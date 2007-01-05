@@ -1,0 +1,28 @@
+Source: cone
+Section: mail
+Priority: optional
+Maintainer: Varun Hiremath <varunhiremath@gmail.com>
+Build-Depends: cdbs, debhelper (>= 5.0), libncurses5-dev, libxml2-dev,
+ libldap2-dev, libssl-dev, fam, aspell
+Standards-Version: 3.7.2
+XS-X-Vcs-Svn: http://bollin.googlecode.com/svn/cone/
+
+Package: cone
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: COnsole Newsreader and Emailer
+ Cone is a text-based mail client. Cone seamlessly handles multiple
+ POP3, IMAP accounts, and local mail folders. Cone is also a simple
+ newsreader. Cone's interface is foolproof enough to be used by
+ inexperienced users, but it also offers advanced features for power
+ users.
+ .
+ Beyond others cone has support for PGP, GPG, UTF-8, IMAP, POP3,
+ incoming HTML mails, external viewers, NNTP, SOCKS 5, SSL/TLS, SASL,
+ LDAP and IMAP based address books, remote storable configuration,
+ multiple accounts, tagging mails with several different flags, and
+ SMAP (Simple Mail Access Protocol, a new IMAP and POP3 replacement
+ developed by the Courier guys and supported by the Courier
+ development versions).
+ .
+  Homepage: http://www.courier-mta.org/cone/
