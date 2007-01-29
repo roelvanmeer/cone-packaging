@@ -1,3 +1,10 @@
+cone (0.69-2) unstable; urgency=low
+
+  * Add procps to Build-Depends (Closes: #408892)
+  * Build against libncursesw5-dev to support UTF-8 (Closes: #409158)
+
+ -- Varun Hiremath <varunhiremath@gmail.com>  Mon, 29 Jan 2007 20:30:28 +0530
+
 cone (0.69-1) unstable; urgency=low
 
   * Initial release (Closes: #405628)
