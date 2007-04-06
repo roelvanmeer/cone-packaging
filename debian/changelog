@@ -1,3 +1,14 @@
+cone (0.69-3) unstable; urgency=low
+
+  [ Varun Hiremath ]
+  * Add patches/gcc4.3_missing_includes.diff to fix build with GCC 4.3
+    Thanks to Martin Michlmayr (Closes: #417493)
+
+  [ Torsten Werner ]
+  * Changed Build-Depends: fam to libfam-dev.
+
+ -- Torsten Werner <twerner@debian.org>  Fri,  6 Apr 2007 21:06:23 +0200
+
 cone (0.69-2) unstable; urgency=low
 
   * Add procps to Build-Depends (Closes: #408892)
