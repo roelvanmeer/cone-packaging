@@ -1,860 +1,349 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->cone</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="Cone mail client"
-HREF="cone00index.html"><LINK
-REL="PREVIOUS"
-TITLE="LDAP Address Books"
-HREF="cone13ldapaddressbook.html"><LINK
-REL="NEXT"
-TITLE="leaf"
-HREF="leaf.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="cone13ldapaddressbook.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="leaf.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="CONE"
-></A
->cone</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN2217"
-></A
-><H2
->Name</H2
->cone&nbsp;--&nbsp;Read and send E-mail messages</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN2220"
-></A
-><H2
->Synopsis</H2
-><P
-><B
-CLASS="COMMAND"
->cone</B
-> [-r] [-c <TT
-CLASS="REPLACEABLE"
-><I
->directory</I
-></TT
->]</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN2226"
-></A
-><H2
->USAGE</H2
-><P
-><TT
-CLASS="APPLICATION"
->Cone</TT
-> is a console newsreader and E-mail.
-It is an interactive program for reading and sending E-mail messages.
-<TT
-CLASS="APPLICATION"
->Cone</TT
-> is designed to be intuitive and easy to learn.
-Starting <TT
-CLASS="APPLICATION"
->Cone</TT
-> for the first time displays two links: one for the
-default system mailbox, and a second link to a quick online tutorial.
-The online tutorial provides a brief overview of using <TT
-CLASS="APPLICATION"
->Cone</TT
-> for
-reading and sending E-mail.</P
-><P
->Pressing <B
-CLASS="KEYCAP"
->Q</B
-> on most screens
-exits <TT
-CLASS="APPLICATION"
->Cone</TT
->.
-<TT
-CLASS="APPLICATION"
->Cone</TT
-> tries to gracefully log out and shut down all server connections.
-If <TT
-CLASS="APPLICATION"
->Cone</TT
-> cannot log out of a remote server because the remote server is
-down, press <B
-CLASS="KEYCAP"
->CTRL</B
->-<B
-CLASS="KEYCAP"
->C</B
->
-(after <B
-CLASS="KEYCAP"
->Q</B
-> to terminate <TT
-CLASS="APPLICATION"
->Cone</TT
->).</P
-><P
->Use <B
-CLASS="KEYCAP"
->CTRL</B
->-<B
-CLASS="KEYCAP"
->Z</B
-> to temporarily suspend <TT
-CLASS="APPLICATION"
->Cone</TT
->
-and drop back to the shell prompt.
-<TT
-CLASS="APPLICATION"
->Cone</TT
-> remains suspended in the background, and may be restarted by using
-the shell's <B
-CLASS="COMMAND"
->fg</B
-> command.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->Connections to remote mail servers may be disconnected
-for inactivity if <TT
-CLASS="APPLICATION"
->Cone</TT
-> remains suspended for a prolonged period of time.
-When suspended, <TT
-CLASS="APPLICATION"
->Cone</TT
-> cannot maintain any active connections to remote
-mail servers.</P
-></TD
-></TR
-></TABLE
-></DIV
-><P
->The <CODE
-CLASS="OPTION"
->-c</CODE
-> option names a directory where <TT
-CLASS="APPLICATION"
->Cone</TT
-> saves its
-configuration files, and defaults to <TT
-CLASS="FILENAME"
->$HOME/.cone</TT
->.
-The configuration directory will be created, if necessary.</P
-><P
->The <CODE
-CLASS="OPTION"
->-r</CODE
-> option recovers a backup copy of <TT
-CLASS="APPLICATION"
->Cone</TT
->'s configuration
-file.
-This option is primarily used when remote configuration is enabled, but
-the folder that contains <TT
-CLASS="APPLICATION"
->Cone</TT
->'s configuration on a remote server was deleted,
-or is not available.
-In all cases, <TT
-CLASS="APPLICATION"
->Cone</TT
-> makes a daily local configuration file backup.
-The <CODE
-CLASS="OPTION"
->-r</CODE
-> option searches for local configuration file
-backups, and offers an option to restore the backup copy.</P
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2262"
-></A
-><H3
->Reading local mail with <TT
-CLASS="APPLICATION"
->Cone</TT
-></H3
-><P
-><TT
-CLASS="APPLICATION"
->Cone</TT
-> reads local mail from either maildirs (the preferred format) or
-mailbox files (or "mboxes").
-When mboxes are used,
-<TT
-CLASS="APPLICATION"
->Cone</TT
-> does not read the system mailbox file directly (usually
-<TT
-CLASS="FILENAME"
->/var/spool/<TT
-CLASS="REPLACEABLE"
-><I
->something</I
-></TT
-></TT
->).
-All messages in the system mailbox are automatically moved to
-<TT
-CLASS="FILENAME"
->$HOME/Inbox</TT
->, which is then accessed as if it was the
-system mailbox.
-Starting <TT
-CLASS="APPLICATION"
->Cone</TT
-> for the first time on an mbox-based system automatically
-copies all existing mail from the system mailbox file
-to <TT
-CLASS="FILENAME"
->$HOME/Inbox</TT
->.</P
-><P
->This is an intentional design choice.  Normal user application cannot
-create new files in <TT
-CLASS="FILENAME"
->/var/spool</TT
->; all they can do is
-read the mailbox file from <TT
-CLASS="FILENAME"
->/var/spool</TT
->.
-Therefore, the only way to update the mailbox file is by
-rewriting it from scratch (more or less).
-While the mailbox file is in the process of being rewritten, if the <TT
-CLASS="APPLICATION"
->Cone</TT
->
-process is interrupted, or killed, the resulted in a corrupted
-system mailbox.
-There are way to minimize this vulnerability, but it cannot be eliminated
-completely.
-Some Linux kernels use an <SPAN
-CLASS="QUOTE"
->"OOM killer"</SPAN
->
-that may terminate any process when
-the system memory is low.
-There is no way to completely prevent corrupted system
-mailbox files on those
-kernels.</P
-><P
-><TT
-CLASS="APPLICATION"
->Cone</TT
-> uses an alternative way of updating mboxes.
-<TT
-CLASS="APPLICATION"
->Cone</TT
-> updates mboxes by creating a new mbox file separately,
-then replacing the original mbox file with the new version.
-Unfortunately this cannot be done with the system mailbox file, because of
-the restricted access rights on the system spool directory.
-To solve this problem <TT
-CLASS="APPLICATION"
->Cone</TT
-> automatically copies the system mailbox file
-to <TT
-CLASS="FILENAME"
->$HOME/Inbox</TT
->, each time the system mailbox file is
-opened and whenever new mail is available.</P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2283"
-></A
-><H3
->Viewing MIME attachments</H3
-><P
-><TT
-CLASS="APPLICATION"
->Cone</TT
-> displays text and simple HTML content by itself.
-Other kinds of attachments may be viewed by using a helper script.
-<TT
-CLASS="APPLICATION"
->Cone</TT
-> invokes a helper script to open a MIME attachment.
-The helper script's name is <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="REPLACEABLE"
-><I
->TYPE</I
-></TT
->.<TT
-CLASS="REPLACEABLE"
-><I
->SUBTYPE</I
-></TT
->.filter"</SPAN
->,
-where <SPAN
-CLASS="QUOTE"
->"TYPE"</SPAN
-> and <SPAN
-CLASS="QUOTE"
->"SUBTYPE"</SPAN
-> corresponds to the
-MIME type and subtype, accordingly.
-<TT
-CLASS="APPLICATION"
->Cone</TT
-> looks for helper scripts in
-<TT
-CLASS="FILENAME"
->$HOME/.cone</TT
-> (or the directory specified by
-<CODE
-CLASS="OPTION"
->-c</CODE
->) and in
-<TT
-CLASS="FILENAME"
->@datadir@/cone</TT
->.</P
-><P
->For example, a helper script named <SPAN
-CLASS="QUOTE"
->"IMAGE.GIF.filter"</SPAN
->, if
-installed, is invoked to process <TT
-CLASS="LITERAL"
->image/gif</TT
-> MIME
-attachments.</P
-><DIV
-CLASS="REFSECT3"
-><A
-NAME="AEN2300"
-></A
-><H4
->Helper scripts</H4
-><P
-><TT
-CLASS="APPLICATION"
->Cone</TT
-> runs each helper script twice:</P
-><DIV
-CLASS="INFORMALEXAMPLE"
-><P
-></P
-><A
-NAME="AEN2304"
-></A
-><TABLE
-BORDER="0"
-BGCOLOR="#E0E0E0"
-WIDTH="100%"
-><TR
-><TD
-><HR><PRE
-CLASS="PROGRAMLISTING"
->TYPE.SUBTYPE.filter check <TT
-CLASS="REPLACEABLE"
-><I
->type/subtype</I
-></TT
-></PRE><HR
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><P
->When the first argument is <SPAN
-CLASS="QUOTE"
->"check"</SPAN
->, the helper script should
-terminate with a zero exit code if it is willing to process an attachment
-whose MIME type is specified by the second argument.
-A script or a program that's has multiple <SPAN
-CLASS="QUOTE"
->"TYPE.SUBTYPE.filter"</SPAN
->
-links may use the second argument to identify the attachment's mime type.
-If the helper script is unable to process the attachment, at this time,
-it should terminate with a non-zero exit code.</P
-><P
->The default helper script for image attachments terminates with a non-zero
-exit code if the <CODE
-CLASS="ENVAR"
->DISPLAY</CODE
-> environment variable is not
-initialized.
-When invoked from an X-Windows terminal, image attachments will be
-automatically displayed; and image attachments are ignored otherwise on
-non-graphical consoles.</P
-><DIV
-CLASS="INFORMALEXAMPLE"
-><P
-></P
-><A
-NAME="AEN2312"
-></A
-><TABLE
-BORDER="0"
-BGCOLOR="#E0E0E0"
-WIDTH="100%"
-><TR
-><TD
-><HR><PRE
-CLASS="PROGRAMLISTING"
->TYPE.SUBTYPE.filter filter <TT
-CLASS="REPLACEABLE"
-><I
->type/subtype</I
-></TT
-> <TT
-CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
-></PRE><HR
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><P
->If the helper script initially terminates with a zero exit code, it will
-be invoked again after the MIME attachment is
-downloaded and decoded.
-The first argument will be <SPAN
-CLASS="QUOTE"
->"filter"</SPAN
->,
-and the attachment's filename is specified by the third argument.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->This is a temporary file, whose extension will not necessary be the
-file extension associated with this MIME type.</P
-></TD
-></TR
-></TABLE
-></DIV
-><P
->The helper script should read and process the file specified by the third
-argument.
-<TT
-CLASS="APPLICATION"
->Cone</TT
-> interprets
-anything the helper script writes to standard output as HTML.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
-><TT
-CLASS="APPLICATION"
->Cone</TT
-> waits until the helper script terminates before displaying the rest
-of the message.
-Most helper scripts should run in the background.
-However, note that <TT
-CLASS="APPLICATION"
->Cone</TT
-> removes the temporary file when the original
-message is closed; the temporary file may be removed any time after the
-helper script terminates.
-The helper script should make its own private copy of the file, if
-necessary.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN2326"
-></A
-><H3
->Activating <ACRONYM
-CLASS="ACRONYM"
->URL</ACRONYM
->s</H3
-><P
-><TT
-CLASS="APPLICATION"
->Cone</TT
-> has limited ability to activate <ACRONYM
-CLASS="ACRONYM"
->URL</ACRONYM
->s in
-<ACRONYM
-CLASS="ACRONYM"
->HTML</ACRONYM
-> messages.
-<TT
-CLASS="APPLICATION"
->Cone</TT
-> handles <SPAN
-CLASS="QUOTE"
->"mailto:"</SPAN
->
-<ACRONYM
-CLASS="ACRONYM"
->URL</ACRONYM
->s by itself.
-For other
-<ACRONYM
-CLASS="ACRONYM"
->URL</ACRONYM
->s
-<TT
-CLASS="APPLICATION"
->Cone</TT
-> runs <TT
-CLASS="FILENAME"
->@datadir@/cone/<TT
-CLASS="REPLACEABLE"
-><I
->method</I
-></TT
->.handler</TT
->
-with the
-<ACRONYM
-CLASS="ACRONYM"
->URL</ACRONYM
-> passed as an argument.</P
-><P
-><TT
-CLASS="APPLICATION"
->Cone</TT
->
-installs <TT
-CLASS="FILENAME"
->http.handler</TT
->
-(hard linked to <TT
-CLASS="FILENAME"
->https.handler</TT
->).
-This script checks if <TT
-CLASS="FILENAME"
->firefox</TT
-> or
-<TT
-CLASS="FILENAME"
->mozilla</TT
-> binaries are found in the current
-<CODE
-CLASS="ENVAR"
->PATH</CODE
->, and runs them.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
-><TT
-CLASS="APPLICATION"
->Cone</TT
-> also looks
-<TT
-CLASS="FILENAME"
-><TT
-CLASS="REPLACEABLE"
-><I
->method</I
-></TT
->.handler</TT
-> in
-<TT
-CLASS="FILENAME"
->$HOME/.cone</TT
-> (or the directory specified by
-<CODE
-CLASS="OPTION"
->-c</CODE
->) in addition to
-<TT
-CLASS="FILENAME"
->@datadir@/cone</TT
->.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN2356"
-></A
-><H2
->FILES</H2
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="FILENAME"
->$HOME/.cone</TT
-></DT
-><DD
-><P
->Configuration files, and other application data.
-May be modified by the <CODE
-CLASS="OPTION"
->-c</CODE
-> option.</P
-></DD
-><DT
-><TT
-CLASS="FILENAME"
->@datadir@/cone/IMAGE.GIF.filter</TT
->,
-<TT
-CLASS="FILENAME"
->@datadir@/cone/IMAGE.JPEG.filter</TT
->,
-<TT
-CLASS="FILENAME"
->@datadir@/cone/IMAGE.PNG.filter</TT
->,
-<TT
-CLASS="FILENAME"
->@datadir@/cone/APPLICATION.PDF.filter</TT
-></DT
-><DD
-><P
->Default helper scripts distributed with <TT
-CLASS="APPLICATION"
->Cone</TT
->.</P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN2374"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="mailtool.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mailtool</SPAN
->(1)</SPAN
-></A
->,
-<SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->sendmail</SPAN
->(8)</SPAN
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="cone13ldapaddressbook.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="leaf.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->LDAP Address Books</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="cone00index.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->leaf</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>cone</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="cone00index.html" title="Cone mail client"/>
+  <link rel="prev" href="cone13ldapaddressbook.html" title="LDAP Address Books"/>
+  <link rel="next" href="leaf.html" title="leaf"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">cone</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="cone13ldapaddressbook.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="application">Cone</span> mail client</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="leaf.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="cone" shape="rect" name="cone"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>cone &#8212; Read and send E-mail messages</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="cmdsynopsis">
+        <p><code class="command">cone</code> [-r] [-c <em class="replaceable"><code>directory</code></em>]</p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id356651" shape="rect" name="id356651"> </a>
+
+      <h2>USAGE</h2>
+
+      <p><span class="application">Cone</span> is a console
+      newsreader and E-mail. It is an interactive program for
+      reading and sending E-mail messages. <span class="application">Cone</span> is designed to be intuitive and
+      easy to learn. Starting <span class="application">Cone</span>
+      for the first time displays two links: one for the default
+      system mailbox, and a second link to a quick online tutorial.
+      The online tutorial provides a brief overview of using
+      <span class="application">Cone</span> for reading and sending
+      E-mail.</p>
+
+      <p>Pressing <span><strong class="keycap">Q</strong></span> on
+      most screens exits <span class="application">Cone</span>.
+      <span class="application">Cone</span> tries to gracefully log
+      out and shut down all server connections. If <span class="application">Cone</span> cannot log out of a remote server
+      because the remote server is down, press <span><strong class="keycap">CTRL</strong></span>-<span><strong class="keycap">C</strong></span> (after <span><strong class="keycap">Q</strong></span> to terminate <span class="application">Cone</span>).</p>
+
+      <p>Use <span><strong class="keycap">CTRL</strong></span>-<span><strong class="keycap">Z</strong></span> to temporarily suspend
+      <span class="application">Cone</span> and drop back to the
+      shell prompt. <span class="application">Cone</span> remains
+      suspended in the background, and may be restarted by using
+      the shell's <span><strong class="command">fg</strong></span>
+      command.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>Connections to remote mail servers may be disconnected
+        for inactivity if <span class="application">Cone</span>
+        remains suspended for a prolonged period of time. When
+        suspended, <span class="application">Cone</span> cannot
+        maintain any active connections to remote mail servers.</p>
+      </div>
+
+      <p>The <code class="option">-c</code> option names a
+      directory where <span class="application">Cone</span> saves
+      its configuration files, and defaults to <code class="filename">$HOME/.cone</code>. The configuration directory
+      will be created, if necessary.</p>
+
+      <p>The <code class="option">-r</code> option recovers a
+      backup copy of <span class="application">Cone</span>'s
+      configuration file. This option is primarily used when remote
+      configuration is enabled, but the folder that contains
+      <span class="application">Cone</span>'s configuration on a
+      remote server was deleted, or is not available. In all cases,
+      <span class="application">Cone</span> makes a daily local
+      configuration file backup. The <code class="option">-r</code>
+      option searches for local configuration file backups, and
+      offers an option to restore the backup copy.</p>
+
+      <div class="refsect2" lang="en" xml:lang="en">
+        <a id="id356996" shape="rect" name="id356996"> </a>
+
+        <h3>Reading local mail with <span class="application">Cone</span></h3>
+
+        <p><span class="application">Cone</span> reads local mail
+        from either maildirs (the preferred format) or mailbox
+        files (or "mboxes"). When mboxes are used, <span class="application">Cone</span> does not read the system mailbox
+        file directly (usually <code class="filename">/var/spool/<em class="replaceable"><code>something</code></em></code>). All
+        messages in the system mailbox are automatically moved to
+        <code class="filename">$HOME/Inbox</code>, which is then
+        accessed as if it was the system mailbox. Starting
+        <span class="application">Cone</span> for the first time on
+        an mbox-based system automatically copies all existing mail
+        from the system mailbox file to <code class="filename">$HOME/Inbox</code>.</p>
+
+        <p>This is an intentional design choice. Normal user
+        application cannot create new files in <code class="filename">/var/spool</code>; all they can do is read the
+        mailbox file from <code class="filename">/var/spool</code>.
+        Therefore, the only way to update the mailbox file is by
+        rewriting it from scratch (more or less). While the mailbox
+        file is in the process of being rewritten, if the
+        <span class="application">Cone</span> process is
+        interrupted, or killed, the resulted in a corrupted system
+        mailbox. There are way to minimize this vulnerability, but
+        it cannot be eliminated completely. Some Linux kernels use
+        an &#8220;<span class="quote">OOM killer</span>&#8221; that
+        may terminate any process when the system memory is low.
+        There is no way to completely prevent corrupted system
+        mailbox files on those kernels.</p>
+
+        <p><span class="application">Cone</span> uses an
+        alternative way of updating mboxes. <span class="application">Cone</span> updates mboxes by creating a new
+        mbox file separately, then replacing the original mbox file
+        with the new version. Unfortunately this cannot be done
+        with the system mailbox file, because of the restricted
+        access rights on the system spool directory. To solve this
+        problem <span class="application">Cone</span> automatically
+        copies the system mailbox file to <code class="filename">$HOME/Inbox</code>, each time the system mailbox
+        file is opened and whenever new mail is available.</p>
+      </div>
+
+      <div class="refsect2" lang="en" xml:lang="en">
+        <a id="id357195" shape="rect" name="id357195"> </a>
+
+        <h3>Viewing MIME attachments</h3>
+
+        <p><span class="application">Cone</span> displays text and
+        simple HTML content by itself. Other kinds of attachments
+        may be viewed by using a helper script. <span class="application">Cone</span> invokes a helper script to open a
+        MIME attachment. The helper script's name is
+        &#8220;<span class="quote"><em class="replaceable"><code>TYPE</code></em>.<em class="replaceable"><code>SUBTYPE</code></em>.filter</span>&#8221;,
+        where &#8220;<span class="quote">TYPE</span>&#8221; and
+        &#8220;<span class="quote">SUBTYPE</span>&#8221;
+        corresponds to the MIME type and subtype, accordingly.
+        <span class="application">Cone</span> looks for helper
+        scripts in <code class="filename">$HOME/.cone</code> (or
+        the directory specified by <code class="option">-c</code>)
+        and in <code class="filename">@datadir@/cone</code>.</p>
+
+        <p>For example, a helper script named &#8220;<span class="quote">IMAGE.GIF.filter</span>&#8221;, if installed, is
+        invoked to process <code class="literal">image/gif</code>
+        MIME attachments.</p>
+
+        <div class="refsect3" lang="en" xml:lang="en">
+          <a id="id357297" shape="rect" name="id357297"> </a>
+
+          <h4>Helper scripts</h4>
+
+          <p><span class="application">Cone</span> runs each helper
+          script twice:</p>
+
+          <div class="informalexample">
+            <hr /><pre class="programlisting" xml:space="preserve">
+TYPE.SUBTYPE.filter check <em class="replaceable"><code>type/subtype</code></em>
+</pre><hr />
+          </div>
+
+          <p>When the first argument is &#8220;<span class="quote">check</span>&#8221;, the helper script should
+          terminate with a zero exit code if it is willing to
+          process an attachment whose MIME type is specified by the
+          second argument. A script or a program that's has
+          multiple &#8220;<span class="quote">TYPE.SUBTYPE.filter</span>&#8221; links may use
+          the second argument to identify the attachment's mime
+          type. If the helper script is unable to process the
+          attachment, at this time, it should terminate with a
+          non-zero exit code.</p>
+
+          <p>The default helper script for image attachments
+          terminates with a non-zero exit code if the <code class="envar">DISPLAY</code> environment variable is not
+          initialized. When invoked from an X-Windows terminal,
+          image attachments will be automatically displayed; and
+          image attachments are ignored otherwise on non-graphical
+          consoles.</p>
+
+          <div class="informalexample">
+            <hr /><pre class="programlisting" xml:space="preserve">
+TYPE.SUBTYPE.filter filter <em class="replaceable"><code>type/subtype</code></em> <em class="replaceable"><code>filename</code></em>
+</pre><hr />
+          </div>
+
+          <p>If the helper script initially terminates with a zero
+          exit code, it will be invoked again after the MIME
+          attachment is downloaded and decoded. The first argument
+          will be &#8220;<span class="quote">filter</span>&#8221;,
+          and the attachment's filename is specified by the third
+          argument.</p>
+
+          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <h3 class="title">Note</h3>
+
+            <p>This is a temporary file, whose extension will not
+            necessary be the file extension associated with this
+            MIME type.</p>
+          </div>
+
+          <p>The helper script should read and process the file
+          specified by the third argument. <span class="application">Cone</span> interprets anything the helper
+          script writes to standard output as HTML.</p>
+
+          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <h3 class="title">Note</h3>
+
+            <p><span class="application">Cone</span> waits until
+            the helper script terminates before displaying the rest
+            of the message. Most helper scripts should run in the
+            background. However, note that <span class="application">Cone</span> removes the temporary file
+            when the original message is closed; the temporary file
+            may be removed any time after the helper script
+            terminates. The helper script should make its own
+            private copy of the file, if necessary.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="refsect2" lang="en" xml:lang="en">
+        <a id="id357450" shape="rect" name="id357450"> </a>
+
+        <h3>Activating <acronym class="acronym">URL</acronym>s</h3>
+
+        <p><span class="application">Cone</span> has limited
+        ability to activate <acronym class="acronym">URL</acronym>s
+        in <acronym class="acronym">HTML</acronym> messages.
+        <span class="application">Cone</span> handles
+        &#8220;<span class="quote">mailto:</span>&#8221;
+        <acronym class="acronym">URL</acronym>s by itself. For
+        other <acronym class="acronym">URL</acronym>s <span class="application">Cone</span> runs <code class="filename">@datadir@/cone/<em class="replaceable"><code>method</code></em>.handler</code> with
+        the <acronym class="acronym">URL</acronym> passed as an
+        argument.</p>
+
+        <p><span class="application">Cone</span> installs
+        <code class="filename">http.handler</code> (hard linked to
+        <code class="filename">https.handler</code>). This script
+        checks if <code class="filename">firefox</code> or
+        <code class="filename">mozilla</code> binaries are found in
+        the current <code class="envar">PATH</code>, and runs
+        them.</p>
+
+        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <h3 class="title">Note</h3>
+
+          <p><span class="application">Cone</span> also looks
+          <code class="filename"><em class="replaceable"><code>method</code></em>.handler</code> in
+          <code class="filename">$HOME/.cone</code> (or the
+          directory specified by <code class="option">-c</code>) in
+          addition to <code class="filename">@datadir@/cone</code>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id357632" shape="rect" name="id357632"> </a>
+
+      <h2>FILES</h2>
+
+      <div class="variablelist">
+        <dl>
+          <dt><span class="term"><code class="filename">$HOME/.cone</code></span></dt>
+
+          <dd>
+            <p>Configuration files, and other application data. May
+            be modified by the <code class="option">-c</code>
+            option.</p>
+          </dd>
+
+          <dt><span class="term"><code class="filename">@datadir@/cone/IMAGE.GIF.filter</code>,
+          <code class="filename">@datadir@/cone/IMAGE.JPEG.filter</code>,
+          <code class="filename">@datadir@/cone/IMAGE.PNG.filter</code>,
+          <code class="filename">@datadir@/cone/APPLICATION.PDF.filter</code></span></dt>
+
+          <dd>
+            <p>Default helper scripts distributed with <span class="application">Cone</span>.</p>
+          </dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id357713" shape="rect" name="id357713"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="mailtool.html" title="mailtool" shape="rect"><span class="citerefentry"><span class="refentrytitle">mailtool</span>(1)</span></a>, <span class="citerefentry"><span class="refentrytitle">sendmail</span>(8)</span>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="cone13ldapaddressbook.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="cone00index.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="leaf.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">LDAP Address Books&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;leaf</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

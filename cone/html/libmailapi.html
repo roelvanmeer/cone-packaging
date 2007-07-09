@@ -1,0 +1,155 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>LibMAIL APIs</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="libmail.html" title="LibMAIL reference"/>
+  <link rel="prev" href="cppnamespace.html" title="C/C++ namespace"/>
+  <link rel="next" href="synchronous.html" title="mail::ACCOUNT Synchronous API reference"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1"><span class="application">LibMAIL</span> APIs</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="cppnamespace.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="application">LibMAIL</span> reference</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="synchronous.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="chapter" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h2 class="title"><a id="libmailapi" shape="rect" name="libmailapi"> </a> <span class="application">LibMAIL</span> APIs</h2>
+        </div>
+      </div>
+    </div>
+
+    <p>The <span class="application">LibMAIL</span> library
+    provides two alternative interfaces: called the
+    &#8220;<span class="quote">native</span>&#8221; and the
+    &#8220;<span class="quote">synchronous</span>&#8221; interfaces
+    (API). The native API is based on two fundamental objects:
+    <span class="structname">mail::account</span> - an
+    &#8220;<span class="quote">account</span>&#8221;; and
+    <span class="structname">mail::folder</span> - a
+    &#8220;<span class="quote">folder</span>&#8221;. The syncronous
+    API uses <span class="structname">mail::ACCOUNT</span> objects
+    instead of <span class="structname">mail::account</span>
+    objects; the synchronous API also uses <span class="structname">mail::folder</span> objects, but they are used in
+    a different manner: instead of invoking <span class="structname">mail::folder</span>'s methods, the synchronous API
+    provides additional <span class="structname">mail::ACCOUNT</span> methods that take a
+    <span class="structname">mail::folder</span> object as an
+    additional parameter.</p>
+
+    <p>Both APIs fulfill the same function, but use fundamentally
+    different approaches. The synchronous, <span class="structname">mail::ACCOUNT</span>-based API, is a traditional,
+    function-oriented interface: each function completes its given
+    task, and returns. The native, <span class="structname">mail::account</span>-based API uses an
+    event-driven paradigm. <span class="structname">mail::account</span> (and <span class="structname">mail::folder</span>) methods receive a
+    <span class="structname">mail::callback</span> object, or one
+    of its subclasses, as an extra parameter. The methods always
+    return immediately, without waiting for the requested operation
+    to complete. The <span class="structname">mail::callback</span>
+    object has two methods: <code class="function">success</code>
+    and <code class="function">fail</code>. One of these methods
+    will be invoked when the original task is completed.</p>
+
+    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <h3 class="title">Note</h3>
+
+      <p>In some cases it's possible that the requested task can be
+      completed immediately, but this mechanism is still used: the
+      callback method will be invoked before the original method
+      returns to the application, instead of afterwards.</p>
+    </div>
+
+    <p>The native API is designed for interactive, event-driven
+    applications. The application's main event loop should invoke
+    the <a href="mail-process.html" title="mail::account::process" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::process</span>(3x)</span></a>
+    method. This method checks all pending requests, and invokes
+    the completed requests' callback methods.</p>
+
+    <p>The native API is not convenient for single-purpose command
+    line based mail processing tools . That's the purpose of the
+    alternative <span class="structname">mail::ACCOUNT</span>-based
+    API. The <span class="structname">mail::ACCOUNT</span>
+    synchronous API is designed specifically for single-purpose
+    command line tools. It should NOT be used by interactive,
+    event-driven applications. This is because open mail accounts
+    usually require some sort of periodic, regularly-scheduled
+    processing (such as checking for new mail). This processing is
+    automatically handled by <a href="mail-process.html" title="mail::account::process" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::process</span>(3x)</span></a>.
+    An interactive application that uses the synchronous API will
+    exhibit random failures because it will be regularly
+    disconnected from mail servers, for inactivity, when no mail
+    processing occurs for a significant period of time.</p>
+
+    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <h3 class="title">Note</h3>
+
+      <p>The synchronous API is really nothing more than a small
+      wrapper around the native API. <span class="structname">mail::ACCOUNT</span> methods closely parallel
+      their equivalent <span class="structname">mail::account</span>-based methods. A given
+      <span class="structname">mail::ACCOUNT</span> method is
+      implemented by creating a callback object, invoking the
+      corresponding <span class="structname">mail::account</span>
+      (or <span class="structname">mail::folder</span>) method,
+      then repeatedly calling <a href="mail-process.html" title="mail::account::process" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::process</span>(3x)</span></a>,
+      until the callback object is invoked.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="cppnamespace.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="libmail.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="synchronous.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">C/C++ namespace&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;<span class="structname">mail::ACCOUNT</span> Synchronous API
+        reference</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

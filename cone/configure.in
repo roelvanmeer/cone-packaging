@@ -1,14 +1,15 @@
 dnl Process this file with autoconf to produce a configure script.
-# $Id: configure.in,v 1.37 2006/05/25 23:54:50 mrsam Exp $
+# $Id: configure.in,v 1.39 2007/05/13 17:26:13 mrsam Exp $
 #
-# Copyright 2003-2006, Double Precision Inc.
+# Copyright 2003-2007, Double Precision Inc.
 #
 # See COPYING for distribution information.
 #
-AC_INIT(cone.C)
+AC_INIT(cone,0.70, [courier-cone@lists.sourceforge.net])
+AC_CONFIG_SRCDIR(cone.C)
 AC_CANONICAL_TARGET
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(cone,0.68)
+AM_INIT_AUTOMAKE
 
 ALL_LINGUAS=
 LPATH="$PATH:/usr/local/bin"

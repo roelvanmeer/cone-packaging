@@ -65,7 +65,7 @@
 #endif
 #include	<locale.h>
 
-static const char rcsid[]="$Id: starttls.c,v 1.35 2006/05/28 15:29:52 mrsam Exp $";
+static const char rcsid[]="$Id: starttls.c,v 1.36 2007/03/06 04:45:57 mrsam Exp $";
 
 /* Command-line options: */
 const char *clienthost=0;
@@ -760,8 +760,28 @@ static void smtp_proto(int fd)
 	struct protoreadbuf prb;
 	const char *p;
 
+	char hostname[1024];
+
 	PRB_INIT(&prb);
 
+	do
+	{
+		p=prb_getline(fd, &prb);
+		printf("%s\n", p);
+	} while ( ! ( isdigit((int)(unsigned char)p[0]) && 
+		      isdigit((int)(unsigned char)p[1]) &&
+		      isdigit((int)(unsigned char)p[2]) &&
+		      (p[3] == 0 || isspace((int)(unsigned char)p[3]))));
+	if (strchr("123", *p) == 0)
+		exit(1);
+
+	hostname[sizeof(hostname)-1]=0;
+	if (gethostname(hostname, sizeof(hostname)-1) < 0)
+		strcpy(hostname, "localhost");
+
+	prb_write(fd, &prb, "EHLO ");
+	prb_write(fd, &prb, hostname);
+	prb_write(fd, &prb, "\r\n");
 	do
 	{
 		p=prb_getline(fd, &prb);

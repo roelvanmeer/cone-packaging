@@ -1,71 +1,73 @@
-   Link: start
-   Link: Logging off (previous)
+   Link: Cone: COnsole Newsreader And Emailer (start)
    Link: Installing Cone (next)
 
-   <<< Previous                                                      Next >>>
+                      Cone: COnsole Newsreader And Emailer
+                                                                         Next
 
    --------------------------------------------------------------------------
 
                       Cone: COnsole Newsreader And Emailer
 
-    [IMG]
+   --------------------------------------------------------------------------
 
-                                  Introduction
+                                                                  Sourceforge
+
+Introduction
 
    Cone is a text-based mail client. Cone seamlessly handles multiple POP3,
    IMAP accounts, and local mail folders. Cone is also a simple newsreader.
    Cone's interface is foolproof enough to be used by inexperienced users,
    but it also offers advanced features for power users.
 
-Overview
+  Overview
 
-     * An online tutorial provides a quick overview of Cone's main features.
+     o An online tutorial provides a quick overview of Cone's main features.
 
-     * A built-in text editor for editing new messages, with search/replace
+     o A built-in text editor for editing new messages, with search/replace
        and spell checking (requires aspell or pspell).
 
        Shortcuts - assign frequently used text to a function key, or to an
        abbreviation. Insert the text by pressing the function key or typing
        its abbreviation.
 
-     * Supports UTF-8 consoles (requires the wide-character version of the
+     o Supports UTF-8 consoles (requires the wide-character version of the
        curses library).
 
-     * Displays HTML mail, with automatic de-moronization ("smart quotes",
+     o Displays HTML mail, with automatic de-moronization ("smart quotes",
        and similar clutter, is replaced by plain garden-variety punctuation).
 
-     * Displays attached images, if invoked from an X terminal, by running
+     o Displays attached images, if invoked from an X terminal, by running
        Gnome's eog, or KDE's kview image viewer. Displays PDF attachments by
        running xpdf. Other, or alternative, helper applications will be added
        as time permits.
 
-     * After attachments are downloaded, they can be optionally removed from
+     o After attachments are downloaded, they can be optionally removed from
        the message.
 
-     * Handles local mail folders, maildirs, IMAP and POP3 accounts, and
+     o Handles local mail folders, maildirs, IMAP and POP3 accounts, and
        Usenet newsgroups. All folders are shown in a hierarchical tree-like
        display.
 
-     * Supports access to servers through a Socks 5 proxy, using the Courier
+     o Supports access to servers through a Socks 5 proxy, using the Courier
        Socks 5 API toolkit.
 
-     * Sends mail using an external SMTP server (with/without
+     o Sends mail using an external SMTP server (with/without
        authentication), or the local sendmail command.
 
-     * All network protocols support SSL/TLS and SASL (CRAM-MD5, CRAM-SHA1,
+     o All network protocols support SSL/TLS and SASL (CRAM-MD5, CRAM-SHA1,
        and LOGIN).
 
-     * Address books (which can be stored in an IMAP folder).
+     o Address books (which can be stored in an IMAP folder).
 
-     * Optional support for LDAP address books.
+     o Optional support for LDAP address books.
 
-     * Remote configuration (share a common configuration between different
+     o Remote configuration (share a common configuration between different
        instances of Cone).
 
-     * An optional "single sign-on". Use a single master password for
+     o An optional "single sign-on". Use a single master password for
        multiple remote mail server accounts.
 
-     * PGP/GPG based encryption, and digital signatures. Sent messages are
+     o PGP/GPG based encryption, and digital signatures. Sent messages are
        automatically signed. Different signing keys may be selected for
        different mail accounts, and the appropriate key is automatically
        selected when replying to a message from an account. Selecting a
@@ -77,10 +79,10 @@ Overview
        When a single sign-on master password is installed, the master
        password also handles access to passphrase-protected keys.
 
-     * Cone shares a lot of its code base with the Courier mail server, which
+     o Cone shares a lot of its code base with the Courier mail server, which
        is why they share the same web site together.
 
-     * Cone also serves as a platform for development of a new experimental
+     o Cone also serves as a platform for development of a new experimental
        network mail access protocol, SMAP, that offers additional
        functionality not available with IMAP or POP3. When Cone logs on to a
        SMAP-capable server, such as the current development version of
@@ -103,30 +105,30 @@ Overview
 
          5. Many other useful features that are waiting to be implemented.
 
-     * Cone owes its versatility in handling a large variety of mail
-       protocols to the fact that it's based on  LibMAIL, a generic C++
+     o Cone owes its versatility in handling a large variety of mail
+       protocols to the fact that it's based on LibMAIL , a generic C++
        library that provides a high-level mail-handling API. Using the
        --with-devel configuration setting installs the LibMAIL toolkit, which
        allows for development of independent E-mail software.
 
    --------------------------------------------------------------------------
 
-   <<< Previous                       Home                           Next >>>
-   Logging off                                                Installing Cone
+                                                                         Next
+                                       ToC                    Installing Cone
 
 References
 
    Visible links
-   . file:///home/mrsam/src/cone/cone/html/book.html
-   . file:///home/mrsam/src/cone/cone/html/x13789.html
-   . file:///home/mrsam/src/cone/cone/html/install.html
-   . file:///home/mrsam/src/cone/cone/html/x13789.html
-   . file:///home/mrsam/src/cone/cone/html/install.html
+   . file:///home/mrsam/src/cone/cone/html/index.html
+   . file:///home/mrsam/src/cone/cone/html/INSTALL.html
+   . file:///home/mrsam/src/cone/cone/html/INSTALL.html
    . http://sourceforge.net/projects/courier/
-   . file:///home/mrsam/src/cone/cone/html/leaf.html
+   . leaf
+	file:///home/mrsam/src/cone/cone/html/leaf.html
    . http://www.courier-mta.org/
-   . file:///home/mrsam/src/cone/cone/html/smap1.html
-   . file:///home/mrsam/src/cone/cone/html/libmail.html
-   . file:///home/mrsam/src/cone/cone/html/x13789.html
-   . file:///home/mrsam/src/cone/cone/html/book.html
-   . file:///home/mrsam/src/cone/cone/html/install.html
+   . AppendixA.Simple Mail Access Protocol, Version 1
+	file:///home/mrsam/src/cone/cone/html/smap1.html
+   . LibMAIL reference
+	file:///home/mrsam/src/cone/cone/html/libmail.html
+   . file:///home/mrsam/src/cone/cone/html/INSTALL.html
+   . file:///home/mrsam/src/cone/cone/html/bk01-toc.html

@@ -1,0 +1,117 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>More comments on concurrency</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1"/>
+  <link rel="prev" href="store.html" title="Modifying message attributes"/>
+  <link rel="next" href="add.html" title="Adding messages to folders"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">More comments on
+        concurrency</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="store.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        Appendix&#160;A.&#160;Simple Mail Access Protocol, Version
+        1</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="add.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="section" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title"><a id="smapconcurrency" shape="rect" name="smapconcurrency"> </a>More comments on
+          concurrency</h3>
+        </div>
+      </div>
+    </div>
+
+    <p>As mentioned earlier, it is possible for a client to request
+    attributes or contents of messages that are no longer
+    available. Another application might have removed the message
+    from the folder, and the SMAP client has not polled the server
+    for changes to the folder's contents.</p>
+
+    <p>With one exception, the server should ignore requests for
+    attributes or content of messages that are no longer available.
+    When the client requests attributes or content of multiple
+    messages, the unavailable messages should simply be omitted
+    from the server's single or multi-line replies. When the client
+    requests a single message, which is no longer available, the
+    server may reply with either an explicit error message, or just
+    a good status line reply, but without any single or multi-line
+    replies containing the requested data.</p>
+
+    <p>Another acceptable response in this situation is for the
+    server to return default data. The server can synthesize a
+    short, generic message whose sole contents is the text "This
+    message is no longer available.", and respond to queries as if
+    this message has been put in place of the requested
+    message.</p>
+
+    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <h3 class="title">Note</h3>
+
+      <p>Here's the exception. The server should always remember
+      the unique identifiers of messages. The server should always
+      respond to requests for <code class="literal">UID</code>s,
+      even if the message is no longer available. No two messages
+      in a folder will ever have the same <code class="literal">UID</code>, so memorizing them should not be too
+      difficult.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="store.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="smap1.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="add.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">Modifying message attributes&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;Adding messages to folders</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

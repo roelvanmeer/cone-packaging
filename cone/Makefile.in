@@ -53,7 +53,22 @@ DIST_COMMON = $(am__configure_deps) $(srcdir)/../config.guess \
 	$(top_srcdir)/intl/Makefile.in ABOUT-NLS mkinstalldirs
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.in
+am__aclocal_m4_deps = $(top_srcdir)/m4/codeset.m4 \
+	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/glibc2.m4 \
+	$(top_srcdir)/m4/glibc21.m4 $(top_srcdir)/m4/iconv.m4 \
+	$(top_srcdir)/m4/intdiv0.m4 $(top_srcdir)/m4/intmax.m4 \
+	$(top_srcdir)/m4/inttypes-pri.m4 $(top_srcdir)/m4/inttypes.m4 \
+	$(top_srcdir)/m4/inttypes_h.m4 $(top_srcdir)/m4/isc-posix.m4 \
+	$(top_srcdir)/m4/lcmessage.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/longdouble.m4 $(top_srcdir)/m4/longlong.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/printf-posix.m4 $(top_srcdir)/m4/progtest.m4 \
+	$(top_srcdir)/m4/signed.m4 $(top_srcdir)/m4/size_max.m4 \
+	$(top_srcdir)/m4/stdint_h.m4 $(top_srcdir)/m4/uintmax_t.m4 \
+	$(top_srcdir)/m4/ulonglong.m4 $(top_srcdir)/m4/wchar_t.m4 \
+	$(top_srcdir)/m4/wint_t.m4 $(top_srcdir)/m4/xsize.m4 \
+	$(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
@@ -326,7 +341,7 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 
-#$Id: Makefile.am,v 1.39 2006/11/18 19:40:43 mrsam Exp $
+#$Id: Makefile.am,v 1.41 2007/05/13 17:26:13 mrsam Exp $
 #
 # Copyright 2003-2006, Double Precision Inc.
 #
@@ -337,7 +352,7 @@ noinst_SCRIPTS = cone.sh cone.dist
 HTMLMACROFILES = cone.html
 MANMACROFILES = man1/cone.1
 noinst_DATA = help.txt http.handler html/index.html html/manpage.css \
-	man/manpage.links
+	man/.timestamp
 AUTOMAKE_OPTIONS = dist-bzip2
 IMAGEFILTERS = IMAGE.GIF.filter IMAGE.JPEG.filter IMAGE.PNG.filter
 pkgdata_SCRIPTS = APPLICATION.PDF.filter
@@ -491,7 +506,7 @@ pwtest_DEPENDENCIES = ../tcpd/libtlsclient.a libcouriertls.dep \
 pwtest_LDADD = ../tcpd/libtlsclient.a `cat libcouriertls.dep` ../md5/libmd5.la
 pwtest_LDFLAGS = -static
 EXTRA_DIST = mkinstalldirs  testsuite1 testsuite1.out pwtest.txt colors.txt mkcolors.pl \
-	fixonlinehelp.pl mkhtmlmsg.pl $(SPELLSRC)
+	fixonlinehelp.pl mkhtmlmsg.pl postproc.xsl $(SPELLSRC)
 
 CLEANFILES = dummyspellchecker.a libmail.la man.timestamp \
           helpfile.H help.txt
@@ -981,7 +996,7 @@ distclean-tags:
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkdir_p) $(distdir)/. $(distdir)/.. $(distdir)/intl $(distdir)/po
+	$(mkdir_p) $(distdir)/. $(distdir)/.. $(distdir)/intl $(distdir)/m4 $(distdir)/po
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -1270,7 +1285,7 @@ dist-hook: $(noinst_DATA)
 		ln $$d/* $(distdir)/html
 	$(mkinstalldirs) $(distdir)/man
 	d=`test -d $(srcdir)/man && echo $(srcdir)/man || echo man` ; \
-		ln $$d/*.[35]x $$d/*.1 $$d/manpage.links $(distdir)/man
+		ln $$d/*.[35]x $$d/*.1 $$d/.timestamp $(distdir)/man
 
 help.txt: config.status html/index.html
 	for f in $(srcdir)/html/cone[0-9]*html; do @PERL@ $(srcdir)/mkhtmlmsg.pl <$$f ; done >help.tmp
@@ -1286,19 +1301,26 @@ help.txt: config.status html/index.html
 @HAVE_SGML_TRUE@sgmltimestamp: sgml/*.sgml
 @HAVE_SGML_TRUE@	$(mkinstalldirs) html
 @HAVE_SGML_TRUE@	rm -f html/*html*
-@HAVE_SGML_TRUE@	docbook2html --include ISOlat1.module --include htmloutput -V '%use-id-as-filename%' -o html $(srcdir)/sgml/book.sgml
-@HAVE_SGML_TRUE@	for f in html/*.html ; do ${srcdir}/../docbook/fixhtml $(srcdir)/sgml/book.sgml $$f; done
+@HAVE_SGML_TRUE@	xsltproc -o html/ $(srcdir)/cone.xsl $(srcdir)/sgml/book.sgml
+@HAVE_SGML_TRUE@	for f in html/*.html; do xsltproc --nonet $(srcdir)/../docbook/fixhtml.xsl $$f | tidy -i -q --doctype transitional --input-encoding utf8 --output-encoding ascii -asxml >html/.t; xsltproc --nonet $(srcdir)/postproc.xsl html/.t >$$f; done
+@HAVE_SGML_TRUE@	rm -f html/.t
 @HAVE_SGML_TRUE@	for f in html/cone*html ; do @PERL@ $(srcdir)/fixonlinehelp.pl $$f ; done
 @HAVE_SGML_TRUE@	touch sgmltimestamp
 
 @HAVE_SGML_TRUE@html/manpage.css: ../docbook/manpage.css
 @HAVE_SGML_TRUE@	cp -f $(srcdir)/../docbook/manpage.css html
 
-@HAVE_SGML_TRUE@man/manpage.links: sgmltimestamp
+@HAVE_SGML_TRUE@man/.timestamp: sgmltimestamp
 @HAVE_SGML_TRUE@	$(mkinstalldirs) man
 @HAVE_SGML_TRUE@	rm -f man/*
-@HAVE_SGML_TRUE@	docbook2man --include manoutput --include ISOlat1.module -o man $(srcdir)/sgml/book.sgml
-@HAVE_SGML_TRUE@	for f in man/* ; do ${srcdir}/../docbook/fixman $(srcdir)/sgml/book.sgml $$f ; done
+@HAVE_SGML_TRUE@	xsltproc --nonet --stringparam man.output.in.separate.dir 1 \
+@HAVE_SGML_TRUE@		--stringparam man.output.subdirs.enabled 0 \
+@HAVE_SGML_TRUE@		/usr/share/sgml/docbook/xsl-stylesheets/manpages/docbook.xsl \
+@HAVE_SGML_TRUE@		 $(srcdir)/sgml/book.sgml
+@HAVE_SGML_TRUE@	for f in man/* ; do sed -n '20,$$d;/<!--/p' <$(srcdir)/sgml/book.sgml | sed 's/\"/ /g;s/^/\.\\\"/g' >man/.tmp; \
+@HAVE_SGML_TRUE@		cat $$f >>man/.tmp; \
+@HAVE_SGML_TRUE@		mv man/.tmp $$f; done
+@HAVE_SGML_TRUE@	>man/.timestamp
 
 @HAVE_SGML_TRUE@onlinehelp: help.txt
 @HAVE_SGML_TRUE@	cp help.txt $$HOME/Mail/libmail

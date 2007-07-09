@@ -1,4 +1,4 @@
-#$Id: Makefile.am,v 1.39 2006/11/18 19:40:43 mrsam Exp $
+#$Id: Makefile.am,v 1.41 2007/05/13 17:26:13 mrsam Exp $
 #
 # Copyright 2003-2006, Double Precision Inc.
 #
@@ -117,7 +117,7 @@ lib_LTLIBRARIES=@LIBMAIL@
 EXTRA_MANS=$(man3src) $(man5src)
 EXTRA_LTLIBRARIES=libmail.la
 
-noinst_DATA += html/index.html html/manpage.css man/manpage.links
+noinst_DATA += html/index.html html/manpage.css man/.timestamp
 
 LAMAILLIBS=../libmail/libmail.la ../maildir/libmaildir.la \
 	../rfc2045/librfc2045.la \
@@ -204,7 +204,7 @@ dist-hook: $(noinst_DATA)
 		ln $$d/* $(distdir)/html
 	$(mkinstalldirs) $(distdir)/man
 	d=`test -d $(srcdir)/man && echo $(srcdir)/man || echo man` ; \
-		ln $$d/*.[35]x $$d/*.1 $$d/manpage.links $(distdir)/man
+		ln $$d/*.[35]x $$d/*.1 $$d/.timestamp $(distdir)/man
 
 help.txt: config.status html/index.html
 	for f in $(srcdir)/html/cone[0-9]*html; do @PERL@ $(srcdir)/mkhtmlmsg.pl <$$f ; done >help.tmp
@@ -222,19 +222,26 @@ $(man1src) $(man3src) $(man5src) html/index.html html/readme.html html/install.h
 sgmltimestamp: sgml/*.sgml
 	$(mkinstalldirs) html
 	rm -f html/*html*
-	docbook2html --include ISOlat1.module --include htmloutput -V '%use-id-as-filename%' -o html $(srcdir)/sgml/book.sgml
-	for f in html/*.html ; do ${srcdir}/../docbook/fixhtml $(srcdir)/sgml/book.sgml $$f; done
+	xsltproc -o html/ $(srcdir)/cone.xsl $(srcdir)/sgml/book.sgml
+	for f in html/*.html; do xsltproc --nonet $(srcdir)/../docbook/fixhtml.xsl $$f | tidy -i -q --doctype transitional --input-encoding utf8 --output-encoding ascii -asxml >html/.t; xsltproc --nonet $(srcdir)/postproc.xsl html/.t >$$f; done
+	rm -f html/.t
 	for f in html/cone*html ; do @PERL@ $(srcdir)/fixonlinehelp.pl $$f ; done
 	touch sgmltimestamp
 
 html/manpage.css: ../docbook/manpage.css
 	cp -f $(srcdir)/../docbook/manpage.css html
 
-man/manpage.links: sgmltimestamp
+man/.timestamp: sgmltimestamp
 	$(mkinstalldirs) man
 	rm -f man/*
-	docbook2man --include manoutput --include ISOlat1.module -o man $(srcdir)/sgml/book.sgml
-	for f in man/* ; do ${srcdir}/../docbook/fixman $(srcdir)/sgml/book.sgml $$f ; done
+	xsltproc --nonet --stringparam man.output.in.separate.dir 1 \
+		--stringparam man.output.subdirs.enabled 0 \
+		/usr/share/sgml/docbook/xsl-stylesheets/manpages/docbook.xsl \
+		 $(srcdir)/sgml/book.sgml
+	for f in man/* ; do sed -n '20,$$d;/<!--/p' <$(srcdir)/sgml/book.sgml | sed 's/\"/ /g;s/^/\.\\\"/g' >man/.tmp; \
+		cat $$f >>man/.tmp; \
+		mv man/.tmp $$f; done
+	>man/.timestamp
 
 onlinehelp: help.txt
 	cp help.txt $$HOME/Mail/libmail
@@ -264,7 +271,7 @@ uninstall-local:
 	rm -f $(DESTDIR)$(pkgdatadir)/https.handler
 
 EXTRA_DIST = mkinstalldirs  testsuite1 testsuite1.out pwtest.txt colors.txt mkcolors.pl \
-	fixonlinehelp.pl mkhtmlmsg.pl $(SPELLSRC)
+	fixonlinehelp.pl mkhtmlmsg.pl postproc.xsl $(SPELLSRC)
 
 colors_inc.h: colors.txt mkcolors.pl
 	@PERL@ $(srcdir)/mkcolors.pl <$(srcdir)/colors.txt >colors_inc.h

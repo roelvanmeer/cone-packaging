@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.21 2006/04/11 02:24:59 mrsam Exp $
+# $Id: Makefile.am,v 1.23 2007/05/13 17:26:13 mrsam Exp $
 #
 # Copyright 2003-2006, Double Precision Inc.
 #
@@ -64,11 +64,11 @@ EXTRA_DIST = automake.fix \
 dist-hook:
 	rm -f $(distdir)/NEWS $(distdir)/README $(distdir)/INSTALL
 	$(HTML2TXT) $(srcdir)/cone/html/index.html >$(distdir)/NEWS
-	$(HTML2TXT) $(srcdir)/cone/html/readme.html >$(distdir)/README
-	$(HTML2TXT) $(srcdir)/cone/html/install.html >$(distdir)/INSTALL
+	$(HTML2TXT) $(srcdir)/cone/html/README.html >$(distdir)/README
+	$(HTML2TXT) $(srcdir)/cone/html/INSTALL.html >$(distdir)/INSTALL
 
 
-# Added by sysconftoolize: $Id: Makefile.am,v 1.21 2006/04/11 02:24:59 mrsam Exp $
+# Added by sysconftoolize: $Id: Makefile.am,v 1.23 2007/05/13 17:26:13 mrsam Exp $
 
 # Copyright 2000 Double Precision, Inc.  See COPYING for
 # distribution information.
@@ -171,6 +171,9 @@ release-dist:
 	socksify ../sftools/release.pl mrsam $(SFPASSWD) courier cone @VERSION@ releasenotes.txt changelog.txt @PACKAGE@-@VERSION@.tar.bz2 @PACKAGE@-@VERSION@.tar.bz2.sig
 
 .PHONY: rpm
+
+pub:
+	cp -pr cone/html/* $$HOME/www/www.courier-mta.org/cone
 
 tst:
 	rm -f valgrind.log*

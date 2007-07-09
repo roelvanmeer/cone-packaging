@@ -1,4 +1,4 @@
-/* $Id: mailtool.C,v 1.8 2004/06/14 00:18:42 mrsam Exp $
+/* $Id: mailtool.C,v 1.9 2007/04/06 17:57:29 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -23,6 +23,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>

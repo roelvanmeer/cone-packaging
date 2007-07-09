@@ -1,10 +1,13 @@
-dnl $Id: configure.in,v 1.23 2006/01/23 23:22:10 mrsam Exp $
+dnl $Id: configure.in,v 1.25 2007/02/26 02:56:37 mrsam Exp $
 dnl
 dnl Copyright 1998 - 2001 Double Precision, Inc.  See COPYING for
 dnl distribution information.
-AC_INIT(rfc2045.c)
+AC_INIT(rfc2045lib, 0.20, [courier-maildrop@lists.sourceforge.net])
 
-AM_INIT_AUTOMAKE(rfc2045lib, 0.20, 0)
+>confdefs.h  # Kill PACKAGE_ macros
+
+AC_CONFIG_SRCDIR(rfc2045.c)
+AM_INIT_AUTOMAKE([foreign no-define])
 AM_CONFIG_HEADER(rfc2045_config.h)
 
 dnl Checks for programs.

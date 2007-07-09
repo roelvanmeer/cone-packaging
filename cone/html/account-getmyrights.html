@@ -1,540 +1,268 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::ACCOUNT::getMyRights</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="mail::ACCOUNT Synchronous API reference"
-HREF="synchronous.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::ACCOUNT::getMessageStructure"
-HREF="account-getmessagestructure.html"><LINK
-REL="NEXT"
-TITLE="mail::ACCOUNT::getParentFolder"
-HREF="account-getparentfolder.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="account-getmessagestructure.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="account-getparentfolder.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="ACCOUNT-GETMYRIGHTS"
-></A
->mail::ACCOUNT::getMyRights</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN4003"
-></A
-><H2
->Name</H2
->mail::ACCOUNT::getMyRights&nbsp;--&nbsp;Compute my access rights on a folder</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN4006"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->#include&nbsp;&#60;libmail/sync.H&#62;<br>
-<br>
-mail::ACCOUNT&nbsp;*mail;<br>
-mail::folder&nbsp;*folder;</P
-><DIV
-CLASS="FUNCSYNOPSIS"
-><P
-></P
-><A
-NAME="AEN4008"
-></A
-><P
-><CODE
-><CODE
-CLASS="FUNCDEF"
->bool ok=mail-&#62;<TT
-CLASS="FUNCTION"
->getMyRights</TT
-></CODE
->(mail::folder *<TT
-CLASS="PARAMETER"
-><I
->folder</I
-></TT
->, std::string &#38;<TT
-CLASS="PARAMETER"
-><I
->rights</I
-></TT
->);</CODE
-></P
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN4016"
-></A
-><H2
->USAGE</H2
-><P
->This function implements folder access control lists (ACLs).
-Access control lists define who is allowed to do certain operations on
-a folder, or on messages in the folder.
-Folder ACLs are implement only for IMAP accounts on IMAP servers that
-implement access control lists.
-This function will fail if
-<TT
-CLASS="REPLACEABLE"
-><I
->folder</I
-></TT
->
-is not a folder on an IMAP server that
-supports access control lists.</P
-><P
->This function
-computes application's access
-rights on the <TT
-CLASS="PARAMETER"
-><I
->folder</I
-></TT
->.
-If this function succeeds (this function may fail if the requesting
-client does not have the required access to the folder),
-<TT
-CLASS="PARAMETER"
-><I
->rights</I
-></TT
-> will be initialized by a text string that
-contains a list of character which describe the requested client's
-access rights on the folder.</P
-><P
->At this time, the following access rights are supported:</P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->a</TT
->"</SPAN
-></DT
-><DD
-><P
->Administrator access: view and change folder access control lists.</P
-></DD
-><DT
-><SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->c</TT
->"</SPAN
-></DT
-><DD
-><P
->Create subfolders.</P
-></DD
-><DT
-><SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->e</TT
->"</SPAN
-></DT
-><DD
-><P
->Expunge deleted messages from the folder.</P
-></DD
-><DT
-><SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->i</TT
->"</SPAN
-></DT
-><DD
-><P
->Insert, or add messages to the folder.</P
-></DD
-><DT
-><SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->l</TT
->"</SPAN
-></DT
-><DD
-><P
->List, or view the folder's existence.
-If a folder does not have the <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->l</TT
->"</SPAN
->
-access right, the server will not include this folder when it's asked to list
-all folders in the folder directory.
-However, if the <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->r</TT
->"</SPAN
->
-access right is present, the folder may be opened if the folder's name
-is known.</P
-></DD
-><DT
-><SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->r</TT
->"</SPAN
-></DT
-><DD
-><P
->Read, or open the folder.
-An attempt to open the folder will fail without the
-<SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->r</TT
->"</SPAN
-> access right, even if the folder's name
-is known.</P
-></DD
-><DT
-><SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->p</TT
->"</SPAN
-></DT
-><DD
-><P
-><SPAN
-CLASS="QUOTE"
->"Post messages"</SPAN
-> to the folder.
-This access right is currently listed in the ACL specification; however its
-intention is not clear, and
-most servers do not do anything useful with this access right.
-It is listed here for information purposes only.</P
-></DD
-><DT
-><SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->s</TT
->"</SPAN
-></DT
-><DD
-><P
->Allow changing the read/unread status of messages in the folder.
-The server will not automatically clear
-the <CODE
-CLASS="STRUCTFIELD"
->unread</CODE
-> message status flag on messages after
-they are read, or let this status flag be explicitly changed,
-without the <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->s</TT
->"</SPAN
->
-access right.</P
-></DD
-><DT
-><SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->t</TT
->"</SPAN
-></DT
-><DD
-><P
->Allow tagging of messages as deleted or undeleted.
-The server will prohibit changing the messages'
-<CODE
-CLASS="STRUCTFIELD"
->deleted</CODE
-> message status flag
-without the <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->t</TT
->"</SPAN
-> access right.</P
-></DD
-><DT
-><SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->w</TT
->"</SPAN
-></DT
-><DD
-><P
->Allow changing the
-<CODE
-CLASS="STRUCTFIELD"
->draft</CODE
->,
-<CODE
-CLASS="STRUCTFIELD"
->replied</CODE
->, and
-<CODE
-CLASS="STRUCTFIELD"
->marked</CODE
-> message status flags.
-The server will not allow changes to these flags
-without the <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->w</TT
->"</SPAN
-> access right.</P
-></DD
-><DT
-><SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->x</TT
->"</SPAN
-></DT
-><DD
-><P
->Allow this folder to be removed.
-The server will not this folder to be deleted
-without the <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->x</TT
->"</SPAN
-> access right.</P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN4111"
-></A
-><H2
->RETURN CODES AND CALLBACKS</H2
-><P
->This method returns <TT
-CLASS="LITERAL"
->true</TT
-> if it succeeds, or
-<TT
-CLASS="LITERAL"
->false</TT
-> if it fails.
-If the method fails, use
-<CODE
-CLASS="STRUCTFIELD"
->mail::ACCOUNT::getErrmsg()</CODE
-> to read a brief
-description of the error.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN4117"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="account-delrights.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::delRights</SPAN
->(3x)</SPAN
-></A
->,
-<A
-HREF="account-getfolderindexinfo.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::getFolderIndexInfo</SPAN
->(3x)</SPAN
-></A
->,
-<A
-HREF="account-getrights.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::getRights</SPAN
->(3x)</SPAN
-></A
->,
-<A
-HREF="account-setrights.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::setRights</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="account-getmessagestructure.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="account-getparentfolder.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::ACCOUNT::getMessageStructure</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="synchronous.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::ACCOUNT::getParentFolder</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>mail::ACCOUNT::getMyRights</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="synchronous.html" title="mail::ACCOUNT Synchronous API reference"/>
+  <link rel="prev" href="account-getmessagestructure.html" title="mail::ACCOUNT::getMessageStructure"/>
+  <link rel="next" href="account-getparentfolder.html" title="mail::ACCOUNT::getParentFolder"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::ACCOUNT::getMyRights</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="account-getmessagestructure.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="structname">mail::ACCOUNT</span> Synchronous
+        API reference</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="account-getparentfolder.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="account-getmyrights" shape="rect" name="account-getmyrights"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::ACCOUNT::getMyRights &#8212; Compute my access
+      rights on a folder</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        #include&#160;&lt;libmail/sync.H&gt;<br clear="none"/>
+        <br clear="none"/>
+        mail::ACCOUNT&#160;*mail;<br clear="none"/>
+        mail::folder&#160;*folder;<br clear="none"/></p>
+      </div>
+
+      <div class="funcsynopsis">
+        <table border="0" summary="Function synopsis" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="1" colspan="1"><code class="funcdef">bool
+            ok=mail-&gt;<b class="fsfunc">getMyRights</b>(</code></td>
+
+            <td rowspan="1" colspan="1">mail::folder *&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">folder</var>,</td>
+          </tr>
+
+          <tr>
+            <td rowspan="1" colspan="1">&#160;</td>
+
+            <td rowspan="1" colspan="1">std::string
+            &amp;&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">rights</var><code>)</code>;</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id389879" shape="rect" name="id389879"> </a>
+
+      <h2>USAGE</h2>
+
+      <p>This function implements folder access control lists
+      (ACLs). Access control lists define who is allowed to do
+      certain operations on a folder, or on messages in the folder.
+      Folder ACLs are implement only for IMAP accounts on IMAP
+      servers that implement access control lists. This function
+      will fail if <em class="replaceable"><code>folder</code></em>
+      is not a folder on an IMAP server that supports access
+      control lists.</p>
+
+      <p>This function computes application's access rights on the
+      <em class="parameter"><code>folder</code></em>. If this
+      function succeeds (this function may fail if the requesting
+      client does not have the required access to the folder),
+      <em class="parameter"><code>rights</code></em> will be
+      initialized by a text string that contains a list of
+      character which describe the requested client's access rights
+      on the folder.</p>
+
+      <p>At this time, the following access rights are
+      supported:</p>
+
+      <div class="variablelist">
+        <dl>
+          <dt><span class="term">&#8220;<span class="quote"><code class="literal">a</code></span>&#8221;</span></dt>
+
+          <dd>
+            <p>Administrator access: view and change folder access
+            control lists.</p>
+          </dd>
+
+          <dt><span class="term">&#8220;<span class="quote"><code class="literal">c</code></span>&#8221;</span></dt>
+
+          <dd>
+            <p>Create subfolders.</p>
+          </dd>
+
+          <dt><span class="term">&#8220;<span class="quote"><code class="literal">e</code></span>&#8221;</span></dt>
+
+          <dd>
+            <p>Expunge deleted messages from the folder.</p>
+          </dd>
+
+          <dt><span class="term">&#8220;<span class="quote"><code class="literal">i</code></span>&#8221;</span></dt>
+
+          <dd>
+            <p>Insert, or add messages to the folder.</p>
+          </dd>
+
+          <dt><span class="term">&#8220;<span class="quote"><code class="literal">l</code></span>&#8221;</span></dt>
+
+          <dd>
+            <p>List, or view the folder's existence. If a folder
+            does not have the &#8220;<span class="quote"><code class="literal">l</code></span>&#8221;
+            access right, the server will not include this folder
+            when it's asked to list all folders in the folder
+            directory. However, if the &#8220;<span class="quote"><code class="literal">r</code></span>&#8221;
+            access right is present, the folder may be opened if
+            the folder's name is known.</p>
+          </dd>
+
+          <dt><span class="term">&#8220;<span class="quote"><code class="literal">r</code></span>&#8221;</span></dt>
+
+          <dd>
+            <p>Read, or open the folder. An attempt to open the
+            folder will fail without the &#8220;<span class="quote"><code class="literal">r</code></span>&#8221;
+            access right, even if the folder's name is known.</p>
+          </dd>
+
+          <dt><span class="term">&#8220;<span class="quote"><code class="literal">p</code></span>&#8221;</span></dt>
+
+          <dd>
+            <p>&#8220;<span class="quote">Post
+            messages</span>&#8221; to the folder. This access right
+            is currently listed in the ACL specification; however
+            its intention is not clear, and most servers do not do
+            anything useful with this access right. It is listed
+            here for information purposes only.</p>
+          </dd>
+
+          <dt><span class="term">&#8220;<span class="quote"><code class="literal">s</code></span>&#8221;</span></dt>
+
+          <dd>
+            <p>Allow changing the read/unread status of messages in
+            the folder. The server will not automatically clear the
+            <em class="structfield"><code>unread</code></em>
+            message status flag on messages after they are read, or
+            let this status flag be explicitly changed, without the
+            &#8220;<span class="quote"><code class="literal">s</code></span>&#8221; access right.</p>
+          </dd>
+
+          <dt><span class="term">&#8220;<span class="quote"><code class="literal">t</code></span>&#8221;</span></dt>
+
+          <dd>
+            <p>Allow tagging of messages as deleted or undeleted.
+            The server will prohibit changing the messages'
+            <em class="structfield"><code>deleted</code></em>
+            message status flag without the &#8220;<span class="quote"><code class="literal">t</code></span>&#8221;
+            access right.</p>
+          </dd>
+
+          <dt><span class="term">&#8220;<span class="quote"><code class="literal">w</code></span>&#8221;</span></dt>
+
+          <dd>
+            <p>Allow changing the <em class="structfield"><code>draft</code></em>, <em class="structfield"><code>replied</code></em>, and <em class="structfield"><code>marked</code></em> message status
+            flags. The server will not allow changes to these flags
+            without the &#8220;<span class="quote"><code class="literal">w</code></span>&#8221; access right.</p>
+          </dd>
+
+          <dt><span class="term">&#8220;<span class="quote"><code class="literal">x</code></span>&#8221;</span></dt>
+
+          <dd>
+            <p>Allow this folder to be removed. The server will not
+            this folder to be deleted without the
+            &#8220;<span class="quote"><code class="literal">x</code></span>&#8221; access right.</p>
+          </dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id390270" shape="rect" name="id390270"> </a>
+
+      <h2>RETURN CODES AND CALLBACKS</h2>
+
+      <p>This method returns <code class="literal">true</code> if
+      it succeeds, or <code class="literal">false</code> if it
+      fails. If the method fails, use <em class="structfield"><code>mail::ACCOUNT::getErrmsg()</code></em> to
+      read a brief description of the error.</p>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id390306" shape="rect" name="id390306"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="account-delrights.html" title="mail::ACCOUNT::delRights" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::delRights</span>(3x)</span></a>,
+      <a href="account-getfolderindexinfo.html" title="mail::ACCOUNT::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getFolderIndexInfo</span>(3x)</span></a>,
+      <a href="account-getrights.html" title="mail::ACCOUNT::getRights" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getRights</span>(3x)</span></a>,
+      <a href="account-setrights.html" title="mail::ACCOUNT::setRights" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::setRights</span>(3x)</span></a>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="account-getmessagestructure.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="synchronous.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="account-getparentfolder.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::ACCOUNT::getMessageStructure&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::ACCOUNT::getParentFolder</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

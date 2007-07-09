@@ -1,1172 +1,545 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::account::searchMessages</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="mail::account Native API reference"
-HREF="native.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::account::saveFolderIndexInfo"
-HREF="mail-savefolderindexinfo.html"><LINK
-REL="NEXT"
-TITLE="mail::account::translatePath"
-HREF="mail-translatepath.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="mail-savefolderindexinfo.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="mail-translatepath.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="MAIL-SEARCHMESSAGES"
-></A
->mail::account::searchMessages</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN7957"
-></A
-><H2
->Name</H2
->mail::account::searchMessages&nbsp;--&nbsp;Search messages in the current folder</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN7960"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->#include&nbsp;&#60;libmail/mail.H&#62;<br>
-<br>
-#include&nbsp;&#60;libmail/search.H&#62;<br>
-<br>
-class&nbsp;myCallback&nbsp;:&nbsp;public&nbsp;mail::searchCallback&nbsp;{<br>
-public:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success(const&nbsp;std::vector&#60;size_t&#62;&nbsp;&#38;found);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;fail(std::string&nbsp;errmsg);<br>
-};<br>
-<br>
-mail::searchParams&nbsp;mySearchParams;<br>
-<br>
-mySearchParams.criteria=<TT
-CLASS="REPLACEABLE"
-><I
->criteria</I
-></TT
->;<br>
-mySearchParams.searchNot=<TT
-CLASS="REPLACEABLE"
-><I
->notFlag</I
-></TT
->;<br>
-mySearchParams.param1="<TT
-CLASS="REPLACEABLE"
-><I
->text</I
-></TT
->";<br>
-mySearchParams.param2="<TT
-CLASS="REPLACEABLE"
-><I
->text</I
-></TT
->";<br>
-mySearchParams.charset="<TT
-CLASS="REPLACEABLE"
-><I
->text</I
-></TT
->";<br>
-mySearchParams.scope=<TT
-CLASS="REPLACEABLE"
-><I
->scope</I
-></TT
->;<br>&#13;</P
-><DIV
-CLASS="FUNCSYNOPSIS"
-><P
-></P
-><A
-NAME="AEN7968"
-></A
-><P
-><CODE
-><CODE
-CLASS="FUNCDEF"
->account-&#62;<TT
-CLASS="FUNCTION"
->searchMessages</TT
-></CODE
->(const std::vector&#60;size_t&#62; <TT
-CLASS="PARAMETER"
-><I
->msgList</I
-></TT
->, myCallback &#38;<TT
-CLASS="PARAMETER"
-><I
->callback</I
-></TT
->);</CODE
-></P
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN7976"
-></A
-><H2
->USAGE</H2
-><P
-><TT
-CLASS="FUNCTION"
->mail::account::searchMessages</TT
-> searches messages in the
-currently-open folder. 
-<TT
-CLASS="PARAMETER"
-><I
->msgList</I
-></TT
-> specifies a list of messages.
-Messages are numbered starting with message #0 and up to one
-less than
-<A
-HREF="mail-getfolderindexsize.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::getFolderIndexSize</SPAN
->(3x)</SPAN
-></A
->()
-(when <TT
-CLASS="FUNCTION"
->mail::account::getFolderIndexSize</TT
-> returns 6,
-the messages are numbered 0 through 5).
-Only the messages that appear in <TT
-CLASS="PARAMETER"
-><I
->msgList</I
-></TT
-> are
-processed by this request.</P
-><P
-><CODE
-CLASS="STRUCTFIELD"
->mySearchParams.criteria</CODE
-> specifies the search type.
-<CODE
-CLASS="STRUCTFIELD"
->mySearchParams.searchNot</CODE
-> is a bool; setting it to
-<TT
-CLASS="LITERAL"
->true</TT
-> logically negates the search type.
-For example, if <CODE
-CLASS="STRUCTFIELD"
->mySearchParams.criteria</CODE
-> is
-<TT
-CLASS="LITERAL"
->mail::searchParams::on</TT
-> then setting
-<CODE
-CLASS="STRUCTFIELD"
->mySearchParams.searchNot</CODE
-> to <TT
-CLASS="LITERAL"
->true</TT
->
-will search for messages NOT sent on the specified date.</P
-><P
-><CODE
-CLASS="STRUCTFIELD"
->mySearchParams.param1</CODE
-> and
-<CODE
-CLASS="STRUCTFIELD"
->mySearchParams.param2</CODE
-> specify
-additional parameters used by
-some search criterias.
-<CODE
-CLASS="STRUCTFIELD"
->mySearchParams.charset</CODE
-> specifies 
-<CODE
-CLASS="STRUCTFIELD"
->mySearchParams.param2</CODE
->'s character set.
-<CODE
-CLASS="STRUCTFIELD"
->mySearchParams.param1</CODE
->'s character set is always
-<TT
-CLASS="LITERAL"
->ISO-8859-1</TT
->.</P
-><P
-><CODE
-CLASS="STRUCTFIELD"
->mySearchParams.scope</CODE
-> specifies the scope of the
-search, and must be set to one of the following:</P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->search_all</DT
-><DD
-><P
->Search all messages in the folder.</P
-></DD
-><DT
->search_marked</DT
-><DD
-><P
->Search only messages that have
-<CODE
-CLASS="STRUCTFIELD"
->mail::messageInfo::marked</CODE
->
-set to <TT
-CLASS="LITERAL"
->true</TT
->.</P
-></DD
-><DT
->search_unmarked</DT
-><DD
-><P
->Search only messages that have
-<CODE
-CLASS="STRUCTFIELD"
->mail::messageInfo::marked</CODE
->
-set to <TT
-CLASS="LITERAL"
->false</TT
->.</P
-></DD
-><DT
->search_ranges</DT
-><DD
-><P
->Search only message #<CODE
-CLASS="STRUCTFIELD"
->rangeLo</CODE
->
-through message #<CODE
-CLASS="STRUCTFIELD"
->rangeHi</CODE
->-1.</P
-></DD
-></DL
-></DIV
-><P
->Complex search criteria may be performed as follows:</P
-><P
-></P
-><UL
-><LI
-><P
->Clear <CODE
-CLASS="STRUCTFIELD"
->mail::messageInfo::marked</CODE
-> status flags on
-all messages (use
-<A
-HREF="mail-updatefolderindexflags.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::updateFolderIndexFlags</SPAN
->(3x)</SPAN
-></A
->
-or
-<A
-HREF="account-updatefolderindexflags.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::updateFolderIndexFlags</SPAN
->(3x)</SPAN
-></A
->.</P
-></LI
-><LI
-><P
->Execute a search with
-<CODE
-CLASS="STRUCTFIELD"
->mySearchParams.scope</CODE
-> set to
-<TT
-CLASS="LITERAL"
->search_unmarked</TT
->.</P
-></LI
-><LI
-><P
->Use
-<A
-HREF="mail-updatefolderindexflags.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::updateFolderIndexFlags</SPAN
->(3x)</SPAN
-></A
->
-or
-<A
-HREF="account-updatefolderindexflags.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::updateFolderIndexFlags</SPAN
->(3x)</SPAN
-></A
->
-to set the
-<CODE
-CLASS="STRUCTFIELD"
->mail::messageInfo::marked</CODE
-> flag on messages found
-by the first search.</P
-></LI
-><LI
-><P
->Run additional searches, with
-<CODE
-CLASS="STRUCTFIELD"
->mySearchParams.scope</CODE
-> set accordingly; and
-use
-<A
-HREF="mail-updatefolderindexflags.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::updateFolderIndexFlags</SPAN
->(3x)</SPAN
-></A
->
-or
-<A
-HREF="account-updatefolderindexflags.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::updateFolderIndexFlags</SPAN
->(3x)</SPAN
-></A
->
-to set or reset the
-<CODE
-CLASS="STRUCTFIELD"
->mail::messageInfo::marked</CODE
-> flag on messages found
-by the search.</P
-></LI
-></UL
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->The <CODE
-CLASS="STRUCTFIELD"
->mail::messageInfo::marked</CODE
-> status flag's usage
-is not limited to searches.
-<CODE
-CLASS="STRUCTFIELD"
->mail::messageInfo::marked</CODE
-> is a generic flag that
-applications may use for their own purposes.
-Searching is one such particular
-application for this flag.</P
-><P
->Some IMAP servers do not implemented the
-<CODE
-CLASS="STRUCTFIELD"
->mail::messageInfo::marked</CODE
-> status flag, and
-there's no such thing as a status flag in the POP3 protocol.
-When
-<CODE
-CLASS="STRUCTFIELD"
->mail::messageInfo::marked</CODE
-> status flag is not
-implemented by the server,
-<CODE
-CLASS="STRUCTNAME"
->mail::account</CODE
-> will synthesize a suitable replacement
-that will work just like the real thing (except that the status flags of
-messages will not be saved when the folder is closed).</P
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN8075"
-></A
-><H3
->Search Criteria</H3
-><P
-><CODE
-CLASS="STRUCTFIELD"
->mySearchParams.criteria</CODE
-> must be set to one of the
-following constants:</P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->mail::searchParams::replied</DT
-><DD
-><P
->Search for messages with the
-<CODE
-CLASS="STRUCTFIELD"
->mail::messageInfo::replied</CODE
-> status flag set.</P
-></DD
-><DT
->mail::searchParams::deleted</DT
-><DD
-><P
->Search for messages with the
-<CODE
-CLASS="STRUCTFIELD"
->mail::messageInfo::deleted</CODE
-> status flag set.</P
-></DD
-><DT
->mail::searchParams::draft</DT
-><DD
-><P
->Search for messages with the
-<CODE
-CLASS="STRUCTFIELD"
->mail::messageInfo::draft</CODE
-> status flag set.</P
-></DD
-><DT
->mail::searchParams::unread</DT
-><DD
-><P
->Search for messages with the
-<CODE
-CLASS="STRUCTFIELD"
->mail::messageInfo::unread</CODE
-> status flag set.</P
-></DD
-><DT
->mail::searchParams::from</DT
-><DD
-><P
->Search for messages where
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
-> occurs in their
-<TT
-CLASS="LITERAL"
->From:</TT
->
-header.</P
-></DD
-><DT
->mail::searchParams::to</DT
-><DD
-><P
->Search for messages where
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
-> occurs in their
-<TT
-CLASS="LITERAL"
->To:</TT
->
-header.</P
-></DD
-><DT
->mail::searchParams::cc</DT
-><DD
-><P
->Search for messages where
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
-> occurs in their
-<TT
-CLASS="LITERAL"
->Cc:</TT
->
-header.</P
-></DD
-><DT
->mail::searchParams::bcc</DT
-><DD
-><P
->Search for messages where
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
-> occurs in their
-<TT
-CLASS="LITERAL"
->Bcc:</TT
->
-header.</P
-></DD
-><DT
->mail::searchParams::subject</DT
-><DD
-><P
->Search for messages where
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
-> occurs in their
-<TT
-CLASS="LITERAL"
->Subject:</TT
->
-header.</P
-></DD
-><DT
->mail::searchParams::header</DT
-><DD
-><P
->Search for messages where
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
-> occurs in a header
-whose name is
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param1</CODE
->.</P
-></DD
-><DT
->mail::searchParams::body</DT
-><DD
-><P
->Search for messages where
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
-> occurs in the
-message's contents.</P
-></DD
-><DT
->mail::searchParams::text</DT
-><DD
-><P
->Search for messages where
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
-> occurs in the
-message's contents or headers.</P
-></DD
-><DT
->mail::searchParams::before</DT
-><DD
-><P
->Search for messages received before the date specified by
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
->.</P
-></DD
-><DT
->mail::searchParams::on</DT
-><DD
-><P
->Search for messages received on the date specified by
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
->.</P
-></DD
-><DT
->mail::searchParams::since</DT
-><DD
-><P
->Search for messages received on or after the date specified by
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
->.</P
-></DD
-><DT
->mail::searchParams::sentbefore</DT
-><DD
-><P
->Search for messages whose <TT
-CLASS="LITERAL"
->Date:</TT
-> header contains a date
-before the date specified by
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
->.</P
-></DD
-><DT
->mail::searchParams::senton</DT
-><DD
-><P
->Search for messages whose <TT
-CLASS="LITERAL"
->Date:</TT
-> header contains a date
-specified by
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
->.</P
-></DD
-><DT
->mail::searchParams::sentsince</DT
-><DD
-><P
->Search for messages whose <TT
-CLASS="LITERAL"
->Date:</TT
-> header contains a date
-specified by
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
->, or later.</P
-></DD
-><DT
->mail::searchParams::larger</DT
-><DD
-><P
->Search for messages whose approximate size is at least as the number of bytes
-specified by
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
->.</P
-></DD
-><DT
->mail::searchParams::smaller</DT
-><DD
-><P
->Search for messages whose approximate size is less than the number of bytes
-specified by
-<CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
->.</P
-></DD
-></DL
-></DIV
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
-><CODE
-CLASS="STRUCTFIELD"
->mail::searchParams.param2</CODE
->
-contains a text string of the form "mm-ddd-yyyy"
-for date-related search criteria (example:
-<TT
-CLASS="LITERAL"
->"12-Oct-2001"</TT
->).</P
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->Usenet servers offer very limited searching facilities.
-Consequently, searching NetNews folders will be slow, and inefficient.
-Searching on status flags is reasonably fast, since 
-<TT
-CLASS="APPLICATION"
->LibMAIL</TT
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
 
-maintains status flags of NetNews folders internally.
+  <title>mail::account::searchMessages</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="native.html" title="mail::account Native API reference"/>
+  <link rel="prev" href="mail-savefolderindexinfo.html" title="mail::account::saveFolderIndexInfo"/>
+  <link rel="next" href="mail-translatepath.html" title="mail::account::translatePath"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
 
-The following search parameters use the <TT
-CLASS="LITERAL"
->NNTP XPAT</TT
-> command,
-provides that the search string uses only the
-<TT
-CLASS="LITERAL"
->US-ASCII</TT
-> alphabet,
-and will also be reasonably fast:
-<TT
-CLASS="LITERAL"
->mail::searchParams::from</TT
->,
-<TT
-CLASS="LITERAL"
->mail::searchParams::to</TT
->,
-<TT
-CLASS="LITERAL"
->mail::searchParams::cc</TT
->,
-<TT
-CLASS="LITERAL"
->mail::searchParams::bcc</TT
->,
-<TT
-CLASS="LITERAL"
->mail::searchParams::subject</TT
->, and
-<TT
-CLASS="LITERAL"
->mail::searchParams::header</TT
->.</P
-><P
->For all other searches, or
-if the search string uses characters outside of the <TT
-CLASS="LITERAL"
->US-ASCII</TT
->
-character set, 
-<TT
-CLASS="APPLICATION"
->LibMAIL</TT
->
- will download each message individually, in order
-to search it.
-That's going to be very, very slow.</P
-><P
->Additionally, most Usenet servers's <TT
-CLASS="LITERAL"
->NNTP XPAT</TT
-> is case
-sensitive.
-All other searches are case insensitive.</P
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->Efficient searching is implemented for local mail, and IMAP/SMAP
-mailboxes only.
-NetNews servers' searching capabilities are very limited, and POP3 servers
-have no search facilities whatsoever.
-In all cases, searching for message status flags is supported, since
-message status flags are always cached locally.</P
-><P
->Only message headers of NetNews folders may be searched, and only English
-characters can be used as a search string.
-Some older NetNews servers may not have any searching ability whatsoever.
-Searching of message contents is not supported.
-Searching by message size, or message's date is not supported either.</P
-><P
->Searching of POP3 folders is also not very efficient, although the search
-text is not limited to English characters only.
-POP3 folder search is accomplished by downloading the complete headers of
-each message, and searching it manually.
-Downloaded headers are not cached.
-The headers are also downloaded when searching by message's date.
-Searching by message size, or message's date is not supported for POP3
-folders.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN8213"
-></A
-><H2
->Return Codes</H2
-><P
->The application must wait until
-<TT
-CLASS="PARAMETER"
-><I
->callback</I
-></TT
->'s
-<TT
-CLASS="FUNCTION"
->success</TT
-> or
-<TT
-CLASS="FUNCTION"
->fail</TT
-> method is invoked.
-The <TT
-CLASS="FUNCTION"
->success</TT
-> method is invoked when this request is
-succesfully processed.
-The <TT
-CLASS="FUNCTION"
->fail</TT
-> method is invoked if this request cannot
-be processed.
-The application must not destroy
-<TT
-CLASS="PARAMETER"
-><I
->callback</I
-></TT
-> until either the
-<TT
-CLASS="FUNCTION"
->success</TT
-> or
-<TT
-CLASS="FUNCTION"
->fail</TT
-> method is invoked.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
-><TT
-CLASS="PARAMETER"
-><I
->callback</I
-></TT
->'s
-<TT
-CLASS="FUNCTION"
->fail</TT
-> method may be invoked even after other
-callback methods were invoked.
-This indicates that the request was partially completed before the error
-was encountered.</P
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->Multiple applications may have the same account and folder opened at the
-same time.
-It is possible that a message referenced by this request was already
-deleted by another application.
-Depending on the underlying server implementation this will result in
-either a failed request, invoking
-<TT
-CLASS="FUNCTION"
->callback.fail</TT
->, or the request completing
-(<TT
-CLASS="FUNCTION"
->callback.success</TT
-> invoked) but without invoking
-any callback function that refer to the message.</P
-></TD
-></TR
-></TABLE
-></DIV
-><P
->The <TT
-CLASS="FUNCTION"
->mail::searchCallback::success</TT
-> method receives
-a vector that lists all messages found by the search.
-The vector will be empty if no messages were found.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->The vector with found messages is destroyed as soon as
-the <TT
-CLASS="FUNCTION"
->mail::searchCallback::success</TT
-> method terminates.
-The application should make a copy of it for any later use.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN8237"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="mail-getfolderindexinfo.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::getFolderIndexInfo</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="mail-savefolderindexinfo.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="mail-translatepath.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::account::saveFolderIndexInfo</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="native.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::account::translatePath</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::account::searchMessages</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="mail-savefolderindexinfo.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="structname">mail::account</span> Native API
+        reference</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="mail-translatepath.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="mail-searchmessages" shape="rect" name="mail-searchmessages"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::account::searchMessages &#8212; Search messages in
+      the current folder</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        #include&#160;&lt;libmail/mail.H&gt;<br clear="none"/>
+        <br clear="none"/>
+        #include&#160;&lt;libmail/search.H&gt;<br clear="none"/>
+        <br clear="none"/>
+        class&#160;myCallback&#160;:&#160;public&#160;mail::searchCallback&#160;{<br clear="none"/>
+
+        public:<br clear="none"/>
+        &#160;&#160;&#160;&#160;void&#160;success(const&#160;std::vector&lt;size_t&gt;&#160;&amp;found);<br clear="none"/>
+
+        &#160;&#160;&#160;&#160;void&#160;fail(std::string&#160;errmsg);<br clear="none"/>
+
+        };<br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        mail::searchParams&#160;mySearchParams;<br clear="none"/>
+        <br clear="none"/>
+        mySearchParams.criteria=<em class="replaceable"><code>criteria</code></em>;<br clear="none"/>
+        mySearchParams.searchNot=<em class="replaceable"><code>notFlag</code></em>;<br clear="none"/>
+        mySearchParams.param1="<em class="replaceable"><code>text</code></em>";<br clear="none"/>
+        mySearchParams.param2="<em class="replaceable"><code>text</code></em>";<br clear="none"/>
+        mySearchParams.charset="<em class="replaceable"><code>text</code></em>";<br clear="none"/>
+        mySearchParams.scope=<em class="replaceable"><code>scope</code></em>;<br clear="none"/>
+        <br clear="none"/></p>
+      </div>
+
+      <div class="funcsynopsis">
+        <table border="0" summary="Function synopsis" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="1" colspan="1"><code class="funcdef">account-&gt;<b class="fsfunc">searchMessages</b>(</code></td>
+
+            <td rowspan="1" colspan="1">const
+            std::vector&lt;size_t&gt; &#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">msgList</var>,</td>
+          </tr>
+
+          <tr>
+            <td rowspan="1" colspan="1">&#160;</td>
+
+            <td rowspan="1" colspan="1">myCallback &amp;&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">callback</var><code>)</code>;</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id430034" shape="rect" name="id430034"> </a>
+
+      <h2>USAGE</h2>
+
+      <p><code class="function">mail::account::searchMessages</code> searches
+      messages in the currently-open folder. <em class="parameter"><code>msgList</code></em> specifies a list of
+      messages. Messages are numbered starting with message #0 and
+      up to one less than <a href="mail-getfolderindexsize.html" title="mail::account::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexSize</span>(3x)</span></a>()
+      (when <code class="function">mail::account::getFolderIndexSize</code> returns
+      6, the messages are numbered 0 through 5). Only the messages
+      that appear in <em class="parameter"><code>msgList</code></em> are processed by this
+      request.</p>
+
+      <p><em class="structfield"><code>mySearchParams.criteria</code></em>
+      specifies the search type. <em class="structfield"><code>mySearchParams.searchNot</code></em> is a
+      bool; setting it to <code class="literal">true</code>
+      logically negates the search type. For example, if <em class="structfield"><code>mySearchParams.criteria</code></em> is
+      <code class="literal">mail::searchParams::on</code> then
+      setting <em class="structfield"><code>mySearchParams.searchNot</code></em> to
+      <code class="literal">true</code> will search for messages
+      NOT sent on the specified date.</p>
+
+      <p><em class="structfield"><code>mySearchParams.param1</code></em> and
+      <em class="structfield"><code>mySearchParams.param2</code></em> specify
+      additional parameters used by some search criterias.
+      <em class="structfield"><code>mySearchParams.charset</code></em>
+      specifies <em class="structfield"><code>mySearchParams.param2</code></em>'s
+      character set. <em class="structfield"><code>mySearchParams.param1</code></em>'s
+      character set is always <code class="literal">ISO-8859-1</code>.</p>
+
+      <p><em class="structfield"><code>mySearchParams.scope</code></em>
+      specifies the scope of the search, and must be set to one of
+      the following:</p>
+
+      <div class="variablelist">
+        <p>Complex search criteria may be performed as follows:</p>
+
+        <div class="itemizedlist">
+          <ul type="disc">
+            <li>
+              <p>Clear <em class="structfield"><code>mail::messageInfo::marked</code></em>
+              status flags on all messages (use <a href="mail-updatefolderindexflags.html" title="mail::account::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexFlags</span>(3x)</span></a>
+              or <a href="account-updatefolderindexflags.html" title="mail::ACCOUNT::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::updateFolderIndexFlags</span>(3x)</span></a>.</p>
+            </li>
+
+            <li>
+              <p>Execute a search with <em class="structfield"><code>mySearchParams.scope</code></em>
+              set to <code class="literal">search_unmarked</code>.</p>
+            </li>
+
+            <li>
+              <p>Use <a href="mail-updatefolderindexflags.html" title="mail::account::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexFlags</span>(3x)</span></a>
+              or <a href="account-updatefolderindexflags.html" title="mail::ACCOUNT::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::updateFolderIndexFlags</span>(3x)</span></a>
+              to set the <em class="structfield"><code>mail::messageInfo::marked</code></em>
+              flag on messages found by the first search.</p>
+            </li>
+
+            <li>
+              <p>Run additional searches, with <em class="structfield"><code>mySearchParams.scope</code></em>
+              set accordingly; and use <a href="mail-updatefolderindexflags.html" title="mail::account::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexFlags</span>(3x)</span></a>
+              or <a href="account-updatefolderindexflags.html" title="mail::ACCOUNT::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::updateFolderIndexFlags</span>(3x)</span></a>
+              to set or reset the <em class="structfield"><code>mail::messageInfo::marked</code></em>
+              flag on messages found by the search.</p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <h3 class="title">Note</h3>
+
+          <p>The <em class="structfield"><code>mail::messageInfo::marked</code></em>
+          status flag's usage is not limited to searches.
+          <em class="structfield"><code>mail::messageInfo::marked</code></em>
+          is a generic flag that applications may use for their own
+          purposes. Searching is one such particular application
+          for this flag.</p>
+
+          <p>Some IMAP servers do not implemented the <em class="structfield"><code>mail::messageInfo::marked</code></em>
+          status flag, and there's no such thing as a status flag
+          in the POP3 protocol. When <em class="structfield"><code>mail::messageInfo::marked</code></em>
+          status flag is not implemented by the server,
+          <span class="structname">mail::account</span> will
+          synthesize a suitable replacement that will work just
+          like the real thing (except that the status flags of
+          messages will not be saved when the folder is
+          closed).</p>
+        </div>
+
+        <div class="refsect2" lang="en" xml:lang="en">
+          <a id="id400187" shape="rect" name="id400187"> </a>
+
+          <h3>Search Criteria</h3>
+
+          <p><em class="structfield"><code>mySearchParams.criteria</code></em>
+          must be set to one of the following constants:</p>
+
+          <div class="variablelist">
+            <dl>
+              <dt><span class="term">mail::searchParams::replied</span></dt>
+
+              <dd>
+                <p>Search for messages with the <em class="structfield"><code>mail::messageInfo::replied</code></em>
+                status flag set.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::deleted</span></dt>
+
+              <dd>
+                <p>Search for messages with the <em class="structfield"><code>mail::messageInfo::deleted</code></em>
+                status flag set.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::draft</span></dt>
+
+              <dd>
+                <p>Search for messages with the <em class="structfield"><code>mail::messageInfo::draft</code></em>
+                status flag set.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::unread</span></dt>
+
+              <dd>
+                <p>Search for messages with the <em class="structfield"><code>mail::messageInfo::unread</code></em>
+                status flag set.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::from</span></dt>
+
+              <dd>
+                <p>Search for messages where <em class="structfield"><code>mail::searchParams.param2</code></em>
+                occurs in their <code class="literal">From:</code>
+                header.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::to</span></dt>
+
+              <dd>
+                <p>Search for messages where <em class="structfield"><code>mail::searchParams.param2</code></em>
+                occurs in their <code class="literal">To:</code>
+                header.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::cc</span></dt>
+
+              <dd>
+                <p>Search for messages where <em class="structfield"><code>mail::searchParams.param2</code></em>
+                occurs in their <code class="literal">Cc:</code>
+                header.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::bcc</span></dt>
+
+              <dd>
+                <p>Search for messages where <em class="structfield"><code>mail::searchParams.param2</code></em>
+                occurs in their <code class="literal">Bcc:</code>
+                header.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::subject</span></dt>
+
+              <dd>
+                <p>Search for messages where <em class="structfield"><code>mail::searchParams.param2</code></em>
+                occurs in their <code class="literal">Subject:</code> header.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::header</span></dt>
+
+              <dd>
+                <p>Search for messages where <em class="structfield"><code>mail::searchParams.param2</code></em>
+                occurs in a header whose name is <em class="structfield"><code>mail::searchParams.param1</code></em>.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::body</span></dt>
+
+              <dd>
+                <p>Search for messages where <em class="structfield"><code>mail::searchParams.param2</code></em>
+                occurs in the message's contents.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::text</span></dt>
+
+              <dd>
+                <p>Search for messages where <em class="structfield"><code>mail::searchParams.param2</code></em>
+                occurs in the message's contents or headers.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::before</span></dt>
+
+              <dd>
+                <p>Search for messages received before the date
+                specified by <em class="structfield"><code>mail::searchParams.param2</code></em>.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::on</span></dt>
+
+              <dd>
+                <p>Search for messages received on the date
+                specified by <em class="structfield"><code>mail::searchParams.param2</code></em>.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::since</span></dt>
+
+              <dd>
+                <p>Search for messages received on or after the
+                date specified by <em class="structfield"><code>mail::searchParams.param2</code></em>.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::sentbefore</span></dt>
+
+              <dd>
+                <p>Search for messages whose <code class="literal">Date:</code> header contains a date
+                before the date specified by <em class="structfield"><code>mail::searchParams.param2</code></em>.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::senton</span></dt>
+
+              <dd>
+                <p>Search for messages whose <code class="literal">Date:</code> header contains a date
+                specified by <em class="structfield"><code>mail::searchParams.param2</code></em>.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::sentsince</span></dt>
+
+              <dd>
+                <p>Search for messages whose <code class="literal">Date:</code> header contains a date
+                specified by <em class="structfield"><code>mail::searchParams.param2</code></em>,
+                or later.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::larger</span></dt>
+
+              <dd>
+                <p>Search for messages whose approximate size is at
+                least as the number of bytes specified by
+                <em class="structfield"><code>mail::searchParams.param2</code></em>.</p>
+              </dd>
+
+              <dt><span class="term">mail::searchParams::smaller</span></dt>
+
+              <dd>
+                <p>Search for messages whose approximate size is
+                less than the number of bytes specified by
+                <em class="structfield"><code>mail::searchParams.param2</code></em>.</p>
+              </dd>
+            </dl>
+          </div>
+
+          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <h3 class="title">Note</h3>
+
+            <p><em class="structfield"><code>mail::searchParams.param2</code></em>
+            contains a text string of the form "mm-ddd-yyyy" for
+            date-related search criteria (example: <code class="literal">"12-Oct-2001"</code>).</p>
+          </div>
+
+          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <h3 class="title">Note</h3>
+
+            <p>Usenet servers offer very limited searching
+            facilities. Consequently, searching NetNews folders
+            will be slow, and inefficient. Searching on status
+            flags is reasonably fast, since <span class="application">LibMAIL</span> maintains status flags of
+            NetNews folders internally. The following search
+            parameters use the <code class="literal">NNTP
+            XPAT</code> command, provides that the search string
+            uses only the <code class="literal">US-ASCII</code>
+            alphabet, and will also be reasonably fast:
+            <code class="literal">mail::searchParams::from</code>,
+            <code class="literal">mail::searchParams::to</code>,
+            <code class="literal">mail::searchParams::cc</code>,
+            <code class="literal">mail::searchParams::bcc</code>,
+            <code class="literal">mail::searchParams::subject</code>, and
+            <code class="literal">mail::searchParams::header</code>.</p>
+
+            <p>For all other searches, or if the search string uses
+            characters outside of the <code class="literal">US-ASCII</code> character set, <span class="application">LibMAIL</span> will download each message
+            individually, in order to search it. That's going to be
+            very, very slow.</p>
+
+            <p>Additionally, most Usenet servers's <code class="literal">NNTP XPAT</code> is case sensitive. All other
+            searches are case insensitive.</p>
+          </div>
+
+          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <h3 class="title">Note</h3>
+
+            <p>Efficient searching is implemented for local mail,
+            and IMAP/SMAP mailboxes only. NetNews servers'
+            searching capabilities are very limited, and POP3
+            servers have no search facilities whatsoever. In all
+            cases, searching for message status flags is supported,
+            since message status flags are always cached
+            locally.</p>
+
+            <p>Only message headers of NetNews folders may be
+            searched, and only English characters can be used as a
+            search string. Some older NetNews servers may not have
+            any searching ability whatsoever. Searching of message
+            contents is not supported. Searching by message size,
+            or message's date is not supported either.</p>
+
+            <p>Searching of POP3 folders is also not very
+            efficient, although the search text is not limited to
+            English characters only. POP3 folder search is
+            accomplished by downloading the complete headers of
+            each message, and searching it manually. Downloaded
+            headers are not cached. The headers are also downloaded
+            when searching by message's date. Searching by message
+            size, or message's date is not supported for POP3
+            folders.</p>
+          </div>
+        </div>
+
+        <dl>
+          <dt><span class="term">search_all</span></dt>
+
+          <dd>
+            <p>Search all messages in the folder.</p>
+          </dd>
+
+          <dt><span class="term">search_marked</span></dt>
+
+          <dd>
+            <p>Search only messages that have <em class="structfield"><code>mail::messageInfo::marked</code></em>
+            set to <code class="literal">true</code>.</p>
+          </dd>
+
+          <dt><span class="term">search_unmarked</span></dt>
+
+          <dd>
+            <p>Search only messages that have <em class="structfield"><code>mail::messageInfo::marked</code></em>
+            set to <code class="literal">false</code>.</p>
+          </dd>
+
+          <dt><span class="term">search_ranges</span></dt>
+
+          <dd>
+            <p>Search only message #<em class="structfield"><code>rangeLo</code></em> through message
+            #<em class="structfield"><code>rangeHi</code></em>-1.</p>
+          </dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id431059" shape="rect" name="id431059"> </a>
+
+      <h2>Return Codes</h2>
+
+      <p>The application must wait until <em class="parameter"><code>callback</code></em>'s <code class="function">success</code> or <code class="function">fail</code> method is invoked. The <code class="function">success</code> method is invoked when this request
+      is succesfully processed. The <code class="function">fail</code> method is invoked if this request
+      cannot be processed. The application must not destroy
+      <em class="parameter"><code>callback</code></em> until either
+      the <code class="function">success</code> or <code class="function">fail</code> method is invoked.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p><em class="parameter"><code>callback</code></em>'s
+        <code class="function">fail</code> method may be invoked
+        even after other callback methods were invoked. This
+        indicates that the request was partially completed before
+        the error was encountered.</p>
+      </div>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>Multiple applications may have the same account and
+        folder opened at the same time. It is possible that a
+        message referenced by this request was already deleted by
+        another application. Depending on the underlying server
+        implementation this will result in either a failed request,
+        invoking <code class="function">callback.fail</code>, or
+        the request completing (<code class="function">callback.success</code> invoked) but without
+        invoking any callback function that refer to the
+        message.</p>
+      </div>
+
+      <p>The <code class="function">mail::searchCallback::success</code> method
+      receives a vector that lists all messages found by the
+      search. The vector will be empty if no messages were
+      found.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>The vector with found messages is destroyed as soon as
+        the <code class="function">mail::searchCallback::success</code> method
+        terminates. The application should make a copy of it for
+        any later use.</p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id431207" shape="rect" name="id431207"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="mail-savefolderindexinfo.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="native.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="mail-translatepath.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::account::saveFolderIndexInfo&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::account::translatePath</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

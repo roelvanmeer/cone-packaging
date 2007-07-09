@@ -1,4 +1,4 @@
-/* $Id: nntpcommand.C,v 1.3 2006/06/04 21:36:01 mrsam Exp $
+/* $Id: nntpcommand.C,v 1.4 2007/04/06 17:57:29 mrsam Exp $
 **
 ** Copyright 2003-2006, Double Precision Inc.
 **
@@ -11,6 +11,7 @@
 #include "gettext.H"
 #include <errno.h>
 #include <stdio.h>
+#include <cstdlib>
 
 #include <sys/types.h>
 #if HAVE_UNISTD_H

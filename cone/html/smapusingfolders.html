@@ -1,0 +1,462 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>Using Folders</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1"/>
+  <link rel="prev" href="smapfolders.html" title="Folders"/>
+  <link rel="next" href="attributes.html" title="Reading message attributes"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">Using
+        Folders</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="smapfolders.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        Appendix&#160;A.&#160;Simple Mail Access Protocol, Version
+        1</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="attributes.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="section" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title"><a id="smapusingfolders" shape="rect" name="smapusingfolders"> </a>Using Folders</h3>
+        </div>
+      </div>
+    </div>
+
+    <p>A folder must be opened before accessing its messages. Only
+    one folder can be opened at a time. Opening a second folder
+    automatically closes the first folder. When opening a folder,
+    the SMAP server's response indicates how many messages there
+    are in the folder. The messages are numbered consecutively,
+    from 1 to the message count returned by the <code class="literal">OPEN</code> command.</p>
+
+    <p>New messages can be added to the folder while it is open.
+    Other application can also remove or modify existing messages,
+    while the folder is opened. There are two mechanisms by which
+    the SMAP client is notified about these changes.</p>
+
+    <p>The SMAP client explicitly requests to be notified about any
+    other changes by issuing either the <code class="literal">NOOP</code> or the <code class="literal">EXPUNGE</code> command. The server's response to the
+    client includes notification of any messages that were added,
+    modified, or removed from the server.</p>
+
+    <p>The <code class="literal">NOOP</code> and <code class="literal">EXPUNGE</code> commands work like all other commands:
+    the server does the requested action, and replies accordingly.
+    The second mechanism uses the <code class="literal">IDLE</code>
+    command, which works a little differently. The server's initial
+    reply includes any changes to the folder's contents, as with
+    <code class="literal">NOOP</code> and <code class="literal">EXPUNGE</code>, but the story doesn't end there. The
+    client's next command, after <code class="literal">IDLE</code>,
+    must be the <code class="literal">RESUME</code> command. Until
+    the server receives the <code class="literal">RESUME</code>,
+    the server may immediately notify the client any time the
+    folder's contents change. SMAP servers that are not capable of
+    immediate notification of this type should periodically poll
+    the folder for changes, until they get a <code class="literal">RESUME</code>.</p>
+
+    <p>When the client is waiting for user input it should issue
+    the <code class="literal">IDLE</code> command, so that it knows
+    about any changes to the folder made by other applications, and
+    react immediately. The client issues a <code class="literal">RESUME</code> when it finally has something to do.
+    This can be a result of user input, or caused by a change to
+    the folder's contents (when new mail arrives, for example, the
+    client may want to automatically download its headers).</p>
+
+    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <h3 class="title">Note</h3>
+
+      <p>Messages in the folder are always consecutively numbered,
+      starting with message #1. The messages are renumbered after
+      removing a message; and new messages are added at the end.
+      For example: a folder has five messages, numbered 1 through
+      5. The third message is removed, and messages #4 and #5
+      become messages #3 and #4, respectively. When two more
+      messages are added to the folder, they become messages #5 and
+      message #6.</p>
+    </div>
+
+    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <h3 class="title">Note</h3>
+
+      <p>The client may send the &#8220;<span class="quote">RESUME</span>&#8221; command at the same time the
+      server is sending a message to the client concerning some
+      changes to the folder that just occured. The SMAP client
+      should always wait and process any remaining folder content
+      notification changes, until it receives that status reply for
+      &#8220;<span class="quote">RESUME</span>&#8221;.</p>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id517956" shape="rect" name="id517956"> </a>Opening a folder</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;OPEN&#160;"Saved&#160;Mail"&#160;2002<br clear="none"/>
+        S:&#160;*&#160;EXISTS&#160;17<br clear="none"/>
+        S:&#160;+OK&#160;Folder&#160;opened<br clear="none"/></p>
+      </div>
+
+      <p>The <code class="literal">OPEN</code> command opens a
+      folder. If another folder is already opened, the other folder
+      is closed. The other folder is closed automatically, whether
+      or not the <code class="literal">OPEN</code> command
+      ultimately succeeds.</p>
+
+      <p>The whitespace-delimited words after &#8220;<span class="quote"><code class="literal">OPEN</code></span>&#8221;
+      specify the folder to open. If it's a valid folder, the
+      server response includes a "* EXISTS" <a href="smapsyntax.html#singleline" title="Single line replies" shape="rect">single line reply</a>.</p>
+
+      <p>SMAP servers are encouraged to offer concurrent access to
+      the same folder to multiple application. SMAP servers that
+      are unable to do so should reject the <code class="literal">OPEN</code> command if the folder is already opened
+      by someone else.</p>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;SOPEN&#160;"28378jhaskdjk9@localhost"&#160;"Saved&#160;Mail"&#160;2002<br clear="none"/>
+
+        S:&#160;*&#160;SNAPSHOTEXISTS&#160;"28378jhaskdjk9@localhost"<br clear="none"/>
+
+        S:&#160;*&#160;EXPUNGE&#160;10-13<br clear="none"/>
+        S:&#160;*&#160;EXISTS&#160;25<br clear="none"/>
+        S:&#160;+OK&#160;Folder&#160;opened<br clear="none"/></p>
+      </div>
+
+      <p>The <code class="literal">SOPEN</code> command enables
+      folder snapshots, and opens a previously folder snapshot. A
+      folder snapshot is a saved, or cached, copy of the folder's
+      contents. Both the SMAP client and the SMAP server maintain
+      synchronizes cached copies, or snapshots, of the folder's
+      contents. This includes the list of messages in the folder,
+      and the message state flags. Normally, after opening a folder
+      the SMAP client needs to download the entire list of
+      messages, and their states, from the server. Restoring a
+      previously snapshot eliminates that step.</p>
+
+      <p>The first whitespace-delimited word after <code class="literal">SOPEN</code> is a snapshot identifier, as returned
+      by a &#8220;<span class="quote">* SNAPSHOT</span>&#8221;
+      message (see <a href="smapusingfolders.html#noop" title="The NOOP command" shape="rect"><code class="literal">NOOP</code></a>). The remaining words specify the
+      name of the folder, as in <code class="literal">OPEN</code>.</p>
+
+      <p>The server responds with a &#8220;<span class="quote">*
+      SNAPSHOTEXISTS</span>&#8221; message, with a copy of the
+      snapshot identifier, followed by zero or more
+      &#8220;<span class="quote">* EXPUNGE</span>&#8221;,
+      &#8220;<span class="quote">* FETCH <em class="replaceable"><code>msgnum</code></em> FLAGS</span>&#8221;,
+      and &#8220;<span class="quote">* EXISTS</span>&#8221; message
+      that reflect any changes to the folder's contents that
+      occured since the snapshot was made. When the final
+      <code class="literal">+OK</code> is received, the folder's
+      contents are brough up to date, and the SMAP client should
+      issue a <code class="literal">NOOP</code> command to make an
+      updated snapshot.</p>
+
+      <p>If the server is unable to find the requested snapshot, it
+      should respond just like to the <code class="literal">OPEN</code> command, with a single
+      &#8220;<span class="quote">* EXISTS</span>&#8221; message. If
+      the client does not receive a &#8220;<span class="quote">*
+      SNAPSHOTEXISTS</span>&#8221; message, the client will
+      conclude that the requested snapshot is not available. This
+      is not an error condition. The requested snapshot might be
+      too old, and the server decided that it should be removed by
+      now.</p>
+
+      <p>A client that wants to use snapshots, but does not have a
+      saved snapshot, should use the <code class="literal">SOPEN</code> command with an empty string for a
+      snapshot identifier. This is because the server would not
+      normally make snapshots if the client used the <code class="literal">OPEN</code> command to open a folder. The server
+      responds to an <code class="literal">SOPEN</code> with an
+      empty identifier in the same way as to an <code class="literal">OPEN</code> command, but enable and make
+      snapshots.</p>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id518163" shape="rect" name="id518163"> </a>Closing a folder</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;CLOSE<br clear="none"/>
+        S:&#160;+OK&#160;Folder&#160;closed<br clear="none"/></p>
+      </div>
+
+      <p>The <code class="literal">CLOSE</code> command closes the
+      currently-opened folder. This command should always succeed,
+      and should ideally do nothing if no folder is currently
+      open.</p>
+
+      <p>SMAP servers that do not support concurrent access to the
+      same folder, by multiple applications, should release the
+      folder so that other applications can open it.</p>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="noop" shape="rect" name="noop"> </a>The <code class="literal">NOOP</code>
+            command</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;NOOP<br clear="none"/>
+        S:&#160;*&#160;EXPUNGE&#160;10-13&#160;17<br clear="none"/>
+        S:&#160;*&#160;FETCH&#160;12&#160;FLAGS=SEEN<br clear="none"/>
+        S:&#160;*&#160;EXISTS&#160;32<br clear="none"/>
+        S:&#160;+OK&#160;Ok.<br clear="none"/>
+        C:&#160;NOOP<br clear="none"/>
+        S:&#160;*&#160;SNAPSHOT&#160;"89238yu90doi923@localhost"<br clear="none"/>
+
+        C:&#160;+OK&#160;Ok.<br clear="none"/></p>
+      </div>
+
+      <p><code class="literal">NOOP</code> polls the server for any
+      changes made to the folder's contents by other applications.
+      The server's response includes 0 or more <a href="smapsyntax.html#singleline" title="Single line replies" shape="rect">single line replies</a> before <code class="literal">NOOP</code>'s <a href="smapsyntax.html#statusreply" title="Status replies" shape="rect">status reply</a>.</p>
+
+      <p>The single line replies may be sent in any order, and the
+      SMAP client should process each single line reply
+      individually, based on its current understanding of the
+      folder's contents, which is taken into account when
+      processing the next single line reply.</p>
+
+      <p>The &#8220;<span class="quote"><code class="literal">*
+      EXPUNGE</code></span>&#8221; single line reply lists messages
+      that have been removed from the folder. The remaining words
+      enumerate the removed message numbers. &#8220;<span class="quote"><em class="replaceable"><code>a</code></em>-<em class="replaceable"><code>b</code></em></span>&#8221;
+      indicates messages #a through #b, inclusive, and the entire
+      list must be sorted in strict numerically increasing order,
+      with no overlaps. This message indicates that the specified
+      messages have been removed, and the remaining messages were
+      renumbered by shifting over to fill in the gaps.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>Some time may elapse before a server receives a
+        <code class="literal">NOOP</code>, after a message is
+        removed by some other application. Since the client will
+        not be aware of the removed message, the server must handle
+        client commands as if the message was not yet removed. For
+        example, after message #13 is removed, message #14 now
+        becomes message #13. Until the server receives a
+        <code class="literal">NOOP</code>, it should be aware that
+        client's <code class="literal">FETCH</code> and
+        <code class="literal">STORE</code> commands that reference
+        message #14 really reference message #13. The server must
+        process these commands accordingly, until the server
+        receives a <code class="literal">NOOP</code>, and notifies
+        the client.</p>
+      </div>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>Excessively long lists of expunged messages may result
+        in multiple <code class="literal">* EXPUNGE</code>
+        messages, instead of a single, huge <code class="literal">*
+        EXPUNGE</code>.</p>
+      </div>
+
+      <p>The <code class="literal">* EXISTS</code> message
+      indicates that new messages were added to the folder, and
+      specifies the new number of messages now in the folder.</p>
+
+      <p>The <code class="literal">* FETCH</code> message indicates
+      that an existing message attribute was changed. The next word
+      specifies the number of the changed message, and the
+      remaining word provide the new message attributes. See the
+      <a href="attributes.html" title="Reading message attributes" shape="rect">description of the <code class="literal">FETCH</code> command</a> for more information.</p>
+
+      <p>The server creates snapshots of the folder's index when
+      the folder was opened with the <code class="literal">SOPEN</code> command. If the <code class="literal">NOOP</code> command did not report any changes to
+      the folder's contents, the server sends a &#8220;<span class="quote">* SNAPSHOT</span>&#8221;, followed by a single word
+      that specifies the saved snapshot's identifier. The format of
+      the snapshot's identifier is defined by the server, and the
+      client should treat it as an opaque text string.</p>
+
+      <p>A client issues the <code class="literal">NOOP</code>
+      command when it wants the server to save the folder's
+      snapshot. If the server comes back with other messages that
+      report changes to the folder, the client should issue another
+      <code class="literal">NOOP</code>, and try again.</p>
+
+      <p>When the server finds no changes to the folder, and no
+      changes at all since the previous <code class="literal">NOOP</code> that returned a snapshot, the server
+      does not need to make a second, identical snapshot. A client
+      may not receive any response to a <code class="literal">NOOP</code>; neither a list of folder's changes,
+      nor a &#8220;<span class="quote">* SNAPSHOT</span>&#8221;
+      message. This indicates that the folder's contents have not
+      changed since the last snapshot. The client should already
+      know this; but if not, that's how the server will remind
+      it.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>The server is not required to keep saved snapshots
+        indefinitely. A server does not need to save more than two
+        snapshots per session. After making snapshots A and B,
+        after processing a request to make a third snapshot, C, the
+        server may delete snapshot A.</p>
+
+        <p>The server cannot delete snapshot B, because the client
+        may crash or be disconnected before it receives the
+        server's acknowledgement of creating snapshot C, and the
+        next time the client reopens the same folder it will
+        specify snapshot B to the <code class="literal">SOPEN</code> command. If a client opens a folder
+        using <code class="literal">SOPEN</code>, but does not name
+        either A or B, (or C), the server may conclude that another
+        client is opening the same folder, and should not remove
+        any of the saved snapshots, unless they are very old.</p>
+      </div>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id518464" shape="rect" name="id518464"> </a>The <code class="literal">EXPUNGE</code>
+            command</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;EXPUNGE&#160;7<br clear="none"/>
+        S:&#160;*&#160;EXPUNGE&#160;7&#160;9&#160;11<br clear="none"/>
+        S:&#160;+OK&#160;Ok.<br clear="none"/></p>
+      </div>
+
+      <p>The <code class="literal">EXPUNGE</code> command is
+      similar <code class="literal">NOOP</code>, except that
+      <code class="literal">EXPUNGE</code> also removes messages
+      from the folder, and the server's response to <code class="literal">EXPUNGE</code> includes the removed messages. The
+      response also includes any additional messages removed by
+      other applications, and any other changes to the folder's
+      contents.</p>
+
+      <p>Message numbers to remove should follow the <code class="literal">EXPUNGE</code> command, as whitespace-delimited
+      words. An <code class="literal">EXPUNGE</code> without an
+      explicit message list is the same as an <code class="literal">EXPUNGE</code> that lists all messages that have
+      the <code class="literal">DELETED</code> flag set.</p>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id518545" shape="rect" name="id518545"> </a>The <code class="literal">IDLE</code>/<code class="literal">RESUME</code> command</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;IDLE<br clear="none"/>
+        S:&#160;+OK&#160;Idling...<br clear="none"/>
+        <br clear="none"/>
+        <span class="emphasis"><em>[&#160;...&#160;some&#160;time&#160;passes&#160;...&#160;]</em></span><br clear="none"/>
+
+        <br clear="none"/>
+        S:&#160;*&#160;FETCH&#160;15&#160;FLAGS=SEEN,DELETED<br clear="none"/>
+
+        S:&#160;*&#160;EXPUNGE&#160;4<br clear="none"/>
+        C:&#160;RESUME<br clear="none"/>
+        S:&#160;+OK&#160;Resumed...<br clear="none"/></p>
+      </div>
+
+      <p>The SMAP client sends the <code class="literal">IDLE</code> command to inform the server that
+      client wants to know about any changes to the folder's
+      contents immediately, without waiting for a <code class="literal">NOOP</code> or <code class="literal">EXPUNGE</code>. If the folder already had some
+      changed made by another process, the server will notify the
+      client immediately after the status reply.</p>
+
+      <p>The next command sent by the client (at some later time)
+      must be the <code class="literal">RESUME</code> command.
+      <code class="literal">RESUME</code> indicates that the client
+      is no longer interested in receiving folder updates, and the
+      server should wait until another <code class="literal">NOOP</code>, <code class="literal">EXPUNGE</code>,
+      or <code class="literal">IDLE</code> before notifying the
+      client about any changes to the folder's contents.</p>
+
+      <p>The client must be aware that the folder's contents might
+      be changed after it sends a <code class="literal">RESUME</code> and before the server receives it. In
+      this case the client might receive additional single line
+      replies before the server responds to the <code class="literal">RESUME</code>. The client must still properly
+      process single line replies, until it receives the server's
+      status reply to the <code class="literal">RESUME</code>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="smapfolders.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="smap1.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="attributes.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">Folders&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;Reading message attributes</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

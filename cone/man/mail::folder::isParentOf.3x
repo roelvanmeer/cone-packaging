@@ -1,0 +1,61 @@
+.\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
+.\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+.\"<!-- distribution information. -->
+.\"     Title: mail::folder::isparentof
+.\"    Author: 
+.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
+.\"      Date: 05/13/2007
+.\"    Manual: 
+
+
+Cone: COnsole Newsreader And Emailer
+.\"    Source: 
+.\"
+.TH "MAIL::FOLDER::ISPARE" "3x" "05/13/2007" "" "Cone: COnsole Newsreader An"
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.SH "NAME"
+mail::folder::isParentOf \- Check if another folder is this folder's subfolder
+.SH "SYNOPSIS"
+.sp
+.RS 4
+.nf
+
+
+
+#include <libmail/mail.H>
+
+mail::folder *folder;
+mail::folder *otherFolder;
+
+.fi
+.RE
+.HP 29
+.BI "bool flag=folder\->isParentOf(" "otherFolder\->getPath()" ");"
+.SH "USAGE"
+.PP
+This function returns an indication whether a folder's path (returned by
+\fBmail::folder::getPath\fR(3x)) refers to a subfolder of this folder.
+.SH "RETURN CODES"
+.PP
+The function returns
+true
+if the specified path refers to a subfolder of this folder.
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+\fBNote\fR
+.PP
+
+true
+is returned even if the path does not refer to a direct subfolder (a path referring to a subfolder of a subfolder will still result in a
+true
+return).
+.SH "SEE ALSO"
+.PP
+
+\fBmail::folder::getPath\fR(3x).

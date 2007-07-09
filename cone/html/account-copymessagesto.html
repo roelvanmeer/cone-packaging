@@ -1,375 +1,186 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::ACCOUNT::copyMessagesTo</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="mail::ACCOUNT Synchronous API reference"
-HREF="synchronous.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::ACCOUNT::checkNewMail"
-HREF="account-checknewmail.html"><LINK
-REL="NEXT"
-TITLE="mail::ACCOUNT::createFolder"
-HREF="account-createfolder.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="account-checknewmail.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="account-createfolder.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="ACCOUNT-COPYMESSAGESTO"
-></A
->mail::ACCOUNT::copyMessagesTo</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN2981"
-></A
-><H2
->Name</H2
->mail::ACCOUNT::copyMessagesTo&nbsp;--&nbsp;Copy messages to another folder</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN2984"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->#include&nbsp;&#60;libmail/sync.H&#62;<br>
-<br>
-<br>
-mail::ACCOUNT&nbsp;*mail;<br>
-mail::folder&nbsp;*folder;</P
-><DIV
-CLASS="FUNCSYNOPSIS"
-><P
-></P
-><A
-NAME="AEN2986"
-></A
-><P
-><CODE
-><CODE
-CLASS="FUNCDEF"
->bool ok=mail-&#62;<TT
-CLASS="FUNCTION"
->copyMessagesTo</TT
-></CODE
->(const std::vector&#60;size_t&#62; &#38;<TT
-CLASS="PARAMETER"
-><I
->msgList</I
-></TT
->, mail::folder *<TT
-CLASS="PARAMETER"
-><I
->copyTo</I
-></TT
->);</CODE
-></P
-><P
-></P
-></DIV
-><P
-CLASS="LITERALLAYOUT"
->std::string&nbsp;errmsg=mail-&#62;getErrmsg();</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN2995"
-></A
-><H2
->USAGE</H2
-><P
-><TT
-CLASS="PARAMETER"
-><I
->msgList</I
-></TT
-> specifies a list of messages.
-Messages are numbered starting with message #0 and up to one
-less than
-<A
-HREF="account-getfolderindexsize.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::getFolderIndexSize</SPAN
->(3x)</SPAN
-></A
->
-(when <TT
-CLASS="FUNCTION"
->mail::account::getFolderIndexSize</TT
-> returns 6,
-the messages are numbered 0 through 5).
-Only the messages that appear in <TT
-CLASS="PARAMETER"
-><I
->msgList</I
-></TT
-> are
-processed by this request.
-When a message is removed from the folder, by
-<A
-HREF="account-updatefolderindexinfo.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::updateFolderIndexInfo</SPAN
->(3x)</SPAN
-></A
->,
-the following messages are renumbered accordingly.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->Most mail servers allow multiple applications to open the same folder.
-Therefore, changes to the folder's contents can occur at any time.
-Before making this request, the application should use
-<A
-HREF="account-checknewmail.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::checkNewMail</SPAN
->(3x)</SPAN
-></A
-> to verify that
-no unexpected changes have been made to the folder's contents.</P
-></TD
-></TR
-></TABLE
-></DIV
-><P
-><TT
-CLASS="FUNCTION"
->mail::ACCOUNT::copyMessagesTo</TT
-> copies messages in the
-currently-open folder to another folder.
-<TT
-CLASS="PARAMETER"
-><I
->copyTo</I
-></TT
-> is a pointer to a
-<CODE
-CLASS="STRUCTNAME"
->mail::folder</CODE
-> object, representing the folder where
-messages are copied to.
-If <CODE
-CLASS="VARNAME"
->account</CODE
-> is an IMAP account and
-<TT
-CLASS="PARAMETER"
-><I
->copyTo</I
-></TT
-> is another folder in the same account, then
-the messages are quickly copied by the IMAP server.
-Otherwise each message is individually downloaded and copied to the
-<TT
-CLASS="PARAMETER"
-><I
->copyTo</I
-></TT
-> folder.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN3022"
-></A
-><H2
->Return Codes</H2
-><P
->This method returns <TT
-CLASS="LITERAL"
->true</TT
-> if it succeeds, or
-<TT
-CLASS="LITERAL"
->false</TT
-> if it fails.
-If the method fails, use
-<CODE
-CLASS="STRUCTFIELD"
->mail::ACCOUNT::getErrmsg()</CODE
-> to read a brief
-description of the error.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN3028"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="account-movemessagesto.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::moveMessagesTo</SPAN
->(3x)</SPAN
-></A
->,
-<A
-HREF="account-searchmessages.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::searchMessages</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="account-checknewmail.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="account-createfolder.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::ACCOUNT::checkNewMail</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="synchronous.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::ACCOUNT::createFolder</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>mail::ACCOUNT::copyMessagesTo</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="synchronous.html" title="mail::ACCOUNT Synchronous API reference"/>
+  <link rel="prev" href="account-checknewmail.html" title="mail::ACCOUNT::checkNewMail"/>
+  <link rel="next" href="account-createfolder.html" title="mail::ACCOUNT::createFolder"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::ACCOUNT::copyMessagesTo</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="account-checknewmail.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="structname">mail::ACCOUNT</span> Synchronous
+        API reference</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="account-createfolder.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="account-copymessagesto" shape="rect" name="account-copymessagesto"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::ACCOUNT::copyMessagesTo &#8212; Copy messages to
+      another folder</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        #include&#160;&lt;libmail/sync.H&gt;<br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        mail::ACCOUNT&#160;*mail;<br clear="none"/>
+        mail::folder&#160;*folder;<br clear="none"/></p>
+      </div>
+
+      <div class="funcsynopsis">
+        <table border="0" summary="Function synopsis" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="1" colspan="1"><code class="funcdef">bool
+            ok=mail-&gt;<b class="fsfunc">copyMessagesTo</b>(</code></td>
+
+            <td rowspan="1" colspan="1">const
+            std::vector&lt;size_t&gt; &amp;&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">msgList</var>,</td>
+          </tr>
+
+          <tr>
+            <td rowspan="1" colspan="1">&#160;</td>
+
+            <td rowspan="1" colspan="1">mail::folder *&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">copyTo</var><code>)</code>;</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        std::string&#160;errmsg=mail-&gt;getErrmsg();<br clear="none"/></p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id379517" shape="rect" name="id379517"> </a>
+
+      <h2>USAGE</h2>
+
+      <p><em class="parameter"><code>msgList</code></em> specifies
+      a list of messages. Messages are numbered starting with
+      message #0 and up to one less than <a href="account-getfolderindexsize.html" title="mail::ACCOUNT::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getFolderIndexSize</span>(3x)</span></a>
+      (when <code class="function">mail::account::getFolderIndexSize</code> returns
+      6, the messages are numbered 0 through 5). Only the messages
+      that appear in <em class="parameter"><code>msgList</code></em> are processed by this
+      request. When a message is removed from the folder, by
+      <a href="account-updatefolderindexinfo.html" title="mail::ACCOUNT::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::updateFolderIndexInfo</span>(3x)</span></a>,
+      the following messages are renumbered accordingly.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>Most mail servers allow multiple applications to open
+        the same folder. Therefore, changes to the folder's
+        contents can occur at any time. Before making this request,
+        the application should use <a href="account-checknewmail.html" title="mail::ACCOUNT::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::checkNewMail</span>(3x)</span></a>
+        to verify that no unexpected changes have been made to the
+        folder's contents.</p>
+      </div>
+
+      <p><code class="function">mail::ACCOUNT::copyMessagesTo</code> copies
+      messages in the currently-open folder to another folder.
+      <em class="parameter"><code>copyTo</code></em> is a pointer
+      to a <span class="structname">mail::folder</span> object,
+      representing the folder where messages are copied to. If
+      <code class="varname">account</code> is an IMAP account and
+      <em class="parameter"><code>copyTo</code></em> is another
+      folder in the same account, then the messages are quickly
+      copied by the IMAP server. Otherwise each message is
+      individually downloaded and copied to the <em class="parameter"><code>copyTo</code></em> folder.</p>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id379594" shape="rect" name="id379594"> </a>
+
+      <h2>Return Codes</h2>
+
+      <p>This method returns <code class="literal">true</code> if
+      it succeeds, or <code class="literal">false</code> if it
+      fails. If the method fails, use <em class="structfield"><code>mail::ACCOUNT::getErrmsg()</code></em> to
+      read a brief description of the error.</p>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id379629" shape="rect" name="id379629"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="account-movemessagesto.html" title="mail::ACCOUNT::moveMessagesTo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::moveMessagesTo</span>(3x)</span></a>,
+      <a href="account-searchmessages.html" title="mail::ACCOUNT::searchMessages" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::searchMessages</span>(3x)</span></a>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="account-checknewmail.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="synchronous.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="account-createfolder.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::ACCOUNT::checkNewMail&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::ACCOUNT::createFolder</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

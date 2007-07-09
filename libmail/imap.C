@@ -1,4 +1,4 @@
-/* $Id: imap.C,v 1.11 2004/06/23 00:55:01 mrsam Exp $
+/* $Id: imap.C,v 1.12 2007/04/06 17:57:29 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -21,6 +21,7 @@
 #include <unicode/unicode.h>
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>

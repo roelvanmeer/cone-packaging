@@ -1,345 +1,173 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::folder::hasMessages</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="mail::folder Native API reference"
-HREF="libmail-folder.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::folder::getRights"
-HREF="folder-getrights.html"><LINK
-REL="NEXT"
-TITLE="mail::folder::hasSubFolders"
-HREF="folder-hassubfolders.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="folder-getrights.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="folder-hassubfolders.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="FOLDER-HASMESSAGES"
-></A
->mail::folder::hasMessages</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN10404"
-></A
-><H2
->Name</H2
->mail::folder::hasMessages&nbsp;--&nbsp;Determine if the folder is capable of storing messages</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN10407"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->#include&nbsp;&#60;libmail/mail.H&#62;<br>
-<br>
-mail::folder&nbsp;*folder;</P
-><DIV
-CLASS="FUNCSYNOPSIS"
-><P
-></P
-><A
-NAME="AEN10409"
-></A
-><P
-><CODE
-><CODE
-CLASS="FUNCDEF"
->bool flag=folder-&#62;<TT
-CLASS="FUNCTION"
->hasMessages</TT
-></CODE
->(void);</CODE
-></P
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN10414"
-></A
-><H2
->USAGE</H2
-><P
->Some folders contain messages.
-Other folders contain other folder (subfolders).
-Some IMAP servers are capable of creating dual-purpose folders that contain
-both messages and other subfolders.
-The
-<TT
-CLASS="FUNCTION"
->hasMessages</TT
-> method indicates whether
-<TT
-CLASS="PARAMETER"
-><I
->folder</I
-></TT
-> is capable of storing messages.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN10419"
-></A
-><H2
->Return Codes</H2
-><P
->A <TT
-CLASS="LITERAL"
->true</TT
-> result indicates that
-<TT
-CLASS="PARAMETER"
-><I
->folder</I
-></TT
-> is capable of storing messages.
-It may not necessarily mean that
-<TT
-CLASS="PARAMETER"
-><I
->folder</I
-></TT
-> actually contains any messages, it might
-very well be an empty folder.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
-><TT
-CLASS="LITERAL"
->POP3</TT
-> folders return a <TT
-CLASS="LITERAL"
->true</TT
->,
-even though application cannot directly add messages to
-<TT
-CLASS="LITERAL"
->POP3</TT
-> folders.
-Applications should interpret a <TT
-CLASS="LITERAL"
->true</TT
-> result to mean
-that:</P
-><P
-></P
-><UL
-><LI
-><P
-><A
-HREF="folder-open.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::folder::open</SPAN
->(3x)</SPAN
-></A
-> may be used
-to open this folder.</P
-></LI
-><LI
-><P
->This folder's
-<A
-HREF="folder-addmessage.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::folder::addmessage</SPAN
->(3x)</SPAN
-></A
-> method, and
-using this folder as a parameter to
-<A
-HREF="mail-copymessagesto.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::folder::copyMessagesTo</SPAN
->(3x)</SPAN
-></A
->
-will probably work.</P
-></LI
-></UL
-><P
->Applications should interpret a <TT
-CLASS="LITERAL"
->false</TT
-> result as a
-guarantee that neither of the above procedures will work.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN10450"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="folder-hassubfolders.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::folder::hasSubFolders</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="folder-getrights.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="folder-hassubfolders.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::folder::getRights</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="libmail-folder.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::folder::hasSubFolders</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>mail::folder::hasMessages</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="libmail-folder.html" title="mail::folder Native API reference"/>
+  <link rel="prev" href="folder-getrights.html" title="mail::folder::getRights"/>
+  <link rel="next" href="folder-hassubfolders.html" title="mail::folder::hasSubFolders"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::folder::hasMessages</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="folder-getrights.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="structname">mail::folder</span> Native API
+        reference</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="folder-hassubfolders.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="folder-hasmessages" shape="rect" name="folder-hasmessages"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::folder::hasMessages &#8212; Determine if the folder
+      is capable of storing messages</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        #include&#160;&lt;libmail/mail.H&gt;<br clear="none"/>
+        <br clear="none"/>
+        mail::folder&#160;*folder;<br clear="none"/></p>
+      </div>
+
+      <div class="funcsynopsis">
+        <table border="0" summary="Function synopsis" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="1" colspan="1"><code class="funcdef">bool
+            flag=folder-&gt;<b class="fsfunc">hasMessages</b>(</code></td>
+
+            <td rowspan="1" colspan="1"><code>void)</code>;</td>
+
+            <td rowspan="1" colspan="1">&#160;</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id452680" shape="rect" name="id452680"> </a>
+
+      <h2>USAGE</h2>
+
+      <p>Some folders contain messages. Other folders contain other
+      folder (subfolders). Some IMAP servers are capable of
+      creating dual-purpose folders that contain both messages and
+      other subfolders. The <code class="function">hasMessages</code> method indicates whether
+      <em class="parameter"><code>folder</code></em> is capable of
+      storing messages.</p>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id452703" shape="rect" name="id452703"> </a>
+
+      <h2>Return Codes</h2>
+
+      <p>A <code class="literal">true</code> result indicates that
+      <em class="parameter"><code>folder</code></em> is capable of
+      storing messages. It may not necessarily mean that <em class="parameter"><code>folder</code></em> actually contains any
+      messages, it might very well be an empty folder.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p><code class="literal">POP3</code> folders return a
+        <code class="literal">true</code>, even though application
+        cannot directly add messages to <code class="literal">POP3</code> folders. Applications should
+        interpret a <code class="literal">true</code> result to
+        mean that:</p>
+
+        <div class="itemizedlist">
+          <ul type="disc">
+            <li>
+              <p><a href="folder-open.html" title="mail::folder::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::open</span>(3x)</span></a>
+              may be used to open this folder.</p>
+            </li>
+
+            <li>
+              <p>This folder's <a href="folder-addmessage.html" title="mail::folder::addMessage" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::addmessage</span>(3x)</span></a>
+              method, and using this folder as a parameter to
+              <a href="mail-copymessagesto.html" title="mail::account::copyMessagesTo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::copyMessagesTo</span>(3x)</span></a>
+              will probably work.</p>
+            </li>
+          </ul>
+        </div>
+
+        <p>Applications should interpret a <code class="literal">false</code> result as a guarantee that neither
+        of the above procedures will work.</p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id452830" shape="rect" name="id452830"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="folder-hassubfolders.html" title="mail::folder::hasSubFolders" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::hasSubFolders</span>(3x)</span></a>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="folder-getrights.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="libmail-folder.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="folder-hassubfolders.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::folder::getRights&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::folder::hasSubFolders</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 /*
-** Copyright 2000-2006 Double Precision, Inc.
+** Copyright 2000-2007 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
@@ -41,7 +41,7 @@
 #include	"maildircreate.h"
 #include	"maildirsharedrc.h"
 
-static const char rcsid[]="$Id: maildirshared.c,v 1.22 2006/05/28 15:29:52 mrsam Exp $";
+static const char rcsid[]="$Id: maildirshared.c,v 1.23 2007/04/16 22:31:53 mrsam Exp $";
 
 /* Prerequisited for shared folder support */
 
@@ -758,6 +758,9 @@ int	fd;
 			perror("write");
 		close(fd);
 	}
+
+	free(cur);
+	free(shared_update_name);
 
 	if (create_db(&obj, dir, &dbname))	return;
 

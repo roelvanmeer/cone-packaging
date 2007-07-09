@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: courier-cone@lists.sourceforge.net\n"
-"POT-Creation-Date: 2006-07-28 21:00-0400\n"
+"POT-Creation-Date: 2007-05-13 13:31-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,176 +16,176 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: addressbook.C:249
+#: addressbook.C:250
 msgid "Local Address Book"
 msgstr ""
 
-#: addressbook.C:620
+#: addressbook.C:621
 msgid "Add Entry"
 msgstr ""
 
-#: addressbook.C:622
+#: addressbook.C:623
 msgid "Nickname: "
 msgstr ""
 
-#: addressbook.C:623 mainmenu.C:379
+#: addressbook.C:624 mainmenu.C:379
 msgid "Name: "
 msgstr ""
 
-#: addressbook.C:624
+#: addressbook.C:625
 msgid "Address: "
 msgstr ""
 
-#: addressbook.C:630 addressbook.C:1354 configscreen.C:225
+#: addressbook.C:631 addressbook.C:1355 configscreen.C:226
 msgid "SAVE"
 msgstr ""
 
-#: addressbook.C:631 addressbook.C:1355 cone.C:130 configscreen.C:226
+#: addressbook.C:632 addressbook.C:1356 cone.C:130 configscreen.C:227
 msgid "CANCEL"
 msgstr ""
 
-#: addressbook.C:644
+#: addressbook.C:645
 msgid "ADD ENTRY"
 msgstr ""
 
-#: addressbook.C:878
+#: addressbook.C:879
 #, c-format
 msgid "Delete address book entry for '%1%'? (Y/N) "
 msgstr ""
 
-#: addressbook.C:896
+#: addressbook.C:897
 msgid "New nickname (CTRL-C - cancel: "
 msgstr ""
 
-#: addressbook.C:930
+#: addressbook.C:931
 msgid "ADDRESS BOOK INDEX"
 msgstr ""
 
-#: addressbook.C:1082
+#: addressbook.C:1083
 msgid "Importing..."
 msgstr ""
 
-#: addressbook.C:1098
+#: addressbook.C:1099
 #, c-format
 msgid "Syntax error on line %1%"
 msgstr ""
 
-#: addressbook.C:1249
+#: addressbook.C:1250
 msgid "ADDADDRESSBOOK_K:A"
 msgstr ""
 
-#: addressbook.C:1250 curseshierarchy.C:2134
+#: addressbook.C:1251 curseshierarchy.C:2135
 msgid "Add"
 msgstr ""
 
-#: addressbook.C:1251
+#: addressbook.C:1252
 msgid "DELADDRESSBOOKENTRY_K:D"
 msgstr ""
 
-#: addressbook.C:1252 addressbook.C:1706 curseshierarchy.C:2136
+#: addressbook.C:1253 addressbook.C:1707 curseshierarchy.C:2137
 #: cursesindexdisplay.C:1584 cursesmessagedisplay.C:1115
 #: filtereditscreen.C:448
 msgid "Delete"
 msgstr ""
 
-#: addressbook.C:1253
+#: addressbook.C:1254
 msgid "RENAMEADDRESSBOOKENTRY_K:R"
 msgstr ""
 
-#: addressbook.C:1254 curseshierarchy.C:2144
+#: addressbook.C:1255 curseshierarchy.C:2145
 msgid "Rename"
 msgstr ""
 
-#: addressbook.C:1255
+#: addressbook.C:1256
 msgid "IMPORTADDRESSBOOKENTRY_K:I"
 msgstr ""
 
-#: addressbook.C:1256
+#: addressbook.C:1257
 msgid "Import"
 msgstr ""
 
-#: addressbook.C:1257
+#: addressbook.C:1258
 msgid "EXPORTADDRESSBOOKENTRY_K:E"
 msgstr ""
 
-#: addressbook.C:1258
+#: addressbook.C:1259
 msgid "Export"
 msgstr ""
 
-#: addressbook.C:1344
+#: addressbook.C:1345
 msgid "Add LDAP directory"
 msgstr ""
 
-#: addressbook.C:1346
+#: addressbook.C:1347
 msgid "Directory name: "
 msgstr ""
 
-#: addressbook.C:1347
+#: addressbook.C:1348
 msgid "LDAP server hostname: "
 msgstr ""
 
-#: addressbook.C:1348
+#: addressbook.C:1349
 msgid "LDAP suffix/root: "
 msgstr ""
 
-#: addressbook.C:1364
+#: addressbook.C:1365
 msgid "LDAP ADDRESSBOOK ADD"
 msgstr ""
 
-#: addressbook.C:1449 curseshierarchy.C:1948
+#: addressbook.C:1450 curseshierarchy.C:1949
 msgid "Address Book created."
 msgstr ""
 
-#: addressbook.C:1456
+#: addressbook.C:1457
 msgid "Connection to %1% failed: %2"
 msgstr ""
 
-#: addressbook.C:1591
+#: addressbook.C:1592
 msgid "Address Book List"
 msgstr ""
 
-#: addressbook.C:1600
+#: addressbook.C:1601
 msgid "ADDRESS BOOKS"
 msgstr ""
 
-#: addressbook.C:1705
+#: addressbook.C:1706
 msgid "DELETEADDRESSBOOK:D"
 msgstr ""
 
-#: addressbook.C:1707 curseshierarchy.C:2137 filtereditscreen.C:451
+#: addressbook.C:1708 curseshierarchy.C:2138 filtereditscreen.C:451
 msgid "MOVEUP:^U"
 msgstr ""
 
-#: addressbook.C:1708 curseshierarchy.C:2138 filtereditscreen.C:452
+#: addressbook.C:1709 curseshierarchy.C:2139 filtereditscreen.C:452
 msgid "Move up"
 msgstr ""
 
-#: addressbook.C:1709 curseshierarchy.C:2139 filtereditscreen.C:453
+#: addressbook.C:1710 curseshierarchy.C:2140 filtereditscreen.C:453
 msgid "MOVEDN:^D"
 msgstr ""
 
-#: addressbook.C:1710 curseshierarchy.C:2140 filtereditscreen.C:454
+#: addressbook.C:1711 curseshierarchy.C:2141 filtereditscreen.C:454
 msgid "Move down"
 msgstr ""
 
-#: addressbook.C:1711
+#: addressbook.C:1712
 msgid "ADDLDAP:A"
 msgstr ""
 
-#: addressbook.C:1712
+#: addressbook.C:1713
 msgid "Add LDAP server"
 msgstr ""
 
-#: addressbook.C:1740
+#: addressbook.C:1741
 #, c-format
 msgid "Delete address book \"%1%\"? (Y/N) "
 msgstr ""
 
-#: addressbook.C:1861
+#: addressbook.C:1862
 msgid "TAKE ADDRESS"
 msgstr ""
 
-#: addressbook.C:2019
+#: addressbook.C:2020
 msgid "No addresses found."
 msgstr ""
 
@@ -421,7 +421,7 @@ msgstr ""
 msgid "N"
 msgstr ""
 
-#: cone.C:1342 curseshierarchy.C:1882
+#: cone.C:1342 curseshierarchy.C:1883
 msgid "Drafts"
 msgstr ""
 
@@ -455,178 +455,178 @@ msgstr ""
 msgid "Welcome to Cone %1% (%2%)"
 msgstr ""
 
-#: configscreen.C:111
+#: configscreen.C:112
 msgid "[ CHANGE ]"
 msgstr ""
 
-#: configscreen.C:163
+#: configscreen.C:164
 msgid "Your E-mail addresses: "
 msgstr ""
 
-#: configscreen.C:168
+#: configscreen.C:169
 msgid "Cc on NetNews follow-ups: "
 msgstr ""
 
-#: configscreen.C:171
+#: configscreen.C:172
 msgid "Your mailing list addresses: "
 msgstr ""
 
-#: configscreen.C:175
+#: configscreen.C:176
 msgid "New custom header: "
 msgstr ""
 
-#: configscreen.C:178
+#: configscreen.C:179
 msgid "Custom sent mail folders: "
 msgstr ""
 
-#: configscreen.C:180
+#: configscreen.C:181
 msgid "Spelling dictionary: "
 msgstr ""
 
-#: configscreen.C:183
+#: configscreen.C:184
 msgid "Outgoing SMTP Server: "
 msgstr ""
 
-#: configscreen.C:186
+#: configscreen.C:187
 msgid "SMTP userid (optional): "
 msgstr ""
 
-#: configscreen.C:189
+#: configscreen.C:190
 msgid "Don't send SMTP password in clear text"
 msgstr ""
 
-#: configscreen.C:191
+#: configscreen.C:192
 msgid "Send mail via main acct (if available)"
 msgstr ""
 
-#: configscreen.C:193
+#: configscreen.C:194
 msgid "Use SMTP tunneled over SSL"
 msgstr ""
 
-#: configscreen.C:195
+#: configscreen.C:196
 msgid "NetNews posting command: "
 msgstr ""
 
-#: configscreen.C:198
+#: configscreen.C:199
 msgid "CTRL-Z command: "
 msgstr ""
 
-#: configscreen.C:201
+#: configscreen.C:202
 msgid "External Editor (^U): "
 msgstr ""
 
-#: configscreen.C:204
+#: configscreen.C:205
 msgid "\"Smart\" keyboard shortcuts"
 msgstr ""
 
-#: configscreen.C:205
+#: configscreen.C:206
 msgid "'Q' quits without prompting"
 msgstr ""
 
-#: configscreen.C:207
+#: configscreen.C:208
 msgid "Autosave (minutes): "
 msgstr ""
 
-#: configscreen.C:210
+#: configscreen.C:211
 msgid "Watch threads for # of days: "
 msgstr ""
 
-#: configscreen.C:213
+#: configscreen.C:214
 msgid "Watch threads until # of followups: "
 msgstr ""
 
-#: configscreen.C:216
+#: configscreen.C:217
 msgid "Extra GnuPG encrypt/sign options: "
 msgstr ""
 
-#: configscreen.C:219
+#: configscreen.C:220
 msgid "Extra GnuPG decrypt/verify options: "
 msgstr ""
 
-#: configscreen.C:222
+#: configscreen.C:223
 msgid "Turn off remote configuration"
 msgstr ""
 
-#: configscreen.C:223
+#: configscreen.C:224
 msgid "Currently defined macros: "
 msgstr ""
 
-#: configscreen.C:249
+#: configscreen.C:250
 msgid "Disable rich text de-moronization"
 msgstr ""
 
-#: configscreen.C:250
+#: configscreen.C:251
 msgid "Minimum rich text de-moronization"
 msgstr ""
 
-#: configscreen.C:251
+#: configscreen.C:252
 msgid "Maximum rich text de-moronization"
 msgstr ""
 
-#: configscreen.C:261
+#: configscreen.C:262
 msgid "Ask"
 msgstr ""
 
-#: configscreen.C:262
+#: configscreen.C:263
 msgid "Yes"
 msgstr ""
 
-#: configscreen.C:263
+#: configscreen.C:264
 msgid "No"
 msgstr ""
 
-#: configscreen.C:319
+#: configscreen.C:320
 #, c-format
 msgid "Tag %1% name: "
 msgstr ""
 
-#: configscreen.C:434
+#: configscreen.C:435
 #, c-format
 msgid "FUNCTION KEY: F%1%"
 msgstr ""
 
-#: configscreen.C:908
+#: configscreen.C:909
 msgid "Cannot add this custom header."
 msgstr ""
 
-#: configscreen.C:923
+#: configscreen.C:924
 msgid "Invalid character in header's name"
 msgstr ""
 
-#: configscreen.C:932
+#: configscreen.C:933
 msgid "Hide this header by default? (Y/N) "
 msgstr ""
 
-#: configscreen.C:1123 filtereditscreen.C:449 gpg.C:825
+#: configscreen.C:1124 filtereditscreen.C:449 gpg.C:826
 msgid "ABORT:^C"
 msgstr ""
 
-#: configscreen.C:1124 curseshierarchy.C:2123 encryptionmenu.C:482
+#: configscreen.C:1125 curseshierarchy.C:2124 encryptionmenu.C:482
 #: filtereditscreen.C:450
 msgid "Cancel"
 msgstr ""
 
-#: configscreen.C:1125
+#: configscreen.C:1126
 msgid "DELADDRESS:DEL"
 msgstr ""
 
-#: configscreen.C:1126
+#: configscreen.C:1127
 msgid "Delete address/folder/macro"
 msgstr ""
 
-#: configscreen.C:1361
+#: configscreen.C:1362
 msgid "Remote configuration already off"
 msgstr ""
 
-#: configscreen.C:1366
+#: configscreen.C:1367
 msgid "Are you sure? (Y/N) "
 msgstr ""
 
-#: configscreen.C:1381
+#: configscreen.C:1382
 msgid "Remote configuration turned off"
 msgstr ""
 
-#: configscreen.C:1392
+#: configscreen.C:1393
 msgid "SETUP"
 msgstr ""
 
@@ -650,11 +650,11 @@ msgstr ""
 msgid "Followup-To: "
 msgstr ""
 
-#: cursesedit.C:737 cursesedit.C:1582 myfolder.C:2064 searchprompt.C:281
+#: cursesedit.C:737 cursesedit.C:1582 myfolder.C:2065 searchprompt.C:281
 msgid "To: "
 msgstr ""
 
-#: cursesedit.C:738 cursesedit.C:1583 myfolder.C:2088 searchprompt.C:286
+#: cursesedit.C:738 cursesedit.C:1583 myfolder.C:2089 searchprompt.C:286
 msgid "Cc: "
 msgstr ""
 
@@ -974,7 +974,7 @@ msgstr ""
 msgid "Macro shortcut: "
 msgstr ""
 
-#: curseseditmessage.C:1482 gpg.C:828
+#: curseseditmessage.C:1482 gpg.C:829
 msgid "ENTER:Enter"
 msgstr ""
 
@@ -1175,109 +1175,109 @@ msgstr ""
 msgid "Ext Editor"
 msgstr ""
 
-#: curseshierarchy.C:173
+#: curseshierarchy.C:174
 #, c-format
 msgid "%1% messages, %2% unread"
 msgstr ""
 
-#: curseshierarchy.C:174 cursesindexdisplay.C:147
+#: curseshierarchy.C:175 cursesindexdisplay.C:147
 #, c-format
 msgid "%1% messages"
 msgstr ""
 
-#: curseshierarchy.C:178
+#: curseshierarchy.C:179
 msgid "*** empty ***"
 msgstr ""
 
-#: curseshierarchy.C:181
+#: curseshierarchy.C:182
 msgid "Folder: "
-msgstr ""
-
-#: curseshierarchy.C:205
-#, c-format
-msgid "(%1% messages, %2% unread)"
 msgstr ""
 
 #: curseshierarchy.C:206
 #, c-format
+msgid "(%1% messages, %2% unread)"
+msgstr ""
+
+#: curseshierarchy.C:207
+#, c-format
 msgid "(%1% messages)"
 msgstr ""
 
-#: curseshierarchy.C:551 myserver.C:913
+#: curseshierarchy.C:552 myserver.C:913
 #, c-format
 msgid "Opening %1%..."
 msgstr ""
 
-#: curseshierarchy.C:918
+#: curseshierarchy.C:919
 msgid "ADDDIRECTORY:^D"
 msgstr ""
 
-#: curseshierarchy.C:919
+#: curseshierarchy.C:920
 msgid "Add Folder Directory"
 msgstr ""
 
-#: curseshierarchy.C:1012
+#: curseshierarchy.C:1013
 #, c-format
 msgid "Add folder/directory in %1%: "
 msgstr ""
 
-#: curseshierarchy.C:1032
+#: curseshierarchy.C:1033
 #, c-format
 msgid "Invalid folder name: %s"
 msgstr ""
 
-#: curseshierarchy.C:1050
+#: curseshierarchy.C:1051
 msgid "Folder not found."
 msgstr ""
 
-#: curseshierarchy.C:1061
+#: curseshierarchy.C:1062
 #, c-format
 msgid "Add %1% as a folder directory? (Y/N) "
 msgstr ""
 
-#: curseshierarchy.C:1119
+#: curseshierarchy.C:1120
 #, c-format
 msgid "Create new folder in %1%: "
 msgstr ""
 
-#: curseshierarchy.C:1134
+#: curseshierarchy.C:1135
 #, c-format
 msgid "Create new folder directory in %1%: "
 msgstr ""
 
-#: curseshierarchy.C:1259
+#: curseshierarchy.C:1260
 msgid "New name: "
 msgstr ""
 
-#: curseshierarchy.C:1319
+#: curseshierarchy.C:1320
 msgid "Permissions: (V/E) "
 msgstr ""
 
-#: curseshierarchy.C:1322
+#: curseshierarchy.C:1323
 msgid "V"
 msgstr ""
 
-#: curseshierarchy.C:1323
+#: curseshierarchy.C:1324
 msgid "View permissions"
 msgstr ""
 
-#: curseshierarchy.C:1325
+#: curseshierarchy.C:1326
 msgid "E"
 msgstr ""
 
-#: curseshierarchy.C:1326
+#: curseshierarchy.C:1327
 msgid "Edit permissions"
 msgstr ""
 
-#: curseshierarchy.C:1351
+#: curseshierarchy.C:1352
 msgid "Checking folder permissions..."
 msgstr ""
 
-#: curseshierarchy.C:1373
+#: curseshierarchy.C:1374
 msgid "No permissions"
 msgstr ""
 
-#: curseshierarchy.C:1376
+#: curseshierarchy.C:1377
 #, c-format
 msgid ""
 "You have the following permissions on this folder:\n"
@@ -1285,204 +1285,204 @@ msgid ""
 "%1%."
 msgstr ""
 
-#: curseshierarchy.C:1406
+#: curseshierarchy.C:1407
 msgid "This folder does not contain messages."
 msgstr ""
 
-#: curseshierarchy.C:1413
+#: curseshierarchy.C:1414
 #, c-format
 msgid "Reset memorized headers for %1%? (Y/N) "
 msgstr ""
 
-#: curseshierarchy.C:1435
+#: curseshierarchy.C:1436
 msgid "Memorized headers cleared."
 msgstr ""
 
-#: curseshierarchy.C:1458
+#: curseshierarchy.C:1459
 msgid "Cannot remove the only mail account."
 msgstr ""
 
-#: curseshierarchy.C:1466
+#: curseshierarchy.C:1467
 #, c-format
 msgid "Remove account %1%? (Y/N) "
 msgstr ""
 
-#: curseshierarchy.C:1583
+#: curseshierarchy.C:1584
 #, c-format
 msgid "Remove %1% from %2%? (Y/N) "
 msgstr ""
 
-#: curseshierarchy.C:1611
+#: curseshierarchy.C:1612
 #, c-format
 msgid "Delete folder directory %1%? (Y/N) "
 msgstr ""
 
-#: curseshierarchy.C:1636
+#: curseshierarchy.C:1637
 #, c-format
 msgid "Delete folder %1%? (Y/N) "
 msgstr ""
 
-#: curseshierarchy.C:1682
+#: curseshierarchy.C:1683
 msgid "Only a folder may be filtered."
 msgstr ""
 
-#: curseshierarchy.C:1735 curseshierarchy.C:1802
+#: curseshierarchy.C:1736 curseshierarchy.C:1803
 msgid "Only top level folders or servers may be rearranged."
 msgstr ""
 
-#: curseshierarchy.C:1820
+#: curseshierarchy.C:1821
 msgid "Current selection not an account."
 msgstr ""
 
-#: curseshierarchy.C:1845
+#: curseshierarchy.C:1846
 msgid ""
 "This is a local mail account. Create another local account from the main "
 "menu."
 msgstr ""
 
-#: curseshierarchy.C:1859
+#: curseshierarchy.C:1860
 msgid "Current selection not a folder."
 msgstr ""
 
-#: curseshierarchy.C:1876
+#: curseshierarchy.C:1877
 msgid "Use folder as: "
 msgstr ""
 
-#: curseshierarchy.C:1878 mainmenu.C:94
+#: curseshierarchy.C:1879 mainmenu.C:94
 msgid "ADDRESSBOOK_K:A"
 msgstr ""
 
-#: curseshierarchy.C:1879 mainmenu.C:95
+#: curseshierarchy.C:1880 mainmenu.C:95
 msgid "Address Book"
 msgstr ""
 
-#: curseshierarchy.C:1881
+#: curseshierarchy.C:1882
 msgid "DRAFTS_K:D"
 msgstr ""
 
-#: curseshierarchy.C:1884
+#: curseshierarchy.C:1885
 msgid "SENT_K:S"
 msgstr ""
 
-#: curseshierarchy.C:1885
+#: curseshierarchy.C:1886
 msgid "Sent mail"
 msgstr ""
 
-#: curseshierarchy.C:1887
+#: curseshierarchy.C:1888
 msgid "TOP_K:T"
 msgstr ""
 
-#: curseshierarchy.C:1888
+#: curseshierarchy.C:1889
 msgid "Top level folder"
 msgstr ""
 
-#: curseshierarchy.C:1890
+#: curseshierarchy.C:1891
 msgid "REMOTE_K:R"
 msgstr ""
 
-#: curseshierarchy.C:1891
+#: curseshierarchy.C:1892
 msgid "Remote configuration"
 msgstr ""
 
-#: curseshierarchy.C:1912
+#: curseshierarchy.C:1913
 msgid "Name of this address book: "
 msgstr ""
 
-#: curseshierarchy.C:1913
+#: curseshierarchy.C:1914
 #, c-format
 msgid "%1% on %2%"
 msgstr ""
 
-#: curseshierarchy.C:1964
+#: curseshierarchy.C:1965
 msgid "This folder cannot store messages, only subfolders."
 msgstr ""
 
-#: curseshierarchy.C:1982
+#: curseshierarchy.C:1983
 msgid "Nickname for this sent mail folder: "
 msgstr ""
 
-#: curseshierarchy.C:1983
+#: curseshierarchy.C:1984
 #, c-format
 msgid "%1% in %2%"
 msgstr ""
 
-#: curseshierarchy.C:2004
+#: curseshierarchy.C:2005
 msgid "This nickname already exists."
 msgstr ""
 
-#: curseshierarchy.C:2017
+#: curseshierarchy.C:2018
 msgid "Import remote configuration (requires restart)? (Y/N): "
 msgstr ""
 
-#: curseshierarchy.C:2115
+#: curseshierarchy.C:2116
 msgid "HIER_K:+/-"
 msgstr ""
 
-#: curseshierarchy.C:2116
+#: curseshierarchy.C:2117
 msgid "Subfolders"
 msgstr ""
 
-#: curseshierarchy.C:2120
+#: curseshierarchy.C:2121
 msgid "ENTER_K:ENTER"
 msgstr ""
 
-#: curseshierarchy.C:2121
+#: curseshierarchy.C:2122
 msgid "Select folder"
 msgstr ""
 
-#: curseshierarchy.C:2122
+#: curseshierarchy.C:2123
 msgid "ABORT_K:^C"
 msgstr ""
 
-#: curseshierarchy.C:2129
+#: curseshierarchy.C:2130
 msgid "EDIT_K:E"
 msgstr ""
 
-#: curseshierarchy.C:2130
+#: curseshierarchy.C:2131
 msgid "Edit Acct"
 msgstr ""
 
-#: curseshierarchy.C:2131
+#: curseshierarchy.C:2132
 msgid "FILTER_K:F"
 msgstr ""
 
-#: curseshierarchy.C:2132
+#: curseshierarchy.C:2133
 msgid "Filter"
 msgstr ""
 
-#: curseshierarchy.C:2133
+#: curseshierarchy.C:2134
 msgid "ADDFOLDER_K:A"
 msgstr ""
 
-#: curseshierarchy.C:2135
+#: curseshierarchy.C:2136
 msgid "DELFOLDER_K:D"
 msgstr ""
 
-#: curseshierarchy.C:2141
+#: curseshierarchy.C:2142
 msgid "SPECIAL:U"
 msgstr ""
 
-#: curseshierarchy.C:2142
+#: curseshierarchy.C:2143
 msgid "Use special"
 msgstr ""
 
-#: curseshierarchy.C:2143
+#: curseshierarchy.C:2144
 msgid "RENAME:R"
 msgstr ""
 
-#: curseshierarchy.C:2145
+#: curseshierarchy.C:2146
 msgid "RESET:^R"
 msgstr ""
 
-#: curseshierarchy.C:2146
+#: curseshierarchy.C:2147
 msgid "Reset hdrs"
 msgstr ""
 
-#: curseshierarchy.C:2147
+#: curseshierarchy.C:2148
 msgid "PERMS:P"
 msgstr ""
 
-#: curseshierarchy.C:2148
+#: curseshierarchy.C:2149
 msgid "Permissions"
 msgstr ""
 
@@ -2085,7 +2085,7 @@ msgstr ""
 msgid "Cancel, do not encrypt"
 msgstr ""
 
-#: cursesmessage.C:3391 myfolder.C:1832
+#: cursesmessage.C:3391 myfolder.C:1833
 msgid "Reading message..."
 msgstr ""
 
@@ -3475,64 +3475,64 @@ msgstr ""
 msgid "Really quit? (Y/N) "
 msgstr ""
 
-#: gpg.C:98
+#: gpg.C:99
 msgid "Key Type        "
 msgstr ""
 
-#: gpg.C:99
+#: gpg.C:100
 msgid "Created   "
 msgstr ""
 
-#: gpg.C:100
+#: gpg.C:101
 msgid "Expires   "
 msgstr ""
 
-#: gpg.C:101
+#: gpg.C:102
 msgid "Description"
 msgstr ""
 
-#: gpg.C:247 gpg.C:249
+#: gpg.C:248 gpg.C:250
 msgid " (disabled)"
 msgstr ""
 
-#: gpg.C:248
+#: gpg.C:249
 msgid " (removed)"
 msgstr ""
 
-#: gpg.C:250
+#: gpg.C:251
 msgid "Group: @"
 msgstr ""
 
-#: gpg.C:832
+#: gpg.C:833
 msgid "SPACE:Space"
 msgstr ""
 
-#: gpg.C:833
+#: gpg.C:834
 msgid "Select/Unselect"
 msgstr ""
 
-#: gpg.C:888 gpg.C:932
+#: gpg.C:889 gpg.C:933
 msgid "No keys are installed."
 msgstr ""
 
-#: hierarchy.C:702
+#: hierarchy.C:703
 msgid "You have new mail"
 msgstr ""
 
-#: init.C:60
+#: init.C:61
 msgid " (Dir)"
 msgstr ""
 
-#: init.C:62
+#: init.C:63
 #, c-format
 msgid " (%1%)"
 msgstr ""
 
-#: init.C:68
+#: init.C:69
 msgid "Out of memory."
 msgstr ""
 
-#: init.C:123
+#: init.C:124
 #, c-format
 msgid ""
 "ERROR: Your display appears to be set to the %1% character set.\n"
@@ -3545,23 +3545,23 @@ msgid ""
 "set and try again.\n"
 msgstr ""
 
-#: init.C:159
+#: init.C:160
 msgid "Press SPACE to continue."
 msgstr ""
 
-#: init.C:160
+#: init.C:161
 msgid "^O"
 msgstr ""
 
-#: init.C:161
+#: init.C:162
 msgid "mOre"
 msgstr ""
 
-#: init.C:167
+#: init.C:168
 msgid "yY"
 msgstr ""
 
-#: init.C:168
+#: init.C:169
 msgid "nN"
 msgstr ""
 
@@ -3810,81 +3810,81 @@ msgstr ""
 msgid "%lu bytes"
 msgstr ""
 
-#: myfolder.C:168 myfolder.C:187 myfolder.C:202
+#: myfolder.C:169 myfolder.C:188 myfolder.C:203
 #, c-format
 msgid "%1%: unable to read snapshot."
 msgstr ""
 
-#: myfolder.C:354
+#: myfolder.C:355
 msgid "Closing folder..."
 msgstr ""
 
-#: myfolder.C:578
+#: myfolder.C:579
 #, c-format
 msgid "%1% new message(s) in %2%"
 msgstr ""
 
-#: myfolder.C:634
+#: myfolder.C:635
 msgid "Currently opened message deleted on the server."
 msgstr ""
 
-#: myfolder.C:837
+#: myfolder.C:838
 msgid "Deleting message..."
 msgstr ""
 
-#: myfolder.C:838
+#: myfolder.C:839
 msgid "Undeleting message..."
 msgstr ""
 
-#: myfolder.C:896
+#: myfolder.C:897
 msgid "Updating watch list..."
 msgstr ""
 
-#: myfolder.C:900
+#: myfolder.C:901
 msgid "... done"
 msgstr ""
 
-#: myfolder.C:921
+#: myfolder.C:922
 msgid "Marking message..."
 msgstr ""
 
-#: myfolder.C:922
+#: myfolder.C:923
 msgid "Unmarking message..."
 msgstr ""
 
-#: myfolder.C:959
+#: myfolder.C:960
 #, c-format
 msgid "%1% message(s) deleted in %2%"
 msgstr ""
 
-#: myfolder.C:1059
+#: myfolder.C:1060
 #, c-format
 msgid "%1%: %2%"
 msgstr ""
 
-#: myfolder.C:1083
+#: myfolder.C:1084
 msgid "Reading headers..."
 msgstr ""
 
-#: myfolder.C:1148
+#: myfolder.C:1149
 #, c-format
 msgid "%1%: %2% messages"
 msgstr ""
 
-#: myfolder.C:1178
+#: myfolder.C:1179
 msgid "Filtering messages..."
 msgstr ""
 
-#: myfolder.C:1455
+#: myfolder.C:1456
 #, c-format
 msgid "Downloading message from %1%..."
 msgstr ""
 
-#: myfolder.C:1488
+#: myfolder.C:1489
 msgid "Extracting MIME attachments..."
 msgstr ""
 
-#: myfolder.C:2020
+#: myfolder.C:2021
 msgid "ERROR: "
 msgstr ""
 
@@ -3904,16 +3904,16 @@ msgstr ""
 msgid "Destination folder does not exist."
 msgstr ""
 
-#: myfolderfilter.C:209 myfolderfilter.C:383 nntpcommand.C:308
+#: myfolderfilter.C:209 myfolderfilter.C:383 nntpcommand.C:309
 msgid "Ok"
 msgstr ""
 
-#: mymessage.C:474
+#: mymessage.C:475
 #, c-format
 msgid "You have %1% message(s) in %2%, open? (Y/N) "
 msgstr ""
 
-#: mymessage.C:506
+#: mymessage.C:507
 msgid "An interrupted message was preserved, resume? (Y/N) "
 msgstr ""
 
@@ -3970,17 +3970,17 @@ msgstr ""
 msgid "remote configuration"
 msgstr ""
 
-#: myserverremoteconfig.C:242 myserverremoteconfig.C:423
+#: myserverremoteconfig.C:242 myserverremoteconfig.C:467
 msgid "Unable to open the remote configuration folder."
 msgstr ""
 
-#: myserverremoteconfig.C:445
+#: myserverremoteconfig.C:491
 msgid ""
 "Unable to find remotely-saved configuration file. Remotely-saved "
 "configuration was probably deleted."
 msgstr ""
 
-#: nntpcommand.C:321
+#: nntpcommand.C:322
 msgid "Posting command failed"
 msgstr ""
 

@@ -1,215 +1,44 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-  <!-- $Id: maildirkw.sgml,v 1.2 2004/01/11 02:47:33 mrsam Exp $ -->
-  <!-- Copyright 2003 Double Precision, Inc.  See COPYING for -->
-  <!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->maildirkw</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><H1
-><A
-NAME="MAILDIRKW"
-></A
->maildirkw</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN6"
-></A
-><H2
->Name</H2
->maildirkw&nbsp;--&nbsp;set maildir message keywords</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN9"
-></A
-><H2
->Synopsis</H2
-><P
-><B
-CLASS="COMMAND"
->maildirkw</B
-> [-c] [-l] [-a] [-r] {<VAR
-CLASS="REPLACEABLE"
->maildir</VAR
->} {<VAR
-CLASS="REPLACEABLE"
->message</VAR
->} [<VAR
-CLASS="REPLACEABLE"
->keyword</VAR
->...]</P
-><P
-><B
-CLASS="COMMAND"
->maildirkw</B
-> [-c] {-L} {<VAR
-CLASS="REPLACEABLE"
->maildir</VAR
->}</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN28"
-></A
-><H2
->DESCRIPTION</H2
-><P
-><B
-CLASS="COMMAND"
->maildirkw</B
->
-modifies <TT
-CLASS="APPLICATION"
->Courier-IMAP</TT
-> compatible maildir message
+<?xml version="1.0"?>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>maildirkw</title><link rel="stylesheet" href="style.css" type="text/css"/><meta name="generator" content="DocBook XSL Stylesheets V1.72.0"/><link rel="start" href="#maildirkw" title="maildirkw"/><link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/><meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/><link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 1998 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+--></head><body><div class="refentry" lang="en" xml:lang="en"><a id="maildirkw" shape="rect"> </a><div class="titlepage"/><div class="refnamediv"><h2>Name</h2><p>maildirkw — set maildir message keywords</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">maildirkw</code>  [-c] [-l] [-a] [-r] {<em class="replaceable"><code>maildir</code></em>} {<em class="replaceable"><code>message</code></em>} [<em class="replaceable"><code>keyword</code></em>...]</p></div><div class="cmdsynopsis"><p><code class="command">maildirkw</code>  [-c] {-L} {<em class="replaceable"><code>maildir</code></em>}</p></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id282374" shape="rect"> </a><h2>DESCRIPTION</h2><p>
+<span><strong class="command">maildirkw</strong></span>
+modifies <span class="application">Courier-IMAP</span> compatible maildir message
 keywords.
 This command allows an easy way to set or clear custom IMAP keywords
 associated with a particular message.
-<VAR
-CLASS="REPLACEABLE"
->maildir</VAR
-> is the pathname to a maildir, or a maildir
+<em class="replaceable"><code>maildir</code></em> is the pathname to a maildir, or a maildir
 folder.
-The <VAR
-CLASS="OPTION"
->-L</VAR
-> option lists all messages in the maildir, and their
+The <code class="option">-L</code> option lists all messages in the maildir, and their
 associated keywords.
-<VAR
-CLASS="REPLACEABLE"
->message</VAR
-> specified which message's keywords
+<em class="replaceable"><code>message</code></em> specified which message's keywords
 should be set.
-One or more <VAR
-CLASS="REPLACEABLE"
->keyword</VAR
->s specifies a list of keywords
+One or more <em class="replaceable"><code>keyword</code></em>s specifies a list of keywords
 to be set for this message.
-The specified list of <VAR
-CLASS="REPLACEABLE"
->keyword</VAR
->s replaces any
-keywords presently set for the <VAR
-CLASS="REPLACEABLE"
->message</VAR
->,
+The specified list of <em class="replaceable"><code>keyword</code></em>s replaces any
+keywords presently set for the <em class="replaceable"><code>message</code></em>,
 unless the
-<VAR
-CLASS="OPTION"
->-a</VAR
-> or the
-<VAR
-CLASS="OPTION"
->-r</VAR
-> option is specified.</P
-><P
->The
-<VAR
-CLASS="OPTION"
->-a</VAR
-> option adds the <VAR
-CLASS="REPLACEABLE"
->keyword</VAR
-> to
-existing keywords that are set for <VAR
-CLASS="REPLACEABLE"
->message</VAR
->.
+<code class="option">-a</code> or the
+<code class="option">-r</code> option is specified.</p><p>
 The
-<VAR
-CLASS="OPTION"
->-r</VAR
-> removes <VAR
-CLASS="REPLACEABLE"
->keyword</VAR
->s from
-<VAR
-CLASS="REPLACEABLE"
->message</VAR
->, leaving any remaining keywords set in
-place.</P
-><P
->The
-<VAR
-CLASS="OPTION"
->-l</VAR
-> should be used if <TT
-CLASS="APPLICATION"
->Courier-IMAP</TT
->'s
-configuration file has the <TT
-CLASS="LITERAL"
->IMAP_USELOCKS</TT
-> option set.
-<VAR
-CLASS="OPTION"
->-l</VAR
->
-enables a compatible locking mechanism to update the message's keywords.</P
-><P
-><VAR
-CLASS="OPTION"
->-c</VAR
-> enables case-sensitive keywords.
+<code class="option">-a</code> option adds the <em class="replaceable"><code>keyword</code></em> to
+existing keywords that are set for <em class="replaceable"><code>message</code></em>.
+The
+<code class="option">-r</code> removes <em class="replaceable"><code>keyword</code></em>s from
+<em class="replaceable"><code>message</code></em>, leaving any remaining keywords set in
+place.</p><p>
+The
+<code class="option">-l</code> should be used if <span class="application">Courier-IMAP</span>'s
+configuration file has the <code class="literal">IMAP_USELOCKS</code> option set.
+<code class="option">-l</code>
+enables a compatible locking mechanism to update the message's keywords.</p><p>
+<code class="option">-c</code> enables case-sensitive keywords.
 IMAP keywords are normally case insensitive.
-<VAR
-CLASS="OPTION"
->-c</VAR
-> needs to be used if the
-<A
-HREF="http://www.courier-mta.org/cone/smap1.html"
-TARGET="_top"
->SMAP1</A
->
-protocol extension is used, which uses case sensitive keywords.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN57"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="maildiracl.html"
-TARGET="_top"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->maildiracl</SPAN
->(1)</SPAN
-></A
->,
-<A
-HREF="maildirmake.html"
-TARGET="_top"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->maildirmake</SPAN
->(1)</SPAN
-></A
->.</P
-></DIV
-></BODY
-></HTML
->
+<code class="option">-c</code> needs to be used if the
+<a href="http://www.courier-mta.org/cone/smap1.html" target="_top" shape="rect">SMAP1</a>
+protocol extension is used, which uses case sensitive keywords.</p></div><div class="refsect1" lang="en" xml:lang="en"><a id="id282684" shape="rect"> </a><h2>SEE ALSO</h2><p>
+<a href="maildiracl.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildiracl</span>(1)</span></a>,
+<a href="maildirmake.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirmake</span>(1)</span></a>.</p></div></div></body></html>

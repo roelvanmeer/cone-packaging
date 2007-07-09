@@ -26,7 +26,10 @@ static unicode_char *c2u(const struct unicode_info *u,
 	
 	len = strlen(eucjp_str);
 	uc = (unicode_char*)malloc((len+1) * sizeof(unicode_char) *2);
-	
+
+	if (!uc)
+		return NULL;
+
 	for(i=0; i<len;) {
 		/* US-ASCII */
 		if((unsigned char)eucjp_str[i] < 0x80)
@@ -129,7 +132,10 @@ static char *u2c(const struct unicode_info *u,
 	while(str[len])
 		len++;
 	s = malloc((len+1)*2);
-	
+
+	if (!s)
+		return NULL;
+
 	for(i=0; str[i]; i++)
 	{
 		int jis_char = 0;

@@ -1,543 +1,276 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->Reading message attributes</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="Simple Mail Access Protocol, Version 1"
-HREF="smap1.html"><LINK
-REL="PREVIOUS"
-TITLE="Using Folders"
-HREF="x12929.html"><LINK
-REL="NEXT"
-TITLE="Reading message contents"
-HREF="x13200.html"></HEAD
-><BODY
-CLASS="SECTION"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="x12929.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
->Simple Mail Access Protocol, Version 1</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="x13200.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECTION"
-><H1
-CLASS="SECTION"
-><A
-NAME="ATTRIBUTES"
->Reading message attributes</A
-></H1
-><P
-><P
-CLASS="LITERALLAYOUT"
->C:&nbsp;FETCH&nbsp;4&nbsp;6-7&nbsp;FLAGS&nbsp;SIZE<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;4&nbsp;FLAGS=SEEN,REPLIED&nbsp;SIZE=8341<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;6&nbsp;FLAGS=&nbsp;SIZE=13862<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;7&nbsp;FLAGS=SEEN&nbsp;SIZE=11802<br>
-S:&nbsp;+OK&nbsp;Ok</P
-></P
-><P
-><TT
-CLASS="LITERAL"
->FETCH</TT
-> is a versatile command that retrieves message contents
-or attributes.
-<TT
-CLASS="LITERAL"
->FETCH</TT
-> is followed by whitespace-delimited words that
-enumerate message numbers whose attributes or contents the server
-should retrieve.
-The list of message numbers if followed by the list of
-attributes (or specific message content) to retrieve.
-When requesting more than one attribute, and/or attributes from more than
-one message, the server's response may list the messages and attributes
-in any order.
-The server may also list all requested attributes for each message in one
-<TT
-CLASS="LITERAL"
->* FETCH</TT
-> reply, or use a separate
-<TT
-CLASS="LITERAL"
->* FETCH</TT
-> reply for each attribute.
-The following response is also a valid reply in the previous example:</P
-><P
-><P
-CLASS="LITERALLAYOUT"
->C:&nbsp;FETCH&nbsp;4&nbsp;6-7&nbsp;FLAGS&nbsp;SIZE<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;7&nbsp;SIZE=11802<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;6&nbsp;SIZE=13862<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;4&nbsp;SIZE=8341<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;4&nbsp;FLAGS=SEEN,REPLIED<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;6&nbsp;FLAGS=<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;7&nbsp;FLAGS=SEEN<br>
-S:&nbsp;+OK&nbsp;Ok</P
-></P
-><P
->The first word in each <TT
-CLASS="LITERAL"
->* FETCH</TT
->
-<A
-HREF="x12387.html#SINGLELINE"
->single line reply</A
->
-is the message number, the remaining whitespace-delimited words specify
-the requested attributes.
-Each requested attribute is returned as a single, whitespace-delimited
-word in the <TT
-CLASS="LITERAL"
->* FETCH</TT
-> reply.
-For future expansion, both servers and clients should ignore attributes
-they do not recognize.</P
-><P
->The following attributes are defined at this time:</P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->UID</TT
-></DT
-><DD
-><P
->Request the message's unique identifier.
-The server assigns a unique identifier word to each message in a folder.
-The client should not attempt to interpret the unique identifier in any way,
-and treat it as an opaque text string.
-The only known property of the unique identifier is that no two messages
-in the same folder will ever have the same unique identifier.
-Example:</P
-><P
-><P
-CLASS="LITERALLAYOUT"
->C:&nbsp;FETCH&nbsp;9-10&nbsp;UID<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;9&nbsp;UID=1043320248/3456<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;10&nbsp;UID=1043320248/3461<br>
-S:&nbsp;+OK&nbsp;FETCH&nbsp;completed</P
-></P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->FLAGS</TT
-></DT
-><DD
-><P
->Each message has one or more message state flags.
-The following flags are currently defined:</P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->DELETED</TT
-></DT
-><DD
-><P
->This message is marked for deletion.</P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->REPLIED</TT
-></DT
-><DD
-><P
->This message has been replied to.</P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->SEEN</TT
-></DT
-><DD
-><P
->The message's contents were previous read by <TT
-CLASS="LITERAL"
->FETCH CONTENTS</TT
->
-at least once.
-The server automatically sets this flag after processing a
-<TT
-CLASS="LITERAL"
->FETCH CONTENTS</TT
->
-command, but it can also be set or cleared manually
-by the <A
-HREF="store.html"
-><TT
-CLASS="LITERAL"
->STORE</TT
-> command</A
->.</P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->DRAFT</TT
-></DT
-><DD
-><P
->This is a draft message.</P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->MARKED</TT
-></DT
-><DD
-><P
->This messge is <SPAN
-CLASS="QUOTE"
->"marked"</SPAN
->.
-<SPAN
-CLASS="QUOTE"
->"MARKED"</SPAN
-> is a generic flag that applications may use for
-their own purposes.
-The <A
-HREF="search.html"
-><TT
-CLASS="LITERAL"
->SEARCH</TT
-> command</A
->
-also uses this flag.</P
-></DD
-></DL
-></DIV
-><P
->The server responds to a <TT
-CLASS="LITERAL"
->* FETCH</TT
-> by returning
-<SPAN
-CLASS="QUOTE"
->"FLAGS=<TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
->"</SPAN
->, where
-<TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
-> is a comma-separated list of flags that are
-set for this message.
-A message without any flags set results in an empty
-<TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
->, or the absence of the 
-<SPAN
-CLASS="QUOTE"
->"FLAGS=<TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
->"</SPAN
-> response
-altogether.</P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->KEYWORDS</TT
-></DT
-><DD
-><P
->The <TT
-CLASS="LITERAL"
->KEYWORDS</TT
-> attribute is available when
-<TT
-CLASS="LITERAL"
->KEYWORDS</TT
-> is listed as an SMAP1 capability
-(see <SPAN
-CLASS="QUOTE"
->"<A
-HREF="conn.html"
->SMAP connection negotiation</A
->"</SPAN
->).
-Each message may have one or more arbitrary tags associated with it.
-The SMAP1 server associates no special meaning to any keyword, except to note
-that it's there.
-The SMAP1 client is free to name keywords in any useful manner.
-The name of each keyword may contain any UTF-8 character except for a comma,
-or a control character.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="90%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->Certain punctuation characters should be avoided if interoperability with
-IMAP is desired.
-IMAP prohibits certain characters from appearing in keywords, namely:
-spaces, parenthesis, quotes, and the following characters:
-<B
-CLASS="KEYCAP"
->{</B
->,
-<B
-CLASS="KEYCAP"
->%</B
->,
-<B
-CLASS="KEYCAP"
->*</B
->,
-<B
-CLASS="KEYCAP"
->\</B
->,
-<B
-CLASS="KEYCAP"
->]</B
->.
-Do not use these characters if IMAP interoperability is desired.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->SIZE</TT
-></DT
-><DD
-><P
->The server's <TT
-CLASS="LITERAL"
->* FETCH</TT
-> reply contains
-<SPAN
-CLASS="QUOTE"
->"SIZE=<TT
-CLASS="REPLACEABLE"
-><I
->bytecount</I
-></TT
->"</SPAN
->, where
-<TT
-CLASS="REPLACEABLE"
-><I
->bytecount</I
-></TT
-> gives the estimated size of the
-message.
-This may not necessarily be an exact byte count.
-SMAP servers are permitted to provide a ballpark estimate of the message's
-size, if an exact byte count is unavailable.</P
-></DD
-><DT
-><TT
-CLASS="LITERAL"
->INTERNALDATE</TT
-></DT
-><DD
-><P
->The server's <TT
-CLASS="LITERAL"
->* FETCH</TT
-> reply contains
-<SPAN
-CLASS="QUOTE"
->"INTERNALDATE=<TT
-CLASS="REPLACEABLE"
-><I
->rfcdate</I
-></TT
->"</SPAN
->, where
-<TT
-CLASS="REPLACEABLE"
-><I
->rfcdate</I
-></TT
-> gives the date and time the message
-was added to the folder.
-Note that this is not necessarily the contents of the message's
-<TT
-CLASS="LITERAL"
->Date:</TT
-> header.
-<TT
-CLASS="REPLACEABLE"
-><I
->rfcdate</I
-></TT
-> uses the same
-<A
-HREF="http://www.rfc-editor.org/rfc/rfc2822.txt"
-TARGET="_top"
->RFC 2822</A
->
-date/time format as the <TT
-CLASS="LITERAL"
->Date:</TT
-> header.
-Example:</P
-><P
-><P
-CLASS="LITERALLAYOUT"
->C:&nbsp;FETCH&nbsp;4&nbsp;INTERNALDATE<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;4&nbsp;"INTERNALDATE=Tue,&nbsp;21&nbsp;Jan&nbsp;2003&nbsp;20:57:48&nbsp;-0500"<br>
-S:&nbsp;+OK&nbsp;Ok</P
-></P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="x12929.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="x13200.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Using Folders</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="smap1.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Reading message contents</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>Reading message attributes</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1"/>
+  <link rel="prev" href="smapusingfolders.html" title="Using Folders"/>
+  <link rel="next" href="smapmessagecontents.html" title="Reading message contents"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">Reading message
+        attributes</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="smapusingfolders.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        Appendix&#160;A.&#160;Simple Mail Access Protocol, Version
+        1</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="smapmessagecontents.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="section" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title"><a id="attributes" shape="rect" name="attributes"> </a>Reading message attributes</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="literallayout">
+      <p><br clear="none"/>
+      C:&#160;FETCH&#160;4&#160;6-7&#160;FLAGS&#160;SIZE<br clear="none"/>
+      S:&#160;*&#160;FETCH&#160;4&#160;FLAGS=SEEN,REPLIED&#160;SIZE=8341<br clear="none"/>
+
+      S:&#160;*&#160;FETCH&#160;6&#160;FLAGS=&#160;SIZE=13862<br clear="none"/>
+
+      S:&#160;*&#160;FETCH&#160;7&#160;FLAGS=SEEN&#160;SIZE=11802<br clear="none"/>
+
+      S:&#160;+OK&#160;Ok<br clear="none"/></p>
+    </div>
+
+    <p><code class="literal">FETCH</code> is a versatile command
+    that retrieves message contents or attributes. <code class="literal">FETCH</code> is followed by whitespace-delimited
+    words that enumerate message numbers whose attributes or
+    contents the server should retrieve. The list of message
+    numbers if followed by the list of attributes (or specific
+    message content) to retrieve. When requesting more than one
+    attribute, and/or attributes from more than one message, the
+    server's response may list the messages and attributes in any
+    order. The server may also list all requested attributes for
+    each message in one <code class="literal">* FETCH</code> reply,
+    or use a separate <code class="literal">* FETCH</code> reply
+    for each attribute. The following response is also a valid
+    reply in the previous example:</p>
+
+    <div class="literallayout">
+      <p><br clear="none"/>
+      C:&#160;FETCH&#160;4&#160;6-7&#160;FLAGS&#160;SIZE<br clear="none"/>
+      S:&#160;*&#160;FETCH&#160;7&#160;SIZE=11802<br clear="none"/>
+      S:&#160;*&#160;FETCH&#160;6&#160;SIZE=13862<br clear="none"/>
+      S:&#160;*&#160;FETCH&#160;4&#160;SIZE=8341<br clear="none"/>
+      S:&#160;*&#160;FETCH&#160;4&#160;FLAGS=SEEN,REPLIED<br clear="none"/>
+      S:&#160;*&#160;FETCH&#160;6&#160;FLAGS=<br clear="none"/>
+      S:&#160;*&#160;FETCH&#160;7&#160;FLAGS=SEEN<br clear="none"/>
+      S:&#160;+OK&#160;Ok<br clear="none"/></p>
+    </div>
+
+    <p>The first word in each <code class="literal">* FETCH</code>
+    <a href="smapsyntax.html#singleline" title="Single line replies" shape="rect">single line reply</a> is the
+    message number, the remaining whitespace-delimited words
+    specify the requested attributes. Each requested attribute is
+    returned as a single, whitespace-delimited word in the
+    <code class="literal">* FETCH</code> reply. For future
+    expansion, both servers and clients should ignore attributes
+    they do not recognize.</p>
+
+    <p>The following attributes are defined at this time:</p>
+
+    <div class="variablelist">
+      <dl>
+        <dt><span class="term"><code class="literal">UID</code></span></dt>
+
+        <dd>
+          <p>Request the message's unique identifier. The server
+          assigns a unique identifier word to each message in a
+          folder. The client should not attempt to interpret the
+          unique identifier in any way, and treat it as an opaque
+          text string. The only known property of the unique
+          identifier is that no two messages in the same folder
+          will ever have the same unique identifier. Example:</p>
+
+          <div class="literallayout">
+            <p><br clear="none"/>
+            C:&#160;FETCH&#160;9-10&#160;UID<br clear="none"/>
+            S:&#160;*&#160;FETCH&#160;9&#160;UID=1043320248/3456<br clear="none"/>
+
+            S:&#160;*&#160;FETCH&#160;10&#160;UID=1043320248/3461<br clear="none"/>
+
+            S:&#160;+OK&#160;FETCH&#160;completed<br clear="none"/></p>
+          </div>
+        </dd>
+
+        <dt><span class="term"><code class="literal">FLAGS</code></span></dt>
+
+        <dd>
+          <p>Each message has one or more message state flags. The
+          following flags are currently defined:</p>
+
+          <div class="variablelist">
+            <dl>
+              <dt><span class="term"><code class="literal">DELETED</code></span></dt>
+
+              <dd>
+                <p>This message is marked for deletion.</p>
+              </dd>
+
+              <dt><span class="term"><code class="literal">REPLIED</code></span></dt>
+
+              <dd>
+                <p>This message has been replied to.</p>
+              </dd>
+
+              <dt><span class="term"><code class="literal">SEEN</code></span></dt>
+
+              <dd>
+                <p>The message's contents were previous read by
+                <code class="literal">FETCH CONTENTS</code> at
+                least once. The server automatically sets this flag
+                after processing a <code class="literal">FETCH
+                CONTENTS</code> command, but it can also be set or
+                cleared manually by the <a href="store.html" title="Modifying message attributes" shape="rect"><code class="literal">STORE</code>
+                command</a>.</p>
+              </dd>
+
+              <dt><span class="term"><code class="literal">DRAFT</code></span></dt>
+
+              <dd>
+                <p>This is a draft message.</p>
+              </dd>
+
+              <dt><span class="term"><code class="literal">MARKED</code></span></dt>
+
+              <dd>
+                <p>This messge is &#8220;<span class="quote">marked</span>&#8221;. &#8220;<span class="quote">MARKED</span>&#8221; is a generic flag that
+                applications may use for their own purposes. The
+                <a href="search.html" title="Searching messages" shape="rect"><code class="literal">SEARCH</code>
+                command</a> also uses this flag.</p>
+              </dd>
+            </dl>
+          </div>
+
+          <p>The server responds to a <code class="literal">*
+          FETCH</code> by returning &#8220;<span class="quote">FLAGS=<em class="replaceable"><code>list</code></em></span>&#8221;, where
+          <em class="replaceable"><code>list</code></em> is a
+          comma-separated list of flags that are set for this
+          message. A message without any flags set results in an
+          empty <em class="replaceable"><code>list</code></em>, or
+          the absence of the &#8220;<span class="quote">FLAGS=<em class="replaceable"><code>list</code></em></span>&#8221;
+          response altogether.</p>
+        </dd>
+
+        <dt><span class="term"><code class="literal">KEYWORDS</code></span></dt>
+
+        <dd>
+          <p>The <code class="literal">KEYWORDS</code> attribute is
+          available when <code class="literal">KEYWORDS</code> is
+          listed as an SMAP1 capability (see &#8220;<span class="quote"><a href="conn.html" title="SMAP connection negotiation" shape="rect">SMAP
+          connection negotiation</a></span>&#8221;). Each message
+          may have one or more arbitrary tags associated with it.
+          The SMAP1 server associates no special meaning to any
+          keyword, except to note that it's there. The SMAP1 client
+          is free to name keywords in any useful manner. The name
+          of each keyword may contain any UTF-8 character except
+          for a comma, or a control character.</p>
+
+          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <h3 class="title">Note</h3>
+
+            <p>Certain punctuation characters should be avoided if
+            interoperability with IMAP is desired. IMAP prohibits
+            certain characters from appearing in keywords, namely:
+            spaces, parenthesis, quotes, and the following
+            characters: <span><strong class="keycap">{</strong></span>, <span><strong class="keycap">%</strong></span>, <span><strong class="keycap">*</strong></span>, <span><strong class="keycap">\</strong></span>, <span><strong class="keycap">]</strong></span>. Do not use these characters
+            if IMAP interoperability is desired.</p>
+          </div>
+        </dd>
+
+        <dt><span class="term"><code class="literal">SIZE</code></span></dt>
+
+        <dd>
+          <p>The server's <code class="literal">* FETCH</code>
+          reply contains &#8220;<span class="quote">SIZE=<em class="replaceable"><code>bytecount</code></em></span>&#8221;,
+          where <em class="replaceable"><code>bytecount</code></em>
+          gives the estimated size of the message. This may not
+          necessarily be an exact byte count. SMAP servers are
+          permitted to provide a ballpark estimate of the message's
+          size, if an exact byte count is unavailable.</p>
+        </dd>
+
+        <dt><span class="term"><code class="literal">INTERNALDATE</code></span></dt>
+
+        <dd>
+          <p>The server's <code class="literal">* FETCH</code>
+          reply contains &#8220;<span class="quote">INTERNALDATE=<em class="replaceable"><code>rfcdate</code></em></span>&#8221;,
+          where <em class="replaceable"><code>rfcdate</code></em>
+          gives the date and time the message was added to the
+          folder. Note that this is not necessarily the contents of
+          the message's <code class="literal">Date:</code> header.
+          <em class="replaceable"><code>rfcdate</code></em> uses
+          the same <a href="http://www.rfc-editor.org/rfc/rfc2822.txt" target="_top" shape="rect">RFC 2822</a> date/time format as the
+          <code class="literal">Date:</code> header. Example:</p>
+
+          <div class="literallayout">
+            <p><br clear="none"/>
+            C:&#160;FETCH&#160;4&#160;INTERNALDATE<br clear="none"/>
+            S:&#160;*&#160;FETCH&#160;4&#160;"INTERNALDATE=Tue,&#160;21&#160;Jan&#160;2003&#160;20:57:48&#160;-0500"<br clear="none"/>
+
+            S:&#160;+OK&#160;Ok<br clear="none"/></p>
+          </div>
+        </dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="smapusingfolders.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="smap1.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="smapmessagecontents.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">Using Folders&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;Reading message contents</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

@@ -1,2 +1,3 @@
 version=3
-http://sf.net/courier/ cone-(.*)\.tar\.bz2 debian uupdate
+http://sf.net/courier/ cone-(.*)\.tar\.bz2 debian debian/orig-tar.sh
+

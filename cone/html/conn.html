@@ -1,690 +1,367 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->SMAP connection negotiation</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="Simple Mail Access Protocol, Version 1"
-HREF="smap1.html"><LINK
-REL="PREVIOUS"
-TITLE="SMAP syntax overview"
-HREF="x12387.html"><LINK
-REL="NEXT"
-TITLE="Folders"
-HREF="x12593.html"></HEAD
-><BODY
-CLASS="SECTION"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="x12387.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
->Simple Mail Access Protocol, Version 1</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="x12593.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECTION"
-><H1
-CLASS="SECTION"
-><A
-NAME="CONN"
->SMAP connection negotiation</A
-></H1
-><P
->It is possible to have a server that handles both IMAP4rev1 and SMAP1.
-This is done by establishing the initial SMAP1 client/server connection
-in a manner that's compatible with IMAP.
-When the server receives a connection from a client, the server sends the
-following reply:</P
-><P
-><P
-CLASS="LITERALLAYOUT"
->*&nbsp;OK&nbsp;[CAPABILITY&nbsp;<TT
-CLASS="REPLACEABLE"
-><I
->capabilitylist</I
-></TT
->]&nbsp;<TT
-CLASS="REPLACEABLE"
-><I
->message</I
-></TT
-></P
-></P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->Servers that offer both IMAP and SMAP must terminate the initial reply
-with CRLF.
-SMAP-only servers can use the LF character alone.</P
-></TD
-></TR
-></TABLE
-></DIV
-><P
-><SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="REPLACEABLE"
-><I
->message</I
-></TT
->"</SPAN
-> is free-form text, that
-identifies
-the server software in human-readable format.
-<SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="REPLACEABLE"
-><I
->capabilitylist</I
-></TT
->"</SPAN
-> is a list of
-keywords that
-describe the server's technical implementation.
-Keywords in the list are separated by whitespace.
-Clients should separate whitespace-delimited
-<SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="REPLACEABLE"
-><I
->capabilitylist</I
-></TT
->"</SPAN
-> into
-individual keywords.
-Multiple keywords may occur in any order, and clients must search the
-entire list for keywords the client understands.</P
-><P
->The presence of the <TT
-CLASS="LITERAL"
->SMAP1</TT
-> keyword specifies
-that the server implements the protocol defined by this document.
-Absence of the
-<TT
-CLASS="LITERAL"
->SMAP1</TT
-> keyword indicates
-that the server is probably an IMAP server.
-Clients that support both SMAP and IMAP protocol can automatically revert
-to IMAP, if they so choose.</P
-><P
->The server's initial reply to the client may include the
-<SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="REPLACEABLE"
-><I
->message</I
-></TT
->"</SPAN
-> part only, without a leading
-keyword capability list inside.
-This indicates that the server is only an IMAP server,
-and does not support SMAP.</P
-><P
-><SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="REPLACEABLE"
-><I
->capabilitylist</I
-></TT
->"</SPAN
-> may include additional
-keywords besides <TT
-CLASS="LITERAL"
->SMAP1</TT
->.
-This document defines the following keywords.
-Other keywords may be added in the future.
-SMAP clients coded to this specification should ignore keywords they do
-not recognize.</P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->STARTTLS</DT
-><DD
-><P
->This SMAP server supports an SSL/TLS connection, via the STARTTLS
-command.</P
-></DD
-><DT
->AUTH=<TT
-CLASS="REPLACEABLE"
-><I
->mechanism</I
-></TT
-></DT
-><DD
-><P
->This SMAP server supports the
-<SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="REPLACEABLE"
-><I
->mechanism</I
-></TT
->"</SPAN
->
-authentication mechanism, as defined by
-<A
-HREF="http://www.rfc-editor.org/rfc/rfc2060.txt"
-TARGET="_top"
->RFC 2060</A
->,
-and its successors.</P
-></DD
-><DT
->LANG=<TT
-CLASS="REPLACEABLE"
-><I
->language</I
-></TT
-></DT
-><DD
-><P
->This SMAP1 server can return diagnostic messages in the
-natural language
-<SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="REPLACEABLE"
-><I
->language</I
-></TT
->"</SPAN
->.
-<SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="REPLACEABLE"
-><I
->language</I
-></TT
->"</SPAN
->
-is a language tag defined by
-<A
-HREF="http://www.rfc-editor.org/rfc/rfc1766.txt"
-TARGET="_top"
->RFC 1766</A
->.
-A multilingual SMAP server lists
-multiple <TT
-CLASS="LITERAL"
->LANG</TT
-> keywords, one keyword for each
-language.</P
-></DD
-><DT
->KEYWORDS</DT
-><DD
-><P
->The SMAP1 server supports user-defined per-message <TT
-CLASS="LITERAL"
->KEYWORDS</TT
->
-attributes.</P
-></DD
-></DL
-></DIV
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->The <TT
-CLASS="LITERAL"
->STARTTLS</TT
-> and <TT
-CLASS="LITERAL"
->AUTH</TT
-> keywords
-are also used by IMAP in the same way.
-IMAP does not define the <TT
-CLASS="LITERAL"
->LANG</TT
-> keyword (there is an optional
-extension to the base IMAP protocol specification that is
-functionally similar, but
-not compatible, with this definition).
-At this time, <TT
-CLASS="LITERAL"
->LANG</TT
-> does not introduce interoperability
-issues with IMAP.
-IMAP also does not define <TT
-CLASS="LITERAL"
->KEYWORD</TT
->, a similar functionality
-is indicated by the <TT
-CLASS="LITERAL"
->PERMANENTFLAGS</TT
-> untagged reply.</P
-><P
->In the future, there's a small chance that a new IMAP protocol
-extension or revision may not be compatible with the
-<TT
-CLASS="LITERAL"
->LANG</TT
->
-or
-<TT
-CLASS="LITERAL"
->KEYWORDS</TT
->
-capability keywords, or any other SMAP
-capability keyword.
-Should this occur,
-the next revision of this document will
-remove <TT
-CLASS="LITERAL"
->LANG</TT
-> or
-<TT
-CLASS="LITERAL"
->KEYWORD</TT
-> (or another incompatible keyword)
-from the initial capability list.
-The client should issue the "<TT
-CLASS="LITERAL"
->\SMAP1 CAPABILITY</TT
->"
-command to retrieve an SMAP1-specific capability list that includes the
-complete SMAP capability keyword list.</P
-><P
->Should IMAP introduce an interoperability issue with the
-<TT
-CLASS="LITERAL"
->SMAP1</TT
-> keyword itself, it will be replaced by another
-keyword.</P
-></TD
-></TR
-></TABLE
-></DIV
-><P
->Example:</P
-><P
-><P
-CLASS="LITERALLAYOUT"
->S:&nbsp;*&nbsp;OK&nbsp;[CAPABILITY&nbsp;SMAP1&nbsp;KEYWORDSAUTH=CRAM-MD5&nbsp;STARTTLS<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LANG=EN&nbsp;LANG=EN-US&nbsp;IMAP4rev1]&nbsp;SMAP/IMAP&nbsp;hybrid&nbsp;server&nbsp;ready</P
-></P
-><DIV
-CLASS="SECTION"
-><H2
-CLASS="SECTION"
-><A
-NAME="AEN12546"
->IMAP/SMAP protocol selection</A
-></H2
-><P
->The first word of IMAP commands is an arbitrary command identification tag.
-The first set of SMAP commands,
-that set up and log in to the mail account, are prefixed by the word
-<TT
-CLASS="LITERAL"
->"\SMAP1"</TT
->.
-The backslash character is not allowed in IMAP command identification tags.
-A server that implements both IMAP and SMAP reads the first
-whitespace-delimited word of the first command it receives.
-If the first word in <TT
-CLASS="LITERAL"
->"\SMAP1"</TT
-> the server knows that
-the client is using SMAP.  Subsequent server replies will now be SMAP replies.
-Otherwise, the first word must be an IMAP command identification tag, so
-the server reverts to IMAP mode for this client connection.</P
-></DIV
-><DIV
-CLASS="SECTION"
-><H2
-CLASS="SECTION"
-><A
-NAME="AEN12551"
->SMAP capability list</A
-></H2
-><P
->The server responds to this command with a
-"<TT
-CLASS="LITERAL"
->* CAPABILITY</TT
->"
-<A
-HREF="x12387.html#SINGLELINE"
->single line</A
->
-reply.
-The remaining words in the reply enumerate SMAP capabilities supported
-by the server.  Example:</P
-><P
-><P
-CLASS="LITERALLAYOUT"
->C:&nbsp;\SMAP1&nbsp;CAPABILITY<br>
-S:&nbsp;*&nbsp;CAPABILITY&nbsp;SMAP1&nbsp;AUTH=CRAM-MD5&nbsp;STARTTLS&nbsp;LANG=EN&nbsp;LANG=EN-US&nbsp;IMAP4rev1<br>
-S:&nbsp;+OK&nbsp;SMAP1&nbsp;capability&nbsp;list&nbsp;complete.</P
-></P
-><P
->The server should reply with the same capability list as the initial
-<TT
-CLASS="LITERAL"
->* OK</TT
-> message.</P
-></DIV
-><DIV
-CLASS="SECTION"
-><H2
-CLASS="SECTION"
-><A
-NAME="AEN12560"
->Enabling encryption</A
-></H2
-><P
->The <TT
-CLASS="LITERAL"
->STARTTLS</TT
->
-capability indicates that the server
-is capable of encrypting the connection between the client and the server.
-See
-<A
-HREF="http://www.rfc-editor.org/rfc/rfc2595.txt"
-TARGET="_top"
->RFC 2595</A
->
-for some additional comments on using TLS with mail-related protocols.</P
-><P
->SSL/TLS negotiation begins immediately after the client receives
-a successfull
-<A
-HREF="x12387.html#STATUSREPLY"
->status reply</A
->
-from the server.  Example:</P
-><P
-><P
-CLASS="LITERALLAYOUT"
->C:&nbsp;\SMAP1&nbsp;STARTTLS<br>
-S:&nbsp;+OK&nbsp;Ready&nbsp;to&nbsp;accept&nbsp;an&nbsp;encrypted&nbsp;SMAP1&nbsp;connection<br>
-<br>
-<I
-CLASS="EMPHASIS"
->[ TLS negotiation occurs ]</I
-><br>&#13;</P
-></P
-></DIV
-><DIV
-CLASS="SECTION"
-><H2
-CLASS="SECTION"
-><A
-NAME="AEN12570"
->Language selection</A
-></H2
-><P
->This command instructs the server to send
-all subsequent messages in a different natural language.
-Example:</P
-><P
-><P
-CLASS="LITERALLAYOUT"
->C:&nbsp;\SMAP1&nbsp;LANGUAGE&nbsp;FR<br>
-S:&nbsp;+OK&nbsp;Bonjour</P
-></P
-><P
->The specified language must be one of the languages enumerated in the
-capability list.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->The UTF-8 character set is used for all languages.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="SECTION"
-><H2
-CLASS="SECTION"
-><A
-NAME="AEN12578"
->Userid/password login</A
-></H2
-><P
->The <TT
-CLASS="LITERAL"
->\SMAP1 LOGIN</TT
-> command initiates a simple userid/password
-login sequence.
-The third word of this command is the login userid, the fourth word is the
-login password.
-The server's
-<A
-HREF="x12387.html#STATUSREPLY"
->status reply</A
->
-indicates whether the supplied credentials were
-accepted.  Example:</P
-><P
-><P
-CLASS="LITERALLAYOUT"
->C:&nbsp;\SMAP1&nbsp;LOGIN&nbsp;joneil&nbsp;p3r472<br>
-S:&nbsp;-ERR&nbsp;Login&nbsp;invalid<br>
-C:&nbsp;\SMAP1&nbsp;LOGIN&nbsp;joneil&nbsp;p2r798<br>
-S:&nbsp;+OK&nbsp;Logged&nbsp;in</P
-></P
-></DIV
-><DIV
-CLASS="SECTION"
-><H2
-CLASS="SECTION"
-><A
-NAME="AEN12585"
->SASL login</A
-></H2
-><P
->The "<TT
-CLASS="LITERAL"
->\SMAP1 AUTHENTICATE</TT
->" command initiates a
-generic SASL-based
-login mechanism.
-The third word of this command specifies the SASL authentication mechanism,
-which must be one of the <TT
-CLASS="LITERAL"
->AUTH</TT
-> mechanism listed in the
-server's capability list.
-The subsequent SASL conversation, if any, is identical to an IMAP SASL
-conversation: each server challenge is sent as a line of text that starts
-with the <TT
-CLASS="LITERAL"
->&#62;</TT
->
-character, whitespace filler, then the base64-encoded server
-challenge.
-The client replies with a line of text containing the base64-encoded reply.
-Example:</P
-><P
-><P
-CLASS="LITERALLAYOUT"
->C:&nbsp;\SMAP1&nbsp;AUTHENTICATE&nbsp;LOGIN<br>
-S:&nbsp;&#62;&nbsp;VXNlciBOYW1lAA==<br>
-C:&nbsp;bWl0bGlz<br>
-S:&nbsp;&#62;&nbsp;UGFzc3dvcmQA<br>
-C:&nbsp;Zmxvc2pidw==<br>
-S:&nbsp;+OK&nbsp;Logged&nbsp;in</P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="x12387.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="x12593.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->SMAP syntax overview</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="smap1.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Folders</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>SMAP connection negotiation</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1"/>
+  <link rel="prev" href="smapsyntax.html" title="SMAP syntax overview"/>
+  <link rel="next" href="smapfolders.html" title="Folders"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">SMAP connection
+        negotiation</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="smapsyntax.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        Appendix&#160;A.&#160;Simple Mail Access Protocol, Version
+        1</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="smapfolders.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="section" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title"><a id="conn" shape="rect" name="conn"> </a>SMAP connection negotiation</h3>
+        </div>
+      </div>
+    </div>
+
+    <p>It is possible to have a server that handles both IMAP4rev1
+    and SMAP1. This is done by establishing the initial SMAP1
+    client/server connection in a manner that's compatible with
+    IMAP. When the server receives a connection from a client, the
+    server sends the following reply:</p>
+
+    <div class="literallayout">
+      <p><br clear="none"/>
+      *&#160;OK&#160;[CAPABILITY&#160;<em class="replaceable"><code>capabilitylist</code></em>]&#160;<em class="replaceable"><code>message</code></em><br clear="none"/>
+      </p>
+    </div>
+
+    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <h3 class="title">Note</h3>
+
+      <p>Servers that offer both IMAP and SMAP must terminate the
+      initial reply with CRLF. SMAP-only servers can use the LF
+      character alone.</p>
+    </div>
+
+    <p>&#8220;<span class="quote"><em class="replaceable"><code>message</code></em></span>&#8221; is
+    free-form text, that identifies the server software in
+    human-readable format. &#8220;<span class="quote"><em class="replaceable"><code>capabilitylist</code></em></span>&#8221; is
+    a list of keywords that describe the server's technical
+    implementation. Keywords in the list are separated by
+    whitespace. Clients should separate whitespace-delimited
+    &#8220;<span class="quote"><em class="replaceable"><code>capabilitylist</code></em></span>&#8221;
+    into individual keywords. Multiple keywords may occur in any
+    order, and clients must search the entire list for keywords the
+    client understands.</p>
+
+    <p>The presence of the <code class="literal">SMAP1</code>
+    keyword specifies that the server implements the protocol
+    defined by this document. Absence of the <code class="literal">SMAP1</code> keyword indicates that the server is
+    probably an IMAP server. Clients that support both SMAP and
+    IMAP protocol can automatically revert to IMAP, if they so
+    choose.</p>
+
+    <p>The server's initial reply to the client may include the
+    &#8220;<span class="quote"><em class="replaceable"><code>message</code></em></span>&#8221; part
+    only, without a leading keyword capability list inside. This
+    indicates that the server is only an IMAP server, and does not
+    support SMAP.</p>
+
+    <p>&#8220;<span class="quote"><em class="replaceable"><code>capabilitylist</code></em></span>&#8221;
+    may include additional keywords besides <code class="literal">SMAP1</code>. This document defines the following
+    keywords. Other keywords may be added in the future. SMAP
+    clients coded to this specification should ignore keywords they
+    do not recognize.</p>
+
+    <div class="variablelist">
+      <dl>
+        <dt><span class="term">STARTTLS</span></dt>
+
+        <dd>
+          <p>This SMAP server supports an SSL/TLS connection, via
+          the STARTTLS command.</p>
+        </dd>
+
+        <dt><span class="term">AUTH=<em class="replaceable"><code>mechanism</code></em></span></dt>
+
+        <dd>
+          <p>This SMAP server supports the &#8220;<span class="quote"><em class="replaceable"><code>mechanism</code></em></span>&#8221;
+          authentication mechanism, as defined by <a href="http://www.rfc-editor.org/rfc/rfc2060.txt" target="_top" shape="rect">RFC 2060</a>, and its successors.</p>
+        </dd>
+
+        <dt><span class="term">LANG=<em class="replaceable"><code>language</code></em></span></dt>
+
+        <dd>
+          <p>This SMAP1 server can return diagnostic messages in
+          the natural language &#8220;<span class="quote"><em class="replaceable"><code>language</code></em></span>&#8221;.
+          &#8220;<span class="quote"><em class="replaceable"><code>language</code></em></span>&#8221; is
+          a language tag defined by <a href="http://www.rfc-editor.org/rfc/rfc1766.txt" target="_top" shape="rect">RFC 1766</a>. A multilingual SMAP server
+          lists multiple <code class="literal">LANG</code>
+          keywords, one keyword for each language.</p>
+        </dd>
+
+        <dt><span class="term">KEYWORDS</span></dt>
+
+        <dd>
+          <p>The SMAP1 server supports user-defined per-message
+          <code class="literal">KEYWORDS</code> attributes.</p>
+        </dd>
+      </dl>
+    </div>
+
+    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <h3 class="title">Note</h3>
+
+      <p>The <code class="literal">STARTTLS</code> and <code class="literal">AUTH</code> keywords are also used by IMAP in the
+      same way. IMAP does not define the <code class="literal">LANG</code> keyword (there is an optional extension
+      to the base IMAP protocol specification that is functionally
+      similar, but not compatible, with this definition). At this
+      time, <code class="literal">LANG</code> does not introduce
+      interoperability issues with IMAP. IMAP also does not define
+      <code class="literal">KEYWORD</code>, a similar functionality
+      is indicated by the <code class="literal">PERMANENTFLAGS</code> untagged reply.</p>
+
+      <p>In the future, there's a small chance that a new IMAP
+      protocol extension or revision may not be compatible with the
+      <code class="literal">LANG</code> or <code class="literal">KEYWORDS</code> capability keywords, or any other
+      SMAP capability keyword. Should this occur, the next revision
+      of this document will remove <code class="literal">LANG</code> or <code class="literal">KEYWORD</code>
+      (or another incompatible keyword) from the initial capability
+      list. The client should issue the "<code class="literal">\SMAP1 CAPABILITY</code>" command to retrieve an
+      SMAP1-specific capability list that includes the complete
+      SMAP capability keyword list.</p>
+
+      <p>Should IMAP introduce an interoperability issue with the
+      <code class="literal">SMAP1</code> keyword itself, it will be
+      replaced by another keyword.</p>
+    </div>
+
+    <p>Example:</p>
+
+    <div class="literallayout">
+      <p><br clear="none"/>
+      S:&#160;*&#160;OK&#160;[CAPABILITY&#160;SMAP1&#160;KEYWORDSAUTH=CRAM-MD5&#160;STARTTLS<br clear="none"/>
+
+      &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;LANG=EN&#160;LANG=EN-US&#160;IMAP4rev1]&#160;SMAP/IMAP&#160;hybrid&#160;server&#160;ready<br clear="none"/>
+      </p>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id516120" shape="rect" name="id516120"> </a>IMAP/SMAP protocol selection</h4>
+          </div>
+        </div>
+      </div>
+
+      <p>The first word of IMAP commands is an arbitrary command
+      identification tag. The first set of SMAP commands, that set
+      up and log in to the mail account, are prefixed by the word
+      <code class="literal">"\SMAP1"</code>. The backslash
+      character is not allowed in IMAP command identification tags.
+      A server that implements both IMAP and SMAP reads the first
+      whitespace-delimited word of the first command it receives.
+      If the first word in <code class="literal">"\SMAP1"</code>
+      the server knows that the client is using SMAP. Subsequent
+      server replies will now be SMAP replies. Otherwise, the first
+      word must be an IMAP command identification tag, so the
+      server reverts to IMAP mode for this client connection.</p>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id516147" shape="rect" name="id516147"> </a>SMAP capability list</h4>
+          </div>
+        </div>
+      </div>
+
+      <p>The server responds to this command with a "<code class="literal">* CAPABILITY</code>" <a href="smapsyntax.html#singleline" title="Single line replies" shape="rect">single line</a> reply. The remaining words in
+      the reply enumerate SMAP capabilities supported by the
+      server. Example:</p>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;\SMAP1&#160;CAPABILITY<br clear="none"/>
+        S:&#160;*&#160;CAPABILITY&#160;SMAP1&#160;AUTH=CRAM-MD5&#160;STARTTLS&#160;LANG=EN&#160;LANG=EN-US&#160;IMAP4rev1<br clear="none"/>
+
+        S:&#160;+OK&#160;SMAP1&#160;capability&#160;list&#160;complete.<br clear="none"/>
+        </p>
+      </div>
+
+      <p>The server should reply with the same capability list as
+      the initial <code class="literal">* OK</code> message.</p>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id516193" shape="rect" name="id516193"> </a>Enabling encryption</h4>
+          </div>
+        </div>
+      </div>
+
+      <p>The <code class="literal">STARTTLS</code> capability
+      indicates that the server is capable of encrypting the
+      connection between the client and the server. See <a href="http://www.rfc-editor.org/rfc/rfc2595.txt" target="_top" shape="rect">RFC 2595</a> for some additional comments on
+      using TLS with mail-related protocols.</p>
+
+      <p>SSL/TLS negotiation begins immediately after the client
+      receives a successfull <a href="smapsyntax.html#statusreply" title="Status replies" shape="rect">status reply</a> from the
+      server. Example:</p>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;\SMAP1&#160;STARTTLS<br clear="none"/>
+        S:&#160;+OK&#160;Ready&#160;to&#160;accept&#160;an&#160;encrypted&#160;SMAP1&#160;connection<br clear="none"/>
+
+        <br clear="none"/>
+        <span class="emphasis"><em>[&#160;TLS&#160;negotiation&#160;occurs&#160;]</em></span><br clear="none"/>
+
+        <br clear="none"/></p>
+      </div>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id516244" shape="rect" name="id516244"> </a>Language selection</h4>
+          </div>
+        </div>
+      </div>
+
+      <p>This command instructs the server to send all subsequent
+      messages in a different natural language. Example:</p>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;\SMAP1&#160;LANGUAGE&#160;FR<br clear="none"/>
+        S:&#160;+OK&#160;Bonjour<br clear="none"/></p>
+      </div>
+
+      <p>The specified language must be one of the languages
+      enumerated in the capability list.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>The UTF-8 character set is used for all languages.</p>
+      </div>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id516277" shape="rect" name="id516277"> </a>Userid/password login</h4>
+          </div>
+        </div>
+      </div>
+
+      <p>The <code class="literal">\SMAP1 LOGIN</code> command
+      initiates a simple userid/password login sequence. The third
+      word of this command is the login userid, the fourth word is
+      the login password. The server's <a href="smapsyntax.html#statusreply" title="Status replies" shape="rect">status reply</a> indicates whether the supplied
+      credentials were accepted. Example:</p>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;\SMAP1&#160;LOGIN&#160;joneil&#160;p3r472<br clear="none"/>
+        S:&#160;-ERR&#160;Login&#160;invalid<br clear="none"/>
+        C:&#160;\SMAP1&#160;LOGIN&#160;joneil&#160;p2r798<br clear="none"/>
+        S:&#160;+OK&#160;Logged&#160;in<br clear="none"/></p>
+      </div>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id516314" shape="rect" name="id516314"> </a>SASL login</h4>
+          </div>
+        </div>
+      </div>
+
+      <p>The "<code class="literal">\SMAP1 AUTHENTICATE</code>"
+      command initiates a generic SASL-based login mechanism. The
+      third word of this command specifies the SASL authentication
+      mechanism, which must be one of the <code class="literal">AUTH</code> mechanism listed in the server's
+      capability list. The subsequent SASL conversation, if any, is
+      identical to an IMAP SASL conversation: each server challenge
+      is sent as a line of text that starts with the <code class="literal">&gt;</code> character, whitespace filler, then the
+      base64-encoded server challenge. The client replies with a
+      line of text containing the base64-encoded reply.
+      Example:</p>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;\SMAP1&#160;AUTHENTICATE&#160;LOGIN<br clear="none"/>
+        S:&#160;&gt;&#160;VXNlciBOYW1lAA==<br clear="none"/>
+        C:&#160;bWl0bGlz<br clear="none"/>
+        S:&#160;&gt;&#160;UGFzc3dvcmQA<br clear="none"/>
+        C:&#160;Zmxvc2pidw==<br clear="none"/>
+        S:&#160;+OK&#160;Logged&#160;in<br clear="none"/></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="smapsyntax.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="smap1.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="smapfolders.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">SMAP syntax overview&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;Folders</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

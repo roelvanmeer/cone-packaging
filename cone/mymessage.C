@@ -1,4 +1,4 @@
-/* $Id: mymessage.C,v 1.7 2006/02/04 05:06:01 mrsam Exp $
+/* $Id: mymessage.C,v 1.8 2007/04/06 17:57:29 mrsam Exp $
 **
 ** Copyright 2003-2004, Double Precision Inc.
 **
@@ -53,6 +53,7 @@
 #include <iomanip>
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 

@@ -65,6 +65,26 @@ Atom: example
 Token: .
 Atom: com
 Token: >
+Tokenize: =?UTF-8?Q?Test?= <nobody@example.com>, foo=bar <nobody@example.com>
+Atom: =?UTF-8?Q?Test?=
+Token: <
+Atom: nobody
+Token: @
+Atom: example
+Token: .
+Atom: com
+Token: >
+Token: ,
+Atom: foo
+Token: =
+Atom: bar
+Token: <
+Atom: nobody
+Token: @
+Atom: example
+Token: .
+Atom: com
+Token: >
 ----
 nobody@example.com (Nobody (is) here\) right)
 nobody@example.com
@@ -89,3 +109,9 @@ nobody@example.com
 nobody@example.com
 nobody@example.com
 Mr. Nobody
+----
+=?UTF-8?Q?Test?= <nobody@example.com>, "foo=bar" <nobody@example.com>
+nobody@example.com
+nobody@example.com
+=?UTF-8?Q?Test?=
+foo=bar

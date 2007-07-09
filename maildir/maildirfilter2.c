@@ -1,5 +1,5 @@
 /*
-** Copyright 2000-2003 Double Precision, Inc.
+** Copyright 2000-2007 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
@@ -18,7 +18,7 @@
 #include	<unistd.h>
 #endif
 
-static const char rcsid[]="$Id: maildirfilter2.c,v 1.6 2003/01/20 13:47:20 mrsam Exp $";
+static const char rcsid[]="$Id: maildirfilter2.c,v 1.7 2007/04/16 22:31:53 mrsam Exp $";
 
 static const char *maildir_filter_config(const char *maildir,
 	const char *varname)
@@ -65,6 +65,9 @@ char *q;
 	}
 
 	q=malloc(strlen(maildir)+strlen(p)+2);
+	if (!q)
+		return NULL;
+
 	*q=0;
 	if (*p != '/')
 		strcat(strcpy(q, maildir), "/");

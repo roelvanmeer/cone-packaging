@@ -1,10 +1,10 @@
 /*
-** Copyright 1998 - 2001 Double Precision, Inc.
+** Copyright 1998 - 2007 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
 /*
-** $Id: rfc822.c,v 1.19 2006/01/22 03:41:15 mrsam Exp $
+** $Id: rfc822.c,v 1.21 2007/02/26 04:13:41 mrsam Exp $
 */
 #include	<stdio.h>
 #include	<ctype.h>
@@ -28,6 +28,8 @@ int	inbracket=0;
 			i++;
 			continue;
 		}
+
+#define SPECIALS "<>@,;:.[]()%!\"\\?=/"
 
 		switch (*p)	{
 		int	level;
@@ -113,6 +115,47 @@ int	inbracket=0;
 			++p;
 			++i;
 			continue;
+
+		case '=':
+
+			if (p[1] == '?')
+			{
+				int j;
+
+			/* exception: =? ... ?= */
+
+				for (j=2; p[j]; j++)
+				{
+					if (p[j] == '?' && p[j+1] == '=')
+						break;
+
+					if (p[j] == '?' || p[j] == '=')
+						continue;
+
+					if (strchr(SPECIALS, p[j]) ||
+					    isspace(p[j]))
+						break;
+				}
+
+				if (p[j] == '?' && p[j+1] == '=')
+				{
+					j += 2;
+					if (tokp)
+					{
+						tokp->token=0;
+						tokp->ptr=p;
+						tokp->len=j;
+						++tokp;
+					}
+					++*toklen;
+
+					p += j;
+					i += j;
+					continue;
+				}
+			}
+			/* FALLTHROUGH */
+
 		case '<':
 		case '>':
 		case '@':
@@ -125,7 +168,6 @@ int	inbracket=0;
 		case '%':
 		case '!':
 		case '?':
-		case '=':
 		case '/':
 
 			if ( (*p == '<' && inbracket) ||
@@ -176,7 +218,7 @@ int	inbracket=0;
 				tokp->len=0;
 			}
 			while (*p && !isspace((int)(unsigned char)*p) && strchr(
-				"<>@,;:.[]()%!\"\\?=/", *p) == 0)
+				SPECIALS, *p) == 0)
 			{
 				if (tokp)	++tokp->len;
 				++p;
@@ -276,7 +318,7 @@ int	flag, j, k;
 			Else, make them all a quoted string. */
 
 			for (j=0; j<i && (tokens[j].token == 0 ||
-					tokens[j].token == '('); j++)
+					  tokens[j].token == '('); j++)
 				;
 
 			if (j == i)

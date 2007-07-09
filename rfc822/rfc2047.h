@@ -1,6 +1,7 @@
 #ifndef	rfc2047_h
 #define	rfc2047_h
 
+#include	<stdlib.h>
 /*
 ** Copyright 1998 - 2002 Double Precision, Inc.  See COPYING for
 ** distribution information.
@@ -11,7 +12,7 @@ extern "C" {
 #endif
 
 
-static const char rfc2047_h_rcsid[]="$Id: rfc2047.h,v 1.8 2004/05/23 14:28:24 mrsam Exp $";
+static const char rfc2047_h_rcsid[]="$Id: rfc2047.h,v 1.9 2007/03/01 04:32:04 mrsam Exp $";
 
 extern int rfc2047_decode(const char *text,
 			  int (*func)(const char *, int,

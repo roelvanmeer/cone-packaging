@@ -1,3 +1,15 @@
+cone (0.70-1) unstable; urgency=low
+
+  [ Torsten Werner ]
+  * Add myself to Uploaders.
+
+  [ Varun Hiremath ]
+  * New upstream release.
+  * Enhance debian/watch and implement get-orig-source.
+  * Remove patches/gcc4.3_missing_includes.diff - merged upstream.
+
+ -- Varun Hiremath <varunhiremath@gmail.com>  Mon, 09 Jul 2007 12:10:50 +0530
+
 cone (0.69-3) unstable; urgency=low
 
   [ Varun Hiremath ]

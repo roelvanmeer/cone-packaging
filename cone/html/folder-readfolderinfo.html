@@ -1,511 +1,242 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::folder::readFolderInfo</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="mail::folder Native API reference"
-HREF="libmail-folder.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::folder::open"
-HREF="folder-open.html"><LINK
-REL="NEXT"
-TITLE="mail::folder::readSubFolders"
-HREF="folder-readsubfolders.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="folder-open.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="folder-readsubfolders.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="FOLDER-READFOLDERINFO"
-></A
->mail::folder::readFolderInfo</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN10787"
-></A
-><H2
->Name</H2
->mail::folder::readFolderInfo&nbsp;--&nbsp;Get folder status</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN10790"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->#include&nbsp;&#60;libmail/mail.H&#62;<br>
-<br>
-<br>
-class&nbsp;myCallback&nbsp;:&nbsp;public&nbsp;mail::callback&nbsp;{<br>
-public:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success(std::string&nbsp;msg);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;fail(std::string&nbsp;msg);<br>
-};</P
-><P
-CLASS="LITERALLAYOUT"
->mail::folder&nbsp;*folder;<br>
-<br>
-class&nbsp;myFolderInfoCallback&nbsp;:&nbsp;public&nbsp;mail::callback::folderInfo&nbsp;{<br>
-<br>
-public:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;displayFolderStatus(messageCount,&nbsp;unreadCount);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
-};</P
-><DIV
-CLASS="FUNCSYNOPSIS"
-><P
-></P
-><A
-NAME="AEN10793"
-></A
-><P
-><CODE
-><CODE
-CLASS="FUNCDEF"
->folder-&#62;<TT
-CLASS="FUNCTION"
->readFolderInfo</TT
-></CODE
->(myFolderInfoCallback &#38;<TT
-CLASS="PARAMETER"
-><I
->folderInfoCallback</I
-></TT
->, myCallback &#38;<TT
-CLASS="PARAMETER"
-><I
->callback</I
-></TT
->);</CODE
-></P
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN10801"
-></A
-><H2
->USAGE</H2
-><P
->This function reads the current status of <TT
-CLASS="PARAMETER"
-><I
->folder</I
-></TT
->, which
-may refer to any folder in the mail account (not necessarily the currently
-open folder).</P
-><P
-><TT
-CLASS="PARAMETER"
-><I
->folderInfoCallback</I
-></TT
->'s
-<TT
-CLASS="FUNCTION"
->success</TT
-> method will be invoked when the folder's
-status is determined.
-The following variables will be initialized prior to invoking
-<TT
-CLASS="FUNCTION"
->success</TT
->:</P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->messageCount</DT
-><DD
-><P
->Total number of messages in the folder.</P
-></DD
-><DT
->unreadCount</DT
-><DD
-><P
->Total number of unread messages in the folder.</P
-></DD
-><DT
->fastInfo</DT
-><DD
-><P
->This field should be initialized before calling this function.
-If set to <TT
-CLASS="LITERAL"
->true</TT
-> the message counts are returned only
-if they can be computed quickly.
-Otherwise
-<TT
-CLASS="PARAMETER"
-><I
->folderInfoCallback</I
-></TT
->'s
-<TT
-CLASS="FUNCTION"
->success</TT
-> method will not be invoked at all, but
-<TT
-CLASS="PARAMETER"
-><I
->callback</I
-></TT
->'s
-<TT
-CLASS="FUNCTION"
->success</TT
-> method will still be invoked.</P
-><P
->If this field is set to <TT
-CLASS="LITERAL"
->false</TT
-> (the default), the message
-counts are returned in all cases.</P
-></DD
-></DL
-></DIV
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
-><TT
-CLASS="PARAMETER"
-><I
->folderInfoCallback</I
-></TT
->'s
-<TT
-CLASS="FUNCTION"
->success</TT
-> method will be invoked just prior to
-<TT
-CLASS="PARAMETER"
-><I
->callback</I
-></TT
->'s
-<TT
-CLASS="FUNCTION"
->success</TT
-> method
-(unless <CODE
-CLASS="STRUCTFIELD"
->fastInfo</CODE
-> is true and message counts
-cannot be computed cheaply).
-The application must still wait until
-<TT
-CLASS="PARAMETER"
-><I
->callback</I
-></TT
->'s
-<TT
-CLASS="FUNCTION"
->success</TT
->, or
-<TT
-CLASS="FUNCTION"
->fail</TT
-> is invoked, and must not destroy the
-<CODE
-CLASS="STRUCTNAME"
->mail::callback::folderInfo</CODE
-> object until either
-method has been invoked.</P
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->Message count computation is considered cheap with maildir-based and
-POP3-based accounts.
-Message count computation is considered expensive with mbox-based
-accounts, and with IMAP-based accounts.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN10842"
-></A
-><H2
->RETURN CODES AND CALLBACKS</H2
-><P
->The application must wait until
-<TT
-CLASS="PARAMETER"
-><I
->callback</I
-></TT
->'s
-<TT
-CLASS="FUNCTION"
->success</TT
-> or
-<TT
-CLASS="FUNCTION"
->fail</TT
-> method is invoked.
-The <TT
-CLASS="FUNCTION"
->success</TT
-> method is invoked when this request is
-succesfully processed.
-The <TT
-CLASS="FUNCTION"
->fail</TT
-> method is invoked if this request cannot
-be processed.
-The application must not destroy
-<TT
-CLASS="PARAMETER"
-><I
->callback</I
-></TT
-> until either the
-<TT
-CLASS="FUNCTION"
->success</TT
-> or
-<TT
-CLASS="FUNCTION"
->fail</TT
-> method is invoked.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
-><TT
-CLASS="PARAMETER"
-><I
->callback</I
-></TT
->'s
-<TT
-CLASS="FUNCTION"
->fail</TT
-> method may be invoked even after other
-callback methods were invoked.
-This indicates that the request was partially completed before the error
-was encountered.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN10857"
-></A
-><H2
->SEE ALSO</H2
-><P
->&#13;<A
-HREF="mail-checknewmail.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::checkNewMail</SPAN
->(3x)</SPAN
-></A
->,
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
 
-<A
-HREF="folder-open.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::folder::open</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="folder-open.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="folder-readsubfolders.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::folder::open</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="libmail-folder.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::folder::readSubFolders</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  <title>mail::folder::readFolderInfo</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="libmail-folder.html" title="mail::folder Native API reference"/>
+  <link rel="prev" href="folder-open.html" title="mail::folder::open"/>
+  <link rel="next" href="folder-readsubfolders.html" title="mail::folder::readSubFolders"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::folder::readFolderInfo</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="folder-open.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="structname">mail::folder</span> Native API
+        reference</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="folder-readsubfolders.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="folder-readfolderinfo" shape="rect" name="folder-readfolderinfo"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::folder::readFolderInfo &#8212; Get folder status</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        #include&#160;&lt;libmail/mail.H&gt;<br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        class&#160;myCallback&#160;:&#160;public&#160;mail::callback&#160;{<br clear="none"/>
+
+        public:<br clear="none"/>
+        &#160;&#160;&#160;&#160;void&#160;success(std::string&#160;msg);<br clear="none"/>
+
+        &#160;&#160;&#160;&#160;void&#160;fail(std::string&#160;msg);<br clear="none"/>
+
+        };<br clear="none"/></p>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        mail::folder&#160;*folder;<br clear="none"/>
+        <br clear="none"/>
+        class&#160;myFolderInfoCallback&#160;:&#160;public&#160;mail::callback::folderInfo&#160;{<br clear="none"/>
+
+        <br clear="none"/>
+        public:<br clear="none"/>
+        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;void&#160;success()<br clear="none"/>
+
+        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;{<br clear="none"/>
+        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;displayFolderStatus(messageCount,&#160;unreadCount);<br clear="none"/>
+
+        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}<br clear="none"/>
+        };<br clear="none"/></p>
+      </div>
+
+      <div class="funcsynopsis">
+        <table border="0" summary="Function synopsis" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="1" colspan="1"><code class="funcdef">folder-&gt;<b class="fsfunc">readFolderInfo</b>(</code></td>
+
+            <td rowspan="1" colspan="1">myFolderInfoCallback
+            &amp;&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">folderInfoCallback</var>,</td>
+          </tr>
+
+          <tr>
+            <td rowspan="1" colspan="1">&#160;</td>
+
+            <td rowspan="1" colspan="1">myCallback &amp;&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">callback</var><code>)</code>;</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id456330" shape="rect" name="id456330"> </a>
+
+      <h2>USAGE</h2>
+
+      <p>This function reads the current status of <em class="parameter"><code>folder</code></em>, which may refer to any
+      folder in the mail account (not necessarily the currently
+      open folder).</p>
+
+      <p><em class="parameter"><code>folderInfoCallback</code></em>'s
+      <code class="function">success</code> method will be invoked
+      when the folder's status is determined. The following
+      variables will be initialized prior to invoking <code class="function">success</code>:</p>
+
+      <div class="variablelist">
+        <dl>
+          <dt><span class="term">messageCount</span></dt>
+
+          <dd>
+            <p>Total number of messages in the folder.</p>
+          </dd>
+
+          <dt><span class="term">unreadCount</span></dt>
+
+          <dd>
+            <p>Total number of unread messages in the folder.</p>
+          </dd>
+
+          <dt><span class="term">fastInfo</span></dt>
+
+          <dd>
+            <p>This field should be initialized before calling this
+            function. If set to <code class="literal">true</code>
+            the message counts are returned only if they can be
+            computed quickly. Otherwise <em class="parameter"><code>folderInfoCallback</code></em>'s
+            <code class="function">success</code> method will not
+            be invoked at all, but <em class="parameter"><code>callback</code></em>'s <code class="function">success</code> method will still be
+            invoked.</p>
+
+            <p>If this field is set to <code class="literal">false</code> (the default), the message
+            counts are returned in all cases.</p>
+          </dd>
+        </dl>
+      </div>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p><em class="parameter"><code>folderInfoCallback</code></em>'s
+        <code class="function">success</code> method will be
+        invoked just prior to <em class="parameter"><code>callback</code></em>'s <code class="function">success</code> method (unless <em class="structfield"><code>fastInfo</code></em> is true and
+        message counts cannot be computed cheaply). The application
+        must still wait until <em class="parameter"><code>callback</code></em>'s <code class="function">success</code>, or <code class="function">fail</code> is invoked, and must not destroy the
+        <span class="structname">mail::callback::folderInfo</span>
+        object until either method has been invoked.</p>
+      </div>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>Message count computation is considered cheap with
+        maildir-based and POP3-based accounts. Message count
+        computation is considered expensive with mbox-based
+        accounts, and with IMAP-based accounts.</p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id456533" shape="rect" name="id456533"> </a>
+
+      <h2>RETURN CODES AND CALLBACKS</h2>
+
+      <p>The application must wait until <em class="parameter"><code>callback</code></em>'s <code class="function">success</code> or <code class="function">fail</code> method is invoked. The <code class="function">success</code> method is invoked when this request
+      is succesfully processed. The <code class="function">fail</code> method is invoked if this request
+      cannot be processed. The application must not destroy
+      <em class="parameter"><code>callback</code></em> until either
+      the <code class="function">success</code> or <code class="function">fail</code> method is invoked.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p><em class="parameter"><code>callback</code></em>'s
+        <code class="function">fail</code> method may be invoked
+        even after other callback methods were invoked. This
+        indicates that the request was partially completed before
+        the error was encountered.</p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id456625" shape="rect" name="id456625"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="mail-checknewmail.html" title="mail::account::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::checkNewMail</span>(3x)</span></a>,
+      <a href="folder-open.html" title="mail::folder::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::open</span>(3x)</span></a>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="folder-open.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="libmail-folder.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="folder-readsubfolders.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::folder::open&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::folder::readSubFolders</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

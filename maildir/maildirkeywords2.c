@@ -1,5 +1,5 @@
 /*
-** Copyright 2003 Double Precision, Inc.
+** Copyright 2003-2007 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
@@ -39,7 +39,7 @@
 #endif
 #endif
 
-static const char rcsid[]="$Id: maildirkeywords2.c,v 1.7 2004/01/11 02:47:33 mrsam Exp $";
+static const char rcsid[]="$Id: maildirkeywords2.c,v 1.8 2007/04/16 22:31:53 mrsam Exp $";
 
 int libmail_kwEnabled=1;
 
@@ -199,8 +199,6 @@ static void doReadKeywords2(const char *maildir, const char *dir,
 
 	if (!updateInfo)
 	{
-		if (updateInfo)
-			free(updateInfo);
 		free(kwname);
 		return;
 	}
@@ -248,6 +246,7 @@ int maildir_kwImport(FILE *fp, struct maildir_kwReadInfo *rki)
 		{
 			rki->errorOccured=-1;
 			rl_free(&rl);
+			libmail_kwmDestroy(tmpMsg);
 			return 0;
 		}
 

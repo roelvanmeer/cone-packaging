@@ -1,337 +1,167 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::ACCOUNT::checkNewMail</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="mail::ACCOUNT Synchronous API reference"
-HREF="synchronous.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::ACCOUNT::addMessage"
-HREF="account-libmail-addmessage.html"><LINK
-REL="NEXT"
-TITLE="mail::ACCOUNT::copyMessagesTo"
-HREF="account-copymessagesto.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="account-libmail-addmessage.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="account-copymessagesto.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="ACCOUNT-CHECKNEWMAIL"
-></A
->mail::ACCOUNT::checkNewMail</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN2925"
-></A
-><H2
->Name</H2
->mail::ACCOUNT::checkNewMail&nbsp;--&nbsp;Check for new mail in the current folder</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN2928"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->#include&nbsp;&#60;libmail/sync.H&#62;<br>
-<br>
-mail::ACCOUNT&nbsp;*mail;</P
-><DIV
-CLASS="FUNCSYNOPSIS"
-><P
-></P
-><A
-NAME="AEN2930"
-></A
-><P
-><CODE
-><CODE
-CLASS="FUNCDEF"
->bool ok=mail-&#62;<TT
-CLASS="FUNCTION"
->checkNewMail</TT
-></CODE
->(void);</CODE
-></P
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN2935"
-></A
-><H2
->USAGE</H2
-><P
->This method returns an indication whether the current open folder was changed.
-The name is slightly misleading;
-<TT
-CLASS="FUNCTION"
->mail::ACCOUNT::checkNewMail</TT
-> also indicates whether
-messages have been removed from the folder, and whether the status of any
-message has changed.</P
-><P
->Most mail servers allow multiple applications to use the same folder.
-Therefore, changes to the folder's contents may occur at any time.
-This method should be used prior to starting any operation that intends to
-use an existing message.
-If
-<TT
-CLASS="FUNCTION"
->mail::ACCOUNT::checkNewMail</TT
-> returns true, the application
-should then use
-<A
-HREF="account-getfolderindexsize.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::getFolderIndexSize</SPAN
->(3x)</SPAN
-></A
-> and
-<A
-HREF="account-getfolderindexinfo.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::getFolderIndexInfo</SPAN
->(3x)</SPAN
-></A
-> to read the
-current folder index, and compare the current list of message UIDs against
-the previously obtained list in order to determine which messages were
-added or removed from the folder.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN2949"
-></A
-><H2
->Return Codes</H2
-><P
->This function returns <TT
-CLASS="LITERAL"
->true</TT
-> if there were any changes
-to the folder's contents after the folder was opened, or since the previous
-call to <TT
-CLASS="FUNCTION"
->mail::ACCOUNT::checkNewMail</TT
->.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->Calling
-<A
-HREF="account-updatefolderindexinfo.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::updateFolderIndexInfo</SPAN
->(3x)</SPAN
-></A
->,
-<A
-HREF="account-updatefolderindexflags.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::updateFolderIndexFlags</SPAN
->(3x)</SPAN
-></A
->, and all other
-methods that modify the contents of the current folder will usually result
-in the next
-call to <TT
-CLASS="FUNCTION"
->mail::ACCOUNT::checkNewMail</TT
-> returning
-<TT
-CLASS="LITERAL"
->true</TT
->.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN2966"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="account-savefolderindexinfo.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::saveFolderIndexInfo</SPAN
->(3x)</SPAN
-></A
->,
-<A
-HREF="account-getfolderindexinfo.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::getFolderIndexInfo</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="account-libmail-addmessage.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="account-copymessagesto.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::ACCOUNT::addMessage</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="synchronous.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::ACCOUNT::copyMessagesTo</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>mail::ACCOUNT::checkNewMail</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="synchronous.html" title="mail::ACCOUNT Synchronous API reference"/>
+  <link rel="prev" href="account-libmail-addmessage.html" title="mail::ACCOUNT::addMessage"/>
+  <link rel="next" href="account-copymessagesto.html" title="mail::ACCOUNT::copyMessagesTo"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::ACCOUNT::checkNewMail</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="account-libmail-addmessage.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="structname">mail::ACCOUNT</span> Synchronous
+        API reference</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="account-copymessagesto.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="account-checknewmail" shape="rect" name="account-checknewmail"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::ACCOUNT::checkNewMail &#8212; Check for new mail in
+      the current folder</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        #include&#160;&lt;libmail/sync.H&gt;<br clear="none"/>
+        <br clear="none"/>
+        mail::ACCOUNT&#160;*mail;<br clear="none"/></p>
+      </div>
+
+      <div class="funcsynopsis">
+        <table border="0" summary="Function synopsis" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="1" colspan="1"><code class="funcdef">bool
+            ok=mail-&gt;<b class="fsfunc">checkNewMail</b>(</code></td>
+
+            <td rowspan="1" colspan="1"><code>void)</code>;</td>
+
+            <td rowspan="1" colspan="1">&#160;</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id378998" shape="rect" name="id378998"> </a>
+
+      <h2>USAGE</h2>
+
+      <p>This method returns an indication whether the current open
+      folder was changed. The name is slightly misleading;
+      <code class="function">mail::ACCOUNT::checkNewMail</code>
+      also indicates whether messages have been removed from the
+      folder, and whether the status of any message has
+      changed.</p>
+
+      <p>Most mail servers allow multiple applications to use the
+      same folder. Therefore, changes to the folder's contents may
+      occur at any time. This method should be used prior to
+      starting any operation that intends to use an existing
+      message. If <code class="function">mail::ACCOUNT::checkNewMail</code> returns true,
+      the application should then use <a href="account-getfolderindexsize.html" title="mail::ACCOUNT::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getFolderIndexSize</span>(3x)</span></a>
+      and <a href="account-getfolderindexinfo.html" title="mail::ACCOUNT::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getFolderIndexInfo</span>(3x)</span></a>
+      to read the current folder index, and compare the current
+      list of message UIDs against the previously obtained list in
+      order to determine which messages were added or removed from
+      the folder.</p>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id379057" shape="rect" name="id379057"> </a>
+
+      <h2>Return Codes</h2>
+
+      <p>This function returns <code class="literal">true</code> if
+      there were any changes to the folder's contents after the
+      folder was opened, or since the previous call to <code class="function">mail::ACCOUNT::checkNewMail</code>.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>Calling <a href="account-updatefolderindexinfo.html" title="mail::ACCOUNT::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::updateFolderIndexInfo</span>(3x)</span></a>,
+        <a href="account-updatefolderindexflags.html" title="mail::ACCOUNT::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::updateFolderIndexFlags</span>(3x)</span></a>,
+        and all other methods that modify the contents of the
+        current folder will usually result in the next call to
+        <code class="function">mail::ACCOUNT::checkNewMail</code>
+        returning <code class="literal">true</code>.</p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id379128" shape="rect" name="id379128"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="account-savefolderindexinfo.html" title="mail::ACCOUNT::saveFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::saveFolderIndexInfo</span>(3x)</span></a>,
+      <a href="account-getfolderindexinfo.html" title="mail::ACCOUNT::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getFolderIndexInfo</span>(3x)</span></a>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="account-libmail-addmessage.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="synchronous.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="account-copymessagesto.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::ACCOUNT::addMessage&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::ACCOUNT::copyMessagesTo</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>Building Cone</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="prev" href="INSTALL.html" title="Installing Cone"/>
+  <link rel="next" href="maillist.html" title="Mailing list"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">Building
+        <span class="application">Cone</span></th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="INSTALL.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        &#160;</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="maillist.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="section" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h2 class="title" style="clear: both"><a id="README" shape="rect" name="README"> </a>Building <span class="application">Cone</span></h2>
+        </div>
+      </div>
+    </div>
+
+    <p><span class="application">Cone</span> is distributed in
+    source code form, licensed under GPL. See COPYING for more
+    information. The following prerequisites must be installed to
+    build and run <span class="application">Cone</span>:</p>
+
+    <div class="itemizedlist">
+      <ul type="disc">
+        <li>
+          <p>A wide-character version of the curses library.
+          <a href="http://dickey.his.com/ncurses/ncurses.html" target="_top" shape="rect">ncurses</a> supports wide
+          characters starting with version 5.3, if enabled at
+          compile time.</p>
+        </li>
+
+        <li>
+          <p><a href="http://www.xmlsoft.org" target="_top" shape="rect">Libxml2</a></p>
+        </li>
+
+        <li>
+          <p><a href="http://www.openssl.org" target="_top" shape="rect">OpenSSL</a> 0.9.7 or higher.</p>
+        </li>
+
+        <li>
+          <p><span class="application">Cone</span> optionally
+          supports LDAP address books. LDAP support requires
+          <a href="http://www.openldap.org" target="_top" shape="rect">OpenLDAP</a>.</p>
+
+          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <h3 class="title">Note</h3>
+
+            <p>It is not sufficient to have only the OpenLDAP
+            runtime libraries installed. The OpenLDAP development
+            kit must be installed as well. On most systems it's
+            usually called the "devel" component, that must be
+            installed in addition to the base OpenLDAP component.
+            Verify that the <code class="filename">/usr/include/ldap.h</code> file exist,
+            before trying to build <span class="application">Cone</span>. If not, the required
+            OpenLDAP development libraries are missing, and must be
+            installed.</p>
+          </div>
+
+          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <h3 class="title">Note</h3>
+
+            <p>LDAP-based address books are highly recommended for
+            corporate and organizational environments. <span class="application">Cone</span>'s basic address books (local
+            address books and IMAP/SMAP folder-based address books)
+            have somewhat limited search functionality -- addresses
+            are looked up by exact nicknames only. LDAP-based
+            address books are more powerful, they may be searched
+            not just by exact nicknames, but also by last name or
+            full names. Partial searches are also possible.</p>
+          </div>
+        </li>
+
+        <li>
+          <p><a href="http://aspell.sourceforge.net/" target="_top" shape="rect">aspell</a> or <a href="http://pspell.sourceforge.net/" target="_top" shape="rect">pspell</a></p>
+        </li>
+
+        <li>
+          <p>Where available, <a href="http://oss.sgi.com/projects/fam/" target="_top" shape="rect">FAM, the File Alteration Monitor</a></p>
+        </li>
+
+        <li>
+          <p>gcc 3.2, or higher</p>
+        </li>
+
+        <li>
+          <p>gmake (if not already installed)</p>
+        </li>
+
+        <li>
+          <p>The Courier Socks 5 proxy client API toolkit is
+          required for Socks 5 support. Other Socks 5 proxy client
+          libraries may or may not work. Download the Courier Socks
+          5 proxy client library from <a href="http://www.courier-mta.org/download.php#sox" target="_top" shape="rect">http://www.courier-mta.org/download.php#sox</a>
+          and follow its installation instructions.</p>
+        </li>
+      </ul>
+    </div>
+
+    <p>Right now the primary development focus is on the Linux
+    platform, gcc 3.2. <span class="application">Cone</span> should
+    build on other POSIX platforms; and any problems are likely to
+    be minor, and trivial to resolve. A large portion of
+    <span class="application">Cone</span>'s code base comes from
+    <a href="http://www.courier-mta.org" target="_top" shape="rect">Courier</a>, which builds on many platforms.</p>
+
+    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <h3 class="title">Note</h3>
+
+      <p><span class="application">Cone</span> requires a
+      wide-character-capable version of Curses. <span class="application">Cone</span> will compile against a non-widechar
+      Curses, but will not be able to display UTF-8, or other
+      variable-length character sets.</p>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h3 class="title"><a id="id327883" shape="rect" name="id327883"> </a>Reading local mail with <span class="application">Cone</span></h3>
+          </div>
+        </div>
+      </div>
+
+      <p><span class="application">Cone</span> reads local mail
+      from either maildirs (the preferred format) or mailbox files
+      (or "mboxes"). When mboxes are used, <span class="application">Cone</span> does not read the system mailbox
+      file directly (usually <code class="filename">/var/spool/<em class="replaceable"><code>something</code></em></code>). All
+      messages in the system mailbox are automatically moved to
+      <code class="filename">$HOME/Inbox</code>, which is then
+      accessed as if it was the system mailbox. Starting
+      <span class="application">Cone</span> for the first time on
+      an mbox-based system automatically copies all existing mail
+      from the system mailbox file to <code class="filename">$HOME/Inbox</code>.</p>
+
+      <p>This is an intentional design choice. Normal user
+      application cannot create new files in <code class="filename">/var/spool</code>; all they can do is read the
+      mailbox file from <code class="filename">/var/spool</code>.
+      Therefore, the only way to update the mailbox file is by
+      rewriting it from scratch (more or less). While the mailbox
+      file is in the process of being rewritten, if the
+      <span class="application">Cone</span> process is interrupted,
+      or killed, the resulted in a corrupted system mailbox. There
+      are way to minimize this vulnerability, but it cannot be
+      eliminated completely. Some Linux kernels use an
+      &#8220;<span class="quote">OOM killer</span>&#8221; that may
+      terminate any process when the system memory is low. There is
+      no way to completely prevent corrupted system mailbox files
+      on those kernels.</p>
+
+      <p><span class="application">Cone</span> uses an alternative
+      way of updating mboxes. <span class="application">Cone</span>
+      updates mboxes by creating a new mbox file separately, then
+      replacing the original mbox file with the new version.
+      Unfortunately this cannot be done with the system mailbox
+      file, because of the restricted access rights on the system
+      spool directory. To solve this problem <span class="application">Cone</span> automatically copies the system
+      mailbox file to <code class="filename">$HOME/Inbox</code>,
+      each time the system mailbox file is opened and whenever new
+      mail is available.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="INSTALL.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        &#160;</td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="maillist.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">Installing <span class="application">Cone</span>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;Mailing list</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

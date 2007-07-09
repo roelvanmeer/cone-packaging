@@ -1,4 +1,4 @@
-/* $Id: myfolder.C,v 1.23 2006/06/04 21:36:01 mrsam Exp $
+/* $Id: myfolder.C,v 1.24 2007/04/06 17:57:29 mrsam Exp $
 **
 ** Copyright 2003-2006, Double Precision Inc.
 **
@@ -24,6 +24,7 @@
 
 #include <errno.h>
 
+#include <algorithm>
 #include <sstream>
 #include <fstream>
 #include <iomanip>

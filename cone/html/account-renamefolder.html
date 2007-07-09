@@ -1,455 +1,218 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::ACCOUNT::renameFolder</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="mail::ACCOUNT Synchronous API reference"
-HREF="synchronous.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::ACCOUNT::removeMessages"
-HREF="account-removemessages.html"><LINK
-REL="NEXT"
-TITLE="mail::ACCOUNT::saveFolderIndexInfo"
-HREF="account-savefolderindexinfo.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="account-removemessages.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="account-savefolderindexinfo.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="ACCOUNT-RENAMEFOLDER"
-></A
->mail::ACCOUNT::renameFolder</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN4819"
-></A
-><H2
->Name</H2
->mail::ACCOUNT::renameFolder&nbsp;--&nbsp;Rename a folder</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN4822"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->#include&nbsp;&#60;libmail/sync.H&#62;<br>
-<br>
-mail::ACCOUNT&nbsp;*mail;</P
-><DIV
-CLASS="FUNCSYNOPSIS"
-><P
-></P
-><A
-NAME="AEN4824"
-></A
-><P
-><CODE
-><CODE
-CLASS="FUNCDEF"
->mail::folder *folder=mail-&#62;<TT
-CLASS="FUNCTION"
->renameFolder</TT
-></CODE
->(const mail::folder *<TT
-CLASS="PARAMETER"
-><I
->oldFolder</I
-></TT
->, const mail::folder *<TT
-CLASS="PARAMETER"
-><I
->newParent</I
-></TT
->, std::string <TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->);</CODE
-></P
-><P
-></P
-></DIV
-><P
-CLASS="LITERALLAYOUT"
->std::string&nbsp;errmsg=mail-&#62;getErrmsg();</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN4835"
-></A
-><H2
->USAGE</H2
-><P
->This function renames an existing folder.
-<TT
-CLASS="PARAMETER"
-><I
->oldFolder</I
-></TT
-> is an existing folder or a folder directory
-(see
-<A
-HREF="folder-createsubfolder.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::folder::createSubFolder</SPAN
->(3x)</SPAN
-></A
->
-for more information on folders and folder directories).
-<TT
-CLASS="PARAMETER"
-><I
->newParent</I
-></TT
->, if not NULL, specifies the new
-parent folder directory.
-A NULL <TT
-CLASS="PARAMETER"
-><I
->newParent</I
-></TT
-> specifies that the folder should
-be be moved to the top level of the mail account's folder hierarchy.</P
-><P
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
-> specifies the new name of the folder, in the
-application's character set.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->Some mail servers reserve certain characters which cannot be used in
-folder names.
-IMAP mail servers use a special character
-(usually
-"<TT
-CLASS="LITERAL"
->/</TT
->" or
-"<TT
-CLASS="LITERAL"
->.</TT
->")
-as a separator between names in
-a hierarchical folder path.
-The actual character varies from server to server.
-An attempt to create/rename a folder
-whose name includes a reserved character will fail.
-Different IMAP servers use different hierarchy separator characters.
-An attempt to create a folder may fail on one IMAP server even if another
-IMAP server can succesfully create a folder with the same name.
-This is, unfortunately, a design flaw in the IMAP protocol.</P
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->Maildir folders created by
-are compatible
-and can be read by the
-<A
-HREF="http://www.courier-mta.org"
-TARGET="_top"
->Courier-IMAP</A
->
-server.
-Names of maildir folders may contain any character, including
-the characters
-"<TT
-CLASS="LITERAL"
->:</TT
->",
-"<TT
-CLASS="LITERAL"
->/</TT
->",
-"<TT
-CLASS="LITERAL"
->.</TT
->",
-"<TT
-CLASS="LITERAL"
->~</TT
->",
-and
-"<TT
-CLASS="LITERAL"
->:</TT
->".
-However, if the same folders are exported
-via IMAP, folders whose name
-includes these characters may not be readable by some IMAP clients.
-Even a
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
 
-<TT
-CLASS="APPLICATION"
->LibMAIL</TT
->
- application may not be able to read
-one of these folders via IMAP.</P
-></TD
-></TR
-></TABLE
-></DIV
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->Mbox mail folders created by
+  <title>mail::ACCOUNT::renameFolder</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="synchronous.html" title="mail::ACCOUNT Synchronous API reference"/>
+  <link rel="prev" href="account-removemessages.html" title="mail::ACCOUNT::removeMessages"/>
+  <link rel="next" href="account-savefolderindexinfo.html" title="mail::ACCOUNT::saveFolderIndexInfo"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
 
-<TT
-CLASS="APPLICATION"
->LibMAIL</TT
->
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
 
-are mostly compatible
-and can be exported by IMAP servers that read mbox-formatted mail folders
-(with some limitations, such as that the same mbox folder cannot be
-open by 
-<TT
-CLASS="APPLICATION"
->LibMAIL</TT
->
- and another application at the
-same time).
-Names of mbox folders can contain any character, including
-the characters
-"<TT
-CLASS="LITERAL"
->/</TT
->",
-and
-"<TT
-CLASS="LITERAL"
->~</TT
->".
-However if mbox folders are exported
-via IMAP, folders whose name includes
-these characters may not be readable by some IMAP clients.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN4866"
-></A
-><H2
->RETURN CODES AND CALLBACKS</H2
-><P
->This function returns a pointer to the renamed
-<CODE
-CLASS="STRUCTNAME"
->mail::folder</CODE
-> object, or a NULL pointer if the
-folder cannot be renamed for some reason.
-The application is responsible for destroying the
-new <CODE
-CLASS="STRUCTNAME"
->mail::folder</CODE
-> object, when it is no longer
-needed.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN4871"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="account-createfolder.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::createFolder</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="account-removemessages.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="account-savefolderindexinfo.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::ACCOUNT::removeMessages</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="synchronous.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::ACCOUNT::saveFolderIndexInfo</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::ACCOUNT::renameFolder</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="account-removemessages.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="structname">mail::ACCOUNT</span> Synchronous
+        API reference</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="account-savefolderindexinfo.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="account-renamefolder" shape="rect" name="account-renamefolder"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::ACCOUNT::renameFolder &#8212; Rename a folder</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        #include&#160;&lt;libmail/sync.H&gt;<br clear="none"/>
+        <br clear="none"/>
+        mail::ACCOUNT&#160;*mail;<br clear="none"/></p>
+      </div>
+
+      <div class="funcsynopsis">
+        <table border="0" summary="Function synopsis" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="1" colspan="1"><code class="funcdef">mail::folder *folder=mail-&gt;<b class="fsfunc">renameFolder</b>(</code></td>
+
+            <td rowspan="1" colspan="1">const mail::folder
+            *&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">oldFolder</var>,</td>
+          </tr>
+
+          <tr>
+            <td rowspan="1" colspan="1">&#160;</td>
+
+            <td rowspan="1" colspan="1">const mail::folder
+            *&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">newParent</var>,</td>
+          </tr>
+
+          <tr>
+            <td rowspan="1" colspan="1">&#160;</td>
+
+            <td rowspan="1" colspan="1">std::string &#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">name</var><code>)</code>;</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        std::string&#160;errmsg=mail-&gt;getErrmsg();<br clear="none"/></p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id397529" shape="rect" name="id397529"> </a>
+
+      <h2>USAGE</h2>
+
+      <p>This function renames an existing folder. <em class="parameter"><code>oldFolder</code></em> is an existing folder
+      or a folder directory (see <a href="folder-createsubfolder.html" title="mail::folder::createSubFolder" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::createSubFolder</span>(3x)</span></a>
+      for more information on folders and folder directories).
+      <em class="parameter"><code>newParent</code></em>, if not
+      NULL, specifies the new parent folder directory. A NULL
+      <em class="parameter"><code>newParent</code></em> specifies
+      that the folder should be be moved to the top level of the
+      mail account's folder hierarchy.</p>
+
+      <p><em class="parameter"><code>name</code></em> specifies the
+      new name of the folder, in the application's character
+      set.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>Some mail servers reserve certain characters which
+        cannot be used in folder names. IMAP mail servers use a
+        special character (usually "<code class="literal">/</code>"
+        or "<code class="literal">.</code>") as a separator between
+        names in a hierarchical folder path. The actual character
+        varies from server to server. An attempt to create/rename a
+        folder whose name includes a reserved character will fail.
+        Different IMAP servers use different hierarchy separator
+        characters. An attempt to create a folder may fail on one
+        IMAP server even if another IMAP server can succesfully
+        create a folder with the same name. This is, unfortunately,
+        a design flaw in the IMAP protocol.</p>
+      </div>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>Maildir folders created by are compatible and can be
+        read by the <a href="http://www.courier-mta.org" target="_top" shape="rect">Courier-IMAP</a> server. Names of
+        maildir folders may contain any character, including the
+        characters "<code class="literal">:</code>", "<code class="literal">/</code>", "<code class="literal">.</code>",
+        "<code class="literal">~</code>", and "<code class="literal">:</code>". However, if the same folders are
+        exported via IMAP, folders whose name includes these
+        characters may not be readable by some IMAP clients. Even a
+        <span class="application">LibMAIL</span> application may
+        not be able to read one of these folders via IMAP.</p>
+      </div>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>Mbox mail folders created by <span class="application">LibMAIL</span> are mostly compatible and can
+        be exported by IMAP servers that read mbox-formatted mail
+        folders (with some limitations, such as that the same mbox
+        folder cannot be open by <span class="application">LibMAIL</span> and another application at the
+        same time). Names of mbox folders can contain any
+        character, including the characters "<code class="literal">/</code>", and "<code class="literal">~</code>".
+        However if mbox folders are exported via IMAP, folders
+        whose name includes these characters may not be readable by
+        some IMAP clients.</p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id397729" shape="rect" name="id397729"> </a>
+
+      <h2>RETURN CODES AND CALLBACKS</h2>
+
+      <p>This function returns a pointer to the renamed
+      <span class="structname">mail::folder</span> object, or a
+      NULL pointer if the folder cannot be renamed for some reason.
+      The application is responsible for destroying the new
+      <span class="structname">mail::folder</span> object, when it
+      is no longer needed.</p>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id397748" shape="rect" name="id397748"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="account-createfolder.html" title="mail::ACCOUNT::createFolder" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::createFolder</span>(3x)</span></a>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="account-removemessages.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="synchronous.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="account-savefolderindexinfo.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::ACCOUNT::removeMessages&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::ACCOUNT::saveFolderIndexInfo</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

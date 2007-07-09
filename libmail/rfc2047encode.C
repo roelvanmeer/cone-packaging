@@ -1,4 +1,4 @@
-/* $Id: rfc2047encode.C,v 1.3 2004/05/30 02:43:00 mrsam Exp $
+/* $Id: rfc2047encode.C,v 1.4 2007/04/06 17:57:29 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -8,6 +8,8 @@
 #include "rfc2047encode.H"
 #include "rfc822/rfc2047.h"
 #include "mail.H"
+
+#include <cstdlib>
 
 mail::rfc2047::encode::encode(std::string txt, std::string charset)
 {

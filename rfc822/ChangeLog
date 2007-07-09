@@ -1,3 +1,8 @@
+2007-02-25  Mr. Sam  <mrsam@courier-mta.com>
+
+	* rfc822.c (parseaddr): rfc822a_alloc() would corrupt and misparse
+	RFC2047-encoded atoms.
+
 2006-01-21  Mr. Sam  <mrsam@courier-mta.com>
 
 	* rfc2047.c (encodebase64): Fix compiler warning.

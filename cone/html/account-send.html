@@ -1,729 +1,341 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::ACCOUNT::send</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="mail::ACCOUNT Synchronous API reference"
-HREF="synchronous.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::ACCOUNT::searchMessages"
-HREF="account-searchmessages.html"><LINK
-REL="NEXT"
-TITLE="mail::ACCOUNT::setRights"
-HREF="account-setrights.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="account-searchmessages.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="account-setrights.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="ACCOUNT-SEND"
-></A
->mail::ACCOUNT::send</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN5212"
-></A
-><H2
->Name</H2
->mail::ACCOUNT::send&nbsp;--&nbsp;Send a message</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN5215"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->#include&nbsp;&#60;libmail/sync.H&#62;<br>
-<br>
-#include&nbsp;&#60;libmail/smtpinfo.H&#62;<br>
-<br>
-mail::ACCOUNT&nbsp;*mail;<br>
-<br>
-class&nbsp;myAddMessagePull&nbsp;:&nbsp;public&nbsp;mail::addMessagePull&nbsp;{<br>
-<br>
-public:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;std::string&nbsp;getMessageContents();<br>
-};<br>
-<br>
-myAddMessagePull&nbsp;message;<br>
-<br>
-mail::smtpInfo&nbsp;info;<br>
-<br>
-info.sender="nobody@example.com";<br>
-<br>
-info.recipients.push_back("recipient@example.com");<br>&#13;</P
-><DIV
-CLASS="FUNCSYNOPSIS"
-><P
-></P
-><A
-NAME="AEN5217"
-></A
-><P
-><CODE
-><CODE
-CLASS="FUNCDEF"
->bool ok=mail-&#62;<TT
-CLASS="FUNCTION"
->send</TT
-></CODE
->(<TT
-CLASS="PARAMETER"
-><I
->info</I
-></TT
->, const mail::folder *<TT
-CLASS="PARAMETER"
-><I
->saveFolder</I
-></TT
->, <TT
-CLASS="PARAMETER"
-><I
->message</I
-></TT
->);</CODE
-></P
-><P
-></P
-></DIV
-><P
-CLASS="LITERALLAYOUT"
->std::string&nbsp;errmsg=mail-&#62;getErrmsg();</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN5228"
-></A
-><H2
->USAGE</H2
-><P
->This method sends a message via SMTP.
-The application should create a
-<CODE
-CLASS="STRUCTNAME"
->mail::ACCOUNT</CODE
-> object, and invoke
-<A
-HREF="account-login.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::login</SPAN
->(3x)</SPAN
-></A
->
-specifying a
-<TT
-CLASS="LITERAL"
->smtp:</TT
->,
-<TT
-CLASS="LITERAL"
->smtps:</TT
-> or
-<TT
-CLASS="LITERAL"
->sendmail:</TT
->
-<TT
-CLASS="PARAMETER"
-><I
->url</I
-></TT
->.
-The resulting <CODE
-CLASS="STRUCTNAME"
->mail::ACCOUNT</CODE
->'s
-<TT
-CLASS="FUNCTION"
->send</TT
-> method will be able to deliver the
-<TT
-CLASS="PARAMETER"
-><I
->message</I
-></TT
->.</P
-><P
-><TT
-CLASS="PARAMETER"
-><I
->message</I
-></TT
->'s
-<TT
-CLASS="FUNCTION"
->getMessageContents</TT
->
-specifies the contents of the message, which should be a valid, MIME-formatted
-message.
-<TT
-CLASS="FUNCTION"
->getMessageContents</TT
->
-does not have to return the entire contents of the message at once.
-<TT
-CLASS="FUNCTION"
->addMessage</TT
-> calls
-<TT
-CLASS="FUNCTION"
->getMessageContents</TT
->
-repeatedly.
-<TT
-CLASS="FUNCTION"
->getMessageContents</TT
->
-should return the next portion of the message with each call.
-<TT
-CLASS="FUNCTION"
->getMessageContents</TT
->
-should return
-an empty string, after providing the entire message contents are provided.
-<TT
-CLASS="FUNCTION"
->getMessageContents</TT
->
-will be called repeatedly until it returns an empty string.</P
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5252"
-></A
-><H3
-><TT
-CLASS="PARAMETER"
-><I
->saveFolder</I
-></TT
-></H3
-><P
-><TT
-CLASS="PARAMETER"
-><I
->saveFolder</I
-></TT
->, if not <TT
-CLASS="LITERAL"
->NULL</TT
->,
-specifies that a copy of the message should also be saved in this folder.
-If this mail account uses the experimental
-<A
-HREF="smap1.html"
->SMAP</A
-> protocol, a single copy of the message
-will be transmitted to the <TT
-CLASS="LITERAL"
->SMAP</TT
-> server, which will file
-the message in the folder, and send it to the designated recipients.
-Otherwise the message is manually saved to this folder using
-<A
-HREF="folder-addmessage.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::folder::addMessage</SPAN
->(3x)</SPAN
-></A
->,
-or
-<A
-HREF="account-libmail-addmessage.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::addMessage</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5268"
-></A
-><H3
->The <CODE
-CLASS="STRUCTNAME"
->mail::smtpInfo</CODE
-> object</H3
-><P
-><TT
-CLASS="PARAMETER"
-><I
->info</I
-></TT
-> specifies the following parameters
-which are used to deliver the message:
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
 
-<TABLE
-BORDER="0"
-BGCOLOR="#E0E0E0"
-WIDTH="100%"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->class mail::smtpInfo {
+  <title>mail::ACCOUNT::send</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="synchronous.html" title="mail::ACCOUNT Synchronous API reference"/>
+  <link rel="prev" href="account-searchmessages.html" title="mail::ACCOUNT::searchMessages"/>
+  <link rel="next" href="account-setrights.html" title="mail::ACCOUNT::setRights"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::ACCOUNT::send</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="account-searchmessages.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="structname">mail::ACCOUNT</span> Synchronous
+        API reference</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="account-setrights.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="account-send" shape="rect" name="account-send"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::ACCOUNT::send &#8212; Send a message</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        #include&#160;&lt;libmail/sync.H&gt;<br clear="none"/>
+        <br clear="none"/>
+        #include&#160;&lt;libmail/smtpinfo.H&gt;<br clear="none"/>
+        <br clear="none"/>
+        mail::ACCOUNT&#160;*mail;<br clear="none"/>
+        <br clear="none"/>
+        class&#160;myAddMessagePull&#160;:&#160;public&#160;mail::addMessagePull&#160;{<br clear="none"/>
+
+        <br clear="none"/>
+        public:<br clear="none"/>
+        &#160;&#160;&#160;&#160;std::string&#160;getMessageContents();<br clear="none"/>
+
+        };<br clear="none"/>
+        <br clear="none"/>
+        myAddMessagePull&#160;message;<br clear="none"/>
+        <br clear="none"/>
+        mail::smtpInfo&#160;info;<br clear="none"/>
+        <br clear="none"/>
+        info.sender="nobody@example.com";<br clear="none"/>
+        <br clear="none"/>
+        info.recipients.push_back("recipient@example.com");<br clear="none"/>
+
+        <br clear="none"/></p>
+      </div>
+
+      <div class="funcsynopsis">
+        <table border="0" summary="Function synopsis" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="1" colspan="1"><code class="funcdef">bool
+            ok=mail-&gt;<b class="fsfunc">send</b>(</code></td>
+
+            <td rowspan="1" colspan="1">&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">info</var>,</td>
+          </tr>
+
+          <tr>
+            <td rowspan="1" colspan="1">&#160;</td>
+
+            <td rowspan="1" colspan="1">const mail::folder
+            *&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">saveFolder</var>,</td>
+          </tr>
+
+          <tr>
+            <td rowspan="1" colspan="1">&#160;</td>
+
+            <td rowspan="1" colspan="1">&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">message</var><code>)</code>;</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        std::string&#160;errmsg=mail-&gt;getErrmsg();<br clear="none"/></p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id402170" shape="rect" name="id402170"> </a>
+
+      <h2>USAGE</h2>
+
+      <p>This method sends a message via SMTP. The application
+      should create a <span class="structname">mail::ACCOUNT</span>
+      object, and invoke <a href="account-login.html" title="mail::ACCOUNT::login" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::login</span>(3x)</span></a>
+      specifying a <code class="literal">smtp:</code>, <code class="literal">smtps:</code> or <code class="literal">sendmail:</code> <em class="parameter"><code>url</code></em>. The resulting <span class="structname">mail::ACCOUNT</span>'s <code class="function">send</code> method will be able to deliver the
+      <em class="parameter"><code>message</code></em>.</p>
+
+      <p><em class="parameter"><code>message</code></em>'s
+      <code class="function">getMessageContents</code> specifies
+      the contents of the message, which should be a valid,
+      MIME-formatted message. <code class="function">getMessageContents</code> does not have to return
+      the entire contents of the message at once. <code class="function">addMessage</code> calls <code class="function">getMessageContents</code> repeatedly. <code class="function">getMessageContents</code> should return the next
+      portion of the message with each call. <code class="function">getMessageContents</code> should return an empty
+      string, after providing the entire message contents are
+      provided. <code class="function">getMessageContents</code>
+      will be called repeatedly until it returns an empty
+      string.</p>
+
+      <div class="refsect2" lang="en" xml:lang="en">
+        <a id="id402305" shape="rect" name="id402305"> </a>
+
+        <h3><em class="parameter"><code>saveFolder</code></em></h3>
+
+        <p><em class="parameter"><code>saveFolder</code></em>, if
+        not <code class="literal">NULL</code>, specifies that a
+        copy of the message should also be saved in this folder. If
+        this mail account uses the experimental <a href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> protocol, a single copy of the
+        message will be transmitted to the <code class="literal">SMAP</code> server, which will file the message
+        in the folder, and send it to the designated recipients.
+        Otherwise the message is manually saved to this folder
+        using <a href="folder-addmessage.html" title="mail::folder::addMessage" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::addMessage</span>(3x)</span></a>,
+        or <a href="account-libmail-addmessage.html" title="mail::ACCOUNT::addMessage" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::addMessage</span>(3x)</span></a>.</p>
+      </div>
+
+      <div class="refsect2" lang="en" xml:lang="en">
+        <a id="id402689" shape="rect" name="id402689"> </a>
+
+        <h3>The <span class="structname">mail::smtpInfo</span>
+        object</h3>
+
+        <p><em class="parameter"><code>info</code></em> specifies
+        the following parameters which are used to deliver the
+        message:</p>
+        <pre class="programlisting" xml:space="preserve">
+class mail::smtpInfo {
 public:
-	std::string sender;
+        std::string sender;
 
-	std::vector&#60;std::string&#62; recipients;
+        std::vector&lt;std::string&gt; recipients;
 
-	std::map&#60;std::string, std::string&#62; options;
-} ;</PRE
-></TD
-></TR
-></TABLE
-></P
-><P
-><CODE
-CLASS="STRUCTFIELD"
->sender</CODE
-> specifies the sender's E-mail address,
-in the form of
-"<TT
-CLASS="REPLACEABLE"
-><I
->user</I
-></TT
->@<TT
-CLASS="REPLACEABLE"
-><I
->domain</I
-></TT
->".
-<CODE
-CLASS="STRUCTFIELD"
->recipients</CODE
-> is a list of recipients' E-mail
-addresses.
-At least one recipient must be specified.</P
-><P
-><CODE
-CLASS="STRUCTFIELD"
->options</CODE
-> specifies additional parameters for
-sending E-mail, initialized as follows:</P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->options.insert(make_pair("novalidate-cert", "1"))</DT
-><DD
-><P
->See
-<A
-HREF="mail-open.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::open</SPAN
->(3x)</SPAN
-></A
->)
-for a description of this option.</P
-></DD
-><DT
->options.insert(make_pair("cram", "1"))</DT
-><DD
-><P
->See
-<A
-HREF="mail-open.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::open</SPAN
->(3x)</SPAN
-></A
->)
-for a description of this option.</P
-></DD
-><DT
->options.insert(make_pair("DSN", "<TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
->"))</DT
-><DD
-><P
->Request a delivery status notification.
-<TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
-> is a comma-separated
-list of the following keywords:
-"<TT
-CLASS="LITERAL"
->never</TT
->" - do not request any receipts, not even
-non-delivery notices;
-"<TT
-CLASS="LITERAL"
->success</TT
->" - request a delivery confirmation receipt;
-"<TT
-CLASS="LITERAL"
->fail</TT
->" - request a non-delivery notice;
-"<TT
-CLASS="LITERAL"
->delay</TT
->" - request a delayed delivery notice.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="90%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->An error will be reported if the mail server does not implement
-delivery status notifications.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DD
-><DT
->options.insert(make_pair("RET", "hdrs"))</DT
-><DD
-><P
->Request that the delivery status notification should not include the entire
-original message, only its headers.</P
-></DD
-><DT
->options.insert(make_pair("RET", "full"))</DT
-><DD
-><P
->Request that the delivery status notifications should include the entire
-original message.</P
-></DD
-><DT
->options.insert(make_pair("NOPIPELINING", "1"))</DT
-><DD
-><P
->Do not use the <TT
-CLASS="LITERAL"
->PIPELINING</TT
-> <TT
-CLASS="LITERAL"
->SMTP</TT
->
-extension even if the mail server claims to support it
-(workaround for buggy firewalls).</P
-></DD
-><DT
->options.insert(make_pair("VERP", "1"))</DT
-><DD
-><P
->Use the <TT
-CLASS="LITERAL"
->VERP</TT
-> mailing list extension.
-If the <CODE
-CLASS="STRUCTFIELD"
->sender</CODE
-> address is
-"<TT
-CLASS="REPLACEABLE"
-><I
->sender</I
-></TT
->@<TT
-CLASS="REPLACEABLE"
-><I
->senddomain</I
-></TT
->",
-then a delivery status notification for
-"<TT
-CLASS="REPLACEABLE"
-><I
->recipient</I
-></TT
->@<TT
-CLASS="REPLACEABLE"
-><I
->recipientdomain</I
-></TT
->"
-will be sent to "<TT
-CLASS="REPLACEABLE"
-><I
->sender</I
-></TT
->-<TT
-CLASS="REPLACEABLE"
-><I
->recipient</I
-></TT
->=<TT
-CLASS="REPLACEABLE"
-><I
->recipientdomain</I
-></TT
->@<TT
-CLASS="REPLACEABLE"
-><I
->senddomain</I
-></TT
->" (with certain additional details).
-This option is currently implemented only by the
-<A
-HREF="http://www.courier-mta.org"
-TARGET="_top"
->Courier
-mail server</A
->.</P
-></DD
-><DT
->options.insert(make_pair("SECURITY", "STARTTLS"))</DT
-><DD
-><P
->The message must be sent via TLS, and the recipient's server must present
-a certificate signed by a trusted, private, certificate authority.
-This option is currently implemented only by the
-<A
-HREF="http://www.courier-mta.org"
-TARGET="_top"
->Courier
-mail server</A
->.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="90%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->This is not the standard <TT
-CLASS="LITERAL"
->STARTTLS</TT
-> <TT
-CLASS="LITERAL"
->ESMTP</TT
->
-extension.
-<TT
-CLASS="LITERAL"
->STARTTLS</TT
-> is always used automatically, if
-it's supported by the mail server.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DD
-></DL
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN5349"
-></A
-><H2
->Return Codes</H2
-><P
->This method returns <TT
-CLASS="LITERAL"
->true</TT
-> if it succeeds, or
-<TT
-CLASS="LITERAL"
->false</TT
-> if it fails.
-If the method fails, use
-<CODE
-CLASS="STRUCTFIELD"
->mail::ACCOUNT::getErrmsg()</CODE
-> to read a brief
-description of the error.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN5355"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="account-login.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::ACCOUNT::login</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="account-searchmessages.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="account-setrights.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::ACCOUNT::searchMessages</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="synchronous.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::ACCOUNT::setRights</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+        std::map&lt;std::string, std::string&gt; options;
+} ;
+</pre>
+
+        <p><em class="structfield"><code>sender</code></em>
+        specifies the sender's E-mail address, in the form of
+        "<em class="replaceable"><code>user</code></em>@<em class="replaceable"><code>domain</code></em>". <em class="structfield"><code>recipients</code></em> is a list of
+        recipients' E-mail addresses. At least one recipient must
+        be specified.</p>
+
+        <p><em class="structfield"><code>options</code></em>
+        specifies additional parameters for sending E-mail,
+        initialized as follows:</p>
+
+        <div class="variablelist">
+          <dl>
+            <dt><span class="term">options.insert(make_pair("novalidate-cert",
+            "1"))</span></dt>
+
+            <dd>
+              <p>See <a href="mail-open.html" title="mail::account::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::open</span>(3x)</span></a>)
+              for a description of this option.</p>
+            </dd>
+
+            <dt><span class="term">options.insert(make_pair("cram",
+            "1"))</span></dt>
+
+            <dd>
+              <p>See <a href="mail-open.html" title="mail::account::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::open</span>(3x)</span></a>)
+              for a description of this option.</p>
+            </dd>
+
+            <dt><span class="term">options.insert(make_pair("DSN",
+            "<em class="replaceable"><code>list</code></em>"))</span></dt>
+
+            <dd>
+              <p>Request a delivery status notification. <em class="replaceable"><code>list</code></em> is a
+              comma-separated list of the following keywords:
+              "<code class="literal">never</code>" - do not request
+              any receipts, not even non-delivery notices;
+              "<code class="literal">success</code>" - request a
+              delivery confirmation receipt; "<code class="literal">fail</code>" - request a non-delivery
+              notice; "<code class="literal">delay</code>" -
+              request a delayed delivery notice.</p>
+
+              <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+                <h3 class="title">Note</h3>
+
+                <p>An error will be reported if the mail server
+                does not implement delivery status
+                notifications.</p>
+              </div>
+            </dd>
+
+            <dt><span class="term">options.insert(make_pair("RET",
+            "hdrs"))</span></dt>
+
+            <dd>
+              <p>Request that the delivery status notification
+              should not include the entire original message, only
+              its headers.</p>
+            </dd>
+
+            <dt><span class="term">options.insert(make_pair("RET",
+            "full"))</span></dt>
+
+            <dd>
+              <p>Request that the delivery status notifications
+              should include the entire original message.</p>
+            </dd>
+
+            <dt><span class="term">options.insert(make_pair("NOPIPELINING",
+            "1"))</span></dt>
+
+            <dd>
+              <p>Do not use the <code class="literal">PIPELINING</code> <code class="literal">SMTP</code> extension even if the mail
+              server claims to support it (workaround for buggy
+              firewalls).</p>
+            </dd>
+
+            <dt><span class="term">options.insert(make_pair("VERP",
+            "1"))</span></dt>
+
+            <dd>
+              <p>Use the <code class="literal">VERP</code> mailing
+              list extension. If the <em class="structfield"><code>sender</code></em> address is
+              "<em class="replaceable"><code>sender</code></em>@<em class="replaceable"><code>senddomain</code></em>", then a
+              delivery status notification for "<em class="replaceable"><code>recipient</code></em>@<em class="replaceable"><code>recipientdomain</code></em>" will
+              be sent to "<em class="replaceable"><code>sender</code></em>-<em class="replaceable"><code>recipient</code></em>=<em class="replaceable"><code>recipientdomain</code></em>@<em class="replaceable"><code>senddomain</code></em>"
+              (with certain additional details). This option is
+              currently implemented only by the <a href="http://www.courier-mta.org" target="_top" shape="rect">Courier mail server</a>.</p>
+            </dd>
+
+            <dt><span class="term">options.insert(make_pair("SECURITY",
+            "STARTTLS"))</span></dt>
+
+            <dd>
+              <p>The message must be sent via TLS, and the
+              recipient's server must present a certificate signed
+              by a trusted, private, certificate authority. This
+              option is currently implemented only by the <a href="http://www.courier-mta.org" target="_top" shape="rect">Courier mail server</a>.</p>
+
+              <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+                <h3 class="title">Note</h3>
+
+                <p>This is not the standard <code class="literal">STARTTLS</code> <code class="literal">ESMTP</code> extension. <code class="literal">STARTTLS</code> is always used
+                automatically, if it's supported by the mail
+                server.</p>
+              </div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id403122" shape="rect" name="id403122"> </a>
+
+      <h2>Return Codes</h2>
+
+      <p>This method returns <code class="literal">true</code> if
+      it succeeds, or <code class="literal">false</code> if it
+      fails. If the method fails, use <em class="structfield"><code>mail::ACCOUNT::getErrmsg()</code></em> to
+      read a brief description of the error.</p>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id403158" shape="rect" name="id403158"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="account-login.html" title="mail::ACCOUNT::login" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::login</span>(3x)</span></a>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="account-searchmessages.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="synchronous.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="account-setrights.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::ACCOUNT::searchMessages&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::ACCOUNT::setRights</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

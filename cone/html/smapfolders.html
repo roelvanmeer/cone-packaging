@@ -1,0 +1,875 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>Folders</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1"/>
+  <link rel="prev" href="conn.html" title="SMAP connection negotiation"/>
+  <link rel="next" href="smapusingfolders.html" title="Using Folders"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">Folders</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="conn.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        Appendix&#160;A.&#160;Simple Mail Access Protocol, Version
+        1</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="smapusingfolders.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="section" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title"><a id="smapfolders" shape="rect" name="smapfolders"> </a>Folders</h3>
+        </div>
+      </div>
+    </div>
+
+    <p>Access to the mail account becomes available after a
+    succesful "<code class="literal">\SMAP1 LOGIN</code>" or
+    "<code class="literal">\SMAP1 AUTHENTICATE</code>" command. A
+    mail account contains a list of folders. A folder contains a
+    list of individual messages. A folder may also contain other
+    folders (so-called "subfolders") instead. A folder that
+    contains subfolders is called a "folder directory". Subfolders
+    may also contain other subfolders, and so on.</p>
+
+    <p>Some SMAP servers are capable of creating hybrid folders
+    that contain both messages and other subfolders, but SMAP
+    clients should not depend on the server's ability to create
+    such folders.</p>
+
+    <p>SMAP folders are referenced by listing the folder's name,
+    the name of its parent folder (if any), then the name of the
+    parent folder's parent folder, and so on. The name of the top
+    level folder is listed first, and the name of the folder itself
+    is listed last, and each folder's name is specified as a
+    separate, whitespace-delimited word. Some <code class="literal">SMAP1</code> commands mark the end of the sequence of
+    words that identifies a folder by an extra, empty word (folder
+    names cannot be empty themselves). For example, the command to
+    create a folder called "December" as a subfolder of another
+    folder called "2002", which itself is a subfolder of a folder
+    called "Important Mail" is:</p>
+
+    <div class="literallayout">
+      <p><br clear="none"/>
+      CREATE&#160;"Important&#160;Mail"&#160;2002&#160;December<br clear="none"/>
+      </p>
+    </div>
+
+    <p>Folder names are written using the UTF-8 character set; they
+    may contain any UTF-8 character except for U+0000 through
+    U+001F.</p>
+
+    <p>SMAP servers may allow clients to create top-level folder or
+    folder directories. SMAP servers may also prohibit clients from
+    creating top-level folder or folder directories; instead, they
+    provide a predefined list of top-level folder directories, such
+    as "Private Folders" and "Public Folders", and SMAP clients are
+    directed to to create subfolders under either top level folder
+    directory. Servers that have this restriction should reject
+    attempts to create top-level folders with an informative error
+    message.</p>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id516434" shape="rect" name="id516434"> </a>Creating folders and folder
+            directories</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;CREATE&#160;"Private&#160;Folders"&#160;Todo-List<br clear="none"/>
+
+        S:&#160;+OK&#160;Folder&#160;created<br clear="none"/>
+        C:&#160;MKDIR&#160;Customers<br clear="none"/>
+        S:&#160;-ERR&#160;Folders&#160;may&#160;not&#160;be&#160;created&#160;here.&#160;&#160;Please&#160;create&#160;a&#160;folder&#160;in<br clear="none"/>
+
+        &#160;&#160;&#160;"Private&#160;Folders"&#160;or&#160;"Public&#160;Folders".<br clear="none"/>
+        </p>
+      </div>
+
+      <p>The <code class="literal">CREATE</code> command creates a
+      new folder. The <code class="literal">MKDIR</code> command
+      creates a new folder directory (a folder that contains other
+      folders). The remaining words specify the name of the new
+      folder or folder directory.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>An SMAP client should not create a new folder directory
+        until it is ready to create its first subfolder. The
+        <code class="literal">MKDIR</code> command should be
+        immediately followed by a <code class="literal">CREATE</code> command that creates the first
+        subfolder in the new folder directory. Empty folder
+        directories serve no particular purpose; SMAP servers are
+        permitted (but not required) to omit empty folder
+        directories when responding to a <code class="literal">LIST</code> command. An SMAP client that wishes
+        to create a new folder directory now, and a subfolder some
+        time later should be implicitly aware of the fact that it
+        created a new folder directory even if a subsequent
+        <code class="literal">LIST</code> command does not reveal
+        its presence.</p>
+      </div>
+
+      <p>Some SMAP servers can implement hybrid folders that
+      contain both folders and subfolders. Clients must explicitly
+      use both <code class="literal">CREATE</code> and <code class="literal">MKDIR</code> commands, which may be used in either
+      order. It is possible that hybrid-capable servers do not
+      differentiate between the <code class="literal">MKDIR</code>
+      and <code class="literal">CREATE</code> commands. Either one
+      creates a folder that's ready to hold messages or subfolders.
+      These servers must ignore a duplicate request to create an
+      existing folder or folder directory (normally a server SHOULD
+      reject such a request). This is because SMAP clients will
+      send both command because they cannot rely on this
+      behavior.</p>
+
+      <div class="section" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h5 class="title"><a id="id516536" shape="rect" name="id516536"> </a>Executive Summary</h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="itemizedlist">
+          <ul type="disc">
+            <li>
+              <p>Use <code class="literal">CREATE</code> to create
+              a folder, <code class="literal">MKDIR</code> to
+              create a folder directory.</p>
+            </li>
+
+            <li>
+              <p>Clients should create new folder directories just
+              prior creating their first subfolder. Clients should
+              not create new folder directories until they are
+              ready to create the first subfolder.</p>
+            </li>
+
+            <li>
+              <p>SMAP servers may ignore <code class="literal">MKDIR</code>, and treat it as a no-op, and
+              automatically create logical folder directories on
+              as-needed basis.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id516587" shape="rect" name="id516587"> </a>Deleting folders and folder
+            directories</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;DELETE&#160;"Private&#160;Folders"&#160;Todo-List<br clear="none"/>
+
+        S:&#160;+OK&#160;Folder&#160;deleted<br clear="none"/>
+        C:&#160;RMDIR&#160;Customers<br clear="none"/>
+        S:&#160;+OK&#160;Folder&#160;directory&#160;deleted<br clear="none"/>
+        </p>
+      </div>
+
+      <p>The <code class="literal">DELETE</code> and <code class="literal">RMDIR</code> commands are the opposite of
+      <code class="literal">CREATE</code> and <code class="literal">MKDIR</code> commands. They delete the indicated
+      folder or folder directory. Some SMAP servers may
+      automatically remove a folder directory after its last
+      subfolder is deleted. Normally a server should reject a
+      request to remove a non-existent folder or folder directory.
+      Servers that automatically remove empty directories should
+      not reject requests to remove a non-existent directory, they
+      should ignore and accept the request, but do nothing. The
+      request to remove a non-existent directory is probably
+      initiated by a client that just removed the last subfolder;
+      the client cannot assume that the server will delete the
+      empty directory, so it explicitly asks the server to do
+      that.</p>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id516639" shape="rect" name="id516639"> </a>Renaming folders and folder
+            directories</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;RENAME&#160;"Dr.&#160;Jekyll"&#160;""&#160;"Mr.&#160;Hyde"<br clear="none"/>
+
+        S:&#160;+OK&#160;Folder&#160;renamed.<br clear="none"/>
+        C:&#160;RENAME&#160;"Saved&#160;Mail"&#160;"Tomorrow's&#160;To-Do&#160;List"&#160;""&#160;"Saved&#160;Mail"&#160;"To-Do&#160;Today"<br clear="none"/>
+
+        S:&#160;+OK&#160;Folder&#160;renamed.<br clear="none"/></p>
+      </div>
+
+      <p>The <code class="literal">RENAME</code> command changes
+      the name of an existing folder or folder directory. The
+      command is followed by a whitespace-delimited word list that
+      specifies an existing folder; then an empty word; then
+      another whitespace-delimited word list which specifies a new
+      name for the folder or folder directory. Both the old name,
+      and the new name, must be complete folder name paths.</p>
+
+      <p>The first example above renames a folder named "Dr.
+      Jekyll" to "Mr. Hyde". The second example renames a subfolder
+      of "Saved Mail" named "Tomorrow's To-Do List" as "To-Do
+      Today". Most SMAP servers can move a folder/subfolder to a
+      different parent folder. This is done by specifying a
+      different path for the new name.</p>
+
+      <p>Both folder and folder directories may be renamed. A
+      renamed folder directory's subfolders "follow along" with
+      their parent folder directory.</p>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id516681" shape="rect" name="id516681"> </a>Listing folders</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;LIST<br clear="none"/>
+        S:&#160;*&#160;LIST&#160;INBOX&#160;"New&#160;Mail"&#160;FOLDER<br clear="none"/>
+
+        S:&#160;*&#160;LIST&#160;Drafts&#160;Drafts&#160;FOLDER<br clear="none"/>
+
+        S:&#160;*&#160;LIST&#160;"Saved&#160;Mail"&#160;"Saved&#160;Mail"&#160;DIRECTORY<br clear="none"/>
+
+        S:&#160;+OK&#160;Here&#160;are&#160;your&#160;folders<br clear="none"/>
+
+        C:&#160;LIST&#160;"Saved&#160;Mail"<br clear="none"/>
+        S:&#160;*&#160;LIST&#160;2001&#160;2001&#160;DIRECTORY<br clear="none"/>
+
+        S:&#160;*&#160;LIST&#160;2002&#160;2002&#160;DIRECTORY<br clear="none"/>
+
+        S:&#160;+OK&#160;Here&#160;are&#160;your&#160;folders<br clear="none"/>
+
+        C:&#160;LIST&#160;"Saved&#160;Mail"&#160;2002<br clear="none"/>
+        S:&#160;*&#160;LIST&#160;February&#160;February&#160;FOLDER<br clear="none"/>
+
+        S:&#160;*&#160;LIST&#160;January&#160;January&#160;FOLDER<br clear="none"/>
+
+        S:&#160;+OK&#160;Here&#160;are&#160;your&#160;folders<br clear="none"/>
+        </p>
+      </div>
+
+      <p>The <code class="literal">LIST</code> command, without any
+      arguments, returns a list of top level folders. A list of
+      subfolders of an existing folder directories is returned by
+      appending the folder name path to the LIST command.</p>
+
+      <p>The server responds with zero or more &#8220;<span class="quote">* LIST</span>&#8221; <a href="smapsyntax.html#singleline" title="Single line replies" shape="rect">single line</a> replies, one reply for each
+      folder or folder directory. The next word after
+      &#8220;<span class="quote">* LIST</span>&#8221; is the name
+      of the folder or folder directory. The following word (called
+      "description") is usually the same as the name of the folder.
+      Certain reserved folders may have a different description
+      (see below). The remaining words contain keywords that
+      describe the folder's attributes. The following attributes
+      are defined at this time:</p>
+
+      <div class="variablelist">
+        <dl>
+          <dt><span class="term"><code class="literal">FOLDER</code></span></dt>
+
+          <dd>
+            <p>This is a regular folder that contains messages.</p>
+          </dd>
+
+          <dt><span class="term"><code class="literal">READONLY</code></span></dt>
+
+          <dd>
+            <p>This is a read-only folder.</p>
+          </dd>
+
+          <dt><span class="term"><code class="literal">DIRECTORY</code></span></dt>
+
+          <dd>
+            <p>This is a folder directory that contains other
+            folders.</p>
+          </dd>
+        </dl>
+      </div>
+
+      <p>Every &#8220;<span class="quote">* LIST</span>&#8221;
+      reply includes either <code class="literal">FOLDER</code> or
+      <code class="literal">DIRECTORY</code>. Both attributes
+      indicate a hybrid folder - a folder that contains both
+      messages and subfolders.</p>
+
+      <div class="section" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h5 class="title"><a id="id516807" shape="rect" name="id516807"> </a>Reserved folders and descriptions</h5>
+            </div>
+          </div>
+        </div>
+
+        <p>Some SMAP servers may not allow clients to create new
+        top-level folders. Instead, they provide a fixed set of
+        top-level folders and folder directories, such as "INBOX",
+        "private", and "public". Clients can only create new
+        subfolders of the reserved folder directories. Other
+        servers may do both: provide a fixed set of reserved,
+        top-level folders, and allow clients to create new
+        top-level folders.</p>
+
+        <p>A reserved folder is generally a symbolic representation
+        for a special folder, or a folder directory, with a
+        pre-defined purpose. The most common example would be the
+        mail folder where new mail arrives; it is typically called
+        &#8220;<span class="quote">INBOX</span>&#8221;. Reserved
+        folders usually have brief, curt names, such as
+        &#8220;<span class="quote">INBOX</span>&#8221;,
+        &#8220;<span class="quote">public</span>&#8221;, or
+        &#8220;<span class="quote">private</span>&#8221;. An SMAP
+        server can offer a more meaningful description using the
+        description word in the &#8220;<span class="quote">*
+        LIST</span>&#8221; reply; for example: &#8220;<span class="quote">New Mail</span>&#8221;, &#8220;<span class="quote">Public Folders</span>&#8221;, or
+        &#8220;<span class="quote">My Folders</span>&#8221;. If the
+        client selects a different natural language, at login time,
+        the server can provide a description in the selected
+        language, but still use the same actual folder name.</p>
+
+        <p>SMAP clients should always use the official folder name,
+        when referencing the folder in any SMAP command, and
+        display the folder's description to the user (recall that
+        for regular folders they are one and the same).</p>
+      </div>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id516864" shape="rect" name="id516864"> </a>Getting folder status</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        C:&#160;STATUS&#160;FULL&#160;"Saved&#160;Mail"<br clear="none"/>
+        S:&#160;*&#160;STATUS&#160;EXISTS=17&#160;UNSEEN=5<br clear="none"/>
+
+        S:&#160;+OK&#160;Status&#160;retrieved<br clear="none"/></p>
+      </div>
+
+      <p>The <code class="literal">STATUS</code> command returns
+      the status of a folder. The next word after
+      &#8220;<span class="quote"><code class="literal">STATUS</code></span>&#8221; is a comma-delimited
+      list of the following keywords. The remaining
+      whitespace-delimited words specify a folder whose requested
+      status should be returned.</p>
+
+      <p>The first word following &#8220;<span class="quote"><code class="literal">STATUS</code></span>&#8221;
+      contains a comma-delimited keyword list. The following
+      keywords are defined at this time. Additional keywords may be
+      added in the future. SMAP server should ignore keywords they
+      do not recognize.</p>
+
+      <div class="variablelist">
+        <dl>
+          <dt><span class="term">FULL</span></dt>
+
+          <dd>
+            <p>Request the number of messages in the folder (sent
+            as the &#8220;<span class="quote"><code class="literal">EXISTS</code></span>&#8221; response), and
+            the number of messages that do not have the
+            <code class="literal">SEEN</code> flag set (the
+            &#8220;<span class="quote"><code class="literal">UNSEEN</code></span>&#8221; response).</p>
+          </dd>
+
+          <dt><span class="term">CHEAP</span></dt>
+
+          <dd>
+            <p>Same as <code class="literal">FULL</code> but return
+            the message counts only if the server is capable of
+            calculating the message counts cheaply and without
+            delay. This keyword is mutually-exclusive with
+            <code class="literal">FULL</code>. If the message
+            counts cannot be calculated cheaply, the
+            &#8220;<span class="quote"><code class="literal">*
+            STATUS</code></span>&#8221; response is not sent, but
+            the server still responds with an &#8220;<span class="quote"><code class="literal">+OK</code></span>&#8221;.</p>
+          </dd>
+        </dl>
+      </div>
+
+      <p>The server's &#8220;<span class="quote"><code class="literal">* STATUS</code></span>&#8221; reply gives the
+      requested message counts.</p>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id517002" shape="rect" name="id517002"> </a>Access Control Lists</h4>
+          </div>
+        </div>
+      </div>
+
+      <p>Access Control Lists (or &#8220;<span class="quote">ACL</span>&#8221;s) may be optionally implemented by
+      an SMAP server. ACLs are usually implemented by servers that
+      support shared folder access, where accounts may mutually
+      share access to their folders, and ACLs specify which
+      accounts may access which folders. ACLs define certain level
+      of granularity; for example an ACL may specify that a given
+      account may read messages in the folder, but not delete them,
+      or add messages to the folder.</p>
+
+      <p>An SMAP server which implements ACLs will include
+      &#8220;<span class="quote"><code class="literal">ACL2=</code><em class="replaceable"><code>method</code></em></span>&#8221; in its
+      capability list. &#8220;<span class="quote">Method</span>&#8221; is the server's method for
+      computing ACLs (see below).</p>
+
+      <div class="section" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h5 class="title"><a id="id517035" shape="rect" name="id517035"> </a>Identifiers and rights</h5>
+            </div>
+          </div>
+        </div>
+
+        <p>Each folder maintains a separate access control list,
+        which applies to that folder only. An access control list
+        consists of zero or more records. Each record contains two
+        data items: an identifier, and rights. &#8220;<span class="quote">Rights</span>&#8221; is a list of zero more
+        characters, that enumerate which kinds of access rights are
+        given to the entity specified by the &#8220;<span class="quote">identifier</span>&#8221;. An identifier may take
+        the following values:</p>
+
+        <div class="variablelist">
+          <dl>
+            <dt><span class="term"><code class="literal">anyone</code></span></dt>
+
+            <dd>
+              <p>The access rights apply to all server
+              accounts.</p>
+            </dd>
+
+            <dt><span class="term"><code class="literal">anonymous</code></span></dt>
+
+            <dd>
+              <p>This is an alias for &#8220;<span class="quote">anonymous</span>&#8221;.</p>
+            </dd>
+
+            <dt><span class="term"><code class="literal">user=</code><em class="replaceable"><code>id</code></em></span></dt>
+
+            <dd>
+              <p>The access rights apply to account named
+              &#8220;<span class="quote">id</span>&#8221;. The
+              account name is specified using the <code class="literal">UTF-8</code> character set.</p>
+            </dd>
+
+            <dt><span class="term"><code class="literal">group=</code><em class="replaceable"><code>id</code></em></span></dt>
+
+            <dd>
+              <p>The access rights apply to a group of accounts
+              named &#8220;<span class="quote">id</span>&#8221;.
+              The group name is specified using the <code class="literal">UTF-8</code> character set. Account groups
+              are site-specific lists, maintained in a site-defined
+              manner. Each SMAP server implementation needs to
+              specify separately the nature and the names of the
+              available account groups (if they exist at all).</p>
+            </dd>
+          </dl>
+        </div>
+
+        <p>Access rights are specified using a list of zero or more
+        characters, as follows:</p>
+
+        <div class="variablelist">
+          <dl>
+            <dt><span class="term"><code class="literal">a</code></span></dt>
+
+            <dd>
+              <p>Administer this folder. Maintain this folder's
+              ACLs.</p>
+            </dd>
+
+            <dt><span class="term"><code class="literal">c</code></span></dt>
+
+            <dd>
+              <p>Create subfolders.</p>
+            </dd>
+
+            <dt><span class="term"><code class="literal">e</code></span></dt>
+
+            <dd>
+              <p>Remove messages from this folder (the <code class="literal">EXPUNGE</code> and the <code class="literal">MOVE</code> commands).</p>
+            </dd>
+
+            <dt><span class="term"><code class="literal">i</code></span></dt>
+
+            <dd>
+              <p>Insert messages into this folder (<code class="literal">COPY</code> or <code class="literal">MOVE</code> messages to this folder, and
+              the <code class="literal">ADD</code> command).</p>
+            </dd>
+
+            <dt><span class="term"><code class="literal">l</code></span></dt>
+
+            <dd>
+              <p>List this folder. This folder is visible, and is
+              shown by the <code class="literal">LIST</code>
+              command.</p>
+            </dd>
+
+            <dt><span class="term"><code class="literal">r</code></span></dt>
+
+            <dd>
+              <p>Read, or open this folder (the <code class="literal">OPEN</code> or the <code class="literal">SOPEN</code> command).</p>
+            </dd>
+
+            <dt><span class="term"><code class="literal">s</code></span></dt>
+
+            <dd>
+              <p>Add or remove the <code class="literal">SEEN</code> flag on messages.</p>
+            </dd>
+
+            <dt><span class="term"><code class="literal">t</code></span></dt>
+
+            <dd>
+              <p>Add or remove the <code class="literal">DELETED</code> flag on messages.</p>
+            </dd>
+
+            <dt><span class="term"><code class="literal">w</code></span></dt>
+
+            <dd>
+              <p>Add or remove any message flag, except for
+              <code class="literal">SEEN</code> and <code class="literal">DELETED</code>; add and remove
+              keywords.</p>
+            </dd>
+
+            <dt><span class="term"><code class="literal">x</code></span></dt>
+
+            <dd>
+              <p>Delete this folder.</p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="section" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h5 class="title"><a id="aclnegrights" shape="rect" name="aclnegrights"> </a>Negative rights</h5>
+            </div>
+          </div>
+        </div>
+
+        <p>An access control list entry may have an identifier that
+        begins with a dash. This access control list entry
+        specifies a &#8220;<span class="quote">negative
+        right</span>&#8221;, which revokes, rather than adds, the
+        corresponding rights from the identifier. For example,
+        consider the the following access control list:</p>
+
+        <div class="informalexample">
+          <pre class="programlisting" xml:space="preserve">
+anyone      alr
+user=fred   -r
+</pre>
+        </div>
+
+        <p>This ACL gives access, list, and read privileges to
+        everyone, and revokes read privileges from the <code class="literal">fred</code> user. Presumably, everyone except
+        fred can administer, list, and read the folder; while fred
+        can only administer and read it.</p>
+      </div>
+
+      <div class="section" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h5 class="title"><a id="id517440" shape="rect" name="id517440"> </a>Computing access rights</h5>
+            </div>
+          </div>
+        </div>
+
+        <p>As hinted in the previous example, there may be more
+        than one access control list entry that's applicable to a
+        given user. The SMAP server needs to compute the actual
+        access rights for a folder based on all applicable access
+        control list entries. There are several approaches to do
+        that. The SMAP server declares its chosen method of access
+        rights computation using the &#8220;<span class="quote">ACL2</span>&#8221; capability. At this time, two
+        access computation methods are defined:</p>
+
+        <div class="variablelist">
+          <dl>
+            <dt><span class="term">ACL2=UNION</span></dt>
+
+            <dd>
+              <p>Access rights from all applicable ACL entries are
+              combined together, then, all negative rights from all
+              applicable ACL entries are removed, giving the final
+              result. This is the computation method used in the
+              previous example.</p>
+            </dd>
+
+            <dt><span class="term">ACL2=MOST-SPECIFIC</span></dt>
+
+            <dd>
+              <p>Only access rights from the &#8220;<span class="quote">most specific</span>&#8221; ACL entries are
+              factored in. That is, ACL entries referring
+              specifically to the user (the &#8220;<span class="quote">user=</span>&#8221; ACL entries, and/or
+              &#8220;<span class="quote">owner</span>&#8221;
+              entries) are used, if present. Otherwise, any
+              applicable &#8220;<span class="quote">group=</span>&#8221; entries are used, if
+              present. Otherwise, &#8220;<span class="quote">anyone</span>&#8221; and &#8220;<span class="quote">anonymous</span>&#8221; entries are used by
+              default.</p>
+
+              <p>Multiple applicable most-specific entries are
+              combined in the same way as the &#8220;<span class="quote">union</span>&#8221; method.</p>
+
+              <p>Here's the equivalent &#8220;<span class="quote">most-specific</span>&#8221; version of the
+              earlier example:</p>
+
+              <div class="informalexample">
+                <pre class="programlisting" xml:space="preserve">
+anyone      alr
+user=fred   al
+</pre>
+              </div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="section" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h5 class="title"><a id="id517536" shape="rect" name="id517536"> </a>Obtaining access rights</h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="literallayout">
+          <p><br clear="none"/>
+          C:&#160;ACL&#160;INBOX<br clear="none"/>
+          S:&#160;*&#160;ACL&#160;"aceilrstwx"<br clear="none"/>
+          S:&#160;+OK&#160;ACL&#160;retrieved<br clear="none"/></p>
+        </div>
+
+        <p>The <code class="literal">ACL</code> command computes
+        the requesting client's access rights on the indicated
+        folder. The whitespace-delimited words after
+        &#8220;<span class="quote"><code class="literal">ACL</code></span>&#8221; specify the folder whose
+        access rights are computed and returned.</p>
+
+        <p>The server responds with a &#8220;<span class="quote">*
+        ACL</span>&#8221; message, which contains a single word
+        that lists the access rights on the given folder.</p>
+      </div>
+
+      <div class="section" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h5 class="title"><a id="id517580" shape="rect" name="id517580"> </a>Retrieving access control lists</h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="literallayout">
+          <p><br clear="none"/>
+          C:&#160;GETACL&#160;INBOX<br clear="none"/>
+          S:&#160;*&#160;GETACL&#160;"owner"&#160;"aceilrstwx"&#160;"user=fred"&#160;"ace"<br clear="none"/>
+
+          S:&#160;+OK&#160;ACLs&#160;retrieved<br clear="none"/></p>
+        </div>
+
+        <p>The <code class="literal">GETACL</code> command returns
+        the access control list for the indicated folder. The
+        whitespace-delimited words after &#8220;<span class="quote"><code class="literal">GETACL</code></span>&#8221;
+        specify the folder whose access control list is
+        requested.</p>
+
+        <p>The server responds with a &#8220;<span class="quote">*
+        GETACL</span>&#8221; message. The remaining
+        whitespace-delimited words after &#8220;<span class="quote"><code class="literal">* GETACL</code></span>&#8221;
+        consist of a zero or more <em class="replaceable"><code>identifier</code></em>/<em class="replaceable"><code>rights</code></em> pairs. In each pair,
+        <em class="replaceable"><code>identifier</code></em> names
+        the identity to which <em class="replaceable"><code>rights</code></em> apply.</p>
+
+        <p>The server may respond with two or more
+        &#8220;<span class="quote">* GETACL</span>&#8221; messages
+        when the access control list is very large.</p>
+      </div>
+
+      <div class="section" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h5 class="title"><a id="id517654" shape="rect" name="id517654"> </a>Modifying access rights</h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="literallayout">
+          <p><br clear="none"/>
+          C:&#160;SETACL&#160;INBOX&#160;""&#160;user=fred&#160;ace<br clear="none"/>
+
+          S:&#160;*&#160;GETACL&#160;"owner"&#160;"aceilrstwx"&#160;"user=fred"&#160;"ace"<br clear="none"/>
+
+          S:&#160;+OK&#160;Updated&#160;ACLs<br clear="none"/>
+          C:&#160;SETACL&#160;INBOX&#160;""&#160;user=fred&#160;+rwx<br clear="none"/>
+
+          S:&#160;*&#160;GETACL&#160;"owner"&#160;"aceilrstwx"&#160;"user=fred"&#160;"acerwx"<br clear="none"/>
+
+          S:&#160;+OK&#160;Updated&#160;ACLs<br clear="none"/>
+          <br clear="none"/></p>
+        </div>
+
+        <p>The <code class="literal">SETACL</code> command modifies
+        rights for a single access control list identifier. The
+        whitespace-delimited words after &#8220;<span class="quote"><code class="literal">SETACL</code></span>&#8221;
+        specify the folder whose access control list will be
+        modified. The folder's name is followed by a single empty
+        word, the identifier, then the requested access rights.</p>
+
+        <p>The existing access rights assigned to the identifier
+        are replaced by the new rights specified in the command. If
+        the identifier does not exist in the access control list,
+        it is added with the specified rights.</p>
+
+        <p>If the access rights are prefixed by &#8220;<span class="quote">+</span>&#8221;, the specified rights are added to
+        the existing rights, for this identifier. If the access
+        rights are prefixed by &#8220;<span class="quote">-</span>&#8221;, the specified rights are removed
+        from the existing rights, for this identifier. It is not an
+        error to add an access right that already exists, or remove
+        an access right that did not exist; in both cases the
+        request is ignored (for that specific access right).</p>
+
+        <p><em class="replaceable"><code>identifier</code></em> may
+        specify a <a href="smapfolders.html#aclnegrights" title="Negative rights" shape="rect">negative right</a>. When the
+        server uses &#8220;<span class="quote">ACL2=UNION</span>&#8221; computation method,
+        setting an empty access right list for an identifier will
+        remove the identifier from the access control list.</p>
+
+        <p>The server responds with zero or more
+        &#8220;<span class="quote"><code class="literal">*
+        GETACL</code></span>&#8221; messages, that return the
+        updated access control list for this folder.</p>
+      </div>
+
+      <div class="section" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h5 class="title"><a id="id517741" shape="rect" name="id517741"> </a>Deleting access rights</h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="literallayout">
+          <p><br clear="none"/>
+          C:&#160;DELETEACL&#160;INBOX&#160;""&#160;user=fred<br clear="none"/>
+
+          S:&#160;*&#160;GETACL&#160;"owner"&#160;"aceilrstwx"<br clear="none"/>
+
+          S:&#160;+OK&#160;Updated&#160;ACLs<br clear="none"/>
+          <br clear="none"/></p>
+        </div>
+
+        <p>The <code class="literal">DELETEACL</code> command
+        removes an identifier from the access control list. The
+        identifier may be a <a href="smapfolders.html#aclnegrights" title="Negative rights" shape="rect">negative right</a>.
+        The whitespace-delimited words after &#8220;<span class="quote"><code class="literal">DELETEACL</code></span>&#8221; specify the folder
+        whose access control list will be modified. The folder's
+        name is followed by a single empty word, than the
+        identifier to be removed. It is not an error to name an
+        identifier that does not exist, the request is effectively
+        ignored (but the server still responds with
+        &#8220;<span class="quote"><code class="literal">*
+        GETACL</code></span>&#8221; messages).</p>
+
+        <p>The server responds with zero or more
+        &#8220;<span class="quote"><code class="literal">*
+        GETACL</code></span>&#8221; messages, that return the
+        updated access control list for this folder.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="conn.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="smap1.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="smapusingfolders.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">SMAP connection negotiation&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;Using Folders</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-/* $Id: configscreen.C,v 1.16 2004/05/01 16:33:15 mrsam Exp $
+/* $Id: configscreen.C,v 1.17 2007/04/06 17:57:29 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -30,6 +30,7 @@
 
 #include <sstream>
 #include <errno.h>
+#include <algorithm>
 
 extern struct CustomColor color_misc_promptColor;
 extern struct CustomColor color_misc_inputField;

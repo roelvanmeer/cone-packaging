@@ -1,6 +1,6 @@
-/* $Id: myserverremoteconfig.C,v 1.8 2004/06/23 00:55:01 mrsam Exp $
+/* $Id: myserverremoteconfig.C,v 1.9 2007/02/03 20:04:50 mrsam Exp $
 **
-** Copyright 2003-2004, Double Precision Inc.
+** Copyright 2003-2007, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -244,8 +244,8 @@ std::string myServer::remoteConfig::saveconfig(std::string filename,
 		return errmsg;
 	}
 
-	if (!saveconfig2(filename, SUBJMARKER) ||
-	    !saveconfig2(macrofilename, MACROSUBJMARKER))
+	if (!saveconfig2(filename, SUBJMARKER, lastFilenameSaved) ||
+	    !saveconfig2(macrofilename, MACROSUBJMARKER, lastMacroFilenameSaved))
 	{
 		if (errmsg.size() == 0)
 			errmsg=strerror(errno);
@@ -257,13 +257,23 @@ std::string myServer::remoteConfig::saveconfig(std::string filename,
 }
 
 bool myServer::remoteConfig::saveconfig2(std::string filename,
-					 std::string subjmarker)
+					 std::string subjmarker,
+					 std::ifstream &cachedContents)
 {
 	if (filename.size() > 0)
 	{
 		FILE *fp=fopen(filename.c_str(), "r");
 
 		if (!fp)
+		{
+			errmsg=strerror(errno);
+			return false;
+		}
+
+		if (configFileUnchanged(cachedContents, fp))
+			return true;
+
+		if (fseek(fp, 0L, SEEK_SET) < 0)
 		{
 			errmsg=strerror(errno);
 			return false;
@@ -342,6 +352,11 @@ bool myServer::remoteConfig::saveconfig2(std::string filename,
 			errmsg=checkNewMailCallback.msg;
 			return false;
 		}
+
+		if (cachedContents.is_open())
+			cachedContents.close();
+		cachedContents.clear();
+		cachedContents.open(filename.c_str());
 	}
 
 	{
@@ -386,6 +401,35 @@ bool myServer::remoteConfig::saveconfig2(std::string filename,
 	return true;
 }
 
+bool myServer::remoteConfig::configFileUnchanged(std::ifstream &savedCpy,
+						 FILE *newCpy)
+{
+	if (!savedCpy.is_open())
+		return false;
+
+	savedCpy.clear();
+	savedCpy.seekg(0);
+
+	char buf1[BUFSIZ];
+	char buf2[BUFSIZ];
+
+	int n;
+
+	while ((n=fread(buf1, 1, sizeof(buf1), newCpy)) > 0)
+	{
+		if (savedCpy.read(buf2, n).fail() || savedCpy.bad())
+			return false;
+
+		if (memcmp(buf1, buf2, n))
+			return false;
+	}
+
+	if (n < 0 || savedCpy.get() != EOF)
+		return false;
+
+	return true;
+}
+
 void myServer::remoteConfig::disconnected(const char *errmsg)
 {
 	if (errmsg && account)
@@ -425,8 +469,9 @@ std::string myServer::remoteConfig::loadconfig(std::string filename,
 		return errmsg;
 	}
 
-	if (!loadconfig2(filename, SUBJMARKER, false) ||
-	    !loadconfig2(macrofilename, MACROSUBJMARKER, true))
+	if (!loadconfig2(filename, SUBJMARKER, false, lastFilenameSaved) ||
+	    !loadconfig2(macrofilename, MACROSUBJMARKER, true,
+			 lastMacroFilenameSaved))
 	{
 		if (errmsg.size() == 0)
 			errmsg=strerror(errno);
@@ -439,13 +484,17 @@ std::string myServer::remoteConfig::loadconfig(std::string filename,
 
 bool myServer::remoteConfig::loadconfig2(std::string filename,
 					 std::string subjmarker,
-					 bool optional)
+					 bool optional,
+					 std::ifstream &savedContents)
 {
 	string notfound=
 		_("Unable to find remotely-saved configuration file. "
 		  "Remotely-saved configuration was probably deleted.");
 
 	size_t messageNumber;
+
+	if (savedContents.is_open())
+		savedContents.close();
 
 	{
 		myServer::Callback searchCallback;
@@ -538,6 +587,14 @@ bool myServer::remoteConfig::loadconfig2(std::string filename,
 			errmsg=strerror(errno);
 			return false;
 		}
+	}
+
+	savedContents.open(filename.c_str());
+
+	if (!savedContents.is_open())
+	{
+		errmsg=filename + ": " + strerror(errno);
+		return false;
 	}
 
 	return true;

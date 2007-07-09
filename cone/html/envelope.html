@@ -1,433 +1,229 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::envelope</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="Extra/Miscellaneous objects/methods"
-HREF="misc.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::emailAddress"
-HREF="emailaddress.html"><LINK
-REL="NEXT"
-TITLE="mail::mimestruct"
-HREF="mimestruct.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="emailaddress.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="mimestruct.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="ENVELOPE"
-></A
->mail::envelope</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN12030"
-></A
-><H2
->Name</H2
->mail::envelope&nbsp;--&nbsp;Message envelope information</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN12033"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->#include&nbsp;&#60;libmail/envelope.H&#62;<br>
-<br>
-mail::envelope&nbsp;myEnvelope;</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN12035"
-></A
-><H2
->USAGE</H2
-><P
-><CODE
-CLASS="STRUCTNAME"
->mail::envelope</CODE
-> describes the message's
-"envelope", and contains the following fields:</P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->time_t date</DT
-><DD
-><P
->The contents of the message's <TT
-CLASS="LITERAL"
->Date:</TT
-> header, or
-<TT
-CLASS="LITERAL"
->0</TT
-> if the message does not have the <TT
-CLASS="LITERAL"
->Date:</TT
->
-header.</P
-></DD
-><DT
->std::string subject</DT
-><DD
-><P
->The contents of the message's <TT
-CLASS="LITERAL"
->Subject:</TT
-> header.
-This is set to an empty string if the header is not present.</P
-></DD
-><DT
->std::string inreplyto</DT
-><DD
-><P
->The contents of the message's <TT
-CLASS="LITERAL"
->In-Reply-To:</TT
-> header.
-This is set to an empty string if the header is not present.</P
-></DD
-><DT
->std::string messageid</DT
-><DD
-><P
->The contents of the message's <TT
-CLASS="LITERAL"
->Message-ID:</TT
-> header.
-This is set to an empty string if the header is not present.</P
-></DD
-><DT
->std::vector &#60;std::string&#62; references</DT
-><DD
-><P
->An array (possibly empty) of message IDs taken from the
-<TT
-CLASS="LITERAL"
->References:</TT
-> header.
-<CODE
-CLASS="STRUCTFIELD"
->references</CODE
->
-is guaranteed to be filled in only for an
-<CODE
-CLASS="STRUCTNAME"
->envelope</CODE
-> representing the whole message.
-<CODE
-CLASS="STRUCTFIELD"
->references</CODE
-> of <TT
-CLASS="LITERAL"
->message/rfc822</TT
->
-attachments may or may not be filled in.</P
-><P
-><CODE
-CLASS="STRUCTFIELD"
->references</CODE
-> is initialized by either
-the
-<TT
-CLASS="FUNCTION"
->messageEnvelopeCallback</TT
-> or the
-<TT
-CLASS="FUNCTION"
->messageReferencesCallback</TT
-> method (depending on the
-underlying account type) of
-<CODE
-CLASS="STRUCTNAME"
->mail::callback::message</CODE
->.</P
-></DD
-><DT
->std::vector&#60;<A
-HREF="address.html"
->mail::address</A
->&#62; from</DT
-><DD
-><P
->An array that lists the addresses in the message's <TT
-CLASS="LITERAL"
->From:</TT
->
-header.
-This array is empty if the header is not present.
-If a message has more than one <TT
-CLASS="LITERAL"
->From:</TT
-> header, this
-array will list the addresses from all headers, combined.</P
-></DD
-><DT
->std::vector&#60;<A
-HREF="address.html"
->mail::address</A
->&#62; sender</DT
-><DD
-><P
->An array that lists the addresses in the message's <TT
-CLASS="LITERAL"
->Sender:</TT
->
-header.
-This array is empty if the header is not present.
-If a message has more than one <TT
-CLASS="LITERAL"
->Sender:</TT
-> header, this
-array will list the addresses from all headers, combined.</P
-></DD
-><DT
->std::vector&#60;<A
-HREF="address.html"
->mail::address</A
->&#62; replyto</DT
-><DD
-><P
->An array that lists the addresses in the message's <TT
-CLASS="LITERAL"
->Reply-To:</TT
->
-header.
-This array is empty if the header is not present.
-If a message has more than one <TT
-CLASS="LITERAL"
->Reply-To:</TT
-> header, this
-array will list the addresses from all headers, combined.</P
-></DD
-><DT
->std::vector&#60;<A
-HREF="address.html"
->mail::address</A
->&#62; to</DT
-><DD
-><P
->An array that lists the addresses in the message's <TT
-CLASS="LITERAL"
->To:</TT
->
-header.
-This array is empty if the header is not present.
-If a message has more than one <TT
-CLASS="LITERAL"
->To:</TT
-> header, this
-array will list the addresses from all headers, combined.</P
-></DD
-><DT
->std::vector&#60;<A
-HREF="address.html"
->mail::address</A
->&#62; cc</DT
-><DD
-><P
->An array that lists the addresses in the message's <TT
-CLASS="LITERAL"
->Cc:</TT
->
-header.
-This array is empty if the header is not present.
-If a message has more than one <TT
-CLASS="LITERAL"
->Cc:</TT
-> header, this
-array will list the addresses from all headers, combined.</P
-></DD
-><DT
->std::vector&#60;<A
-HREF="address.html"
->mail::address</A
->&#62; bcc</DT
-><DD
-><P
->An array that lists the addresses in the message's <TT
-CLASS="LITERAL"
->Bcc:</TT
->
-header.
-This array is empty if the header is not present.
-If a message has more than one <TT
-CLASS="LITERAL"
->Bcc:</TT
-> header, this
-array will list the addresses from all headers, combined.</P
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN12118"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="address.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::address</SPAN
->(3x)</SPAN
-></A
->,
-<A
-HREF="mimestruct.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::mimestruct</SPAN
->(3x)</SPAN
-></A
->,
-<A
-HREF="mail-getfolderindexinfo.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::getFolderIndexInfo</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="emailaddress.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="mimestruct.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::emailAddress</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="misc.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::mimestruct</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>mail::envelope</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="misc.html" title="Extra/Miscellaneous objects/methods"/>
+  <link rel="prev" href="emailaddress.html" title="mail::emailAddress"/>
+  <link rel="next" href="mimestruct.html" title="mail::mimestruct"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::envelope</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="emailaddress.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        Extra/Miscellaneous objects/methods</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="mimestruct.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="envelope" shape="rect" name="envelope"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::envelope &#8212; Message envelope information</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        #include&#160;&lt;libmail/envelope.H&gt;<br clear="none"/>
+        <br clear="none"/>
+        mail::envelope&#160;myEnvelope;<br clear="none"/></p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id466941" shape="rect" name="id466941"> </a>
+
+      <h2>USAGE</h2>
+
+      <p><span class="structname">mail::envelope</span> describes
+      the message's "envelope", and contains the following
+      fields:</p>
+
+      <div class="variablelist">
+        <dl>
+          <dt><span class="term">time_t date</span></dt>
+
+          <dd>
+            <p>The contents of the message's <code class="literal">Date:</code> header, or <code class="literal">0</code> if the message does not have the
+            <code class="literal">Date:</code> header.</p>
+          </dd>
+
+          <dt><span class="term">std::string subject</span></dt>
+
+          <dd>
+            <p>The contents of the message's <code class="literal">Subject:</code> header. This is set to an
+            empty string if the header is not present.</p>
+          </dd>
+
+          <dt><span class="term">std::string inreplyto</span></dt>
+
+          <dd>
+            <p>The contents of the message's <code class="literal">In-Reply-To:</code> header. This is set to an
+            empty string if the header is not present.</p>
+          </dd>
+
+          <dt><span class="term">std::string messageid</span></dt>
+
+          <dd>
+            <p>The contents of the message's <code class="literal">Message-ID:</code> header. This is set to an
+            empty string if the header is not present.</p>
+          </dd>
+
+          <dt><span class="term">std::vector &lt;std::string&gt;
+          references</span></dt>
+
+          <dd>
+            <p>An array (possibly empty) of message IDs taken from
+            the <code class="literal">References:</code> header.
+            <em class="structfield"><code>references</code></em> is
+            guaranteed to be filled in only for an <span class="structname">envelope</span> representing the whole
+            message. <em class="structfield"><code>references</code></em> of
+            <code class="literal">message/rfc822</code> attachments
+            may or may not be filled in.</p>
+
+            <p><em class="structfield"><code>references</code></em>
+            is initialized by either the <code class="function">messageEnvelopeCallback</code> or the
+            <code class="function">messageReferencesCallback</code>
+            method (depending on the underlying account type) of
+            <span class="structname">mail::callback::message</span>.</p>
+          </dd>
+
+          <dt><span class="term">std::vector&lt;<a href="address.html" title="mail::address" shape="rect">mail::address</a>&gt; from</span></dt>
+
+          <dd>
+            <p>An array that lists the addresses in the message's
+            <code class="literal">From:</code> header. This array
+            is empty if the header is not present. If a message has
+            more than one <code class="literal">From:</code>
+            header, this array will list the addresses from all
+            headers, combined.</p>
+          </dd>
+
+          <dt><span class="term">std::vector&lt;<a href="address.html" title="mail::address" shape="rect">mail::address</a>&gt; sender</span></dt>
+
+          <dd>
+            <p>An array that lists the addresses in the message's
+            <code class="literal">Sender:</code> header. This array
+            is empty if the header is not present. If a message has
+            more than one <code class="literal">Sender:</code>
+            header, this array will list the addresses from all
+            headers, combined.</p>
+          </dd>
+
+          <dt><span class="term">std::vector&lt;<a href="address.html" title="mail::address" shape="rect">mail::address</a>&gt; replyto</span></dt>
+
+          <dd>
+            <p>An array that lists the addresses in the message's
+            <code class="literal">Reply-To:</code> header. This
+            array is empty if the header is not present. If a
+            message has more than one <code class="literal">Reply-To:</code> header, this array will list
+            the addresses from all headers, combined.</p>
+          </dd>
+
+          <dt><span class="term">std::vector&lt;<a href="address.html" title="mail::address" shape="rect">mail::address</a>&gt; to</span></dt>
+
+          <dd>
+            <p>An array that lists the addresses in the message's
+            <code class="literal">To:</code> header. This array is
+            empty if the header is not present. If a message has
+            more than one <code class="literal">To:</code> header,
+            this array will list the addresses from all headers,
+            combined.</p>
+          </dd>
+
+          <dt><span class="term">std::vector&lt;<a href="address.html" title="mail::address" shape="rect">mail::address</a>&gt; cc</span></dt>
+
+          <dd>
+            <p>An array that lists the addresses in the message's
+            <code class="literal">Cc:</code> header. This array is
+            empty if the header is not present. If a message has
+            more than one <code class="literal">Cc:</code> header,
+            this array will list the addresses from all headers,
+            combined.</p>
+          </dd>
+
+          <dt><span class="term">std::vector&lt;<a href="address.html" title="mail::address" shape="rect">mail::address</a>&gt; bcc</span></dt>
+
+          <dd>
+            <p>An array that lists the addresses in the message's
+            <code class="literal">Bcc:</code> header. This array is
+            empty if the header is not present. If a message has
+            more than one <code class="literal">Bcc:</code> header,
+            this array will list the addresses from all headers,
+            combined.</p>
+          </dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id467851" shape="rect" name="id467851"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="address.html" title="mail::address" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::address</span>(3x)</span></a>, <a href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::mimestruct</span>(3x)</span></a>,
+      <a href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="emailaddress.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="misc.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="mimestruct.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::emailAddress&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::mimestruct</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

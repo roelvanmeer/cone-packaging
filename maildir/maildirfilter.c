@@ -35,7 +35,7 @@
 #include	<unistd.h>
 #endif
 
-static const char rcsid[]="$Id: maildirfilter.c,v 1.27 2006/07/01 00:37:09 mrsam Exp $";
+static const char rcsid[]="$Id: maildirfilter.c,v 1.28 2007/03/05 01:14:46 mrsam Exp $";
 
 struct maildirfilterrule *maildir_filter_appendrule(struct maildirfilter *r,
 					const char *name,
@@ -80,7 +80,8 @@ int maildir_filter_ruleupdate(struct maildirfilter *r,
 		  const char *fromhdr,
 		  int *errcode)
 {
-const char *c;
+	const char *c;
+	struct maildirfilterrule *pom;
 
 /*
 ** Before creating a new rule, validate all input.
@@ -101,7 +102,6 @@ const char *c;
 	/* rule name: may not already exist */
 	*errcode=MF_ERR_EXISTS;
 	
-	struct maildirfilterrule *pom;
 	for (pom=r->first; pom->next; pom=pom->next) {
 	    if (p!=pom && !strcmp(name, pom->rulename))
 		return (-1);

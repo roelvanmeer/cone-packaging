@@ -1,4 +1,4 @@
-/* $Id: curseshierarchy.C,v 1.12 2004/04/25 03:37:15 mrsam Exp $
+/* $Id: curseshierarchy.C,v 1.13 2007/04/06 17:57:29 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -32,6 +32,7 @@
 #include "acl.H"
 #include <errno.h>
 #include <set>
+#include <algorithm>
 
 using namespace std;
 

@@ -1,242 +1,139 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::account::hasCapability</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="mail::account Native API reference"
-HREF="native.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::account::getSendFolder"
-HREF="mail-getsendfolder.html"><LINK
-REL="NEXT"
-TITLE="mail::account::isRemoteUrl"
-HREF="mail-isremoteurl.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="mail-getsendfolder.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="mail-isremoteurl.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="MAIL-HASCAPABILITY"
-></A
->mail::account::hasCapability</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN6536"
-></A
-><H2
->Name</H2
->mail::account::hasCapability&nbsp;--&nbsp;Mail account's properties</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN6539"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->mail::account&nbsp;*account;</P
-><DIV
-CLASS="FUNCSYNOPSIS"
-><P
-></P
-><A
-NAME="AEN6541"
-></A
-><P
-><CODE
-><CODE
-CLASS="FUNCDEF"
->bool flag=account-&#62;<TT
-CLASS="FUNCTION"
->hasCapability</TT
-></CODE
->(std::string <TT
-CLASS="PARAMETER"
-><I
->capability</I
-></TT
->);</CODE
-></P
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN6547"
-></A
-><H2
->USAGE</H2
-><P
->This function checks this
-<CODE
-CLASS="STRUCTNAME"
->mail::account</CODE
->'s properties.
-The list of potential properties, or capabilities, depends on the account.
-The currently defined list of properties are:
-<P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><TT
-CLASS="LITERAL"
->LIBMAIL_SINGLEFOLDER</TT
-></DT
-><DD
-><P
->Whether this account contains a single incoming mail folder
-(currently only <TT
-CLASS="LITERAL"
->pop3</TT
-> accounts
-have this capability defined).</P
-></DD
-></DL
-></DIV
-></P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN6558"
-></A
-><H2
->RETURN CODES AND CALLBACKS</H2
-><P
->The
-<TT
-CLASS="FUNCTION"
->hasCapability</TT
-> method returns true if the account
-supports the indicated capability.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="mail-getsendfolder.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="mail-isremoteurl.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::account::getSendFolder</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="native.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::account::isRemoteUrl</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>mail::account::hasCapability</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="native.html" title="mail::account Native API reference"/>
+  <link rel="prev" href="mail-getsendfolder.html" title="mail::account::getSendFolder"/>
+  <link rel="next" href="mail-isremoteurl.html" title="mail::account::isRemoteUrl"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::account::hasCapability</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="mail-getsendfolder.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="structname">mail::account</span> Native API
+        reference</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="mail-isremoteurl.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="mail-hascapability" shape="rect" name="mail-hascapability"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::account::hasCapability &#8212; Mail account's
+      properties</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        mail::account&#160;*account;<br clear="none"/></p>
+      </div>
+
+      <div class="funcsynopsis">
+        <table border="0" summary="Function synopsis" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="1" colspan="1"><code class="funcdef">bool
+            flag=account-&gt;<b class="fsfunc">hasCapability</b>(</code></td>
+
+            <td rowspan="1" colspan="1">std::string &#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">capability</var><code>)</code>;</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id415799" shape="rect" name="id415799"> </a>
+
+      <h2>USAGE</h2>
+
+      <p>This function checks this <span class="structname">mail::account</span>'s properties. The list of
+      potential properties, or capabilities, depends on the
+      account. The currently defined list of properties are:</p>
+
+      <div class="variablelist">
+        <dl>
+          <dt><span class="term"><code class="literal">LIBMAIL_SINGLEFOLDER</code></span></dt>
+
+          <dd>
+            <p>Whether this account contains a single incoming mail
+            folder (currently only <code class="literal">pop3</code> accounts have this capability
+            defined).</p>
+          </dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id415840" shape="rect" name="id415840"> </a>
+
+      <h2>RETURN CODES AND CALLBACKS</h2>
+
+      <p>The <code class="function">hasCapability</code> method
+      returns true if the account supports the indicated
+      capability.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="mail-getsendfolder.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="native.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="mail-isremoteurl.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::account::getSendFolder&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::account::isRemoteUrl</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>
