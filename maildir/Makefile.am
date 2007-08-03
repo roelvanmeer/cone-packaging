@@ -1,9 +1,8 @@
-#$Id: Makefile.am,v 1.56 2005/09/24 00:27:05 mrsam Exp $
+#$Id: Makefile.am,v 1.57 2007/06/30 15:40:53 mrsam Exp $
 #
 # Copyright 1998 - 2005 Double Precision, Inc.  See COPYING for
 # distribution information.
 
-AUTOMAKE = srcdir=${srcdir} @SHELL@ ${srcdir}/../automake.fix @AUTOMAKE@
 
 noinst_LTLIBRARIES=libmaildir.la
 

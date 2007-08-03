@@ -1,9 +1,8 @@
-# $Id: Makefile.am,v 1.4 2006/01/23 23:22:10 mrsam Exp $
+# $Id: Makefile.am,v 1.5 2007/06/30 15:40:53 mrsam Exp $
 #
 # Copyright 2001-2002 Double Precision, Inc.  See COPYING for
 # distribution information.
 
-AUTOMAKE = srcdir=${srcdir} @SHELL@ ${srcdir}/../automake.fix @AUTOMAKE@
 
 EXTRA_DIST=certs.sh mkcerts.pl
 

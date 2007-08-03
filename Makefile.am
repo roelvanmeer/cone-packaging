@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.23 2007/05/13 17:26:13 mrsam Exp $
+# $Id: Makefile.am,v 1.28 2007/07/22 01:54:11 mrsam Exp $
 #
 # Copyright 2003-2006, Double Precision Inc.
 #
@@ -30,7 +30,6 @@ DISTCLEANFILES=coneversion
 coneversion:
 	echo "@VERSION@" | cmp -s - coneversion && exit 0; echo "@VERSION@" >coneversion
 
-AUTOMAKE = srcdir=${srcdir} @SHELL@ ${srcdir}/automake.fix @AUTOMAKE@
 AUTOMAKE_OPTIONS=dist-bzip2
 
 HTML2TXT=links -dump -no-numbering
@@ -58,8 +57,7 @@ uninstall-local:
 	rm -f ${DESTDIR}${libexecdir}/cone
 	rm -f ${DESTDIR}${pkgdatadir}/${HELPNAME}
 
-EXTRA_DIST = automake.fix \
-	cone.spec COPYING COPYING.GPL AUTHORS
+EXTRA_DIST = cone.spec COPYING COPYING.GPL AUTHORS
 
 dist-hook:
 	rm -f $(distdir)/NEWS $(distdir)/README $(distdir)/INSTALL
@@ -68,7 +66,7 @@ dist-hook:
 	$(HTML2TXT) $(srcdir)/cone/html/INSTALL.html >$(distdir)/INSTALL
 
 
-# Added by sysconftoolize: $Id: Makefile.am,v 1.23 2007/05/13 17:26:13 mrsam Exp $
+# Added by sysconftoolize: $Id: Makefile.am,v 1.28 2007/07/22 01:54:11 mrsam Exp $
 
 # Copyright 2000 Double Precision, Inc.  See COPYING for
 # distribution information.
@@ -127,7 +125,7 @@ bump.rpm.release: cone.spec
 	RELEASE=`expr $$NEXT_RELEASE + 1`; \
 	echo "VERSION=@VERSION@" >$(srcdir)/rpm.release; \
 	echo "RELEASE=$$RELEASE" >>$(srcdir)/rpm.release; \
-	sed 's/^Release: .*/Release: '$$RELEASE'%{cone_release}/' \
+	sed 's/^Release: .*/Release: '$$RELEASE'%{?dist}%{cone_release}/' \
 		<cone.spec >cone.spec.new; \
 	mv cone.spec.new cone.spec
 
@@ -173,7 +171,15 @@ release-dist:
 .PHONY: rpm
 
 pub:
-	cp -pr cone/html/* $$HOME/www/www.courier-mta.org/cone
+	rm -rf tmp
+	mkdir tmp
+	set -e; for f in `cd cone/html; ls *.html`; \
+	do \
+		xsltproc --nonet $$HOME/www/www.courier-mta.org/xsl/cone.xsl cone/html/$$f >tmp/$$f ; \
+	done
+	cp -p cone/html/*.css cone/html/*.gif tmp
+	rsync -a --exclude .svn --delete-after tmp/. $$HOME/www/www.courier-mta.org/cone
+	rm -rf tmp
 
 tst:
 	rm -f valgrind.log*

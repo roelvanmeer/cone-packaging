@@ -1,10 +1,10 @@
-#$Id: Makefile.am,v 1.41 2007/05/13 17:26:13 mrsam Exp $
+#$Id: Makefile.am,v 1.46 2007/07/22 01:13:37 mrsam Exp $
 #
-# Copyright 2003-2006, Double Precision Inc.
+# Copyright 2003-2007, Double Precision Inc.
 #
 # See COPYING for distribution information.
 #
-SUBDIRS=intl po m4
+SUBDIRS=intl po
 
 noinst_PROGRAMS=cone leaf htmlparsertest pwtest
 noinst_SCRIPTS=cone.sh cone.dist
@@ -15,7 +15,6 @@ MANMACROFILES=man1/cone.1
 
 noinst_DATA=help.txt http.handler
 
-AUTOMAKE = srcdir=${srcdir} @SHELL@ ${srcdir}/../automake.fix @AUTOMAKE@
 AUTOMAKE_OPTIONS=dist-bzip2
 
 IMAGEFILTERS=IMAGE.GIF.filter IMAGE.JPEG.filter IMAGE.PNG.filter
@@ -220,8 +219,9 @@ if HAVE_SGML
 $(man1src) $(man3src) $(man5src) html/index.html html/readme.html html/install.html: sgmltimestamp
 
 sgmltimestamp: sgml/*.sgml
+	rm -rf html
 	$(mkinstalldirs) html
-	rm -f html/*html*
+	cp -p manpage.css icon.gif html
 	xsltproc -o html/ $(srcdir)/cone.xsl $(srcdir)/sgml/book.sgml
 	for f in html/*.html; do xsltproc --nonet $(srcdir)/../docbook/fixhtml.xsl $$f | tidy -i -q --doctype transitional --input-encoding utf8 --output-encoding ascii -asxml >html/.t; xsltproc --nonet $(srcdir)/postproc.xsl html/.t >$$f; done
 	rm -f html/.t
@@ -270,7 +270,7 @@ uninstall-local:
 	rm -f $(DESTDIR)$(pkgdatadir)/http.handler
 	rm -f $(DESTDIR)$(pkgdatadir)/https.handler
 
-EXTRA_DIST = mkinstalldirs  testsuite1 testsuite1.out pwtest.txt colors.txt mkcolors.pl \
+EXTRA_DIST = testsuite1 testsuite1.out pwtest.txt colors.txt mkcolors.pl \
 	fixonlinehelp.pl mkhtmlmsg.pl postproc.xsl $(SPELLSRC)
 
 colors_inc.h: colors.txt mkcolors.pl

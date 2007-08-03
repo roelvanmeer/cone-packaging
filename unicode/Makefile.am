@@ -1,9 +1,8 @@
-# $Id: Makefile.am,v 1.23 2006/03/25 14:24:43 mrsam Exp $
+# $Id: Makefile.am,v 1.24 2007/06/30 15:40:53 mrsam Exp $
 #
 # Copyright 2000 Double Precision, Inc.  See COPYING for
 # distribution information.
 
-AUTOMAKE = srcdir=${srcdir} @SHELL@ ${srcdir}/../automake.fix @AUTOMAKE@
 
 CLEANFILES=charsetlist.c
 

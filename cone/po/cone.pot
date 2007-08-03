@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: courier-cone@lists.sourceforge.net\n"
-"POT-Creation-Date: 2007-05-13 13:31-0400\n"
+"POT-Creation-Date: 2007-07-21 21:08-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,7 +49,6 @@ msgid "ADD ENTRY"
 msgstr ""
 
 #: addressbook.C:879
-#, c-format
 msgid "Delete address book entry for '%1%'? (Y/N) "
 msgstr ""
 
@@ -66,7 +65,6 @@ msgid "Importing..."
 msgstr ""
 
 #: addressbook.C:1099
-#, c-format
 msgid "Syntax error on line %1%"
 msgstr ""
 
@@ -177,7 +175,6 @@ msgid "Add LDAP server"
 msgstr ""
 
 #: addressbook.C:1741
-#, c-format
 msgid "Delete address book \"%1%\"? (Y/N) "
 msgstr ""
 
@@ -306,7 +303,6 @@ msgid "Pick a different account name. This one's already used."
 msgstr ""
 
 #: cone.C:310
-#, c-format
 msgid "Add %1% Account"
 msgstr ""
 
@@ -359,12 +355,10 @@ msgid "EDIT ACCOUNT"
 msgstr ""
 
 #: cone.C:711
-#, c-format
 msgid "Select the folder to copy %1% message(s) to."
 msgstr ""
 
 #: cone.C:713
-#, c-format
 msgid "Select the folder to move %1% message(s) to."
 msgstr ""
 
@@ -397,7 +391,6 @@ msgid "Have a nice day."
 msgstr ""
 
 #: cone.C:1054
-#, c-format
 msgid "Recover configuration from %1%? (Y/N) "
 msgstr ""
 
@@ -451,7 +444,6 @@ msgid "Loading GnuPG encryption keys..."
 msgstr ""
 
 #: cone.C:1465
-#, c-format
 msgid "Welcome to Cone %1% (%2%)"
 msgstr ""
 
@@ -576,12 +568,10 @@ msgid "No"
 msgstr ""
 
 #: configscreen.C:320
-#, c-format
 msgid "Tag %1% name: "
 msgstr ""
 
 #: configscreen.C:435
-#, c-format
 msgid "FUNCTION KEY: F%1%"
 msgstr ""
 
@@ -667,7 +657,6 @@ msgid "Inline attachment? (Y/N) "
 msgstr ""
 
 #: cursesedit.C:1113
-#, c-format
 msgid "%1% (%2% of %3%)"
 msgstr ""
 
@@ -732,7 +721,6 @@ msgid "NetNews server not found. Please log on to a server first."
 msgstr ""
 
 #: cursesedit.C:2097
-#, c-format
 msgid "Post message%1%? (Y/N) "
 msgstr ""
 
@@ -817,7 +805,6 @@ msgid "Encrypting/signing..."
 msgstr ""
 
 #: cursesedit.C:2880
-#, c-format
 msgid "Saving message in %1%..."
 msgstr ""
 
@@ -826,7 +813,6 @@ msgid "Sending message..."
 msgstr ""
 
 #: cursesedit.C:2914
-#, c-format
 msgid ""
 "The mail server rejected the message with the following error:\n"
 "\n"
@@ -839,7 +825,6 @@ msgid "Posting message..."
 msgstr ""
 
 #: cursesedit.C:2961
-#, c-format
 msgid ""
 "The NetNews server rejected the message with the following error:\n"
 "\n"
@@ -939,7 +924,6 @@ msgid "Replace All"
 msgstr ""
 
 #: curseseditmessage.C:980
-#, c-format
 msgid "Replaced %1% occurences."
 msgstr ""
 
@@ -960,7 +944,6 @@ msgid "Starting editor..."
 msgstr ""
 
 #: curseseditmessage.C:1386
-#, c-format
 msgid ""
 "The external editor command failed.  Check that the configured external "
 "editor, \"%1%\", exists."
@@ -1176,12 +1159,10 @@ msgid "Ext Editor"
 msgstr ""
 
 #: curseshierarchy.C:174
-#, c-format
 msgid "%1% messages, %2% unread"
 msgstr ""
 
 #: curseshierarchy.C:175 cursesindexdisplay.C:147
-#, c-format
 msgid "%1% messages"
 msgstr ""
 
@@ -1194,17 +1175,14 @@ msgid "Folder: "
 msgstr ""
 
 #: curseshierarchy.C:206
-#, c-format
 msgid "(%1% messages, %2% unread)"
 msgstr ""
 
 #: curseshierarchy.C:207
-#, c-format
 msgid "(%1% messages)"
 msgstr ""
 
 #: curseshierarchy.C:552 myserver.C:913
-#, c-format
 msgid "Opening %1%..."
 msgstr ""
 
@@ -1217,7 +1195,6 @@ msgid "Add Folder Directory"
 msgstr ""
 
 #: curseshierarchy.C:1013
-#, c-format
 msgid "Add folder/directory in %1%: "
 msgstr ""
 
@@ -1231,17 +1208,14 @@ msgid "Folder not found."
 msgstr ""
 
 #: curseshierarchy.C:1062
-#, c-format
 msgid "Add %1% as a folder directory? (Y/N) "
 msgstr ""
 
 #: curseshierarchy.C:1120
-#, c-format
 msgid "Create new folder in %1%: "
 msgstr ""
 
 #: curseshierarchy.C:1135
-#, c-format
 msgid "Create new folder directory in %1%: "
 msgstr ""
 
@@ -1278,7 +1252,6 @@ msgid "No permissions"
 msgstr ""
 
 #: curseshierarchy.C:1377
-#, c-format
 msgid ""
 "You have the following permissions on this folder:\n"
 "\n"
@@ -1290,7 +1263,6 @@ msgid "This folder does not contain messages."
 msgstr ""
 
 #: curseshierarchy.C:1414
-#, c-format
 msgid "Reset memorized headers for %1%? (Y/N) "
 msgstr ""
 
@@ -1303,22 +1275,18 @@ msgid "Cannot remove the only mail account."
 msgstr ""
 
 #: curseshierarchy.C:1467
-#, c-format
 msgid "Remove account %1%? (Y/N) "
 msgstr ""
 
 #: curseshierarchy.C:1584
-#, c-format
 msgid "Remove %1% from %2%? (Y/N) "
 msgstr ""
 
 #: curseshierarchy.C:1612
-#, c-format
 msgid "Delete folder directory %1%? (Y/N) "
 msgstr ""
 
 #: curseshierarchy.C:1637
-#, c-format
 msgid "Delete folder %1%? (Y/N) "
 msgstr ""
 
@@ -1389,7 +1357,6 @@ msgid "Name of this address book: "
 msgstr ""
 
 #: curseshierarchy.C:1914
-#, c-format
 msgid "%1% on %2%"
 msgstr ""
 
@@ -1402,7 +1369,6 @@ msgid "Nickname for this sent mail folder: "
 msgstr ""
 
 #: curseshierarchy.C:1984
-#, c-format
 msgid "%1% in %2%"
 msgstr ""
 
@@ -1495,7 +1461,6 @@ msgid " "
 msgstr ""
 
 #: cursesindexdisplay.C:603 cursesmessagedisplay.C:578
-#, c-format
 msgid "Blind-forward message to %1% address(es)? (Y/N) "
 msgstr ""
 
@@ -1642,12 +1607,10 @@ msgid "unrEad selected"
 msgstr ""
 
 #: cursesindexdisplay.C:1306
-#, c-format
 msgid "Tag %1% messages as: "
 msgstr ""
 
 #: cursesindexdisplay.C:1357
-#, c-format
 msgid "Watch thread up to %1% days, %2%-deep replies? (Y/N) "
 msgstr ""
 
@@ -1840,7 +1803,6 @@ msgid "Show blobs"
 msgstr ""
 
 #: cursesmessage.C:566
-#, c-format
 msgid ""
 "<br><center>* Inline attachment shown *</center><center><b>%1%</b></"
 "center><br>\n"
@@ -1855,21 +1817,18 @@ msgid "Attachment: "
 msgstr ""
 
 #: cursesmessage.C:873
-#, c-format
 msgid ""
 "The following text uses an unknown character set called \"%1%\".  Some "
 "characters may not be shown correctly."
 msgstr ""
 
 #: cursesmessage.C:879
-#, c-format
 msgid ""
 "The following text is written in the %1% character set.  Your display is set "
 "to the %2% character set, so some characters may not be shown correctly."
 msgstr ""
 
 #: cursesmessage.C:951
-#, c-format
 msgid "Signed/encrypted (%1%) content follows"
 msgstr ""
 
@@ -1922,12 +1881,10 @@ msgid " Message-ID: "
 msgstr ""
 
 #: cursesmessage.C:1215 cursesmessage.C:1226
-#, c-format
 msgid "%1%; %2%"
 msgstr ""
 
 #: cursesmessage.C:1967
-#, c-format
 msgid "Follow up to: %1%? (Y/N) "
 msgstr ""
 
@@ -1944,7 +1901,6 @@ msgid "Reply to all? (Y/N) "
 msgstr ""
 
 #: cursesmessage.C:2300
-#, c-format
 msgid "%1% writes:"
 msgstr ""
 
@@ -1969,7 +1925,6 @@ msgid "Error - invalid mail list format"
 msgstr ""
 
 #: cursesmessage.C:2799
-#, c-format
 msgid "Password for SMTP server on %1%: "
 msgstr ""
 
@@ -1978,17 +1933,14 @@ msgid "Passphrase (if required): "
 msgstr ""
 
 #: cursesmessage.C:2970
-#, c-format
 msgid "Sign, encrypt, then %1%"
 msgstr ""
 
 #: cursesmessage.C:2971
-#, c-format
 msgid "Sign, then %1%"
 msgstr ""
 
 #: cursesmessage.C:2972
-#, c-format
 msgid "Encrypt, then %1%"
 msgstr ""
 
@@ -2017,7 +1969,6 @@ msgid "never"
 msgstr ""
 
 #: cursesmessage.C:3108
-#, c-format
 msgid "Send message (NOTIFY=%1%)? (Y) "
 msgstr ""
 
@@ -2094,7 +2045,6 @@ msgid "Decrypting/verifying message..."
 msgstr ""
 
 #: cursesmessagedisplay.C:147
-#, c-format
 msgid "%1%: %2% of %3% %4%"
 msgstr ""
 
@@ -2107,7 +2057,6 @@ msgid " (DELETED)"
 msgstr ""
 
 #: cursesmessagedisplay.C:298
-#, c-format
 msgid "Cannot find handler for %1%"
 msgstr ""
 
@@ -2120,7 +2069,6 @@ msgid "External handler terminated with a non-zero exit code."
 msgstr ""
 
 #: cursesmessagedisplay.C:472
-#, c-format
 msgid "No more unread mail in %1%"
 msgstr ""
 
@@ -2137,7 +2085,6 @@ msgid "ERROR: Decryption failed, passphrase forgotten."
 msgstr ""
 
 #: cursesmessagedisplay.C:1038
-#, c-format
 msgid "Text located, displayed on line #%1%"
 msgstr ""
 
@@ -2522,7 +2469,6 @@ msgid "Subject:"
 msgstr ""
 
 #: filter.C:146
-#, c-format
 msgid "Header \"%1%\""
 msgstr ""
 
@@ -2535,57 +2481,46 @@ msgid "Header and body"
 msgstr ""
 
 #: filter.C:158 searchprompt.C:378
-#, c-format
 msgid "Received before: %1% "
 msgstr ""
 
 #: filter.C:162 searchprompt.C:383
-#, c-format
 msgid "Received on: %1% "
 msgstr ""
 
 #: filter.C:166 searchprompt.C:388
-#, c-format
 msgid "Received since: %1% "
 msgstr ""
 
 #: filter.C:173 searchprompt.C:363
-#, c-format
 msgid "Sent before: %1% "
 msgstr ""
 
 #: filter.C:177 searchprompt.C:368
-#, c-format
 msgid "Sent on: %1% "
 msgstr ""
 
 #: filter.C:180 searchprompt.C:373
-#, c-format
 msgid "Sent since: %1% "
 msgstr ""
 
 #: filter.C:185
-#, c-format
 msgid "Larger than %1% bytes"
 msgstr ""
 
 #: filter.C:189
-#, c-format
 msgid "Smaller than %1% bytes"
 msgstr ""
 
 #: filter.C:194
-#, c-format
 msgid "Search NOT %1%"
 msgstr ""
 
 #: filter.C:195
-#, c-format
 msgid "Search %1%"
 msgstr ""
 
 #: filter.C:222
-#, c-format
 msgid "%1% contains %2%"
 msgstr ""
 
@@ -2606,12 +2541,10 @@ msgid "Unmark"
 msgstr ""
 
 #: filter.C:247
-#, c-format
 msgid "Copy to %1%"
 msgstr ""
 
 #: filter.C:256
-#, c-format
 msgid "Tag as %1%"
 msgstr ""
 
@@ -2620,7 +2553,6 @@ msgid "(unknown)"
 msgstr ""
 
 #: filter.C:261
-#, c-format
 msgid "Move to %1%"
 msgstr ""
 
@@ -2713,7 +2645,6 @@ msgid "DELFILTER:DEL"
 msgstr ""
 
 #: filtereditscreen.C:472
-#, c-format
 msgid "%1% - FILTERS"
 msgstr ""
 
@@ -2812,7 +2743,7 @@ msgid "CLEAR:Rr"
 msgstr ""
 
 #: gettext.C:45
-msgid "MORE:"
+msgid "MORE:\v"
 msgstr ""
 
 #: gettext.C:46
@@ -2940,7 +2871,7 @@ msgid "FWD:Ff"
 msgstr ""
 
 #: gettext.C:77
-msgid "GETFILE:"
+msgid "GETFILE:\a"
 msgstr ""
 
 #: gettext.C:78
@@ -3524,7 +3455,6 @@ msgid " (Dir)"
 msgstr ""
 
 #: init.C:63
-#, c-format
 msgid " (%1%)"
 msgstr ""
 
@@ -3533,7 +3463,6 @@ msgid "Out of memory."
 msgstr ""
 
 #: init.C:124
-#, c-format
 msgid ""
 "ERROR: Your display appears to be set to the %1% character set.\n"
 "This application cannot display this character set.  If this application "
@@ -3566,12 +3495,10 @@ msgid "nN"
 msgstr ""
 
 #: leaf.C:122
-#, c-format
 msgid "%1% (*)"
 msgstr ""
 
 #: leaf.C:124
-#, c-format
 msgid "%1%/%2%"
 msgstr ""
 
@@ -3580,17 +3507,14 @@ msgid "Modified file is not saved, lose all changes made? (Y/N) "
 msgstr ""
 
 #: leaf.C:165
-#, c-format
 msgid "Loading %1%..."
 msgstr ""
 
 #: leaf.C:172
-#, c-format
 msgid "Saving %1%..."
 msgstr ""
 
 #: leaf.C:179
-#, c-format
 msgid "Saved %1%"
 msgstr ""
 
@@ -3627,7 +3551,6 @@ msgid "LEAF"
 msgstr ""
 
 #: leaf.C:592
-#, c-format
 msgid "Welcome to LEAF (%1%)"
 msgstr ""
 
@@ -3811,7 +3734,6 @@ msgid "%lu bytes"
 msgstr ""
 
 #: myfolder.C:169 myfolder.C:188 myfolder.C:203
-#, c-format
 msgid "%1%: unable to read snapshot."
 msgstr ""
 
@@ -3820,7 +3742,6 @@ msgid "Closing folder..."
 msgstr ""
 
 #: myfolder.C:579
-#, c-format
 msgid "%1% new message(s) in %2%"
 msgstr ""
 
@@ -3853,12 +3774,10 @@ msgid "Unmarking message..."
 msgstr ""
 
 #: myfolder.C:960
-#, c-format
 msgid "%1% message(s) deleted in %2%"
 msgstr ""
 
 #: myfolder.C:1060
-#, c-format
 msgid "%1%: %2%"
 msgstr ""
 
@@ -3867,7 +3786,6 @@ msgid "Reading headers..."
 msgstr ""
 
 #: myfolder.C:1149
-#, c-format
 msgid "%1%: %2% messages"
 msgstr ""
 
@@ -3876,7 +3794,6 @@ msgid "Filtering messages..."
 msgstr ""
 
 #: myfolder.C:1456
-#, c-format
 msgid "Downloading message from %1%..."
 msgstr ""
 
@@ -3909,7 +3826,6 @@ msgid "Ok"
 msgstr ""
 
 #: mymessage.C:475
-#, c-format
 msgid "You have %1% message(s) in %2%, open? (Y/N) "
 msgstr ""
 
@@ -3918,47 +3834,38 @@ msgid "An interrupted message was preserved, resume? (Y/N) "
 msgstr ""
 
 #: myserver.C:129
-#, c-format
 msgid "%1% - DISCONNECTED: %2%"
 msgstr ""
 
 #: myserver.C:146
-#, c-format
 msgid "%1% - ALERT: %2%"
 msgstr ""
 
 #: myserver.C:404
-#, c-format
 msgid "Connecting to %1%..."
 msgstr ""
 
 #: myserver.C:892
-#, c-format
 msgid "Purging %1%..."
 msgstr ""
 
 #: myservercallback.C:85 myservercallback.C:102
-#, c-format
 msgid "%1% of %2%"
 msgstr ""
 
 #: myservercallback.C:106 myservercallback.C:111
-#, c-format
 msgid " (%1% done)"
 msgstr ""
 
 #: myservercallback.C:110
-#, c-format
 msgid " (%1%; %2% done)"
 msgstr ""
 
 #: myserverlogincallback.C:50
-#, c-format
 msgid "Password for %1% (CTRL-C - cancel): "
 msgstr ""
 
 #: myserverlogincallback.C:51
-#, c-format
 msgid "Login for %1% (CTRL-C - cancel): "
 msgstr ""
 
@@ -4013,7 +3920,6 @@ msgid "Overwrite existing file? (Y/N) "
 msgstr ""
 
 #: searchcallback.C:39
-#, c-format
 msgid "Found %1% messages."
 msgstr ""
 
@@ -4346,7 +4252,6 @@ msgid "No servers available for special folders"
 msgstr ""
 
 #: specialfolder.C:208
-#, c-format
 msgid "%1% does not have a hierarchy for special folders."
 msgstr ""
 

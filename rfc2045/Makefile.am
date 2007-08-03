@@ -1,9 +1,8 @@
-#$Id: Makefile.am,v 1.33 2005/11/16 02:23:15 mrsam Exp $
+#$Id: Makefile.am,v 1.34 2007/06/30 15:40:53 mrsam Exp $
 #
 # Copyright 1998 - 2004 Double Precision, Inc.  See COPYING for
 # distribution information.
 
-AUTOMAKE = srcdir=${srcdir} @SHELL@ ${srcdir}/../automake.fix @AUTOMAKE@
 
 DISTCLEANFILES=testsuite.dat
 

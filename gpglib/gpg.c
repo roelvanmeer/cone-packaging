@@ -3,7 +3,7 @@
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: gpg.c,v 1.11 2006/05/28 15:29:52 mrsam Exp $";
+static const char rcsid[]="$Id: gpg.c,v 1.12 2007/07/04 02:24:38 mrsam Exp $";
 
 #include "config.h"
 #include <stdio.h>
@@ -36,6 +36,7 @@ static const char rcsid[]="$Id: gpg.c,v 1.11 2006/05/28 15:29:52 mrsam Exp $";
 #include "tempname.h"
 #include "gpglib.h"
 #include "rfc822/encode.h"
+#include "rfc2045/rfc2045.h"
 
 static int my_rewind(FILE *fp)
 {
@@ -504,37 +505,6 @@ static int dogpgencrypt(const char *gpghome,
 	return 0;
 }
 
-static int qp_do(const char *p, size_t cnt, void *ptr)
-{
-	struct gpg_fork_output_info *gfoi=
-		(struct gpg_fork_output_info *)ptr;
-	struct gpgmime_forkinfo *gpg=gfoi->gpgptr;
-	size_t i;
-
-	(*gfoi->output_func)(p, cnt, gfoi->output_func_arg);
-
-	while (cnt)
-	{
-		if (*p == '\n')
-		{
-			libmail_gpgmime_write(gpg, "\r\n", 2);
-			++p;
-			--cnt;
-			continue;
-		}
-
-
-		for (i=0; i<cnt; i++)
-			if (p[i] == '\n')
-				break;
-
-		libmail_gpgmime_write(gpg, p, i);
-		p += i;
-		cnt -= i;
-	}
-	return 0;
-}
-
 static int dogpgsign(const char *gpghome, const char *passphrase_fd,
 		     struct mimestack **stack, struct header *h, int *iseof,
 		     int (*input_func)(char *, size_t, void *vp),
@@ -559,10 +529,7 @@ static int dogpgsign(const char *gpghome, const char *passphrase_fd,
 	FILE *signed_content_fp;
 	const char *boundary;
 	int need_crlf;
-	int convert_to_qp=0;
-	int in_headers;
 	struct gpg_fork_output_info gfoi;
-	struct libmail_encode_info encode_info;
 
 	for (hp=h; hp; hp=hp->next)
 	{
@@ -640,9 +607,6 @@ static int dogpgsign(const char *gpghome, const char *passphrase_fd,
 					break;
 				}
 
-				if (*p <= 0 || *p >= 0x7F)
-					convert_to_qp=1;
-
 				putc(*p, signed_content_fp);
 			}
 			if (*p == '\n')
@@ -718,56 +682,10 @@ static int dogpgsign(const char *gpghome, const char *passphrase_fd,
 		return (-1);
 	}
 
-	if (convert_to_qp)
-		libmail_encode_start(&encode_info,
-				     "quoted-printable",
-				     qp_do,
-				     &gfoi);
-
-	in_headers=1;
-
 	while (fgets(buf, sizeof(buf), signed_content_fp) != NULL)
 	{
 		char *p;
 		size_t j, k;
-
-		if (convert_to_qp && in_headers &&
-		    strncasecmp(buf, "content-transfer-encoding:", 26) == 0)
-			continue;
-
-		if (strcmp(buf, "\r\n") == 0 && in_headers)
-		{
-			in_headers=0;
-			if (convert_to_qp)
-				strcpy(buf, "Content-Transfer-Encoding: "
-				       "quoted-printable\r\n"
-				       "X-Mime-Autoconverted: from 8bit"
-				       " to quoted-printable by mimegpg"
-				       "\r\n\r\n");
-		}
-		else if (convert_to_qp && !in_headers)
-		{
-			size_t i;
-
-			for (p=buf; *p; )
-			{
-				if (*p == '\r')
-				{
-					++p;
-					continue;
-				}
-
-				for (i=0; p[i]; ++i)
-					if (p[i] == '\r')
-						break;
-
-				if (rc == 0 &&
-				    libmail_encode(&encode_info, p, i))
-					rc= -1;
-				p += i;
-			}
-			continue;
-		}
 
 		libmail_gpgmime_write(&gpg, buf, strlen(buf));
 
@@ -778,12 +696,6 @@ static int dogpgsign(const char *gpghome, const char *passphrase_fd,
 
 		if (k)
 			(*output_func)(p, k, output_func_arg);
-	}
-
-	if (convert_to_qp)
-	{
-		if (rc == 0 && libmail_encode_end(&encode_info))
-			rc= -1;
 	}
 
 	C("\n--");
@@ -866,19 +778,19 @@ static void print_noncontent_headers(struct header *h,
 	}
 }
 
-static int dosignencode(int dosign, int doencode, int dodecode,
-			const char *gpghome,
-			const char *passphrase_fd,
-			int (*input_func)(char *, size_t, void *vp),
-			void *input_func_arg,
-			void (*output_func)(const char *,
-					    size_t,
-					    void *),
-			void *output_func_arg,
-			void (*errhandler_func)(const char *, void *),
-			void *errhandler_arg,
-			int argc, char **argv,
-			int *status)
+static int dosignencode2(int dosign, int doencode, int dodecode,
+			 const char *gpghome,
+			 const char *passphrase_fd,
+			 int (*input_func)(char *, size_t, void *vp),
+			 void *input_func_arg,
+			 void (*output_func)(const char *,
+					     size_t,
+					     void *),
+			 void *output_func_arg,
+			 void (*errhandler_func)(const char *, void *),
+			 void *errhandler_arg,
+			 int argc, char **argv,
+			 int *status)
 {
 	struct mimestack *boundary_stack=0;
 	int iseof=0;
@@ -2055,6 +1967,167 @@ static void libmail_gpg_errfunc(const char *errmsg, void *vp)
 		(*eh->options->errhandler_func)(errmsg,
 						eh->options->errhandler_arg);
 	}
+}
+ 
+static int input_func_from_fp(char *buf, size_t cnt, void *vp)
+{
+	if (fgets(buf, cnt, (FILE *)vp) == NULL)
+		return (-1);
+	return (0);
+}
+
+/*
+** When signing, but not encoding, signed text must be 7bit, as per RFC.
+**
+** Use rfc2045's rewriter to do this.
+*/
+
+static int dosignencode(int dosign, int doencode, int dodecode,
+			const char *gpghome,
+			const char *passphrase_fd,
+			int (*input_func)(char *, size_t, void *vp),
+			void *input_func_arg,
+			void (*output_func)(const char *,
+					    size_t,
+					    void *),
+			void *output_func_arg,
+			void (*errhandler_func)(const char *, void *),
+			void *errhandler_arg,
+			int argc, char **argv,
+			int *status)
+{
+	char temp_decode_name[TEMPNAMEBUFSIZE];
+	int fdin;
+	int fdout;
+	FILE *fdin_fp;
+	char buffer[8192];
+	struct rfc2045 *rfcp;
+	int rc;
+
+	if (!dosign || doencode)
+		return dosignencode2(dosign, doencode, dodecode,
+				     gpghome,
+				     passphrase_fd,
+				     input_func,
+				     input_func_arg,
+				     output_func,
+				     output_func_arg,
+				     errhandler_func,
+				     errhandler_arg,
+				     argc, argv, status);
+
+	/* Save the message into a temp file, first */
+
+	fdin=libmail_tempfile(temp_decode_name);
+
+	if (fdin < 0 ||
+	    (fdin_fp=fdopen(fdin, "w+")) == NULL)
+	{
+		if (fdin >= 0)
+			close(fdin);
+
+		(*errhandler_func)("Cannot create temporary file",
+				   errhandler_arg);
+		return (-1);
+	}
+
+	unlink(temp_decode_name);
+
+	if (!(rfcp=rfc2045_alloc_ac()))
+	{
+		(*errhandler_func)(strerror(errno), errhandler_arg);
+		fclose(fdin_fp);
+		return (-1);
+	}
+
+	while ( (*input_func)(buffer, sizeof(buffer), input_func_arg) == 0)
+	{
+		size_t l=strlen(buffer);
+
+		if (fwrite(buffer, l, 1, fdin_fp) != 1)
+		{
+			(*errhandler_func)(strerror(errno), errhandler_arg);
+			fclose(fdin_fp);
+			rfc2045_free(rfcp);
+			return (-1);
+		}
+
+		/* Parse the message at the same time it's being saved */
+
+		rfc2045_parse(rfcp, buffer, l);
+	}
+
+	if (fseek(fdin_fp, 0L, SEEK_SET) < 0)
+	{
+		(*errhandler_func)(strerror(errno), errhandler_arg);
+		fclose(fdin_fp);
+		rfc2045_free(rfcp);
+		return (-1);
+	}
+
+	if (!rfc2045_ac_check(rfcp, RFC2045_RW_7BIT))
+	{
+		rfc2045_free(rfcp);
+
+		/* No need to rewrite, just do this */
+
+		rc=dosignencode2(dosign, doencode, dodecode,
+				     gpghome,
+				     passphrase_fd,
+				     input_func_from_fp,
+				     fdin_fp,
+				     output_func,
+				     output_func_arg,
+				     errhandler_func,
+				     errhandler_arg,
+				     argc, argv, status);
+
+		fclose(fdin_fp);
+
+		return rc;
+	}
+
+	/* Rewrite the message into another temp file */
+
+	fdout=libmail_tempfile(temp_decode_name);
+
+	if (fdout < 0 ||
+	    rfc2045_rewrite(rfcp, fileno(fdin_fp), fdout, "mimegpg") < 0 ||
+	    lseek(fdout, 0L, SEEK_SET) < 0)
+	{
+		if (fdout >= 0)
+			close(fdout);
+		(*errhandler_func)(strerror(errno), errhandler_arg);
+		rfc2045_free(rfcp);
+		fclose(fdin_fp);
+		return (-1);
+	}
+	fclose(fdin_fp);
+	rfc2045_free(rfcp);
+
+	/* Now, read the converted message, from the temp file */
+
+	if ((fdin_fp=fdopen(fdout, "w+")) == NULL)
+	{
+		close(fdout);
+
+		(*errhandler_func)("Cannot create temporary file",
+				   errhandler_arg);
+		return (-1);
+	}
+
+	rc=dosignencode2(dosign, doencode, dodecode,
+			 gpghome,
+			 passphrase_fd,
+			 input_func_from_fp,
+			 fdin_fp,
+			 output_func,
+			 output_func_arg,
+			 errhandler_func,
+			 errhandler_arg,
+			 argc, argv, status);
+	fclose(fdin_fp);
+	return rc;
 }
 
 int libmail_gpg_signencode(int dosign,

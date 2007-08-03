@@ -1,9 +1,8 @@
-# $Id: Makefile.am,v 1.15 2005/06/19 13:15:28 mrsam Exp $
+# $Id: Makefile.am,v 1.16 2007/06/30 15:40:53 mrsam Exp $
 #
 # Copyright 1998 - 2005 Double Precision, Inc.  See COPYING for
 # distribution information.
 
-AUTOMAKE = srcdir=${srcdir} @SHELL@ ${srcdir}/../automake.fix @AUTOMAKE@
 
 noinst_LIBRARIES=librfc1035.a
 

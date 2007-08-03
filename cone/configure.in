@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-# $Id: configure.in,v 1.39 2007/05/13 17:26:13 mrsam Exp $
+# $Id: configure.in,v 1.41 2007/07/22 01:13:37 mrsam Exp $
 #
 # Copyright 2003-2007, Double Precision Inc.
 #
@@ -31,6 +31,7 @@ AC_PROG_AWK
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_LN_S
+AC_GNU_SOURCE
 AM_PROG_LIBTOOL
 AM_GNU_GETTEXT
 
@@ -306,4 +307,4 @@ AC_TRY_COMPILE([
 AC_SUBST(LDAPSEARCH)
 
 MKINSTALLDIRS='mkdir -p --'
-AC_OUTPUT(Makefile cone.dist cone.sh IMAGE.filter APPLICATION.PDF.filter http.handler po/Makefile.in m4/Makefile   intl/Makefile )
+AC_OUTPUT(Makefile cone.dist cone.sh IMAGE.filter APPLICATION.PDF.filter http.handler po/Makefile.in intl/Makefile )

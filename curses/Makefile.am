@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.3 2004/03/21 05:30:01 mrsam Exp $
+# $Id: Makefile.am,v 1.4 2007/07/04 02:24:38 mrsam Exp $
 #
 # Copyright 2002, Double Precision Inc.
 #
@@ -6,8 +6,6 @@
 #
 
 noinst_LIBRARIES=libcurses.a
-
-AUTOMAKE = srcdir=${srcdir} @SHELL@ ${srcdir}/../automake.fix @AUTOMAKE@
 
 libcurses_a_SOURCES=mycurses.H curses.C \
 	cursesbutton.H cursesbutton.C \
