@@ -1,5 +1,5 @@
 /*
-** Copyright 2000-2006 Double Precision, Inc.  See COPYING for
+** Copyright 2000-2007 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
@@ -7,6 +7,7 @@
 #include	"liblock.h"
 #include	<stdio.h>
 #include	<signal.h>
+#include	<limits.h>
 #include	<stdlib.h>
 #include	<string.h>
 #include	<unistd.h>
@@ -30,9 +31,31 @@
 #include	<sys/ioctl.h>
 #endif
 
+#ifndef OPEN_MAX
+#ifdef HAVE_SYSCONF
+#ifdef _SC_OPEN_MAX
+#define OPEN_MAX	(my_open_max())
+
+static int my_open_max()
+{
+	long n=sysconf(_SC_OPEN_MAX);
+
+	if (n == -1)
+		n=64;
+	return n;
+}
+
+#endif
+#endif
+#endif
+
+#ifndef OPEN_MAX
+#define OPEN_MAX	64
+#endif
+
 #define exit(_a_) _exit(_a_)
 
-static const char rcsid[]="$Id: lockdaemon.c,v 1.11 2007/05/05 03:04:41 mrsam Exp $";
+static const char rcsid[]="$Id: lockdaemon.c,v 1.13 2007/09/26 02:36:59 mrsam Exp $";
 
 static int start1(const char *, int);
 
@@ -145,14 +168,14 @@ int	lockfd;
 		lockfd=open(lockfile, O_RDWR|O_CREAT, 0600);
 	}
 
-	if (lockfd < 0 || dup2(lockfd, 99) != 99)
+	if (lockfd < 0 || dup2(lockfd, OPEN_MAX-1) != OPEN_MAX-1)
 	{
 		perror(lockfile);
 		exit(1);
 	}
 
 	close(lockfd);
-	lockfd=99;
+	lockfd=OPEN_MAX-1;
 
 #ifdef	FD_CLOEXEC
 	if (fcntl(lockfd, F_SETFD, FD_CLOEXEC) < 0)

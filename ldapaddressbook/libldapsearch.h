@@ -1,4 +1,4 @@
-/* $Id: libldapsearch.h,v 1.3 2006/03/28 03:12:54 mrsam Exp $
+/* $Id: libldapsearch.h,v 1.4 2007/09/26 01:42:40 mrsam Exp $
 **
 ** Copyright 2006, Double Precision Inc.
 **
@@ -35,6 +35,8 @@ struct ldapsearch {
 
 struct ldapsearch *l_search_alloc(const char *host,
 				  int port,
+				  const char *userid,
+				  const char *password,
 				  const char *base);
 /* base - the starting point of the search in the LDAP tree */
 

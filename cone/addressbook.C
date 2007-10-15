@@ -1,4 +1,4 @@
-/* $Id: addressbook.C,v 1.11 2007/04/06 17:57:29 mrsam Exp $
+/* $Id: addressbook.C,v 1.12 2007/09/26 01:42:40 mrsam Exp $
 **
 ** Copyright 2003-2006, Double Precision Inc.
 **
@@ -305,7 +305,7 @@ bool AddressBook::open()
 			outofmemory();
 
 		try {
-			if (i->open(url.substr(7), folderStr))
+			if (i->openUrl(url, folderStr))
 			{
 				myInterface=i;
 				return true;
@@ -1319,10 +1319,14 @@ class AddLdapScreen : public CursesContainer,
 
 	CursesLabel nickname_label;
 	CursesLabel server_label;
+	CursesLabel userid_label;
+	CursesLabel password_label;
 	CursesLabel suffix_label;
 
 	CursesField nickname_field;
 	CursesField server_field;
+	CursesField userid_field;
+	CursesField password_field;
 	CursesField suffix_field;
 
 	CursesButtonRedirect<AddLdapScreen> saveButton, cancelButton;
@@ -1346,10 +1350,14 @@ AddLdapScreen::AddLdapScreen(CursesMainScreen *parent)
 	  addDialog(this),
 	  nickname_label(NULL, _("Directory name: ")),
 	  server_label(NULL, _("LDAP server hostname: ")),
+	  userid_label(NULL, _("LDAP userid (optional): ")),
+	  password_label(NULL, _("LDAP password (optional): ")),
 	  suffix_label(NULL, _("LDAP suffix/root: ")),
 
 	  nickname_field(NULL),
 	  server_field(NULL),
+	  userid_field(NULL),
+	  password_field(NULL),
 	  suffix_field(NULL),
 
 	  saveButton(this, _("SAVE")),
@@ -1361,17 +1369,20 @@ AddLdapScreen::AddLdapScreen(CursesMainScreen *parent)
 	addDialog.setRow(2);
 	addDialog.addPrompt(&nickname_label, &nickname_field, 0);
 	addDialog.addPrompt(&server_label, &server_field, 1);
-	addDialog.addPrompt(&suffix_label, &suffix_field, 2);
+	addDialog.addPrompt(&userid_label, &userid_field, 2);
+	addDialog.addPrompt(&password_label, &password_field, 3);
+	addDialog.addPrompt(&suffix_label, &suffix_field, 4);
 	titleBar->setTitles(_("LDAP ADDRESSBOOK ADD"), "");
 
+	password_field.setPasswordChar();
 	saveButton=this;
 	cancelButton=this;
 
 	saveButton=&AddLdapScreen::save;
 	cancelButton=&AddLdapScreen::cancel;
 
-	addDialog.addPrompt(NULL, &saveButton, 4);
-	addDialog.addPrompt(NULL, &cancelButton, 6);
+	addDialog.addPrompt(NULL, &saveButton, 6);
+	addDialog.addPrompt(NULL, &cancelButton, 8);
 
 	nickname_field.requestFocus();
 }
@@ -1397,6 +1408,8 @@ void AddLdapScreen::save()
 {
 	std::string name=nickname_field.getText();
 	std::string server=server_field.getText();
+	std::string userid=userid_field.getText();
+	std::string password=password_field.getText();
 	std::string suffix=suffix_field.getText();
 
 	if (name.size() == 0)
@@ -1413,11 +1426,15 @@ void AddLdapScreen::save()
 		return;
 	}
 
+	/* TODO */
+
 #if HAVE_OPENLDAP
 
 	{
 		struct ldapsearch *s=l_search_alloc(server.c_str(),
 						    LDAP_PORT,
+						    userid.c_str(),
+						    password.c_str(),
 						    suffix.c_str());
 
 		if (s)
@@ -1432,8 +1449,13 @@ void AddLdapScreen::save()
 					outofmemory();
 
 				try {
+					std::string url="ldap://" + server;
+
 					abook->init(name,
-						    "ldap://" + server,
+						    mail::loginUrlEncode
+						    ("ldap", server,
+						     userid,
+						     password),
 						    suffix);
 
 					AddressBook::addressBookList

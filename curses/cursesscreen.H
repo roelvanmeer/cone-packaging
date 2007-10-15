@@ -1,4 +1,4 @@
-/* $Id: cursesscreen.H,v 1.2 2004/02/19 04:20:09 mrsam Exp $
+/* $Id: cursesscreen.H,v 1.3 2007/07/30 02:47:52 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -30,6 +30,8 @@ class CursesScreen : public CursesContainer {
 	mbstate_t inputstate;
 
 	int inputcounter;
+
+	bool underline_hack;
 
 public:
 	CursesScreen();

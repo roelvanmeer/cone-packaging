@@ -1,4 +1,4 @@
-/* $Id: addressbookinterfaceldap.C,v 1.2 2006/02/17 01:11:08 mrsam Exp $
+/* $Id: addressbookinterfaceldap.C,v 1.3 2007/09/26 01:42:40 mrsam Exp $
 **
 ** Copyright 2006, Double Precision Inc.
 **
@@ -8,6 +8,7 @@
 #include "libmail/rfcaddr.H"
 #include "libmail/rfc2047encode.H"
 #include "libmail/misc.H"
+#include "libmail/logininfo.H"
 
 #include "addressbookinterfaceldap.H"
 
@@ -33,16 +34,23 @@ AddressBook::Interface::LDAP::~LDAP()
 		l_search_free(search);
 }
 
-bool AddressBook::Interface::LDAP::open(std::string host, std::string suffix)
+bool AddressBook::Interface::LDAP::openUrl(std::string url, std::string suffix)
 {
 	if (search)
 		return true;
 
-	search=l_search_alloc(host.c_str(), LDAP_PORT, suffix.c_str());
+	mail::loginInfo loginInfo;
+
+	if (!mail::loginUrlDecode(url, loginInfo))
+		return false;
+
+	search=l_search_alloc(loginInfo.server.c_str(), LDAP_PORT,
+			      loginInfo.uid.c_str(),
+			      loginInfo.pwd.c_str(), suffix.c_str());
 
 	if (!search)
 	{
-		statusBar->status(host + ": " + strerror(errno),
+		statusBar->status(loginInfo.server + ": " + strerror(errno),
 				  statusBar->SERVERERROR);
 		statusBar->beepError();
 		return false;

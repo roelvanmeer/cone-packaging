@@ -1,4 +1,4 @@
-/* $Id: cursesscreen.C,v 1.14 2006/06/04 21:36:01 mrsam Exp $
+/* $Id: cursesscreen.C,v 1.15 2007/07/30 02:47:52 mrsam Exp $
 **
 ** Copyright 2002-2006, Double Precision Inc.
 **
@@ -104,6 +104,10 @@ CursesScreen::CursesScreen() : inputcounter(0)
 	save_w=COLS;
 	save_h=LINES;
 	shiftmode=false;
+
+	const char *underline_hack_env=getenv("UNDERLINE_HACK");
+
+	underline_hack=underline_hack_env && atoi(underline_hack_env);
 }
 
 CursesScreen::~CursesScreen()
@@ -261,7 +265,17 @@ bool CursesScreen::writeText(const wchar_t *text, int row, int col,
 	if (attr.getUnderline())
 	{
 		if (termattrs() & A_UNDERLINE)
+		{
+			if (underline_hack)
+			{
+				size_t i=0;
+
+				for (i=0; buf[i]; i++)
+					if (buf[i] == ' ')
+						buf[i]=0xA0;
+			}
 			attron(A_UNDERLINE);
+		}
 		else
 		{
 			size_t i;

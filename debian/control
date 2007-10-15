@@ -6,7 +6,8 @@ Uploaders: Torsten Werner <twerner@debian.org>
 Build-Depends: cdbs, debhelper (>= 5.0), libncursesw5-dev, libxml2-dev,
  libldap2-dev, libssl-dev, libfam-dev, aspell, procps
 Standards-Version: 3.7.2
-XS-X-Vcs-Svn: http://bollin.googlecode.com/svn/cone/
+XS-Vcs-Svn: https://bollin.googlecode.com/svn/cone/
+XS-Vcs-Browser: http://bollin.googlecode.com/svn/cone/
 
 Package: cone
 Architecture: any

@@ -1,4 +1,4 @@
-/* $Id: ldapsearch.c,v 1.2 2006/02/12 17:59:56 mrsam Exp $
+/* $Id: ldapsearch.c,v 1.3 2007/09/26 01:42:40 mrsam Exp $
 **
 ** Copyright 2006, Double Precision Inc.
 **
@@ -44,7 +44,8 @@ int main(int argc, char **argv)
 	if (port_n <= 0)
 		port_n=LDAP_PORT;
 
-	s=l_search_alloc(host, port_n, suffix);
+	s=l_search_alloc(host, port_n, argc > 5 ? argv[5]:NULL,
+			 argc > 6 ?argv[6]:NULL, suffix);
 
 	if (!s)
 	{
