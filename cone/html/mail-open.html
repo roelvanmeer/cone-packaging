@@ -185,7 +185,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id417875" shape="rect" name="id417875"> </a>
+      <a id="id433814" shape="rect" name="id433814"> </a>
 
       <h2>USAGE</h2>
 
@@ -200,10 +200,10 @@ information.
           <dt><span class="term">imap://<em class="replaceable"><code>user</code></em>@<em class="replaceable"><code>server[<span class="optional">:port</span>]</code></em>[<span class="optional">/options</span>]</span></dt>
 
           <dd>
-            <p>An <a href="http://www.rfc-editor.org/rfc/rfc2060.txt" target="_top" shape="rect">IMAP</a> or an <a href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> account on <em class="replaceable"><code>server</code></em>. The colon and
+            <p>An <a class="ulink" href="http://www.rfc-editor.org/rfc/rfc2060.txt" target="_top" shape="rect">IMAP</a> or an <a class="link" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> account on <em class="replaceable"><code>server</code></em>. The colon and
             <em class="replaceable"><code>port</code></em> are
             optional; defaulting to the standard IMAP port 143. A
-            slash, followed by a slash-separated list of <a href="mail-open.html#mail-open-options" title="Account Options" shape="rect">additional options</a>
+            slash, followed by a slash-separated list of <a class="link" href="mail-open.html#mail-open-options" title="Account Options" shape="rect">additional options</a>
             may follow.</p>
 
             <p><em class="replaceable"><code>user</code></em>
@@ -220,7 +220,7 @@ information.
             <p>A POP3 account on <em class="replaceable"><code>server</code></em>. The colon and
             <em class="replaceable"><code>port</code></em> are
             optional; defaulting to the standard POP3 port 110. A
-            slash, followed by a slash-separated list of <a href="mail-open.html#mail-open-options" title="Account Options" shape="rect">additional options</a>
+            slash, followed by a slash-separated list of <a class="link" href="mail-open.html#mail-open-options" title="Account Options" shape="rect">additional options</a>
             may follow.</p>
 
             <p><em class="replaceable"><code>user</code></em>
@@ -262,7 +262,7 @@ information.
             <p>Access Usenet newsgroups via nntp on <em class="replaceable"><code>server</code></em>. The colon and
             <em class="replaceable"><code>port</code></em> are
             optional; defaulting to the standard NNTP port 119. A
-            slash, followed by a slash-separated list of <a href="mail-open.html#mail-open-options" title="Account Options" shape="rect">additional options</a>
+            slash, followed by a slash-separated list of <a class="link" href="mail-open.html#mail-open-options" title="Account Options" shape="rect">additional options</a>
             may follow.</p>
 
             <p><em class="parameter"><code>extraString</code></em>
@@ -373,7 +373,7 @@ information.
           <dd>
             <p>Create an account object for sending mail. The
             created <span class="structname">mail::account</span>'s
-            <a href="mail-getsendfolder.html" title="mail::account::getSendFolder" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getSendFolder</span>(3x)</span></a>
+            <a class="link" href="mail-getsendfolder.html" title="mail::account::getSendFolder" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getSendFolder</span>(3x)</span></a>
             method will create a special <span class="structname">mail::folder</span> object. Adding a
             message to this "folder" will E-mail this message via
             SMTP.</p>
@@ -385,7 +385,7 @@ information.
             submission protocol is almost identical to SMTP, with
             the most notable difference is that authentication is
             required). A slash, followed by a slash-separated list
-            of <a href="mail-open.html#mail-open-options" title="Account Options" shape="rect">additional options</a>
+            of <a class="link" href="mail-open.html#mail-open-options" title="Account Options" shape="rect">additional options</a>
             may follow.</p>
 
             <p>[<span class="optional">user</span>]@ is optional,
@@ -407,8 +407,8 @@ information.
           <dt><span class="term">sendmail://localhost</span></dt>
 
           <dd>
-            <p>Like "smtp", but use the local <span><strong class="command">sendmail</strong></span> command to send
-            mail.</p>
+            <p>Like "smtp", but use the local <span class="command"><strong>sendmail</strong></span> command to
+            send mail.</p>
           </dd>
         </dl>
       </div>
@@ -461,17 +461,17 @@ information.
         processing is halted until <code class="function">loginPrompt</code> terminates. If the password
         is already known, <code class="function">loginPrompt</code>
         may invoke <code class="function">mail::loginCallback::callback</code>
-        immediately. This is also the only option with the <a href="synchronous.html" title="mail::ACCOUNT Synchronous API reference" shape="rect">Synchronous API</a>, since <a href="account-login.html" title="mail::ACCOUNT::login" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::login</span>(3x)</span></a>
+        immediately. This is also the only option with the
+        <a class="link" href="synchronous.html" title="mail::ACCOUNT Synchronous API reference" shape="rect">Synchronous API</a>, since <a class="link" href="account-login.html" title="mail::ACCOUNT::login" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::login</span>(3x)</span></a>
         does not return control to the application until the login
         process completes.</p>
 
-        <p>Applications that use the asynchronous <a href="native.html" title="mail::account Native API reference" shape="rect">Native API</a> have another option.
-        <code class="function">loginPrompt</code> gets invoked by
-        <a href="mail-process.html" title="mail::account::process" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::process</span>(3x)</span></a>.
+        <p>Applications that use the asynchronous <a class="link" href="native.html" title="mail::account Native API reference" shape="rect">Native
+        API</a> have another option. <code class="function">loginPrompt</code> gets invoked by <a class="link" href="mail-process.html" title="mail::account::process" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::process</span>(3x)</span></a>.
         <code class="function">loginPrompt</code> may terminate
         without invoking <code class="function">mail::loginCallback::callback</code>. The
         application may then prompt for the requested information
-        after <a href="mail-process.html" title="mail::account::process" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::process</span>(3x)</span></a>
+        after <a class="link" href="mail-process.html" title="mail::account::process" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::process</span>(3x)</span></a>
         returns, and invoke either <code class="function">mail::loginCallback::callback</code> or
         <code class="function">mail::loginCallback::callbackCancel</code>, at
         some point later down the road, which will result in the
@@ -543,7 +543,7 @@ information.
             <dt><span class="term"><code class="literal">/imap</code></span></dt>
 
             <dd>
-              <p>Do not use the <a href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> if the server claims the
+              <p>Do not use the <a class="link" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> if the server claims the
               availability of this experimental mail access
               protocol, and fall back to IMAP compatibility mode
               (this option is meaningful only with
@@ -652,7 +652,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id419350" shape="rect" name="id419350"> </a>
+      <a id="id435289" shape="rect" name="id435289"> </a>
 
       <h2>RETURN CODES AND CALLBACKS</h2>
 
@@ -684,7 +684,7 @@ information.
       an immediate failure, in addition to invoking the
       <code class="function">fail</code> method. <code class="function">mail::account::open</code> may also invoke the
       <code class="function">success</code> method before it
-      returns, however in most cases the <code class="function">success</code> method will be invoked by <a href="mail-process.html" title="mail::account::process" shape="rect"><code class="function">mail::account::process</code></a>() at a later
+      returns, however in most cases the <code class="function">success</code> method will be invoked by <a class="link" href="mail-process.html" title="mail::account::process" shape="rect"><code class="function">mail::account::process</code></a>() at a later
       time.</p>
 
       <p>The application may not destroy the <em class="parameter"><code>callback</code></em> object until either
@@ -717,16 +717,16 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id419619" shape="rect" name="id419619"> </a>
+      <a id="id435558" shape="rect" name="id435558"> </a>
 
       <h2>SEE ALSO</h2>
 
-      <p><a href="mail-getsendfolder.html" title="mail::account::getSendFolder" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getSendFolder</span>(3x)</span></a>,
-      <a href="mail-isremoteurl.html" title="mail::account::isRemoteUrl" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::isRemoteUrl</span>(3x)</span></a>,
-      <a href="mail-loginurlencode.html" title="mail::loginUrlEncode" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::loginUrlEncode</span>(3x)</span></a>,
-      <a href="mail-process.html" title="mail::account::process" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::process</span>(3x)</span></a>,
-      <a href="mail-readtoplevel.html" title="mail::account::readTopLevelFolders" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readTopLevelFolders</span>(3x)</span></a>,
-      <a href="mail-setappcharset.html" title="mail::setAppCharset" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::setAppCharset</span>(3x)</span></a>.</p>
+      <p><a class="link" href="mail-getsendfolder.html" title="mail::account::getSendFolder" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getSendFolder</span>(3x)</span></a>,
+      <a class="link" href="mail-isremoteurl.html" title="mail::account::isRemoteUrl" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::isRemoteUrl</span>(3x)</span></a>,
+      <a class="link" href="mail-loginurlencode.html" title="mail::loginUrlEncode" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::loginUrlEncode</span>(3x)</span></a>,
+      <a class="link" href="mail-process.html" title="mail::account::process" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::process</span>(3x)</span></a>,
+      <a class="link" href="mail-readtoplevel.html" title="mail::account::readTopLevelFolders" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readTopLevelFolders</span>(3x)</span></a>,
+      <a class="link" href="mail-setappcharset.html" title="mail::setAppCharset" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::setAppCharset</span>(3x)</span></a>.</p>
     </div>
   </div>
 

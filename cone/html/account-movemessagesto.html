@@ -99,18 +99,18 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id395077" shape="rect" name="id395077"> </a>
+      <a id="id411015" shape="rect" name="id411015"> </a>
 
       <h2>USAGE</h2>
 
       <p><em class="parameter"><code>msgList</code></em> specifies
       a list of messages. Messages are numbered starting with
-      message #0 and up to one less than <a href="account-getfolderindexsize.html" title="mail::ACCOUNT::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getFolderIndexSize</span>(3x)</span></a>
+      message #0 and up to one less than <a class="link" href="account-getfolderindexsize.html" title="mail::ACCOUNT::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getFolderIndexSize</span>(3x)</span></a>
       (when <code class="function">mail::account::getFolderIndexSize</code> returns
       6, the messages are numbered 0 through 5). Only the messages
       that appear in <em class="parameter"><code>msgList</code></em> are processed by this
       request. When a message is removed from the folder, by
-      <a href="account-updatefolderindexinfo.html" title="mail::ACCOUNT::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::updateFolderIndexInfo</span>(3x)</span></a>,
+      <a class="link" href="account-updatefolderindexinfo.html" title="mail::ACCOUNT::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::updateFolderIndexInfo</span>(3x)</span></a>,
       the following messages are renumbered accordingly.</p>
 
       <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -119,14 +119,14 @@ information.
         <p>Most mail servers allow multiple applications to open
         the same folder. Therefore, changes to the folder's
         contents can occur at any time. Before making this request,
-        the application should use <a href="account-checknewmail.html" title="mail::ACCOUNT::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::checkNewMail</span>(3x)</span></a>
+        the application should use <a class="link" href="account-checknewmail.html" title="mail::ACCOUNT::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::checkNewMail</span>(3x)</span></a>
         to verify that no unexpected changes have been made to the
         folder's contents.</p>
       </div>
 
       <p><code class="function">mail::ACCOUNT::moveMessagesTo</code> moves
       messages in the currently-open folder to another folder. It's
-      similar to <a href="account-copymessagesto.html" title="mail::ACCOUNT::copyMessagesTo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::copyMessagesTo</span>(3x)</span></a>,
+      similar to <a class="link" href="account-copymessagesto.html" title="mail::ACCOUNT::copyMessagesTo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::copyMessagesTo</span>(3x)</span></a>,
       except that the messages are moved, instead of copied.</p>
 
       <p><em class="parameter"><code>copyTo</code></em> is a
@@ -134,16 +134,16 @@ information.
       object, representing the folder where messages are moved to.
       <em class="parameter"><code>copyTo</code></em> may be a
       folder in another mail account, in which case this function
-      transparently copies the indicated messages using <a href="account-copymessagesto.html" title="mail::ACCOUNT::copyMessagesTo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::copyMessagesTo</span>(3x)</span></a>,
-      then the original messages are removed using <a href="account-removemessages.html" title="mail::ACCOUNT::removeMessages" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::removeMessages</span>(3x)</span></a>.
-      Only <a href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> and maildir-based mail accounts can
+      transparently copies the indicated messages using <a class="link" href="account-copymessagesto.html" title="mail::ACCOUNT::copyMessagesTo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::copyMessagesTo</span>(3x)</span></a>,
+      then the original messages are removed using <a class="link" href="account-removemessages.html" title="mail::ACCOUNT::removeMessages" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::removeMessages</span>(3x)</span></a>.
+      Only <a class="link" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> and maildir-based mail accounts can
       move messages directly between folders; for all other
       accounts the copy/delete implementation will be used
       automatically.</p>
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id395247" shape="rect" name="id395247"> </a>
+      <a id="id411185" shape="rect" name="id411185"> </a>
 
       <h2>Return Codes</h2>
 
@@ -154,12 +154,12 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id395283" shape="rect" name="id395283"> </a>
+      <a id="id411221" shape="rect" name="id411221"> </a>
 
       <h2>SEE ALSO</h2>
 
-      <p><a href="account-copymessagesto.html" title="mail::ACCOUNT::copyMessagesTo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::copyMessagesTo</span>(3x)</span></a>,
-      <a href="account-removemessages.html" title="mail::ACCOUNT::removeMessages" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::removeMessages</span>(3x)</span></a>.</p>
+      <p><a class="link" href="account-copymessagesto.html" title="mail::ACCOUNT::copyMessagesTo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::copyMessagesTo</span>(3x)</span></a>,
+      <a class="link" href="account-removemessages.html" title="mail::ACCOUNT::removeMessages" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::removeMessages</span>(3x)</span></a>.</p>
     </div>
   </div>
 

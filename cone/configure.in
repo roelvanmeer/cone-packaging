@@ -1,11 +1,11 @@
 dnl Process this file with autoconf to produce a configure script.
-# $Id: configure.in,v 1.42 2007/09/29 21:36:19 mrsam Exp $
+# $Id: configure.in,v 1.44 2007/11/24 03:29:12 mrsam Exp $
 #
 # Copyright 2003-2007, Double Precision Inc.
 #
 # See COPYING for distribution information.
 #
-AC_INIT(cone,0.72, [courier-cone@lists.sourceforge.net])
+AC_INIT(cone,0.74, [courier-cone@lists.sourceforge.net])
 AC_CONFIG_SRCDIR(cone.C)
 AC_CANONICAL_TARGET
 AM_CONFIG_HEADER(config.h)

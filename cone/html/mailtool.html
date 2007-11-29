@@ -61,26 +61,25 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id358874" shape="rect" name="id358874"> </a>
+      <a id="id374790" shape="rect" name="id374790"> </a>
 
       <h2>USAGE</h2>
 
-      <p><span><strong class="command">mailtool</strong></span> is
+      <p><span class="command"><strong>mailtool</strong></span> is
       a diagnostic utility for handling various operations on
-      mailboxes. <span><strong class="command">mailtool</strong></span>'s main uses include:
-      display the list of folders in a mailbox; displaying list of
-      messages in a mailbox; and copying mailboxes.</p>
+      mailboxes. <span class="command"><strong>mailtool</strong></span>'s main uses
+      include: display the list of folders in a mailbox; displaying
+      list of messages in a mailbox; and copying mailboxes.</p>
 
-      <p>The following mailboxes can be accessed by
-      <span><strong class="command">mailtool</strong></span>:</p>
+      <p>The following mailboxes can be accessed by <span class="command"><strong>mailtool</strong></span>:</p>
 
       <div class="variablelist">
         <dl>
           <dt><span class="term">imap://<em class="replaceable"><code>userid</code></em>@<em class="replaceable"><code>server</code></em>[/options]</span></dt>
 
           <dd>
-            <p>An IMAP account. <span><strong class="command">mailtool</strong></span> will prompt for the
-            login password.</p>
+            <p>An IMAP account. <span class="command"><strong>mailtool</strong></span> will prompt
+            for the login password.</p>
           </dd>
 
           <dt><span class="term">imaps://<em class="replaceable"><code>userid</code></em>@<em class="replaceable"><code>server</code></em>[/options]</span></dt>
@@ -93,8 +92,8 @@ information.
           <dt><span class="term">pop3://<em class="replaceable"><code>userid</code></em>@<em class="replaceable"><code>server</code></em>[/options]</span></dt>
 
           <dd>
-            <p>A POP3 account. <span><strong class="command">mailtool</strong></span> will prompt for the
-            login password.</p>
+            <p>A POP3 account. <span class="command"><strong>mailtool</strong></span> will prompt
+            for the login password.</p>
           </dd>
 
           <dt><span class="term">pop3s://<em class="replaceable"><code>userid</code></em>@<em class="replaceable"><code>server</code></em>[/options]</span></dt>
@@ -181,7 +180,7 @@ information.
           <dt><span class="term"><code class="literal">/imap</code></span></dt>
 
           <dd>
-            <p>Do not use the <a href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> if the server claims the
+            <p>Do not use the <a class="link" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> if the server claims the
             availability of this experimental mail access protocol,
             and fall back to IMAP compatibility mode (this option
             is meaningful only with &#8220;<span class="quote"><code class="literal">imap://</code></span>&#8221; and
@@ -244,7 +243,7 @@ information.
       </div>
 
       <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id359748" shape="rect" name="id359748"> </a>
+        <a id="id375663" shape="rect" name="id375663"> </a>
 
         <h3>Displaying mailbox contents</h3>
 
@@ -267,7 +266,7 @@ mailtool -tree imap://jsmith@mail.example.com/novalidate-cert/cram
       </div>
 
       <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id360038" shape="rect" name="id360038"> </a>
+        <a id="id375954" shape="rect" name="id375954"> </a>
 
         <h3>Creating folders</h3>
 
@@ -293,7 +292,7 @@ mailtool -create INBOX.lists announcements maildir:Maildir
       </div>
 
       <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id360154" shape="rect" name="id360154"> </a>
+        <a id="id376070" shape="rect" name="id376070"> </a>
 
         <h3>Deleting folders</h3>
 
@@ -317,7 +316,7 @@ mailtool -delete INBOX.lists.announcements maildir:Maildir
       </div>
 
       <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id360248" shape="rect" name="id360248"> </a>
+        <a id="id376164" shape="rect" name="id376164"> </a>
 
         <h3>Renaming folders</h3>
 
@@ -350,7 +349,7 @@ mailtool -rename INBOX.lists.announcements INBOX.lists Announcements maildir:Mai
       </div>
 
       <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id360364" shape="rect" name="id360364"> </a>
+        <a id="id376280" shape="rect" name="id376280"> </a>
 
         <h3>Reading folder's index</h3>
 
@@ -373,7 +372,7 @@ mailtool -index INBOX imap://john@mail.example.com/novalidate-cert
       </div>
 
       <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id360435" shape="rect" name="id360435"> </a>
+        <a id="id376351" shape="rect" name="id376351"> </a>
 
         <h3>Removing a message from a folder</h3>
 
@@ -391,9 +390,8 @@ mailtool -index INBOX imap://john@mail.example.com/novalidate-cert
         <p><em class="replaceable"><code>n</code></em> may be a
         comma-separated list of message numbers, in strictly
         numerically increasing order. <code class="literal">-remove</code> confirms the list of messages to
-        remove and issues a &#8220;<span class="quote">Ready:</span>&#8221; prompt. Press
-        <span><strong class="keycap">ENTER</strong></span> to
-        remove the messages.</p>
+        remove and issues a &#8220;<span class="quote">Ready:</span>&#8221; prompt. Press <span class="keycap"><strong>ENTER</strong></span> to remove the
+        messages.</p>
 
         <div class="informalexample">
           <pre class="programlisting" xml:space="preserve">
@@ -403,7 +401,7 @@ mailtool -remove INBOX 28,31 imap://john@mail.example.com/novalidate-cert
       </div>
 
       <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id360547" shape="rect" name="id360547"> </a>
+        <a id="id376463" shape="rect" name="id376463"> </a>
 
         <h3>Filtering messages</h3>
 
@@ -418,10 +416,10 @@ mailtool -remove INBOX 28,31 imap://john@mail.example.com/novalidate-cert
         downloaded, and the summary of each message is shown, one
         message at a time. Each message's summary is followed by a
         prompt: &#8220;<span class="quote">Delete, Skip, or
-        Exit</span>&#8221;. Pressing <span><strong class="keycap">D</strong></span> removes the message,
-        <span><strong class="keycap">S</strong></span> leaves the
-        message unchanged, and <span><strong class="keycap">E</strong></span> leaves the remaining messages
-        unchanged.</p>
+        Exit</span>&#8221;. Pressing <span class="keycap"><strong>D</strong></span> removes the message,
+        <span class="keycap"><strong>S</strong></span> leaves the
+        message unchanged, and <span class="keycap"><strong>E</strong></span> leaves the remaining
+        messages unchanged.</p>
 
         <div class="informalexample">
           <pre class="programlisting" xml:space="preserve">
@@ -440,7 +438,7 @@ mailtool -filter INBOX pop3://john@mail.example.com/novalidate-cert
       </div>
 
       <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id360661" shape="rect" name="id360661"> </a>
+        <a id="id376577" shape="rect" name="id376577"> </a>
 
         <h3>Copying folders</h3>
 
@@ -504,11 +502,11 @@ mailtool -recurse -tofolder INBOX.converted_mail \
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id360862" shape="rect" name="id360862"> </a>
+      <a id="id376778" shape="rect" name="id376778"> </a>
 
       <h2>SEE ALSO</h2>
 
-      <p><a href="cone.html" title="cone" shape="rect"><span class="citerefentry"><span class="refentrytitle">cone</span>(1)</span></a>.</p>
+      <p><a class="link" href="cone.html" title="cone" shape="rect"><span class="citerefentry"><span class="refentrytitle">cone</span>(1)</span></a>.</p>
     </div>
   </div>
 

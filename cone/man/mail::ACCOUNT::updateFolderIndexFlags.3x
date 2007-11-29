@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::ACCOUNT::updateFolderIndexFlags
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::UPDAT" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::UPDAT" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::ACCOUNT::updateFolderIndexFlags \- Update status of multiple messages
+mail::ACCOUNT::updateFolderIndexFlags - Update status of multiple messages
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,13 +25,13 @@ mail::ACCOUNT::updateFolderIndexFlags \- Update status of multiple messages
 
 
 
-#include <libmail/sync.H>
+#include <libmail/sync\.H>
 
 mail::ACCOUNT *mail;
 .fi
 .RE
 .HP 37
-.BI "bool ok=mail\->updateFolderIndexFlags(const\ std::vector<size_t>\ " "msgList" ", bool\ " "doFlip" ", bool\ " "enableDisable" ", const\ messageInfo\ &" "msgInfo" ");"
+.BI "bool ok=mail->updateFolderIndexFlags(const\ std::vector<size_t>\ " "msgList" ", bool\ " "doFlip" ", bool\ " "enableDisable" ", const\ messageInfo\ &" "msgInfo" ");"
 .sp
 .RS 4
 .nf
@@ -42,68 +42,68 @@ std::string errmsg=mail\->getErrmsg();
 .PP
 This is a version of
 \fBmail::ACCOUNT::saveFolderIndexInfo\fR(3x)
-that updates the status of multiple messages with one request.
+that updates the status of multiple messages with one request\.
 .PP
 
 \fImsgList\fR
-specifies a list of messages. Messages are numbered starting with message #0 and up to one less than
+specifies a list of messages\. Messages are numbered starting with message #0 and up to one less than
 \fBmail::ACCOUNT::getFolderIndexSize\fR(3x)
 (when
 \fBmail::account::getFolderIndexSize\fR
-returns 6, the messages are numbered 0 through 5). Only the messages that appear in
+returns 6, the messages are numbered 0 through 5)\. Only the messages that appear in
 \fImsgList\fR
-are processed by this request. When a message is removed from the folder, by
-\fBmail::ACCOUNT::updateFolderIndexInfo\fR(3x), the following messages are renumbered accordingly.
+are processed by this request\. When a message is removed from the folder, by
+\fBmail::ACCOUNT::updateFolderIndexInfo\fR(3x), the following messages are renumbered accordingly\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
-Most mail servers allow multiple applications to open the same folder. Therefore, changes to the folder's contents can occur at any time. Before making this request, the application should use
+Most mail servers allow multiple applications to open the same folder\. Therefore, changes to the folder\'s contents can occur at any time\. Before making this request, the application should use
 \fBmail::ACCOUNT::checkNewMail\fR(3x)
-to verify that no unexpected changes have been made to the folder's contents.
+to verify that no unexpected changes have been made to the folder\'s contents\.
 .PP
 
 \fImsgInfo\fR
-selects which message status flags should be updated in every message. See
-\fBmail::ACCOUNT::getFolderIndexInfo\fR(3x).
+selects which message status flags should be updated in every message\. See
+\fBmail::ACCOUNT::getFolderIndexInfo\fR(3x)\.
 .PP
 
 \fImsgInfo\fR
-does NOT specify the new value of the status flags, only which status flags should be updated. For example, setting
-\fImsgInfo\fR.marked
-to true indicates that the messages'
+does NOT specify the new value of the status flags, only which status flags should be updated\. For example, setting
+\fImsgInfo\fR\.marked
+to true indicates that the messages\'
 marked
 status flag will be set to the value specified by
 \fIdoFlip\fR
 and
-\fIenableDisable\fR.
+\fIenableDisable\fR\.
 .PP
 Setting
 \fIdoFlip\fR
 to
 true
-"flips" the selected status flags (each message's flag will be set to false if the status flag was originally true, and set to true if the status flag was originalfalse). If
+"flips" the selected status flags (each message\'s flag will be set to false if the status flag was originally true, and set to true if the status flag was originalfalse)\. If
 \fIdoFlip\fR
 is false, then the selected status flags are set to the value of
 \fIenableDisable\fR
 \fIenableDisable\fR
 is ignored when Setting
 \fIdoFlip\fR
-is true.
+is true\.
 .SH "RETURN CODES"
 .PP
 This method returns
 true
 if it succeeds, or
 false
-if it fails. If the method fails, use
+if it fails\. If the method fails, use
 mail::ACCOUNT::getErrmsg()
-to read a brief description of the error.
+to read a brief description of the error\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::ACCOUNT::saveFolderIndexInfo\fR(3x),
-\fBmail::ACCOUNT::getFolderIndexInfo\fR(3x).
+\fBmail::ACCOUNT::getFolderIndexInfo\fR(3x)\.

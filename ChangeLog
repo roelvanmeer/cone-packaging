@@ -1,3 +1,28 @@
+0.74
+
+2007-11-21  Mr. Sam  <mrsam@courier-mta.com>
+
+	* tcpd/libcouriergnutls.c (tls_connect): TLS_MIN_DH_BITS setting,
+	invokes gnutls_dh_set_prime_bits(). Fix some bugs.
+
+2007-11-18  Mr. Sam  <mrsam@courier-mta.com>
+
+	* tcpd/libcouriergnutls.c (tls_transfer): Fix some bugs.
+
+2007-11-18  Mr. Sam  <mrsam@courier-mta.com>
+
+	* tcpd/libcouriergnutls.c: Fix SSL session caching bug.
+
+0.73
+
+2007-11-05  Mr. Sam  <mrsam@courier-mta.com>
+
+	* tls: Implement GnuTLS as an alternative to OpenSSL.
+
+2007-10-23  Mr. Sam  <mrsam@courier-mta.com>
+
+	* tls: code cleanup.
+
 0.72
 
 2007-09-24  Mr. Sam  <mrsam@courier-mta.com>

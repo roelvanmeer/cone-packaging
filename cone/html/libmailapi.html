@@ -91,7 +91,7 @@ information.
 
     <p>The native API is designed for interactive, event-driven
     applications. The application's main event loop should invoke
-    the <a href="mail-process.html" title="mail::account::process" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::process</span>(3x)</span></a>
+    the <a class="link" href="mail-process.html" title="mail::account::process" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::process</span>(3x)</span></a>
     method. This method checks all pending requests, and invokes
     the completed requests' callback methods.</p>
 
@@ -104,7 +104,7 @@ information.
     event-driven applications. This is because open mail accounts
     usually require some sort of periodic, regularly-scheduled
     processing (such as checking for new mail). This processing is
-    automatically handled by <a href="mail-process.html" title="mail::account::process" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::process</span>(3x)</span></a>.
+    automatically handled by <a class="link" href="mail-process.html" title="mail::account::process" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::process</span>(3x)</span></a>.
     An interactive application that uses the synchronous API will
     exhibit random failures because it will be regularly
     disconnected from mail servers, for inactivity, when no mail
@@ -120,7 +120,7 @@ information.
       implemented by creating a callback object, invoking the
       corresponding <span class="structname">mail::account</span>
       (or <span class="structname">mail::folder</span>) method,
-      then repeatedly calling <a href="mail-process.html" title="mail::account::process" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::process</span>(3x)</span></a>,
+      then repeatedly calling <a class="link" href="mail-process.html" title="mail::account::process" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::process</span>(3x)</span></a>,
       until the callback object is invoked.</p>
     </div>
   </div>

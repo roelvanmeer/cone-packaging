@@ -173,7 +173,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id386497" shape="rect" name="id386497"> </a>
+      <a id="id402435" shape="rect" name="id402435"> </a>
 
       <h2>USAGE</h2>
 
@@ -191,12 +191,12 @@ information.
             <p><em class="parameter"><code>msgList</code></em>
             specifies a list of messages. Messages are numbered
             starting with message #0 and up to one less than
-            <a href="account-getfolderindexsize.html" title="mail::ACCOUNT::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getFolderIndexSize</span>(3x)</span></a>
+            <a class="link" href="account-getfolderindexsize.html" title="mail::ACCOUNT::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getFolderIndexSize</span>(3x)</span></a>
             (when <code class="function">mail::account::getFolderIndexSize</code>
             returns 6, the messages are numbered 0 through 5). Only
             the messages that appear in <em class="parameter"><code>msgList</code></em> are processed by
             this request. When a message is removed from the
-            folder, by <a href="account-updatefolderindexinfo.html" title="mail::ACCOUNT::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::updateFolderIndexInfo</span>(3x)</span></a>,
+            folder, by <a class="link" href="account-updatefolderindexinfo.html" title="mail::ACCOUNT::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::updateFolderIndexInfo</span>(3x)</span></a>,
             the following messages are renumbered accordingly.</p>
 
             <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -206,7 +206,7 @@ information.
               open the same folder. Therefore, changes to the
               folder's contents can occur at any time. Before
               making this request, the application should use
-              <a href="account-checknewmail.html" title="mail::ACCOUNT::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::checkNewMail</span>(3x)</span></a>
+              <a class="link" href="account-checknewmail.html" title="mail::ACCOUNT::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::checkNewMail</span>(3x)</span></a>
               to verify that no unexpected changes have been made
               to the folder's contents.</p>
             </div>
@@ -214,10 +214,10 @@ information.
 
           <li>
             <p>The second version receives a single message number,
-            and a <a href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="structname">mail::mimestruct</span></a> object that
+            and a <a class="link" href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="structname">mail::mimestruct</span></a> object that
             refers to a single MIME attachment or a section of this
-            message. The <a href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="structname">mail::mimestruct</span></a> object was
-            previously obtained from <a href="account-getmessagestructure.html" title="mail::ACCOUNT::getMessageStructure" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getMessageStructure</span>(3x)</span></a>,
+            message. The <a class="link" href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="structname">mail::mimestruct</span></a> object was
+            previously obtained from <a class="link" href="account-getmessagestructure.html" title="mail::ACCOUNT::getMessageStructure" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getMessageStructure</span>(3x)</span></a>,
             for this message. This method returns a recursive tree
             of <span class="structname">mail::mimestruct</span>
             objects which enumerates the individual MIME sections
@@ -298,7 +298,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id386794" shape="rect" name="id386794"> </a>
+      <a id="id402674" shape="rect" name="id402674"> </a>
 
       <h2>Return Codes</h2>
 
@@ -309,13 +309,13 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id386829" shape="rect" name="id386829"> </a>
+      <a id="id402708" shape="rect" name="id402708"> </a>
 
       <h2>SEE ALSO</h2>
 
-      <p><a href="account-getmessagecontentdecoded.html" title="mail::ACCOUNT::getMessageContentDecoded" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getMessageContentDecoded</span>(3x)</span></a>,
-      <a href="account-getmessageenvelope.html" title="mail::ACCOUNT::getMessageEnvelope" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getMessageEnvelope</span>(3x)</span></a>,
-      <a href="account-getmessagestructure.html" title="mail::ACCOUNT::getMessageStructure" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getMessageStructure</span>(3x)</span></a>.</p>
+      <p><a class="link" href="account-getmessagecontentdecoded.html" title="mail::ACCOUNT::getMessageContentDecoded" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getMessageContentDecoded</span>(3x)</span></a>,
+      <a class="link" href="account-getmessageenvelope.html" title="mail::ACCOUNT::getMessageEnvelope" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getMessageEnvelope</span>(3x)</span></a>,
+      <a class="link" href="account-getmessagestructure.html" title="mail::ACCOUNT::getMessageStructure" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getMessageStructure</span>(3x)</span></a>.</p>
     </div>
   </div>
 

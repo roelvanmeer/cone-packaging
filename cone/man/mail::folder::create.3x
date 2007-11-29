@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::folder::create
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::FOLDER::CREATE" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::FOLDER::CREATE" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::folder::create \- Create a new folder
+mail::folder::create - Create a new folder
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,7 +25,7 @@ mail::folder::create \- Create a new folder
 
 
 
-#include <libmail/mail.H>
+#include <libmail/mail\.H>
 
 
 class myCallback : public mail::callback {
@@ -36,49 +36,49 @@ public:
 .fi
 .RE
 .HP 15
-.BI "folder\->create(bool\ " "createDirectory" ", myCallback\ &" "callback" ");"
+.BI "folder->create(bool\ " "createDirectory" ", myCallback\ &" "callback" ");"
 .SH "USAGE"
 .PP
 An alternative way to create a new folder is to use
 \fBmail::account::folderFromString\fR(3x)
-to re\-create a folder object, and then use the new object's
+to re\-create a folder object, and then use the new object\'s
 \fBcreate\fR
-method to create the folder.
+method to create the folder\.
 .PP
 See
 \fBmail::folder::createSubFolder\fR(3x)
-for more information.
+for more information\.
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 The application must wait until
-\fIcallback\fR's
+\fIcallback\fR\'s
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked. The
+method is invoked\. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed. The
+method is invoked when this request is succesfully processed\. The
 \fBfail\fR
-method is invoked if this request cannot be processed. The application must not destroy
+method is invoked if this request cannot be processed\. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked.
+method is invoked\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
-\fIcallback\fR's
+\fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked. This indicates that the request was partially completed before the error was encountered.
+method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::folder::createSubFolder\fR(3x),
-\fBmail::folder::renameFolder\fR(3x).
+\fBmail::folder::renameFolder\fR(3x)\.

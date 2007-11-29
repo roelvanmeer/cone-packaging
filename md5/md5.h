@@ -56,6 +56,7 @@ char *md5_crypt_redhat(const char *, const char *);
 #define	md5_crypt	md5_crypt_redhat
 
 const char *md5_hash_courier(const char *);
+const char *md5_hash_raw(const char *);
 
 #ifdef	__cplusplus
 } ;

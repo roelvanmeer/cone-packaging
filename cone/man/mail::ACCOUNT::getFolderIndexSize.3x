@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::ACCOUNT::getFolderIndexSize
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::GETFO" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::GETFO" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::ACCOUNT::getFolderIndexSize \- Return number of messages in the current folder
+mail::ACCOUNT::getFolderIndexSize - Return number of messages in the current folder
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,25 +25,25 @@ mail::ACCOUNT::getFolderIndexSize \- Return number of messages in the current fo
 
 
 
-#include <libmail/sync.H>
+#include <libmail/sync\.H>
 
 mail::ACCOUNT *mail;
 .fi
 .RE
 .HP 45
-.BI "size_t messageCount=mail\->getFolderIndexSize(void);"
+.BI "size_t messageCount=mail->getFolderIndexSize(void);"
 .SH "USAGE"
 .PP
 
 \fBmail::ACCOUNT::getFolderIndexSize\fR
-returns the number of messages in the currently open folder. Messages in the folder are numbered starting with zero, and ending with one less than the number returned by this function.
+returns the number of messages in the currently open folder\. Messages in the folder are numbered starting with zero, and ending with one less than the number returned by this function\.
 .PP
 For example, if
 \fBmail::ACCOUNT::getFolderIndexSize\fR
-returns 5 it means that there are five messages in the folder, numbered 0 through 4.
+returns 5 it means that there are five messages in the folder, numbered 0 through 4\.
 .SH "RETURN CODES AND CALLBACKS"
 .PP
-This function always succeeds, and returns the number of messages in the currently\-open folder.
+This function always succeeds, and returns the number of messages in the currently\-open folder\.
 .SH "SEE ALSO"
 .PP
 

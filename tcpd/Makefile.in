@@ -14,11 +14,10 @@
 
 @SET_MAKE@
 
-#$Id: Makefile.am,v 1.28 2007/06/30 15:40:53 mrsam Exp $
+#$Id: Makefile.am,v 1.31 2007/11/04 23:52:16 mrsam Exp $
 #
 # Copyright 1998 - 2005 Double Precision, Inc.  See COPYING for
 # distribution information.
-
 
 
 VPATH = @srcdir@
@@ -57,20 +56,22 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES =
-LIBRARIES = $(noinst_LIBRARIES)
-ARFLAGS = cru
-libtlsclient_a_AR = $(AR) $(ARFLAGS)
-libtlsclient_a_LIBADD =
-am_libtlsclient_a_OBJECTS = tlsclient.$(OBJEXT) \
-	tlspasswordcache.$(OBJEXT)
-libtlsclient_a_OBJECTS = $(am_libtlsclient_a_OBJECTS)
 LTLIBRARIES = $(noinst_LTLIBRARIES)
-libcouriertls_la_LIBADD =
-am_libcouriertls_la_OBJECTS = libcouriertls.lo tlsinfo.lo tlscache.lo
+am_libcouriertls_la_OBJECTS = tlscache.lo
 libcouriertls_la_OBJECTS = $(am_libcouriertls_la_OBJECTS)
+libcouriertlsgnutls_la_DEPENDENCIES =
+am_libcouriertlsgnutls_la_OBJECTS = libcouriergnutls.lo tlsinfo.lo
+libcouriertlsgnutls_la_OBJECTS = $(am_libcouriertlsgnutls_la_OBJECTS)
+libcouriertlsopenssl_la_DEPENDENCIES =
+am_libcouriertlsopenssl_la_OBJECTS = libcouriertls.lo tlsinfo.lo
+libcouriertlsopenssl_la_OBJECTS =  \
+	$(am_libcouriertlsopenssl_la_OBJECTS)
 libspipe_la_LIBADD =
 am_libspipe_la_OBJECTS = spipe.lo
 libspipe_la_OBJECTS = $(am_libspipe_la_OBJECTS)
+libtlsclient_la_LIBADD =
+am_libtlsclient_la_OBJECTS = tlsclient.lo tlspasswordcache.lo
+libtlsclient_la_OBJECTS = $(am_libtlsclient_la_OBJECTS)
 PROGRAMS = $(noinst_PROGRAMS)
 am_couriertcpd_OBJECTS = argparse.$(OBJEXT) tcpd.$(OBJEXT) \
 	tcpdaccess.$(OBJEXT) tcpremoteinfo.$(OBJEXT)
@@ -101,11 +102,15 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(libtlsclient_a_SOURCES) $(libcouriertls_la_SOURCES) \
-	$(libspipe_la_SOURCES) $(couriertcpd_SOURCES) \
+SOURCES = $(libcouriertls_la_SOURCES) \
+	$(libcouriertlsgnutls_la_SOURCES) \
+	$(libcouriertlsopenssl_la_SOURCES) $(libspipe_la_SOURCES) \
+	$(libtlsclient_la_SOURCES) $(couriertcpd_SOURCES) \
 	$(couriertls_SOURCES) $(tlscachetest_SOURCES)
-DIST_SOURCES = $(libtlsclient_a_SOURCES) $(libcouriertls_la_SOURCES) \
-	$(libspipe_la_SOURCES) $(couriertcpd_SOURCES) \
+DIST_SOURCES = $(libcouriertls_la_SOURCES) \
+	$(libcouriertlsgnutls_la_SOURCES) \
+	$(libcouriertlsopenssl_la_SOURCES) $(libspipe_la_SOURCES) \
+	$(libtlsclient_la_SOURCES) $(couriertcpd_SOURCES) \
 	$(couriertls_SOURCES) $(tlscachetest_SOURCES)
 ETAGS = etags
 CTAGS = ctags
@@ -127,12 +132,14 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BUILDLIBCOURIERTLS = @BUILDLIBCOURIERTLS@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 COURIERTCPD = @COURIERTCPD@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
+CRYPTLIBS = @CRYPTLIBS@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
@@ -156,7 +163,8 @@ INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 KRB5CONFIG = @KRB5CONFIG@
 LDFLAGS = @LDFLAGS@
-LIBCOURIERTLS = @LIBCOURIERTLS@
+LIBCOURIERTLSGNUTLS = @LIBCOURIERTLSGNUTLS@
+LIBCOURIERTLSOPENSSL = @LIBCOURIERTLSOPENSSL@
 LIBDB = @LIBDB@
 LIBDL = @LIBDL@
 LIBGDBM = @LIBGDBM@
@@ -176,6 +184,7 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PKGCONFIG = @PKGCONFIG@
 RANLIB = @RANLIB@
 SED = @SED@
 SETENV = @SETENV@
@@ -183,6 +192,7 @@ SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STARTTLS = @STARTTLS@
 STRIP = @STRIP@
+TLSLIBRARY = @TLSLIBRARY@
 USE_DB = @USE_DB@
 USE_GDBM = @USE_GDBM@
 VERSION = @VERSION@
@@ -211,6 +221,7 @@ dblibrary = @dblibrary@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
+gnutlsdep = @gnutlsdep@
 host = @host@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -227,6 +238,7 @@ localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
+openssldep = @openssldep@
 pdfdir = @pdfdir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
@@ -237,22 +249,24 @@ soxdep = @soxdep@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-tlsdep = @tlsdep@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-DISTCLEANFILES = couriertls.config libcouriertls.dep test.dat
-EXTRA_LTLIBRARIES = libcouriertls.la
+DISTCLEANFILES = couriertls.config test.dat
+EXTRA_LTLIBRARIES = libcouriertls.la libcouriertlsopenssl.la libcouriertlsgnutls.la
 BUILT_SOURCES = couriertcpd.html couriertcpd.1 \
 		couriertls.html couriertls.1
 
 EXTRA_DIST = $(BUILT_SOURCES) couriertls.html README.couriertls \
 	testsuite testsuite.txt
 
-noinst_LTLIBRARIES = libspipe.la @LIBCOURIERTLS@
-noinst_LIBRARIES = libtlsclient.a
+noinst_LTLIBRARIES = libspipe.la @BUILDLIBCOURIERTLS@ @LIBCOURIERTLSOPENSSL@ @LIBCOURIERTLSGNUTLS@ libtlsclient.la
+libcouriertls_la_SOURCES = tlscache.c tlscache.h
+libcouriertls_la_LIBADD = @TLSLIBRARY@
+libcouriertls_la_DEPENDENCIES = @TLSLIBRARY@
 couriertcpd_SOURCES = argparse.c argparse.h \
 	tcpd.c tcpdaccess.c tcpremoteinfo.c tcpremoteinfo.h
 
+CONFIG_STATUS_DEPENDENCIES = ../soxwrap/soxlibs.dep
 couriertcpd_DEPENDENCIES = libspipe.la \
 	../rfc1035/librfc1035.a \
 	@dblibrary@ \
@@ -280,7 +294,7 @@ tlscachetest_LDADD = ../numlib/libnumlib.la ../liblock/liblock.la
 tlscachetest_LDFLAGS = -static
 libspipe_la_SOURCES = spipe.c spipe.h
 couriertls_SOURCES = starttls.c argparse.c argparse.h
-couriertls_t = @tlsdep@ @soxdep@
+couriertls_t = @soxdep@
 couriertls_DEPENDENCIES = libcouriertls.la libspipe.la ../rfc1035/librfc1035.a \
 	../md5/libmd5.la ../random128/librandom128.la \
 	../numlib/libnumlib.la ../liblock/liblock.la \
@@ -292,10 +306,11 @@ couriertls_LDADD = libcouriertls.la libspipe.la ../rfc1035/librfc1035.a \
 	../soxwrap/libsoxwrap.a $(couriertls_t:%=-Wl,%)
 
 couriertls_LDFLAGS = -static
-libcouriertls_la_SOURCES = libcouriertls.c libcouriertls.h tlsinfo.c \
-	tlscache.c tlscache.h
-
-libtlsclient_a_SOURCES = tlsclient.c tlsclient.h \
+libcouriertlsopenssl_la_SOURCES = libcouriertls.c libcouriertls.h tlsinfo.c
+libcouriertlsopenssl_la_LIBADD = @openssldep@
+libcouriertlsgnutls_la_SOURCES = libcouriergnutls.c tlsinfo.c
+libcouriertlsgnutls_la_LIBADD = @gnutlsdep@
+libtlsclient_la_SOURCES = tlsclient.c tlsclient.h \
 	tlspasswordcache.c tlspasswordcache.h
 
 all: $(BUILT_SOURCES) config.h
@@ -329,6 +344,9 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	    cd $(top_builddir) && $(SHELL) ./config.status $@ $(am__depfiles_maybe);; \
 	esac;
 
+$(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+	$(SHELL) ./config.status --recheck
+
 $(top_srcdir)/configure:  $(am__configure_deps)
 	cd $(srcdir) && $(AUTOCONF)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
@@ -351,13 +369,6 @@ $(srcdir)/config.h.in:  $(am__configure_deps)
 distclean-hdr:
 	-rm -f config.h stamp-h1
 
-clean-noinstLIBRARIES:
-	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
-libtlsclient.a: $(libtlsclient_a_OBJECTS) $(libtlsclient_a_DEPENDENCIES) 
-	-rm -f libtlsclient.a
-	$(libtlsclient_a_AR) libtlsclient.a $(libtlsclient_a_OBJECTS) $(libtlsclient_a_LIBADD)
-	$(RANLIB) libtlsclient.a
-
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
 	@list='$(noinst_LTLIBRARIES)'; for p in $$list; do \
@@ -368,8 +379,14 @@ clean-noinstLTLIBRARIES:
 	done
 libcouriertls.la: $(libcouriertls_la_OBJECTS) $(libcouriertls_la_DEPENDENCIES) 
 	$(LINK)  $(libcouriertls_la_OBJECTS) $(libcouriertls_la_LIBADD) $(LIBS)
+libcouriertlsgnutls.la: $(libcouriertlsgnutls_la_OBJECTS) $(libcouriertlsgnutls_la_DEPENDENCIES) 
+	$(LINK)  $(libcouriertlsgnutls_la_OBJECTS) $(libcouriertlsgnutls_la_LIBADD) $(LIBS)
+libcouriertlsopenssl.la: $(libcouriertlsopenssl_la_OBJECTS) $(libcouriertlsopenssl_la_DEPENDENCIES) 
+	$(LINK)  $(libcouriertlsopenssl_la_OBJECTS) $(libcouriertlsopenssl_la_LIBADD) $(LIBS)
 libspipe.la: $(libspipe_la_OBJECTS) $(libspipe_la_DEPENDENCIES) 
 	$(LINK)  $(libspipe_la_OBJECTS) $(libspipe_la_LIBADD) $(LIBS)
+libtlsclient.la: $(libtlsclient_la_OBJECTS) $(libtlsclient_la_DEPENDENCIES) 
+	$(LINK)  $(libtlsclient_la_OBJECTS) $(libtlsclient_la_LIBADD) $(LIBS)
 
 clean-noinstPROGRAMS:
 	@list='$(noinst_PROGRAMS)'; for p in $$list; do \
@@ -394,6 +411,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/argparse.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcouriergnutls.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcouriertls.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spipe.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/starttls.Po@am__quote@
@@ -402,9 +420,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tcpremoteinfo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tlscache.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tlscachetest.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tlsclient.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tlsclient.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tlsinfo.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tlspasswordcache.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tlspasswordcache.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -612,7 +630,7 @@ distcleancheck: distclean
 check-am: all-am
 check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
-all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(PROGRAMS) config.h
+all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) config.h
 installdirs:
 install: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) install-am
@@ -643,8 +661,8 @@ maintainer-clean-generic:
 	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
-clean-am: clean-generic clean-libtool clean-noinstLIBRARIES \
-	clean-noinstLTLIBRARIES clean-noinstPROGRAMS mostlyclean-am
+clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
+	clean-noinstPROGRAMS mostlyclean-am
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
@@ -706,24 +724,21 @@ uninstall-am:
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am am--refresh check check-am clean \
-	clean-generic clean-libtool clean-noinstLIBRARIES \
-	clean-noinstLTLIBRARIES clean-noinstPROGRAMS ctags dist \
-	dist-all dist-bzip2 dist-gzip dist-shar dist-tarZ dist-zip \
-	distcheck distclean distclean-compile distclean-generic \
-	distclean-hdr distclean-libtool distclean-tags distcleancheck \
-	distdir distuninstallcheck dvi dvi-am html html-am info \
-	info-am install install-am install-data install-data-am \
-	install-dvi install-dvi-am install-exec install-exec-am \
-	install-html install-html-am install-info install-info-am \
-	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
-	uninstall-am
+	clean-generic clean-libtool clean-noinstLTLIBRARIES \
+	clean-noinstPROGRAMS ctags dist dist-all dist-bzip2 dist-gzip \
+	dist-shar dist-tarZ dist-zip distcheck distclean \
+	distclean-compile distclean-generic distclean-hdr \
+	distclean-libtool distclean-tags distcleancheck distdir \
+	distuninstallcheck dvi dvi-am html html-am info info-am \
+	install install-am install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags uninstall uninstall-am
 
-
-$(top_builddir)/config.status: ../soxwrap/soxlibs.dep
 
 @HAVE_SGML_TRUE@couriertcpd.html: couriertcpd.sgml ../docbook/sgml2html
 @HAVE_SGML_TRUE@	../docbook/sgml2html couriertcpd.sgml couriertcpd.html

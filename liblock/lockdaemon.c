@@ -31,31 +31,9 @@
 #include	<sys/ioctl.h>
 #endif
 
-#ifndef OPEN_MAX
-#ifdef HAVE_SYSCONF
-#ifdef _SC_OPEN_MAX
-#define OPEN_MAX	(my_open_max())
-
-static int my_open_max()
-{
-	long n=sysconf(_SC_OPEN_MAX);
-
-	if (n == -1)
-		n=64;
-	return n;
-}
-
-#endif
-#endif
-#endif
-
-#ifndef OPEN_MAX
-#define OPEN_MAX	64
-#endif
-
 #define exit(_a_) _exit(_a_)
 
-static const char rcsid[]="$Id: lockdaemon.c,v 1.13 2007/09/26 02:36:59 mrsam Exp $";
+static const char rcsid[]="$Id: lockdaemon.c,v 1.14 2007/10/11 01:46:34 mrsam Exp $";
 
 static int start1(const char *, int);
 
@@ -133,7 +111,7 @@ int	i;
 
 static int start1(const char *lockfile, int fd)
 {
-int	lockfd;
+int	lockfd, maxfd;
 
 #if     HAVE_SETPGRP
 #if     SETPGRP_VOID
@@ -168,14 +146,27 @@ int	lockfd;
 		lockfd=open(lockfile, O_RDWR|O_CREAT, 0600);
 	}
 
-	if (lockfd < 0 || dup2(lockfd, OPEN_MAX-1) != OPEN_MAX-1)
+#if HAVE_GETDTABLESIZE
+	maxfd=getdtablesize()-1;
+#elif defined(OPEN_MAX)
+	maxfd=OPEN_MAX-1;
+#elif HAVE_SYSCONF && defined(_SC_OPEN_MAX)
+	if ((maxfd=sysconf(_SC_OPEN_MAX)) < 0)
+		maxfd=63;
+	else if (maxfd > 0)
+		maxfd--;
+#else
+	maxfd=63;
+#endif
+
+	if (lockfd < 0 || dup2(lockfd, maxfd) != maxfd)
 	{
 		perror(lockfile);
 		exit(1);
 	}
 
 	close(lockfd);
-	lockfd=OPEN_MAX-1;
+	lockfd=maxfd;
 
 #ifdef	FD_CLOEXEC
 	if (fcntl(lockfd, F_SETFD, FD_CLOEXEC) < 0)

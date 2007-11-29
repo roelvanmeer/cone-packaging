@@ -103,7 +103,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id436662" shape="rect" name="id436662"> </a>
+      <a id="id452601" shape="rect" name="id452601"> </a>
 
       <h2>USAGE</h2>
 
@@ -130,7 +130,7 @@ information.
 
       <p>These events are normally reported by invoking the
       <code class="function">newMessages</code>, <code class="function">messagesRemoved</code>, and <code class="function">messageChanged</code> method of the <span class="structname">mail::callback::folder</span> object that was
-      passed to <a href="folder-open.html" title="mail::folder::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::open</span>(3x)</span></a>.</p>
+      passed to <a class="link" href="folder-open.html" title="mail::folder::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::open</span>(3x)</span></a>.</p>
 
       <p>These callback function normally are not generated
       immediately after the corresponding events occur. Changes to
@@ -138,9 +138,9 @@ information.
       request is processed; additionally many mail servers do not
       even do that, and only check for changes when the mail
       clients explicitly asks the server to check for new mail
-      (<a href="mail-checknewmail.html" title="mail::account::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::checkNewMail</span>(3x)</span></a>)
-      or to update the permanent message status ( <a href="mail-removemessages.html" title="mail::account::removeMessages" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::removeMessages</span>(3x)</span></a>
-      or <a href="mail-updatefolderindexinfo.html" title="mail::account::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexInfo</span>(3x)</span></a>).</p>
+      (<a class="link" href="mail-checknewmail.html" title="mail::account::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::checkNewMail</span>(3x)</span></a>)
+      or to update the permanent message status ( <a class="link" href="mail-removemessages.html" title="mail::account::removeMessages" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::removeMessages</span>(3x)</span></a>
+      or <a class="link" href="mail-updatefolderindexinfo.html" title="mail::account::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexInfo</span>(3x)</span></a>).</p>
 
       <p>This method requests the server to notify the application
       immediately when another application changes the folder (the
@@ -153,12 +153,12 @@ information.
 
         <p>This method only works with IMAP mail accounts on IMAP
         servers that support the IMAP IDLE extension, as described
-        by <a href="http://www.rfc-editor.org/rfc/rfc2177.txt" target="_top" shape="rect">RFC 2177</a>. This method has no
-        effect with IMAP servers that do not implement the IDLE
-        extension, or other mail accounts.</p>
+        by <a class="ulink" href="http://www.rfc-editor.org/rfc/rfc2177.txt" target="_top" shape="rect">RFC 2177</a>. This method has no effect with
+        IMAP servers that do not implement the IDLE extension, or
+        other mail accounts.</p>
 
         <p>This method is also implemented for local mail in
-        maildirs, on systems running the SGI <a href="http://oss.sgi.com/projects/fam/" target="_top" shape="rect">File Access Monitor</a>. This method has no effect
+        maildirs, on systems running the SGI <a class="ulink" href="http://oss.sgi.com/projects/fam/" target="_top" shape="rect">File Access Monitor</a>. This method has no effect
         on mbox mail folders, or on systems without the FAM
         daemon.</p>
       </div>
@@ -194,7 +194,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id436907" shape="rect" name="id436907"> </a>
+      <a id="id452846" shape="rect" name="id452846"> </a>
 
       <h2>Return Codes</h2>
 
@@ -216,14 +216,14 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id436999" shape="rect" name="id436999"> </a>
+      <a id="id452937" shape="rect" name="id452937"> </a>
 
       <h2>SEE ALSO</h2>
 
-      <p><a href="mail-checknewmail.html" title="mail::account::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::checkNewMail</span>(3x)</span></a>,
-      <a href="mail-removemessages.html" title="mail::account::removeMessages" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::removeMessages</span>(3x)</span></a>,
-      <a href="mail-updatefolderindexinfo.html" title="mail::account::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexInfo</span>(3x)</span></a>,
-      <a href="http://www.rfc-editor.org/rfc/rfc2177.txt" target="_top" shape="rect">RFC 2177</a>.</p>
+      <p><a class="link" href="mail-checknewmail.html" title="mail::account::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::checkNewMail</span>(3x)</span></a>,
+      <a class="link" href="mail-removemessages.html" title="mail::account::removeMessages" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::removeMessages</span>(3x)</span></a>,
+      <a class="link" href="mail-updatefolderindexinfo.html" title="mail::account::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexInfo</span>(3x)</span></a>,
+      <a class="ulink" href="http://www.rfc-editor.org/rfc/rfc2177.txt" target="_top" shape="rect">RFC 2177</a>.</p>
     </div>
   </div>
 

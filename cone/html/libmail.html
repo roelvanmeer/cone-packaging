@@ -56,32 +56,33 @@ information.
       access library, which provides a high-level API for accessing
       E-mail messages stored on POP3 and IMAP servers, or in local
       mail folders; and for sending mail via ESMTP, or the local
-      <span><strong class="command">sendmail</strong></span>
+      <span class="command"><strong>sendmail</strong></span>
       command. <span class="application">LibMAIL</span> also serves
       as a platform for development of a new experimental network
-      mail access protocol, <a href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a>, that offers additional capabilities
+      mail access protocol, <a class="link" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a>, that offers additional capabilities
       not available in IMAP and POP3.</p>
 
       <p>If available, SSL/TLS is used automatically (when it is
       supported by the remote server); as such, applications must
-      also link to OpenSSL libraries in addition to linking with
-      <code class="filename">libmail.a</code>.</p>
+      also link to either GnuTLS or OpenSSL libraries (depending on
+      what <span class="application">LibMAIL</span> was compiled
+      against) in addition to linking with <code class="filename">libmail.a</code>.</p>
 
       <p><span class="application">LibMAIL</span> is currently in
       active development. Right now the primary development focus
-      is on the Linux platform, gcc 3.2. <span class="application">LibMAIL</span> will probably build on other
+      is on the Linux platform and the gcc compiler. <span class="application">LibMAIL</span> will probably build on other
       POSIX platforms; any errors are likely to be minor, and
       trivial to resolve. A large portion of <span class="application">LibMAIL</span> 's code base is imported from a
       related project that is known to be stable on all modern
       operating systems.</p>
 
       <p>At this time, <span class="application">LibMAIL</span> is
-      built as part of the <a href="cone00index.html" title="Cone mail client" shape="rect"><span class="application">Cone</span></a> mail client, which has some
-      additional dependencies, namely: curses, <a href="http://xmlsoft.org" target="_top" shape="rect">libxml2</a>,
-      and <a href="http://www.openssl.org" target="_top" shape="rect">OpenSSL</a>. <span class="application">LibMAIL</span>
-      itself only needs OpenSSL, but for now the only way to build
-      <span class="application">LibMAIL</span> is by building
-      <span class="application">Cone</span> with the <code class="literal">--with-devel</code> option.</p>
+      built as part of the <a class="link" href="cone00index.html" title="Cone mail client" shape="rect"><span class="application">Cone</span></a> mail client, which has some
+      additional dependencies, namely: curses, <a class="ulink" href="http://xmlsoft.org" target="_top" shape="rect">libxml2</a>, and <a class="ulink" href="http://www.openssl.org" target="_top" shape="rect">OpenSSL</a> or <a class="ulink" href="http://www.gnutls.org" target="_top" shape="rect">GnuTLS</a>. <span class="application">LibMAIL</span>
+      itself only needs OpenSSL or GnuTLS, but for now the only way
+      to build <span class="application">LibMAIL</span> is by
+      building <span class="application">Cone</span> with the
+      <code class="literal">--with-devel</code> option.</p>
     </div>
   </div>
 

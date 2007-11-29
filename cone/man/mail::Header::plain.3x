@@ -3,50 +3,50 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::Header::plain
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::HEADER::PLAIN" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::HEADER::PLAIN" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::Header::plain \- An unstructured, US\-ASCII\-only, E\-mail header.
+mail::Header::plain - An unstructured, US-ASCII-only, E-mail header.
 .SH "SYNOPSIS"
 .sp
 .RS 4
 .nf
-#include <libmail/headers.H>
+#include <libmail/headers\.H>
 
 mail::Header::plain plain_header("Content\-Type", "text/plain");
 
-std::cout << plain_header.toString();
+std::cout << plain_header\.toString();
 
 .fi
 .RE
 .SH "USAGE"
 .PP
-This class creates an unstructured E\-mail header. Two arguments are provided to the constructor: the header's name, and its contents. The header contents must contain only
+This class creates an unstructured E\-mail header\. Two arguments are provided to the constructor: the header\'s name, and its contents\. The header contents must contain only
 US\-ASCII
-characters. Use the
+characters\. Use the
 \fBmail::Header::encoded\fR(3x)
 object to create a header containing non\-US\-ASCII
-content.
+content\.
 .PP
 The
 \fBtoString()\fR
 returns the header as a single text string:
-\(lq\fIname\fR: \fIvalue\fR\(rq. Long headers are folded at the nearest whitespace.
+\(lq\fIname\fR: \fIvalue\fR\(rq\. Long headers are folded at the nearest whitespace\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::Header::addresslist\fR(3x),
 \fBmail::Header::encoded\fR(3x),
 \fBmail::Header::list\fR(3x),
-\fBmail::Header::mime\fR(3x).
+\fBmail::Header::mime\fR(3x)\.

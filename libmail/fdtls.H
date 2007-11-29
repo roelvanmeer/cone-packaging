@@ -1,4 +1,4 @@
-/* $Id: fdtls.H,v 1.3 2003/06/19 01:01:41 mrsam Exp $
+/* $Id: fdtls.H,v 1.4 2007/10/24 02:15:12 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -53,8 +53,8 @@ public:
 	bool tlsflag;
 
 	// OpenSSL stuff:
-	SSL_CTX *ctx;
-	SSL *ssl;
+	ssl_context ctx;
+	ssl_handle ssl;
 	int fd;
 	bool tlsShutdownSent;
 

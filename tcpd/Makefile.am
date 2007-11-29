@@ -1,14 +1,14 @@
-#$Id: Makefile.am,v 1.28 2007/06/30 15:40:53 mrsam Exp $
+#$Id: Makefile.am,v 1.31 2007/11/04 23:52:16 mrsam Exp $
 #
 # Copyright 1998 - 2005 Double Precision, Inc.  See COPYING for
 # distribution information.
 
 
-DISTCLEANFILES=couriertls.config libcouriertls.dep test.dat
+DISTCLEANFILES=couriertls.config test.dat
 
 noinst_PROGRAMS=@COURIERTCPD@ @STARTTLS@ tlscachetest
 EXTRA_PROGRAMS=couriertls couriertcpd
-EXTRA_LTLIBRARIES=libcouriertls.la
+EXTRA_LTLIBRARIES=libcouriertls.la libcouriertlsopenssl.la libcouriertlsgnutls.la
 
 BUILT_SOURCES=  couriertcpd.html couriertcpd.1 \
 		couriertls.html couriertls.1
@@ -16,13 +16,16 @@ BUILT_SOURCES=  couriertcpd.html couriertcpd.1 \
 EXTRA_DIST=$(BUILT_SOURCES) couriertls.html README.couriertls \
 	testsuite testsuite.txt
 
-noinst_LTLIBRARIES=libspipe.la @LIBCOURIERTLS@
-noinst_LIBRARIES=libtlsclient.a
+noinst_LTLIBRARIES=libspipe.la @BUILDLIBCOURIERTLS@ @LIBCOURIERTLSOPENSSL@ @LIBCOURIERTLSGNUTLS@ libtlsclient.la
+
+libcouriertls_la_SOURCES=tlscache.c tlscache.h
+libcouriertls_la_LIBADD=@TLSLIBRARY@
+libcouriertls_la_DEPENDENCIES=@TLSLIBRARY@
 
 couriertcpd_SOURCES=argparse.c argparse.h \
 	tcpd.c tcpdaccess.c tcpremoteinfo.c tcpremoteinfo.h
 
-$(top_builddir)/config.status: ../soxwrap/soxlibs.dep
+CONFIG_STATUS_DEPENDENCIES = ../soxwrap/soxlibs.dep
 
 couriertcpd_DEPENDENCIES= libspipe.la \
 	../rfc1035/librfc1035.a \
@@ -56,7 +59,7 @@ libspipe_la_SOURCES=spipe.c spipe.h
 
 couriertls_SOURCES=starttls.c argparse.c argparse.h
 
-couriertls_t= @tlsdep@ @soxdep@
+couriertls_t= @soxdep@
 
 couriertls_DEPENDENCIES=libcouriertls.la libspipe.la ../rfc1035/librfc1035.a \
 	../md5/libmd5.la ../random128/librandom128.la \
@@ -68,10 +71,13 @@ couriertls_LDADD=libcouriertls.la libspipe.la ../rfc1035/librfc1035.a \
 	../soxwrap/libsoxwrap.a $(couriertls_t:%=-Wl,%)
 couriertls_LDFLAGS=-static
 
-libcouriertls_la_SOURCES=libcouriertls.c libcouriertls.h tlsinfo.c \
-	tlscache.c tlscache.h
+libcouriertlsopenssl_la_SOURCES=libcouriertls.c libcouriertls.h tlsinfo.c
+libcouriertlsopenssl_la_LIBADD=@openssldep@
 
-libtlsclient_a_SOURCES=tlsclient.c tlsclient.h \
+libcouriertlsgnutls_la_SOURCES=libcouriergnutls.c tlsinfo.c
+libcouriertlsgnutls_la_LIBADD=@gnutlsdep@
+
+libtlsclient_la_SOURCES=tlsclient.c tlsclient.h \
 	tlspasswordcache.c tlspasswordcache.h
 
 if HAVE_SGML

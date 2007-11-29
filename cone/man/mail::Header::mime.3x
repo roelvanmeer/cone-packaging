@@ -3,63 +3,63 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::Header::mime
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::HEADER::MIME" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::HEADER::MIME" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::Header::mime \- A structured MIME header.
+mail::Header::mime - A structured MIME header.
 .SH "SYNOPSIS"
 .sp
 .RS 4
 .nf
-#include <libmail/headers.H>
+#include <libmail/headers\.H>
 
 mail::Header::mime content_type("Content\-Type", "text/plain");
 
-    content_type.parameters.set_simple("charset", "iso\-8859\-1");
+    content_type\.parameters\.set_simple("charset", "iso\-8859\-1");
 
 mail::Header::mime content_disposition("Content\-Disposition", "attachment")
-                              ("filename", "document.doc")
+                              ("filename", "document\.doc")
                               ("name", "Monthly Sales", "iso\-8859\-1", "EN");
 
-std::cout << content_type.toString();
+std::cout << content_type\.toString();
 
 .fi
 .RE
 .SH "USAGE"
 .PP
-This class creates a structured MIME header. A structured MIME header, like
+This class creates a structured MIME header\. A structured MIME header, like
 Content\-Type
 or
 Content\-Disposition
 contains a literal value, and zero or more
 \(lqname=setting\(rq
-parameters, separated by semicolons.
+parameters, separated by semicolons\.
 .PP
-Two arguments are provided to the constructor, the header's name, and its literal value. After constructing, use the
+Two arguments are provided to the constructor, the header\'s name, and its literal value\. After constructing, use the
 parameters
-member to set the parameters. This member has the following methods:
+member to set the parameters\. This member has the following methods:
 .PP
 set_simple(std::string name, std::string value)
 .RS 4
 Set parameter
 name
 to
-value.
+value\.
 value
 must contain
 US\-ASCII
-text only.
+text only\.
 .RE
 .PP
 set(std::string name, std::string value, std::string charset, std::string language)
@@ -67,52 +67,52 @@ set(std::string name, std::string value, std::string charset, std::string langua
 Set parameter
 name
 to
-value.
+value\.
 charset
 specifies
-value's character set.
+value\'s character set\.
 language
 is optional, and specifies
-value's language.
+value\'s language\.
 value
 is converted to
 US\-ASCII
 text according to
-\fIRFC 2231\fR\&[1].
+\fIRFC 2231\fR\&[1]\.
 .RE
 .PP
 erase(std::string name)
 .RS 4
 Remove parameter
-name.
+name\.
 .RE
 .PP
 The
 \fBtoString()\fR
 returns the header as a single text string:
-\(lq\fIname\fR: \fIvalue\fR\(rq. Long headers are folded accordingly.
+\(lq\fIname\fR: \fIvalue\fR\(rq\. Long headers are folded accordingly\.
 .SS "Dynamic parameter generation"
 .PP
 Parameters can also be dynamically populated by repeatedly calling the
-\(lq()\(rq.
+\(lq()\(rq\.
 .PP
 One version of the
 \(lq()\(rq
 operator receives the parameter name and value, and corresponds to the
 \fBset_simple\fR
-method. The second version also receives the character set and language information, and corresponds to the
+method\. The second version also receives the character set and language information, and corresponds to the
 \fBset\fR
-function.
+function\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::Header::addresslist\fR(3x),
 \fBmail::Header::encoded\fR(3x),
 \fBmail::Header::list\fR(3x),
-\fBmail::Header::plain\fR(3x).
-.SH "REFERENCES"
+\fBmail::Header::plain\fR(3x)\.
+.SH "NOTES"
 .IP " 1." 4
 RFC 2231
 .RS 4
-\%http://www.rfc\-editor.org/rfc/rfc2231.txt
+\%http://www.rfc-editor.org/rfc/rfc2231.txt
 .RE

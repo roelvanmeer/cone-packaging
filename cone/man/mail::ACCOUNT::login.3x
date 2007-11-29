@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::ACCOUNT::login
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::LOGIN" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::LOGIN" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::ACCOUNT::login \- Open a new mail account
+mail::ACCOUNT::login - Open a new mail account
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,7 +25,7 @@ mail::ACCOUNT::login \- Open a new mail account
 
 
 
-#include <libmail/sync.H>
+#include <libmail/sync\.H>
 
 mail::ACCOUNT *mail=new mail::ACCOUNT;
 
@@ -34,7 +34,7 @@ mail::account::openInfo accountOpenInfo;
 .fi
 .RE
 .HP 20
-.BI "bool ok=mail\->login(" "accountOpenInfo" ");"
+.BI "bool ok=mail->login(" "accountOpenInfo" ");"
 .sp
 .RS 4
 .nf
@@ -45,35 +45,35 @@ std::string errmsg=mail\->getErrmsg();
 .PP
 
 \fBmail::ACCOUNT::login\fR
-opens a new mail account. The mail account's location is specified by
-\fIaccountOpenInfo\fR. See
+opens a new mail account\. The mail account\'s location is specified by
+\fIaccountOpenInfo\fR\. See
 \fBmail::account::open\fR(3x)
 for the description of the parameters set by
-\fIaccountOpenInfo\fR.
+\fIaccountOpenInfo\fR\.
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 This method returns
 true
 if it succeeds, or
 false
-if it fails. If the method fails, use
+if it fails\. If the method fails, use
 mail::ACCOUNT::getErrmsg()
-to read a brief description of the error.
+to read a brief description of the error\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 The object must be destroyed if
 \fBmail::ACCOUNT::login\fR
-fails. A new
+fails\. A new
 mail::ACCOUNT
-object must be created for another login attempt.
+object must be created for another login attempt\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::ACCOUNT::logout\fR(3x),
 \fBmail::loginUrlEncode\fR(3x),
-\fBmail::setAppCharset\fR(3x).
+\fBmail::setAppCharset\fR(3x)\.

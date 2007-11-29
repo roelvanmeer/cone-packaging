@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::loginUrlEncode
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::LOGINURLENCODE" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::LOGINURLENCODE" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::loginUrlEncode \- Create a mail account URL
+mail::loginUrlEncode - Create a mail account URL
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,7 +25,7 @@ mail::loginUrlEncode \- Create a mail account URL
       
 
 
-#include <libmail/mail.H>
+#include <libmail/mail\.H>
 
 .fi
 .RE
@@ -34,45 +34,45 @@ mail::loginUrlEncode \- Create a mail account URL
 .SH "USAGE"
 .PP
 This utility function creates a URL, suitable for
-\fBmail::account::open\fR(3x), for opening a mail account on a remote server.
+\fBmail::account::open\fR(3x), for opening a mail account on a remote server\.
 .PP
 
 \fImethod\fR
 is one of the supported
 libmail
-network protocols: "imap", "imaps", "pop3", "pop3s", "nntp", "nntps", "smtp", or "smtps".
+network protocols: "imap", "imaps", "pop3", "pop3s", "nntp", "nntps", "smtp", or "smtps"\.
 \fIserver\fR
-is the remote server name. The server name is optionally appended by a colon and a port number, to specify a non\-default port for the protocol.
+is the remote server name\. The server name is optionally appended by a colon and a port number, to specify a non\-default port for the protocol\.
 .PP
 
 \fIuid\fR
-identifies the mail account's login id. With "smtp", or "smtps",
+identifies the mail account\'s login id\. With "smtp", or "smtps",
 \fIuid\fR
-specifies the userid for authenticated ESMTP. The
+specifies the userid for authenticated ESMTP\. The
 \fIpassword\fR
-is optional.
+is optional\.
 \fBmail::account::open\fR(3x)
 accepts a separate
 \fIpassword\fR
-parameter. This
+parameter\. This
 \fIpassword\fR
-should be an empty string, so that the resulting URL does not include the password. The real password is then passed as a parameter to
-\fBmail::account::open\fR(3x). As an alternative, this
+should be an empty string, so that the resulting URL does not include the password\. The real password is then passed as a parameter to
+\fBmail::account::open\fR(3x)\. As an alternative, this
 \fIpassword\fR
-parameter can be initialized. The resulting URL will include the password, and the the
+parameter can be initialized\. The resulting URL will include the password, and the the
 \fIpassword\fR
 parameter to
-\fBmail::account::open\fR(3x). should be set to an empty string.
+\fBmail::account::open\fR(3x)\. should be set to an empty string\.
 .SS "Options"
 .PP
 Additional protocol options are specified by prefixing each option with the forward\-slash character, "/", and appending all options to
 \fIserver\fR
-(after any optional protocol port number).
+(after any optional protocol port number)\.
 .SH "RETURN CODES"
 .PP
-This function returns the resulting URL.
+This function returns the resulting URL\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::open\fR(3x),
-\fBmail::loginUrlEncode\fR(3x).
+\fBmail::loginUrlEncode\fR(3x)\.

@@ -5,10 +5,13 @@
 #include	"config.h"
 #include	"argparse.h"
 #include	"spipe.h"
+#define COURIERTCPD_EXPOSE_OPENSSL 1
 #include	"libcouriertls.h"
+#include	<openssl/rand.h>
 #include	"tlscache.h"
 #include	"rfc1035/rfc1035.h"
 #include	"soxwrap/soxwrap.h"
+#include	"random128/random128.h"
 #ifdef  getc
 #undef  getc
 #endif
@@ -402,8 +405,25 @@ SSL_CTX *tls_create(int isserver, const struct tls_info *info)
 		return (NULL);
 	}
 
-	SSL_load_error_strings();
-	SSLeay_add_ssl_algorithms();
+	{
+		static int first=1;
+
+		if (first)
+		{
+			first=0;
+			SSL_load_error_strings();
+			SSLeay_add_ssl_algorithms();
+
+			while (RAND_status() != 1)
+			{
+				const char *p=random128();
+				size_t l=strlen(p);
+
+				RAND_add(p, l, l/16);
+			}
+		}
+	}
+
 
 	info_copy=malloc(sizeof(struct tls_info));
 
@@ -870,6 +890,14 @@ SSL *tls_connect(SSL_CTX *ctx, int fd)
 	return (ssl);
 }
 
+void tls_disconnect(SSL *ssl, int fd)
+{
+	fcntl(fd, F_SETFL, 0);
+	SSL_set_shutdown(ssl, SSL_SENT_SHUTDOWN|SSL_RECEIVED_SHUTDOWN);
+	SSL_free(ssl);
+	ERR_remove_state(0);
+}
+
 /* --------------------------------------- */
 
 int	tls_transfer(struct tls_transfer_info *t, SSL *ssl, int fd,
@@ -1052,5 +1080,217 @@ int tls_connecting(SSL *ssl)
 	struct tls_info *info=(struct tls_info *)SSL_get_app_data(ssl);
 
 	return info->accept_interrupted || info->connect_interrupted;
+}
+
+#define MAXDOMAINSIZE	256
+
+static time_t asn1toTime(ASN1_TIME *asn1Time)
+{
+	struct tm tm;
+	int offset;
+
+	if (asn1Time == NULL || asn1Time->length < 13)
+		return 0;
+
+	memset(&tm, 0, sizeof(tm));
+
+#define N2(n)	((asn1Time->data[n]-'0')*10 + asn1Time->data[(n)+1]-'0')
+
+#define CPY(f,n) (tm.f=N2(n))
+
+	CPY(tm_year,0);
+
+	if(tm.tm_year < 50)
+		tm.tm_year += 100; /* Sux */
+
+	CPY(tm_mon, 2);
+	--tm.tm_mon;
+	CPY(tm_mday, 4);
+	CPY(tm_hour, 6);
+	CPY(tm_min, 8);
+	CPY(tm_sec, 10);
+
+	offset=0;
+
+	if (asn1Time->data[12] != 'Z')
+	{
+		if (asn1Time->length < 17)
+			return 0;
+
+		offset=N2(13)*3600+N2(15)*60;
+
+		if (asn1Time->data[12] == '-')
+			offset= -offset;
+	}
+
+#undef N2
+#undef CPY
+
+	return mktime(&tm)-offset;
+}
+
+
+static void dump_x509(X509 *x509,
+		      void (*dump_func)(const char *, int cnt, void *),
+		      void *dump_arg)
+{
+	X509_NAME *subj=X509_get_subject_name(x509);
+	int nentries, j;
+	time_t timestamp;
+	static const char gcc_shutup[]="%Y-%m-%d %H:%M:%S";
+
+	if (!subj)
+		return;
+
+	(*dump_func)("Subject:\n", -1, dump_arg);
+
+	nentries=X509_NAME_entry_count(subj);
+	for (j=0; j<nentries; j++)
+	{
+		const char *obj_name;
+		X509_NAME_ENTRY *e;
+		ASN1_OBJECT *o;
+		ASN1_STRING *d;
+
+		int dlen;
+		unsigned char *ddata;
+
+		e=X509_NAME_get_entry(subj, j);
+		if (!e)
+			continue;
+
+		o=X509_NAME_ENTRY_get_object(e);
+		d=X509_NAME_ENTRY_get_data(e);
+
+		if (!o || !d)
+			continue;
+
+		obj_name=OBJ_nid2sn(OBJ_obj2nid(o));
+
+		dlen=ASN1_STRING_length(d);
+		ddata=ASN1_STRING_data(d);
+	
+		(*dump_func)("   ", -1, dump_arg);
+		(*dump_func)(obj_name, -1, dump_arg);
+		(*dump_func)("=", 1, dump_arg);
+		(*dump_func)((const char *)ddata, dlen, dump_arg);
+		(*dump_func)("\n", 1, dump_arg);
+		
+	}
+	(*dump_func)("\n", 1, dump_arg);
+
+	timestamp=asn1toTime(X509_get_notBefore(x509));
+
+	if (timestamp)
+	{
+		struct tm *tm=localtime(&timestamp);
+		char buffer[500];
+
+		buffer[strftime(buffer, sizeof(buffer)-1, gcc_shutup,
+				tm)]=0;
+
+		(*dump_func)("Not-Before: ", -1, dump_arg);
+		(*dump_func)(buffer, -1, dump_arg);
+		(*dump_func)("\n", 1, dump_arg);
+	}
+
+	timestamp=asn1toTime(X509_get_notAfter(x509));
+	if (timestamp)
+	{
+		struct tm *tm=localtime(&timestamp);
+		char buffer[500];
+
+		buffer[strftime(buffer, sizeof(buffer)-1, gcc_shutup,
+				tm)]=0;
+
+		(*dump_func)("Not-After: ", -1, dump_arg);
+		(*dump_func)(buffer, -1, dump_arg);
+		(*dump_func)("\n", 1, dump_arg);
+	}
+}
+
+void tls_dump_connection_info(ssl_handle ssl,
+			      int server,
+			      void (*dump_func)(const char *, int cnt, void *),
+			      void *dump_arg)
+{
+	SSL_CIPHER *cipher;
+
+	{
+		STACK_OF(X509) *peer_cert_chain=SSL_get_peer_cert_chain(ssl);
+		int i;
+
+		if (server)
+		{
+			X509 *x=SSL_get_peer_certificate(ssl);
+
+			if (x)
+			{
+				dump_x509(x, dump_func, dump_arg);
+				X509_free(x);
+			}
+		}
+
+		for (i=0; peer_cert_chain && i<peer_cert_chain->stack.num; i++)
+			dump_x509((X509 *)peer_cert_chain->stack.data[i],
+				  dump_func, dump_arg);
+	}
+
+	cipher=SSL_get_current_cipher(ssl);
+
+	if (cipher)
+	{
+		const char *c;
+
+		c=SSL_CIPHER_get_version(cipher);
+		if (c)
+		{
+			(*dump_func)("Version: ", -1, dump_arg);
+			(*dump_func)(c, -1, dump_arg);
+			(*dump_func)("\n", 1, dump_arg);
+		}
+
+		{
+			char buf[10];
+
+			(*dump_func)("Bits: ", -1, dump_arg);
+
+			snprintf(buf, sizeof(buf), "%d",
+				 SSL_CIPHER_get_bits(cipher, NULL));
+			buf[sizeof(buf)-1]=0;
+
+			(*dump_func)(buf, -1, dump_arg);
+			(*dump_func)("\n", 1, dump_arg);
+		}
+
+		c=SSL_CIPHER_get_name(cipher);
+
+		if (c)
+		{
+			(*dump_func)("Cipher: ", -1, dump_arg);
+			(*dump_func)(c, -1, dump_arg);
+			(*dump_func)("\n", 1, dump_arg);
+		}
+	}
+}
+
+char *tls_get_encryption_desc(ssl_handle ssl)
+{
+	char protocolbuf[256];
+	SSL_CIPHER *cipher;
+	const char *c, *d;
+
+	cipher=SSL_get_current_cipher(ssl);
+
+	c=cipher ? SSL_CIPHER_get_version(cipher):NULL;
+	d=cipher ? SSL_CIPHER_get_name(cipher):NULL;
+
+	snprintf(protocolbuf, sizeof(protocolbuf),
+		 "%s,%dbits,%s",
+		 c ? c:"unknown",
+		 cipher ? SSL_CIPHER_get_bits(cipher, NULL):0,
+		 d ? d:"unknown");
+	protocolbuf[sizeof(protocolbuf)-1]=0;
+	return strdup(protocolbuf);
 }
 

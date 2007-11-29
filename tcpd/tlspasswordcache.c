@@ -1,5 +1,5 @@
 /*
-** Copyright 2003-2006 Double Precision, Inc.
+** Copyright 2003-2007 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <errno.h>
 #include <md5/md5.h>
 
@@ -18,7 +19,7 @@
 #include <openssl/err.h>
 #include <openssl/rand.h>
 
-static void sslerror(const char *pfix)
+static void sslerror(EVP_CIPHER_CTX *ctx, const char *pfix)
 {
         char errmsg[256];
         int errnum=ERR_get_error();
@@ -27,6 +28,315 @@ static void sslerror(const char *pfix)
 
 	fprintf(stderr, "%s: %s\n", pfix, errmsg);
 }
+
+
+#endif
+
+#if HAVE_GCRYPT
+
+#include <gcrypt.h>
+
+#define RAND_pseudo_bytes(a,b) (gcry_create_nonce((a),(b)), 0)
+
+typedef struct {
+	enum gcry_cipher_algos algo;
+	enum gcry_cipher_modes mode;
+} EVP_CIPHER;
+
+#define EVP_MAX_IV_LENGTH 256
+
+const EVP_CIPHER *EVP_des_cbc()
+{
+	static const EVP_CIPHER des_cbc={GCRY_CIPHER_DES,
+					 GCRY_CIPHER_MODE_CBC};
+
+	return &des_cbc;
+}
+
+typedef struct {
+	const EVP_CIPHER *cipher;
+	gcry_error_t err;
+	gcry_cipher_hd_t handle;
+
+	int padding;
+	char *blkbuf;
+	size_t blksize;
+
+	size_t blkptr;
+
+} EVP_CIPHER_CTX;
+
+static void sslerror(EVP_CIPHER_CTX *ctx, const char *pfix)
+{
+	fprintf(stderr, "%s: %s\n", pfix, gcry_strerror(ctx->err));
+}
+
+static void EVP_CIPHER_CTX_init(EVP_CIPHER_CTX *ctx)
+{
+	memset(ctx, 0, sizeof(*ctx));
+}
+
+static void EVP_CIPHER_CTX_cleanup(EVP_CIPHER_CTX *ctx)
+{
+	if (ctx->handle)
+	{
+		gcry_cipher_close(ctx->handle);
+		ctx->handle=NULL;
+	}
+
+	if (ctx->blkbuf)
+	{
+		free(ctx->blkbuf);
+		ctx->blkbuf=NULL;
+	}
+}
+
+static int EVP_CIPHER_iv_length(const EVP_CIPHER *cipher)
+{
+	size_t l=0;
+
+	gcry_cipher_algo_info(cipher->algo, GCRYCTL_GET_BLKLEN, NULL, &l);
+	return l;
+}
+
+static int EVP_CIPHER_key_length(const EVP_CIPHER *cipher)
+{
+	size_t l=0;
+
+	gcry_cipher_algo_info(cipher->algo, GCRYCTL_GET_KEYLEN, NULL, &l);
+	return l;
+}
+
+static int EVP_EncryptInit_ex(EVP_CIPHER_CTX *ctx, const EVP_CIPHER *cipher,
+			      void *impl, unsigned char *key, unsigned char *iv)
+{
+	EVP_CIPHER_CTX_cleanup(ctx);
+	ctx->cipher=cipher;
+	ctx->err=gcry_cipher_open(&ctx->handle,
+				  cipher->algo,
+				  cipher->mode, 0);
+
+	if (!ctx->err)
+		ctx->err=gcry_cipher_setkey(ctx->handle, key,
+					    EVP_CIPHER_key_length(cipher));
+
+	if (!ctx->err)
+		ctx->err=gcry_cipher_setiv(ctx->handle, iv,
+					   (ctx->blksize=
+					    EVP_CIPHER_iv_length(cipher)));
+
+	if (!ctx->err)
+		if ((ctx->blkbuf=malloc(ctx->blksize)) == NULL)
+			ctx->err=gpg_err_code_from_errno(errno);
+
+	ctx->blkptr=0;
+	ctx->padding=1;
+
+	return ctx->err == 0;
+}
+
+static int EVP_EncryptUpdate(EVP_CIPHER_CTX *ctx, unsigned char *out,
+			     int *outl, unsigned char *in, int inl)
+{
+	*outl=0;
+
+	while (inl > 0)
+	{
+		size_t cp= (size_t)inl < (ctx->blksize - ctx->blkptr)
+			? (size_t)inl:(ctx->blksize - ctx->blkptr);
+
+		if (ctx->blkptr == 0 && inl > ctx->blksize*2)
+		{
+			cp=(inl / ctx->blksize - 1) * ctx->blksize;
+
+			if ((ctx->err=gcry_cipher_encrypt(ctx->handle,
+							  out, cp,
+							  in, cp))
+			    != 0)
+				return 0;
+
+			out += cp;
+			*outl += cp;
+			in += cp;
+			inl -= cp;
+			continue;
+		}
+
+		memcpy(ctx->blkbuf + ctx->blkptr, in, cp);
+
+		in += cp;
+		inl -= cp;
+
+		ctx->blkptr += cp;
+
+		if (ctx->blkptr == ctx->blksize)
+		{
+			if ((ctx->err=gcry_cipher_encrypt(ctx->handle,
+							  out, ctx->blksize,
+							  ctx->blkbuf,
+							  ctx->blksize)) != 0)
+				return 0;
+			out += ctx->blksize;
+			*outl += ctx->blksize;
+			ctx->blkptr=0;
+		}
+	}
+	return 1;
+}
+
+static int EVP_EncryptFinal_ex(EVP_CIPHER_CTX *ctx, unsigned char *out,
+			       int *outl)
+{
+	if (ctx->padding)
+	{
+		unsigned char pad=ctx->blksize - ctx->blkptr;
+
+		*outl=0;
+
+		if (pad == 0)
+			pad=ctx->blksize;
+
+		do
+		{
+			int n_outl;
+
+			if (!EVP_EncryptUpdate(ctx, out, &n_outl, &pad, 1))
+				return 0;
+				
+			out += n_outl;
+			*outl += n_outl;
+		}
+		while (ctx->blkptr);
+	}
+	else if (ctx->blksize != ctx->blkptr)
+	{
+		ctx->err=GPG_ERR_BAD_DATA;
+		return 0;
+	}
+
+	return 1;
+}
+
+static int EVP_DecryptInit_ex(EVP_CIPHER_CTX *ctx, const EVP_CIPHER *type,
+			      void *impl, unsigned char *key,
+			      unsigned char *iv)
+{
+	return EVP_EncryptInit_ex(ctx, type, impl, key, iv);
+}
+
+static int EVP_DecryptUpdate(EVP_CIPHER_CTX *ctx, unsigned char *out,
+			     int *outl, unsigned char *in, int inl)
+{
+	*outl=0;
+
+	while (inl > 0)
+	{
+		size_t cp;
+
+		if (ctx->blkptr == 0 && inl > ctx->blksize * 3)
+		{
+			cp=(inl / ctx->blksize - 2) * ctx->blksize;
+
+			if ((ctx->err=gcry_cipher_decrypt(ctx->handle,
+							  out, cp,
+							  in, cp))
+			    != 0)
+				return 0;
+
+			out += cp;
+			*outl += cp;
+			in += cp;
+			inl -= cp;
+			continue;
+		}
+
+		if (ctx->blkptr == ctx->blksize)
+		{
+			if ((ctx->err=gcry_cipher_decrypt(ctx->handle,
+							  out, ctx->blksize,
+							  ctx->blkbuf,
+							  ctx->blksize)) != 0)
+				return 0;
+			out += ctx->blksize;
+			*outl += ctx->blksize;
+			ctx->blkptr=0;
+		}
+
+		cp= (size_t)inl < (ctx->blksize - ctx->blkptr)
+			? (size_t)inl:(ctx->blksize - ctx->blkptr);
+
+		memcpy(ctx->blkbuf + ctx->blkptr, in, cp);
+
+		in += cp;
+		inl -= cp;
+
+		ctx->blkptr += cp;
+
+	}
+	return 1;
+}
+
+static int EVP_DecryptFinal_ex(EVP_CIPHER_CTX *ctx, unsigned char *outm,
+			       int *outl)
+{
+	unsigned char lastval;
+	int cnt;
+
+	if (ctx->blkptr != ctx->blksize)
+	{
+		ctx->err=GPG_ERR_BAD_DATA;
+		return 0;
+	}
+
+	if ((ctx->err=gcry_cipher_decrypt(ctx->handle,
+					  ctx->blkbuf,
+					  ctx->blksize,
+					  NULL, 0)) != 0)
+		return 0;
+
+	if (ctx->padding)
+	{
+		lastval=ctx->blkbuf[ctx->blksize-1];
+
+		if (lastval > 0 && lastval <= ctx->blksize)
+		{
+			char n;
+
+			for (n=0; n<lastval; n++)
+				if (ctx->blkbuf[ctx->blksize-1-n] != lastval)
+					lastval=0;
+		}
+		else
+			lastval=0;
+
+		if (!lastval)
+		{
+			ctx->err=GPG_ERR_BAD_DATA;
+			return 0;
+		}
+	}
+	else
+	{
+		lastval=0;
+	}
+
+	cnt=ctx->blksize-lastval;
+	if (cnt)
+		memcpy(outm, ctx->blkbuf, cnt);
+	*outl=cnt;
+	return 1;
+}
+
+
+#define HAVE_OPENSSL097 1
+#endif
+
+#if HAVE_OPENSSL097
+
+#if BUFSIZ < 8192
+#undef BUFSIZ
+#define BUFSIZ 8192
+#endif
 
 int tlspassword_init()
 {
@@ -74,11 +384,12 @@ int tlspassword_save( const char * const *urls,
 	}
 
 	if (iv_len + key_len > sizeof(iv1_buf)
-	    || key_len > sizeof(md5_password)-1)
+	    || iv_len + key_len != sizeof(iv2_buf)
+	    || key_len != sizeof(md5_password)/2)
 	{
 		fprintf(stderr,
 			"tlspassword_save: internal error - "
-			"key sizes too large.\n");
+			"unexpected key sizes.\n");
 		EVP_CIPHER_CTX_cleanup(&ctx);
 		errno=EIO;
 		return -1;
@@ -98,7 +409,7 @@ int tlspassword_save( const char * const *urls,
 	    !EVP_EncryptFinal_ex(&ctx, (unsigned char *)(p += l), &l))
 
 	{
-		sslerror("EVP_EncryptInit_ex");
+		sslerror(&ctx, "EVP_EncryptInit_ex");
 		EVP_CIPHER_CTX_cleanup(&ctx);
 		errno=EIO;
 		return -1;
@@ -139,7 +450,7 @@ int tlspassword_save( const char * const *urls,
 				(unsigned char *)&iv2_buf,
 				(unsigned char *)&iv2_buf + key_len))
 	{
-		sslerror("EVP_EncryptInit_ex");
+		sslerror(&ctx, "EVP_EncryptInit_ex");
 		EVP_CIPHER_CTX_cleanup(&ctx);
 		errno=EIO;
 		return -1;
@@ -160,7 +471,7 @@ int tlspassword_save( const char * const *urls,
 
 	if (!EVP_EncryptFinal_ex(&ctx, (unsigned char *)buf, &l))
 	{
-		sslerror("EVP_EncryptInit_ex");
+		sslerror(&ctx, "EVP_EncryptInit_ex");
 		EVP_CIPHER_CTX_cleanup(&ctx);
 		errno=EIO;
 		return -1;
@@ -196,7 +507,7 @@ static int save_string(EVP_CIPHER_CTX *ctx,
 
 	if (!EVP_EncryptUpdate(ctx, (unsigned char *)buf, &l, b, 2))
 	{
-		sslerror("EVP_EncryptUpdate");
+		sslerror(ctx, "EVP_EncryptUpdate");
 		return -1;
 	}
 
@@ -218,7 +529,7 @@ static int save_string(EVP_CIPHER_CTX *ctx,
 		if (!EVP_EncryptUpdate(ctx, (unsigned char *)buf, &l,
 				       (unsigned char *)str, n))
 		{
-			sslerror("EVP_EncryptUpdate");
+			sslerror(ctx, "EVP_EncryptUpdate");
 			return -1;
 		}
 
@@ -342,7 +653,6 @@ int tlspassword_load( int (*callback)(char *, size_t, void *),
 	readinfo.readfuncarg=callback_arg;
 	readinfo.tl_list=NULL;
 	readinfo.tl_last=NULL;
-
 
 	md5_digest(mpw, strlen(mpw), md5_password);
 

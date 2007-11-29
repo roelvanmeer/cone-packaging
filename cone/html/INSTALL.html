@@ -52,18 +52,18 @@ information.
     </div>
 
     <p>First, make sure that all the necessary requirements
-    (<a href="README.html" title="Building Cone" shape="rect">README</a>) are satisfied. See RPM instructions below if
-    building for Red Hat Linux. See additional notes below for
-    upgrade instructions. Otherwise:</p>
+    (<a class="link" href="README.html" title="Building Cone" shape="rect">README</a>) are satisfied. See RPM instructions
+    below if building for Red Hat Linux. See additional notes below
+    for upgrade instructions. Otherwise:</p>
 
     <div class="itemizedlist">
       <ul type="disc">
         <li>
           <p>Download the Courier Socks 5 proxy client library from
-          <a href="http://www.courier-mta.org/download.php#sox" target="_top" shape="rect">http://www.courier-mta.org/download.php#sox</a>
+          <a class="ulink" href="http://www.courier-mta.org/download.php#sox" target="_top" shape="rect">http://www.courier-mta.org/download.php#sox</a>
           and follow its installation instructions. Binary RPMs can
           be built from the source code tarball by following the
-          procedure outlined in <a href="http://www.courier-mta.org/FAQ.html#rpm" target="_top" shape="rect">http://www.courier-mta.org/FAQ.html#rpm</a>
+          procedure outlined in <a class="ulink" href="http://www.courier-mta.org/FAQ.html#rpm" target="_top" shape="rect">http://www.courier-mta.org/FAQ.html#rpm</a>
           using the &#8220;<span class="quote">courier-sox-<em class="replaceable"><code>version</code></em></span>&#8221;
           tarball, and installing the &#8220;<span class="quote">courier-sox</span>&#8221; and &#8220;<span class="quote">courier-sox-devel</span>&#8221; binary RPMs
           afterwards.</p>
@@ -74,49 +74,49 @@ information.
         </li>
 
         <li>
-          <p>Download the source code tarball from <a href="http://www.courier-mta.org/download.php#cone" target="_top" shape="rect">http://www.courier-mta.org/download.php#cone</a>
+          <p>Download the source code tarball from <a class="ulink" href="http://www.courier-mta.org/download.php#cone" target="_top" shape="rect">http://www.courier-mta.org/download.php#cone</a>
           and unpack it.</p>
         </li>
 
         <li>
           <p>Set the appropriate environment variables if the
           compiler or linker needs any custom command line flags.
-          Run &#8220;<span class="quote"><span><strong class="command">./configure
+          Run &#8220;<span class="quote"><span class="command"><strong>./configure
           --help</strong></span></span>&#8221; to list the
           available environment variables that specify additional
           arbitrary parameters for the C/C++ compiler.</p>
         </li>
 
         <li>
-          <p>Run &#8220;<span class="quote"><span><strong class="command">./configure <em class="replaceable"><code>[options]</code></em></strong></span></span>&#8221;.
+          <p>Run &#8220;<span class="quote"><span class="command"><strong>./configure <em class="replaceable"><code>[options]</code></em></strong></span></span>&#8221;.
           See below for a list of available options.</p>
         </li>
 
         <li>
-          <p>Run <span><strong class="command">make</strong></span>.</p>
+          <p>Run <span class="command"><strong>make</strong></span>.</p>
 
           <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
             <h3 class="title">Note</h3>
 
             <p>The GNU version of the <code class="literal">command</code> is required. On BSD systems
-            it's the <span><strong class="command">gmake</strong></span>. Use
-            <span><strong class="command">gmake</strong></span> in
+            it's the <span class="command"><strong>gmake</strong></span>. Use
+            <span class="command"><strong>gmake</strong></span> in
             this, and the following steps.</p>
           </div>
         </li>
 
         <li>
-          <p>Run <span><strong class="command">make
+          <p>Run <span class="command"><strong>make
           check</strong></span>.</p>
         </li>
 
         <li>
-          <p>Run <span><strong class="command">make
+          <p>Run <span class="command"><strong>make
           install</strong></span>.</p>
         </li>
 
         <li>
-          <p>Run <span><strong class="command">make
+          <p>Run <span class="command"><strong>make
           install-configure</strong></span>.</p>
         </li>
       </ul>
@@ -125,7 +125,7 @@ information.
     <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
       <h3 class="title">Note</h3>
 
-      <p>Do not forget &#8220;<span class="quote"><span><strong class="command">make
+      <p>Do not forget &#8220;<span class="quote"><span class="command"><strong>make
       install-configure</strong></span></span>&#8221;. It is
       required.</p>
     </div>
@@ -164,13 +164,13 @@ information.
         <dd>
           <p>The development libraries and include files (only if
           <em class="parameter"><code>--with-devel</code></em> was
-          specified to the <span><strong class="command">configure</strong></span> script).</p>
+          specified to the <span class="command"><strong>configure</strong></span> script).</p>
         </dd>
       </dl>
     </div>
 
     <p>These installation directories, and other options, may be
-    controlled by additional options to the <span><strong class="command">configure</strong></span> script:</p>
+    controlled by additional options to the <span class="command"><strong>configure</strong></span> script:</p>
 
     <div class="variablelist">
       <dl>
@@ -178,10 +178,11 @@ information.
         others...</span></dt>
 
         <dd>
-          <p><span><strong class="command">./configure
+          <p><span class="command"><strong>./configure
           --help</strong></span> lists about a dozen parameters to
-          the <span><strong class="command">./configure</strong></span> that specify the
-          directories where various files should be installed.</p>
+          the <span class="command"><strong>./configure</strong></span> that
+          specify the directories where various files should be
+          installed.</p>
         </dd>
 
         <dt><span class="term"><em class="parameter"><code>--with-certdb</code></em>, <em class="parameter"><code>--without-certdb</code></em>, <em class="parameter"><code>--with-certdb=<em class="replaceable"><code>filename</code></em></code></em></span></dt>
@@ -192,9 +193,8 @@ information.
           SSL certificate, which must be signed by a trusted
           certificate authority. <span class="application">Cone</span>'s source distribution includes
           the same list of trusted certificate authorities as the
-          <a href="http://www.mozilla.org" target="_top" shape="rect"><span class="application">Mozilla</span></a>
-          browser. <span class="application">Cone</span>'s
-          certificate list is installed by default, unless <a href="http://www.courier-mta.org" target="_top" shape="rect"><span class="application">Courier</span></a> is
+          <a class="ulink" href="http://www.mozilla.org" target="_top" shape="rect"><span class="application">Mozilla</span></a> browser. <span class="application">Cone</span>'s certificate list is installed
+          by default, unless <a class="ulink" href="http://www.courier-mta.org" target="_top" shape="rect"><span class="application">Courier</span></a> is
           also installed, in which case <span class="application">Cone</span>'s default configuration points
           to <span class="application">Courier</span>'s
           <code class="filename">rootcerts</code> directory (which
@@ -205,7 +205,7 @@ information.
           SSL certificate authority list, even if <span class="application">Courier</span> is also installed, in
           <code class="filename">/usr/local/share/cone/rootcerts</code> (which
           is derived from the <em class="parameter"><code>--datadir</code></em> default option,
-          as explained by <span><strong class="command">./configure
+          as explained by <span class="command"><strong>./configure
           --help</strong></span>). <em class="parameter"><code>--with-certdb=<em class="replaceable"><code>filename</code></em></code></em>
           installs the trusted SSL certificate authority list in
           the directory <em class="replaceable"><code>filename</code></em>. <em class="parameter"><code>--without-certdb</code></em> does not
@@ -213,10 +213,20 @@ information.
           SSL certificate authority list.</p>
         </dd>
 
+        <dt><span class="term"><em class="parameter"><code>--with-gnutls</code></em></span></dt>
+
+        <dd>
+          <p>Select the GnuTLS library even if the OpenSSL library
+          is also installed. The <span class="command"><strong>configure</strong></span> script
+          automatically selects whichever one is available. The
+          OpenSSL library is selected if both are present. Use this
+          option to override and select GnuTLS instead.</p>
+        </dd>
+
         <dt><span class="term"><em class="parameter"><code>--with-devel</code></em></span></dt>
 
         <dd>
-          <p>Install <a href="libmail.html" title="LibMAIL reference" shape="rect"><span class="application">LibMAIL</span></a> , the mail library used
+          <p>Install <a class="link" href="libmail.html" title="LibMAIL reference" shape="rect"><span class="application">LibMAIL</span></a> , the mail library used
           by <span class="application">Cone</span> to access and
           handle E-mail messages.</p>
         </dd>
@@ -225,10 +235,10 @@ information.
 
         <dd>
           <p><span class="application">Cone</span> can use either
-          <span><strong class="command">aspell</strong></span> or
-          <span><strong class="command">pspell</strong></span> for
-          spell checking. <span><strong class="command">aspell</strong></span> is used if both are
-          installed. This option selects <span><strong class="command">pspell</strong></span> instead.</p>
+          <span class="command"><strong>aspell</strong></span> or
+          <span class="command"><strong>pspell</strong></span> for
+          spell checking. <span class="command"><strong>aspell</strong></span> is used if both
+          are installed. This option selects <span class="command"><strong>pspell</strong></span> instead.</p>
         </dd>
       </dl>
     </div>
@@ -237,7 +247,7 @@ information.
       <div class="titlepage">
         <div>
           <div>
-            <h3 class="title"><a id="id327236" shape="rect" name="id327236"> </a>Upgrading from an earlier version of
+            <h3 class="title"><a id="id343099" shape="rect" name="id343099"> </a>Upgrading from an earlier version of
             <span class="application">Cone</span></h3>
           </div>
         </div>
@@ -252,7 +262,7 @@ information.
         <div class="titlepage">
           <div>
             <div>
-              <h4 class="title"><a id="id327275" shape="rect" name="id327275"> </a>Upgrading from version 0.59 and
+              <h4 class="title"><a id="id343138" shape="rect" name="id343138"> </a>Upgrading from version 0.59 and
               earlier</h4>
             </div>
           </div>
@@ -272,7 +282,7 @@ information.
       <div class="titlepage">
         <div>
           <div>
-            <h3 class="title"><a id="id327304" shape="rect" name="id327304"> </a>RPM builds</h3>
+            <h3 class="title"><a id="id343167" shape="rect" name="id343167"> </a>RPM builds</h3>
           </div>
         </div>
       </div>
@@ -289,8 +299,8 @@ cd $HOME/rpm
 mkdir SOURCES SPECS BUILD SRPMS RPMS
 </pre>
 
-      <p>Finally, download the source code to <span class="application">Cone</span> from <a href="http://www.courier-mta.org/download.php#cone" target="_top" shape="rect">http://www.courier-mta.org/download.php#cone</a>. Do
-      not unpack the tarball. Execute &#8220;<span class="quote"><span><strong class="command">rpmbuild -ta
+      <p>Finally, download the source code to <span class="application">Cone</span> from <a class="ulink" href="http://www.courier-mta.org/download.php#cone" target="_top" shape="rect">http://www.courier-mta.org/download.php#cone</a>. Do
+      not unpack the tarball. Execute &#8220;<span class="quote"><span class="command"><strong>rpmbuild -ta
       cone-<em class="replaceable"><code>version</code></em>.tar.bz2</strong></span></span>&#8221;.
       Two binary RPMs will be created: the main binary package
       contains <span class="application">Cone</span>. The
@@ -306,7 +316,7 @@ mkdir SOURCES SPECS BUILD SRPMS RPMS
       <div class="titlepage">
         <div>
           <div>
-            <h3 class="title"><a id="id327446" shape="rect" name="id327446"> </a>CVS Source checkouts</h3>
+            <h3 class="title"><a id="id343309" shape="rect" name="id343309"> </a>CVS Source checkouts</h3>
           </div>
         </div>
       </div>
@@ -315,7 +325,7 @@ mkdir SOURCES SPECS BUILD SRPMS RPMS
       however additional requirements apply. Besides the usual
       prerequisites for building <span class="application">Cone</span>, additional development software
       must be installed. See the &#8220;<span class="quote">Download via CVS</span>&#8221; instructions at
-      <a href="http://www.courier-mta.org/status.html" target="_top" shape="rect">http://www.courier-mta.org/status.html</a>.
+      <a class="ulink" href="http://www.courier-mta.org/status.html" target="_top" shape="rect">http://www.courier-mta.org/status.html</a>.
       <span class="application">Cone</span> has the same
       requirements as <span class="application">Courier</span> for
       CVS builds (technically, <span class="application">Cone</span> does not need libtool, but that may

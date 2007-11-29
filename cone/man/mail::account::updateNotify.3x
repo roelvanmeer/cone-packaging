@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::account::updateNotify
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::UPDAT" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::UPDAT" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::account::updateNotify \- Request notification of folder updates
+mail::account::updateNotify - Request notification of folder updates
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,7 +25,7 @@ mail::account::updateNotify \- Request notification of folder updates
 
 
 
-#include <libmail/mail.H>
+#include <libmail/mail\.H>
 
 
 class myCallback : public mail::callback {
@@ -42,18 +42,21 @@ mail::account *account;
 .fi
 .RE
 .HP 22
-.BI "account\->updateNotify(bool\ " "enableDisable" ", myCallback\ &" "callback" ");"
+.BI "account->updateNotify(bool\ " "enableDisable" ", myCallback\ &" "callback" ");"
 .SH "USAGE"
 .PP
-If supported by the mail server, this function requests that the application be notified immediately if another application makes any changes to the currently open folder. This includes:
+If supported by the mail server, this function requests that the application be notified immediately if another application makes any changes to the currently open folder\. This includes:
+.sp
 .RS 4
-\h'-04'\(bu\h'+03'New mail delivered to the folder.
+\h'-04'\(bu\h'+03'New mail delivered to the folder\.
 .RE
+.sp
 .RS 4
-\h'-04'\(bu\h'+03'Existing messages removed from the folder.
+\h'-04'\(bu\h'+03'Existing messages removed from the folder\.
 .RE
+.sp
 .RS 4
-\h'-04'\(bu\h'+03'Changes to the messages' flags.
+\h'-04'\(bu\h'+03'Changes to the messages\' flags\.
 .RE
 .PP
 These events are normally reported by invoking the
@@ -63,99 +66,99 @@ These events are normally reported by invoking the
 method of the
 mail::callback::folder
 object that was passed to
-\fBmail::folder::open\fR(3x).
+\fBmail::folder::open\fR(3x)\.
 .PP
-These callback function normally are not generated immediately after the corresponding events occur. Changes to the folder's contents are usually checked only when the next request is processed; additionally many mail servers do not even do that, and only check for changes when the mail clients explicitly asks the server to check for new mail (\fBmail::account::checkNewMail\fR(3x)) or to update the permanent message status (
+These callback function normally are not generated immediately after the corresponding events occur\. Changes to the folder\'s contents are usually checked only when the next request is processed; additionally many mail servers do not even do that, and only check for changes when the mail clients explicitly asks the server to check for new mail (\fBmail::account::checkNewMail\fR(3x)) or to update the permanent message status (
 \fBmail::account::removeMessages\fR(3x)
 or
-\fBmail::account::updateFolderIndexInfo\fR(3x)).
+\fBmail::account::updateFolderIndexInfo\fR(3x))\.
 .PP
 This method requests the server to notify the application immediately when another application changes the folder (the
 \fIenableDisable\fR
 parameter is
 true), or to stop notifying the application (\fIenableDisable\fR
-is false).
+is false)\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 This method only works with IMAP mail accounts on IMAP servers that support the IMAP IDLE extension, as described by
-\fIRFC 2177\fR\&[1]. This method has no effect with IMAP servers that do not implement the IDLE extension, or other mail accounts.
+\fIRFC 2177\fR\&[1]\. This method has no effect with IMAP servers that do not implement the IDLE extension, or other mail accounts\.
 .PP
 This method is also implemented for local mail in maildirs, on systems running the SGI
-\fIFile Access Monitor\fR\&[2]. This method has no effect on mbox mail folders, or on systems without the FAM daemon.
+\fIFile Access Monitor\fR\&[2]\. This method has no effect on mbox mail folders, or on systems without the FAM daemon\.
 .PP
-The immediate update notification mode is enabled until it is explicitly disabled. When the immediate update notification mode is in effect with an IMAP IDLE\-capable server, any other request silently terminates the IDLE mode, performs the request, and reenters IDLE mode.
+The immediate update notification mode is enabled until it is explicitly disabled\. When the immediate update notification mode is in effect with an IMAP IDLE\-capable server, any other request silently terminates the IDLE mode, performs the request, and reenters IDLE mode\.
 .PP
 This method is a no\-op if the account does not support the update notification mode, and
-\fIcallback\fR's
+\fIcallback\fR\'s
 \fBsuccess\fR
-method is quietly invoked, without any further processing. When
+method is quietly invoked, without any further processing\. When
 \fIenableDisable\fR
 is true, the
 \fBsuccess\fR
-method is invoked when the IMAP server acknowledges that it entered the IDLE mode, or when monitoring begins on the currently open maildir folder. When
+method is invoked when the IMAP server acknowledges that it entered the IDLE mode, or when monitoring begins on the currently open maildir folder\. When
 \fIenableDisable\fR
 is false, the
 \fBsuccess\fR
-method is invoked when the IMAP server acknowledges the completion of the IDLE command, and immediate update notification mode stops (or after maildor folder monitoring stops).
+method is invoked when the IMAP server acknowledges the completion of the IDLE command, and immediate update notification mode stops (or after maildor folder monitoring stops)\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 When
 \fIenableDisable\fR
 is set to false, it is still possible that some
 mail::callback::folder
 callback methods will be invoked before
-\fBsuccess\fR. This occurs when the server was in the process of reporting folder changes just before the client requested the termination of immediate update notification.
+\fBsuccess\fR\. This occurs when the server was in the process of reporting folder changes just before the client requested the termination of immediate update notification\.
 .SH "RETURN CODES"
 .PP
 The application must wait until
-\fIcallback\fR's
+\fIcallback\fR\'s
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked. The
+method is invoked\. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed. The
+method is invoked when this request is succesfully processed\. The
 \fBfail\fR
-method is invoked if this request cannot be processed. The application must not destroy
+method is invoked if this request cannot be processed\. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked.
+method is invoked\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
-\fIcallback\fR's
+\fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked. This indicates that the request was partially completed before the error was encountered.
+method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::checkNewMail\fR(3x),
 \fBmail::account::removeMessages\fR(3x),
 \fBmail::account::updateFolderIndexInfo\fR(3x),
-\fIRFC 2177\fR\&[1].
-.SH "REFERENCES"
+\fIRFC 2177\fR\&[1]\.
+.SH "NOTES"
 .IP " 1." 4
 RFC 2177
 .RS 4
-\%http://www.rfc\-editor.org/rfc/rfc2177.txt
+\%http://www.rfc-editor.org/rfc/rfc2177.txt
 .RE
 .IP " 2." 4
 File Access Monitor

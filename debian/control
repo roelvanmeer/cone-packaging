@@ -4,10 +4,11 @@ Priority: optional
 Maintainer: Varun Hiremath <varunhiremath@gmail.com>
 Uploaders: Torsten Werner <twerner@debian.org>
 Build-Depends: cdbs, debhelper (>= 5.0), libncursesw5-dev, libxml2-dev,
- libldap2-dev, libssl-dev, libfam-dev, aspell, procps
+ libldap2-dev, libssl-dev, libfam-dev, aspell, procps, openssl
 Standards-Version: 3.7.2
-XS-Vcs-Svn: https://bollin.googlecode.com/svn/cone/
-XS-Vcs-Browser: http://bollin.googlecode.com/svn/cone/
+Homepage: http://www.courier-mta.org/cone/
+Vcs-Svn: https://bollin.googlecode.com/svn/cone/
+Vcs-Browser: http://bollin.googlecode.com/svn/cone/
 
 Package: cone
 Architecture: any
@@ -26,5 +27,3 @@ Description: COnsole Newsreader and Emailer
  SMAP (Simple Mail Access Protocol, a new IMAP and POP3 replacement
  developed by the Courier guys and supported by the Courier
  development versions).
- .
-  Homepage: http://www.courier-mta.org/cone/

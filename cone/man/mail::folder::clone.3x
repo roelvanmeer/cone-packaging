@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::folder::clone
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::FOLDER::CLONE" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::FOLDER::CLONE" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::folder::clone \- Clone a mail::folder object
+mail::folder::clone - Clone a mail::folder object
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -28,41 +28,41 @@ mail::folder *folderCopy;
 .fi
 .RE
 .HP 25
-.BI "folderCopy=folder\->clone(void);"
+.BI "folderCopy=folder->clone(void);"
 .SH "USAGE"
 .PP
 This function creates a new
 mail::folder
-object that refers to the same mail folder, in every possible way. This is usually used by some callback methods that receive pointers to
-mail::folders, and wish to preserve them for the main application (mail::folders received by callback methods are usually destroyed as soon as the callback method terminates).
+object that refers to the same mail folder, in every possible way\. This is usually used by some callback methods that receive pointers to
+mail::folders, and wish to preserve them for the main application (mail::folders received by callback methods are usually destroyed as soon as the callback method terminates)\.
 .SH "RETURN CODES AND CALLBACKS"
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
 mail::folders are linked to their corresponding
-mail::accounts. A
+mail::accounts\. A
 mail::folder
 created by one
 mail::account
 may not be used with a different
-mail::folder. All
+mail::folder\. All
 mail::folders created by a
 mail::account
 are invalidated when this
 mail::account
-object is destroyed. Note that the
+object is destroyed\. Note that the
 mail::folder
 objects are not automatically destroyed; the application is still responsible for destroying any remaining
 mail::folders, after their a
 mail::account
-is destroyed.
+is destroyed\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::folder::createSubFolder\fR(3x),
-\fBmail::folder::readSubFolders\fR(3x).
+\fBmail::folder::readSubFolders\fR(3x)\.

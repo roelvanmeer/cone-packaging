@@ -19,7 +19,7 @@ Building Cone
 
      o Libxml2
 
-     o OpenSSL 0.9.7 or higher.
+     o GnuTLS; or OpenSSL 0.9.7 or higher
 
      o Cone optionally supports LDAP address books. LDAP support requires
        OpenLDAP.
@@ -46,9 +46,9 @@ Building Cone
 
      o aspell or pspell
 
-     o Where available, FAM, the File Alteration Monitor
+     o Gamin, or the older FAM library
 
-     o gcc 3.2, or higher
+     o The current version of the gcc compiler
 
      o gmake (if not already installed)
 
@@ -114,10 +114,12 @@ References
    . file:///home/mrsam/src/cone/cone/html/maillist.html
    . http://dickey.his.com/ncurses/ncurses.html
    . http://www.xmlsoft.org/
+   . http://www.gnutls.org/
    . http://www.openssl.org/
    . http://www.openldap.org/
    . http://aspell.sourceforge.net/
    . http://pspell.sourceforge.net/
+   . http://www.gnome.org/~veillard/gamin/
    . http://oss.sgi.com/projects/fam/
    . http://www.courier-mta.org/download.php#sox
    . http://www.courier-mta.org/

@@ -21,16 +21,29 @@
 #include	<fcntl.h>
 #endif
 
+#ifdef COURIERTCPD_EXPOSE_OPENSSL
+
 #define	DEBUG_SAFESTACK	1	/* For openssl 0.9.6 */
 
 #include	<openssl/ssl.h>
 #include	<openssl/err.h>
 
+typedef SSL_CTX *ssl_context;
+typedef SSL *ssl_handle;
+#else
+
+struct ssl_context_t;
+struct ssl_handle_t;
+
+typedef struct ssl_context_t *ssl_context;
+typedef struct ssl_handle_t *ssl_handle;
+#endif
+
 #ifdef  __cplusplus
 extern "C" {
 #endif
 
-static const char libcouriertls_h_rcsid[]="$Id: libcouriertls.h,v 1.9 2003/09/01 19:30:23 mrsam Exp $";
+static const char libcouriertls_h_rcsid[]="$Id: libcouriertls.h,v 1.11 2007/11/04 20:49:58 mrsam Exp $";
 
 /*
 **                   High level TLS interface library
@@ -42,6 +55,8 @@ static const char libcouriertls_h_rcsid[]="$Id: libcouriertls.h,v 1.9 2003/09/01
 /*
 ** This tls_info structure must be initialized before calling tls_create().
 */
+
+struct CACHE;
 
 struct tls_info {
 
@@ -60,7 +75,7 @@ struct tls_info {
 	** the SSL connection gets torn down.
 	*/
 
-	int (*connect_callback)(SSL *, void *);
+	int (*connect_callback)(ssl_handle , void *);
 
 	/*
 	** When libcouriertls.a feels the urge to report an error, this
@@ -117,27 +132,23 @@ const struct tls_info *tls_get_default_info();
 ** Do not call tls_destroy until all sessions are similarly destroyed.
 */
 
-SSL_CTX *tls_create(int isserver, const struct tls_info *);
-void tls_destroy(SSL_CTX *ctx);
+ssl_context tls_create(int isserver, const struct tls_info *);
+void tls_destroy(ssl_context ctx);
 
 /*
 ** SSL connect/disconnect.  tls_connect() creates a new SSL connection on
 ** an existing file descriptor.
 */
 
-SSL *tls_connect(SSL_CTX *ctx, int fd);
+ssl_handle tls_connect(ssl_context ctx, int fd);
 
-#define tls_disconnect(ssl, fd) do { \
-	fcntl((fd), F_SETFL, 0); \
-	SSL_set_shutdown((ssl), SSL_SENT_SHUTDOWN|SSL_RECEIVED_SHUTDOWN); \
-	SSL_free(ssl); \
-	ERR_remove_state(0); } while (0)
+void tls_disconnect(ssl_handle ssl, int fd);
 
 /*
 ** Return non-zero if connection is still in progress
 */
 
-int tls_connecting(SSL *);
+int tls_connecting(ssl_handle );
 
 /*
 ** Once an SSL/TLS session is established, use the following structure to
@@ -199,11 +210,19 @@ struct tls_transfer_info {
 **  (both readleft and writeleft were zero).
 */
 
-int	tls_transfer(struct tls_transfer_info *info, SSL *ssl, int fd,
-			  fd_set *r, fd_set *w);
+int	tls_transfer(struct tls_transfer_info *info, ssl_handle ssl, int fd,
+		     fd_set *r, fd_set *w);
 
 #define tls_inprogress(s) ((s)->read_interrupted || (s)->write_interrupted || \
 			(s)->shutdown_interrupted)
+
+void tls_dump_connection_info(ssl_handle ssl,
+			      int server,
+			      void (*dump_func)(const char *, int cnt, void *),
+			      void *dump_arg);
+
+char *tls_get_encryption_desc(ssl_handle ssl);
+
 
 /*
 ** Start orderly SSL/TLS connection disconnect.

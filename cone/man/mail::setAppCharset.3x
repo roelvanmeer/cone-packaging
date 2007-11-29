@@ -3,27 +3,27 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::setAppCharset
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::SETAPPCHARSET" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::SETAPPCHARSET" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::setAppCharset \- Set application character set
+mail::setAppCharset - Set application character set
 .SH "SYNOPSIS"
 .sp
 .RS 4
 .nf
-#include <libmail/misc.H>
-#include <langinfo.h>
+#include <libmail/misc\.H>
+#include <langinfo\.h>
 
 const char *myCharset=nl_langinfo(CODESET);
 .fi
@@ -32,25 +32,25 @@ const char *myCharset=nl_langinfo(CODESET);
 .BI "mail::setAppCharset(const\ char\ *" "myCharset" ");"
 .SH "USAGE"
 .PP
-This function should be used to specify the application's character set.
+This function should be used to specify the application\'s character set\.
 
 
 
 LibMAIL
-automatically translates names of folders between the application's character set, and the mail server's character set.
+automatically translates names of folders between the application\'s character set, and the mail server\'s character set\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
 
 
 
 LibMAIL
-supports a limited number of character sets. The full
+supports a limited number of character sets\. The full
 
 
 
@@ -60,15 +60,15 @@ ISO\-8859
 character set family, most
 windows
 character sets, and
-KOI8\-R. Some East Asian character sets (Japanese, traditional and simplified Chinese) are experimental, and have not been fully tested.
+KOI8\-R\. Some East Asian character sets (Japanese, traditional and simplified Chinese) are experimental, and have not been fully tested\.
 .SH "RETURN CODES"
 .PP
 This function returns
 true
 if the character set was succesfully installed;
 false
-if the character set is not supported.
+if the character set is not supported\.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::account::open\fR(3x).
+\fBmail::account::open\fR(3x)\.

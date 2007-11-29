@@ -113,7 +113,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id440140" shape="rect" name="id440140"> </a>
+      <a id="id456078" shape="rect" name="id456078"> </a>
 
       <h2>USAGE</h2>
 
@@ -151,7 +151,7 @@ information.
           <dd>
             <p>The message's timestamp, as retrieved by
             <code class="literal">mail::account::ARRIVALDATE</code>
-            parameter to <a href="mail-readmsgattr.html" title="mail::account::readMessageAttributes" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readMessageAttributes</span>(3x)</span></a>().</p>
+            parameter to <a class="link" href="mail-readmsgattr.html" title="mail::account::readMessageAttributes" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readMessageAttributes</span>(3x)</span></a>().</p>
 
             <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
               <h3 class="title">Note</h3>
@@ -164,7 +164,7 @@ information.
           <dt><span class="term">messageInfo</span></dt>
 
           <dd>
-            <p>The message flags, as returned by <a href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>().</p>
+            <p>The message flags, as returned by <a class="link" href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>().</p>
 
             <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
               <h3 class="title">Note</h3>
@@ -181,7 +181,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id440322" shape="rect" name="id440322"> </a>
+      <a id="id456261" shape="rect" name="id456261"> </a>
 
       <h2>MIME-BASED MESSAGE COMPOSITION</h2>
 
@@ -361,7 +361,7 @@ mail::addMessage *msg;
       report it, and clean up the <span class="structname">mail::addMessage</span> object.</p>
 
       <p>The <code class="function">assembleContent</code> method
-      receives a <a href="mail-attachments.html" title="mail::Attachment" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::Attachment</span>(3x)</span></a>
+      receives a <a class="link" href="mail-attachments.html" title="mail::Attachment" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::Attachment</span>(3x)</span></a>
       object.</p>
 
       <p>The second parameter to <code class="function">assembleMessageRfc822</code> are the MIME headers
@@ -407,7 +407,7 @@ mail::addMessage *msg;
       the callback function will be called at a later time.</p>
 
       <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id440825" shape="rect" name="id440825"> </a>
+        <a id="id456764" shape="rect" name="id456764"> </a>
 
         <h3>COPYING ATTACHMENTS FROM OTHER MESSAGES</h3>
 
@@ -521,11 +521,12 @@ mail::addMessage *msg;
         section from another message. <em class="parameter"><code>acct</code></em> specifies an open mail
         account, with an open mail folder. <em class="parameter"><code>uid</code></em> specifies the unique
         identifier of a message in <em class="parameter"><code>acct</code></em>'s open folder, which can
-        be obtained from <a href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>.
+        be obtained from <a class="link" href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>.
         <em class="parameter"><code>attachment</code></em>
         specifies which attachment in message <em class="parameter"><code>uid</code></em> should be copied.
         <em class="parameter"><code>attachment</code></em> must be
-        obtained using <code class="literal">mail::account::MIMESTRUCTURE</code> with <a href="mail-readmsgattr.html" title="mail::account::readMessageAttributes" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readMessageAttributes</span>(3x)</span></a>.</p>
+        obtained using <code class="literal">mail::account::MIMESTRUCTURE</code> with
+        <a class="link" href="mail-readmsgattr.html" title="mail::account::readMessageAttributes" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readMessageAttributes</span>(3x)</span></a>.</p>
 
         <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
@@ -546,7 +547,7 @@ mail::addMessage *msg;
         <em class="parameter"><code>mimeIdList</code></em> is not
         copied. <em class="parameter"><code>mimeIdList</code></em>
         is a list of MIME section identifiers, obtained from
-        <a href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::mimestruct</span>(3x)</span></a>'s
+        <a class="link" href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::mimestruct</span>(3x)</span></a>'s
         <em class="structfield"><code>mime_id</code></em>
         field.</p>
 
@@ -556,7 +557,7 @@ mail::addMessage *msg;
         client, which removes individual attachments from a
         message. To do that, set <em class="parameter"><code>attachment</code></em> to the top-level
         MIME section that refers to the entire message (literally
-        the same object returned by <a href="mail-readmsgattr.html" title="mail::account::readMessageAttributes" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readMessageAttributes</span>(3x)</span></a>)
+        the same object returned by <a class="link" href="mail-readmsgattr.html" title="mail::account::readMessageAttributes" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readMessageAttributes</span>(3x)</span></a>)
         and specify the attachments to remove in <em class="parameter"><code>mimeIdList</code></em>. Use <span class="citerefentry"><span class="refentrytitle">mail::folder::addMessage</span>(3x)</span>
         to add the message to the same folder as the original
         message (this must be done before invoking <code class="function">assembleRemoveAttachmentsFrom</code>, of
@@ -566,7 +567,7 @@ mail::addMessage *msg;
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id441156" shape="rect" name="id441156"> </a>
+      <a id="id457095" shape="rect" name="id457095"> </a>
 
       <h2>RETURN CODES AND CALLBACKS</h2>
 
@@ -622,12 +623,12 @@ mail::addMessage *msg;
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id441342" shape="rect" name="id441342"> </a>
+      <a id="id457280" shape="rect" name="id457280"> </a>
 
       <h2>SEE ALSO</h2>
 
-      <p><a href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>(),
-      <a href="mail-readmsgattr.html" title="mail::account::readMessageAttributes" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readMessageAttributes</span>(3x)</span></a>().</p>
+      <p><a class="link" href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>(),
+      <a class="link" href="mail-readmsgattr.html" title="mail::account::readMessageAttributes" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readMessageAttributes</span>(3x)</span></a>().</p>
     </div>
   </div>
 

@@ -1,3 +1,10 @@
+cone (0.74-1) unstable; urgency=low
+
+  * New upstream release
+  * Add openssl to Build-Depends
+
+ -- Varun Hiremath <varunhiremath@gmail.com>  Thu, 29 Nov 2007 18:16:21 +0530
+
 cone (0.72-1) unstable; urgency=low
 
   * New upstream release.

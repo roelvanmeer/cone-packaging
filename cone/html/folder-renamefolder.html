@@ -130,12 +130,12 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id458419" shape="rect" name="id458419"> </a>
+      <a id="id474359" shape="rect" name="id474359"> </a>
 
       <h2>USAGE</h2>
 
       <p>This function renames an existing folder. <em class="parameter"><code>folder</code></em> is an existing folder or
-      a folder directory (see <a href="folder-createsubfolder.html" title="mail::folder::createSubFolder" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::createSubFolder</span>(3x)</span></a>
+      a folder directory (see <a class="link" href="folder-createsubfolder.html" title="mail::folder::createSubFolder" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::createSubFolder</span>(3x)</span></a>
       for more information on folders and folder directories).
       <em class="parameter"><code>newParent</code></em>, if not
       NULL, specifies the new parent folder directory. A NULL
@@ -168,9 +168,9 @@ information.
         <h3 class="title">Note</h3>
 
         <p>Maildir folders created by are compatible and can be
-        read by the <a href="http://www.courier-mta.org" target="_top" shape="rect">Courier-IMAP</a> server. Names of
-        maildir folders may contain any character, including the
-        characters "<code class="literal">:</code>", "<code class="literal">/</code>", "<code class="literal">.</code>",
+        read by the <a class="ulink" href="http://www.courier-mta.org" target="_top" shape="rect">Courier-IMAP</a> server. Names of maildir folders
+        may contain any character, including the characters
+        "<code class="literal">:</code>", "<code class="literal">/</code>", "<code class="literal">.</code>",
         "<code class="literal">~</code>", and "<code class="literal">:</code>". However, if the same folders are
         exported via IMAP, folders whose name includes these
         characters may not be readable by some IMAP clients. Even a
@@ -194,7 +194,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id458620" shape="rect" name="id458620"> </a>
+      <a id="id474559" shape="rect" name="id474559"> </a>
 
       <h2>RETURN CODES AND CALLBACKS</h2>
 
@@ -251,7 +251,7 @@ information.
         method receives a (possibly empty) vector of pointers to
         <span class="structname">mail::folder</span> objects. These
         objects will be destroyed when <code class="function">folderCallback.success</code> terminates. The
-        application must use <a href="folder-clone.html" title="mail::folder::clone" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::clone</span>(3x)</span></a>
+        application must use <a class="link" href="folder-clone.html" title="mail::folder::clone" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::clone</span>(3x)</span></a>
         to create copies of <span class="structname">mail::folder</span> objects it wants to use
         later.</p>
       </div>
@@ -268,15 +268,15 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id458922" shape="rect" name="id458922"> </a>
+      <a id="id474862" shape="rect" name="id474862"> </a>
 
       <h2>SEE ALSO</h2>
 
-      <p><a href="folder-clone.html" title="mail::folder::clone" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::clone</span>(3x)</span></a>,
-      <a href="folder-create.html" title="mail::folder::create" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::create</span>(3x)</span></a>,
-      <a href="folder-createsubfolder.html" title="mail::folder::createSubFolder" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::createSubFolder</span>(3x)</span></a>,
-      <a href="folder-destroy.html" title="mail::folder::destroy" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::destroy</span>(3x)</span></a>,
-      <a href="folder-readsubfolders.html" title="mail::folder::readSubFolders" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::readSubFolders</span>(3x)</span></a>.</p>
+      <p><a class="link" href="folder-clone.html" title="mail::folder::clone" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::clone</span>(3x)</span></a>,
+      <a class="link" href="folder-create.html" title="mail::folder::create" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::create</span>(3x)</span></a>,
+      <a class="link" href="folder-createsubfolder.html" title="mail::folder::createSubFolder" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::createSubFolder</span>(3x)</span></a>,
+      <a class="link" href="folder-destroy.html" title="mail::folder::destroy" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::destroy</span>(3x)</span></a>,
+      <a class="link" href="folder-readsubfolders.html" title="mail::folder::readSubFolders" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::readSubFolders</span>(3x)</span></a>.</p>
     </div>
   </div>
 

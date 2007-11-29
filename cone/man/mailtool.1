@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mailtool
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAILTOOL" "1" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAILTOOL" "1" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mailtool \- Process mailboxes
+mailtool - Process mailboxes
 .SH "SYNOPSIS"
 .HP 9
 \fBmailtool\fR [options...]
@@ -25,48 +25,48 @@ mailtool \- Process mailboxes
 .PP
 
 \fBmailtool\fR
-is a diagnostic utility for handling various operations on mailboxes.
-\fBmailtool\fR's main uses include: display the list of folders in a mailbox; displaying list of messages in a mailbox; and copying mailboxes.
+is a diagnostic utility for handling various operations on mailboxes\.
+\fBmailtool\fR\'s main uses include: display the list of folders in a mailbox; displaying list of messages in a mailbox; and copying mailboxes\.
 .PP
 The following mailboxes can be accessed by
 \fBmailtool\fR:
 .PP
 imap://\fIuserid\fR@\fIserver\fR[/options]
 .RS 4
-An IMAP account.
+An IMAP account\.
 \fBmailtool\fR
-will prompt for the login password.
+will prompt for the login password\.
 .RE
 .PP
 imaps://\fIuserid\fR@\fIserver\fR[/options]
 .RS 4
-An IMAP account accessed via an encrypted SSL connection.
+An IMAP account accessed via an encrypted SSL connection\.
 .RE
 .PP
 pop3://\fIuserid\fR@\fIserver\fR[/options]
 .RS 4
-A POP3 account.
+A POP3 account\.
 \fBmailtool\fR
-will prompt for the login password.
+will prompt for the login password\.
 .RE
 .PP
 pop3s://\fIuserid\fR@\fIserver\fR[/options]
 .RS 4
-A POP3 account accessed via an encrypted SSL connection.
+A POP3 account accessed via an encrypted SSL connection\.
 .RE
 .PP
 maildir:\fIpath\fR
 .RS 4
-A local maildir mailbox.
+A local maildir mailbox\.
 \fIpath\fR
-specifies the maildir's location relative to the home directory (NOT the current directory).
+specifies the maildir\'s location relative to the home directory (NOT the current directory)\.
 .RE
 .PP
 mbox:\fIpath\fR
 .RS 4
-Local mbox mail folders.
+Local mbox mail folders\.
 \fIpath\fR
-specifies the path to an mbox folder file, or a directory containing mbox folders, relative to the home directory (NOT the current directory).
+specifies the path to an mbox folder file, or a directory containing mbox folders, relative to the home directory (NOT the current directory)\.
 .RE
 .PP
 inbox:\fIpath\fR
@@ -74,24 +74,24 @@ inbox:\fIpath\fR
 Local mbox mail folders, like
 \(lqmbox:\fIpath\fR\(rq; additionally, the system spool mailbox is automatically copied to
 \fI$HOME/Inbox\fR, which is accessible as folder
-INBOX.
+INBOX\.
 .RE
 .PP
 The name of a remote IMAP or POP3 server may be followed by one or more options that control various settings of the IMAP or POP3 connection:
 .PP
 /cram
 .RS 4
-Do not open the account unless the server supports secure password authentication. Secure password authentication verifies the account's password using a challenge/response authentication mechanism (where the label "cram" comes from). The actual password is never actually transmitted to the server, and therefore cannot be intercepted while in transit over an untrusted network.
+Do not open the account unless the server supports secure password authentication\. Secure password authentication verifies the account\'s password using a challenge/response authentication mechanism (where the label "cram" comes from)\. The actual password is never actually transmitted to the server, and therefore cannot be intercepted while in transit over an untrusted network\.
 .sp
-Secure password authentication is not supported by all servers. This option may not work with some servers. This option does not enable secure password authentication, it only mandates its use. If the server supports secure password authentication, it will be used even without the
+Secure password authentication is not supported by all servers\. This option may not work with some servers\. This option does not enable secure password authentication, it only mandates its use\. If the server supports secure password authentication, it will be used even without the
 /cram
-option. Traditional userid/password authentication will be used only if the server does not implement secure password authentication. The
+option\. Traditional userid/password authentication will be used only if the server does not implement secure password authentication\. The
 /cram
-option makes secure password authentication mandatory.
+option makes secure password authentication mandatory\.
 .sp
 The
 /cram
-option is marginally useful even with encrypted server connections. The secure password authentication never sends the explicit password to the server. Encryption makes it theoretically impossible to recover the password from an encrypted data connection; but with secure authentication the password is never sent over the connection in the first place (the password's validity is certified by exchanging certain mathematical calculations between the server and the client). If the server is compromised, the compromised server will not receive the account password (unless the password is recovered from the server in other ways).
+option is marginally useful even with encrypted server connections\. The secure password authentication never sends the explicit password to the server\. Encryption makes it theoretically impossible to recover the password from an encrypted data connection; but with secure authentication the password is never sent over the connection in the first place (the password\'s validity is certified by exchanging certain mathematical calculations between the server and the client)\. If the server is compromised, the compromised server will not receive the account password (unless the password is recovered from the server in other ways)\.
 .RE
 .PP
 /imap
@@ -102,30 +102,30 @@ if the server claims the availability of this experimental mail access protocol,
 \(lqimap://\(rq
 and
 \(lqimaps://\(rq
-URLs).
+URLs)\.
 .RE
 .PP
 /notls
 .RS 4
-Do not upgrade a plain connection to an encrypted one. This option is primarily used for testing and debugging purposes. Sometimes this option might be useful with servers that claim to offer encryption, but are unable to do so when taken up on their offer.
+Do not upgrade a plain connection to an encrypted one\. This option is primarily used for testing and debugging purposes\. Sometimes this option might be useful with servers that claim to offer encryption, but are unable to do so when taken up on their offer\.
 .RE
 .PP
 /novalidate\-cert
 .RS 4
-Do not validate the server's SSL certificate when using an encrypted connection. Normally the mail server's SSL certificate must be validate when using an encrypted connection. The certificate's name must match the server's name, and the certificate must be signed by a trusted certificate authority.
+Do not validate the server\'s SSL certificate when using an encrypted connection\. Normally the mail server\'s SSL certificate must be validate when using an encrypted connection\. The certificate\'s name must match the server\'s name, and the certificate must be signed by a trusted certificate authority\.
 .sp
-The encrypted connection normally fails if the certificate cannot be validate. Validation requires that a list of trusted certificate authorities must be known and configured. It's simply impossible to know which certificate authorities are valid without an explicit list of valid, known, trusted, certificate authorities. If a trusted authority list is not configured, no certificate can be validated. If the server's certificate is a self\-signed certificate (this is often used for testing purposes), or if it's not signed by a known authority, the encrypted connection fails.
+The encrypted connection normally fails if the certificate cannot be validate\. Validation requires that a list of trusted certificate authorities must be known and configured\. It\'s simply impossible to know which certificate authorities are valid without an explicit list of valid, known, trusted, certificate authorities\. If a trusted authority list is not configured, no certificate can be validated\. If the server\'s certificate is a self\-signed certificate (this is often used for testing purposes), or if it\'s not signed by a known authority, the encrypted connection fails\.
 .sp
 This
 /novalidate\-cert
-option disables certificate validation. The encrypted connection will be established even if the server's certificate would otherwise be rejected.
+option disables certificate validation\. The encrypted connection will be established even if the server\'s certificate would otherwise be rejected\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
-This option is applicable even when an encrypted IMAP or POP3 connection is not explicitly requested. Many mail servers are capable of automatically upgrading unencrypted connections to a fully\-encrypted connection. If a mail server claims to be able to use encryption, then there's no reason not to use it. The result is that all encryption certification requirements still apply even when encryption is not explicitly requested.
+Note
+This option is applicable even when an encrypted IMAP or POP3 connection is not explicitly requested\. Many mail servers are capable of automatically upgrading unencrypted connections to a fully\-encrypted connection\. If a mail server claims to be able to use encryption, then there\'s no reason not to use it\. The result is that all encryption certification requirements still apply even when encryption is not explicitly requested\.
 .RE
 .SS "Displaying mailbox contents"
 .HP 9
@@ -134,18 +134,18 @@ This option is applicable even when an encrypted IMAP or POP3 connection is not 
 
 \-tree
 shows a hierarchical representation of mail folders in
-\fIaccount\fR.
+\fIaccount\fR\.
 \-list
-generates a simple folder listing, one folder name per line.
+generates a simple folder listing, one folder name per line\.
 \-tree
 shows folder names, while
 \-list
 shows the actual mail folder path in
-\fIaccount\fR.
+\fIaccount\fR\.
 .sp
 .RS 4
 .nf
-mailtool \-tree imap://jsmith@mail.example.com/novalidate\-cert/cram
+mailtool \-tree imap://jsmith@mail\.example\.com/novalidate\-cert/cram
 .fi
 .RE
 .SS "Creating folders"
@@ -157,22 +157,22 @@ mailtool \-tree imap://jsmith@mail.example.com/novalidate\-cert/cram
 creates a new subfolder of
 \fIfolder\fR
 in
-\fIaccount\fR. The new subfolder's name is
-\fIname\fR.
+\fIaccount\fR\. The new subfolder\'s name is
+\fIname\fR\.
 \-createdir
-creates a new folder directory (a folder that contains other folders).
+creates a new folder directory (a folder that contains other folders)\.
 .sp
 .RS 4
 .nf
-mailtool \-create INBOX.lists announcements maildir:Maildir
+mailtool \-create INBOX\.lists announcements maildir:Maildir
 .fi
 .RE
 .PP
 This command creates a new folder
 \(lqannouncements\(rq
 as a subfolders of
-\(lqINBOX.lists\(rq
-in the local maildir.
+\(lqINBOX\.lists\(rq
+in the local maildir\.
 .SS "Deleting folders"
 .HP 9
 \fBmailtool\fR \-delete | \-deletedir  \fIfolder\fR \fIaccount\fR
@@ -182,15 +182,15 @@ in the local maildir.
 deletes an existing
 \fIfolder\fR
 in
-\fIaccount\fR.
+\fIaccount\fR\.
 .PP
 
 \-deletedir
-deletes a folder directory.
+deletes a folder directory\.
 .sp
 .RS 4
 .nf
-mailtool \-delete INBOX.lists.announcements maildir:Maildir
+mailtool \-delete INBOX\.lists\.announcements maildir:Maildir
 .fi
 .RE
 .SS "Renaming folders"
@@ -200,25 +200,25 @@ mailtool \-delete INBOX.lists.announcements maildir:Maildir
 
 \-renames
 renames an existing
-\fIoldfolder\fR. The folder is renamed as
+\fIoldfolder\fR\. The folder is renamed as
 \fIname\fR, as a subfolder of
-\fIfolder\fR.
+\fIfolder\fR\.
 \fIfolder\fR
 may be an empty string if the folder should be moved to the top level of
-\fIaccount\fR's folder hierarchy.
+\fIaccount\fR\'s folder hierarchy\.
 .sp
 .RS 4
 .nf
-mailtool \-rename INBOX.lists.announcements INBOX.lists Announcements maildir:Maildir
+mailtool \-rename INBOX\.lists\.announcements INBOX\.lists Announcements maildir:Maildir
 .fi
 .RE
 .PP
 The folder
-\(lqINBOX.lists.announcements\(rq
+\(lqINBOX\.lists\.announcements\(rq
 is renamed to
-\(lqINBOX.lists.Announcements\(rq. This slightly unusual way to rename folder allows folders to be relocated in the mail
-\fIaccount\fR's folder hierarchy.
-.SS "Reading folder's index"
+\(lqINBOX\.lists\.Announcements\(rq\. This slightly unusual way to rename folder allows folders to be relocated in the mail
+\fIaccount\fR\'s folder hierarchy\.
+.SS "Reading folder\'s index"
 .HP 9
 \fBmailtool\fR \-index \fIfolder\fR \fIaccount\fR
 .PP
@@ -226,11 +226,11 @@ is renamed to
 \-index
 downloads and prints a summary of all messages in
 \fIfolder\fR, in
-\fIaccount\fR. The summary shows the sender's and recipients' address, the message's subject, and size.
+\fIaccount\fR\. The summary shows the sender\'s and recipients\' address, the message\'s subject, and size\.
 .sp
 .RS 4
 .nf
-mailtool \-index INBOX imap://john@mail.example.com/novalidate\-cert
+mailtool \-index INBOX imap://john@mail\.example\.com/novalidate\-cert
 .fi
 .RE
 .SS "Removing a message from a folder"
@@ -242,22 +242,22 @@ mailtool \-index INBOX imap://john@mail.example.com/novalidate\-cert
 removes message #\fIn\fR
 (ranging from 1 to the number of messages in the folder) in
 \fIfolder\fR, in
-\fIaccount\fR. The message numbers may be obtained by using
-\-index.
+\fIaccount\fR\. The message numbers may be obtained by using
+\-index\.
 .PP
 
 \fIn\fR
-may be a comma\-separated list of message numbers, in strictly numerically increasing order.
+may be a comma\-separated list of message numbers, in strictly numerically increasing order\.
 \-remove
 confirms the list of messages to remove and issues a
 \(lqReady:\(rq
-prompt. Press
+prompt\. Press
 ENTER
-to remove the messages.
+to remove the messages\.
 .sp
 .RS 4
 .nf
-mailtool \-remove INBOX 28,31 imap://john@mail.example.com/novalidate\-cert
+mailtool \-remove INBOX 28,31 imap://john@mail\.example\.com/novalidate\-cert
 .fi
 .RE
 .SS "Filtering messages"
@@ -269,19 +269,19 @@ mailtool \-remove INBOX 28,31 imap://john@mail.example.com/novalidate\-cert
 is a combination of
 \-index
 and
-\-remove.
-\fIfolder\fR's index is downloaded, and the summary of each message is shown, one message at a time. Each message's summary is followed by a prompt:
-\(lqDelete, Skip, or Exit\(rq. Pressing
+\-remove\.
+\fIfolder\fR\'s index is downloaded, and the summary of each message is shown, one message at a time\. Each message\'s summary is followed by a prompt:
+\(lqDelete, Skip, or Exit\(rq\. Pressing
 D
 removes the message,
 S
 leaves the message unchanged, and
 E
-leaves the remaining messages unchanged.
+leaves the remaining messages unchanged\.
 .sp
 .RS 4
 .nf
-mailtool \-filter INBOX pop3://john@mail.example.com/novalidate\-cert
+mailtool \-filter INBOX pop3://john@mail\.example\.com/novalidate\-cert
 .fi
 .RE
 .sp
@@ -289,11 +289,11 @@ mailtool \-filter INBOX pop3://john@mail.example.com/novalidate\-cert
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
 \-filter
-is not meant to be used with large folders. Unless messages are removed quickly, the connection to the server may be disconnected for inactivity.
+is not meant to be used with large folders\. Unless messages are removed quickly, the connection to the server may be disconnected for inactivity\.
 .SS "Copying folders"
 .HP 9
 \fBmailtool\fR [\-recurse] \-tofolder \fItofolder\fR \-copyto \fItoaccount\fR \-fromfolder \fIfromfolder\fR \fIfromaccount\fR
@@ -305,21 +305,21 @@ fromaccount
 to a new folder,
 tofolder
 (which will be created, if necessary) in
-toaccount. Optionally,
+toaccount\. Optionally,
 \-recurse
 specifies that all subfolders of
 fromfolder
-should also be copied.
+should also be copied\.
 .sp
 .RS 4
 .nf
 
 mailtool \-tofolder INBOX \-copyto maildir:Maildir \e
-    \-fromfolder "INBOX" imap://mbox100@mail.example.com/novalidate\-cert
+    \-fromfolder "INBOX" imap://mbox100@mail\.example\.com/novalidate\-cert
 
-mailtool \-recurse \-tofolder INBOX.converted_mail \e
+mailtool \-recurse \-tofolder INBOX\.converted_mail \e
     \-copyto maildir:Maildir \-fromfolder "mail" \e
-        imap://mbox100@mail.example.com/novalidate\-cert
+        imap://mbox100@mail\.example\.com/novalidate\-cert
 .fi
 .RE
 .PP
@@ -328,14 +328,14 @@ This example first copies the INBOX on the IMAP server to
 \(lqmail\(rq
 on the IMAP server to the
 \(lqconverted_mail\(rq
-subfolder in the maildir.
+subfolder in the maildir\.
 .sp
 .RS 4
 .nf
 mailtool \-tofolder INBOX \-copyto maildir:Maildir \e
    \-fromfolder "INBOX" inbox:mail
 
-mailtool \-recurse \-tofolder INBOX.converted_mail \e
+mailtool \-recurse \-tofolder INBOX\.converted_mail \e
     \-copyto maildir:Maildir \-fromfolder "" mbox:mail
 
 .fi
@@ -348,16 +348,16 @@ This example first copies
 \fI$HOME/mail\fR
 to the
 \(lqconverted_mail\(rq
-subfolder in the maildir.
+subfolder in the maildir\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
-Mail accounts that contain hybrid folders (folders that contain both messages and subfolders) can only be copied to account types that also support hybrid folders: either local maildirs, or to remote servers that support hybrid folders.
+Mail accounts that contain hybrid folders (folders that contain both messages and subfolders) can only be copied to account types that also support hybrid folders: either local maildirs, or to remote servers that support hybrid folders\.
 .SH "SEE ALSO"
 .PP
 
-\fBcone\fR(1).
+\fBcone\fR(1)\.

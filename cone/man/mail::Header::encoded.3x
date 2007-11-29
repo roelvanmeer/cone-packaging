@@ -3,67 +3,67 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::Header::encoded
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::HEADER::ENCODE" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::HEADER::ENCODE" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::Header::encoded \- An unstructured E\-mail header.
+mail::Header::encoded - An unstructured E-mail header.
 .SH "SYNOPSIS"
 .sp
 .RS 4
 .nf
-#include <libmail/headers.H>
+#include <libmail/headers\.H>
 
 mail::Header::encoded encoded_header("Subject", subjectStr, "UTF\-8", "EN");
 
-std::cout << encoded_header.toString();
+std::cout << encoded_header\.toString();
 
 .fi
 .RE
 .SH "USAGE"
 .PP
-This class creates unstructured E\-mail header. Three arguments are provided to the constructor: the header's name, its content, and the content's character set. Non\-US\-ASCII
+This class creates unstructured E\-mail header\. Three arguments are provided to the constructor: the header\'s name, its content, and the content\'s character set\. Non\-US\-ASCII
 portions of the contents are encoded according to
-\fIRFC 2047\fR\&[1].
+\fIRFC 2047\fR\&[1]\.
 .PP
-The fourth argument to the constructor is optional. If not an empty string, it identifies the content's language, as described in section 5 of
-\fIRFC 2231\fR\&[2].
+The fourth argument to the constructor is optional\. If not an empty string, it identifies the content\'s language, as described in section 5 of
+\fIRFC 2231\fR\&[2]\.
 .PP
-This is not the appropriate class to create structured MIME headers, or address list headers. Use
+This is not the appropriate class to create structured MIME headers, or address list headers\. Use
 \fBmail::Header::addresslist\fR(3x)
-to create headers that contain E\-mail addresses. Use
+to create headers that contain E\-mail addresses\. Use
 \fBmail::Header::mime\fR(3x)
-to create structured MIME headers.
+to create structured MIME headers\.
 .PP
 The
 \fBtoString()\fR
 returns the header as a single text string:
-\(lq\fIname\fR: \fIvalue\fR\(rq. Long headers are folded at the nearest whitespace.
+\(lq\fIname\fR: \fIvalue\fR\(rq\. Long headers are folded at the nearest whitespace\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::Header::addresslist\fR(3x),
 \fBmail::Header::list\fR(3x),
 \fBmail::Header::mime\fR(3x),
-\fBmail::Header::plain\fR(3x).
-.SH "REFERENCES"
+\fBmail::Header::plain\fR(3x)\.
+.SH "NOTES"
 .IP " 1." 4
 RFC 2047
 .RS 4
-\%http://www.rfc\-editor.org/rfc/rfc2047.txt
+\%http://www.rfc-editor.org/rfc/rfc2047.txt
 .RE
 .IP " 2." 4
 RFC 2231
 .RS 4
-\%http://www.rfc\-editor.org/rfc/rfc2231.txt
+\%http://www.rfc-editor.org/rfc/rfc2231.txt
 .RE

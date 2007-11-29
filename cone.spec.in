@@ -1,4 +1,4 @@
-# $Id: cone.spec.in,v 1.14 2007/07/22 01:54:11 mrsam Exp $
+# $Id: cone.spec.in,v 1.16 2007/11/08 02:45:45 mrsam Exp $
 
 # Custom build against libcurses-5.3
 
@@ -44,12 +44,20 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 
 BuildRequires: aspell-devel libxml2-devel
-BuildRequires: zlib-devel openssl-devel /usr/include/fam.h perl
+BuildRequires: zlib-devel /usr/include/fam.h perl
 BuildRequires: libstdc++-devel gcc-c++
 BuildRequires: openldap-devel
 
+%define use_openssl %(rpm -q openssl-devel >/dev/null 2>&1 && echo 1 && exit 0; echo 0)
+
+%if %use_openssl
+BuildRequires:      openssl
+BuildRequires:      openssl-devel
 %if %is_not_mandrake
-BuildRequires: openssl-perl
+BuildRequires:      openssl-perl
+%endif
+%else
+BuildRequires:      gnutls-devel libgcrypt-devel
 %endif
 
 %if %import_rootcerts

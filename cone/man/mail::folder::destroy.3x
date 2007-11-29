@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::folder::destroy
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::FOLDER::DESTRO" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::FOLDER::DESTRO" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::folder::destroy \- Destroy an existing folder
+mail::folder::destroy - Destroy an existing folder
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,7 +25,7 @@ mail::folder::destroy \- Destroy an existing folder
 
 
 
-#include <libmail/mail.H>
+#include <libmail/mail\.H>
 
 
 class myCallback : public mail::callback {
@@ -36,18 +36,18 @@ public:
 .fi
 .RE
 .HP 15
-.BI "folder\->create(myCallback\ &" "callback" ", bool\ " "destroyDir" ");"
+.BI "folder->create(myCallback\ &" "callback" ", bool\ " "destroyDir" ");"
 .SH "USAGE"
 .PP
 This function destroys the folder referenced by this
 mail::folder
-object. The
+object\. The
 mail::folder
-object itself is not destroyed (the usual C++ delete operator does the trick there), only the actual folder is destroyed.
+object itself is not destroyed (the usual C++ delete operator does the trick there), only the actual folder is destroyed\.
 .PP
-Folders contain either messages, or other sub\-folders (so\-called "folder directories"). Some mail accounts may contain dual\-purpose folders that contain both messages and sub\-folders (see
+Folders contain either messages, or other sub\-folders (so\-called "folder directories")\. Some mail accounts may contain dual\-purpose folders that contain both messages and sub\-folders (see
 \fBmail::account::createSubFolder\fR(3x)
-for more information). With some account types, only completely empty folders may be deleted (the operation will fail if the folder still contains messages or other sub\-folders).
+for more information)\. With some account types, only completely empty folders may be deleted (the operation will fail if the folder still contains messages or other sub\-folders)\.
 .PP
 
 \fIdestroyDir\fR
@@ -55,37 +55,37 @@ must be set to
 true
 when destroying a folder directory, and to
 false
-when destroying a regular folder.
+when destroying a regular folder\.
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 The application must wait until
-\fIcallback\fR's
+\fIcallback\fR\'s
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked. The
+method is invoked\. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed. The
+method is invoked when this request is succesfully processed\. The
 \fBfail\fR
-method is invoked if this request cannot be processed. The application must not destroy
+method is invoked if this request cannot be processed\. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked.
+method is invoked\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
-\fIcallback\fR's
+\fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked. This indicates that the request was partially completed before the error was encountered.
+method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::account::createSubFolder\fR(3x).
+\fBmail::account::createSubFolder\fR(3x)\.

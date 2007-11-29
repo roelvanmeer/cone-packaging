@@ -81,7 +81,7 @@ information.
     replies in any order.</p>
 
     <p>The <code class="literal">CONTENTS=</code><em class="replaceable"><code>part</code></em> keyword results in a
-    <a href="smapsyntax.html#singleline" title="Single line replies" shape="rect">multiple line</a> reply from
+    <a class="link" href="smapsyntax.html#singleline" title="Single line replies" shape="rect">multiple line</a> reply from
     the server, returning the requested content, specified by
     <em class="replaceable"><code>part</code></em>. The server may
     use either multiple line format (dot-stuffed, or binary) at its
@@ -229,9 +229,9 @@ information.
             S:&#160;+OK&#160;Ok<br clear="none"/></p>
           </div>
 
-          <p><a href="http://www.rfc-editor.org/rfc/rfc2045.txt" target="_top" shape="rect">RFC 2045</a>, and related
-          documents, specifies the format of MIME messages. A MIME
-          message contains one or more individual or multipart MIME
+          <p><a class="ulink" href="http://www.rfc-editor.org/rfc/rfc2045.txt" target="_top" shape="rect">RFC 2045</a>, and related documents,
+          specifies the format of MIME messages. A MIME message
+          contains one or more individual or multipart MIME
           sections; a multipart MIME section itself contains
           inferior individual or multipart sections, forming a
           distinct hierarchy. Consult RFCs 2045 through 2049 for
@@ -240,16 +240,16 @@ information.
           <p><code class="literal">MIME(</code><em class="replaceable"><code>list</code></em><code class="literal">)</code> parses the MIME structure of a
           message, and recursively returns the requested headers
           from each MIME section in the message. The server returns
-          a series of <a href="smapsyntax.html#multiline" title="Multiple line replies" shape="rect">multi-line</a>
-          replies, each reply carries headers from a single MIME
-          section. The multi-line replies may be sent in any order,
-          except that the headers for the topmost MIME section must
-          always be sent first, and the headers from the other MIME
-          sections may only be sent after the headers from their
-          parent MIME section, and the headers from all of their
-          preceding sibling MIME section (which is just a fancy way
-          of saying that the server uses either the prefix or the
-          infix traversal order).</p>
+          a series of <a class="link" href="smapsyntax.html#multiline" title="Multiple line replies" shape="rect">multi-line</a> replies, each reply carries
+          headers from a single MIME section. The multi-line
+          replies may be sent in any order, except that the headers
+          for the topmost MIME section must always be sent first,
+          and the headers from the other MIME sections may only be
+          sent after the headers from their parent MIME section,
+          and the headers from all of their preceding sibling MIME
+          section (which is just a fancy way of saying that the
+          server uses either the prefix or the infix traversal
+          order).</p>
 
           <p>The server assigns a unique &#8220;<span class="quote">MIME section ID</span>&#8221; to each MIME
           section. The method the server uses to generate a MIME

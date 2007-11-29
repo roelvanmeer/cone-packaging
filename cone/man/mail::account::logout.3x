@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::account::logout
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::LOGOU" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::LOGOU" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::account::logout \- Disconnect from the server
+mail::account::logout - Disconnect from the server
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,7 +25,7 @@ mail::account::logout \- Disconnect from the server
 
 
 
-#include <libmail/mail.H>
+#include <libmail/mail\.H>
 
 
 class myCallback : public mail::callback {
@@ -42,56 +42,56 @@ mail::account *account;
 .fi
 .RE
 .HP 16
-.BI "account\->logout(myCallback\ &" "callback" ");"
+.BI "account->logout(myCallback\ &" "callback" ");"
 .SH "USAGE"
 .PP
-Close the mail account. The application should wait until either
-\fBcallback.success\fR
+Close the mail account\. The application should wait until either
+\fBcallback\.success\fR
 or
-\fBcallback.fail\fR
+\fBcallback\.fail\fR
 is called (not much of a difference, really, in both cases the
 mail::account
-object disconnects from the server). The
+object disconnects from the server)\. The
 \fBdisconnected\fR
 method of the
 mail::callback::disconnect
 object, originally passed to
-\fBmail::account::open\fR, is also invoked.
+\fBmail::account::open\fR, is also invoked\.
 .SH "RETURN CODES"
 .PP
 The application must wait until
-\fIcallback\fR's
+\fIcallback\fR\'s
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked. The
+method is invoked\. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed. The
+method is invoked when this request is succesfully processed\. The
 \fBfail\fR
-method is invoked if this request cannot be processed. The application must not destroy
+method is invoked if this request cannot be processed\. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked.
+method is invoked\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
-\fIcallback\fR's
+\fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked. This indicates that the request was partially completed before the error was encountered.
+method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
 .PP
 In this case, however, there is no substantial difference between
 \fBsuccess\fR
 and
-\fBfail\fR.
+\fBfail\fR\.
 \fBmail::account::logout\fR
 does not destroy the
 mail::account
-object, the object may be destroyed after either callback function is invoked.
+object, the object may be destroyed after either callback function is invoked\.

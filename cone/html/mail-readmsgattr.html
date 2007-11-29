@@ -74,7 +74,7 @@ information.
         <br clear="none"/>
         &#160;&#160;&#160;&#160;void&#160;messageEnvelopeCallback(size_t&#160;messageNumber,<br clear="none"/>
 
-        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;const&#160;<a href="envelope.html" title="mail::envelope" shape="rect">mail::envelope</a>&#160;&amp;envelopeArg);<br clear="none"/>
+        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;const&#160;<a class="link" href="envelope.html" title="mail::envelope" shape="rect">mail::envelope</a>&#160;&amp;envelopeArg);<br clear="none"/>
         <br clear="none"/>
         &#160;&#160;&#160;&#160;void&#160;messageReferencesCallback(size_t&#160;messageNumber,<br clear="none"/>
 
@@ -93,7 +93,7 @@ information.
         <br clear="none"/>
         &#160;&#160;&#160;&#160;void&#160;messageStructureCallback(size_t&#160;messageNumber,<br clear="none"/>
 
-        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;const&#160;<a href="mimestruct.html" title="mail::mimestruct" shape="rect">mail::mimestruct</a>&#160;&amp;messageStructure);<br clear="none"/>
+        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;const&#160;<a class="link" href="mimestruct.html" title="mail::mimestruct" shape="rect">mail::mimestruct</a>&#160;&amp;messageStructure);<br clear="none"/>
 
         &#160;&#160;&#160;&#160;void&#160;messageTextCallback(size_t&#160;messageNumber,&#160;std::string&#160;text);<br clear="none"/>
 
@@ -146,7 +146,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id423286" shape="rect" name="id423286"> </a>
+      <a id="id439225" shape="rect" name="id439225"> </a>
 
       <h2>USAGE</h2>
 
@@ -154,7 +154,7 @@ information.
       requests metadata of messages in the currently open folder.
       <em class="parameter"><code>msgList</code></em> specifies a
       list of messages. Messages are numbered starting with message
-      #0 and up to one less than <a href="mail-getfolderindexsize.html" title="mail::account::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexSize</span>(3x)</span></a>()
+      #0 and up to one less than <a class="link" href="mail-getfolderindexsize.html" title="mail::account::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexSize</span>(3x)</span></a>()
       (when <code class="function">mail::account::getFolderIndexSize</code> returns
       6, the messages are numbered 0 through 5). Only the messages
       that appear in <em class="parameter"><code>msgList</code></em> are processed by this
@@ -182,7 +182,7 @@ information.
             <p>Message's envelope headers (<code class="function">myCallback.messageEnvelopeCallback</code>,
             and possibly <code class="function">myCallback.messageReferencesCallback</code>).
             <code class="function">messageEnvelopeCallback</code>
-            receives a <a href="envelope.html" title="mail::envelope" shape="rect"><span class="structname">mail::envelope</span></a> object that
+            receives a <a class="link" href="envelope.html" title="mail::envelope" shape="rect"><span class="structname">mail::envelope</span></a> object that
             describes the "envelope", or a message summary (sender,
             recipients, subject, etc...). In some instances the
             <code class="function">messageReferencesCallback</code>
@@ -213,13 +213,13 @@ information.
           <dt><span class="term">mail::account::MIMESTRUCTURE</span></dt>
 
           <dd>
-            <p>Returns a <a href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="structname">mail::mimestruct</span></a> object that
+            <p>Returns a <a class="link" href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="structname">mail::mimestruct</span></a> object that
             enumerates the message's MIME content (<code class="function">myCallback.messageStructureCallback</code>).
             <code class="function">myCallback.messageStructureCallback</code>
-            receives a reference to a <a href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="structname">mail::mimestruct</span></a> object that
+            receives a reference to a <a class="link" href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="structname">mail::mimestruct</span></a> object that
             refers to the entire message. If the message contains
             attachments, the <code class="function">mail::mimestruct::getChild</code> method
-            returns pointers to <a href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="structname">mail::mimestruct</span></a> objects which
+            returns pointers to <a class="link" href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="structname">mail::mimestruct</span></a> objects which
             refer to the individual MIME attachments.</p>
           </dd>
         </dl>
@@ -259,15 +259,15 @@ information.
         <h3 class="title">Note</h3>
 
         <p>The <span class="structname">mail::envelope</span> and
-        <a href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="structname">mail::mimestruct</span></a>
-        objects are destroyed immediately after their corresponding
-        callback method terminates. The application should copy any
-        objects it intends to use later.</p>
+        <a class="link" href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="structname">mail::mimestruct</span></a> objects are
+        destroyed immediately after their corresponding callback
+        method terminates. The application should copy any objects
+        it intends to use later.</p>
       </div>
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id423475" shape="rect" name="id423475"> </a>
+      <a id="id439414" shape="rect" name="id439414"> </a>
 
       <h2>Return Codes</h2>
 
@@ -303,16 +303,16 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id423598" shape="rect" name="id423598"> </a>
+      <a id="id439537" shape="rect" name="id439537"> </a>
 
       <h2>SEE ALSO</h2>
 
-      <p><a href="mail-getfolderindexsize.html" title="mail::account::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexSize</span>(3x)</span></a>,
-      <a href="mail-readmsgcontent.html" title="mail::account::readMessageContent" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readMessageContent</span>(3x)</span></a>,
-      <a href="mail-readmsgcontentdecoded.html" title="mail::account::readMessageContentDecoded" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readMessageContentDecoded</span>(3x)</span></a>,
-      <a href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>,
-      <a href="envelope.html" title="mail::envelope" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::envelope</span>(3x)</span></a>,
-      <a href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::mimestruct</span>(3x)</span></a>.</p>
+      <p><a class="link" href="mail-getfolderindexsize.html" title="mail::account::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexSize</span>(3x)</span></a>,
+      <a class="link" href="mail-readmsgcontent.html" title="mail::account::readMessageContent" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readMessageContent</span>(3x)</span></a>,
+      <a class="link" href="mail-readmsgcontentdecoded.html" title="mail::account::readMessageContentDecoded" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readMessageContentDecoded</span>(3x)</span></a>,
+      <a class="link" href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>,
+      <a class="link" href="envelope.html" title="mail::envelope" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::envelope</span>(3x)</span></a>,
+      <a class="link" href="mimestruct.html" title="mail::mimestruct" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::mimestruct</span>(3x)</span></a>.</p>
     </div>
   </div>
 

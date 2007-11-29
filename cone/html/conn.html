@@ -115,7 +115,7 @@ information.
 
         <dd>
           <p>This SMAP server supports the &#8220;<span class="quote"><em class="replaceable"><code>mechanism</code></em></span>&#8221;
-          authentication mechanism, as defined by <a href="http://www.rfc-editor.org/rfc/rfc2060.txt" target="_top" shape="rect">RFC 2060</a>, and its successors.</p>
+          authentication mechanism, as defined by <a class="ulink" href="http://www.rfc-editor.org/rfc/rfc2060.txt" target="_top" shape="rect">RFC 2060</a>, and its successors.</p>
         </dd>
 
         <dt><span class="term">LANG=<em class="replaceable"><code>language</code></em></span></dt>
@@ -124,7 +124,7 @@ information.
           <p>This SMAP1 server can return diagnostic messages in
           the natural language &#8220;<span class="quote"><em class="replaceable"><code>language</code></em></span>&#8221;.
           &#8220;<span class="quote"><em class="replaceable"><code>language</code></em></span>&#8221; is
-          a language tag defined by <a href="http://www.rfc-editor.org/rfc/rfc1766.txt" target="_top" shape="rect">RFC 1766</a>. A multilingual SMAP server
+          a language tag defined by <a class="ulink" href="http://www.rfc-editor.org/rfc/rfc1766.txt" target="_top" shape="rect">RFC 1766</a>. A multilingual SMAP server
           lists multiple <code class="literal">LANG</code>
           keywords, one keyword for each language.</p>
         </dd>
@@ -179,7 +179,7 @@ information.
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id516120" shape="rect" name="id516120"> </a>IMAP/SMAP protocol selection</h4>
+            <h4 class="title"><a id="id532082" shape="rect" name="id532082"> </a>IMAP/SMAP protocol selection</h4>
           </div>
         </div>
       </div>
@@ -202,12 +202,12 @@ information.
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id516147" shape="rect" name="id516147"> </a>SMAP capability list</h4>
+            <h4 class="title"><a id="id532109" shape="rect" name="id532109"> </a>SMAP capability list</h4>
           </div>
         </div>
       </div>
 
-      <p>The server responds to this command with a "<code class="literal">* CAPABILITY</code>" <a href="smapsyntax.html#singleline" title="Single line replies" shape="rect">single line</a> reply. The remaining words in
+      <p>The server responds to this command with a "<code class="literal">* CAPABILITY</code>" <a class="link" href="smapsyntax.html#singleline" title="Single line replies" shape="rect">single line</a> reply. The remaining words in
       the reply enumerate SMAP capabilities supported by the
       server. Example:</p>
 
@@ -228,19 +228,18 @@ information.
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id516194" shape="rect" name="id516194"> </a>Enabling encryption</h4>
+            <h4 class="title"><a id="id532155" shape="rect" name="id532155"> </a>Enabling encryption</h4>
           </div>
         </div>
       </div>
 
       <p>The <code class="literal">STARTTLS</code> capability
       indicates that the server is capable of encrypting the
-      connection between the client and the server. See <a href="http://www.rfc-editor.org/rfc/rfc2595.txt" target="_top" shape="rect">RFC 2595</a> for some additional comments on
-      using TLS with mail-related protocols.</p>
+      connection between the client and the server. See <a class="ulink" href="http://www.rfc-editor.org/rfc/rfc2595.txt" target="_top" shape="rect">RFC 2595</a> for some additional
+      comments on using TLS with mail-related protocols.</p>
 
       <p>SSL/TLS negotiation begins immediately after the client
-      receives a successfull <a href="smapsyntax.html#statusreply" title="Status replies" shape="rect">status reply</a> from the
-      server. Example:</p>
+      receives a successfull <a class="link" href="smapsyntax.html#statusreply" title="Status replies" shape="rect">status reply</a> from the server. Example:</p>
 
       <div class="literallayout">
         <p><br clear="none"/>
@@ -258,7 +257,7 @@ information.
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id516244" shape="rect" name="id516244"> </a>Language selection</h4>
+            <h4 class="title"><a id="id532206" shape="rect" name="id532206"> </a>Language selection</h4>
           </div>
         </div>
       </div>
@@ -286,7 +285,7 @@ information.
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id516278" shape="rect" name="id516278"> </a>Userid/password login</h4>
+            <h4 class="title"><a id="id532239" shape="rect" name="id532239"> </a>Userid/password login</h4>
           </div>
         </div>
       </div>
@@ -294,7 +293,7 @@ information.
       <p>The <code class="literal">\SMAP1 LOGIN</code> command
       initiates a simple userid/password login sequence. The third
       word of this command is the login userid, the fourth word is
-      the login password. The server's <a href="smapsyntax.html#statusreply" title="Status replies" shape="rect">status reply</a> indicates whether the supplied
+      the login password. The server's <a class="link" href="smapsyntax.html#statusreply" title="Status replies" shape="rect">status reply</a> indicates whether the supplied
       credentials were accepted. Example:</p>
 
       <div class="literallayout">
@@ -310,7 +309,7 @@ information.
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id516314" shape="rect" name="id516314"> </a>SASL login</h4>
+            <h4 class="title"><a id="id532276" shape="rect" name="id532276"> </a>SASL login</h4>
           </div>
         </div>
       </div>

@@ -187,7 +187,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id408382" shape="rect" name="id408382"> </a>
+      <a id="id424320" shape="rect" name="id424320"> </a>
 
       <h2>USAGE</h2>
 
@@ -198,12 +198,12 @@ information.
 
       <p><em class="parameter"><code>msgList</code></em> specifies
       a list of messages. Messages are numbered starting with
-      message #0 and up to one less than <a href="account-getfolderindexsize.html" title="mail::ACCOUNT::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getFolderIndexSize</span>(3x)</span></a>
+      message #0 and up to one less than <a class="link" href="account-getfolderindexsize.html" title="mail::ACCOUNT::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getFolderIndexSize</span>(3x)</span></a>
       (when <code class="function">mail::account::getFolderIndexSize</code> returns
       6, the messages are numbered 0 through 5). Only the messages
       that appear in <em class="parameter"><code>msgList</code></em> are processed by this
       request. When a message is removed from the folder, by
-      <a href="account-updatefolderindexinfo.html" title="mail::ACCOUNT::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::updateFolderIndexInfo</span>(3x)</span></a>,
+      <a class="link" href="account-updatefolderindexinfo.html" title="mail::ACCOUNT::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::updateFolderIndexInfo</span>(3x)</span></a>,
       the following messages are renumbered accordingly.</p>
 
       <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -212,7 +212,7 @@ information.
         <p>Most mail servers allow multiple applications to open
         the same folder. Therefore, changes to the folder's
         contents can occur at any time. Before making this request,
-        the application should use <a href="account-checknewmail.html" title="mail::ACCOUNT::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::checkNewMail</span>(3x)</span></a>
+        the application should use <a class="link" href="account-checknewmail.html" title="mail::ACCOUNT::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::checkNewMail</span>(3x)</span></a>
         to verify that no unexpected changes have been made to the
         folder's contents.</p>
       </div>
@@ -230,7 +230,7 @@ information.
       existing set of keywords (<em class="parameter"><code>changeTo</code></em> is <code class="literal">false</code>).</p>
 
       <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id408885" shape="rect" name="id408885"> </a>
+        <a id="id424822" shape="rect" name="id424822"> </a>
 
         <h3>Keywords</h3>
 
@@ -275,7 +275,7 @@ information.
             </li>
 
             <li>
-              <p><a href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> accounts have case-sensitive
+              <p><a class="link" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> accounts have case-sensitive
               keywords that use the <code class="literal">UTF-8</code> character set. Keyword names
               may not contain commas.</p>
 
@@ -312,7 +312,7 @@ information.
               not saved. When the folder is closed, all set
               keywords are lost. Snapshots may be used to obtain
               permanent keyword storage for NNTP and POP3 accounts.
-              See <a href="folder-open.html" title="mail::folder::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::open</span>(3x)</span></a>
+              See <a class="link" href="folder-open.html" title="mail::folder::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::open</span>(3x)</span></a>
               for more information.</p>
             </li>
           </ul>
@@ -321,7 +321,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id408702" shape="rect" name="id408702"> </a>
+      <a id="id424640" shape="rect" name="id424640"> </a>
 
       <h2>Return Codes</h2>
 
@@ -332,13 +332,13 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id408738" shape="rect" name="id408738"> </a>
+      <a id="id424676" shape="rect" name="id424676"> </a>
 
       <h2>SEE ALSO</h2>
 
-      <p><a href="account-savefolderindexinfo.html" title="mail::ACCOUNT::saveFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::saveFolderIndexInfo</span>(3x)</span></a>,
-      <a href="account-getfolderindexinfo.html" title="mail::ACCOUNT::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getFolderIndexInfo</span>(3x)</span></a>,
-      <a href="account-getfolderkeywordinfo.html" title="mail::ACCOUNT::getFolderKeywordInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getFolderKeywordInfo</span>(3x)</span></a>.</p>
+      <p><a class="link" href="account-savefolderindexinfo.html" title="mail::ACCOUNT::saveFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::saveFolderIndexInfo</span>(3x)</span></a>,
+      <a class="link" href="account-getfolderindexinfo.html" title="mail::ACCOUNT::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getFolderIndexInfo</span>(3x)</span></a>,
+      <a class="link" href="account-getfolderkeywordinfo.html" title="mail::ACCOUNT::getFolderKeywordInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::getFolderKeywordInfo</span>(3x)</span></a>.</p>
     </div>
   </div>
 
