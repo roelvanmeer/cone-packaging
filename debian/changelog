@@ -1,3 +1,13 @@
+cone (0.74-2) unstable; urgency=low
+
+  * Add patches/gcc4.3.diff to include missing headers and fix FTBFS with
+    GCC 4.3 (Closes: #456070)
+  * debian/control:
+    + Add quilt to Build-Depends
+    + Bumped up Standards-Version to 3.7.3
+
+ -- Varun Hiremath <varun@debian.org>  Thu, 13 Dec 2007 21:15:25 +0530
+
 cone (0.74-1) unstable; urgency=low
 
   * New upstream release

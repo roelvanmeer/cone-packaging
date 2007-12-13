@@ -1,11 +1,11 @@
 Source: cone
 Section: mail
 Priority: optional
-Maintainer: Varun Hiremath <varunhiremath@gmail.com>
+Maintainer: Varun Hiremath <varun@debian.org>
 Uploaders: Torsten Werner <twerner@debian.org>
 Build-Depends: cdbs, debhelper (>= 5.0), libncursesw5-dev, libxml2-dev,
- libldap2-dev, libssl-dev, libfam-dev, aspell, procps, openssl
-Standards-Version: 3.7.2
+ libldap2-dev, libssl-dev, libfam-dev, aspell, procps, openssl, quilt
+Standards-Version: 3.7.3
 Homepage: http://www.courier-mta.org/cone/
 Vcs-Svn: https://bollin.googlecode.com/svn/cone/
 Vcs-Browser: http://bollin.googlecode.com/svn/cone/

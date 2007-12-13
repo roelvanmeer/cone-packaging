@@ -1,0 +1,180 @@
+Index: cone-0.74/libmail/addmessage.C
+===================================================================
+--- cone-0.74.orig/libmail/addmessage.C	2004-06-23 06:25:25.000000000 +0530
++++ cone-0.74/libmail/addmessage.C	2007-12-13 20:25:07.000000000 +0530
+@@ -8,6 +8,7 @@
+ #include "addmessage.H"
+ #include "attachments.H"
+ #include <errno.h>
++#include <cstring>
+ 
+ // Default method implementation.
+ 
+Index: cone-0.74/libmail/addmessageimport.C
+===================================================================
+--- cone-0.74.orig/libmail/addmessageimport.C	2006-06-05 03:06:02.000000000 +0530
++++ cone-0.74/libmail/addmessageimport.C	2007-12-13 20:25:07.000000000 +0530
+@@ -8,6 +8,7 @@
+ #include "addmessage.H"
+ #include "attachments.H"
+ #include <errno.h>
++#include <cstring>
+ 
+ using namespace std;
+ 
+Index: cone-0.74/libmail/addmessageremoveattachments.C
+===================================================================
+--- cone-0.74.orig/libmail/addmessageremoveattachments.C	2004-06-23 06:25:01.000000000 +0530
++++ cone-0.74/libmail/addmessageremoveattachments.C	2007-12-13 20:25:07.000000000 +0530
+@@ -10,6 +10,7 @@
+ #include "headers.H"
+ #include <errno.h>
+ #include <vector>
++#include <cstring>
+ 
+ using namespace std;
+ 
+Index: cone-0.74/libmail/addressbook.C
+===================================================================
+--- cone-0.74.orig/libmail/addressbook.C	2005-02-24 09:09:09.000000000 +0530
++++ cone-0.74/libmail/addressbook.C	2007-12-13 20:25:07.000000000 +0530
+@@ -14,6 +14,7 @@
+ #include "rfc2047decode.H"
+ #include "misc.H"
+ #include <errno.h>
++#include <cstring>
+ 
+ using namespace std;
+ 
+Index: cone-0.74/libmail/addressbookadd.C
+===================================================================
+--- cone-0.74.orig/libmail/addressbookadd.C	2005-02-24 09:09:09.000000000 +0530
++++ cone-0.74/libmail/addressbookadd.C	2007-12-13 20:25:07.000000000 +0530
+@@ -16,6 +16,7 @@
+ #include <ctype.h>
+ #include <vector>
+ #include <errno.h>
++#include <cstring>
+ 
+ using namespace std;
+ 
+Index: cone-0.74/libmail/attachments.C
+===================================================================
+--- cone-0.74.orig/libmail/attachments.C	2004-06-23 06:25:25.000000000 +0530
++++ cone-0.74/libmail/attachments.C	2007-12-13 20:25:07.000000000 +0530
+@@ -17,6 +17,7 @@
+ #include <errno.h>
+ #include <sstream>
+ #include <iomanip>
++#include <cstring>
+ 
+ using namespace std;
+ 
+Index: cone-0.74/libmail/fd.C
+===================================================================
+--- cone-0.74.orig/libmail/fd.C	2006-06-05 03:06:02.000000000 +0530
++++ cone-0.74/libmail/fd.C	2007-12-13 20:25:07.000000000 +0530
+@@ -21,6 +21,7 @@
+ 
+ #include	<iostream>
+ #include	<sstream>
++#include        <cstdlib>
+ 
+ using namespace std;
+ 
+Index: cone-0.74/libmail/fdtls.C
+===================================================================
+--- cone-0.74.orig/libmail/fdtls.C	2003-06-12 04:06:32.000000000 +0530
++++ cone-0.74/libmail/fdtls.C	2007-12-13 20:25:07.000000000 +0530
+@@ -6,6 +6,7 @@
+ */
+ #include "libmail_config.h"
+ #include "fdtls.H"
++#include <cstdlib>
+ 
+ #if HAVE_LIBCOURIERTLS
+ 
+Index: cone-0.74/libmail/mimetypes.C
+===================================================================
+--- cone-0.74.orig/libmail/mimetypes.C	2003-05-27 19:39:08.000000000 +0530
++++ cone-0.74/libmail/mimetypes.C	2007-12-13 20:25:07.000000000 +0530
+@@ -9,6 +9,7 @@
+ #include "namespace.H"
+ #include <fstream>
+ #include <ctype.h>
++#include <cstring>
+ 
+ using namespace std;
+ 
+Index: cone-0.74/libmail/rfc2047decode.C
+===================================================================
+--- cone-0.74.orig/libmail/rfc2047decode.C	2004-05-16 08:20:34.000000000 +0530
++++ cone-0.74/libmail/rfc2047decode.C	2007-12-13 20:25:07.000000000 +0530
+@@ -9,6 +9,7 @@
+ #include "rfc2047decode.H"
+ #include "rfc822/rfc2047.h"
+ #include "mail.H"
++#include <cstring>
+ 
+ using namespace std;
+ 
+Index: cone-0.74/libmail/sortfolders.C
+===================================================================
+--- cone-0.74.orig/libmail/sortfolders.C	2003-05-27 19:39:09.000000000 +0530
++++ cone-0.74/libmail/sortfolders.C	2007-12-13 20:25:07.000000000 +0530
+@@ -6,6 +6,7 @@
+ */
+ #include "libmail_config.h"
+ #include "mail.H"
++#include <cstring>
+ 
+ mail::folder::sort::sort(bool foldersFirstArg) // TRUE: sort folders first
+ 	: foldersFirst(foldersFirstArg)
+Index: cone-0.74/cone/gettext.C
+===================================================================
+--- cone-0.74.orig/cone/gettext.C	2007-12-13 21:04:02.000000000 +0530
++++ cone-0.74/cone/gettext.C	2007-12-13 21:04:10.000000000 +0530
+@@ -14,6 +14,7 @@
+ #include "unicode/unicode.h"
+ #include "libmail/mail.H"
+ #include <errno.h>
++#include <cstring>
+ 
+ #if HAVE_LANGINFO_H
+ #include <langinfo.h>
+Index: cone-0.74/cone/nntpcommand.C
+===================================================================
+--- cone-0.74.orig/cone/nntpcommand.C	2007-12-13 21:09:14.000000000 +0530
++++ cone-0.74/cone/nntpcommand.C	2007-12-13 21:09:23.000000000 +0530
+@@ -12,6 +12,7 @@
+ #include <errno.h>
+ #include <stdio.h>
+ #include <cstdlib>
++#include <cstring>
+ 
+ #include <sys/types.h>
+ #if HAVE_UNISTD_H
+Index: cone-0.74/cone/tags.C
+===================================================================
+--- cone-0.74.orig/cone/tags.C	2007-12-13 21:10:14.000000000 +0530
++++ cone-0.74/cone/tags.C	2007-12-13 21:10:22.000000000 +0530
+@@ -9,6 +9,7 @@
+ #include "tags.H"
+ #include "gettext.H"
+ #include <sstream>
++#include <cstring>
+ 
+ using namespace std;
+ 
+Index: cone-0.74/cone/spellcheckerAspell.C
+===================================================================
+--- cone-0.74.orig/cone/spellcheckerAspell.C	2007-12-13 21:11:05.000000000 +0530
++++ cone-0.74/cone/spellcheckerAspell.C	2007-12-13 21:11:13.000000000 +0530
+@@ -10,6 +10,7 @@
+ #include "libmail/mail.H"
+ 
+ #include <errno.h>
++#include <cstring>
+ 
+ #if HAVE_ASPELL_CONFIG_HH
+ #include "aspell/suggest.hh"
