@@ -4,7 +4,9 @@ include /usr/share/cdbs/1/class/autotools.mk
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/rules/patchsys-quilt.mk
 
-binary-predeb/cone::
+install/cone::
+	#renaming config file
+	mv $(DEB_DESTDIR)/etc/cone.dist $(DEB_DESTDIR)/etc/cone
 	rmdir $(DEB_DESTDIR)usr/share/man/man3/
 
 get-orig-source:

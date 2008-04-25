@@ -1,3 +1,13 @@
+cone (0.74-3) unstable; urgency=low
+
+  * Add preinst file to safely move old /etc/cone.dist conffile to /etc/cone
+    (Closes: #477481)
+  * debian/rules: rename /etc/cone.dist to /etc/cone
+  * Add patches/sendmail_path.diff to fix the default sendmail path
+    (Closes: #477494)
+
+ -- Varun Hiremath <varun@debian.org>  Fri, 25 Apr 2008 11:44:36 +0530
+
 cone (0.74-2) unstable; urgency=low
 
   * Add patches/gcc4.3.diff to include missing headers and fix FTBFS with

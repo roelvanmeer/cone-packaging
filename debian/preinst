@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -e
+
+# Rename the old conffile 'cone.dist' to 'cone' if needed and possible.
+# Can be removed after the release of Lenny.
+case "$1" in
+  install|upgrade)
+    if [ -e /etc/cone.dist ]; then
+      if [ ! -e /etc/cone ]; then
+	mv /etc/cone.dist /etc/cone
+      else
+	echo 'You have both /etc/cone and /etc/cone.dist. Please remove the'
+	echo 'second one after merging any local changes to the first one.'
+      fi
+    fi
+  ;;
+esac
+
+#DEBHELPER#
