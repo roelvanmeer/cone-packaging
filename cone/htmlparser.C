@@ -1,4 +1,4 @@
-/* $Id: htmlparser.C,v 1.7 2005/11/24 01:45:18 mrsam Exp $
+/* $Id: htmlparser.C,v 1.8 2008/05/24 17:57:41 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -979,7 +979,7 @@ void htmlParser::newTag()
 			while (b != e)
 			{
 				if (value.size() == 0 ||
-				    value[0] != '\'' && value[0] != '"')
+				    (value[0] != '\'' && value[0] != '"'))
 				{
 					// Unquoted attr value ends at next
 					// blank.

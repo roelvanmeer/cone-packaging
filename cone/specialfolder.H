@@ -1,4 +1,4 @@
-/* $Id: specialfolder.H,v 1.1 2003/05/27 14:09:04 mrsam Exp $
+/* $Id: specialfolder.H,v 1.2 2008/05/24 17:57:41 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -14,11 +14,13 @@
 #include <map>
 #include <vector>
 
+namespace mail {
+	class folder;
+};
+
 ///////////////////////////////////////////////////////////////////////
 //
 // Pre-defined folders, such as Drafts or Outbox.
-
-class mail::folder;
 
 class SpecialFolder {
 

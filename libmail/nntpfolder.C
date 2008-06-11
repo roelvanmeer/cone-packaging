@@ -1,4 +1,4 @@
-/* $Id: nntpfolder.C,v 1.2 2003/06/07 22:45:12 mrsam Exp $
+/* $Id: nntpfolder.C,v 1.3 2008/05/24 17:57:42 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -15,6 +15,7 @@
 #include <list>
 #include <map>
 #include <errno.h>
+#include <cstring>
 
 using namespace std;
 

@@ -1,4 +1,4 @@
-/* $Id: imapidle.C,v 1.2 2004/04/06 02:06:36 mrsam Exp $
+/* $Id: imapidle.C,v 1.3 2008/05/24 17:57:42 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -141,10 +141,12 @@ bool mail::imapIdleHandler::taggedMessage(imap &imapAccount, std::string name,
 	}
 
 	if (c)
+	{
 		if (okfail)
 			c->success(errmsg);
 		else
 			c->fail(errmsg);
+	}
 	return true;
 }
 		

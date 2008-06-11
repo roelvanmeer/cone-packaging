@@ -1,9 +1,10 @@
-/* $Id: tmpaccountfolder.C,v 1.1 2003/06/11 22:36:33 mrsam Exp $
+/* $Id: tmpaccountfolder.C,v 1.2 2008/05/24 17:57:42 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
+#include <cstring>
 
 #include "tmpaccount.H"
 #include <errno.h>

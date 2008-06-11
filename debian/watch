@@ -1,2 +1,6 @@
 version=3
-http://sf.net/courier/ cone-(.*)\.tar\.bz2 debian debian/orig-tar.sh
+http://heanet.dl.sourceforge.net/sourceforge/courier/ cone-(.*)\.tar\.bz2 \
+  debian debian/orig-tar.sh
+
+# the redirector is broken
+#http://sf.net/courier/ cone-(.*)\.tar\.bz2 debian debian/orig-tar.sh

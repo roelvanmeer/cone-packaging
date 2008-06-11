@@ -1,10 +1,9 @@
-/* $Id: nntplistactive.C,v 1.3 2004/04/28 00:35:15 mrsam Exp $
+/* $Id: nntplistactive.C,v 1.4 2008/05/24 17:57:42 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
-
 #include "nntplistactive.H"
 #include "nntpfolder.H"
 #include "nntpnewsrc.H"
@@ -12,6 +11,7 @@
 #include <sstream>
 #include <algorithm>
 #include <errno.h>
+#include <cstring>
 
 using namespace std;
 

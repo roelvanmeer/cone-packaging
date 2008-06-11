@@ -1,11 +1,11 @@
-##VERSION: $Id: cone.dist.in,v 1.4 2007/11/22 14:25:41 mrsam Exp $
+##VERSION: $Id: cone.dist.in,v 1.5 2008/05/24 17:57:41 mrsam Exp $
 #
 # cone configuration file created from cone.dist by sysconftool
 #
 # Do not alter lines that begin with ##, they are used when upgrading
 # this configuration.
 #
-#  Copyright 2003 Double Precision, Inc.  See COPYING for
+#  Copyright 2003-2008 Double Precision, Inc.  See COPYING for
 #  distribution information.
 #
 #  This configuration file sets various options for CONE.  Most of these
@@ -60,8 +60,6 @@ UNDERLINE_HACK=0
 # When compiled against GnuTLS, multiple protocols can be selected as follows:
 #
 # TLS_PROTOCOL="TLS1_1:TLS1:SSL3"
-
-TLS_PROTOCOL=SSL3
 
 ##NAME: TLS_STARTTLS_PROTOCOL:0
  

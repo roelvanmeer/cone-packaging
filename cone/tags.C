@@ -1,6 +1,6 @@
-/* $Id: tags.C,v 1.4 2004/04/25 03:37:15 mrsam Exp $
+/* $Id: tags.C,v 1.5 2008/05/24 17:57:41 mrsam Exp $
 **
-** Copyright 2003-2004, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -9,6 +9,7 @@
 #include "tags.H"
 #include "gettext.H"
 #include <sstream>
+#include <cstring>
 
 using namespace std;
 

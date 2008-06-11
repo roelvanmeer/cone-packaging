@@ -1,4 +1,4 @@
-/* $Id: cursesfield.C,v 1.5 2004/05/01 02:28:21 mrsam Exp $
+/* $Id: cursesfield.C,v 1.6 2008/05/24 17:57:41 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -329,6 +329,7 @@ bool CursesField::processKeyInFocus(const Key &key)
 	if (cursorpos != selectpos)
 	{
 		if (key != key.SHIFT)
+		{
 			if (cursorpos < selectpos)
 			{
 				if (key != yankKey)
@@ -365,6 +366,7 @@ bool CursesField::processKeyInFocus(const Key &key)
 					   text.begin() + cursorpos);
 				cursorpos=selectpos;
 			}
+		}
 
 		selectpos=cursorpos;
 		draw();

@@ -1,6 +1,6 @@
-/* $Id: fd.C,v 1.8 2006/06/04 21:36:02 mrsam Exp $
+/* $Id: fd.C,v 1.9 2008/05/24 17:57:41 mrsam Exp $
 **
-** Copyright 2002-2006, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -21,6 +21,8 @@
 
 #include	<iostream>
 #include	<sstream>
+#include	<cstring>
+#include	<cstdlib>
 
 using namespace std;
 

@@ -1,6 +1,6 @@
-/* $Id: structure.C,v 1.5 2004/06/12 23:48:52 mrsam Exp $
+/* $Id: structure.C,v 1.6 2008/05/24 17:57:42 mrsam Exp $
 **
-** Copyright 2002-2004, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -10,6 +10,7 @@
 #include "structure.H"
 #include "envelope.H"
 #include "rfcaddr.H"
+#include <cstring>
 
 #include "rfc822/rfc2047.h"
 #include "rfc2045/rfc2045.h"

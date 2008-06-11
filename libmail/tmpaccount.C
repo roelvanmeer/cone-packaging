@@ -1,9 +1,10 @@
-/* $Id: tmpaccount.C,v 1.4 2004/06/14 00:18:43 mrsam Exp $
+/* $Id: tmpaccount.C,v 1.5 2008/05/24 17:57:42 mrsam Exp $
 **
-** Copyright 2003-2004, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
+#include <cstring>
 
 #include "tmpaccount.H"
 #include "driver.H"

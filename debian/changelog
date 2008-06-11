@@ -1,3 +1,11 @@
+cone (0.75-1) unstable; urgency=low
+
+  * new upstream release
+  * Do not use the sf.net redirector in debian/watch because it is flaky.
+  * Remove patch gcc4.3.diff because it is not needed any more.
+
+ -- Torsten Werner <twerner@debian.org>  Wed, 11 Jun 2008 21:53:34 +0200
+
 cone (0.74-3) unstable; urgency=low
 
   * Add preinst file to safely move old /etc/cone.dist conffile to /etc/cone

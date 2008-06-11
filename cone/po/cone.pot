@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: courier-cone@lists.sourceforge.net\n"
-"POT-Creation-Date: 2007-09-29 17:41-0400\n"
+"POT-Creation-Date: 2008-05-24 13:41-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -997,43 +997,43 @@ msgstr ""
 msgid "Replace with: "
 msgstr ""
 
-#: curseseditmessage.C:1800 gettext.C:130
+#: curseseditmessage.C:1800 gettext.C:131
 msgid "REPLACE0:0"
 msgstr ""
 
-#: curseseditmessage.C:1801 gettext.C:131
+#: curseseditmessage.C:1801 gettext.C:132
 msgid "REPLACE1:1"
 msgstr ""
 
-#: curseseditmessage.C:1802 gettext.C:132
+#: curseseditmessage.C:1802 gettext.C:133
 msgid "REPLACE2:2"
 msgstr ""
 
-#: curseseditmessage.C:1803 gettext.C:133
+#: curseseditmessage.C:1803 gettext.C:134
 msgid "REPLACE3:3"
 msgstr ""
 
-#: curseseditmessage.C:1804 gettext.C:134
+#: curseseditmessage.C:1804 gettext.C:135
 msgid "REPLACE4:4"
 msgstr ""
 
-#: curseseditmessage.C:1805 gettext.C:135
+#: curseseditmessage.C:1805 gettext.C:136
 msgid "REPLACE5:5"
 msgstr ""
 
-#: curseseditmessage.C:1806 gettext.C:136
+#: curseseditmessage.C:1806 gettext.C:137
 msgid "REPLACE6:6"
 msgstr ""
 
-#: curseseditmessage.C:1807 gettext.C:137
+#: curseseditmessage.C:1807 gettext.C:138
 msgid "REPLACE7:7"
 msgstr ""
 
-#: curseseditmessage.C:1808 gettext.C:138
+#: curseseditmessage.C:1808 gettext.C:139
 msgid "REPLACE8:8"
 msgstr ""
 
-#: curseseditmessage.C:1809 gettext.C:139
+#: curseseditmessage.C:1809 gettext.C:140
 msgid "REPLACE9:9"
 msgstr ""
 
@@ -2666,715 +2666,715 @@ msgid ""
 "or copied to another folder in the same account."
 msgstr ""
 
-#: gettext.C:24
+#: gettext.C:25
 msgid "ABORT_K:"
 msgstr ""
 
-#: gettext.C:25
+#: gettext.C:26
 msgid "ADDADDRESSBOOK:Aa"
 msgstr ""
 
-#: gettext.C:26
+#: gettext.C:27
 msgid "ADDDIRECTORY:"
 msgstr ""
 
-#: gettext.C:27
+#: gettext.C:28
 msgid "ADDFOLDER:Aa"
 msgstr ""
 
-#: gettext.C:28
+#: gettext.C:29
 msgid "ADDLDAP_K:Aa"
 msgstr ""
 
-#: gettext.C:29
+#: gettext.C:30
 msgid "ADDREMOVE:-"
 msgstr ""
 
-#: gettext.C:30
+#: gettext.C:31
 msgid "ADDRESSBOOK:Aa"
 msgstr ""
 
-#: gettext.C:31
+#: gettext.C:32
 msgid "ADDRIGHTS:Aa"
 msgstr ""
 
-#: gettext.C:32
+#: gettext.C:33
 msgid "ADDRIGHTSADMINS:Aa"
 msgstr ""
 
-#: gettext.C:33
+#: gettext.C:34
 msgid "ADDRIGHTSANON:2"
 msgstr ""
 
-#: gettext.C:34
+#: gettext.C:35
 msgid "ADDRIGHTSANYONE:1"
 msgstr ""
 
-#: gettext.C:35
+#: gettext.C:36
 msgid "ADDRIGHTSAUTHUSER:3"
 msgstr ""
 
-#: gettext.C:36
+#: gettext.C:37
 msgid "ADDRIGHTSGROUP:Gg"
 msgstr ""
 
-#: gettext.C:37
+#: gettext.C:38
 msgid "ADDRIGHTSOWNER:Oo"
 msgstr ""
 
-#: gettext.C:38
+#: gettext.C:39
 msgid "ADDRIGHTSUSER:Uu"
 msgstr ""
 
-#: gettext.C:39
+#: gettext.C:40
 msgid "ALL:Aa"
 msgstr ""
 
-#: gettext.C:40
+#: gettext.C:41
 msgid "ATTACHFILE:"
 msgstr ""
 
-#: gettext.C:41
+#: gettext.C:42
 msgid "ATTACHKEY:"
 msgstr ""
 
-#: gettext.C:42
+#: gettext.C:43
 msgid "BLOBS:Ss"
 msgstr ""
 
-#: gettext.C:43
+#: gettext.C:44
 msgid "BOUNCE:Bb"
 msgstr ""
 
-#: gettext.C:44
+#: gettext.C:45
 msgid "CLEAR:Rr"
 msgstr ""
 
-#: gettext.C:45
+#: gettext.C:46
 msgid "MORE:\v"
 msgstr ""
 
-#: gettext.C:46
+#: gettext.C:47
 msgid "COPY:Cc"
 msgstr ""
 
-#: gettext.C:47
+#: gettext.C:48
 msgid "CUT:"
 msgstr ""
 
-#: gettext.C:48
+#: gettext.C:49
 msgid "DATEACCEPT: "
 msgstr ""
 
-#: gettext.C:49
+#: gettext.C:50
 msgid "DATE:Dd"
 msgstr ""
 
-#: gettext.C:50
+#: gettext.C:51
 msgid "DAYDEC1:-_"
 msgstr ""
 
-#: gettext.C:51
+#: gettext.C:52
 msgid "DAYINC1:+="
 msgstr ""
 
-#: gettext.C:52
+#: gettext.C:53
 msgid "DELADDRESSBOOKENTRY:Dd"
 msgstr ""
 
-#: gettext.C:53
+#: gettext.C:54
 msgid "DELETEADDRESSBOOK:Dd"
 msgstr ""
 
-#: gettext.C:54
+#: gettext.C:55
 msgid "DELETED:Dd"
 msgstr ""
 
-#: gettext.C:55
+#: gettext.C:56
 msgid "DELETE:Dd"
 msgstr ""
 
-#: gettext.C:56
+#: gettext.C:57
 msgid "DELFOLDER:Dd"
 msgstr ""
 
-#: gettext.C:57
+#: gettext.C:58
 msgid "DELRIGHTS:Dd"
 msgstr ""
 
-#: gettext.C:58
+#: gettext.C:59
 msgid "DICTSPELL:"
 msgstr ""
 
-#: gettext.C:59
+#: gettext.C:60
 msgid "MOVEDOWN:"
 msgstr ""
 
-#: gettext.C:60
+#: gettext.C:61
 msgid "DRAFTS:Dd"
 msgstr ""
 
-#: gettext.C:61
+#: gettext.C:62
 msgid "DSNDELAY:Dd"
 msgstr ""
 
-#: gettext.C:62
+#: gettext.C:63
 msgid "DSNFAIL:Ff"
 msgstr ""
 
-#: gettext.C:63
+#: gettext.C:64
 msgid "DSNNEVER:Nn"
 msgstr ""
 
-#: gettext.C:64
+#: gettext.C:65
 msgid "DSNSUCCESS:Ss"
 msgstr ""
 
-#: gettext.C:65
+#: gettext.C:66
 msgid "EDIT:Ee"
 msgstr ""
 
-#: gettext.C:66
+#: gettext.C:67
 msgid "EDITREPLACE:"
 msgstr ""
 
-#: gettext.C:67
+#: gettext.C:68
 msgid "EDITSEARCH:"
 msgstr ""
 
-#: gettext.C:68
+#: gettext.C:69
 msgid "Export:Ee"
 msgstr ""
 
-#: gettext.C:69
+#: gettext.C:70
 msgid "EXTEDITOR:"
 msgstr ""
 
-#: gettext.C:70
+#: gettext.C:71
 msgid "ENCRYPTIONMENU:Ee"
 msgstr ""
 
-#: gettext.C:71
+#: gettext.C:72
 msgid "ENCRYPT:Ee"
 msgstr ""
 
-#: gettext.C:72
+#: gettext.C:73
 msgid "EXPUNGE:Xx"
 msgstr ""
 
-#: gettext.C:73
+#: gettext.C:74
 msgid "FILTER:Ff"
 msgstr ""
 
-#: gettext.C:74
+#: gettext.C:75
 msgid "FOLDERINDEX:Ii"
 msgstr ""
 
-#: gettext.C:75
+#: gettext.C:76
 msgid "FULLHEADERS:"
 msgstr ""
 
-#: gettext.C:76
+#: gettext.C:77
 msgid "FWD:Ff"
 msgstr ""
 
-#: gettext.C:77
+#: gettext.C:78
 msgid "GETFILE:\a"
 msgstr ""
 
-#: gettext.C:78
+#: gettext.C:79
 msgid "GPG_CAREFULCHECK:3"
 msgstr ""
 
-#: gettext.C:79
+#: gettext.C:80
 msgid "GPG_CASUALCHECK:2"
 msgstr ""
 
-#: gettext.C:80
+#: gettext.C:81
 msgid "GPGDELKEY:Dd"
 msgstr ""
 
-#: gettext.C:81
+#: gettext.C:82
 msgid "GPGEDITKEY:Ee"
 msgstr ""
 
-#: gettext.C:82
+#: gettext.C:83
 msgid "GPGNEWKEY:Nn"
 msgstr ""
 
-#: gettext.C:83
+#: gettext.C:84
 msgid "GPG_NOANSWER:0"
 msgstr ""
 
-#: gettext.C:84
+#: gettext.C:85
 msgid "GPG_NOCHECKING:1"
 msgstr ""
 
-#: gettext.C:85
+#: gettext.C:86
 msgid "GPGSIGNKEY:Ss"
 msgstr ""
 
-#: gettext.C:86
+#: gettext.C:87
 msgid "HEADERS:Hh"
 msgstr ""
 
-#: gettext.C:87
+#: gettext.C:88
 msgid "IGNOREALL_K:Aa"
 msgstr ""
 
-#: gettext.C:88
+#: gettext.C:89
 msgid "IGNORE_K:Ii"
 msgstr ""
 
-#: gettext.C:89
+#: gettext.C:90
 msgid "IMAPACCOUNT:Ii"
 msgstr ""
 
-#: gettext.C:90
+#: gettext.C:91
 msgid "IMPORTADDRESSBOOK:Ii"
 msgstr ""
 
-#: gettext.C:91
+#: gettext.C:92
 msgid "INBOXMBOX:Ss"
 msgstr ""
 
-#: gettext.C:92
+#: gettext.C:93
 msgid "JUMP:Jj"
 msgstr ""
 
-#: gettext.C:93
+#: gettext.C:94
 msgid "JUSTIFY:\n"
 msgstr ""
 
-#: gettext.C:94
+#: gettext.C:95
 msgid "LARGER:Ll"
 msgstr ""
 
-#: gettext.C:95
+#: gettext.C:96
 msgid "LESSTHAN:<"
 msgstr ""
 
-#: gettext.C:96
+#: gettext.C:97
 msgid "LISTFOLDERS:Ll"
 msgstr ""
 
-#: gettext.C:97
+#: gettext.C:98
 msgid "MACRO:"
 msgstr ""
 
-#: gettext.C:98
+#: gettext.C:99
 msgid "MAINMENU:Mm"
 msgstr ""
 
-#: gettext.C:99
+#: gettext.C:100
 msgid "MARK:Rr"
 msgstr ""
 
-#: gettext.C:100
+#: gettext.C:101
 msgid "MARKUNMARK: "
 msgstr ""
 
-#: gettext.C:101
+#: gettext.C:102
 msgid "MASTERPASSWORD:Pp"
 msgstr ""
 
-#: gettext.C:102
+#: gettext.C:103
 msgid "MONDEC1:[{"
 msgstr ""
 
-#: gettext.C:103
+#: gettext.C:104
 msgid "MONINC1:]}"
 msgstr ""
 
-#: gettext.C:104
+#: gettext.C:105
 msgid "MORE:"
 msgstr ""
 
-#: gettext.C:105
+#: gettext.C:106
 msgid "MOVE:Mm"
 msgstr ""
 
-#: gettext.C:106
+#: gettext.C:107
 msgid "MOVEMESSAGE:Oo"
 msgstr ""
 
-#: gettext.C:107
+#: gettext.C:108
 msgid "MSGSEARCH:/"
 msgstr ""
 
-#: gettext.C:108
+#: gettext.C:109
 msgid "NEWACCOUNT:Nn"
 msgstr ""
 
-#: gettext.C:109
+#: gettext.C:110
 msgid "NEXTMESSAGE:Nn"
 msgstr ""
 
-#: gettext.C:110
+#: gettext.C:111
 msgid "NNTPACCOUNT:Nn"
 msgstr ""
 
-#: gettext.C:111
+#: gettext.C:112
 msgid "NOT1:!!"
 msgstr ""
 
-#: gettext.C:112
+#: gettext.C:113
 msgid "OPENFILE:"
 msgstr ""
 
-#: gettext.C:113
+#: gettext.C:114
 msgid "OTHERMBOX:Oo"
 msgstr ""
 
-#: gettext.C:114
+#: gettext.C:115
 msgid "PERMISSIONS:Pp"
 msgstr ""
 
-#: gettext.C:115
+#: gettext.C:116
 msgid "EDITPERMISSIONS:Ee"
 msgstr ""
 
-#: gettext.C:116
+#: gettext.C:117
 msgid "VIEWPERMISSIONS:Vv"
 msgstr ""
 
-#: gettext.C:117
+#: gettext.C:118
 msgid "POP3ACCOUNT:Pp"
 msgstr ""
 
-#: gettext.C:118
+#: gettext.C:119
 msgid "POP3MAILDROPACCOUNT:Mm"
 msgstr ""
 
-#: gettext.C:119
+#: gettext.C:120
 msgid "POSTPONE:"
 msgstr ""
 
-#: gettext.C:120
+#: gettext.C:121
 msgid "PRINT:|"
 msgstr ""
 
-#: gettext.C:121
+#: gettext.C:122
 msgid "PREVMESSAGE:Pp"
 msgstr ""
 
-#: gettext.C:122
+#: gettext.C:123
 msgid "PRIVATEKEY:Pp"
 msgstr ""
 
-#: gettext.C:123
+#: gettext.C:124
 msgid "QUIT:Qq"
 msgstr ""
 
-#: gettext.C:124
+#: gettext.C:125
 msgid "RECVBEFORE1:44"
 msgstr ""
 
-#: gettext.C:125
+#: gettext.C:126
 msgid "RECVON1:55"
 msgstr ""
 
-#: gettext.C:126
+#: gettext.C:127
 msgid "RECVSINCE1:66"
 msgstr ""
 
-#: gettext.C:127
+#: gettext.C:128
 msgid "REMOTE:Rr"
 msgstr ""
 
-#: gettext.C:128
+#: gettext.C:129
 msgid "RENAME:Rr"
 msgstr ""
 
-#: gettext.C:129
+#: gettext.C:130
 msgid "RENAMEADDRESSBOOKENTRY:Rr"
 msgstr ""
 
-#: gettext.C:140
+#: gettext.C:141
 msgid "REPLACE_K:Rr"
 msgstr ""
 
-#: gettext.C:141
+#: gettext.C:142
 msgid "ROT13:"
 msgstr ""
 
-#: gettext.C:142
+#: gettext.C:143
 msgid "REPLIED:Rr"
 msgstr ""
 
-#: gettext.C:143
+#: gettext.C:144
 msgid "REPLY:Rr"
 msgstr ""
 
-#: gettext.C:144
+#: gettext.C:145
 msgid "RESET:"
 msgstr ""
 
-#: gettext.C:145
+#: gettext.C:146
 msgid "SAVEAS:"
 msgstr ""
 
-#: gettext.C:146
+#: gettext.C:147
 msgid "SAVE:"
 msgstr ""
 
-#: gettext.C:147
+#: gettext.C:148
 msgid "SAVE:Ss"
 msgstr ""
 
-#: gettext.C:148
+#: gettext.C:149
 msgid "ANYWHEREKEY:Aa"
 msgstr ""
 
-#: gettext.C:149
+#: gettext.C:150
 msgid "SEARCHBCC:Bb"
 msgstr ""
 
-#: gettext.C:150
+#: gettext.C:151
 msgid "SEARCHBROADEN:Bb"
 msgstr ""
 
-#: gettext.C:151
+#: gettext.C:152
 msgid "SEARCHCC:Cc"
 msgstr ""
 
-#: gettext.C:152
+#: gettext.C:153
 msgid "CONTENTSKEY:Oo"
 msgstr ""
 
-#: gettext.C:153
+#: gettext.C:154
 msgid "SEARCHFROM:Ff"
 msgstr ""
 
-#: gettext.C:154
+#: gettext.C:155
 msgid "HEADERKEY:Hh"
 msgstr ""
 
-#: gettext.C:155
+#: gettext.C:156
 msgid "SEARCHNARROW:Nn"
 msgstr ""
 
-#: gettext.C:156
+#: gettext.C:157
 msgid "SEARCH:;"
 msgstr ""
 
-#: gettext.C:157
+#: gettext.C:158
 msgid "SEARCHSUBJECT:Ss"
 msgstr ""
 
-#: gettext.C:158
+#: gettext.C:159
 msgid "SEARCHTO:Tt"
 msgstr ""
 
-#: gettext.C:159
+#: gettext.C:160
 msgid "SELECTDSN:Dd"
 msgstr ""
 
-#: gettext.C:160
+#: gettext.C:161
 msgid "SELECT:Ss"
 msgstr ""
 
-#: gettext.C:161
+#: gettext.C:162
 msgid "SEND:"
 msgstr ""
 
-#: gettext.C:162
+#: gettext.C:163
 msgid "SENTBEFORE1:11"
 msgstr ""
 
-#: gettext.C:163
+#: gettext.C:164
 msgid "SENT:Ss"
 msgstr ""
 
-#: gettext.C:164
+#: gettext.C:165
 msgid "SENTON1:22"
 msgstr ""
 
-#: gettext.C:165
+#: gettext.C:166
 msgid "SENTSINCE1:33"
 msgstr ""
 
-#: gettext.C:166
+#: gettext.C:167
 msgid "SETUPSCREEN:Ss"
 msgstr ""
 
-#: gettext.C:167
+#: gettext.C:168
 msgid "SIGN:Ss"
 msgstr ""
 
-#: gettext.C:168
+#: gettext.C:169
 msgid "SIZE:Zz"
 msgstr ""
 
-#: gettext.C:169
+#: gettext.C:170
 msgid "SMALLER:Ss"
 msgstr ""
 
-#: gettext.C:170
+#: gettext.C:171
 msgid "SORTFOLDER_ARRIVAL:Aa"
 msgstr ""
 
-#: gettext.C:171
+#: gettext.C:172
 msgid "SORTFOLDER_DATE:Dd"
 msgstr ""
 
-#: gettext.C:172
+#: gettext.C:173
 msgid "SORTFOLDER_NAME:Nn"
 msgstr ""
 
-#: gettext.C:173
+#: gettext.C:174
 msgid "SORTFOLDER:$"
 msgstr ""
 
-#: gettext.C:174
+#: gettext.C:175
 msgid "SORTFOLDER_SUBJECT:Ss"
 msgstr ""
 
-#: gettext.C:175
+#: gettext.C:176
 msgid "SORTFOLDER_THREAD:Tt"
 msgstr ""
 
-#: gettext.C:176
+#: gettext.C:177
 msgid "SORTNOT:!"
 msgstr ""
 
-#: gettext.C:177
+#: gettext.C:178
 msgid "SPECIAL:Uu"
 msgstr ""
 
-#: gettext.C:178
+#: gettext.C:179
 msgid "STATUS:Ss"
 msgstr ""
 
-#: gettext.C:179
+#: gettext.C:180
 msgid "TAG0:0"
 msgstr ""
 
-#: gettext.C:180
+#: gettext.C:181
 msgid "TAG1:1"
 msgstr ""
 
-#: gettext.C:181
+#: gettext.C:182
 msgid "TAG2:2"
 msgstr ""
 
-#: gettext.C:182
+#: gettext.C:183
 msgid "TAG3:3"
 msgstr ""
 
-#: gettext.C:183
+#: gettext.C:184
 msgid "TAG4:4"
 msgstr ""
 
-#: gettext.C:184
+#: gettext.C:185
 msgid "TAG5:5"
 msgstr ""
 
-#: gettext.C:185
+#: gettext.C:186
 msgid "TAG6:6"
 msgstr ""
 
-#: gettext.C:186
+#: gettext.C:187
 msgid "TAG7:7"
 msgstr ""
 
-#: gettext.C:187
+#: gettext.C:188
 msgid "TAG8:8"
 msgstr ""
 
-#: gettext.C:188
+#: gettext.C:189
 msgid "TAG9:9"
 msgstr ""
 
-#: gettext.C:189
+#: gettext.C:190
 msgid "TAG:Tt"
 msgstr ""
 
-#: gettext.C:190
+#: gettext.C:191
 msgid "TAKEADDR:Tt"
 msgstr ""
 
-#: gettext.C:191
+#: gettext.C:192
 msgid "TEXT:Tt"
 msgstr ""
 
-#: gettext.C:192
+#: gettext.C:193
 msgid "TODIRECTORY:"
 msgstr ""
 
-#: gettext.C:193
+#: gettext.C:194
 msgid "TOGGLE:Gg"
 msgstr ""
 
-#: gettext.C:194
+#: gettext.C:195
 msgid "TOGGLE_K: "
 msgstr ""
 
-#: gettext.C:195
+#: gettext.C:196
 msgid "TOP:Tt"
 msgstr ""
 
-#: gettext.C:196
+#: gettext.C:197
 msgid "UNDELETE:Uu"
 msgstr ""
 
-#: gettext.C:197
+#: gettext.C:198
 msgid "UNREAD:Ee"
 msgstr ""
 
-#: gettext.C:198
+#: gettext.C:199
 msgid "UNENCRYPT:Yy"
 msgstr ""
 
-#: gettext.C:199
+#: gettext.C:200
 msgid "UNMARK:Kk"
 msgstr ""
 
-#: gettext.C:200
+#: gettext.C:201
 msgid "UNREAD:Uu"
 msgstr ""
 
-#: gettext.C:201
+#: gettext.C:202
 msgid "UNWATCH:Aa"
 msgstr ""
 
-#: gettext.C:202
+#: gettext.C:203
 msgid "MOVEUP:"
 msgstr ""
 
-#: gettext.C:203
+#: gettext.C:204
 msgid "VIEWATT:Vv"
 msgstr ""
 
-#: gettext.C:204
+#: gettext.C:205
 msgid "WATCH:Ww"
 msgstr ""
 
-#: gettext.C:205
+#: gettext.C:206
 msgid "WATCHDAYS:Dd"
 msgstr ""
 
-#: gettext.C:206
+#: gettext.C:207
 msgid "WATCHDEPTH:Rr"
 msgstr ""
 
-#: gettext.C:207
+#: gettext.C:208
 msgid "WATCH:Aa"
 msgstr ""
 
-#: gettext.C:208
+#: gettext.C:209
 msgid "WRITE:Ww"
 msgstr ""
 
-#: gettext.C:209
+#: gettext.C:210
 msgid "YANK:"
 msgstr ""
 
-#: gettext.C:210
+#: gettext.C:211
 msgid "YEARDEC1:<,"
 msgstr ""
 
-#: gettext.C:211
+#: gettext.C:212
 msgid "YEARINC1:>."
 msgstr ""
 
@@ -3829,7 +3829,7 @@ msgstr ""
 msgid "Destination folder does not exist."
 msgstr ""
 
-#: myfolderfilter.C:209 myfolderfilter.C:383 nntpcommand.C:309
+#: myfolderfilter.C:209 myfolderfilter.C:383 nntpcommand.C:310
 msgid "Ok"
 msgstr ""
 
@@ -3895,7 +3895,7 @@ msgid ""
 "configuration was probably deleted."
 msgstr ""
 
-#: nntpcommand.C:322
+#: nntpcommand.C:323
 msgid "Posting command failed"
 msgstr ""
 
@@ -4267,42 +4267,42 @@ msgstr ""
 msgid "Spell checking disabled"
 msgstr ""
 
-#: tags.C:17
+#: tags.C:18
 msgid "Normal"
 msgstr ""
 
-#: tags.C:18
+#: tags.C:19
 msgid "Important"
 msgstr ""
 
-#: tags.C:19
+#: tags.C:20
 msgid "Work"
 msgstr ""
 
-#: tags.C:20
+#: tags.C:21
 msgid "Personal"
 msgstr ""
 
-#: tags.C:21
+#: tags.C:22
 msgid "To Do"
 msgstr ""
 
-#: tags.C:22
+#: tags.C:23
 msgid "Later"
 msgstr ""
 
-#: tags.C:23
+#: tags.C:24
 msgid "Custom1"
 msgstr ""
 
-#: tags.C:24
+#: tags.C:25
 msgid "Custom2"
 msgstr ""
 
-#: tags.C:25
+#: tags.C:26
 msgid "Custom3"
 msgstr ""
 
-#: tags.C:26
+#: tags.C:27
 msgid "Custom4"
 msgstr ""

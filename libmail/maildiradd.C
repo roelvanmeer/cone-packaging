@@ -1,11 +1,12 @@
-/* $Id: maildiradd.C,v 1.5 2006/06/04 21:36:02 mrsam Exp $
+/* $Id: maildiradd.C,v 1.6 2008/05/24 17:57:42 mrsam Exp $
 **
-** Copyright 2002-2006, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 #include "libmail_config.h"
 #include "maildiradd.H"
+#include <cstring>
 
 #include "maildir/config.h"
 #include "maildir/maildircreate.h"

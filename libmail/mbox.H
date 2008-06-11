@@ -1,4 +1,4 @@
-/* $Id: mbox.H,v 1.6 2004/06/14 00:18:42 mrsam Exp $
+/* $Id: mbox.H,v 1.7 2008/05/24 17:57:42 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -25,8 +25,6 @@
 #include "generic.H"
 
 #include "namespace.H"
-
-class mail::smtpInfo;
 
 struct ll_mail;
 

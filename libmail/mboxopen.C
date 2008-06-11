@@ -1,10 +1,11 @@
-/* $Id: mboxopen.C,v 1.2 2006/06/04 21:36:02 mrsam Exp $
+/* $Id: mboxopen.C,v 1.3 2008/05/24 17:57:42 mrsam Exp $
 **
-** Copyright 2002-2006, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 #include "libmail_config.h"
+#include <cstring>
 
 #include "mbox.H"
 #include "mboxopen.H"
