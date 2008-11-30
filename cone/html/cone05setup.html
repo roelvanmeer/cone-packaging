@@ -60,7 +60,7 @@ information.
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id377657" shape="rect" name="id377657"> </a>Setup Screen</h4>
+            <h4 class="title"><a id="id339907" shape="rect" name="id339907"> </a>Setup Screen</h4>
           </div>
         </div>
       </div>
@@ -159,6 +159,29 @@ DEL Delete address/folder
           <dd>
             <p>This setting specifies the name of the SMTP server
             used for sending mail. If not specified, <span class="application">Cone</span> uses the local <span class="command"><strong>sendmail</strong></span> command.</p>
+          </dd>
+
+          <dt><span class="term">SMTP SSL certificate
+          (optional)</span></dt>
+
+          <dd>
+            <p>This setting enables SMTP authentication using an
+            <acronym class="acronym">SSL</acronym> certificate.
+            This setting appears with a button that reads
+            &#8220;<span class="quote">Use
+            certificate</span>&#8221;. The setting and the button
+            appears only if at least one <acronym class="acronym">SSL</acronym> certificate is already imported
+            (see <a class="xref" href="cone10certificates.html" title="Certificates" shape="rect"><i>Certificates</i></a>). Choosing this button
+            pops up a dialog with a list of available certificates.
+            Selecting a certificate from the list changes this
+            button to read &#8220;<span class="quote">Remove
+            certificate</span>&#8221;, and selecting it again
+            removes the certificate selection. When using
+            certificates, the SMTP userid, below, may be left
+            blank. If provided, and the server does not support
+            authentication using <acronym class="acronym">SSL</acronym> certificates, the traditional
+            userid/password authentication is an automatic
+            fallback.</p>
           </dd>
 
           <dt><span class="term">SMTP userid</span></dt>

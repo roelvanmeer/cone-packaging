@@ -146,6 +146,8 @@ information.
 
         &#160;&#160;&#160;&#160;accountOpenInfo.pwd="secret";<br clear="none"/>
 
+        &#160;&#160;&#160;&#160;accountOpenInfo.certificates.push_back(pemCertStr);<br clear="none"/>
+
         &#160;&#160;&#160;&#160;accountOpenInfo.extraString="";&#160;//&#160;Used&#160;by&#160;nntp:,&#160;nntps:,&#160;pop3maildrop:&#160;and&#160;pop3maildrops:<br clear="none"/>
 
         &#160;&#160;&#160;&#160;accountOpenInfo.loginCallbackObj=&#160;&amp;passwdCallback;<br clear="none"/>
@@ -185,7 +187,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id447611" shape="rect" name="id447611"> </a>
+      <a id="id406718" shape="rect" name="id406718"> </a>
 
       <h2>USAGE</h2>
 
@@ -200,7 +202,7 @@ information.
           <dt><span class="term">imap://<em class="replaceable"><code>user</code></em>@<em class="replaceable"><code>server[<span class="optional">:port</span>]</code></em>[<span class="optional">/options</span>]</span></dt>
 
           <dd>
-            <p>An <a class="ulink" href="http://www.rfc-editor.org/rfc/rfc2060.txt" target="_top" shape="rect">IMAP</a> or an <a class="link" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> account on <em class="replaceable"><code>server</code></em>. The colon and
+            <p>An <a class="ulink" href="http://www.rfc-editor.org/rfc/rfc3501.txt" target="_top" shape="rect">IMAP</a> or an <a class="link" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> account on <em class="replaceable"><code>server</code></em>. The colon and
             <em class="replaceable"><code>port</code></em> are
             optional; defaulting to the standard IMAP port 143. A
             slash, followed by a slash-separated list of <a class="link" href="mail-open.html#mail-open-options" title="Account Options" shape="rect">additional options</a>
@@ -421,6 +423,47 @@ information.
       initialized to a non-NULL pointer. <em class="parameter"><code>loginCallbackObj</code></em> may be set to
       NULL if <em class="parameter"><code>pwd</code></em> specifies
       a password.</p>
+
+      <p><em class="parameter"><code>certificates</code></em> is a
+      vector of strings that optionally contain <acronym class="acronym">SSL</acronym> certificates. The application can
+      optionally authenticate using an <acronym class="acronym">SSL</acronym> instead of a userid/password. Both
+      the userid/password and SSL certificates may be defined. If
+      the server does not accept an SSL certificate, the
+      userid/password gets used as a fallback option.
+      <acronym class="acronym">SSL</acronym> certificate
+      authentication is implemented for IMAP and POP3 accounts, and
+      for SMTP accounts (see the USAGE section).</p>
+
+      <p>If defined, the each string in the <em class="parameter"><code>certificates</code></em> array contains a
+      single string that contains a PEM-formatted SSL certificate
+      and its corresponding key. The certificate string should
+      contain a &#8220;<span class="quote">-----BEGIN
+      CERTIFICATE-----</span>&#8221; section followed by a
+      &#8220;<span class="quote">-----BEGIN RSA PRIVATE
+      KEY-----</span>&#8221; or a &#8220;<span class="quote">-----BEGIN DH PRIVATE KEY-----</span>&#8221; section.
+      If the certificate supplies an intermediate authority
+      certificate, the additional &#8220;<span class="quote">-----BEGIN CERTIFICATE-----</span>&#8221; section
+      follows the key.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>Passphrase-protected keys are not supported.</p>
+      </div>
+
+      <p><em class="parameter"><code>certificates</code></em> is a
+      vector, and multiple certificates may be placed in the
+      vector. The certificate gets selected from the available
+      multiple choices based on the peer's acceptable certificate
+      authorities.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>If more than one certificate is signed by the peer's
+        certificate authorities, the actual certificate gets chosen
+        at random.</p>
+      </div>
 
       <p><em class="parameter"><code>loginCallbackObj</code></em>'s
       <code class="function">loginPrompt</code> method will be
@@ -652,7 +695,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id449085" shape="rect" name="id449085"> </a>
+      <a id="id408267" shape="rect" name="id408267"> </a>
 
       <h2>RETURN CODES AND CALLBACKS</h2>
 
@@ -717,7 +760,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id449355" shape="rect" name="id449355"> </a>
+      <a id="id408536" shape="rect" name="id408536"> </a>
 
       <h2>SEE ALSO</h2>
 

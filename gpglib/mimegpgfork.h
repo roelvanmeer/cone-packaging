@@ -6,10 +6,11 @@
 ** distribution information.
 */
 
-static const char mimegpgfork_h_rcsid[]="$Id: mimegpgfork.h,v 1.3 2003/06/02 23:47:16 mrsam Exp $";
+static const char mimegpgfork_h_rcsid[]="$Id: mimegpgfork.h,v 1.4 2008/07/07 03:25:41 mrsam Exp $";
 
 #include "config.h"
 #include <stdio.h>
+#include <signal.h>
 #include <sys/types.h>
 
 #ifdef  __cplusplus
@@ -29,6 +30,8 @@ struct gpgmime_forkinfo {
 
 	int gpg_errflag;
 	pid_t gpg_pid;
+
+	struct sigaction old_pipe_sig;
 
 	int (*gpg_readhandler)(const char *, size_t, void *);
 	void *gpg_voidarg;

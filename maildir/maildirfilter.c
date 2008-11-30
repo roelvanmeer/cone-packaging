@@ -1,5 +1,5 @@
 /*
-** Copyright 2000-2006 Double Precision, Inc.
+** Copyright 2000-2008 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
@@ -35,7 +35,7 @@
 #include	<unistd.h>
 #endif
 
-static const char rcsid[]="$Id: maildirfilter.c,v 1.28 2007/03/05 01:14:46 mrsam Exp $";
+static const char rcsid[]="$Id: maildirfilter.c,v 1.29 2008/07/04 13:46:34 mrsam Exp $";
 
 struct maildirfilterrule *maildir_filter_appendrule(struct maildirfilter *r,
 					const char *name,
@@ -290,8 +290,7 @@ int maildir_filter_ruleupdate(struct maildirfilter *r,
 		++fromhdr;
 
 	for (c=fromhdr; *c; c++)
-		if (*c == '\'' || *c == '\\' ||
-		    (int)(unsigned char)*c < ' ')
+		if ((int)(unsigned char)*c < ' ')
 			return (-1);
 
 	*errcode=MF_ERR_BADRULEFOLDER;
@@ -449,10 +448,11 @@ struct maildirfilterrule *p;
 
 	for (fprintf(f, "FROM='"); *fromaddr; fromaddr++)
 	{
-		if (*fromaddr != '"' && *fromaddr != '\'' && *fromaddr != '\\')
-			putc(*fromaddr, f);
+		if (*fromaddr == '\'' || *fromaddr == '\\')
+			putc('\\', f);
+		putc(*fromaddr, f);
 	}
-	fprintf(f, "\'\nimport SENDER\nif ($SENDER eq \"\")\n{\n SENDER=$FROM\n}\n\n");
+	fprintf(f, "\'\n");
 
 	for (p=r->first; p; p=p->next)
 	{
@@ -553,7 +553,7 @@ struct maildirfilterrule *p;
 
 		if (*tofolder == '!')
 		{
-			fprintf(f, "    %s \"| $SENDMAIL -f \" '\"$SENDER\"' \" %s\"\n",
+			fprintf(f, "    %s \"| $SENDMAIL -f \" '\"\"' \" %s\"\n",
 				p->flags & MFR_CONTINUE ? "cc":"to",
 					tofolder+1);
 		}
@@ -569,12 +569,23 @@ struct maildirfilterrule *p;
 
 			if (maildir_filter_autoresp_info_init_str(&ai, tofolder+1) == 0)
 			{
-
 				if (p->fromhdr && p->fromhdr[0])
-					fprintf(f, "    AUTOREPLYFROM='%s'\n",
-						p->fromhdr);
+				{
+					const char *cp;
+
+					fprintf(f, "    AUTOREPLYFROM='");
+
+
+					for (cp=p->fromhdr; *cp; ++cp)
+					{
+						if (*cp == '\'' || *cp == '\\')
+							putc('\\', f);
+						putc(*cp, f);
+					}
+					fprintf(f, "'\n");
+				}
 				else
-					fprintf(f, "    AUTOREPLYFROM=$FROM\n"
+					fprintf(f, "    AUTOREPLYFROM=\"$FROM\"\n"
 						);
 
 				fprintf(f, "   `%s -A \"X-Sender: $FROM\""

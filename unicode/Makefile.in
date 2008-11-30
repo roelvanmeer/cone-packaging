@@ -14,9 +14,9 @@
 
 @SET_MAKE@
 
-# $Id: Makefile.am,v 1.24 2007/06/30 15:40:53 mrsam Exp $
+# $Id: Makefile.am,v 1.25 2008/07/20 16:24:52 mrsam Exp $
 #
-# Copyright 2000 Double Precision, Inc.  See COPYING for
+# Copyright 2000-2008 Double Precision, Inc.  See COPYING for
 # distribution information.
 
 
@@ -41,10 +41,12 @@ build_triplet = @build@
 host_triplet = @host@
 noinst_PROGRAMS = unicode-info$(EXEEXT)
 subdir = .
-DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
+DIST_COMMON = README $(am__configure_deps) $(srcdir)/../config.guess \
+	$(srcdir)/../config.sub $(srcdir)/../depcomp \
+	$(srcdir)/../install-sh $(srcdir)/../ltmain.sh \
+	$(srcdir)/../missing $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/unicode_config.h.in \
-	$(top_srcdir)/configure config.guess config.sub depcomp \
-	install-sh ltmain.sh missing
+	$(top_srcdir)/configure
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -70,7 +72,8 @@ am_libunicode_la_OBJECTS = iso8859.lo windows874u.lo unicode.lo \
 	xtest.lo unicode_ultcase.lo utf8.lo utf8_chset.lo utf7.lo \
 	koi8r.lo koi8u.lo unicode_ultcasetab.lo $(am__objects_1) \
 	$(am__objects_2) $(am__objects_3) big5.lo gb2312.lo \
-	iso2022jp.lo shiftjis.lo eucjp.lo ksx1001.lo charsetlist.lo
+	iso2022jp.lo shiftjis.lo eucjp.lo ksx1001.lo \
+	unicode_wcwidth.lo charsetlist.lo
 libunicode_la_OBJECTS = $(am_libunicode_la_OBJECTS)
 PROGRAMS = $(noinst_PROGRAMS)
 am_unicode_info_OBJECTS = unicodeinfo.$(OBJEXT)
@@ -80,7 +83,7 @@ unicode_info_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(unicode_info_LDFLAGS) $(LDFLAGS) -o $@
 SCRIPTS = $(noinst_SCRIPTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__depfiles_maybe = depfiles
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -219,7 +222,7 @@ CLEANFILES = charsetlist.c
 noinst_SCRIPTS = mkiso8859.pl mkkoi8r.pl mkkoi8u.pl mkibm864.pl big5.pl gb2312.pl \
 	update.sh \
 	mkultcase.pl unicodefilter.pl charsetlist.pl mkiso8859.pl \
-	iso2022jp.pl ksx1001.pl
+	iso2022jp.pl ksx1001.pl mkeastasianwidth.pl
 
 unicode_info_SOURCES = unicodeinfo.c
 unicode_info_DEPENDENCIES = libunicode.la
@@ -245,6 +248,7 @@ libunicode_la_SOURCES = unicode.h iso8859.c windows874u.c unicode.c unicode2.c \
 			$(IBMCFILES) big5.c big5.h gb2312.c gb2312.h \
 			iso2022jp.c iso2022jp.h shiftjis.c eucjp.c \
 			ksx1001.h ksx1001.c \
+			unicode_wcwidth.c eastasianwidth.h \
 			charsetlist.c
 
 EXTRA_DIST = $(noinst_SCRIPTS) $(ISO8859CFILES) charsetlist.txt
@@ -377,6 +381,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/unicode2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/unicode_ultcase.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/unicode_ultcasetab.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/unicode_wcwidth.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/unicodeinfo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utf7.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utf7imap.Plo@am__quote@
@@ -759,6 +764,7 @@ update-www-eastasia:
 	@SHELL@ $(srcdir)/update.sh Unihan-3.2.0.txt.gz http://www.unicode.org/Public/3.2-Update/Unihan-3.2.0.txt.gz
 	@SHELL@ $(srcdir)/update.sh CP949.TXT http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP949.TXT
 	@SHELL@ $(srcdir)/update.sh big5-iso.txt http://www.info.gov.hk/digital21/chi/hkscs/download/big5-iso.txt
+	@SHELL@ $(srcdir)/update.sh EastAsianWidth.txt http://www.unicode.org/Public/UNIDATA/EastAsianWidth.txt
 
 charsetlist.c: charsetlist.txt charsetlist.pl Makefile config.status
 	@PERL@ $(srcdir)/unicodefilter.pl "@unicode@" \
@@ -807,6 +813,9 @@ dist-hook:
 
 @UPDATE_UNICODE_TRUE@ksx1001.h: CP949.TXT ksx1001.pl
 @UPDATE_UNICODE_TRUE@	@PERL@ $(srcdir)/ksx1001.pl > ksx1001.h
+
+@UPDATE_UNICODE_TRUE@eastasianwidth.h: EastAsianWidth.txt mkeastasianwidth.pl
+@UPDATE_UNICODE_TRUE@	@PERL@ $(srcdir)/mkeastasianwidth.pl >eastasianwidth.h
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

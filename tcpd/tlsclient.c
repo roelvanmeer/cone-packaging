@@ -1,5 +1,5 @@
 /*
-** Copyright 2001 Double Precision, Inc.
+** Copyright 2001-2008 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 #include	"config.h"
@@ -51,7 +51,7 @@
 
 #include	"tlsclient.h"
 
-static const char rcsid[]="$Id: tlsclient.c,v 1.4 2006/05/28 15:29:52 mrsam Exp $";
+static const char rcsid[]="$Id: tlsclient.c,v 1.6 2008/06/30 00:31:15 mrsam Exp $";
 
 
 #define ERRMSG(s) (cinfo->errmsg[0]=0, \
@@ -203,6 +203,79 @@ int couriertls_start(char **args, struct couriertls_info *cinfo)
 	}
 
 	return (0);
+}
+
+const char *couriertls_get_subject(struct couriertls_info *cinfo,
+				   const char *subject)
+{
+	struct tls_subject *subj;
+	struct tls_subjitem *item, *p;
+
+	if ((subj=cinfo->first_subject) == 0)
+		return NULL;
+
+	p=NULL;
+
+	for (item=subj->firstitem; item; item=item->nextitem)
+	{
+		const char *a=item->name;
+		const char *b=subject;
+
+		while (*a && *b)
+		{
+			int ca= *a++;
+			int cb= *b++;
+
+			/* Locale muddies things up, do this by hand */
+
+			if (ca >= 'a' && ca <= 'z')
+				ca -= 'a' - 'A';
+
+			if (cb >= 'a' && cb <= 'z')
+				cb -= 'a' - 'A';
+
+			if (ca != cb)
+				break;
+		}
+
+		if (!*a && !*b)
+			p=item;
+		/*
+		** We want the last one, to match the behavior when couriertls
+		** passes this stuff via the environment.
+		*/
+	}
+
+	if (p)
+		return p->value;
+	return (0);
+}
+
+void couriertls_export_subject_environment(struct couriertls_info *cinfo)
+{
+	struct tls_subject *subj;
+	struct tls_subjitem *item;
+
+	if ((subj=cinfo->first_subject) == 0)
+		return;
+
+	for (item=subj->firstitem; item; item=item->nextitem)
+	{
+		char *a=malloc(strlen(item->name)+20);
+		const char *b=item->value;
+		char *p;
+
+		if (!a) continue;
+
+		strcat(strcpy(a, "TLS_SUBJECT_"), item->name);
+
+		for (p=a; *p; p++)
+			if (*p >= 'a' && *p <= 'z')
+				*p -= 'a' - 'A';
+
+		setenv(a, b, 1);
+		free(a);
+	}
 }
 
 static int do_couriertls_start(char **args, struct couriertls_info *cinfo)

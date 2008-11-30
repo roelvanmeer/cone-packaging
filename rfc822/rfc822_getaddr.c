@@ -1,10 +1,10 @@
 /*
-** Copyright 1998 - 1999 Double Precision, Inc.
+** Copyright 1998 - 2008 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
 /*
-** $Id: rfc822_getaddr.c,v 1.6 2000/10/22 05:23:50 mrsam Exp $
+** $Id: rfc822_getaddr.c,v 1.8 2008/06/14 14:12:50 mrsam Exp $
 */
 #include	"rfc822.h"
 #include	<stdlib.h>
@@ -40,9 +40,30 @@ char	*addrbuf, *ptr;
 	return (addrbuf);
 }
 
+/* Get rid of surrounding quotes */
+
+static void dropquotes(char *addrbuf)
+{
+	char	*p, *q;
+
+	p=q=addrbuf;
+
+	if (*p == '"')
+		++p;
+
+	while (*p)
+	{
+		if (*p == '"' && p[1] == 0)
+			break;
+
+		*q++ = *p++;
+	}
+
+	*q=0;
+}
+
 char *rfc822_getname(const struct rfc822a *rfc, int n)
 {
-char	*p, *q;
 size_t	addrbuflen=0;
 char	*addrbuf, *ptr;
 
@@ -54,17 +75,12 @@ char	*addrbuf, *ptr;
 	rfc822_prname(rfc, n, &saveaddr, &ptr);
 	addrbuf[addrbuflen]=0;
 
-	/* Get rid of surrounding quotes */
-
-	for (p=q=addrbuf; *p; p++)
-		if (*p != '"')	*q++=*p;
-	*q=0;
+	dropquotes(addrbuf);
 	return (addrbuf);
 }
 
 char *rfc822_getname_orlist(const struct rfc822a *rfc, int n)
 {
-char	*p, *q;
 size_t	addrbuflen=0;
 char	*addrbuf, *ptr;
 
@@ -76,11 +92,7 @@ char	*addrbuf, *ptr;
 	rfc822_prname_orlist(rfc, n, &saveaddr, &ptr);
 	addrbuf[addrbuflen]=0;
 
-	/* Get rid of surrounding quotes */
-
-	for (p=q=addrbuf; *p; p++)
-		if (*p != '"')	*q++=*p;
-	*q=0;
+	dropquotes(addrbuf);
 	return (addrbuf);
 }
 

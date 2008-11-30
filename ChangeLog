@@ -1,3 +1,117 @@
+0.77
+
+2008-08-25  Mr. Sam  <mrsam@courier-mta.com>
+
+	* cone/gpg.C (GPG::select_key): When there's only one key in the
+	keyring, it was impossible to cancel it.
+
+2008-08-24  Mr. Sam  <mrsam@courier-mta.com>
+
+	* tcpd/libcouriergnutls.c (set_cert): Add support for certificates
+	signed by an intermediate CA.
+
+0.76
+
+2008-07-13  Mr. Sam  <mrsam@courier-mta.com>
+
+	* tcpd/libcouriertls.c: Various bug fixes.
+	(tls_cert_name): Convert subject name to rfc 2553 format.
+
+	* cone/certificates.C: Smarter parsing of cert subject lines.
+
+	* Remove SSL certificate bundle from this package. Use system-supplied
+	SSL CA bundle.
+
+	* cone/cone.dist.in: Update and improve comments. Bump TLS_TRUSTCERTS.
+
+	* Update documentation to describe SSL certificate authentication.
+	
+	* Store SSL certificates in the password file.
+
+2008-07-06  Mr. Sam  <mrsam@courier-mta.com>
+
+	* gpglib/mimegpgfork.c (libmail_gpgmime_fork): Save and restore
+	SIGPIPE signal handler.
+
+	* cone/passwordlist.C: Eliminate needless saving of unmodified
+	passwords.
+	(PasswordList::remove): Ditto.
+
+	* cone/myserverconfig.C: Save and load certificate info in config
+	files.
+	(myServer::savepasswords): Do not memorize empty passwords.
+
+	* cone/myserver.C: Add a certificate ID to the list of server
+	parameters.
+
+	* cone/mainmenu.C (MainMenuScreen::MainMenuScreen): New link to the
+	"CERTIFICATES" screen.
+
+	* cone/cursesmessage.C (CursesMessage::getSendFolder): Prompting for
+	SMTP server's password was broken, fix it and add support for SSL
+	certificates.
+
+	* cone/myserverlogincallback.C: The other broken bits of userid/password
+	request callback.
+
+	* cone/curseshierarchy.C (CursesHierarchy::processKey): Enable
+	editing of pop3 maildrop accounts.
+
+	* cone/cursesedit.C (CursesEdit::markreplied): Use the server's
+	certificate, if defined, when we have to open a temporary second
+	session to mark the message as replied.
+
+	* cone/configscreen.C: Add a button to select a certificate for the
+	SMTP server.
+	(ConfigScreen::doSave): Logic to memorize SMTP server's password was
+	broken. Also: need to save memorized passwords after updating the
+	configuration.
+
+	* cone/cone.dist.in: Do not define TLS_STARTTLS_PROTOCOL, by default.
+	New description of TLS_CERTFILE.
+
+	* cone/cone.C (tryCreateAccount): Add an SSL certificate to
+	login parameters.
+	(addAccountPrompt): Add a button to select an SSL certificate for the
+	account.
+	(editAccountScreen): Ditto.
+	(main): Ignore SIGPIPE.
+	
+
+	* libmail/imap.C: Implement client SSL certs and AUTHENTICATE EXTERNAL.
+
+	* libmail/pop3.C: Ditto.
+
+	* libmail/smtp.C: Ditto.
+
+	* libmail/pop3maildrop.C: Ditto (pass through to pop3).
+
+	* libmail/nntp.C: Just pass through client SSL certs to fd::fd, for
+	now. 
+
+	* libmail/mail.H (class account::openInfo): Add certificate vector
+	to open account parameters.
+
+	* libmail/fdtls.C (fdTLS::get_tls_client_certs): Supply client SSL
+	certs to OpenSSL/GnuTLS.
+
+	* libmail/fd.C (fd::fd): Load user-specified client SSL certs into
+	the libcouriertls structure.
+
+	* tcpd/libcouriertls.h: Implement support for client SSL/TLS
+	certificates.
+
+2008-06-13  Mr. Sam  <mrsam@courier-mta.com>
+
+	* rfc822_getaddr.c: Backslashed special characters in address names
+	weren't being dequoted correctly by rfc822_getname() and
+	rfc822_getname_orlist().
+
+2008-06-12  Fazal Majid <sourceforge@sentfrom.com>
+
+	* curses/cursesscreen.C: Change the order of includes -- OpenSolaris
+	issue
+
 0.75
 
 2008-05-24  Mr. Sam  <mrsam@courier-mta.com>

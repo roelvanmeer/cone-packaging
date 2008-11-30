@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>maildiracl</title><link rel="stylesheet" href="style.css" type="text/css"/><meta name="generator" content="DocBook XSL Stylesheets V1.72.0"/><link rel="start" href="#maildiracl" title="maildiracl"/><link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/><meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/><link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>maildiracl</title><link rel="stylesheet" href="style.css" type="text/css"/><meta name="generator" content="DocBook XSL Stylesheets V1.73.2"/><link rel="start" href="#maildiracl" title="maildiracl"/><link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/><meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/><link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
 
 Copyright 1998 - 2007 Double Precision, Inc.  See COPYING for distribution
 information.
 
---></head><body><div class="refentry" lang="en" xml:lang="en"><a id="maildiracl" shape="rect"> </a><div class="titlepage"/><div class="refnamediv"><h2>Name</h2><p>maildiracl — manage access control lists</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">maildiracl</code>  {-reset} {<em class="replaceable"><code>maildir</code></em>}</p></div><div class="cmdsynopsis"><p><code class="command">maildiracl</code>  {-list} {<em class="replaceable"><code>maildir</code></em>} {<em class="replaceable"><code>INBOX[.folder]</code></em>}</p></div><div class="cmdsynopsis"><p><code class="command">maildiracl</code>  {-set} {<em class="replaceable"><code>maildir</code></em>} {<em class="replaceable"><code>INBOX[.folder]</code></em>} {<em class="replaceable"><code>[-]identifier</code></em>} {<em class="replaceable"><code>[+/-]rights</code></em>}</p></div><div class="cmdsynopsis"><p><code class="command">maildiracl</code>  {-delete} {<em class="replaceable"><code>maildir</code></em>} {<em class="replaceable"><code>INBOX[.folder]</code></em>} {<em class="replaceable"><code>[-]identifier</code></em>}</p></div><div class="cmdsynopsis"><p><code class="command">maildiracl</code>  {-compute} {<em class="replaceable"><code>maildir</code></em>} {<em class="replaceable"><code>INBOX[.folder]</code></em>} {<em class="replaceable"><code>identifier</code></em>...}</p></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id282676" shape="rect"> </a><h2>DESCRIPTION</h2><p>
-<span><strong class="command">maildiracl</strong></span>
+--></head><body><div class="refentry" lang="en" xml:lang="en"><a id="maildiracl" shape="rect"> </a><div class="titlepage"/><div class="refnamediv"><h2>Name</h2><p>maildiracl — manage access control lists</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">maildiracl</code>  {-reset} {<em class="replaceable"><code>maildir</code></em>}</p></div><div class="cmdsynopsis"><p><code class="command">maildiracl</code>  {-list} {<em class="replaceable"><code>maildir</code></em>} {<em class="replaceable"><code>INBOX[.folder]</code></em>}</p></div><div class="cmdsynopsis"><p><code class="command">maildiracl</code>  {-set} {<em class="replaceable"><code>maildir</code></em>} {<em class="replaceable"><code>INBOX[.folder]</code></em>} {<em class="replaceable"><code>[-]identifier</code></em>} {<em class="replaceable"><code>[+/-]rights</code></em>}</p></div><div class="cmdsynopsis"><p><code class="command">maildiracl</code>  {-delete} {<em class="replaceable"><code>maildir</code></em>} {<em class="replaceable"><code>INBOX[.folder]</code></em>} {<em class="replaceable"><code>[-]identifier</code></em>}</p></div><div class="cmdsynopsis"><p><code class="command">maildiracl</code>  {-compute} {<em class="replaceable"><code>maildir</code></em>} {<em class="replaceable"><code>INBOX[.folder]</code></em>} {<em class="replaceable"><code>identifier</code></em>...}</p></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id370988" shape="rect"> </a><h2>DESCRIPTION</h2><p>
+<span class="command"><strong>maildiracl</strong></span>
 manages “<span class="quote">access control lists</span>” (or ACLs)
 of <span class="application">Courier-IMAP</span> maildir folders.
 Access control lists are used primarily to provide fine-grained control
@@ -13,15 +13,15 @@ for accessing virtual shared folders via IMAP.</p><div class="note" style="margi
 The <span class="application">Courier-IMAP</span> server implements two types of shared folders:
 filesystem permission-based shared folders,
 as well as virtual shared folders based on IMAP access control lists.
-Use the <span><strong class="command">maildiracl</strong></span>
+Use the <span class="command"><strong>maildiracl</strong></span>
 command to set up access control lists for virtual shared folders.
 Use the
-<a href="maildirmake.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirmake</span>(1)</span></a>,
+<a class="ulink" href="maildirmake.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirmake</span>(1)</span></a>,
 command
 to implement shared folders based on
 filesystem permissions.</p><p>
 See the <span class="application">Courier-IMAP</span> server documentation for additional information
-on setting up virtual shared folders.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id281898" shape="rect"> </a><h3>ACL overview</h3><p>
+on setting up virtual shared folders.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id371579" shape="rect"> </a><h3>ACL overview</h3><p>
 ACLs provide a fine-grained mechanism for controlling
 access to shared folders.
 ACLs may be used to specify, for example, that
@@ -69,7 +69,7 @@ may change other status flags of messages in this folder.
 May also add or remove custom keywords on individual messages.</p></dd><dt><span class="term">x</span></dt><dd><p>
 <em class="replaceable"><code>identifier</code></em>
 may delete this folder (which includes renaming this folder as another
-mailbox's subfoler.</p></dd></dl></div><div class="refsect3" lang="en" xml:lang="en"><a id="id325377" shape="rect"> </a><h4>Negative rights</h4><p>
+mailbox's subfoler.</p></dd></dl></div><div class="refsect3" lang="en" xml:lang="en"><a id="id415522" shape="rect"> </a><h4>Negative rights</h4><p>
 An ACL entry of “<span class="quote">-identifier</span>” and “<span class="quote">rights</span>”
 is called a “<span class="quote">negative right</span>”, which
 explicitly removes “<span class="quote">rights</span>” from “<span class="quote">identifier</span>”.
@@ -77,7 +77,7 @@ More than one “<span class="quote">identifier</span>” is usually used to det
 actual rights someone has for the given folder.
 The actual access rights are determined by taking all rights from all
 applicable <em class="replaceable"><code>identifier</code></em>, than subtracting any
-negative rights, as specified in the following section.</p></div><div class="refsect3" lang="en" xml:lang="en"><a id="id325415" shape="rect"> </a><h4>Identifiers</h4><p>
+negative rights, as specified in the following section.</p></div><div class="refsect3" lang="en" xml:lang="en"><a id="id415557" shape="rect"> </a><h4>Identifiers</h4><p>
 Access rights on a given folder are computed by obtained the rights
 on the following identifiers, then subtracting the negative rights on the
 same identifiers:</p><div class="variablelist"><dl><dt><span class="term"><code class="literal">owner</code></span></dt><dd><p>
@@ -119,7 +119,7 @@ access to every folder); everyone else can see it and open it,
 except for “<span class="quote">mary</span>” who can see that the mailbox exists, but
 can't open it; additionally, “<span class="quote">john</span>” can change the status and
 keywords of individual messages (but not mark them as deleted/undeleted or
-seen/unseen, which requires additional rights).</p></div></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id325609" shape="rect"> </a><h2>OPTIONS</h2><div class="cmdsynopsis"><p><code class="command">maildiracl -reset <em class="replaceable"><code>maildir</code></em></code> </p></div><p>
+seen/unseen, which requires additional rights).</p></div></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id415741" shape="rect"> </a><h2>OPTIONS</h2><div class="cmdsynopsis"><p><code class="command">maildiracl -reset <em class="replaceable"><code>maildir</code></em></code> </p></div><p>
 This command resets access control lists in
 <code class="filename"><em class="replaceable"><code>maildir</code></em></code>
 which as a path to a maildir.
@@ -188,13 +188,13 @@ his own folder.</p><div class="informalexample"><pre class="programlisting" xml:
 maildiracl -compute /home/john34/Maildir INBOX.Public user=tom46
 </pre></div><p>
 This command computes access rights “<span class="quote">tom46</span>” has on
-“<span class="quote">john34</span>”'s folder.</p></div><div class="refsect1" lang="en" xml:lang="en"><a id="id325910" shape="rect"> </a><h2>IRREVOCABLE ACCESS RIGHTS</h2><p>
+“<span class="quote">john34</span>”'s folder.</p></div><div class="refsect1" lang="en" xml:lang="en"><a id="id416014" shape="rect"> </a><h2>IRREVOCABLE ACCESS RIGHTS</h2><p>
 The owner of the mailbox must always have the “<span class="quote">a</span>” amd
 “<span class="quote">l</span>” access rights.
 The <code class="literal">administrators</code> group must always have all access
 rights to all folders.
 Attempts to set access control lists, that do not include these minimum
-access rights, will be rejected.</p></div><div class="refsect1" lang="en" xml:lang="en"><a id="id325935" shape="rect"> </a><h2>BUGS</h2><p>
+access rights, will be rejected.</p></div><div class="refsect1" lang="en" xml:lang="en"><a id="id416037" shape="rect"> </a><h2>BUGS</h2><p>
 All identifiers are specified using the <code class="literal">UTF-8</code> character
 set.</p><p>
 All non-Latin letters in folder names are specified using the
@@ -203,13 +203,13 @@ This implementation of access control lists is based on
 version 2 (or “<span class="quote">ACL2</span>”) of IMAP
 access control lists, which is a work-in-progress.
 The existing IMAP ACL,
-<a href="http://www.rfc-editor.org/rfc/rfc2086.txt" target="_top" shape="rect">RFC 2086</a>
+<a class="ulink" href="http://www.rfc-editor.org/rfc/rfc2086.txt" target="_top" shape="rect">RFC 2086</a>
 is transparently implemented inside the ACL2 model.</p><p>
 If history's of any guidance, ACL2 is subject to change at any time.
 Be sure to check the release notes
 when upgrading to a newer version of this software.
 The “<span class="quote">ACL overview</span>” portion of this manual page is a
 <span class="emphasis"><em>very</em></span> brief summary of ACL2, which leaves out optional
-parts of ACL2 that are not implemented.</p></div><div class="refsect1" lang="en" xml:lang="en"><a id="id325989" shape="rect"> </a><h2>SEE ALSO</h2><p>
-<a href="maildirmake.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirmake</span>(1)</span></a>,
-<a href="maildirkw.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirkw</span>(1)</span></a>,</p></div></div></body></html>
+parts of ACL2 that are not implemented.</p></div><div class="refsect1" lang="en" xml:lang="en"><a id="id416086" shape="rect"> </a><h2>SEE ALSO</h2><p>
+<a class="ulink" href="maildirmake.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirmake</span>(1)</span></a>,
+<a class="ulink" href="maildirkw.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirkw</span>(1)</span></a>,</p></div></div></body></html>

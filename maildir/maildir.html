@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>maildir</title><link rel="stylesheet" href="style.css" type="text/css"/><meta name="generator" content="DocBook XSL Stylesheets V1.72.0"/><link rel="start" href="#maildir" title="maildir"/><link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/><meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/><link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>maildir</title><link rel="stylesheet" href="style.css" type="text/css"/><meta name="generator" content="DocBook XSL Stylesheets V1.73.2"/><link rel="start" href="#maildir" title="maildir"/><link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/><meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/><link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
 
 Copyright 1998 - 2007 Double Precision, Inc.  See COPYING for distribution
 information.
 
---></head><body><div class="refentry" lang="en" xml:lang="en"><a id="maildir" shape="rect"> </a><div class="titlepage"/><div class="refnamediv"><h2>Name</h2><p>maildir — E-mail directory</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><p>$HOME/Maildir</p></div><div class="refsect1" lang="en" xml:lang="en"><a id="id316345" shape="rect"> </a><h2>DESCRIPTION</h2><p>
+--></head><body><div class="refentry" lang="en" xml:lang="en"><a id="maildir" shape="rect"> </a><div class="titlepage"/><div class="refnamediv"><h2>Name</h2><p>maildir — E-mail directory</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><p>$HOME/Maildir</p></div><div class="refsect1" lang="en" xml:lang="en"><a id="id485624" shape="rect"> </a><h2>DESCRIPTION</h2><p>
 A “<span class="quote">Maildir</span>” is a structured directory that holds E-mail
 messages.
 Maildirs were first implemented by the
@@ -41,9 +41,9 @@ mbox.</p><p>
 Maildirs allow multiple concurrent access by different applications.
 Maildirs do not require locking.
 Multiple applications can update a maildir at the same time, without
-stepping on each other's feet.</p><div class="refsect2" lang="en" xml:lang="en"><a id="id282343" shape="rect"> </a><h3>Maildir contents</h3><p>
+stepping on each other's feet.</p><div class="refsect2" lang="en" xml:lang="en"><a id="id486788" shape="rect"> </a><h3>Maildir contents</h3><p>
 A “<span class="quote">maildir</span>” is a directory that's created by
-<a href="maildirmake.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirmake</span>(1)</span></a>.
+<a class="ulink" href="maildirmake.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirmake</span>(1)</span></a>.
 Naturally, maildirs should not have any group or world permissions,
 unless you want other people to read your mail.
 A maildir contains three subdirectories:
@@ -71,7 +71,7 @@ The main maildir contains a single, flat list of subfolders.
 These folders are logically nested,
 and periods serve to separate folder hierarchies.
 For example, <code class="filename">.Sent.2002</code> is considered to be a subfolder
-called “<span class="quote">2002</span>” which is a subfolder of “<span class="quote">Sent</span>”.</p><div class="refsect3" lang="en" xml:lang="en"><a id="id282646" shape="rect"> </a><h4>Folder name encoding</h4><p>
+called “<span class="quote">2002</span>” which is a subfolder of “<span class="quote">Sent</span>”.</p><div class="refsect3" lang="en" xml:lang="en"><a id="id464004" shape="rect"> </a><h4>Folder name encoding</h4><p>
 Folder names can contain any Unicode character, except for control characters.
 US-ASCII characters, U+0x0020 - U+0x007F, except for the period,
 forward-slash, and
@@ -87,7 +87,7 @@ terminated by the “<span class="quote">-</span>” character.
 The sequence of 16-bit Unicode characters is
 written in big-endian order, and
 encoded using the base64-encoding method described in section 5.2
-of <a href="http://www.rfc-editor.org/rfc/rfc1521.txt" target="_top" shape="rect">RFC 1521</a>,
+of <a class="ulink" href="http://www.rfc-editor.org/rfc/rfc1521.txt" target="_top" shape="rect">RFC 1521</a>,
 with the following modifications:</p><div class="itemizedlist"><ul type="disc"><li><p>
 The “<span class="quote">=</span>” padding character is omitted.
 When decoding, an incomplete 16-bit character is discarded.</p></li><li><p>
@@ -98,12 +98,12 @@ e-acute character, U+0x00e9,
 is encoded as
 “<span class="quote">R&amp;AOk-sum&amp;AOk-</span>”
 (so a folder of that name would be a maildir subdirectory called
-“<span class="quote">.R&amp;AOk-sum&amp;AOk-</span>”).</p></div><div class="refsect3" lang="en" xml:lang="en"><a id="id282725" shape="rect"> </a><h4>Other maildir contents</h4><p>
+“<span class="quote">.R&amp;AOk-sum&amp;AOk-</span>”).</p></div><div class="refsect3" lang="en" xml:lang="en"><a id="id464609" shape="rect"> </a><h4>Other maildir contents</h4><p>
 Software that uses maildirs may also create
 additional files besides the
 <code class="filename">tmp</code>, <code class="filename">new</code>, and
 <code class="filename">cur</code> subdirectories -- in the main maildir or a
-subfolder -- for its own purposes.</p></div></div><div class="refsect2" lang="en" xml:lang="en"><a id="id281910" shape="rect"> </a><h3>Messages</h3><p>
+subfolder -- for its own purposes.</p></div></div><div class="refsect2" lang="en" xml:lang="en"><a id="id464636" shape="rect"> </a><h3>Messages</h3><p>
 E-mail messages are stored in separate, individual files,
 one E-mail message per file.
 The <code class="filename">tmp</code> subdirectory temporarily
@@ -116,7 +116,7 @@ The <code class="filename">new</code> subdirectory stores messages
 that have been delivered to this maildir, but have not yet been seen by any
 mail application.
 The <code class="filename">cur</code> subdirectory stores messages that have
-already been seen by mail applications.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id281952" shape="rect"> </a><h3>Adding new mail to maildirs</h3><p>The following process delivers a new message to the maildir:</p><p>A new unique filename is created using one of two possible forms:
+already been seen by mail applications.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id464165" shape="rect"> </a><h3>Adding new mail to maildirs</h3><p>The following process delivers a new message to the maildir:</p><p>A new unique filename is created using one of two possible forms:
 “<span class="quote">time.MusecPpid.host</span>”, or
 “<span class="quote">time.MusecPpid_unique.host</span>”.
 “<span class="quote">time</span>” and
@@ -186,13 +186,13 @@ should be
 call);
 and “<span class="quote">cnt</span>” is the message's size, in bytes.</p><p>
 The “<span class="quote">,S=<em class="replaceable"><code>cnt</code></em></span>”
-part optimizes <a href="http://www.courier-mta.org" target="_top" shape="rect">Courier</a>'s
+part optimizes <a class="ulink" href="http://www.courier-mta.org" target="_top" shape="rect">Courier</a>'s
 maildir quota enhancement; it allows the size of all the mail stored in
 the maildir to be added up without issuing the
 <span class="citerefentry"><span class="refentrytitle">stat</span>(2)</span>
 system call
 for each individual message (this can be quite a performance drain with
-certain network filesystems).</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id325461" shape="rect"> </a><h3>READING MAIL FROM MAILDIRS</h3><p>
+certain network filesystems).</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id508641" shape="rect"> </a><h3>READING MAIL FROM MAILDIRS</h3><p>
 Applications that read mail from maildirs should do it in the following
 order:</p><p>
 When opening a maildir or a maildir folder, read the <code class="filename">tmp</code>
@@ -230,7 +230,7 @@ but wherever possible new messages should be created in compliance with the
 voluntary quota protocol.</p><p>The voluntary quota protocol involves some additional procedures that must
 be followed when creating or deleting messages within a given maildir or its
 subfolders.  The
-<a href="deliverquota.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">deliverquota</span>(8)</span></a>
+<a class="ulink" href="deliverquota.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">deliverquota</span>(8)</span></a>
 command is a
 tiny application that delivers a single message to a maildir using the
 voluntary quota protocol, and hopefully it can be used as a measure of last
@@ -238,8 +238,8 @@ resort.  Alternatively, applications can use the
 <code class="filename">libmaildir.a</code>
 library to handle all the low-level dirty details for them. The voluntary
 quota enhancement is described in the
-<a href="maildirquota.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirquota</span>(7)</span></a>
-man page.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id325590" shape="rect"> </a><h3>Maildir Quotas</h3><p>
+<a class="ulink" href="maildirquota.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirquota</span>(7)</span></a>
+man page.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id508762" shape="rect"> </a><h3>Maildir Quotas</h3><p>
 This is a voluntary mechanism for enforcing "loose" quotas on the maximum
 sizes of maildirs.  This mechanism is enforced in software, and not by the
 operating system.  Therefore it is only effective as long as the maildirs
@@ -278,16 +278,16 @@ The <code class="literal">-q</code> option takes a parameter,
 is a comma-separated list of quota specifications. A quota specification
 consists of a number followed by either 'S', indicating the maximum message
 size in bytes, or 'C', maximum number of messages. For example:</p><p>
-</p><div class="blockquote"><blockquote class="blockquote"><div class="informalexample"><div class="literallayout"><p><span><strong class="command">maildirmake -q 5000000S,1000C ./Maildir</strong></span></p></div></div></blockquote></div><p>
+</p><div class="blockquote"><blockquote class="blockquote"><div class="informalexample"><div class="literallayout"><p><span class="command"><strong>maildirmake -q 5000000S,1000C ./Maildir</strong></span></p></div></div></blockquote></div><p>
 This sets the quota to
 5,000,000 bytes or 1000 messages, whichever comes first.</p><p>
-</p><div class="blockquote"><blockquote class="blockquote"><div class="informalexample"><div class="literallayout"><p><span><strong class="command">maildirmake -q 1000000S ./Maildir</strong></span></p></div></div></blockquote></div><p>
+</p><div class="blockquote"><blockquote class="blockquote"><div class="informalexample"><div class="literallayout"><p><span class="command"><strong>maildirmake -q 1000000S ./Maildir</strong></span></p></div></div></blockquote></div><p>
 This sets the quota
 to 1,000,000 bytes, without limiting the number of messages.</p><p>
 A quota of an existing maildir can be changed by rerunning the
-<span><strong class="command">maildirmake</strong></span> command with a new <code class="literal">-q</code>
+<span class="command"><strong>maildirmake</strong></span> command with a new <code class="literal">-q</code>
 option.
 To delete a quota entirely, delete the
 <code class="filename"><em class="replaceable"><code>Maildir</code></em>/maildirsize</code>
-file.</p></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id325721" shape="rect"> </a><h2>SEE ALSO</h2><p>
-<a href="maildirmake.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirmake</span>(1)</span></a>.</p></div></div></body></html>
+file.</p></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id508886" shape="rect"> </a><h2>SEE ALSO</h2><p>
+<a class="ulink" href="maildirmake.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirmake</span>(1)</span></a>.</p></div></div></body></html>

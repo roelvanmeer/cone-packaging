@@ -13,6 +13,7 @@ Vcs-Browser: http://bollin.googlecode.com/svn/cone/
 Package: cone
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Provides: mail-reader
 Description: COnsole Newsreader and Emailer
  Cone is a text-based mail client. Cone seamlessly handles multiple
  POP3, IMAP accounts, and local mail folders. Cone is also a simple

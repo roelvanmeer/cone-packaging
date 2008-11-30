@@ -3,18 +3,18 @@
 .\"  <!-- distribution information. -->
 .\"     Title: reformime
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 05/13/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 08/25/2008
 .\"    Manual: Double Precision, Inc.
 .\"    Source: Double Precision, Inc.
 .\"
-.TH "REFORMIME" "1" "05/13/2007" "Double Precision, Inc." "Double Precision, Inc."
+.TH "REFORMIME" "1" "08/25/2008" "Double Precision, Inc." "Double Precision, Inc."
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-reformime \- MIME E\-mail reformatting tool
+reformime - MIME E-mail reformatting tool
 .SH "SYNOPSIS"
 .HP 10
 \fBreformime\fR [\fIoptions\fR...]
@@ -22,7 +22,7 @@ reformime \- MIME E\-mail reformatting tool
 .PP
 
 \fBreformime\fR
-is a utility for reformatting MIME messages.
+is a utility for reformatting MIME messages\.
 .PP
 Generally,
 \fBreformime\fR
@@ -30,34 +30,34 @@ expects to see an
 \fIRFC 2045\fR\&[1]
 compliant message on standard input, except in few cases such as the
 \fB\-m\fR
-option.
+option\.
 .PP
 If no options are given,
 \fBreformime\fR
-prints the MIME structure of the message. The output consists of so\-called "MIME reference tags", one per line. For example:
+prints the MIME structure of the message\. The output consists of so\-called "MIME reference tags", one per line\. For example:
 .sp
 .RS 4
 .nf
 1
-1.1
-1.2
+1\.1
+1\.2
 .fi
 .RE
 .PP
-This shows that the message contains two different MIME sections. The first line of the MIME structure output will always contain "1", which refers to the entire message. In this case it happens to be a
+This shows that the message contains two different MIME sections\. The first line of the MIME structure output will always contain "1", which refers to the entire message\. In this case it happens to be a
 multipart/mixed
-message. "1.1" refers to the first section of the multipart message, which happens to be a
+message\. "1\.1" refers to the first section of the multipart message, which happens to be a
 text/plain
-section. "1.2" refers to the second section of the message, which happens to be an
+section\. "1\.2" refers to the second section of the message, which happens to be an
 application/octet\-stream
-section.
+section\.
 .PP
 If the message is not a MIME message, or it does not contain any attachments,
 \fBreformime\fR
 prints only "1", that refers to the entire message itself:
 .sp .RS 4 .nf 1 .fi .RE
 .PP
-Here's the output from
+Here\'s the output from
 \fBreformime\fR
 when the first part of the message was itself a
 multipart/alternative
@@ -66,29 +66,29 @@ section:
 .RS 4
 .nf
 1
-1.1
-1.1.1
-1.1.2
-1.2
+1\.1
+1\.1\.1
+1\.1\.2
+1\.2
 .fi
 .RE
 .PP
-Arbitrarily complex MIME constructs are possible.
+Arbitrarily complex MIME constructs are possible\.
 .SH "OPTIONS"
 .PP
 \-d
 .RS 4
-Parse a delivery status notification MIME message (\fIRFC 1894\fR\&[2]).
+Parse a delivery status notification MIME message (\fIRFC 1894\fR\&[2])\.
 \fBreformime\fR
-expects to see on standard input a MIME message that consists of a delivery status notification, as defined by RFC 1894.
+expects to see on standard input a MIME message that consists of a delivery status notification, as defined by RFC 1894\.
 \fBreformime\fR
-reads the message and prints on standard output a list of addresses and their corresponding delivery status, as specified in the delivery status notification. Each line printed by
+reads the message and prints on standard output a list of addresses and their corresponding delivery status, as specified in the delivery status notification\. Each line printed by
 \fBreformime\fR
-consists of a delivery status, a space, and the address.
+consists of a delivery status, a space, and the address\.
 \fBreformime\fR
-then terminates with a 0 exit status.
+then terminates with a 0 exit status\.
 \fBreformime\fR
-produces no output and terminates with an exit status of 1 if the standard input does not contain a delivery status notification.
+produces no output and terminates with an exit status of 1 if the standard input does not contain a delivery status notification\.
 .RE
 .PP
 \-D
@@ -99,47 +99,47 @@ except that
 \fBreformime\fR
 lists the address found in the
 Original\-Recipient:
-header, if it exists.
+header, if it exists\.
 .RE
 .PP
 \-e
 .RS 4
-Extract the contents of the indicated MIME section, and display it on standard output. The
+Extract the contents of the indicated MIME section, and display it on standard output\. The
 \fB\-s\fR
 option is required when
 \fB\-e\fR
-is specified. If the indicated section uses either the
+is specified\. If the indicated section uses either the
 base64
 or
 quoted\-printable
 encoding method,
 \fBreformime\fR
-automatically decodes it. In this case you're better off redirecting the standard output into a file.
+automatically decodes it\. In this case you\'re better off redirecting the standard output into a file\.
 .RE
 .PP
 \-i
 .RS 4
-Display MIME information for each section.
+Display MIME information for each section\.
 \fBreformime\fR
 displays the contents of the
 Content\-Type:
-header, any encoding used, and the character set.
+header, any encoding used, and the character set\.
 \fBreformime\fR
-also displays the byte offset in the message where each section starts and ends (and where the actual contents of the section start, after skipping all the headers).
+also displays the byte offset in the message where each section starts and ends (and where the actual contents of the section start, after skipping all the headers)\.
 .RE
 .PP
 \-m
 .RS 4
 Create a
 multipart/digest
-MIME message digest.
+MIME message digest\.
 .RE
 .PP
 \-r
 .RS 4
 Rewrite message, adding or standardizing
 \fIRFC 2045\fR\&[1]
-MIME headers.
+MIME headers\.
 .RE
 .PP
 \-r7
@@ -148,7 +148,7 @@ Like
 \fB\-r\fR
 but also convert
 8bit\-encoded MIME sections to
-quoted\-printable.
+quoted\-printable\.
 .RE
 .PP
 \-r8
@@ -157,29 +157,29 @@ Like
 \fB\-r\fR
 but also convert
 quoted\-printable\-encoded MIME sections to
-8bit.
+8bit\.
 .RE
 .PP
 \-s \fIsection\fR
 .RS 4
-Display MIME information for this section only.
+Display MIME information for this section only\.
 \fIsection\fR
-is a MIME specification tag. The
+is a MIME specification tag\. The
 \fB\-s\fR
 option is required if
 \fB\-e\fR
 is also specified, and is optional with
-\fB\-i\fR.
+\fB\-i\fR\.
 .RE
 .PP
 \-x
 .RS 4
-Extract the contents of the indicated MIME section to a file.
+Extract the contents of the indicated MIME section to a file\.
 .RE
 .PP
 \-X
 .RS 4
-Pipe the contents of the indicated MIME section to a program.
+Pipe the contents of the indicated MIME section to a program\.
 .RE
 .SS "Extracting RFC 2045 MIME section(s) to file(s)"
 .PP
@@ -187,36 +187,36 @@ The
 \fB\-x\fR
 and
 \fB\-X\fR
-options extract a specific MIME section to a file or to a pipe to an external program. Use the
+options extract a specific MIME section to a file or to a pipe to an external program\. Use the
 \fB\-s\fR
-option to identify the MIME section to extract. If the
+option to identify the MIME section to extract\. If the
 \fB\-s\fR
-option is not specified, every MIME section in the message is extracted, one at a time.
+option is not specified, every MIME section in the message is extracted, one at a time\.
 quoted\-printable
 and
 base64
-encoding are automatically decoded.
+encoding are automatically decoded\.
 .PP
 \-x
 .RS 4
-Interactive extraction.
+Interactive extraction\.
 \fBreformime\fR
-prints the MIME content type of each section. Answer with 'y' or 'Y' to extract the MIME section. Specify the filename at the next prompt.
+prints the MIME content type of each section\. Answer with \'y\' or \'Y\' to extract the MIME section\. Specify the filename at the next prompt\.
 \fBreformime\fR
-prompts with a default filename.
+prompts with a default filename\.
 \fBreformime\fR
-tries to choose the default filename based on the MIME headers, if possible. If not, the default filename will be
-attachment1.dat
+tries to choose the default filename based on the MIME headers, if possible\. If not, the default filename will be
+attachment1\.dat
 (if the \-s option is not specified, the next filename will be
-attachment2.dat, and so on).
+attachment2\.dat, and so on)\.
 .RE
 .PP
 \-x\fIPREFIX\fR
 .RS 4
-Automatic extraction.
+Automatic extraction\.
 \fBreformime\fR
-automatically extracts one or more MIME sections, and saves them to a file. The filename is formed by taking
-\fIPREFIX\fR, and appending the default filename to it. Note that there's no space between "\-x" and "PREFIX". For example:
+automatically extracts one or more MIME sections, and saves them to a file\. The filename is formed by taking
+\fIPREFIX\fR, and appending the default filename to it\. Note that there\'s no space between "\-x" and "PREFIX"\. For example:
 .sp
 .RS 4
 .nf
@@ -224,56 +224,56 @@ reformime \-xfiles\-
 .fi
 .RE
 This command saves MIME sections as
-\fIfiles\-attachment1.dat\fR, then
-\fIfiles\-attachment2.dat\fR, etc.
+\fIfiles\-attachment1\.dat\fR, then
+\fIfiles\-attachment2\.dat\fR, etc\.
 \fBreformime\fR
-tries to append the filename specified in the MIME headers for each section, where possible.
+tries to append the filename specified in the MIME headers for each section, where possible\.
 \fBreformime\fR
-replaces all suspect characters with the underscore character.
+replaces all suspect characters with the underscore character\.
 .RE
 .PP
-\-X prog arg1 arg2 ...
+\-X prog arg1 arg2 \.\.\.
 .RS 4
 The
 \fB\-X\fR
 option must be the last option to
-\fBreformime\fR.
+\fBreformime\fR\.
 \fBreformime\fR
 runs an external program
-\fBprog\fR, and pipes the contents of the MIME section to the program.
+\fBprog\fR, and pipes the contents of the MIME section to the program\.
 \fBreformime\fR
 sets the environment variable
 \fBCONTENT_TYPE\fR
-to the MIME content type. The environment variable
+to the MIME content type\. The environment variable
 \fBFILENAME\fR
 gets set to the default filename of
-\fBreformime\fR's liking. If the
+\fBreformime\fR\'s liking\. If the
 \fB\-s\fR
-option is not specified, the program runs once for every MIME section in the message. The external program,
+option is not specified, the program runs once for every MIME section in the message\. The external program,
 \fBprog\fR
 must terminate with a zero exit status in order for
 \fBreformime\fR
-to proceed to the next MIME section in the message. In any case, if
+to proceed to the next MIME section in the message\. In any case, if
 \fBprog\fR
 terminates with a non\-zero exit status,
 \fBreformime\fR
 terminates with the exit status of 20 plus
-\fBprog\fR's exit status.
+\fBprog\fR\'s exit status\.
 .RE
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
 \fBreformime\fR
 extracts every MIME section in the message unless the
 \fB\-s\fR
-option is specified. This includes even the
+option is specified\. This includes even the
 text/plain
-MIME content that usually precedes a binary attachment.
+MIME content that usually precedes a binary attachment\.
 .SS "Adding RFC 2045 MIME headers"
 .PP
 The
@@ -286,7 +286,7 @@ Content\-Type:, or
 Content\-Transfer\-Encoding:
 header,
 \fBreformime\fR
-adds one.
+adds one\.
 .PP
 If the
 Content\-Transfer\-Encoding:
@@ -298,40 +298,40 @@ raw, but only seven\-bit data is found,
 changes the
 Content\-Transfer\-Encoding
 header to
-7bit.
+7bit\.
 .PP
 \fB\-r7\fR
 does the same thing, but also converts
 8bit\-encoded content that contains eight\-bit characters to
 quoted\-printable
-encoding.
+encoding\.
 .PP
 \fB\-r8\fR
 does the same thing, but also converts
 quoted\-printable\-encoded content to
-8bit, except in some situations.
+8bit, except in some situations\.
 .SS "Creating multipart/digest MIME digests"
 .PP
 The
 \fB\-m\fR
-option creates a MIME digest.
+option creates a MIME digest\.
 \fBreformime\fR
-reads a list of filenames on standard input. Each line read from standard input contains the name of a file that is presumed to contain an RFC 2822\-formatted message.
+reads a list of filenames on standard input\. Each line read from standard input contains the name of a file that is presumed to contain an RFC 2822\-formatted message\.
 \fBreformime\fR
 splices all files into a
 \fBmultipart/digest\fR
-MIME section, and writes it to standard output.
+MIME section, and writes it to standard output\.
 .SS "Translating MIME headers"
 .PP
-The following options do not read a message from standard input. These options process MIME headers via the command line, and are designed to be conveniently used by mail\-handling scripts.
+The following options do not read a message from standard input\. These options process MIME headers via the command line, and are designed to be conveniently used by mail\-handling scripts\.
 .PP
 \-h "\fIheader\fR"
 .RS 4
-Decode a MIME\-encoded "\fIheader\fR" and print the decoded 8\-bit content on standard output. Example:
+Decode a MIME\-encoded "\fIheader\fR" and print the decoded 8\-bit content on standard output\. Example:
 .sp
 .RS 4
 .nf
-$ reformime \-h '=?iso\-8859\-1?Q?H=F3la!?='
+$ reformime \-h \'=?iso\-8859\-1?Q?H=F3la!?=\'
 Hóla!
 .fi
 .RE
@@ -339,9 +339,9 @@ Hóla!
 .PP
 \-o "\fItext\fR"
 .RS 4
-MIME\-encode "\fItext\fR", and print the results on standard output. Use the
+MIME\-encode "\fItext\fR", and print the results on standard output\. Use the
 \fB\-c\fR
-option to specify the character set.
+option to specify the character set\.
 .RE
 .PP
 \-O "\fItext\fR"
@@ -349,7 +349,7 @@ option to specify the character set.
 Like the
 \fB\-o option\fR, except that
 \fItext\fR
-is a structured header with RFC 2822 addresses.
+is a structured header with RFC 2822 addresses\.
 .RE
 .SH "SEE ALSO"
 .PP
@@ -361,17 +361,17 @@ is a structured header with RFC 2822 addresses.
 \fI\fBmaildropfilter\fR(5)\fR\&[6],
 \fBegrep\fR(1),
 \fBgrep\fR(1),
-\fBsendmail\fR(8).
-.SH "REFERENCES"
+\fBsendmail\fR(8)\.
+.SH "NOTES"
 .IP " 1." 4
 RFC 2045
 .RS 4
-\%http://www.rfc\-editor.org/rfc/rfc2045.txt
+\%http://www.rfc-editor.org/rfc/rfc2045.txt
 .RE
 .IP " 2." 4
 RFC 1894
 .RS 4
-\%http://www.rfc\-editor.org/rfc/rfc1894.txt
+\%http://www.rfc-editor.org/rfc/rfc1894.txt
 .RE
 .IP " 3." 4
 \fBreformail\fR(1)

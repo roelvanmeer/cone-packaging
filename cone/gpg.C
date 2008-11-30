@@ -1,4 +1,4 @@
-/* $Id: gpg.C,v 1.10 2007/04/06 17:57:29 mrsam Exp $
+/* $Id: gpg.C,v 1.11 2008/08/26 00:08:54 mrsam Exp $
 **
 ** Copyright 2003-2004, Double Precision Inc.
 **
@@ -889,9 +889,6 @@ string GPG::select_key( vector<Key> &keyVec, std::string fingerprint,
 		statusBar->status(_("No keys are installed."));
 		return "";
 	}
-
-	if (keyVec.size() == 1)
-		return keyVec[0].fingerprint;
 
 	myServer::nextScreen=NULL;
 

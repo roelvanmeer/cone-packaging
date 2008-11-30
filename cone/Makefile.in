@@ -47,25 +47,9 @@ DIST_COMMON = $(am__configure_deps) $(srcdir)/../config.guess \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/cone.dist.in $(srcdir)/cone.sh.in \
 	$(srcdir)/config.h.in $(srcdir)/http.handler.in \
-	$(top_srcdir)/configure $(top_srcdir)/intl/Makefile.in \
-	ABOUT-NLS ChangeLog config.rpath
+	$(top_srcdir)/configure $(top_srcdir)/intl/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/codeset.m4 \
-	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/glibc2.m4 \
-	$(top_srcdir)/m4/glibc21.m4 $(top_srcdir)/m4/iconv.m4 \
-	$(top_srcdir)/m4/intdiv0.m4 $(top_srcdir)/m4/intl.m4 \
-	$(top_srcdir)/m4/intmax.m4 $(top_srcdir)/m4/inttypes-pri.m4 \
-	$(top_srcdir)/m4/inttypes_h.m4 $(top_srcdir)/m4/lcmessage.m4 \
-	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
-	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/lock.m4 \
-	$(top_srcdir)/m4/longdouble.m4 $(top_srcdir)/m4/longlong.m4 \
-	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
-	$(top_srcdir)/m4/printf-posix.m4 $(top_srcdir)/m4/progtest.m4 \
-	$(top_srcdir)/m4/size_max.m4 $(top_srcdir)/m4/stdint_h.m4 \
-	$(top_srcdir)/m4/uintmax_t.m4 $(top_srcdir)/m4/ulonglong.m4 \
-	$(top_srcdir)/m4/visibility.m4 $(top_srcdir)/m4/wchar_t.m4 \
-	$(top_srcdir)/m4/wint_t.m4 $(top_srcdir)/m4/xsize.m4 \
-	$(top_srcdir)/configure.in
+am__aclocal_m4_deps = $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
@@ -90,7 +74,6 @@ am__DEPENDENCIES_1 = ../libmail/libmail.la ../maildir/libmaildir.la \
 	../rfc822/libencode.la ../liblock/liblock.la \
 	../libhmac/libhmac.la ../md5/libmd5.la ../sha1/libsha1.la \
 	../numlib/libnumlib.la
-libmail_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libmail_la_OBJECTS =
 libmail_la_OBJECTS = $(am_libmail_la_OBJECTS)
 libmail_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
@@ -100,12 +83,13 @@ PROGRAMS = $(noinst_PROGRAMS)
 am_cone_OBJECTS = acl.$(OBJEXT) addressbook.$(OBJEXT) \
 	addressbookinterface.$(OBJEXT) \
 	addressbookinterfaceldap.$(OBJEXT) \
-	addressbookinterfacemail.$(OBJEXT) colors.$(OBJEXT) \
-	cone.$(OBJEXT) configscreen.$(OBJEXT) ctrlchandler.$(OBJEXT) \
-	cursesaddresslist.$(OBJEXT) cursesattachmentdisplay.$(OBJEXT) \
-	cursesedit.$(OBJEXT) curseseditmessage.$(OBJEXT) \
-	curseshierarchy.$(OBJEXT) cursesindexdisplay.$(OBJEXT) \
-	cursesmessage.$(OBJEXT) cursesmessagedisplay.$(OBJEXT) \
+	addressbookinterfacemail.$(OBJEXT) certificates.$(OBJEXT) \
+	colors.$(OBJEXT) cone.$(OBJEXT) configscreen.$(OBJEXT) \
+	ctrlchandler.$(OBJEXT) cursesaddresslist.$(OBJEXT) \
+	cursesattachmentdisplay.$(OBJEXT) cursesedit.$(OBJEXT) \
+	curseseditmessage.$(OBJEXT) curseshierarchy.$(OBJEXT) \
+	cursesindexdisplay.$(OBJEXT) cursesmessage.$(OBJEXT) \
+	cursesmessagedisplay.$(OBJEXT) \
 	cursesmessageflowedtext.$(OBJEXT) \
 	cursesmessagehtmlparser.$(OBJEXT) \
 	disconnectcallbackstub.$(OBJEXT) encryptionmenu.$(OBJEXT) \
@@ -234,6 +218,7 @@ EXEEXT = @EXEEXT@
 F77 = @F77@
 FFLAGS = @FFLAGS@
 GENCAT = @GENCAT@
+GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GLIBC2 = @GLIBC2@
 GLIBC21 = @GLIBC21@
 GMSGFMT = @GMSGFMT@
@@ -266,10 +251,12 @@ LIBMAIL = @LIBMAIL@
 LIBMULTITHREAD = @LIBMULTITHREAD@
 LIBOBJS = @LIBOBJS@
 LIBPTH = @LIBPTH@
+LIBPTH_PREFIX = @LIBPTH_PREFIX@
 LIBS = @LIBS@
 LIBTHREAD = @LIBTHREAD@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
+LTLIBC = @LTLIBC@
 LTLIBICONV = @LTLIBICONV@
 LTLIBINTL = @LTLIBINTL@
 LTLIBMULTITHREAD = @LTLIBMULTITHREAD@
@@ -295,7 +282,6 @@ PERL = @PERL@
 POSUB = @POSUB@
 PRI_MACROS_BROKEN = @PRI_MACROS_BROKEN@
 RANLIB = @RANLIB@
-ROOTCERTS = @ROOTCERTS@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -305,9 +291,12 @@ STRIP = @STRIP@
 USE_INCLUDED_LIBINTL = @USE_INCLUDED_LIBINTL@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
+WINDRES = @WINDRES@
+WOE32 = @WOE32@
 WOE32DLL = @WOE32DLL@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
+XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
 XMLCONFIG = @XMLCONFIG@
 XMLLIBS = @XMLLIBS@
 XPDF = @XPDF@
@@ -330,6 +319,7 @@ build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
 builddir = @builddir@
+cacerts = @cacerts@
 datadir = @datadir@
 datarootdir = @datarootdir@
 docdir = @docdir@
@@ -368,9 +358,9 @@ target_vendor = @target_vendor@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 
-#$Id: Makefile.am,v 1.47 2007/11/05 05:11:29 mrsam Exp $
+#$Id: Makefile.am,v 1.49 2008/07/13 14:27:32 mrsam Exp $
 #
-# Copyright 2003-2007, Double Precision Inc.
+# Copyright 2003-2008, Double Precision Inc.
 #
 # See COPYING for distribution information.
 #
@@ -389,6 +379,7 @@ cone_SOURCES = acl.C acl.H addressbook.C addressbook.H \
 	addressbookinterfaceldap.C addressbookinterfaceldap.H \
 	addressbookinterfacemail.C addressbookinterfacemail.H \
 	cache.H \
+	certificates.C certificates.H \
 	colors.C colors.H colors_inc.h \
 	cone.C \
 	configscreen.C configscreen.H \
@@ -483,6 +474,7 @@ LAMAILLIBS = ../libmail/libmail.la ../maildir/libmaildir.la \
 
 libmail_la_SOURCES = 
 libmail_la_LIBADD = $(LAMAILLIBS)
+libmail_la_DEPENDENCIES = $(LAMAILLIBS)
 libmail_la_LDFLAGS = -static -rpath $(libdir)
 
 #libmail.a: $(AMAILLIBS) $(LAMAILLIBS)
@@ -690,6 +682,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/addressbookinterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/addressbookinterfaceldap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/addressbookinterfacemail.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/certificates.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colors.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cone.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/configscreen.Po@am__quote@

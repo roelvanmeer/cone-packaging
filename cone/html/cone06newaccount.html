@@ -51,7 +51,7 @@ information.
     </div>
 
     <p>The &#8220;<span class="quote">New Account</span>&#8221;
-    option off the Main Menu adds a new account toe the Folder
+    option off the Main Menu adds a new account to the Folder
     Listing screen. Selecting this option results in a prompt to
     select the mail account type:</p>
 
@@ -139,7 +139,7 @@ information.
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id379540" shape="rect" name="id379540"> </a>New/Edit Account Screen</h4>
+            <h4 class="title"><a id="id341498" shape="rect" name="id341498"> </a>New/Edit Account Screen</h4>
           </div>
         </div>
       </div>
@@ -159,6 +159,8 @@ information.
                               [ ] Do not send password in clear text
 
                               [ ] Use an encrypted connection
+
+                              [ Use certificate ]
 
                               [ LOGIN ]
 
@@ -228,6 +230,35 @@ information.
             <p>Select this option to enable encryption.</p>
           </dd>
 
+          <dt><span class="term">Use certificate</span></dt>
+
+          <dd>
+            <p>This button enables authentication using an
+            <acronym class="acronym">SSL</acronym> certificate.
+            This button appears only if at least one
+            <acronym class="acronym">SSL</acronym> certificate is
+            already imported (see <a class="xref" href="cone10certificates.html" title="Certificates" shape="rect"><i>Certificates</i></a>). Choosing this button
+            pops up a dialog with a list of available certificates.
+            Selecting a certificate from the list changes this
+            button to read &#8220;<span class="quote">Remove
+            certificate</span>&#8221;, and selecting it again
+            removes the certificate selection. When using
+            certificates, the login and the password fields may be
+            left blank. If provided, and the server does not
+            support authentication using <acronym class="acronym">SSL</acronym> certificates, the traditional
+            userid/password authentication is an automatic
+            fallback.</p>
+
+            <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+              <h3 class="title">Note</h3>
+
+              <p><acronym class="acronym">SSL</acronym> certificate
+              authentication is implemented with IMAP and POP3
+              accounts only. It is not implemented for News
+              accounts.</p>
+            </div>
+          </dd>
+
           <dt><span class="term">[ LOGIN ]</span></dt>
 
           <dd>
@@ -248,7 +279,7 @@ information.
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id379690" shape="rect" name="id379690"> </a>Options</h5>
+              <h5 class="title"><a id="id341693" shape="rect" name="id341693"> </a>Options</h5>
             </div>
           </div>
         </div>

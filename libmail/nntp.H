@@ -1,6 +1,6 @@
-/* $Id: nntp.H,v 1.10 2004/06/14 00:18:43 mrsam Exp $
+/* $Id: nntp.H,v 1.11 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2003-2004, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -202,6 +202,7 @@ public:
 	friend class XpatTaskCallback;
 
 	nntp(std::string url, std::string passwd,
+	     std::vector<std::string> &certificates,
 	     std::string newsrcFilename,
 	     mail::loginCallback *loginCallbackFunc,
 	     callback &callback,

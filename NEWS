@@ -57,6 +57,8 @@ Introduction
      o All network protocols support SSL/TLS and SASL (CRAM-MD5, CRAM-SHA1,
        and LOGIN).
 
+     o Optional authentication using client SSL certificates.
+
      o Address books (which can be stored in an IMAP folder).
 
      o Optional support for LDAP address books.

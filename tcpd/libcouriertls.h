@@ -1,5 +1,5 @@
 /*
-** Copyright 2002 Double Precision, Inc.
+** Copyright 2002-2008 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
@@ -43,7 +43,7 @@ typedef struct ssl_handle_t *ssl_handle;
 extern "C" {
 #endif
 
-static const char libcouriertls_h_rcsid[]="$Id: libcouriertls.h,v 1.11 2007/11/04 20:49:58 mrsam Exp $";
+static const char libcouriertls_h_rcsid[]="$Id: libcouriertls.h,v 1.13 2008/07/07 03:25:41 mrsam Exp $";
 
 /*
 **                   High level TLS interface library
@@ -100,6 +100,57 @@ struct tls_info {
 	const char * (*getconfigvar)(const char *, void *);
 
 	/*
+	** Retrieve client SSL TLS certificates. If this function pointer is
+	** not NULL, this callback gets invoked repeatedly, with the first
+	** parameter starting at zero and increasing until the callback
+	** function returns 0.
+	**
+	** A non-zero return means that the callback function initialized
+	** *cert_array_ret and *cert_array_size_ret to a pointer to a
+	** PEM-formatted client SSL certificate, and its size in bytes.
+	** The PEM file should contain a "BEGIN CERTIFICATE" followed by a
+	** "BEGIN * PRIVATE KEY" (passphrase-protected keys and certs are
+	** not yet supported. A zero return means that a cert/key is not
+	** available.
+	**
+	** The first parameter is the certificate index number. 0 puts
+	** the first available client certificate into cert_array_ret
+	** and cert_array_size_ret and returns non-zero, or a zero return
+	** if no SSL client certificates are available. If a client certificate
+	** is returned, the callback function MAY get invoked again with
+	** the first parameter set to 1, to retrieve the second client
+	** certificate (if available). This continues until the callback
+	** function returns zero, or until the returned SSL certificate's
+	** issuer matches the acceptable issuers, as requested by the peer.
+	**
+	** The callback function cannot expect that all available SSL client
+	** certs will get retrieved. If a suitable cert is found, no more
+	** will be requested.
+	*/
+
+	int (*getpemclientcert4ca)(size_t i,
+				   const char **cert_array_ret,
+				   size_t *cert_array_size_ret,
+				   void *dummy_arg);
+	/*
+	** If this callback function is defined, it gets invoked before
+	** the first SSL client certificate gets requested. Its typical
+	** purpose is to load all the available client certificates into
+	** readily-available memory buffer of some sorts.
+	*/
+	void (*loadpemclientcert4ca)(void *dummy_arg);
+
+	/*
+	** Once a suitable SSL certificate is returned, or after all
+	** certificates are returned (getpemclientcert4ca returned zero),
+	** this function gets invoked. Its typical purpose is to unload
+	** all memory buffers used by loaded client certs, and release all
+	** memory allocated by loadpemclient4ca.
+	*/
+
+	void (*releasepemclientcert4ca)(void *dummy_arg);
+
+	/*
 	** app_data is a transparent pointer that's passed along as the last
 	** argument to the callback functions above.
 	*/
@@ -114,6 +165,8 @@ struct tls_info {
 
 	int connect_interrupted;
 	int accept_interrupted;
+
+	int certificate_verified;
 };
 
 /*
@@ -149,6 +202,12 @@ void tls_disconnect(ssl_handle ssl, int fd);
 */
 
 int tls_connecting(ssl_handle );
+
+/*
+** Return non-zero if the certificate was verified
+*/
+
+int tls_certificate_verified(ssl_handle);
 
 /*
 ** Once an SSL/TLS session is established, use the following structure to
@@ -223,6 +282,7 @@ void tls_dump_connection_info(ssl_handle ssl,
 
 char *tls_get_encryption_desc(ssl_handle ssl);
 
+char *tls_cert_name(const char *buf, size_t buf_size);
 
 /*
 ** Start orderly SSL/TLS connection disconnect.
@@ -231,6 +291,9 @@ char *tls_get_encryption_desc(ssl_handle ssl);
 #define tls_closing(s) ((s)->shutdown_interrupted=1)
 #define tls_isclosing(s) ((s)->shutdown_interrupted)
 #define tls_isclosed(s) ((s)->shutdown)
+
+
+int tls_validate_pem_cert(const char *buf, size_t buf_size);
 
 #ifdef  __cplusplus
 }

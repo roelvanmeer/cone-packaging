@@ -1,6 +1,6 @@
-/* $Id: smtp.H,v 1.5 2004/06/14 00:18:43 mrsam Exp $
+/* $Id: smtp.H,v 1.6 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2002-2004, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -32,7 +32,7 @@ LIBMAIL_START
 // An SMTP implementation
 //
 
-class smtp : public fd {
+class smtp : public fd, public loginInfo::callbackTarget {
 
 private:
 	void resumed();
@@ -70,6 +70,7 @@ private:
 	void greetingResponse(int, std::string);
 	void ehloResponse(int, std::string);
 	void heloResponse(int, std::string);
+	void auth_external_response(int, std::string);
 	void quitResponse(int, std::string);
 
 	int hmac_method_index;
@@ -82,6 +83,14 @@ private:
 	void starttlsResponse(int, std::string);
 
 	void authenticate_login();
+
+	void begin_auth();
+	void begin_auth_nonexternal();
+
+	void loginInfoCallback(std::string str);
+	void loginInfoCallbackCancel();
+
+
 	void loginUseridResponse(int, std::string);
 	void loginPasswdResponse(int, std::string);
 	void loginResponse(int, std::string);
@@ -128,8 +137,10 @@ public:
 	friend class Blast;
 
 	smtp(std::string url, std::string passwd,
-		   mail::callback &callback,
-		   mail::callback::disconnect &disconnectCallback);
+	     std::vector<std::string> &certificates,
+	     mail::callback &callback,
+	     mail::callback::disconnect &disconnectCallback,
+	     loginCallback *loginCallbackFunc);
 
 	smtp(const smtp &); // UNDEFINED
 	smtp &operator=(const smtp &); // UNDEFINED

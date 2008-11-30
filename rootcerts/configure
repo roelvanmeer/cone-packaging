@@ -578,7 +578,7 @@ PACKAGE_VERSION='0.50'
 PACKAGE_STRING='rootcerts 0.50'
 PACKAGE_BUGREPORT='courier-users@lists.sourceforge.net'
 
-ac_unique_file="certs.sh"
+ac_unique_file="rootcertsdir.cnf.in"
 ac_subst_vars='SHELL
 PATH_SEPARATOR
 PACKAGE_NAME
@@ -639,12 +639,7 @@ AMTAR
 am__tar
 am__untar
 LN_S
-PERL
 certdb
-OPENSSL
-REHASH
-HAVE_OPENSSL_TRUE
-HAVE_OPENSSL_FALSE
 LIBOBJS
 LTLIBOBJS'
 ac_subst_files=''
@@ -1226,7 +1221,6 @@ if test -n "$ac_init_help"; then
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
-  --without-certdb        Do not install default root certificates
   --with-certdb=/pathname     Use external root certificate database in pathname
 
 Report bugs to <courier-users@lists.sourceforge.net>.
@@ -2229,214 +2223,52 @@ echo "${ECHO_T}no, using $LN_S" >&6; }
 fi
 
 
-EXTRA_PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin:/usr/local/bin
-for ac_prog in perl5 perl
-do
-  # Extract the first word of "$ac_prog", so it can be a program name with args.
-set dummy $ac_prog; ac_word=$2
-{ echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_PERL+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $PERL in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_PERL="$PERL" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $EXTRA_PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_PERL="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-PERL=$ac_cv_path_PERL
-if test -n "$PERL"; then
-  { echo "$as_me:$LINENO: result: $PERL" >&5
-echo "${ECHO_T}$PERL" >&6; }
-else
-  { echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-fi
-
-
-  test -n "$PERL" && break
-done
-test -n "$PERL" || PERL=""""
-
-
-if test "$PERL" = ""
-then
-	{ { echo "$as_me:$LINENO: error: Perl not found" >&5
-echo "$as_me: error: Perl not found" >&2;}
-   { (exit 1); exit 1; }; }
-fi
-
 test "x$prefix" = xNONE && prefix=$ac_default_prefix
 test "x$exec_prefix" = xNONE && exec_prefix='${prefix}'
 eval "datadir=$datadir"
+
+certdb=""
 
 
 # Check whether --with-certdb was given.
 if test "${with_certdb+set}" = set; then
   withval=$with_certdb;
 		case $withval in
-		no)
-			certdb=""
-			OPENSSL=""
-			;;
 		/*)
 			certdb="$withval"
+			;;
+		*)
+			{ { echo "$as_me:$LINENO: error: --with-certdb requires an absolute pathname" >&5
+echo "$as_me: error: --with-certdb requires an absolute pathname" >&2;}
+   { (exit 1); exit 1; }; }
 			;;
 		esac
 
 else
-   certdb="${datadir}/rootcerts"
-fi
-
-rm -f rootcerts.cnf
-echo "dir=\"$certdb\"" >rootcertsdir.cnf
 
 
-
-. ../tcpd/couriertls.config
-
-if test "$ssllib" = "openssl"
-then
-	# Extract the first word of "openssl", so it can be a program name with args.
-set dummy openssl; ac_word=$2
-{ echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_OPENSSL+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $OPENSSL in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_OPENSSL="$OPENSSL" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $EXTRA_PATH
+for f in /etc/ssl/certs /etc/ssl/cert.pem /etc/pki/tls/cert.pem
 do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_OPENSSL="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_OPENSSL" && ac_cv_path_OPENSSL=""""
-  ;;
-esac
-fi
-OPENSSL=$ac_cv_path_OPENSSL
-if test -n "$OPENSSL"; then
-  { echo "$as_me:$LINENO: result: $OPENSSL" >&5
-echo "${ECHO_T}$OPENSSL" >&6; }
-else
-  { echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-fi
-
-
-	# Extract the first word of "c_rehash", so it can be a program name with args.
-set dummy c_rehash; ac_word=$2
-{ echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_REHASH+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $REHASH in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_REHASH="$REHASH" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $EXTRA_PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_REHASH="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_REHASH" && ac_cv_path_REHASH=""""
-  ;;
-esac
-fi
-REHASH=$ac_cv_path_REHASH
-if test -n "$REHASH"; then
-  { echo "$as_me:$LINENO: result: $REHASH" >&5
-echo "${ECHO_T}$REHASH" >&6; }
-else
-  { echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-fi
-
-
-
-	if test "$REHASH" = ""
+	if test -f $f -o -d $f
 	then
-		{ echo "$as_me:$LINENO: WARNING: Unable to locate OpenSSL's c_rehash script in the current" >&5
-echo "$as_me: WARNING: Unable to locate OpenSSL's c_rehash script in the current" >&2;}
-		{ echo "$as_me:$LINENO: WARNING: PATH.  The c_rehash script is included in the OpenSSL" >&5
-echo "$as_me: WARNING: PATH.  The c_rehash script is included in the OpenSSL" >&2;}
-		{ echo "$as_me:$LINENO: WARNING: package but may not be installed on your system.  Please" >&5
-echo "$as_me: WARNING: package but may not be installed on your system.  Please" >&2;}
-		{ echo "$as_me:$LINENO: WARNING: install the c_rehash script from OpenSSL and rerun this" >&5
-echo "$as_me: WARNING: install the c_rehash script from OpenSSL and rerun this" >&2;}
-		{ echo "$as_me:$LINENO: WARNING: configure script." >&5
-echo "$as_me: WARNING: configure script." >&2;}
-		{ { echo "$as_me:$LINENO: error: openssl found but c_rehash was not found." >&5
-echo "$as_me: error: openssl found but c_rehash was not found." >&2;}
-   { (exit 1); exit 1; }; }
+		certdb=$f
 	fi
-fi
-
-if test "$ssllib" = "gnutls"
-then
-	REHASH=": \#"
-fi
-
+done
 
 if test "$certdb" = ""
 then
-	REHASH=""
+	certdb="/etc/ssl/cert.pem"
+
+	{ echo "$as_me:$LINENO: WARNING: Cannot find known locations of CA certs, using $certdb" >&5
+echo "$as_me: WARNING: Cannot find known locations of CA certs, using $certdb" >&2;}
 fi
 
- if test "$REHASH" != ""; then
-  HAVE_OPENSSL_TRUE=
-  HAVE_OPENSSL_FALSE='#'
-else
-  HAVE_OPENSSL_TRUE='#'
-  HAVE_OPENSSL_FALSE=
 fi
 
 
-ac_config_files="$ac_config_files Makefile"
+
+
+ac_config_files="$ac_config_files Makefile rootcertsdir.cnf"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -2564,13 +2396,6 @@ LIBOBJS=$ac_libobjs
 LTLIBOBJS=$ac_ltlibobjs
 
 
-if test -z "${HAVE_OPENSSL_TRUE}" && test -z "${HAVE_OPENSSL_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"HAVE_OPENSSL\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"HAVE_OPENSSL\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
 
 : ${CONFIG_STATUS=./config.status}
 ac_clean_files_save=$ac_clean_files
@@ -3015,6 +2840,7 @@ for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
+    "rootcertsdir.cnf") CONFIG_FILES="$CONFIG_FILES rootcertsdir.cnf" ;;
 
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
@@ -3135,17 +2961,12 @@ AMTAR!$AMTAR$ac_delim
 am__tar!$am__tar$ac_delim
 am__untar!$am__untar$ac_delim
 LN_S!$LN_S$ac_delim
-PERL!$PERL$ac_delim
 certdb!$certdb$ac_delim
-OPENSSL!$OPENSSL$ac_delim
-REHASH!$REHASH$ac_delim
-HAVE_OPENSSL_TRUE!$HAVE_OPENSSL_TRUE$ac_delim
-HAVE_OPENSSL_FALSE!$HAVE_OPENSSL_FALSE$ac_delim
 LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 68; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 63; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

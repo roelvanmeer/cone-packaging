@@ -1,6 +1,6 @@
-/* $Id: cursesmessage.C,v 1.27 2006/07/29 00:59:01 mrsam Exp $
+/* $Id: cursesmessage.C,v 1.28 2008/07/07 03:25:40 mrsam Exp $
 **
-** Copyright 2003-2006, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -11,6 +11,7 @@
 #include "myreadfolders.H"
 #include "myfolder.H"
 #include "myserverpromptinfo.H"
+#include "myserverlogincallback.H"
 #include "gettext.H"
 #include "addressbook.H"
 #include "wraptext.H"
@@ -2782,46 +2783,42 @@ mail::folder *CursesMessage::getSendFolder(mail::smtpInfo &smtpInfo,
 	{
 		string pwd="";
 
-		mail::loginInfo SMTPInfo;
+		string url=myServer::smtpServerURL;
 
-		if (myServer::smtpServerURL.size() > 0 &&
-		    mail::loginUrlDecode(myServer::smtpServerURL, SMTPInfo)
-		    && SMTPInfo.uid.size() > 0)
+		mail::loginInfo SMTPServerLoginInfo;
+		mail::account::openInfo loginInfo;
+
+		myServerLoginCallback loginPrompt;
+		myServer::Callback callback(CursesStatusBar::LOGINERROR);
+
+		if (url.size() > 0 &&
+		    mail::loginUrlDecode(url, SMTPServerLoginInfo)
+		    && SMTPServerLoginInfo.uid.size() > 0)
 		{
+
+			loginPrompt.myCallback= &callback;
+			loginInfo.loginCallbackObj= &loginPrompt;
+			
 			if (myServer::smtpServerPassword.size() > 0)
 				pwd=myServer::smtpServerPassword;
 			else if (!PasswordList::passwordList
 				 .check(myServer::smtpServerURL, pwd))
 			{
-				myServer::promptInfo pwdString=
-					myServer::
-					prompt(myServer
-					       ::promptInfo(Gettext(_("Password for SMTP server on %1%: "))
-							    << SMTPInfo.server)
-					       .password()
-					       .initialValue(myServer
-							     ::smtpServerPassword));
-
-				if (pwdString.abortflag)
-					return NULL;
-				pwd=pwdString;
+				pwd="";
 			}
 		}
 
 		myServer::smtpServerPassword="";
 		// If fail to log in, ask next time
 
-		myServer::Callback callback(CursesStatusBar::LOGINERROR);
-
-		string url=myServer::smtpServerURL;
-
 		if (url.size() == 0)
 			url="sendmail://localhost";
 
-		mail::account::openInfo loginInfo;
 
 		loginInfo.url=url;
 		loginInfo.pwd=pwd;
+		myServer::find_cert_by_id(loginInfo.certificates,
+					  myServer::smtpServerCertificate);
 
 		smtpServer=mail::account::open( loginInfo,
 						callback,
@@ -2830,11 +2827,34 @@ mail::folder *CursesMessage::getSendFolder(mail::smtpInfo &smtpInfo,
 		try {
 			string errmsg;
 
-			if (!myServer::eventloop(callback))
+			for (;;)
 			{
-				delete smtpServer;
-				smtpServer=NULL;
-				return NULL;
+				if (callback.interrupted)
+				{
+					loginPrompt
+						.promptPassword(Gettext(_("mail server on %1%"))
+								<< SMTPServerLoginInfo.server,
+								pwd);
+				}
+
+				statusBar->clearstatus();
+				statusBar->status(Gettext(_("Connecting to %1%..."))
+						  << SMTPServerLoginInfo.server);
+
+				bool rc=myServer::eventloop(callback);
+
+				if (callback.interrupted)
+					continue;
+
+				if (!rc)
+				{
+					delete smtpServer;
+					smtpServer=NULL;
+					PasswordList::passwordList
+						.remove(myServer::smtpServerURL);
+					return NULL;
+				}
+				break;
 			}
 
 			folder=smtpServer->getSendFolder(smtpInfo,
@@ -2857,8 +2877,9 @@ mail::folder *CursesMessage::getSendFolder(mail::smtpInfo &smtpInfo,
 		myServer::smtpServerPassword=pwd;
 		// Don't ask next time.
 
-		PasswordList::passwordList.save(myServer::smtpServerURL,
-						pwd);
+		if (myServer::smtpServerURL.size() > 0)
+			PasswordList::passwordList.save(myServer::smtpServerURL,
+							pwd);
 	}
 
 	return folder;

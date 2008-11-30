@@ -1,6 +1,6 @@
-/* $Id: myserverremoteconfig.C,v 1.9 2007/02/03 20:04:50 mrsam Exp $
+/* $Id: myserverremoteconfig.C,v 1.10 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2003-2007, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -100,6 +100,8 @@ mail::account *myServer::remoteConfig::login2()
 
 	loginInfo.url=myServer::remoteConfigURL;
 	loginInfo.pwd=myServer::remoteConfigPassword;
+	find_cert_by_url(myServer::remoteConfigURL,
+			 loginInfo.certificates);
 
 	loginInfo.loginCallbackObj= &loginCallback;
 

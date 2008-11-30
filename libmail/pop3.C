@@ -1,4 +1,4 @@
-/* $Id: pop3.C,v 1.15 2008/05/24 17:57:42 mrsam Exp $
+/* $Id: pop3.C,v 1.16 2008/07/07 03:25:41 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -53,6 +53,7 @@ static bool open_pop3(mail::account *&accountRet,
 		return false;
 
 	accountRet=new mail::pop3(oi.url, oi.pwd,
+				  oi.certificates,
 				  oi.loginCallbackObj,
 				  callback,
 				  disconnectCallback);
@@ -247,6 +248,7 @@ class mail::pop3::LoginTask : public mail::pop3::Task,
 	void greetingHandler(const char *message);
 	void capaHandler(const char *message);
 	void stlsHandler(const char *message);
+	void stlsCapaHandler(const char *message);
 
 	int hmac_index;	// Next HMAC method to try.
 	void hmacHandler(const char *message);
@@ -257,6 +259,8 @@ class mail::pop3::LoginTask : public mail::pop3::Task,
 	void uidlHandler(const char *message);
 
 	void addCapability(const char *message);
+	void addStlsCapability(const char *message);
+	void processExternalLogin(const char *message);
 
 	void processedCapabilities();
 	void loggedIn(const char *message);
@@ -269,6 +273,8 @@ class mail::pop3::LoginTask : public mail::pop3::Task,
 	void loginCallbackUid(std::string);
 	void loginCallbackPwd(std::string);
 
+	void stlsCapaDone();
+	void nonExternalLogin();
 public:
 	LoginTask(mail::pop3 &server, mail::callback *callbackArg);
 	~LoginTask();
@@ -421,6 +427,100 @@ void mail::pop3::LoginTask::addCapability(const char *message)
 
 void mail::pop3::LoginTask::processedCapabilities()
 {
+#if HAVE_LIBCOURIERTLS
+
+	if (myserver->pop3LoginInfo.use_ssl
+	    || myserver->pop3LoginInfo.options.count("notls") > 0
+	    || !myserver->hasCapability("STLS"))
+	{
+		stlsCapaDone();
+		return;
+	}
+
+	currentHandler=&LoginTask::stlsHandler;
+	myserver->socketWrite("STLS\r\n");
+#else
+	stlsCapaDone();
+#endif
+}
+
+void mail::pop3::LoginTask::stlsHandler(const char *message)
+{
+	if (*message != '+')
+	{
+		fail(message);
+		return;
+	}
+
+#if HAVE_LIBCOURIERTLS
+
+	myserver->pop3LoginInfo.callbackPtr=callbackPtr;
+
+	callbackPtr=NULL;
+	if (!myserver->socketBeginEncryption(myserver->pop3LoginInfo))
+		return; // Can't set callbackPtr to NULL now, because
+	// this object could be destroyed.
+
+	// If beginEcnryption() succeeded, restore the callback ptr.
+	callbackPtr=myserver->pop3LoginInfo.callbackPtr;
+#endif
+	currentHandler=&LoginTask::stlsCapaHandler;
+	myserver->socketWrite("CAPA\r\n");
+}
+
+void mail::pop3::LoginTask::stlsCapaHandler(const char *message)
+{
+	myserver->capabilities.clear();
+
+	if (*message == '-')
+	{
+		processedCapabilities(); // No capabilities
+		return;
+	}
+
+	if (*message != '+')
+	{
+		fail(message);
+		return;
+	}
+	currentHandler=&LoginTask::addStlsCapability;
+}
+
+void mail::pop3::LoginTask::addStlsCapability(const char *message)
+{
+	if (strcmp(message, ".") == 0)
+	{
+		stlsCapaDone();
+		return;
+	}
+	addCapability(message);
+}
+
+void mail::pop3::LoginTask::stlsCapaDone()
+{
+	if (!myserver->hasCapability("AUTH=EXTERNAL"))
+	{
+		nonExternalLogin();
+		return;
+	}
+
+	currentHandler=&LoginTask::processExternalLogin;
+	myserver->socketWrite("AUTH EXTERNAL =\r\n");
+}
+
+void mail::pop3::LoginTask::processExternalLogin(const char *message)
+{
+	if (*message != '+')
+	{
+		nonExternalLogin();
+		return;
+	}
+
+	loggedIn(message);
+}
+
+void mail::pop3::LoginTask::nonExternalLogin()
+{
 	if (!myserver->pop3LoginInfo.loginCallbackFunc)
 	{
 		loginCallbackPwd(myserver->pop3LoginInfo.pwd);
@@ -475,45 +575,6 @@ void mail::pop3::LoginTask::loginCallbackPwd(std::string pwd)
 	myserver->savedLoginInfo.pwd=myserver->pop3LoginInfo.pwd=pwd;
 
 	hmac_index=0;
-
-#if HAVE_LIBCOURIERTLS
-
-	if (myserver->pop3LoginInfo.use_ssl
-	    || myserver->pop3LoginInfo.options.count("notls") > 0
-	    || !myserver->hasCapability("STLS"))
-	{
-		hmacHandler("-ERR Login failed"); // Not really
-		return;
-	}
-
-	currentHandler=&LoginTask::stlsHandler;
-	myserver->socketWrite("STLS\r\n");
-#else
-	hmacHandler("-ERR Login failed"); // Not really
-#endif
-}
-
-void mail::pop3::LoginTask::stlsHandler(const char *message)
-{
-	if (*message != '+')
-	{
-		fail(message);
-		return;
-	}
-
-#if HAVE_LIBCOURIERTLS
-
-	myserver->pop3LoginInfo.callbackPtr=callbackPtr;
-
-	callbackPtr=NULL;
-	if (!myserver->socketBeginEncryption(myserver->pop3LoginInfo))
-		return; // Can't set callbackPtr to NULL now, because
-	// this object could be destroyed.
-
-	// If beginEcnryption() succeeded, restore the callback ptr.
-	callbackPtr=myserver->pop3LoginInfo.callbackPtr;
-#endif
-
 	hmacHandler("-ERR Login failed"); // Not really
 }
 
@@ -1898,10 +1959,11 @@ mail::pop3::pop3MessageInfo::~pop3MessageInfo()
 
 
 mail::pop3::pop3(string url, string passwd,
+		 std::vector<std::string> &certificates,
 		 mail::loginCallback *callback_func,
 		 mail::callback &callback,
 		 mail::callback::disconnect &disconnectCallback)
-	: mail::fd(disconnectCallback),
+	: mail::fd(disconnectCallback, certificates),
 	  calledDisconnected(false),
 	  orderlyShutdown(false),
 	  lastTaskCompleted(0),

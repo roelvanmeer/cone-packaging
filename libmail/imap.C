@@ -1,6 +1,6 @@
-/* $Id: imap.C,v 1.12 2007/04/06 17:57:29 mrsam Exp $
+/* $Id: imap.C,v 1.13 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2002-2004, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -51,6 +51,7 @@ static bool open_imap(mail::account *&accountRet,
 		return false;
 
 	accountRet=new mail::imap(oi.url, oi.pwd,
+				  oi.certificates,
 				  oi.loginCallbackObj,
 				  callback,
 				  disconnectCallback);
@@ -150,10 +151,11 @@ void mail::imapHandler::setTimeout()
 
 mail::imap::imap(string url,
 		 string passwd,
+		 std::vector<std::string> &certificates,
 		 mail::loginCallback *callback_func,
 		 mail::callback &callback,
 		 mail::callback::disconnect &disconnectCallback)
-	: mail::fd(disconnectCallback),
+	: mail::fd(disconnectCallback, certificates),
 	  orderlyShutdown(false), sameServerFolderPtr(NULL),
 	  smap(false),
 	  smapProtocolHandlerFunc(&smapHandler::singleLineProcess),
@@ -570,7 +572,7 @@ int mail::imap::socketRead(const string &readbuffer)
 
 	string::iterator mb=buffer_cpy.begin(), me=buffer_cpy.end();
 
-	if ( !smap && mb != me && *mb == '*' )
+	if ( mb != me && *mb == '*' )
 	{
 		++mb;
 

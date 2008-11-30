@@ -1,13 +1,9 @@
-/* $Id: cursesscreen.C,v 1.15 2007/07/30 02:47:52 mrsam Exp $
+/* $Id: cursesscreen.C,v 1.17 2008/06/14 13:50:47 mrsam Exp $
 **
 ** Copyright 2002-2006, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
-
-#include "curses_config.h"
-#include "cursesscreen.H"
-#include "cursesfield.H"
 
 #include <signal.h>
 #include <stdlib.h>
@@ -16,6 +12,7 @@
 #include <iomanip>
 #include <iostream>
 
+#include "curses_config.h"
 #if HAVE_SYS_WAIT_H
 #include <sys/wait.h>
 #endif
@@ -25,6 +22,9 @@
 #ifndef WIFEXITED
 #define WIFEXITED(stat_val) (((stat_val) & 255) == 0)
 #endif
+
+#include "cursesscreen.H"
+#include "cursesfield.H"
 
 using namespace std;
 

@@ -1,4 +1,4 @@
-/* $Id: fdtls.C,v 1.3 2008/05/24 17:57:42 mrsam Exp $
+/* $Id: fdtls.C,v 1.4 2008/07/07 03:25:41 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -24,6 +24,25 @@ void mail::fdTLS::get_tls_err_msg(const char *errmsg, void *vp)
 	((mail::fdTLS *)vp)->get_tls_err_msg(errmsg);
 }
 
+// libcouriertls.a callback - retrieve SSL/TLS certificate
+
+int mail::fdTLS::get_tls_client_certs(size_t i,
+				      const char **cert_array_ret,
+				      size_t *cert_array_size_ret,
+				      void *vp)
+{
+	return ((mail::fdTLS *)vp)->get_tls_client_certs(i, cert_array_ret,
+							 cert_array_size_ret);
+}
+
+// libcouriertls.a callback - release all SSL/TLS certificates
+
+void mail::fdTLS::free_tls_client_certs(void *vp)
+{
+	((mail::fdTLS *)vp)->free_tls_client_certs();
+}
+
+
 // Get a config setting, for now, use getenv.
 
 const char *mail::fdTLS::get_tls_config_var(const char *varname)
@@ -38,6 +57,24 @@ const char *mail::fdTLS::get_tls_config_var(const char *varname)
 	}
 
 	return getenv(varname);
+}
+
+int mail::fdTLS::get_tls_client_certs(size_t i,
+				      const char **cert_array_ret,
+				      size_t *cert_array_size_ret)
+{
+	if (i < certs.size())
+	{
+		*cert_array_ret=certs[i].c_str();
+		*cert_array_size_ret=certs[i].size();
+		return 1;
+	}
+
+	return 0;
+}
+
+void mail::fdTLS::free_tls_client_certs()
+{
 }
 
 // libcouriertls.a callback - report a tls error msg

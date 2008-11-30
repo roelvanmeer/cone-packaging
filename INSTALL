@@ -164,8 +164,8 @@ Installing Cone
    CVS" instructions at http://www.courier-mta.org/status.html. Cone has the
    same requirements as Courier for CVS builds (technically, Cone does not
    need libtool, but that may change in the future). Make sure that the
-   prerequisite software is installed, then check out the " Cone" module from
-   CVS, tagged at revision " Cone-latest". The HEAD may be checked out, but
+   prerequisite software is installed, then check out the "Cone" module from
+   CVS, tagged at revision "Cone-latest". The HEAD may be checked out, but
    carries more of the usual risks.
 
    After the module is checked out, run the autobloat shell script to rebuild

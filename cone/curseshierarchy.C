@@ -1,6 +1,6 @@
-/* $Id: curseshierarchy.C,v 1.13 2007/04/06 17:57:29 mrsam Exp $
+/* $Id: curseshierarchy.C,v 1.14 2008/07/07 03:25:40 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -1833,6 +1833,8 @@ bool CursesHierarchy::processKey(const Curses::Key &key)
 			     loginInfo.method == "imaps" ||
 			     loginInfo.method == "pop3" ||
 			     loginInfo.method == "pop3s" ||
+			     loginInfo.method == "pop3maildrop" ||
+			     loginInfo.method == "pop3maildrops" ||
 			     loginInfo.method == "nntp" ||
 			     loginInfo.method == "nntps"))
 			{

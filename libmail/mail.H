@@ -1,6 +1,6 @@
-/* $Id: mail.H,v 1.15 2004/06/14 00:18:42 mrsam Exp $
+/* $Id: mail.H,v 1.16 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2003-2004, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -186,6 +186,8 @@ public:
 
 		std::string url;
 		std::string pwd;
+
+		std::vector<std::string> certificates; // Raw SSL certificates
 
 		std::string extraString; // newsrc filename, etc...
 

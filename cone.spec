@@ -1,4 +1,4 @@
-# $Id: cone.spec.in,v 1.16 2007/11/08 02:45:45 mrsam Exp $
+# $Id: cone.spec.in,v 1.17 2008/07/13 14:27:32 mrsam Exp $
 
 # Custom build against libcurses-5.3
 
@@ -20,8 +20,6 @@ BuildRequires: ncurses-devel
 
 %define is_not_mandrake %(test ! -e /etc/mandrake-release && echo 1 || echo 0)
 
-%define import_rootcerts %(rpm -q courier >/dev/null 2>&1 && echo 1 || echo 0)
-
 %if 0%{!?dist:1}
 %if %is_not_mandrake
 %define cone_release %(release="`rpm -q --queryformat='.%{VERSION}' redhat-release 2>/dev/null`" ; if test $? != 0 ; then release="`rpm -q --queryformat='.%{VERSION}' fedora-release 2>/dev/null`" ; if test $? != 0 ; then release="" ; fi ; fi ; echo "$release")
@@ -34,7 +32,7 @@ BuildRequires: ncurses-devel
 
 Summary: CONE mail reader
 Name: cone
-Version: 0.75
+Version: 0.77
 Release: 1%{?dist}%{cone_release}
 URL: http://www.courier-mta.org/cone
 Source0: %{name}-%{version}.tar.bz2
@@ -53,15 +51,8 @@ BuildRequires: openldap-devel
 %if %use_openssl
 BuildRequires:      openssl
 BuildRequires:      openssl-devel
-%if %is_not_mandrake
-BuildRequires:      openssl-perl
-%endif
 %else
 BuildRequires:      gnutls-devel libgcrypt-devel
-%endif
-
-%if %import_rootcerts
-Requires: %(eval `courier-config` ; echo $datadir/rootcerts )
 %endif
 
 Requires(post): %{__perl}

@@ -1,6 +1,6 @@
-/* $Id: fdtls.H,v 1.4 2007/10/24 02:15:12 mrsam Exp $
+/* $Id: fdtls.H,v 1.5 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2002, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -16,7 +16,7 @@
 #endif
 
 #include <string>
-
+#include <vector>
 #include	"namespace.H"
 
 LIBMAIL_START
@@ -58,14 +58,18 @@ public:
 	int fd;
 	bool tlsShutdownSent;
 
+	std::vector<std::string> &certs;
+
 	std::string domain;  // Server's known hostname (for cert checking)
 	std::string errmsg;  // Most recent error message.
 
-	fdTLS(bool tlsflagArg) : tls_info( *tls_get_default_info() ),
-				 tlsflag(tlsflagArg),
-				 ctx(NULL),
-				 ssl(NULL),
-				 fd(-1), tlsShutdownSent(false)
+	fdTLS(bool tlsflagArg,
+	      std::vector<std::string> &certsArg)
+		: tls_info( *tls_get_default_info() ),
+		  tlsflag(tlsflagArg),
+		  ctx(NULL),
+		  ssl(NULL),
+		  fd(-1), tlsShutdownSent(false), certs(certsArg)
 	{
 		errmsg="";
 	}
@@ -93,10 +97,22 @@ public:
 	static const char *get_tls_config_var(const char *, void *);
 	static void get_tls_err_msg(const char *, void *);
 
+	static int get_tls_client_certs(size_t i,
+					const char **cert_array_ret,
+					size_t *cert_array_size_ret,
+					void *dummy_arg);
+
+	static void free_tls_client_certs(void *dummy_arg);
+
 private:
 	const char *get_tls_config_var(const char *);
 	void get_tls_err_msg(const char *);
 
+	int get_tls_client_certs(size_t i,
+				 const char **cert_array_ret,
+				 size_t *cert_array_size_ret);
+
+	void free_tls_client_certs();
 
 #else
 public:

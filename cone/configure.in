@@ -1,11 +1,11 @@
 dnl Process this file with autoconf to produce a configure script.
-# $Id: configure.in,v 1.46 2008/05/24 18:00:11 mrsam Exp $
+# $Id: configure.in,v 1.49 2008/08/26 00:08:54 mrsam Exp $
 #
 # Copyright 2003-2008, Double Precision Inc.
 #
 # See COPYING for distribution information.
 #
-AC_INIT(cone,0.75, [courier-cone@lists.sourceforge.net])
+AC_INIT(cone,0.77, [courier-cone@lists.sourceforge.net])
 AC_CONFIG_SRCDIR(cone.C)
 AC_CANONICAL_TARGET
 AM_CONFIG_HEADER(config.h)
@@ -62,8 +62,6 @@ CPPFLAGS="`$XMLCONFIG --cflags` -I.. -I${srcdir}/.. $CPPFLAGS -I../libmail -I${s
 XMLLIBS="`$XMLCONFIG --libs`"
 AC_SUBST(XMLLIBS)
 
-certdb=""
-
 . ../tcpd/couriertls.config
 
 if test "$couriertls" != ""
@@ -72,29 +70,8 @@ then
 fi
 AC_SUBST(LIBCOURIERTLS)
 
-AC_ARG_WITH(certdb, [ --with-certdb=dirname  Install root certs in dirname ],
-[
-	case $withval in
-	/*)
-		certdb="$withval"
-		;;
-	esac
-])
-
-AC_ARG_WITH(courierrootcert, [ --with-courierrootcert=dirname  Use Courier root certs in dirname ],
-[
-	case $withval in
-	/*)
-		certdb="$withval"
-		;;
-	esac
-])
-
-if test "$certdb" != ""
-then
-	ROOTCERTS="TLS_TRUSTCERTS=$certdb"
-fi
-AC_SUBST(ROOTCERTS)
+. ../rootcerts/rootcertsdir.cnf
+AC_SUBST(cacerts)
 
 AC_PATH_PROGS(PERL, perl5 perl, perl, $LPATH)
 dnl Checks for libraries.

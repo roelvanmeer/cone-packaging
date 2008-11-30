@@ -20441,7 +20441,7 @@ echo "$as_me: WARNING: Cannot figure out how to calculate the alternate timezone
 	;;
 esac
 
-if test -d ../unicode
+if test -d $srcdir/../unicode
 then
 
 cat >>confdefs.h <<_ACEOF

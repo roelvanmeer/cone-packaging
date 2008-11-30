@@ -1,3 +1,10 @@
+cone (0.77-1) experimental; urgency=low
+
+  * new upstream release
+  * Add Provides: mail-reader. (Closes: #506069)
+
+ -- Torsten Werner <twerner@debian.org>  Sun, 30 Nov 2008 23:19:31 +0100
+
 cone (0.75-1) unstable; urgency=low
 
   * new upstream release

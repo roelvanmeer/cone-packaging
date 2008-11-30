@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.11 2008/05/18 19:57:59 mrsam Exp $
+dnl $Id: configure.in,v 1.12 2008/07/12 20:17:25 mrsam Exp $
 dnl
 dnl Copyright 2001-2008 Double Precision, Inc.  See COPYING for
 dnl distribution information.
@@ -7,71 +7,46 @@ AC_INIT(rootcerts, 0.50, [courier-users@lists.sourceforge.net])
 
 >confdefs.h  # Kill PACKAGE_ macros
 
-AC_CONFIG_SRCDIR(certs.sh)
+AC_CONFIG_SRCDIR(rootcertsdir.cnf.in)
 AM_INIT_AUTOMAKE([foreign no-define])
 LPATH="$PATH:/usr/local/bin"
 
 AC_PROG_INSTALL
 AC_PROG_LN_S
 
-EXTRA_PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin:/usr/local/bin
-AC_PATH_PROGS(PERL, perl5 perl, "", $EXTRA_PATH)
-
-if test "$PERL" = ""
-then
-	AC_MSG_ERROR(Perl not found)
-fi
-
 test "x$prefix" = xNONE && prefix=$ac_default_prefix
 test "x$exec_prefix" = xNONE && exec_prefix='${prefix}'
 eval "datadir=$datadir"
 
-AC_ARG_WITH(certdb, [  --without-certdb        Do not install default root certificates
-  --with-certdb=/pathname     Use external root certificate database in pathname], [
+certdb=""
+
+AC_ARG_WITH(certdb, [  --with-certdb=/pathname     Use external root certificate database in pathname], [
 		case $withval in
-		no)
-			certdb=""
-			OPENSSL=""
-			;;
 		/*)
 			certdb="$withval"
 			;;
+		*)
+			AC_MSG_ERROR(--with-certdb requires an absolute pathname)
+			;;
 		esac
-], [ certdb="${datadir}/rootcerts" ])
-rm -f rootcerts.cnf
-echo "dir=\"$certdb\"" >rootcertsdir.cnf
+], [
 
-AC_SUBST(certdb)
-
-. ../tcpd/couriertls.config
-
-if test "$ssllib" = "openssl"
-then
-	AC_PATH_PROG(OPENSSL, openssl, "", $EXTRA_PATH)
-	AC_PATH_PROG(REHASH, c_rehash, "", $EXTRA_PATH)
-
-	if test "$REHASH" = ""
+for f in /etc/ssl/certs /etc/ssl/cert.pem /etc/pki/tls/cert.pem
+do
+	if test -f $f -o -d $f
 	then
-		AC_MSG_WARN(Unable to locate OpenSSL's c_rehash script in the current)
-		AC_MSG_WARN(PATH.  The c_rehash script is included in the OpenSSL)
-		AC_MSG_WARN(package but may not be installed on your system.  Please)
-		AC_MSG_WARN(install the c_rehash script from OpenSSL and rerun this)
-		AC_MSG_WARN(configure script.)
-		AC_MSG_ERROR(openssl found but c_rehash was not found.)
+		certdb=$f
 	fi
-fi
-
-if test "$ssllib" = "gnutls"
-then
-	REHASH=": \#"
-fi
-AC_SUBST(REHASH)
+done
 
 if test "$certdb" = ""
 then
-	REHASH=""
+	certdb="/etc/ssl/cert.pem"
+
+	AC_MSG_WARN([Cannot find known locations of CA certs, using $certdb])
 fi
+ ])
 
-AM_CONDITIONAL(HAVE_OPENSSL, test "$REHASH" != "")
+AC_SUBST(certdb)
 
-AC_OUTPUT(Makefile)
+AC_OUTPUT(Makefile rootcertsdir.cnf)

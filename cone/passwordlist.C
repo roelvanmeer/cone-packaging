@@ -1,6 +1,6 @@
-/* $Id: passwordlist.C,v 1.3 2003/06/05 02:54:23 mrsam Exp $
+/* $Id: passwordlist.C,v 1.6 2008/07/13 17:11:43 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -74,10 +74,21 @@ bool PasswordList::get(string url, string &pwd)
 
 void PasswordList::save(string url, string pwd)
 {
-	remove(url);
+	map<string, string>::iterator p=list.find(url);
+
+	if (p != list.end())
+	{
+		if (p->second == pwd)
+			return;
+		list.erase(p);
+	}
 
 	list.insert(make_pair(url, pwd));
+	save();
+}
 
+void PasswordList::save()
+{
 	if (hasMasterPassword())
 		myServer::savepasswords(masterPassword);
 }
@@ -86,8 +97,10 @@ void PasswordList::remove(string url)
 {
 	map<string, string>::iterator p=list.find(url);
 
-	if (p != list.end())
-		list.erase(p);
+	if (p == list.end())
+		return;
+
+	list.erase(p);
 
 	if (hasMasterPassword())
 		myServer::savepasswords(masterPassword);
@@ -128,11 +141,31 @@ void PasswordList::setMasterPassword(std::string newPassword)
 void PasswordList::loadPasswords(const char * const *uids,
 				 const char * const *pw)
 {
-	while (*uids && *pw)
+	myServer::certs->certs.clear();
+
+	for (; *uids && *pw; ++uids, ++pw)
 	{
+		if (strncmp(*uids, "ssl:", 4) == 0)
+		{
+			const char *name, *cert;
+
+			std::string id=*uids + 4;
+
+			name= *pw;
+			cert=strchr(name, '\n');
+			if (!cert)
+				continue;
+
+			Certificates::cert newCert;
+
+			newCert.name=Gettext::fromutf8(std::string(name,
+								   cert));
+			newCert.cert=++cert;
+			myServer::certs->certs[id]=newCert;
+			continue;
+		}
+
 		list.insert(make_pair(string(*uids), string(*pw)));
-		++uids;
-		++pw;
 	}
 }
 

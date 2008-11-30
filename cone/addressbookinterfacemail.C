@@ -1,4 +1,4 @@
-/* $Id: addressbookinterfacemail.C,v 1.1 2006/02/16 02:59:42 mrsam Exp $
+/* $Id: addressbookinterfacemail.C,v 1.2 2008/07/07 03:25:40 mrsam Exp $
 **
 ** Copyright 2006, Double Precision Inc.
 **
@@ -121,6 +121,7 @@ bool AddressBook::Interface::Mail::serverLogin(std::string url,
 	mail::account::openInfo loginInfo;
 	loginInfo.url=url;
 	loginInfo.pwd=pwd;
+	myServer::find_cert_by_url(url, loginInfo.certificates);
 	loginInfo.loginCallbackObj=loginPrompt;
 
 	server=mail::account::open(loginInfo,

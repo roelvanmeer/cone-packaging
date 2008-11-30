@@ -1,6 +1,6 @@
-/* $Id: globalkeys.H,v 1.4 2006/02/16 02:59:42 mrsam Exp $
+/* $Id: globalkeys.H,v 1.5 2008/07/07 03:25:40 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -32,6 +32,8 @@ public:
 		ATTACHMENTSCREEN,
 		WRITEMESSAGESCREEN,
 		ADDRESSBOOKLISTSCREEN,
+		CERTIFICATESCREEN,
+		CHOOSECERTIFICATESCREEN,
 		ADDRESSBOOKINDEXSCREEN,
 		ADDLDAPADDRESSBOOKSCREEN,
 		QUITSCREEN

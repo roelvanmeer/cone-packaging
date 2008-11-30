@@ -3,29 +3,29 @@
 .\"  <!-- distribution information. -->
 .\"     Title: maildiracl
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 05/13/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 08/25/2008
 .\"    Manual: Double Precision, Inc.
 .\"    Source: Double Precision, Inc.
 .\"
-.TH "MAILDIRACL" "1" "05/13/2007" "Double Precision, Inc." "Double Precision, Inc."
+.TH "MAILDIRACL" "1" "08/25/2008" "Double Precision, Inc." "Double Precision, Inc."
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-maildiracl \- manage access control lists
+maildiracl - manage access control lists
 .SH "SYNOPSIS"
 .HP 11
 \fBmaildiracl\fR {\-reset} {\fImaildir\fR}
 .HP 11
-\fBmaildiracl\fR {\-list} {\fImaildir\fR} {\fIINBOX[.folder]\fR}
+\fBmaildiracl\fR {\-list} {\fImaildir\fR} {\fIINBOX[\.folder]\fR}
 .HP 11
-\fBmaildiracl\fR {\-set} {\fImaildir\fR} {\fIINBOX[.folder]\fR} {\fI[\-]identifier\fR} {\fI[+/\-]rights\fR}
+\fBmaildiracl\fR {\-set} {\fImaildir\fR} {\fIINBOX[\.folder]\fR} {\fI[\-]identifier\fR} {\fI[+/\-]rights\fR}
 .HP 11
-\fBmaildiracl\fR {\-delete} {\fImaildir\fR} {\fIINBOX[.folder]\fR} {\fI[\-]identifier\fR}
+\fBmaildiracl\fR {\-delete} {\fImaildir\fR} {\fIINBOX[\.folder]\fR} {\fI[\-]identifier\fR}
 .HP 11
-\fBmaildiracl\fR {\-compute} {\fImaildir\fR} {\fIINBOX[.folder]\fR} {\fIidentifier\fR...}
+\fBmaildiracl\fR {\-compute} {\fImaildir\fR} {\fIINBOX[\.folder]\fR} {\fIidentifier\fR...}
 .SH "DESCRIPTION"
 .PP
 
@@ -34,37 +34,37 @@ manages
 \(lqaccess control lists\(rq
 (or ACLs) of
 Courier\-IMAP
-maildir folders. Access control lists are used primarily to provide fine\-grained control for accessing virtual shared folders via IMAP.
+maildir folders\. Access control lists are used primarily to provide fine\-grained control for accessing virtual shared folders via IMAP\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 The
 Courier\-IMAP
-server implements two types of shared folders: filesystem permission\-based shared folders, as well as virtual shared folders based on IMAP access control lists. Use the
+server implements two types of shared folders: filesystem permission\-based shared folders, as well as virtual shared folders based on IMAP access control lists\. Use the
 \fBmaildiracl\fR
-command to set up access control lists for virtual shared folders. Use the
-\fI\fBmaildirmake\fR(1)\fR\&[1], command to implement shared folders based on filesystem permissions.
+command to set up access control lists for virtual shared folders\. Use the
+\fI\fBmaildirmake\fR(1)\fR\&[1], command to implement shared folders based on filesystem permissions\.
 .PP
 See the
 Courier\-IMAP
-server documentation for additional information on setting up virtual shared folders.
+server documentation for additional information on setting up virtual shared folders\.
 .SS "ACL overview"
 .PP
-ACLs provide a fine\-grained mechanism for controlling access to shared folders. ACLs may be used to specify, for example, that
+ACLs provide a fine\-grained mechanism for controlling access to shared folders\. ACLs may be used to specify, for example, that
 user1
 may only open and read the messages in the folder; and
 user2
-can not only do that, but also delete messages, and create subfolders.
+can not only do that, but also delete messages, and create subfolders\.
 .PP
-Each folder maintains its own individual access control list, that specifies who can do what to the folder. An ACL is a list of
+Each folder maintains its own individual access control list, that specifies who can do what to the folder\. An ACL is a list of
 \(lqidentifier\(rq
 and
 \(lqrights\(rq
-pairs. Each
+pairs\. Each
 \(lqidentifier\(rq
 and
 \(lqrights\(rq
@@ -74,7 +74,7 @@ pair means that an entity called
 UTF\-8
 character set) is allowed to do
 \(lqrights\(rq
-on this folder.
+on this folder\.
 \(lqrights\(rq
 consists of one or more letters, each letter signifies a particular action:
 .PP
@@ -82,88 +82,88 @@ a
 .RS 4
 
 \fIidentifier\fR
-may modify this folder's ACLs.
+may modify this folder\'s ACLs\.
 .RE
 .PP
 c
 .RS 4
 
 \fIidentifier\fR
-may create subfolders of this folder (this includes renaming another folder as this folder's subfolders).
+may create subfolders of this folder (this includes renaming another folder as this folder\'s subfolders)\.
 .RE
 .PP
 e
 .RS 4
 
 \fIidentifier\fR
-may remove deleted messages from this folder.
+may remove deleted messages from this folder\.
 .RE
 .PP
 i
 .RS 4
 
 \fIidentifier\fR
-may add messages to this folder (either uploading them one by one, or copying messages from another folder).
+may add messages to this folder (either uploading them one by one, or copying messages from another folder)\.
 .RE
 .PP
 l
 .RS 4
 
 \fIidentifier\fR
-may actually see that this folder exists. If
+may actually see that this folder exists\. If
 \fIidentifier\fR
 does not have the
 \(lql\(rq
 right on this folder, the folder is effectively invisible to
-\fIidentifier\fR.
+\fIidentifier\fR\.
 .RE
 .PP
 r
 .RS 4
 
 \fIidentifier\fR
-may open this folder. Note that if
+may open this folder\. Note that if
 \fIidentifier\fR
 knows the name of this folder, it can open it even if
 \fIidentifier\fR
 does not the
 \(lql\(rq
-right on this folder.
+right on this folder\.
 .RE
 .PP
 s
 .RS 4
 
 \fIidentifier\fR
-may mark messages in this folder as seen, or unseen.
+may mark messages in this folder as seen, or unseen\.
 .RE
 .PP
 t
 .RS 4
 
 \fIidentifier\fR
-may mark messages in this folder as deleted, or undeleted.
+may mark messages in this folder as deleted, or undeleted\.
 .RE
 .PP
 w
 .RS 4
 
 \fIidentifier\fR
-may change other status flags of messages in this folder. May also add or remove custom keywords on individual messages.
+may change other status flags of messages in this folder\. May also add or remove custom keywords on individual messages\.
 .RE
 .PP
 x
 .RS 4
 
 \fIidentifier\fR
-may delete this folder (which includes renaming this folder as another mailbox's subfoler.
+may delete this folder (which includes renaming this folder as another mailbox\'s subfoler\.
 .RE
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNegative rights\fR
+Negative rights
 .RS
 .PP
 An ACL entry of
@@ -174,69 +174,69 @@ is called a
 \(lqnegative right\(rq, which explicitly removes
 \(lqrights\(rq
 from
-\(lqidentifier\(rq. More than one
+\(lqidentifier\(rq\. More than one
 \(lqidentifier\(rq
-is usually used to determine the actual rights someone has for the given folder. The actual access rights are determined by taking all rights from all applicable
-\fIidentifier\fR, than subtracting any negative rights, as specified in the following section.
+is usually used to determine the actual rights someone has for the given folder\. The actual access rights are determined by taking all rights from all applicable
+\fIidentifier\fR, than subtracting any negative rights, as specified in the following section\.
 .RE
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBIdentifiers\fR
+Identifiers
 .RS
 .PP
 Access rights on a given folder are computed by obtained the rights on the following identifiers, then subtracting the negative rights on the same identifiers:
 .PP
 owner
 .RS 4
-The owner of the maildir containing this folder. The maildir's INBOX's ACL defaults to all rights for its owner. A new folder's ACL is the same as its parent's ACL. In all cases, trying to remove the
+The owner of the maildir containing this folder\. The maildir\'s INBOX\'s ACL defaults to all rights for its owner\. A new folder\'s ACL is the same as its parent\'s ACL\. In all cases, trying to remove the
 \(lqa\(rq
-right from the owner (either directly or using a negative right) results in an error.
+right from the owner (either directly or using a negative right) results in an error\.
 .RE
 .PP
 anyone
 .RS 4
-This identifier refers literally to every userid. The associated rights (or negative rights) are always used.
+This identifier refers literally to every userid\. The associated rights (or negative rights) are always used\.
 .RE
 .PP
 anonymous
 .RS 4
 This is a synonym from
-\(lqanyone\(rq.
+\(lqanyone\(rq\.
 .RE
 .PP
 user=\fIloginid\fR
 .RS 4
 Rights (or negative rights) for IMAP account
-\(lqloginid\(rq.
+\(lqloginid\(rq\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 
 \(lqloginid\(rq
-is what's logged to syslog after a succesful login. In some situations
+is what\'s logged to syslog after a succesful login\. In some situations
 \(lqloginid\(rq
-is not exactly the actual login ID used by the IMAP client.
+is not exactly the actual login ID used by the IMAP client\.
 
 .RE
 .PP
 group=\fIname\fR
 .RS 4
 Rights (or negative rights) for account group
-\(lqname\(rq. Access rights are granted to an account group as a whole. The account options feature of the Courier Authentication Library specifies which account belongs to which account group. See courier\-authlib's documentation for more information.
+\(lqname\(rq\. Access rights are granted to an account group as a whole\. The account options feature of the Courier Authentication Library specifies which account belongs to which account group\. See courier\-authlib\'s documentation for more information\.
 .RE
 .PP
 administrators
 .RS 4
 This is an alias for
-\(lqgroup=administrators\(rq. Accounts that are members of an account group called
+\(lqgroup=administrators\(rq\. Accounts that are members of an account group called
 \(lqadministrators\(rq
-are considered administrative accounts, and automatically receive all access rights on all accessible folders.
+are considered administrative accounts, and automatically receive all access rights on all accessible folders\.
 .RE
 .PP
 Consider the following access control list:
@@ -251,11 +251,11 @@ administrators aceilrstwx
 .fi
 .RE
 .PP
-This access control list specifies that the folder's owner has complete control over the mailbox (as well as the administrators, which have complete access to every folder); everyone else can see it and open it, except for
+This access control list specifies that the folder\'s owner has complete control over the mailbox (as well as the administrators, which have complete access to every folder); everyone else can see it and open it, except for
 \(lqmary\(rq
-who can see that the mailbox exists, but can't open it; additionally,
+who can see that the mailbox exists, but can\'t open it; additionally,
 \(lqjohn\(rq
-can change the status and keywords of individual messages (but not mark them as deleted/undeleted or seen/unseen, which requires additional rights).
+can change the status and keywords of individual messages (but not mark them as deleted/undeleted or seen/unseen, which requires additional rights)\.
 .RE
 .SH "OPTIONS"
 .HP 26
@@ -263,21 +263,21 @@ can change the status and keywords of individual messages (but not mark them as 
 .PP
 This command resets access control lists in
 \fI\fImaildir\fR\fR
-which as a path to a maildir. Under certain conditions, the files where a folder's ACLs are saved may continue to exist after the folder is removed. The
+which as a path to a maildir\. Under certain conditions, the files where a folder\'s ACLs are saved may continue to exist after the folder is removed\. The
 \-reset
 options goes through
 \fImaildir\fR
-and removes all stale ACL files for removed folders.
+and removes all stale ACL files for removed folders\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 The
 Courier\-IMAP
-server normally performs this maintenance function automatically. It is not necessary to run this command under normal conditions.
+server normally performs this maintenance function automatically\. It is not necessary to run this command under normal conditions\.
 .HP 32
 \fBmaildiracl \-list
 \fR\fB\fImaildir\fR\fR\fB
@@ -285,13 +285,13 @@ server normally performs this maintenance function automatically. It is not nece
 \fR
 .PP
 This command lists the access control lists set for
-\fIfolder\fR.
+\fIfolder\fR\.
 \fIfolder\fR
 must be either
 \(lqINBOX\(rq
 or
-\(lqINBOX.folder.subfolder\(rq, which is the same naming convention for
-Courier\-IMAP.
+\(lqINBOX\.folder\.subfolder\(rq, which is the same naming convention for
+Courier\-IMAP\.
 .HP 49
 \fBmaildiracl \-set
 \fR\fB\fImaildir\fR\fR\fB
@@ -304,7 +304,7 @@ Puts
 (which may begin with a minus sign to specify a negative right) and
 \fIrights\fR
 in
-\fIfolder\fR's access control list. Existing rights for
+\fIfolder\fR\'s access control list\. Existing rights for
 \fIidentifier\fR
 (or
 \fIidentifier\fR) are replaced by
@@ -314,15 +314,15 @@ unless
 begins with
 \(lq+\(rq
 or
-\(lq\-\(rq, which modifies the existing rights by adding or removing from them accordingly. Some examples:
+\(lq\-\(rq, which modifies the existing rights by adding or removing from them accordingly\. Some examples:
 .sp
 .RS 4
 .nf
-maildiracl \-set /home/user1/Maildir INBOX.Sent user=john lr
+maildiracl \-set /home/user1/Maildir INBOX\.Sent user=john lr
 
-maildiracl \-set /home/user2/Maildir INBOX.Notes anyone \-r
+maildiracl \-set /home/user2/Maildir INBOX\.Notes anyone \-r
 
-maildiracl \-set /home/user3/Maildir INBOX.Private \-user=tom +r
+maildiracl \-set /home/user3/Maildir INBOX\.Private \-user=tom +r
 .fi
 .RE
 .sp
@@ -330,14 +330,14 @@ maildiracl \-set /home/user3/Maildir INBOX.Private \-user=tom +r
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 Observe that the last command
 \fIrevokes\fR
 the
 \(lqr\(rq
 right from
-\(lqtom\(rq, by adding it as a negative right.
+\(lqtom\(rq, by adding it as a negative right\.
 .HP 45
 \fBmaildiracl \-delete
 \fR\fB\fImaildir\fR\fR\fB
@@ -347,9 +347,9 @@ right from
 This command removes
 \fIidentifier\fR
 from
-\fIfolder\fR's access control list, if it exists. Use
+\fIfolder\fR\'s access control list, if it exists\. Use
 \(lq\-\fIidentifier\fR\(rq
-to remove negative rights.
+to remove negative rights\.
 .HP 49
 \fBmaildiracl \-compute
 \fR\fB\fImaildir\fR\fR\fB
@@ -357,65 +357,65 @@ to remove negative rights.
 [\fR\fB\fIidentifier\fR\fR\fB]+\fR
 .PP
 This command takes a list of one or more
-\fIidentifier\fRs. All access rights for the
-\fIidentifier\fRs are combined together, then any appropriate negative rights are removed, and the result is printed on standard output. Use the following procedure to compute access rights the same way as they are computed by
+\fIidentifier\fRs\. All access rights for the
+\fIidentifier\fRs are combined together, then any appropriate negative rights are removed, and the result is printed on standard output\. Use the following procedure to compute access rights the same way as they are computed by
 Courier\-IMAP:
 .sp
 .RS 4
 .nf
-maildiracl \-compute /home/tom46/Maildir INBOX.Sent owner user=tom46
+maildiracl \-compute /home/tom46/Maildir INBOX\.Sent owner user=tom46
 .fi
 .RE
 .PP
 This command computes access rights
 \(lqtom46\(rq
-has on his own folder.
+has on his own folder\.
 .sp
 .RS 4
 .nf
-maildiracl \-compute /home/john34/Maildir INBOX.Public user=tom46
+maildiracl \-compute /home/john34/Maildir INBOX\.Public user=tom46
 .fi
 .RE
 .PP
 This command computes access rights
 \(lqtom46\(rq
 has on
-\(lqjohn34\(rq's folder.
+\(lqjohn34\(rq\'s folder\.
 .SH "IRREVOCABLE ACCESS RIGHTS"
 .PP
 The owner of the mailbox must always have the
 \(lqa\(rq
 amd
 \(lql\(rq
-access rights. The
+access rights\. The
 administrators
-group must always have all access rights to all folders. Attempts to set access control lists, that do not include these minimum access rights, will be rejected.
+group must always have all access rights to all folders\. Attempts to set access control lists, that do not include these minimum access rights, will be rejected\.
 .SH "BUGS"
 .PP
 All identifiers are specified using the
 UTF\-8
-character set.
+character set\.
 .PP
 All non\-Latin letters in folder names are specified using the
 modified\-UTF7
-coding as used in IMAP.
+coding as used in IMAP\.
 .PP
 This implementation of access control lists is based on version 2 (or
-\(lqACL2\(rq) of IMAP access control lists, which is a work\-in\-progress. The existing IMAP ACL,
+\(lqACL2\(rq) of IMAP access control lists, which is a work\-in\-progress\. The existing IMAP ACL,
 \fIRFC 2086\fR\&[2]
-is transparently implemented inside the ACL2 model.
+is transparently implemented inside the ACL2 model\.
 .PP
-If history's of any guidance, ACL2 is subject to change at any time. Be sure to check the release notes when upgrading to a newer version of this software. The
+If history\'s of any guidance, ACL2 is subject to change at any time\. Be sure to check the release notes when upgrading to a newer version of this software\. The
 \(lqACL overview\(rq
 portion of this manual page is a
 \fIvery\fR
-brief summary of ACL2, which leaves out optional parts of ACL2 that are not implemented.
+brief summary of ACL2, which leaves out optional parts of ACL2 that are not implemented\.
 .SH "SEE ALSO"
 .PP
 
 \fI\fBmaildirmake\fR(1)\fR\&[1],
 \fI\fBmaildirkw\fR(1)\fR\&[3],
-.SH "REFERENCES"
+.SH "NOTES"
 .IP " 1." 4
 \fBmaildirmake\fR(1)
 .RS 4
@@ -424,7 +424,7 @@ brief summary of ACL2, which leaves out optional parts of ACL2 that are not impl
 .IP " 2." 4
 RFC 2086
 .RS 4
-\%http://www.rfc\-editor.org/rfc/rfc2086.txt
+\%http://www.rfc-editor.org/rfc/rfc2086.txt
 .RE
 .IP " 3." 4
 \fBmaildirkw\fR(1)
