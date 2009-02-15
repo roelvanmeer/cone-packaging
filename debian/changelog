@@ -1,3 +1,9 @@
+cone (0.77-2) unstable; urgency=low
+
+  * Bump up Standards-Version: 3.8.0 (no changes).
+
+ -- Torsten Werner <twerner@debian.org>  Sun, 15 Feb 2009 21:18:19 +0100
+
 cone (0.77-1) experimental; urgency=low
 
   * new upstream release
