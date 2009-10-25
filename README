@@ -3,8 +3,8 @@
    Link: Installing Cone (previous)
    Link: Mailing list (next)
 
-                                 Building Cone
-   Prev                                                                  Next
+                                 Building Cone                               
+   Prev                                                                  Next
 
    --------------------------------------------------------------------------
 
@@ -14,14 +14,14 @@ Building Cone
    for more information. The following prerequisites must be installed to
    build and run Cone:
 
-     o A wide-character version of the curses library. ncurses supports wide
+     o A wide-character version of the curses library. ncurses supports wide
        characters starting with version 5.3, if enabled at compile time.
 
-     o Libxml2
+     o Libxml2
 
-     o GnuTLS; or OpenSSL 0.9.7 or higher
+     o GnuTLS; or OpenSSL 0.9.7 or higher
 
-     o Cone optionally supports LDAP address books. LDAP support requires
+     o Cone optionally supports LDAP address books. LDAP support requires
        OpenLDAP.
 
   Note
@@ -44,15 +44,15 @@ Building Cone
        not just by exact nicknames, but also by last name or full names.
        Partial searches are also possible.
 
-     o aspell or pspell
+     o aspell or pspell
 
-     o Gamin, or the older FAM library
+     o Gamin, or the older FAM library
 
-     o The current version of the gcc compiler
+     o The current version of the gcc compiler
 
-     o gmake (if not already installed)
+     o gmake (if not already installed)
 
-     o The Courier Socks 5 proxy client API toolkit is required for Socks 5
+     o The Courier Socks 5 proxy client API toolkit is required for Socks 5
        support. Other Socks 5 proxy client libraries may or may not work.
        Download the Courier Socks 5 proxy client library from
        http://www.courier-mta.org/download.php#sox and follow its
@@ -86,7 +86,7 @@ Building Cone
    process of being rewritten, if the Cone process is interrupted, or killed,
    the resulted in a corrupted system mailbox. There are way to minimize this
    vulnerability, but it cannot be eliminated completely. Some Linux kernels
-   use an "OOM killer" that may terminate any process when the system memory
+   use an “OOM killer” that may terminate any process when the system memory
    is low. There is no way to completely prevent corrupted system mailbox
    files on those kernels.
 
@@ -100,8 +100,8 @@ Building Cone
 
    --------------------------------------------------------------------------
 
-   Prev                                                                  Next
-   Installing Cone                 Home | ToC                    Mailing list
+   Prev                                                                  Next
+   Installing Cone                 Home | ToC                    Mailing list
 
 References
 

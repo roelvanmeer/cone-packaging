@@ -1,4 +1,4 @@
-/* $Id: imaplisthandler.C,v 1.4 2004/04/25 03:37:15 mrsam Exp $
+/* $Id: imaplisthandler.C,v 1.5 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -103,7 +103,7 @@ string mail::imap::translatePath(string path)
 					return path;
 				} catch (...) {
 					free(p);
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 			}
 
@@ -113,7 +113,7 @@ string mail::imap::translatePath(string path)
 			return path;
 		} catch (...) {
 			free(uc);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	}
 
@@ -197,7 +197,7 @@ string mail::imap::translatePath(string path)
 			free(uc);
 		} catch (...) {
 			free(uc);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		ucvec.push_back(0);
 
@@ -215,7 +215,7 @@ string mail::imap::translatePath(string path)
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	} while (path.size() > 0);
 
@@ -449,13 +449,13 @@ void mail::imapLIST::get_name(mail::imap &imapAccount, Token t)
 						free(p);
 					} catch (...) {
 						free(p);
-						LIBMAIL_THROW();
+						LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 					}
 				free(uc);
 			} catch (...)
 			{
 				free(uc);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 		if (nameVal.size() == 0 && !oneNameOnly) // LIST % artifact

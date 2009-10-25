@@ -1,4 +1,4 @@
-/* $Id: mail.h,v 1.2 2002/09/26 12:30:40 mrsam Exp $ */
+/* $Id: mail.h,v 1.3 2009/06/27 17:12:00 mrsam Exp $ */
 
 #ifndef liblockmail_h
 #define liblockmail_h
@@ -103,7 +103,7 @@ int ll_dotlock(const char *dotlock, const char *tmpfile,
 	       int timeout);
 
 #ifdef	__cplusplus
-} ;
+}
 #endif
 
 #endif

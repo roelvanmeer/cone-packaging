@@ -1,4 +1,4 @@
-/* $Id: cursesmessagedisplay.C,v 1.12 2006/06/04 21:36:01 mrsam Exp $
+/* $Id: cursesmessagedisplay.C,v 1.13 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2006, Double Precision Inc.
 **
@@ -633,7 +633,7 @@ bool CursesMessageDisplay::processKeyInFocus(const Curses::Key &key)
 				delete folder;
 			if (smtpServer)
 				delete smtpServer;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		return true;

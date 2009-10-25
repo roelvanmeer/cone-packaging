@@ -1,4 +1,4 @@
-/* $Id: maildiradd.C,v 1.6 2008/05/24 17:57:42 mrsam Exp $
+/* $Id: maildiradd.C,v 1.8 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -152,7 +152,7 @@ void mail::maildir::addmessage::go()
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	fclose(tmpfile);
@@ -165,7 +165,8 @@ void mail::maildir::addmessage::go()
 	if (flags.size() > 0)
 	{
 		newname = newname + MDIRSEP "2," + flags;
-		memcpy(strrchr(newname.c_str(), '/')-3, "cur", 3);
+		memcpy(strrchr(const_cast<char *>(newname.c_str()), '/')-3,
+		       "cur", 3);
 		// We go into the cur directory, now
 	}
 
@@ -208,7 +209,7 @@ void mail::maildir::addmessage::go()
 		delete this;
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -225,6 +226,6 @@ void mail::maildir::addmessage::fail(string errmsg)
 		delete this;
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }

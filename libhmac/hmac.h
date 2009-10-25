@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-static const char hmac_h_rcsid[]="$Id: hmac.h,v 1.6 2005/02/21 03:18:30 mrsam Exp $";
+static const char hmac_h_rcsid[]="$Id: hmac.h,v 1.7 2009/06/27 17:12:00 mrsam Exp $";
 
 struct hmac_hashinfo {	/* HMAC hash function descriptor */
 
@@ -85,7 +85,7 @@ void hmac_hashtext (
 	unsigned char *);	/* Output - the hash */
 
 #ifdef	__cplusplus
-} ;
+}
 #endif
 
 #endif

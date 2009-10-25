@@ -1,4 +1,4 @@
-/* $Id: cursesattachmentdisplay.H,v 1.5 2008/05/24 17:57:41 mrsam Exp $
+/* $Id: cursesattachmentdisplay.H,v 1.6 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2005, Double Precision Inc.
 **
@@ -24,7 +24,7 @@ class CursesMessage;
 
 namespace mail {
 	class mimestruct;
-};
+}
 
 ////////////////////////////////////////////////////////////////
 //

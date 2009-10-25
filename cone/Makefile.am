@@ -1,4 +1,4 @@
-#$Id: Makefile.am,v 1.49 2008/07/13 14:27:32 mrsam Exp $
+#$Id: Makefile.am,v 1.53 2009/06/27 17:12:00 mrsam Exp $
 #
 # Copyright 2003-2008, Double Precision Inc.
 #
@@ -212,7 +212,7 @@ help.txt: config.status html/index.html
 	../libmail/mailtool -copyto mbox:`pwd`/help.txt -tofolder "" -fromfolder "" mbox:`pwd`/help.tmp
 	sed 's:^From [^ ][^ ]*:From nobody@localhost:' <help.txt >help.tmp
 	mv -f help.tmp help.txt.in
-	CONFIG_HEADERS= CONFIG_FILES=help.txt $(SHELL) $(top_builddir)/config.status
+	$(SHELL) $(top_builddir)/config.status --file=help.txt
 	rm -f help.txt.in
 
 if HAVE_SGML
@@ -237,7 +237,7 @@ man/.timestamp: sgmltimestamp
 	rm -f man/*
 	xsltproc --nonet --stringparam man.output.in.separate.dir 1 \
 		--stringparam man.output.subdirs.enabled 0 \
-		/usr/share/sgml/docbook/xsl-stylesheets/manpages/docbook.xsl \
+		http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl \
 		 $(srcdir)/sgml/book.sgml
 	for f in man/* ; do sed -n '20,$$d;/<!--/p' <$(srcdir)/sgml/book.sgml | sed 's/\"/ /g;s/^/\.\\\"/g' >man/.tmp; \
 		cat $$f >>man/.tmp; \
@@ -252,8 +252,8 @@ endif
 install-data-local: install-man
 	$(mkinstalldirs) $(DESTDIR)$(htmldatadir)
 	${INSTALL} -m 444 $(srcdir)/html/* $(DESTDIR)$(htmldatadir)
-	for f in $(HTMLMACROFILES) ; do mv -f $(DESTDIR)$(htmldatadir)/$$f $(DESTDIR)$(htmldatadir)/$$f.in ; CONFIG_HEADERS= CONFIG_FILES=$(DESTDIR)$(htmldatadir)/$$f $(SHELL) $(top_builddir)/config.status; rm -f $(DESTDIR)$(htmldatadir)/$$f.in ; done
-	for f in $(MANMACROFILES) ; do mv -f $(DESTDIR)$(mandir)/$$f $(DESTDIR)$(mandir)/$$f.in ; CONFIG_HEADERS= CONFIG_FILES=$(DESTDIR)$(mandir)/$$f $(SHELL) $(top_builddir)/config.status; rm -f $(DESTDIR)$(mandir)/$$f.in ; done
+	for f in $(HTMLMACROFILES) ; do mv -f $(DESTDIR)$(htmldatadir)/$$f $(DESTDIR)$(htmldatadir)/$$f.in ; $(SHELL) $(top_builddir)/config.status --file=$(DESTDIR)$(htmldatadir)/$$f ; rm -f $(DESTDIR)$(htmldatadir)/$$f.in ; done
+	for f in $(MANMACROFILES) ; do mv -f $(DESTDIR)$(mandir)/$$f $(DESTDIR)$(mandir)/$$f.in ; $(SHELL) $(top_builddir)/config.status --file=$(DESTDIR)$(mandir)/$$f; rm -f $(DESTDIR)$(mandir)/$$f.in ; done
 
 install-exec-local:
 	$(mkinstalldirs) $(DESTDIR)$(htmldatadir)
@@ -272,7 +272,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(pkgdatadir)/https.handler
 
 EXTRA_DIST = testsuite1 testsuite1.out pwtest.txt colors.txt mkcolors.pl \
-	fixonlinehelp.pl mkhtmlmsg.pl postproc.xsl $(SPELLSRC)
+	fixonlinehelp.pl mkhtmlmsg.pl postproc.xsl $(SPELLSRC) \
+	m4/ChangeLog $(srcdir)/m4/*.m4
 
 colors_inc.h: colors.txt mkcolors.pl
 	@PERL@ $(srcdir)/mkcolors.pl <$(srcdir)/colors.txt >colors_inc.h

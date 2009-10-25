@@ -1,4 +1,4 @@
-/* $Id: myfolderfilter.C,v 1.6 2004/04/28 00:35:14 mrsam Exp $
+/* $Id: myfolderfilter.C,v 1.7 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -452,7 +452,7 @@ myFolder::FolderFilter *myFolder::installFilter()
 	} catch (...) {
 		delete currentFilter;
 		currentFilter=NULL;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	return currentFilter;

@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
-dnl $Id: configure.in,v 1.15 2007/02/26 04:13:41 mrsam Exp $
+dnl $Id: configure.in,v 1.17 2009/06/13 18:10:27 mrsam Exp $
 
-dnl Copyright 2000-2004 Double Precision, Inc.  See COPYING for
+dnl Copyright 2000-2009 Double Precision, Inc.  See COPYING for
 dnl distribution information.
 
 AC_INIT(soxwrap, 0.50, [courier-users@lists.sourceforge.net])
@@ -25,7 +25,7 @@ AC_PROG_CC
 dnl Check for options
 
 AC_CACHE_CHECK([for the Courier Socks library],
-		    ac_courier_socks,
+		    ac_cv_courier_socks,
 
 AC_COMPILE_IFELSE(
 	AC_LANG_SOURCE([
@@ -34,7 +34,7 @@ AC_COMPILE_IFELSE(
 #ifndef courier_socks_h
 #error Not a Courier socks header file
 #endif
-],[ int x=0; ]), [ac_courier_socks=yes],[ac_courier_socks=no])
+],[ int x=0; ]), [ac_cv_courier_socks=yes],[ac_cv_courier_socks=no])
 
 )
 
@@ -44,12 +44,12 @@ AC_ARG_WITH(socks,
 [
 	if test "$withval" = "yes"
 	then
-		if test "$ac_courier_socks" = "no"
+		if test "$ac_cv_courier_socks" = "no"
 		then
 			AC_MSG_ERROR([Courier Socks header files not found])
 		fi
 	else
-		ac_courier_socks=no
+		ac_cv_courier_socks=no
 	fi
 ])
 
@@ -94,7 +94,7 @@ fi
 
 LIBS="$saveLIBS"
 
-if test "$ac_courier_socks" = "yes"
+if test "$ac_cv_courier_socks" = "yes"
 then
 	SOCKLIBS="-lsocks"
 	DOSOCKS=1
@@ -150,13 +150,16 @@ esac
 )
 
 storage="struct sockaddr"
+storage_family="sa_family"
 
 if test "$soxwrap_cv_hasipv6structs" = "yes"
 then
 	AC_DEFINE_UNQUOTED(HAVE_SOXWRAP_IPV6,1,[Whether IPv6 is available])
 	storage="struct sockaddr_storage"
+	storage_family="ss_family"
 fi
 AC_DEFINE_UNQUOTED(SOCKADDR_STORAGE, $storage, [ Whether sockaddr_storage is available ])
+AC_DEFINE_UNQUOTED(SS_family, $storage_family, [ The address family field in SOCKADDR_STORAGE])
 
 dnl Check for socklen_t
 

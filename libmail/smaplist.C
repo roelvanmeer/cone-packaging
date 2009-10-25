@@ -1,4 +1,4 @@
-/* $Id: smaplist.C,v 1.6 2008/05/24 17:57:42 mrsam Exp $
+/* $Id: smaplist.C,v 1.7 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -121,7 +121,7 @@ bool mail::smapLIST::processLine(imap &imapAccount,
 			subfolders.push_back(f);
 		} catch (...) {
 			delete f;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		return true;
 	}

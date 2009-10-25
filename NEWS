@@ -1,8 +1,8 @@
    Link: Cone: COnsole Newsreader And Emailer (start)
    Link: Installing Cone (next)
 
-                      Cone: COnsole Newsreader And Emailer
-                                                                         Next
+                      Cone: COnsole Newsreader And Emailer                   
+                                                                         Next
 
    --------------------------------------------------------------------------
 
@@ -21,55 +21,55 @@ Introduction
 
   Overview
 
-     o An online tutorial provides a quick overview of Cone's main features.
+     o An online tutorial provides a quick overview of Cone's main features.
 
-     o A built-in text editor for editing new messages, with search/replace
+     o A built-in text editor for editing new messages, with search/replace
        and spell checking (requires aspell or pspell).
 
        Shortcuts - assign frequently used text to a function key, or to an
        abbreviation. Insert the text by pressing the function key or typing
        its abbreviation.
 
-     o Supports UTF-8 consoles (requires the wide-character version of the
+     o Supports UTF-8 consoles (requires the wide-character version of the
        curses library).
 
-     o Displays HTML mail, with automatic de-moronization ("smart quotes",
+     o Displays HTML mail, with automatic de-moronization (“smart quotes”,
        and similar clutter, is replaced by plain garden-variety punctuation).
 
-     o Displays attached images, if invoked from an X terminal, by running
+     o Displays attached images, if invoked from an X terminal, by running
        Gnome's eog, or KDE's kview image viewer. Displays PDF attachments by
        running xpdf. Other, or alternative, helper applications will be added
        as time permits.
 
-     o After attachments are downloaded, they can be optionally removed from
+     o After attachments are downloaded, they can be optionally removed from
        the message.
 
-     o Handles local mail folders, maildirs, IMAP and POP3 accounts, and
+     o Handles local mail folders, maildirs, IMAP and POP3 accounts, and
        Usenet newsgroups. All folders are shown in a hierarchical tree-like
        display.
 
-     o Supports access to servers through a Socks 5 proxy, using the Courier
+     o Supports access to servers through a Socks 5 proxy, using the Courier
        Socks 5 API toolkit.
 
-     o Sends mail using an external SMTP server (with/without
+     o Sends mail using an external SMTP server (with/without
        authentication), or the local sendmail command.
 
-     o All network protocols support SSL/TLS and SASL (CRAM-MD5, CRAM-SHA1,
+     o All network protocols support SSL/TLS and SASL (CRAM-MD5, CRAM-SHA1,
        and LOGIN).
 
-     o Optional authentication using client SSL certificates.
+     o Optional authentication using client SSL certificates.
 
-     o Address books (which can be stored in an IMAP folder).
+     o Address books (which can be stored in an IMAP folder).
 
-     o Optional support for LDAP address books.
+     o Optional support for LDAP address books.
 
-     o Remote configuration (share a common configuration between different
+     o Remote configuration (share a common configuration between different
        instances of Cone).
 
-     o An optional "single sign-on". Use a single master password for
+     o An optional “single sign-on”. Use a single master password for
        multiple remote mail server accounts.
 
-     o PGP/GPG based encryption, and digital signatures. Sent messages are
+     o PGP/GPG based encryption, and digital signatures. Sent messages are
        automatically signed. Different signing keys may be selected for
        different mail accounts, and the appropriate key is automatically
        selected when replying to a message from an account. Selecting a
@@ -81,33 +81,33 @@ Introduction
        When a single sign-on master password is installed, the master
        password also handles access to passphrase-protected keys.
 
-     o Cone shares a lot of its code base with the Courier mail server, which
+     o Cone shares a lot of its code base with the Courier mail server, which
        is why they share the same web site together.
 
-     o Cone also serves as a platform for development of a new experimental
+     o Cone also serves as a platform for development of a new experimental
        network mail access protocol, SMAP, that offers additional
        functionality not available with IMAP or POP3. When Cone logs on to a
        SMAP-capable server, such as the current development version of
        Courier, additional features become available:
 
-         1. Folder names may utilize the full UTF-8 character set, without
+         1. Folder names may utilize the full UTF-8 character set, without
             any reserved folder hierarchy separator characters. The user does
             not need to be aware of the underlying mail folder
             implementation.
 
-         2. Faster downloading of attachments.
+         2. Faster downloading of attachments.
 
-         3. Faster mail sending. SMAP does not require the client to open a
+         3. Faster mail sending. SMAP does not require the client to open a
             second SMTP connection, and send a second copy of the message via
             SMTP.
 
-         4. Fast opening of large folders. Cone does not need to download the
+         4. Fast opening of large folders. Cone does not need to download the
             complete folder index every time the folder is opened, only
             what's changed to the folder since the last time it was open.
 
-         5. Many other useful features that are waiting to be implemented.
+         5. Many other useful features that are waiting to be implemented.
 
-     o Cone owes its versatility in handling a large variety of mail
+     o Cone owes its versatility in handling a large variety of mail
        protocols to the fact that it's based on LibMAIL , a generic C++
        library that provides a high-level mail-handling API. Using the
        --with-devel configuration setting installs the LibMAIL toolkit, which
@@ -115,8 +115,8 @@ Introduction
 
    --------------------------------------------------------------------------
 
-                                                                         Next
-                                       ToC                    Installing Cone
+                                                                         Next
+                                       ToC                    Installing Cone
 
 References
 

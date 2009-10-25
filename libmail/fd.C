@@ -1,4 +1,4 @@
-/* $Id: fd.C,v 1.10 2008/07/07 03:25:41 mrsam Exp $
+/* $Id: fd.C,v 1.11 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -822,7 +822,7 @@ void mail::fd::socketWrite(string s)
 		writequeue.push(w);
 	} catch (...) {
 		delete w;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 

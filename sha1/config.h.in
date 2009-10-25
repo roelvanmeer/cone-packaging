@@ -30,6 +30,10 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
+/* Define to the sub-directory in which libtool stores uninstalled libraries.
+   */
+#undef LT_OBJDIR
+
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
 
@@ -48,11 +52,17 @@
 /* 32 bit data type */
 #undef SHA1_WORD
 
+/* 64 bit data type */
+#undef SHA512_WORD
+
 /* The size of `unsigned', as computed by sizeof. */
 #undef SIZEOF_UNSIGNED
 
 /* The size of `unsigned long', as computed by sizeof. */
 #undef SIZEOF_UNSIGNED_LONG
+
+/* The size of `unsigned long long', as computed by sizeof. */
+#undef SIZEOF_UNSIGNED_LONG_LONG
 
 /* The size of `unsigned short', as computed by sizeof. */
 #undef SIZEOF_UNSIGNED_SHORT

@@ -1,6 +1,6 @@
-# $Id: Makefile.am,v 1.30 2008/08/26 00:22:48 mrsam Exp $
+# $Id: Makefile.am,v 1.32 2009/06/27 17:59:36 mrsam Exp $
 #
-# Copyright 2003-2006, Double Precision Inc.
+# Copyright 2003-2009, Double Precision Inc.
 #
 # See COPYING for distribution information.
 #
@@ -66,7 +66,7 @@ dist-hook:
 	$(HTML2TXT) $(srcdir)/cone/html/INSTALL.html >$(distdir)/INSTALL
 
 
-# Added by sysconftoolize: $Id: Makefile.am,v 1.30 2008/08/26 00:22:48 mrsam Exp $
+# Added by sysconftoolize: $Id: Makefile.am,v 1.32 2009/06/27 17:59:36 mrsam Exp $
 
 # Copyright 2000 Double Precision, Inc.  See COPYING for
 # distribution information.
@@ -115,7 +115,17 @@ dorpm:
 	rm -f rpm/SOURCES/*
 	rm -f rpm/SPECS/*
 	rm -f rpm/SRPMS/*
-	unset MAKEFLAGS ; test ! -f $$HOME/.bashrc || . $$HOME/.bashrc; rpmbuild -ta --clean cone-@VERSION@.tar.bz2
+	rpmbuild -ta --clean \
+		--define "_topdir `pwd`/rpm" \
+		--define '_rpmdir %{_topdir}/RPMS' \
+		--define '_srcrpmdir %{_topdir}/SRPMS' \
+		--define '_sourcedir %{_topdir}/SOURCES' \
+		--define '_specdir %{_topdir}/SPECS' \
+		--define '_builddir %{_topdir}/BUILD' \
+		--define '_build_name_fmt %%{ARCH}/%%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm' \
+		--define '_tmppath %{_var}/tmp' \
+		--define '__spec_prep_pre %{___build_pre}' \
+		cone-@VERSION@.tar.bz2
 
 bump.rpm.release: cone.spec
 	VERSION="x"; \
@@ -147,10 +157,11 @@ tagrelease:
                `echo cone-@VERSION@ | tr '.' '-'`
 
 upload-beta:
+	test -z "$(SFPASSWD)" && exit 1; exit 0
 	rm -f @PACKAGE@-@VERSION@.tar.bz2.sig; gpg --detach-sign --default-key mrsam@courier-mta.com @PACKAGE@-@VERSION@.tar.bz2; test -f @PACKAGE@-@VERSION@.tar.bz2.sig || exit 1
-	socksify ssh courier.sourceforge.net echo @PACKAGE@-@VERSION@.tar.bz2 `ls -l @PACKAGE@-@VERSION@.tar.bz2 | awk ' { print $$5 } '` \>/home/groups/c/co/courier/@PACKAGE@.beta
-	ssh headache 'cd torrents.courier-mta.org/pub/@PACKAGE@-dev && rm -rf @PACKAGE@-@VERSION@ && mkdir @PACKAGE@-@VERSION@ && echo seeder_args=--max_upload_rate 50 >@PACKAGE@-@VERSION@.info && ls -t | sed 1,6d | xargs rm -rf '
-	scp @PACKAGE@-@VERSION@.tar.bz2 @PACKAGE@-@VERSION@.tar.bz2.sig headache:torrents.courier-mta.org/pub/@PACKAGE@-dev/@PACKAGE@-@VERSION@
+	socksify ssh grace.speakeasy.net echo @PACKAGE@-@VERSION@.tar.bz2 `ls -l @PACKAGE@-@VERSION@.tar.bz2 | awk ' { print $$5 } '` \>courier-mta.org/@PACKAGE@.beta
+	rsync -aP --progress @PACKAGE@-@VERSION@.tar.bz2 @PACKAGE@-@VERSION@.tar.bz2.sig frs.sourceforge.net:uploads/
+	../sftools/release.pl mrsam $(SFPASSWD) courier @PACKAGE@-devel `echo @VERSION@|sed 's/.*\(........\)/\1/'` "" "" @PACKAGE@-@VERSION@.tar.bz2 @PACKAGE@-@VERSION@.tar.bz2.sig
 
 
 upload-dist:

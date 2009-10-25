@@ -32,7 +32,7 @@ BuildRequires: ncurses-devel
 
 Summary: CONE mail reader
 Name: cone
-Version: 0.77
+Version: 0.79
 Release: 1%{?dist}%{cone_release}
 URL: http://www.courier-mta.org/cone
 Source0: %{name}-%{version}.tar.bz2

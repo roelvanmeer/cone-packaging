@@ -1,4 +1,4 @@
-/* $Id: htmlparser.C,v 1.8 2008/05/24 17:57:41 mrsam Exp $
+/* $Id: htmlparser.C,v 1.9 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -466,7 +466,7 @@ void htmlParser::fmtline(bool wrapped)
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -536,7 +536,7 @@ void htmlParser::parse(string s)
 			free(u);
 		} catch (...) {
 			free(u);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		parseline(w);

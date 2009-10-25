@@ -169,7 +169,7 @@ static char *u2c(const struct unicode_info *u,
 			lo = (unsigned char)(str[i] - (unsigned)0xff40);
 			/* JIS -> EUCJP */
 			lo += 0x80;
-			s[pos++] = 0x8e;
+			s[pos++] = (char)0x8e;
 			s[pos++] = lo;
 		}
 		/* JIS X 0208 */
@@ -213,7 +213,7 @@ static char *u2c(const struct unicode_info *u,
 				hi += 0x80;
 				lo += 0x80;
 
-				s[pos++] = 0x8f;
+				s[pos++] = (char)0x8f;
 				s[pos++] = hi;
 				s[pos++] = lo;
 			}

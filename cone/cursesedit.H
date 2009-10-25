@@ -1,4 +1,4 @@
-/* $Id: cursesedit.H,v 1.12 2008/05/24 17:57:41 mrsam Exp $
+/* $Id: cursesedit.H,v 1.13 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2006, Double Precision Inc.
 **
@@ -54,7 +54,7 @@
 
 namespace mail {
 	class mimestruct;
-};
+}
 
 class CursesEdit : public CursesContainer, public CursesKeyHandler {
 

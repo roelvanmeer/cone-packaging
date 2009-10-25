@@ -1,4 +1,4 @@
-/* $Id: certificates.C,v 1.4 2008/07/13 17:18:38 mrsam Exp $
+/* $Id: certificates.C,v 1.5 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2008, Double Precision Inc.
 **
@@ -364,7 +364,7 @@ bool CertificatesScreen::processKey(const Curses::Key &key)
 		} catch (...) {
 			if (s)
 				free(s);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		std::map<std::string, Certificates::cert>::iterator i;
@@ -388,7 +388,7 @@ bool CertificatesScreen::processKey(const Curses::Key &key)
 			} catch (...) {
 				if (s)
 					free(s);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 		}
 

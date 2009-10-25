@@ -1,4 +1,4 @@
-/* $Id: liblock.h,v 1.5 2004/10/21 00:10:49 mrsam Exp $ */
+/* $Id: liblock.h,v 1.6 2009/06/27 16:32:38 mrsam Exp $ */
 
 #ifndef liblock_h
 #define liblock_h
@@ -106,7 +106,7 @@ To send the daemon process a SIGHUP, call ll_daemon_restart.
 */
 
 #ifdef	__cplusplus
-} ;
+}
 #endif
 
 #endif

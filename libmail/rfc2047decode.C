@@ -1,4 +1,4 @@
-/* $Id: rfc2047decode.C,v 1.3 2008/05/24 17:57:42 mrsam Exp $
+/* $Id: rfc2047decode.C,v 1.4 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -55,7 +55,7 @@ int mail::rfc2047::decoder::rfc2047_callback(const char *text, int text_len,
 			free(u);
 		} catch (...) {
 			free(u);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		return (0);
 	}
@@ -95,7 +95,7 @@ int mail::rfc2047::decoder::rfc2047_callback(const char *text, int text_len,
 		free(u);
 	} catch (...) {
 		free(u);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	return (0);
 }
@@ -148,7 +148,7 @@ string mail::rfc2047::decoder::decode(string text,
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	return s;
 }
@@ -177,7 +177,7 @@ string mail::rfc2047::decoder::decodeSimple(string str)
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 	return s;
@@ -198,7 +198,7 @@ string mail::rfc2047::decoder::decodeEnhanced(string str,
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 	return s;

@@ -1,4 +1,4 @@
-/* $Id: cursesmessage.C,v 1.28 2008/07/07 03:25:40 mrsam Exp $
+/* $Id: cursesmessage.C,v 1.29 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -1268,7 +1268,7 @@ bool CursesMessage::toMyCharset(const struct unicode_info *content_chset,
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	return true;
@@ -2101,7 +2101,7 @@ void CursesMessage::reply()
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 	string senderName="";
@@ -2394,7 +2394,7 @@ void CursesMessage::reply()
 	} catch (...) {
 		if (reformatterPtr)
 			delete reformatterPtr;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	otmpfile << flush;
@@ -2444,7 +2444,7 @@ void CursesMessage::forward()
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 	bool isMimeAttachment=(string)response == "Y";
@@ -2872,7 +2872,7 @@ mail::folder *CursesMessage::getSendFolder(mail::smtpInfo &smtpInfo,
 		} catch (...) {
 			delete smtpServer;
 			smtpServer=NULL;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		myServer::smtpServerPassword=pwd;
 		// Don't ask next time.
@@ -3404,7 +3404,7 @@ bool CursesMessage::decrypt(string passphrase, vector<std::string> &opts,
 			delete f;
 		} catch (...) {
 			delete f;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	}
 

@@ -1,4 +1,4 @@
-/* $Id: hierarchy.C,v 1.3 2007/04/06 17:57:29 mrsam Exp $
+/* $Id: hierarchy.C,v 1.4 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -250,7 +250,7 @@ void Hierarchy::Entry::clone(const Hierarchy::Entry &n)
 			} catch (...)
 			{
 				delete nc;
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 			nc->parent=this;
@@ -348,7 +348,7 @@ Hierarchy::Entry *Hierarchy::Server::clone() const
 	} catch (...)
 	{
 		delete miniMe;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	return miniMe;
@@ -473,7 +473,7 @@ Hierarchy::Entry *Hierarchy::Root::clone() const
 	} catch (...)
 	{
 		delete miniMe;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	return miniMe;
@@ -557,7 +557,7 @@ Hierarchy::Entry *Hierarchy::Folder::clone() const
 	} catch (...)
 	{
 		delete miniMe;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	return miniMe;
 }

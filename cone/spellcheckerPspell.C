@@ -1,4 +1,4 @@
-/* $Id: spellcheckerPspell.C,v 1.2 2008/05/24 17:57:41 mrsam Exp $
+/* $Id: spellcheckerPspell.C,v 1.3 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -138,7 +138,7 @@ bool SpellChecker::Manager::suggestions(string word,
 		delete_pspell_string_emulation(elements);
 	} catch (...) {
 		delete_pspell_string_emulation(elements);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	return true;

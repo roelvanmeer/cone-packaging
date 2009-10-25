@@ -4,7 +4,7 @@
 */
 
 /*
-** $Id: rfc822.c,v 1.21 2007/02/26 04:13:41 mrsam Exp $
+** $Id: rfc822.c,v 1.22 2009/06/27 16:32:38 mrsam Exp $
 */
 #include	<stdio.h>
 #include	<ctype.h>
@@ -656,22 +656,6 @@ int	i;
 		rfcp->addrs=0;
 	}
 }
-
-static void compat_err_func(const char *p, int i, void *voidp)
-{
-	void (*err_func)(const char *, int)=
-		(void (*)(const char *, int))voidp;
-
-	if (err_func)
-		(*err_func)(p, i);
-}
-
-struct rfc822t *rfc822t_alloc(const char *addr,
-			      void (*err_func)(const char *, int))
-{
-	return (rfc822t_alloc_new(addr, &compat_err_func, (void *)err_func));
-}
-
 
 struct rfc822t *rfc822t_alloc_new(const char *addr,
 	void (*err_func)(const char *, int, void *), void *voidp)

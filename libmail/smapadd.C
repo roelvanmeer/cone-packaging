@@ -1,4 +1,4 @@
-/* $Id: smapadd.C,v 1.5 2008/05/24 17:57:42 mrsam Exp $
+/* $Id: smapadd.C,v 1.6 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -110,7 +110,7 @@ bool mail::smapAdd::processLine(imap &imapAccount,
 			imapAccount.socketWrite(w);
 		} catch (...) {
 			delete w;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		return true;

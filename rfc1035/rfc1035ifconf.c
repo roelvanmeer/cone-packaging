@@ -13,7 +13,7 @@
 #include <unistd.h>
 #endif
 
-static const char rcsid[]="$Id: rfc1035ifconf.c,v 1.2 2002/10/05 05:16:21 mrsam Exp $";
+static const char rcsid[]="$Id: rfc1035ifconf.c,v 1.3 2009/06/27 17:40:07 mrsam Exp $";
 
 #if HAVE_SIOCGIFCONF
 
@@ -47,7 +47,12 @@ static int getifconf(int fd, struct rfc1035_ifconf **ifconf_ptr)
 
 #if RFC1035_IPV6
 		if (sin->sin_family == AF_INET6)
-			addr=((const struct sockaddr_in6 *)sin)->sin6_addr;
+		{
+			struct sockaddr_in6 sin6;
+
+			memcpy(&sin6, sin, sizeof(sin6));
+			addr=sin6.sin6_addr;
+		}
 		else if (sin->sin_family == AF_INET)
 			rfc1035_ipv4to6(&addr, &sin->sin_addr);
 		else

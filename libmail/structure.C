@@ -1,4 +1,4 @@
-/* $Id: structure.C,v 1.6 2008/05/24 17:57:42 mrsam Exp $
+/* $Id: structure.C,v 1.7 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -184,7 +184,7 @@ string mail::mimestruct::parameterList::get(string name,
 				free(s);
 			} catch (...) {
 				free(s);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 			p=pbuf.c_str();
@@ -196,7 +196,7 @@ string mail::mimestruct::parameterList::get(string name,
 
 	} catch (...) {
 		rfc2231_paramDestroy(paramList);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	return stringRet;
@@ -364,7 +364,7 @@ mail::mimestruct *mail::mimestruct::addChild()
 	} catch (...)
 	{
 		delete p;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	return p;

@@ -49,7 +49,7 @@ extern char *unicode_fromCharset(const struct unicode_info *chset,
 				 unicodeEntityAltList *altMap);
 
 #ifdef __cplusplus
-};
+}
 #endif
 
 #endif

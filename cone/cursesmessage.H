@@ -1,4 +1,4 @@
-/* $Id: cursesmessage.H,v 1.12 2008/05/24 17:57:41 mrsam Exp $
+/* $Id: cursesmessage.H,v 1.13 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -31,7 +31,7 @@ namespace mail {
 	class account;
 	class envelope;
 	class mimestruct;
-};
+}
 
 class CursesMessageDisplay;
 class Curses;

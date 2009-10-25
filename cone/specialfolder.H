@@ -1,4 +1,4 @@
-/* $Id: specialfolder.H,v 1.2 2008/05/24 17:57:41 mrsam Exp $
+/* $Id: specialfolder.H,v 1.3 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -16,7 +16,7 @@
 
 namespace mail {
 	class folder;
-};
+}
 
 ///////////////////////////////////////////////////////////////////////
 //

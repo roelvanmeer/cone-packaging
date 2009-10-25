@@ -2,11 +2,11 @@
 #define	sha1_h
 
 /*
-** Copyright 2001 Double Precision, Inc.
+** Copyright 2001-2008 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
-static const char sha1_h_rcsid[]="$Id: sha1.h,v 1.4 2005/02/21 03:18:30 mrsam Exp $";
+static const char sha1_h_rcsid[]="$Id: sha1.h,v 1.6 2008/12/18 12:08:26 mrsam Exp $";
 
 #if	HAVE_CONFIG_H
 #include	"sha1/config.h"
@@ -22,6 +22,9 @@ static const char sha1_h_rcsid[]="$Id: sha1.h,v 1.4 2005/02/21 03:18:30 mrsam Ex
 #define SHA256_DIGEST_SIZE	32
 #define SHA256_BLOCK_SIZE	64
 
+#define SHA512_DIGEST_SIZE	64
+#define SHA512_BLOCK_SIZE	128
+
 typedef SHA1_WORD SHA256_WORD;
 
 #ifdef	__cplusplus
@@ -30,6 +33,7 @@ extern "C" {
 
 typedef	unsigned char SHA1_DIGEST[20];
 typedef unsigned char SHA256_DIGEST[32];
+typedef unsigned char SHA512_DIGEST[64];
 
 #ifdef	SHA1_INTERNAL
 
@@ -46,6 +50,14 @@ struct SHA256_CONTEXT {
 	SHA256_WORD	H[8];
 
 	unsigned char blk[SHA256_BLOCK_SIZE];
+	unsigned blk_ptr;
+	} ;
+
+struct SHA512_CONTEXT {
+
+	SHA512_WORD	H[8];
+
+	unsigned char blk[SHA512_BLOCK_SIZE];
 	unsigned blk_ptr;
 	} ;
 
@@ -66,13 +78,31 @@ void sha256_context_endstream(struct SHA256_CONTEXT *, unsigned long);
 void sha256_context_digest(struct SHA256_CONTEXT *, SHA256_DIGEST);
 void sha256_context_restore(struct SHA256_CONTEXT *, const SHA256_DIGEST);
 
+void sha512_context_init(struct SHA512_CONTEXT *);
+void sha512_context_hash(struct SHA512_CONTEXT *,
+			 const unsigned char[SHA512_BLOCK_SIZE]);
+void sha512_context_hashstream(struct SHA512_CONTEXT *,
+			       const void *, unsigned);
+void sha512_context_endstream(struct SHA512_CONTEXT *, SHA512_WORD);
+void sha512_context_digest(struct SHA512_CONTEXT *, SHA512_DIGEST);
+void sha512_context_restore(struct SHA512_CONTEXT *, const SHA512_DIGEST);
+
 #endif
 
 void sha1_digest(const void *, unsigned, SHA1_DIGEST);
 const char *sha1_hash(const char *);
 
-void sha256_digest(const void *, unsigned, SHA1_DIGEST);
+typedef unsigned char SSHA_RAND[4];
+
+const char *ssha_hash(const char *, SSHA_RAND);
+
+void sha256_digest(const void *, unsigned, SHA256_DIGEST);
+
 const char *sha256_hash(const char *);
+
+void sha512_digest(const void *, unsigned, SHA512_DIGEST);
+
+const char *sha512_hash(const char *);
 
 #ifdef	__cplusplus
  } ;

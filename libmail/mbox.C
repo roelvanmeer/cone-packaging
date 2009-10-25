@@ -1,4 +1,4 @@
-/* $Id: mbox.C,v 1.10 2004/06/14 00:18:42 mrsam Exp $
+/* $Id: mbox.C,v 1.11 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -247,7 +247,7 @@ void mail::mbox::installTask(task *t)
 		tasks.push(t);
 	} catch (...) {
 		delete t;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -571,7 +571,7 @@ void mail::mbox::findFolder(string path,
 		delete f;
 	} catch (...) {
 		delete f;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -644,7 +644,7 @@ void mail::mbox::readMessageAttributes(const vector<size_t> &messages,
 		}
 	} catch (...) {
 		delete mlock;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -678,7 +678,7 @@ void mail::mbox::readMessageContent(const vector<size_t> &messages,
 		}
 	} catch (...) {
 		delete mlock;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -1501,7 +1501,7 @@ bool mail::mbox::scan(mail::file &scanFile,
 			uidmap.insert(make_pair(info.uid, n));
 		} catch (...) {
 			folderMessageIndex.erase(folderMessageIndex.begin()+n);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		n++;
 	}

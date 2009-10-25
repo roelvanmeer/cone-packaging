@@ -1,4 +1,4 @@
-/* $Id: curseshierarchy.C,v 1.14 2008/07/07 03:25:40 mrsam Exp $
+/* $Id: curseshierarchy.C,v 1.15 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -1942,7 +1942,7 @@ bool CursesHierarchy::processKey(const Curses::Key &key)
 							abook);
 				} catch (...) {
 					delete abook;
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 
 				delete folder;
@@ -2062,7 +2062,7 @@ bool CursesHierarchy::processKey(const Curses::Key &key)
 			delete folder;
 		} catch (...) {
 			delete folder;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		return true;
 	}

@@ -1,4 +1,4 @@
-/* $Id: addressbookopen.C,v 1.1 2003/05/27 14:09:08 mrsam Exp $
+/* $Id: addressbookopen.C,v 1.2 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -33,7 +33,7 @@ void mail::addressbook::Open::fail(string msg)
 		delete this;
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -77,7 +77,7 @@ void mail::addressbook::Open::readIndex(string msg)
 		delete this;
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 

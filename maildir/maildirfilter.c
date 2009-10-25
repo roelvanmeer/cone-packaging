@@ -19,6 +19,12 @@
 #include	<sys/types.h>
 #include	"maildirmisc.h"
 
+#if HAVE_SYSEXITS_H
+#include	<sysexits.h>
+#else
+#define	EX_SOFTWARE	70
+#endif
+
 #if	HAVE_PCRE_H
 #include	<pcre.h>
 #else
@@ -35,7 +41,7 @@
 #include	<unistd.h>
 #endif
 
-static const char rcsid[]="$Id: maildirfilter.c,v 1.29 2008/07/04 13:46:34 mrsam Exp $";
+static const char rcsid[]="$Id: maildirfilter.c,v 1.30 2008/11/26 03:57:28 mrsam Exp $";
 
 struct maildirfilterrule *maildir_filter_appendrule(struct maildirfilter *r,
 					const char *name,
@@ -560,8 +566,8 @@ struct maildirfilterrule *p;
 		else if (*tofolder == '*')
 		{
 			fprintf(f, "    echo \"%s\"\n"
-				"    EXITCODE=77\n"
-				"    exit\n", tofolder+1);
+				"    EXITCODE=%d\n"
+				"    exit\n", tofolder+1, EX_SOFTWARE);
 		}
 		else if (*tofolder == '+')
 		{

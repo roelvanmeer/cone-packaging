@@ -1,3 +1,8 @@
+2008-11-30  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* imaprefs.c (dorefcreate): Clean up usage of rfc822_threadsearchmsg().
+	A malloc() failure wasn't checked correctly.
+
 2008-06-13  Mr. Sam  <mrsam@courier-mta.com>
 
 	* rfc822_getaddr.c: Backslashed special characters in address names

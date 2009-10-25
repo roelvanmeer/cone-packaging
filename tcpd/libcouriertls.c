@@ -1432,6 +1432,7 @@ int tls_validate_pem_cert(const char *buf, size_t buf_size)
 	BIO *certbio;
 	int err;
 	EVP_PKEY *pk;
+	X509 *x;
 
 	ERR_clear_error();
 
@@ -1441,7 +1442,7 @@ int tls_validate_pem_cert(const char *buf, size_t buf_size)
 	if (!certbio)
 		return (0);
 
-	X509 *x=PEM_read_bio_X509(certbio, NULL, NULL, NULL);
+	x=PEM_read_bio_X509(certbio, NULL, NULL, NULL);
 
 	if (x)
 	{

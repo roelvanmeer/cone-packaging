@@ -176,7 +176,7 @@ if ((/^x/:b))
 if ((/^subject: *x/))
 {
     echo "bounce"
-    EXITCODE=77
+    EXITCODE=70
     exit
 }
 
@@ -191,7 +191,7 @@ if ((/^subject: *x/))
 if (($SIZE > 100000))
 {
     echo "bounce"
-    EXITCODE=77
+    EXITCODE=70
     exit
 }
 
@@ -207,7 +207,7 @@ if (($SIZE > 100000))
 if (!($SIZE > 100000))
 {
     echo "bounce"
-    EXITCODE=77
+    EXITCODE=70
     exit
 }
 

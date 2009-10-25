@@ -1,3 +1,41 @@
+0.79
+
+2009-06-27  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* all: portability fixes for gcc 4.4.
+
+2009-05-07  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* cone/myserverconfig.C (loadmacros): Fix saved macros that contain
+	8-bit text.
+
+0.78
+
+2009-04-26  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* tcpd/libcouriergnutls.c: Fix off-by-1. Other cleanups.
+
+2009-04-19  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* libmail/maildiradd.C: gcc 4.4 fixes.
+
+2009-02-15  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* Updated autoconf, automake, libtool, and gettext.
+
+2008-11-28  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* cone/configure.in: Update script to work with newer autoconf.
+
+	* cone/Makefile.am: Use XML catalog to locate stylesheet.
+
+	* curses/configure.in: Replace AC_CONFIG_HEADER with AM_CONFIG_HEADER
+
+2008-08-26  Alessandro Vesely <vesely@tana.it>
+
+	* tcpd/libcouriergnutls.c (tls_connect): Fix client certificate request
+	settings.
+
 0.77
 
 2008-08-25  Mr. Sam  <mrsam@courier-mta.com>

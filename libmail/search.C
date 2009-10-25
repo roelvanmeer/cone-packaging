@@ -1,4 +1,4 @@
-/* $Id: search.C,v 1.5 2004/06/14 00:18:43 mrsam Exp $
+/* $Id: search.C,v 1.6 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -365,7 +365,7 @@ void mail::searchOneMessage::go()
 				free(p);
 			} catch (...) {
 				free(p);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 			u=u->search_chset;
 		}
@@ -390,7 +390,7 @@ void mail::searchOneMessage::go()
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	p=(*unicode_ISO8859_1.toupper_func)(&unicode_ISO8859_1,
@@ -407,7 +407,7 @@ void mail::searchOneMessage::go()
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	searchFlag=false;
@@ -652,7 +652,7 @@ void mail::searchOneMessage::checkNextHeader()
 					free(q);
 				} catch (...) {
 					free(q);
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 			}
 
@@ -801,7 +801,7 @@ void mail::searchOneMessage::searchEnvelope(const mail::envelope &envelope)
 	} catch (...) {
 		free(p);
 		free(q);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 }
@@ -1039,7 +1039,7 @@ void mail::searchOneMessage::search(string text)
 						free(p);
 					} catch (...) {
 						free(p);
-						LIBMAIL_THROW();
+						LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 					}
 			}
 
@@ -1245,7 +1245,7 @@ void mail::searchMessages::RunningLater()
 		m->go();
 	} catch (...) {
 		delete m;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 

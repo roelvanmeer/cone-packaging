@@ -1,4 +1,4 @@
-/* $Id: pop3.C,v 1.16 2008/07/07 03:25:41 mrsam Exp $
+/* $Id: pop3.C,v 1.17 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -190,7 +190,7 @@ void mail::pop3::Task::disconnected(const char *reason)
 	} catch (...) {
 		if (c)
 			c->fail(reason);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -316,7 +316,7 @@ void mail::pop3::LoginTask::fail(const char *reason)
 	} catch (...) {
 		if (c)
 			c->fail("ERROR: An exception occured in mail::pop3");
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -1438,11 +1438,11 @@ void mail::pop3::UpdateTask::serverResponse(const char *message)
 					      lo);
 		} catch (...) {
 			delete lo;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	} catch (...) {
 		delete l;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	done();
 }
@@ -2172,7 +2172,7 @@ void mail::pop3::installTask(Task *t)
 		tasks.insert(tasks.end(), t);
 	} catch (...) {
 		delete t;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	if (wasEmpty)
@@ -2357,7 +2357,7 @@ void mail::pop3::genericGetMessageFd(string uid,
 				   mail::readBoth, *t);
 	} catch (...) {
 		delete t;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -2396,7 +2396,7 @@ void mail::pop3::genericGetMessageStruct(string uid,
 				   mail::readBoth, *t);
 	} catch (...) {
 		delete t;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 }

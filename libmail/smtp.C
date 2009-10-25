@@ -1,4 +1,4 @@
-/* $Id: smtp.C,v 1.10 2008/07/07 03:25:41 mrsam Exp $
+/* $Id: smtp.C,v 1.11 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -443,7 +443,7 @@ mail::smtp::smtp(string url, string passwd,
 			errmsg=socketAttach(pipefd[0]);
 		} catch (...) {
 			close(pipefd[0]);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	}
 	else
@@ -585,7 +585,7 @@ void mail::smtp::ehloResponse(int n, string s)
 				free(t);
 			} catch (...) {
 				free(t);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 		for (p=0; p<line.size(); p++)

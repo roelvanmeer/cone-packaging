@@ -1,4 +1,4 @@
-/* $Id: rfcaddr.C,v 1.5 2004/05/30 02:43:00 mrsam Exp $
+/* $Id: rfcaddr.C,v 1.6 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -141,7 +141,7 @@ string mail::address::getCanonAddress() const
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	}
 
@@ -199,7 +199,7 @@ template<class T> bool mail::address::fromString(string addresses,
 				free(n);
 			} catch (...) {
 				free(n);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 
@@ -217,7 +217,7 @@ template<class T> bool mail::address::fromString(string addresses,
 				free(n);
 			} catch (...) {
 				free(n);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 			if (a->addrs[i].name == 0)
@@ -230,7 +230,7 @@ template<class T> bool mail::address::fromString(string addresses,
 	} catch (...) {
 		rfc822a_free(a);
 		rfc822t_free(t);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	return true;
 }

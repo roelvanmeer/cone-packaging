@@ -1,4 +1,4 @@
-/* $Id: smapaddmessage.C,v 1.3 2008/05/24 17:57:42 mrsam Exp $
+/* $Id: smapaddmessage.C,v 1.4 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -104,7 +104,7 @@ void mail::smapAddMessage::go()
 		if (add)
 			delete add;
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	delete this;

@@ -6,7 +6,7 @@
 ** See COPYING for distribution information.
 */
 
-static const char maildir_search_h_rcsid[]="$Id: maildirsearch.h,v 1.4 2003/01/05 04:22:50 mrsam Exp $";
+static const char maildir_search_h_rcsid[]="$Id: maildirsearch.h,v 1.5 2009/06/27 16:32:38 mrsam Exp $";
 
 /*
 ** A deterministic automaton-based search mechanism.  Search for a particular
@@ -74,7 +74,7 @@ int maildir_search_start(struct maildir_searchengine *engine,
 #ifdef  __cplusplus
 }
 
-// A C++ wrapper for the above
+/* A C++ wrapper for the above */
 
 #if HAVE_VECTOR
 #include <vector>
@@ -117,13 +117,13 @@ class Search {
 	bool operator !() { return ! operator bool(); }
 
  private:
-	Search(const Search &); // UNDEFINED
+	Search(const Search &); /* UNDEFINED */
 
-	Search &operator=(const Search &); // UNDEFINED
-
-};
+	Search &operator=(const Search &); /* UNDEFINED */
 
 };
+
+}
 
 #endif
 

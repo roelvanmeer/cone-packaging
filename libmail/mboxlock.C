@@ -1,4 +1,4 @@
-/* $Id: mboxlock.C,v 1.2 2008/05/24 17:57:42 mrsam Exp $
+/* $Id: mboxlock.C,v 1.3 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -37,7 +37,7 @@ void mail::mbox::LockTask::reopenCallback::success(string msg)
 		task->mboxAccount.installTask(task);
 	} catch (...) {
 		delete task;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -148,7 +148,7 @@ bool mail::mbox::LockTask::doit()
 		mboxAccount.tasks.pop();
 	} catch (...) {
 		delete t;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	try {

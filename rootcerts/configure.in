@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.12 2008/07/12 20:17:25 mrsam Exp $
+dnl $Id: configure.in,v 1.13 2008/11/28 23:23:22 mrsam Exp $
 dnl
 dnl Copyright 2001-2008 Double Precision, Inc.  See COPYING for
 dnl distribution information.
@@ -16,6 +16,7 @@ AC_PROG_LN_S
 
 test "x$prefix" = xNONE && prefix=$ac_default_prefix
 test "x$exec_prefix" = xNONE && exec_prefix='${prefix}'
+eval "datarootdir=$datarootdir"
 eval "datadir=$datadir"
 
 certdb=""

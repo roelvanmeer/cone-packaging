@@ -1,4 +1,4 @@
-/* $Id: mboxfolder.C,v 1.4 2004/04/25 03:37:16 mrsam Exp $
+/* $Id: mboxfolder.C,v 1.5 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -92,13 +92,13 @@ string mail::mbox::folder::defaultName(string path)
 					free(p);
 				} catch (...) {
 					free(p);
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 
 			free(uc);
 		} catch (...) {
 			free(uc);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 	return path;
@@ -409,13 +409,13 @@ void mail::mbox::folder::readSubFolders( mail::callback::folderList &callback1,
 							free(p);
 						} catch (...) {
 							free(p);
-							LIBMAIL_THROW();
+							LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 						}
 
 					free(uc);
 				} catch (...) {
 					free(uc);
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 
 			folder *f=new folder(fpath, mboxAccount);
@@ -427,7 +427,7 @@ void mail::mbox::folder::readSubFolders( mail::callback::folderList &callback1,
 				folderList.push_back(f);
 			} catch (...) {
 				delete f;
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 		}
 
@@ -458,7 +458,7 @@ void mail::mbox::folder::readSubFolders( mail::callback::folderList &callback1,
 
 		if (dirp)
 			closedir(dirp);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	callback2.success("OK");
@@ -512,13 +512,13 @@ void mail::mbox::folder::createSubFolder(string name,
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		free(uc);
 	} catch (...) {
 		free(uc);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	if (isDirectory) {
@@ -645,7 +645,7 @@ void mail::mbox::folder::destroy(mail::callback &callback, bool destroyDir)
 		} catch (...) {
 			if (dirp)
 				closedir(dirp);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		if (rmdir(path.c_str()) < 0)
@@ -789,13 +789,13 @@ void mail::mbox::folder::renameFolder(const mail::folder *newParent,
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		free(uc);
 	} catch (...) {
 		free(uc);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	string newpath=(newParent ? newParent->getPath() + "/":
@@ -896,7 +896,7 @@ void mail::mbox::folder::open(mail::callback &openCallback,
 							   false, NULL));
 		} catch (...) {
 			delete cc;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		return;
 	}
@@ -937,7 +937,7 @@ void mail::mbox::folder::closeCallback::success(string msg)
 		delete this;
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 

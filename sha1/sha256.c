@@ -9,7 +9,7 @@
 #include	<string.h>
 #include	<stdlib.h>
 
-static const char rcsid[]="$Id: sha256.c,v 1.1 2005/02/21 03:18:30 mrsam Exp $";
+static const char rcsid[]="$Id: sha256.c,v 1.2 2008/12/18 12:08:26 mrsam Exp $";
 
 #define ROTR(x,n) ((SHA256_WORD)(((SHA256_WORD)(x) >> (n))|((x) << (32-(n)))))
 
@@ -135,8 +135,8 @@ unsigned ll;
 
 void sha256_context_endstream(struct SHA256_CONTEXT *c, unsigned long l)
 {
-unsigned char buf[8];
-static unsigned char zero[SHA256_BLOCK_SIZE-8];
+	unsigned char buf[8];
+	static const unsigned char zero[SHA256_BLOCK_SIZE-8];
 
 	buf[0]=0x80;
 	sha256_context_hashstream(c, &buf, 1);
