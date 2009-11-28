@@ -1,3 +1,10 @@
+cone (0.79-2) unstable; urgency=low
+
+  * Switch to source format 3.0
+  * Add libtool to Build-Depends
+
+ -- Varun Hiremath <varun@debian.org>  Sat, 28 Nov 2009 06:13:19 -0500
+
 cone (0.79-1) unstable; urgency=low
 
   * New upstream release (Closes: #546689)
