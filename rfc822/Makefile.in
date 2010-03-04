@@ -15,9 +15,9 @@
 
 @SET_MAKE@
 
-# $Id: Makefile.am,v 1.20 2007/06/30 15:40:53 mrsam Exp $
+# $Id: Makefile.am,v 1.22 2009/11/22 19:39:52 mrsam Exp $
 #
-# Copyright 1998 - 2005 Double Precision, Inc.  See COPYING for
+# Copyright 1998 - 2009 Double Precision, Inc.  See COPYING for
 # distribution information.
 
 
@@ -63,7 +63,8 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 libencode_la_LIBADD =
 am_libencode_la_OBJECTS = encode.lo
 libencode_la_OBJECTS = $(am_libencode_la_OBJECTS)
-librfc822_la_LIBADD =
+am__DEPENDENCIES_1 =
+librfc822_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_librfc822_la_OBJECTS = rfc822.lo rfc822hdr.lo rfc822_getaddr.lo \
 	rfc822_getaddrs.lo rfc822_mkdate.lo rfc822_parsedt.lo \
 	rfc2047u.lo rfc2047.lo imapsubj.lo imaprefs.lo \
@@ -142,6 +143,8 @@ INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
+LIBIDN_CFLAGS = @LIBIDN_CFLAGS@
+LIBIDN_LIBS = @LIBIDN_LIBS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
@@ -163,6 +166,7 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PKG_CONFIG = @PKG_CONFIG@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -228,6 +232,8 @@ librfc822_la_SOURCES = rfc822.c rfc822.h rfc822hdr.c rfc822hdr.h \
                   rfc2047.c rfc2047.h imapsubj.c imaprefs.h imaprefs.c \
 		  encodeautodetect.c
 
+librfc822_la_LIBADD = $(LIBIDN_LIBS)
+AM_CFLAGS = $(LIBIDN_CFLAGS)
 libencode_la_SOURCES = encode.c encode.h
 BUILT_SOURCES = rfc822.3 rfc822.html
 noinst_DATA = $(BUILT_SOURCES)
@@ -236,8 +242,8 @@ testsuite_DEPENDENCIES = librfc822.la
 testsuite_LDADD = librfc822.la
 testsuite_LDFLAGS = -static
 reftest_SOURCES = reftest.c imaprefs.h
-reftest_DEPENDENCIES = librfc822.la
-reftest_LDADD = librfc822.la
+reftest_DEPENDENCIES = librfc822.la ../unicode/libunicode.la
+reftest_LDADD = librfc822.la ../unicode/libunicode.la
 reftest_LDFLAGS = -static
 EXTRA_DIST = testsuite.txt reftest.txt $(BUILT_SOURCES)
 all: $(BUILT_SOURCES) config.h

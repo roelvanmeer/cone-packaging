@@ -3,6 +3,8 @@
 include /usr/share/cdbs/1/class/autotools.mk
 include /usr/share/cdbs/1/rules/debhelper.mk
 
+DEB_CONFIGURE_EXTRA_FLAGS = SENDMAIL=/usr/sbin/sendmail
+
 install/cone::
 	#renaming config file
 	mv $(DEB_DESTDIR)/etc/cone.dist $(DEB_DESTDIR)/etc/cone

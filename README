@@ -3,7 +3,7 @@
    Link: Installing Cone (previous)
    Link: Mailing list (next)
 
-                                 Building Cone                               
+                                 Building Cone
    Prev                                                                  Next
 
    --------------------------------------------------------------------------
@@ -20,6 +20,9 @@ Building Cone
      o Libxml2
 
      o GnuTLS; or OpenSSL 0.9.7 or higher
+
+     o Libidn; although Cone will compile without it, internationalized
+       domain names will not be shown properly.
 
      o Cone optionally supports LDAP address books. LDAP support requires
        OpenLDAP.
@@ -116,6 +119,7 @@ References
    . http://www.xmlsoft.org/
    . http://www.gnutls.org/
    . http://www.openssl.org/
+   . http://www.gnu.org/software/libidn/
    . http://www.openldap.org/
    . http://aspell.sourceforge.net/
    . http://pspell.sourceforge.net/

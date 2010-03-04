@@ -1,27 +1,34 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::account::readMessageAttributes
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::READM" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::READM" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::account::readMessageAttributes - Return message metadata
+mail::account::readMessageAttributes \- Return message metadata
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
-#include <libmail/mail\.H>
-#include <libmail/envelope\.H>
-#include <libmail/structure\.H>
+#include <libmail/mail\&.H>
+#include <libmail/envelope\&.H>
+#include <libmail/structure\&.H>
 
 class myCallbackMessage : public mail::callback::message {
 public:
@@ -45,70 +52,67 @@ public:
     void messageTextCallback(size_t messageNumber, std::string text);
 };
 
-std::cout << (float)myMessageCallback\.messageTextCompleted /
-             (float)myMessageCallback\.messageTextEstimatedSize * 100
-          << "% completed\." << endl;
+std::cout << (float)myMessageCallback\&.messageTextCompleted /
+             (float)myMessageCallback\&.messageTextEstimatedSize * 100
+          << "% completed\&." << endl;
 
 .fi
-.RE
 .sp
-.RS 4
 .nf
 mail::account *account;
 .fi
-.RE
-.HP 31
+.HP \w'account->readMessageAttributes('u
 .BI "account->readMessageAttributes(const\ std::vector<size_t>\ " "msgList" ", mail::account::MessageAttributes\ " "attributes" ", myCallbackMessage\ &" "callback" ");"
 .SH "USAGE"
 .PP
 
 \fBmail::account::readMessageAttributes\fR
-requests metadata of messages in the currently open folder\.
+requests metadata of messages in the currently open folder\&.
 
 
 
 \fImsgList\fR
-specifies a list of messages\. Messages are numbered starting with message #0 and up to one less than
+specifies a list of messages\&. Messages are numbered starting with message #0 and up to one less than
 \fBmail::account::getFolderIndexSize\fR(3x)() (when
 \fBmail::account::getFolderIndexSize\fR
-returns 6, the messages are numbered 0 through 5)\. Only the messages that appear in
+returns 6, the messages are numbered 0 through 5)\&. Only the messages that appear in
 \fImsgList\fR
-are processed by this request\.
+are processed by this request\&.
 \fIattributes\fR
 is a logical\-or of the following constants:
 .PP
 mail::account::ARRIVALDATE
 .RS 4
-When the message was added to the folder (\fBmyCallback\.messageArrivalDateCallback\fR)\.
+When the message was added to the folder (\fBmyCallback\&.messageArrivalDateCallback\fR)\&.
 .RE
 .PP
 mail::account::MESSAGESIZE
 .RS 4
-Estimated message size, in bytes (\fBmyCallback\.messageSizeCallback\fR)\.
+Estimated message size, in bytes (\fBmyCallback\&.messageSizeCallback\fR)\&.
 .RE
 .PP
 mail::account::ENVELOPE
 .RS 4
-Message\'s envelope headers (\fBmyCallback\.messageEnvelopeCallback\fR, and possibly
-\fBmyCallback\.messageReferencesCallback\fR)\.
+Message\'s envelope headers (\fBmyCallback\&.messageEnvelopeCallback\fR, and possibly
+\fBmyCallback\&.messageReferencesCallback\fR)\&.
 \fBmessageEnvelopeCallback\fR
 receives a
 mail::envelope
-object that describes the "envelope", or a message summary (sender, recipients, subject, etc\.\.\.)\. In some instances the
+object that describes the "envelope", or a message summary (sender, recipients, subject, etc\&.\&.\&.)\&. In some instances the
 \fBmessageReferencesCallback\fR
 callback will also be invoked, with an an array of message IDs taken from the
 References
-header\. In other instances the
+header\&. In other instances the
 mail::envelope
 will already have the
-references
-populated with the same information\.
+\fIreferences\fR
+populated with the same information\&.
 .sp
 
 \fBmessageReferencesCallback\fR
 may be invoked before or after the
 \fBmessageEnvelopeCallback\fR
-function, if at all\. The application should be prepared to merge the information returned by these two callbacks\. As noted below, multiple callback methods may be invoked in any order, and the application should not make any assumption as to the relative order in which these two methods will be invoked\.
+function, if at all\&. The application should be prepared to merge the information returned by these two callbacks\&. As noted below, multiple callback methods may be invoked in any order, and the application should not make any assumption as to the relative order in which these two methods will be invoked\&.
 .sp
 For example, it is perfectly feasible to have a request for envelopes of two messages result in two
 \fBmessageEnvelopeCallback\fR
@@ -118,28 +122,28 @@ callbacks; or two instances of
 \fBmessageEnvelopeCallback\fR
 followed by a
 \fBmessageReferencesCallback\fR
-that refers to the same message\.
+that refers to the same message\&.
 .RE
 .PP
 mail::account::MIMESTRUCTURE
 .RS 4
 Returns a
 mail::mimestruct
-object that enumerates the message\'s MIME content (\fBmyCallback\.messageStructureCallback\fR)\.
-\fBmyCallback\.messageStructureCallback\fR
+object that enumerates the message\'s MIME content (\fBmyCallback\&.messageStructureCallback\fR)\&.
+\fBmyCallback\&.messageStructureCallback\fR
 receives a reference to a
 mail::mimestruct
-object that refers to the entire message\. If the message contains attachments, the
+object that refers to the entire message\&. If the message contains attachments, the
 \fBmail::mimestruct::getChild\fR
 method returns pointers to
 mail::mimestruct
-objects which refer to the individual MIME attachments\.
+objects which refer to the individual MIME attachments\&.
 .RE
 .PP
 Metadata information requested by each one of these constants is returned by invoking the corresponding callback method in
-\fIcallback\fR\. When requesting two or more items at once the callback functions may be invoked in any order\. When requesting metadata from more than one message the callback functions are invoked one for each requested message\. Each callback function receives the requested metadata item together with
+\fIcallback\fR\&. When requesting two or more items at once the callback functions may be invoked in any order\&. When requesting metadata from more than one message the callback functions are invoked one for each requested message\&. Each callback function receives the requested metadata item together with
 \fImessageNumber\fR
-\- which message this metadata item relates to\. The callback functions may be invoked in any message order\.
+\- which message this metadata item relates to\&. The callback functions may be invoked in any message order\&.
 .PP
 For example, when requesting both
 ENVELOPE
@@ -147,13 +151,27 @@ and
 MIMESTRUCTURE, the possibilities are:
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+
 ENVELOPEs for all messages first, then all
-MIMESTRUCTUREs\.
+MIMESTRUCTUREs\&.
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'The
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+The
 ENVELOPE
 and the
 MIMESTRUCTURE
@@ -161,20 +179,28 @@ for the first message, then the
 ENVELOPE
 and the
 MIMESTRUCTURE
-for the next message, and so on\.
+for the next message, and so on\&.
 .RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 The
 mail::envelope
 and
 mail::mimestruct
-objects are destroyed immediately after their corresponding callback method terminates\. The application should copy any objects it intends to use later\.
+objects are destroyed immediately after their corresponding callback method terminates\&. The application should copy any objects it intends to use later\&.
+.sp .5v
+.RE
 .SH "RETURN CODES"
 .PP
 The application must wait until
@@ -182,38 +208,54 @@ The application must wait until
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\. The
+method is invoked\&. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed\. The
+method is invoked when this request is succesfully processed\&. The
 \fBfail\fR
-method is invoked if this request cannot be processed\. The application must not destroy
+method is invoked if this request cannot be processed\&. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\.
+method is invoked\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 \fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
+method may be invoked even after other callback methods were invoked\&. This indicates that the request was partially completed before the error was encountered\&.
+.sp .5v
+.RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
-Multiple applications may have the same account and folder opened at the same time\. It is possible that a message referenced by this request was already deleted by another application\. Depending on the underlying server implementation this will result in either a failed request, invoking
-\fBcallback\.fail\fR, or the request completing (\fBcallback\.success\fR
-invoked) but without invoking any callback function that refer to the message\.
+Multiple applications may have the same account and folder opened at the same time\&. It is possible that a message referenced by this request was already deleted by another application\&. Depending on the underlying server implementation this will result in either a failed request, invoking
+\fBcallback\&.fail\fR, or the request completing (\fBcallback\&.success\fR
+invoked) but without invoking any callback function that refer to the message\&.
+.sp .5v
+.RE
 .SH "SEE ALSO"
 .PP
 
@@ -222,4 +264,4 @@ invoked) but without invoking any callback function that refer to the message\.
 \fBmail::account::readMessageContentDecoded\fR(3x),
 \fBmail::account::getFolderIndexInfo\fR(3x),
 \fBmail::envelope\fR(3x),
-\fBmail::mimestruct\fR(3x)\.
+\fBmail::mimestruct\fR(3x)\&.

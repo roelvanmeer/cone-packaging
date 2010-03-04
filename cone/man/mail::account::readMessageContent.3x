@@ -1,27 +1,34 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::account::readMessageContent
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::READM" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::READM" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::account::readMessageContent - Read messages
+mail::account::readMessageContent \- Read messages
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
-#include <libmail/mail\.H>
-#include <libmail/envelope\.H>
-#include <libmail/structure\.H>
+#include <libmail/mail\&.H>
+#include <libmail/envelope\&.H>
+#include <libmail/structure\&.H>
 
 class myCallbackMessage : public mail::callback::message {
 public:
@@ -45,84 +52,103 @@ public:
     void messageTextCallback(size_t messageNumber, std::string text);
 };
 
-std::cout << (float)myMessageCallback\.messageTextCompleted /
-             (float)myMessageCallback\.messageTextEstimatedSize * 100
-          << "% completed\." << endl;
+std::cout << (float)myMessageCallback\&.messageTextCompleted /
+             (float)myMessageCallback\&.messageTextEstimatedSize * 100
+          << "% completed\&." << endl;
 
 .fi
-.RE
 .sp
-.RS 4
 .nf
 mail::account *account;
 .fi
-.RE
-.HP 28
+.HP \w'account->readMessageContent('u
 .BI "account->readMessageContent(const\ std::vector<size_t>\ &" "msgList" ", bool\ " "peek" ", mail::readMode\ " "requestType" ", myCallbackMessage\ &" "callback" ");"
-.HP 28
+.HP \w'account->readMessageContent('u
 .BI "account->readMessageContent(size_t\ " "messageNum" ", bool\ " "peek" ", mail::mimestruct\ &" "msginfo" ", mail::readMode\ " "requestType" ", myCallbackMessage\ &" "callback" ");"
 .SH "USAGE"
 .PP
 
 \fBmail::account::readMessagesContent\fR
-reads messages in the currently open folder\. There are two alternative versions of this method\.
+reads messages in the currently open folder\&. There are two alternative versions of this method\&.
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'The first version receives a list of message numbers\.
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+The first version receives a list of message numbers\&.
 
 
 
 \fImsgList\fR
-specifies a list of messages\. Messages are numbered starting with message #0 and up to one less than
+specifies a list of messages\&. Messages are numbered starting with message #0 and up to one less than
 \fBmail::account::getFolderIndexSize\fR(3x)() (when
 \fBmail::account::getFolderIndexSize\fR
-returns 6, the messages are numbered 0 through 5)\. Only the messages that appear in
+returns 6, the messages are numbered 0 through 5)\&. Only the messages that appear in
 \fImsgList\fR
-are processed by this request\. This version is capable of returning headers and/or content of multiple messages\.
+are processed by this request\&. This version is capable of returning headers and/or content of multiple messages\&.
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'The second version receives a single message number, and a
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+The second version receives a single message number, and a
 mail::mimestruct
-object that refers to a single MIME attachment or a section of this message\. The
+object that refers to a single MIME attachment or a section of this message\&. The
 \fImail::account::MIMESTRUCTURE\fR
 argument to
 \fBmail::account::readMessageAttributes\fR(3x)
 returns a recursive tree of
 mail::mimestruct
-objects which enumerates the individual MIME sections in the message\.
+objects which enumerates the individual MIME sections in the message\&.
 \fImsgInfo\fR
-must be a reference to one of these objects (or to a copy of these objects)\.
+must be a reference to one of these objects (or to a copy of these objects)\&.
 .RE
 .PP
 Setting
 \fIpeek\fR
 to true does not reset the
-unread
-message status flag for this message\. Otherwise the
-unread
-message status flag will be reset\.
+\fIunread\fR
+message status flag for this message\&. Otherwise the
+\fIunread\fR
+message status flag will be reset\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 The application is notified about when a message\'s status changes by by invoking the
 \fBmessageChanged\fR
 callback method of the currently opened folder\'s
 mail::folderCallback
-object\. Depending on the mail server, the
+object\&. Depending on the mail server, the
 \fBmessageChanged\fR
 method may be invoked as part of processing this request, or some time later after this request is completed, and
 \fIcallback\fR\'s
 \fBsuccess\fR
-method was invoked\.
+method was invoked\&.
+.sp .5v
+.RE
 .PP
 The
 \fBmail::callback::message::messageTextCallback\fR
-method receives the requested content, which is determined by the remaining parameters\.
+method receives the requested content, which is determined by the remaining parameters\&.
 .PP
 
 \fIrequestType\fR
@@ -130,36 +156,44 @@ identifies the type of information to return from the selected MIME section, and
 .PP
 mail::readHeadersFolded
 .RS 4
-Return only the headers of the MIME section\. Folded headers are unfolded (the newline and the leading space on the next line are replaced with a single space character)\.
+Return only the headers of the MIME section\&. Folded headers are unfolded (the newline and the leading space on the next line are replaced with a single space character)\&.
 .RE
 .PP
 mail::readHeaders
 .RS 4
-Return only the headers of the MIME section\. The headers are returned as\-is, without unfolding them\.
+Return only the headers of the MIME section\&. The headers are returned as\-is, without unfolding them\&.
 .RE
 .PP
 mail::readContents
 .RS 4
-Return the content of the MIME section\.
+Return the content of the MIME section\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
-The MIME section is not decoded\. Check the
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+The MIME section is not decoded\&. Check the
 Content\-Transfer\-Encoding
-header to know what you\'re getting\.
+header to know what you\'re getting\&.
+.sp .5v
+.RE
 .RE
 .PP
 mail::readBoth
 .RS 4
-Return the entire MIME section, as is: its headers, a blank line, then the contents\.
+Return the entire MIME section, as is: its headers, a blank line, then the contents\&.
 .RE
 .PP
-The callback method may not receive the entire requested content at once\. Typically the method will be invoked multiple times; each time the method receives the next portion of the requested content\. When requesting headers and/or content of multiple messages, they may be returned in any order, and the
+The callback method may not receive the entire requested content at once\&. Typically the method will be invoked multiple times; each time the method receives the next portion of the requested content\&. When requesting headers and/or content of multiple messages, they may be returned in any order, and the
 \fImessageNumber\fR
-parameter indicates which message\'s contents are being returned (note, however, that the entire contents of a given message are returned in their entirety, even when the callback method gets invoked multiple times for that message, before content from the next message are returned)\.
+parameter indicates which message\'s contents are being returned (note, however, that the entire contents of a given message are returned in their entirety, even when the callback method gets invoked multiple times for that message, before content from the next message are returned)\&.
 .SH "RETURN CODES"
 .PP
 The application must wait until
@@ -167,41 +201,57 @@ The application must wait until
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\. The
+method is invoked\&. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed\. The
+method is invoked when this request is succesfully processed\&. The
 \fBfail\fR
-method is invoked if this request cannot be processed\. The application must not destroy
+method is invoked if this request cannot be processed\&. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\.
+method is invoked\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 \fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
+method may be invoked even after other callback methods were invoked\&. This indicates that the request was partially completed before the error was encountered\&.
+.sp .5v
+.RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
-Multiple applications may have the same account and folder opened at the same time\. It is possible that a message referenced by this request was already deleted by another application\. Depending on the underlying server implementation this will result in either a failed request, invoking
-\fBcallback\.fail\fR, or the request completing (\fBcallback\.success\fR
-invoked) but without invoking any callback function that refer to the message\.
+Multiple applications may have the same account and folder opened at the same time\&. It is possible that a message referenced by this request was already deleted by another application\&. Depending on the underlying server implementation this will result in either a failed request, invoking
+\fBcallback\&.fail\fR, or the request completing (\fBcallback\&.success\fR
+invoked) but without invoking any callback function that refer to the message\&.
+.sp .5v
+.RE
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::getFolderIndexSize\fR(3x),
 \fBmail::account::readMessageAttributes\fR(3x),
-\fBmail::account::readMessageContentDecoded\fR(3x)\.
+\fBmail::account::readMessageContentDecoded\fR(3x)\&.

@@ -1,4 +1,4 @@
-/* $Id: addressbookadd.C,v 1.9 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: addressbookadd.C,v 1.10 2009/10/31 22:38:07 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -143,8 +143,8 @@ void mail::addressbook::Add::addedBeef(string successMsg)
 
 	vector<mail::emailAddress> from_addresses;
 
-	from_addresses.push_back(mail::emailAddress("Libmail Address Book",
-						    "libmail@localhost"));
+	from_addresses.push_back(mail::address("Libmail Address Book",
+					       "libmail@localhost"));
 
 	headers << mail::Header::addresslist("From", from_addresses);
 	headers << mail::Header::encoded("Subject",

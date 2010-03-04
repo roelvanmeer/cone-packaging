@@ -1,6 +1,6 @@
-# $Id: Makefile.am,v 1.16 2007/11/05 05:11:29 mrsam Exp $
+# $Id: Makefile.am,v 1.17 2009/10/31 03:41:59 mrsam Exp $
 #
-# Copyright 2002-2007, Double Precision Inc.
+# Copyright 2002-2009, Double Precision Inc.
 #
 # See COPYING for distribution information.
 #
@@ -9,6 +9,8 @@ CONFIG_STATUS_DEPENDENCIES=../tcpd/couriertls.config
 
 noinst_LTLIBRARIES=libmail.la
 noinst_PROGRAMS=mailtool testsuite
+
+AM_CFLAGS = $(LIBIDN_CFLAGS)
 
 libmail_la_SOURCES=misc.H mail.H mail.C \
 			addmessage.C addmessage.H \
@@ -119,6 +121,7 @@ libmail_la_SOURCES=misc.H mail.H mail.C \
 			sync.C sync.H \
 			tmpaccount.C tmpaccount.H \
 			tmpaccountadd.C tmpaccountfolder.C
+libmail_la_LIBADD = $(LIBIDN_LIBS)
 
 mailtool_SOURCES=mailtool.C
 mailtool_DEPENDENCIES=libmail.la \

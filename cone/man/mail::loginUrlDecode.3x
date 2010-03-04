@@ -1,78 +1,82 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::loginUrlDecode
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::LOGINURLDECODE" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::LOGINURLDECODE" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::loginUrlDecode - Decode a mail account URL
+mail::loginUrlDecode \- Decode a mail account URL
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
       
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
-#include <libmail/logininfo\.H>
+#include <libmail/logininfo\&.H>
 
 mail::loginInfo urlInfo;
 .fi
-.RE
-.HP 35
+.HP \w'bool\ ok=mail::account::loginDecode('u
 .BI "bool ok=mail::account::loginDecode(std::string\ " "url" ", " "urlInfo" ");"
 .sp
-.RS 4
 .nf
-std::string method=urlInfo\.method;
-std::string server=urlInfo\.server;
-std::string uid=urlInfo\.uid;
-std::string pwd=urlInfo\.pwd;
+std::string method=urlInfo\&.method;
+std::string server=urlInfo\&.server;
+std::string uid=urlInfo\&.uid;
+std::string pwd=urlInfo\&.pwd;
 std::map<std::string, std::string>::iterator
-    optionBegin=urlInfo\.options\.begin(),
-    optionEnd=urlInfo\.options\.end();
+    optionBegin=urlInfo\&.options\&.begin(),
+    optionEnd=urlInfo\&.options\&.end();
 .fi
-.RE
 .SH "USAGE"
 .PP
 This function does the opposite of
 \fBmail::loginUrlEncode\fR(3x); a mail account URL string is broken down into its components:
 .PP
-method
+\fImethod\fR
 .RS 4
-The protocol name\.
+The protocol name\&.
 .RE
 .PP
-server
+\fIserver\fR
 .RS 4
 The name of the mail account\'s server
 .RE
 .PP
-uid
+\fIuid\fR
 .RS 4
-The mail account login ID\.
+The mail account login ID\&.
 .RE
 .PP
-pwd
+\fIpwd\fR
 .RS 4
-The mail account\'s password, if specified by the URL\.
+The mail account\'s password, if specified by the URL\&.
 .RE
 .PP
-options
+\fIoptions\fR
 .RS 4
 This map lists any additional options specified by the URL (all
 \(lq/\fIname\fR=\fIvalue\fR\(rq
-options are placed into this map)\.
+options are placed into this map)\&.
 .RE
 .SH "RETURN CODES"
 .PP
@@ -84,8 +88,8 @@ if
 mail::loginInfo
 object) was initialized from the contents of a valid URL, or
 false
-if the URL was not valid\.
+if the URL was not valid\&.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::loginUrlEncode\fR(3x)\.
+\fBmail::loginUrlEncode\fR(3x)\&.

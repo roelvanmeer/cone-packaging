@@ -1,6 +1,6 @@
-/* $Id: rfcaddr.C,v 1.6 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: rfcaddr.C,v 1.10 2009/11/22 14:54:41 mrsam Exp $
 **
-** Copyright 2002-2004, Double Precision Inc.
+** Copyright 2002-2009, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -14,6 +14,39 @@
 #include "rfc2047decode.H"
 #include "rfc822/rfc822.h"
 #include "unicode/unicode.h"
+
+#include <iostream>
+
+#if LIBIDN
+#include <idna.h>
+#include <stringprep.h>
+
+namespace mail {
+	class libidn_init {
+
+	public:
+		libidn_init();
+		~libidn_init();
+	};
+
+	libidn_init libidn_init_instance;
+}
+
+mail::libidn_init::libidn_init()
+{
+	if (!stringprep_check_version(STRINGPREP_VERSION))
+	{
+		std::cerr << "Required stringprep version "
+			  << STRINGPREP_VERSION << " is not installed"
+			  << std::endl;
+		abort();
+	}
+}
+
+mail::libidn_init::~libidn_init()
+{
+}
+#endif
 
 using namespace std;
 
@@ -185,7 +218,7 @@ template<class T> bool mail::address::fromString(string addresses,
 			string name;
 			string addr;
 
-			char *n=rfc822_getname_orlist(a, i);
+			char *n=rfc822_display_name_tobuf(a, i, NULL);
 
 			if (!n)
 			{
@@ -251,12 +284,15 @@ void mail::address::setName(std::string s)
 	name=s;
 }
 
+void mail::address::setAddr(std::string s)
+{
+	addr=s;
+}
+
 /////////////////////////////////////////////////////////////////////////
 
-mail::emailAddress::emailAddress(string n, string a)
-	: mail::address(n, a)
+mail::emailAddress::emailAddress() : mail::address("", "")
 {
-	setAddrName(n);
 }
 
 mail::emailAddress::~emailAddress()
@@ -269,13 +305,53 @@ mail::emailAddress::emailAddress(const mail::address &a)
 	decode();
 }
 
-void mail::emailAddress::setAddrName(string s)
+std::string mail::emailAddress::setDisplayName(string s)
 {
-	encodedName=s;
+	decodedName=s;
 	if (appcharset == NULL)
 		appcharset=unicode_find(unicode_default_chset());
 
 	name=mail::rfc2047::encodeAddrName(s, appcharset->chset);
+
+	return ""; // TODO
+}
+
+std::string mail::emailAddress::setDisplayAddr(string s)
+{
+	std::string errcode;
+
+	decodedAddr=s;
+
+#if LIBIDN
+	char *ascii_ptr;
+
+	size_t at=s.find('@');
+
+	if (at != s.npos)
+	{
+		int err=idna_to_ascii_lz(s.c_str()+at+1, &ascii_ptr, 0);
+
+		if (err != IDNA_SUCCESS)
+		{
+			errcode=idna_strerror((Idna_rc)err);
+		}
+		else
+		{
+			try {
+				s=s.substr(0, at+1) + ascii_ptr;
+				free(ascii_ptr);
+			} catch (...)
+			{
+				free(ascii_ptr);
+				throw;
+			}
+		}
+	}
+#endif
+
+	addr=s;
+
+	return errcode;
 }
 
 void mail::emailAddress::setName(string s)
@@ -284,11 +360,42 @@ void mail::emailAddress::setName(string s)
 	decode();
 }
 
+void mail::emailAddress::setAddr(string s)
+{
+	mail::address::setAddr(s);
+	decode();
+}
+
 void mail::emailAddress::decode()
 {
 	if (appcharset == NULL)
 		appcharset=unicode_find(unicode_default_chset());
-	encodedName=mail::rfc2047::decoder::decodeEnhanced(name,
-							   *appcharset);
+	decodedName=mail::rfc2047::decoder::decoder().decode(name, *appcharset);
+
+#if LIBIDN
+	char *encoded_str;
+
+	size_t at=addr.find('@');
+
+	if (at != addr.npos)
+	{
+		int rc=idna_to_unicode_lzlz(addr.c_str()+at+1, &encoded_str, 0);
+
+		if (rc == IDNA_SUCCESS)
+		{
+			try {
+				decodedAddr=addr.substr(0, at+1) + encoded_str;
+				free(encoded_str);
+			} catch (...)
+			{
+				free(encoded_str);
+				throw;
+			}
+			return;
+		}
+	}
+
+#endif
+	decodedAddr=addr;
 }
 

@@ -1,4 +1,4 @@
-/* $Id: configscreen.C,v 1.19 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: configscreen.C,v 1.20 2009/10/31 22:38:07 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -601,7 +601,10 @@ ConfigScreen::ConfigScreen(CursesContainer *parent)
 	for (b=myServer::myAddresses.begin(),
 		     e=myServer::myAddresses.end(); b != e; b++)
 	{
-		Button *bb=new Button(this, &ConfigScreen::delAddress, *b);
+		mail::emailAddress emailAddress(mail::address("", *b));
+
+		Button *bb=new Button(this, &ConfigScreen::delAddress,
+				      emailAddress.getDisplayAddr());
 
 		if (!bb)
 			outofmemory();
@@ -646,7 +649,10 @@ ConfigScreen::ConfigScreen(CursesContainer *parent)
 	for (b=myServer::myListAddresses.begin(),
 		     e=myServer::myListAddresses.end(); b != e; b++)
 	{
-		Button *bb=new Button(this, &ConfigScreen::delListAddress, *b);
+		mail::emailAddress emailAddress(mail::address("", *b));
+
+		Button *bb=new Button(this, &ConfigScreen::delListAddress,
+				      emailAddress.getDisplayAddr());
 
 		if (!bb)
 			outofmemory();
@@ -1138,13 +1144,66 @@ void ConfigScreen::doSave()
 {
 	nntpCommandFolder::nntpCommand=nntpCommand.getText();
 
-	set<Button *>::iterator b=addresses.begin(), e=addresses.end();
+	set<Button *>::iterator b, e;
+
+	std::string errmsg;
+
+	b=addresses.begin();
+	e=addresses.end();
+
+	while (b != e)
+	{
+		mail::emailAddress addr;
+
+		errmsg=addr.setDisplayAddr((*b)->address);
+
+		if (errmsg != "")
+		{
+			(*b)->requestFocus();
+			break;
+		}
+		b++;
+	}
+
+	if (errmsg == "")
+	{
+		b=listAddresses.begin();
+		e=listAddresses.end();
+
+		while (b != e)
+		{
+			mail::emailAddress addr;
+
+			errmsg=addr.setDisplayAddr((*b)->address);
+			if (errmsg != "")
+			{
+				(*b)->requestFocus();
+				break;
+			}
+			b++;
+		}
+	}
+
+	if (errmsg != "")
+	{
+		statusBar->clearstatus();
+		statusBar->status(errmsg);
+		statusBar->beepError();
+		return;
+	}
+
+	b=addresses.begin();
+	e=addresses.end();
 
 	myServer::myAddresses.clear();
 
 	while (b != e)
 	{
-		myServer::myAddresses.push_back( (*b)->address );
+		mail::emailAddress addr;
+
+		addr.setDisplayAddr((*b)->address);
+
+		myServer::myAddresses.push_back( addr.getAddr() );
 		b++;
 	}
 
@@ -1154,7 +1213,11 @@ void ConfigScreen::doSave()
 
 	while (b != e)
 	{
-		myServer::myListAddresses.push_back( (*b)->address );
+		mail::emailAddress addr;
+
+		addr.setDisplayAddr((*b)->address);
+
+		myServer::myListAddresses.push_back( addr.getAddr() );
 		b++;
 	}
 

@@ -1,3 +1,13 @@
+cone (0.80-1) unstable; urgency=low
+
+  * New upstream release
+  * Drop patches/sendmail_path.diff and fix SENDMAIL path by passing an
+    extra configure argument in debian/rules, thanks to Chow Loong Jin
+    (Closes: #571665)
+  * Bump Standards-Version to 3.8.4
+
+ -- Varun Hiremath <varun@debian.org>  Wed, 03 Mar 2010 22:51:22 -0500
+
 cone (0.79-2) unstable; urgency=low
 
   * Switch to source format 3.0

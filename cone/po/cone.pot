@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: cone 0.79\n"
+"Project-Id-Version: cone 0.80\n"
 "Report-Msgid-Bugs-To: courier-cone@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-06-27 13:28-0400\n"
+"POT-Creation-Date: 2009-12-29 21:33-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,11 +36,11 @@ msgstr ""
 msgid "Address: "
 msgstr ""
 
-#: addressbook.C:631 addressbook.C:1363 configscreen.C:231
+#: addressbook.C:631 addressbook.C:1388 configscreen.C:231
 msgid "SAVE"
 msgstr ""
 
-#: addressbook.C:632 addressbook.C:1364 cone.C:131 configscreen.C:232
+#: addressbook.C:632 addressbook.C:1389 cone.C:131 configscreen.C:232
 msgid "CANCEL"
 msgstr ""
 
@@ -48,149 +48,149 @@ msgstr ""
 msgid "ADD ENTRY"
 msgstr ""
 
-#: addressbook.C:879
+#: addressbook.C:904
 msgid "Delete address book entry for '%1%'? (Y/N) "
 msgstr ""
 
-#: addressbook.C:897
+#: addressbook.C:922
 msgid "New nickname (CTRL-C - cancel: "
 msgstr ""
 
-#: addressbook.C:931
+#: addressbook.C:956
 msgid "ADDRESS BOOK INDEX"
 msgstr ""
 
-#: addressbook.C:1083
+#: addressbook.C:1108
 msgid "Importing..."
 msgstr ""
 
-#: addressbook.C:1099
+#: addressbook.C:1124
 msgid "Syntax error on line %1%"
 msgstr ""
 
-#: addressbook.C:1250
+#: addressbook.C:1275
 msgid "ADDADDRESSBOOK_K:A"
 msgstr ""
 
-#: addressbook.C:1251 curseshierarchy.C:2137
+#: addressbook.C:1276 curseshierarchy.C:2137
 msgid "Add"
 msgstr ""
 
-#: addressbook.C:1252
+#: addressbook.C:1277
 msgid "DELADDRESSBOOKENTRY_K:D"
 msgstr ""
 
-#: addressbook.C:1253 addressbook.C:1729 curseshierarchy.C:2139
+#: addressbook.C:1278 addressbook.C:1754 curseshierarchy.C:2139
 #: cursesindexdisplay.C:1584 cursesmessagedisplay.C:1115
 #: filtereditscreen.C:448
 msgid "Delete"
 msgstr ""
 
-#: addressbook.C:1254
+#: addressbook.C:1279
 msgid "RENAMEADDRESSBOOKENTRY_K:R"
 msgstr ""
 
-#: addressbook.C:1255 curseshierarchy.C:2147
+#: addressbook.C:1280 curseshierarchy.C:2147
 msgid "Rename"
 msgstr ""
 
-#: addressbook.C:1256
+#: addressbook.C:1281
 msgid "IMPORTADDRESSBOOKENTRY_K:I"
 msgstr ""
 
-#: addressbook.C:1257
+#: addressbook.C:1282
 msgid "Import"
 msgstr ""
 
-#: addressbook.C:1258
+#: addressbook.C:1283
 msgid "EXPORTADDRESSBOOKENTRY_K:E"
 msgstr ""
 
-#: addressbook.C:1259
+#: addressbook.C:1284
 msgid "Export"
 msgstr ""
 
-#: addressbook.C:1349
+#: addressbook.C:1374
 msgid "Add LDAP directory"
 msgstr ""
 
-#: addressbook.C:1351
+#: addressbook.C:1376
 msgid "Directory name: "
 msgstr ""
 
-#: addressbook.C:1352
+#: addressbook.C:1377
 msgid "LDAP server hostname: "
 msgstr ""
 
-#: addressbook.C:1353
+#: addressbook.C:1378
 msgid "LDAP userid (optional): "
 msgstr ""
 
-#: addressbook.C:1354
+#: addressbook.C:1379
 msgid "LDAP password (optional): "
 msgstr ""
 
-#: addressbook.C:1355
+#: addressbook.C:1380
 msgid "LDAP suffix/root: "
 msgstr ""
 
-#: addressbook.C:1375
+#: addressbook.C:1400
 msgid "LDAP ADDRESSBOOK ADD"
 msgstr ""
 
-#: addressbook.C:1472 curseshierarchy.C:1951
+#: addressbook.C:1497 curseshierarchy.C:1951
 msgid "Address Book created."
 msgstr ""
 
-#: addressbook.C:1479
+#: addressbook.C:1504
 msgid "Connection to %1% failed: %2"
 msgstr ""
 
-#: addressbook.C:1614
+#: addressbook.C:1639
 msgid "Address Book List"
 msgstr ""
 
-#: addressbook.C:1623
+#: addressbook.C:1648
 msgid "ADDRESS BOOKS"
 msgstr ""
 
-#: addressbook.C:1728
+#: addressbook.C:1753
 msgid "DELETEADDRESSBOOK:D"
 msgstr ""
 
-#: addressbook.C:1730 curseshierarchy.C:2140 filtereditscreen.C:451
+#: addressbook.C:1755 curseshierarchy.C:2140 filtereditscreen.C:451
 msgid "MOVEUP:^U"
 msgstr ""
 
-#: addressbook.C:1731 curseshierarchy.C:2141 filtereditscreen.C:452
+#: addressbook.C:1756 curseshierarchy.C:2141 filtereditscreen.C:452
 msgid "Move up"
 msgstr ""
 
-#: addressbook.C:1732 curseshierarchy.C:2142 filtereditscreen.C:453
+#: addressbook.C:1757 curseshierarchy.C:2142 filtereditscreen.C:453
 msgid "MOVEDN:^D"
 msgstr ""
 
-#: addressbook.C:1733 curseshierarchy.C:2143 filtereditscreen.C:454
+#: addressbook.C:1758 curseshierarchy.C:2143 filtereditscreen.C:454
 msgid "Move down"
 msgstr ""
 
-#: addressbook.C:1734
+#: addressbook.C:1759
 msgid "ADDLDAP:A"
 msgstr ""
 
-#: addressbook.C:1735
+#: addressbook.C:1760
 msgid "Add LDAP server"
 msgstr ""
 
-#: addressbook.C:1763
+#: addressbook.C:1788
 msgid "Delete address book \"%1%\"? (Y/N) "
 msgstr ""
 
-#: addressbook.C:1884
+#: addressbook.C:1909
 msgid "TAKE ADDRESS"
 msgstr ""
 
-#: addressbook.C:2042
+#: addressbook.C:2067
 msgid "No addresses found."
 msgstr ""
 
@@ -587,56 +587,56 @@ msgstr ""
 msgid "FUNCTION KEY: F%1%"
 msgstr ""
 
-#: configscreen.C:915
+#: configscreen.C:921
 msgid "Cannot add this custom header."
 msgstr ""
 
-#: configscreen.C:930
+#: configscreen.C:936
 msgid "Invalid character in header's name"
 msgstr ""
 
-#: configscreen.C:939
+#: configscreen.C:945
 msgid "Hide this header by default? (Y/N) "
 msgstr ""
 
-#: configscreen.C:1130 filtereditscreen.C:449 gpg.C:826
+#: configscreen.C:1136 filtereditscreen.C:449 gpg.C:826
 msgid "ABORT:^C"
 msgstr ""
 
-#: configscreen.C:1131 curseshierarchy.C:2126 encryptionmenu.C:482
+#: configscreen.C:1137 curseshierarchy.C:2126 encryptionmenu.C:482
 #: filtereditscreen.C:450
 msgid "Cancel"
 msgstr ""
 
-#: configscreen.C:1132
+#: configscreen.C:1138
 msgid "DELADDRESS:DEL"
 msgstr ""
 
-#: configscreen.C:1133
+#: configscreen.C:1139
 msgid "Delete address/folder/macro"
 msgstr ""
 
-#: configscreen.C:1382
+#: configscreen.C:1445
 msgid "Remote configuration already off"
 msgstr ""
 
-#: configscreen.C:1387
+#: configscreen.C:1450
 msgid "Are you sure? (Y/N) "
 msgstr ""
 
-#: configscreen.C:1402
+#: configscreen.C:1465
 msgid "Remote configuration turned off"
 msgstr ""
 
-#: configscreen.C:1413
+#: configscreen.C:1476
 msgid "SETUP"
 msgstr ""
 
-#: configscreen.C:1436
+#: configscreen.C:1499
 msgid "Remove certificate"
 msgstr ""
 
-#: configscreen.C:1437
+#: configscreen.C:1500
 msgid "Use certificate"
 msgstr ""
 
@@ -652,187 +652,187 @@ msgstr ""
 msgid "Subject: "
 msgstr ""
 
-#: cursesedit.C:717 cursesedit.C:1588
+#: cursesedit.C:718 cursesedit.C:1589
 msgid "Newsgroups: "
 msgstr ""
 
-#: cursesedit.C:719 cursesedit.C:1590
+#: cursesedit.C:720 cursesedit.C:1591
 msgid "Followup-To: "
 msgstr ""
 
-#: cursesedit.C:737 cursesedit.C:1582 myfolder.C:2065 searchprompt.C:281
+#: cursesedit.C:738 cursesedit.C:1583 myfolder.C:2065 searchprompt.C:281
 msgid "To: "
 msgstr ""
 
-#: cursesedit.C:738 cursesedit.C:1583 myfolder.C:2089 searchprompt.C:286
+#: cursesedit.C:739 cursesedit.C:1584 myfolder.C:2089 searchprompt.C:286
 msgid "Cc: "
 msgstr ""
 
-#: cursesedit.C:1068
+#: cursesedit.C:1069
 msgid "Description (optional): "
 msgstr ""
 
-#: cursesedit.C:1076
+#: cursesedit.C:1077
 msgid "Inline attachment? (Y/N) "
 msgstr ""
 
-#: cursesedit.C:1113
+#: cursesedit.C:1114
 msgid "%1% (%2% of %3%)"
 msgstr ""
 
-#: cursesedit.C:1182
+#: cursesedit.C:1183
 msgid "Creating MIME attachment..."
 msgstr ""
 
-#: cursesedit.C:1594 searchprompt.C:276
+#: cursesedit.C:1595 searchprompt.C:276
 msgid "From: "
 msgstr ""
 
-#: cursesedit.C:1596 searchprompt.C:291
+#: cursesedit.C:1597 searchprompt.C:291
 msgid "Bcc: "
 msgstr ""
 
-#: cursesedit.C:1598
+#: cursesedit.C:1599
 msgid "Reply-To: "
 msgstr ""
 
-#: cursesedit.C:1607
+#: cursesedit.C:1608
 msgid "Fcc: "
 msgstr ""
 
-#: cursesedit.C:1625
+#: cursesedit.C:1626
 msgid "(none)"
 msgstr ""
 
-#: cursesedit.C:1679
+#: cursesedit.C:1680
 msgid "Attach public key? (Y/N) "
 msgstr ""
 
-#: cursesedit.C:1682 encryptionmenu.C:158
+#: cursesedit.C:1683 encryptionmenu.C:158
 msgid "PRIVATEKEY_K:P"
 msgstr ""
 
-#: cursesedit.C:1683
+#: cursesedit.C:1684
 msgid "Attach private key"
 msgstr ""
 
-#: cursesedit.C:1706
+#: cursesedit.C:1707
 msgid "ATTACH KEY"
 msgstr ""
 
-#: cursesedit.C:1707
+#: cursesedit.C:1708
 msgid "Select key to export and attach, then press ENTER"
 msgstr ""
 
-#: cursesedit.C:1708
+#: cursesedit.C:1709
 msgid "Attach key"
 msgstr ""
 
-#: cursesedit.C:1708
+#: cursesedit.C:1709
 msgid "Cancel, do not attach."
 msgstr ""
 
-#: cursesedit.C:1765
+#: cursesedit.C:1766
 msgid "Discard this message? (Y/N)"
 msgstr ""
 
-#: cursesedit.C:2056
+#: cursesedit.C:2057
 msgid "NetNews server not found. Please log on to a server first."
 msgstr ""
 
-#: cursesedit.C:2097
+#: cursesedit.C:2098
 msgid "Post message%1%? (Y/N) "
 msgstr ""
 
-#: cursesedit.C:2100
+#: cursesedit.C:2101
 msgid " (sign and encrypt)"
 msgstr ""
 
-#: cursesedit.C:2100
+#: cursesedit.C:2101
 msgid " (sign)"
 msgstr ""
 
-#: cursesedit.C:2102
+#: cursesedit.C:2103
 msgid " (encrypt)"
 msgstr ""
 
-#: cursesedit.C:2109 cursesmessage.C:3009
+#: cursesedit.C:2110 cursesmessage.C:3015
 msgid "SIGN_K:S"
 msgstr ""
 
-#: cursesedit.C:2110 cursesmessage.C:3010
+#: cursesedit.C:2111 cursesmessage.C:3016
 msgid "Sign"
 msgstr ""
 
-#: cursesedit.C:2112 cursesmessage.C:3012
+#: cursesedit.C:2113 cursesmessage.C:3018
 msgid "ENCRYPT_K:E"
 msgstr ""
 
-#: cursesedit.C:2113 cursesmessage.C:3013
+#: cursesedit.C:2114 cursesmessage.C:3019
 msgid "Encrypt"
 msgstr ""
 
-#: cursesedit.C:2152
+#: cursesedit.C:2153
 msgid "Post message? (Y/N) "
 msgstr ""
 
-#: cursesedit.C:2194
+#: cursesedit.C:2195
 msgid "Send message? (Y/N) "
 msgstr ""
 
-#: cursesedit.C:2195
+#: cursesedit.C:2196
 msgid "send message? (Y/N) "
 msgstr ""
 
-#: cursesedit.C:2209
+#: cursesedit.C:2210
 msgid "Mail copies to listed recipients? (Y/N) "
 msgstr ""
 
-#: cursesedit.C:2210
+#: cursesedit.C:2211
 msgid "mail copies to listed recipients? (Y/N) "
 msgstr ""
 
-#: cursesedit.C:2288
+#: cursesedit.C:2289
 msgid "Rename last month's selected sent mail folder? (Y/N) "
 msgstr ""
 
-#: cursesedit.C:2502
+#: cursesedit.C:2503
 msgid "Message post aborted"
 msgstr ""
 
-#: cursesedit.C:2504
+#: cursesedit.C:2505
 msgid "Message send aborted"
 msgstr ""
 
-#: cursesedit.C:2506
+#: cursesedit.C:2507
 msgid "Message save aborted"
 msgstr ""
 
-#: cursesedit.C:2740
+#: cursesedit.C:2741
 msgid "No recipients specified."
 msgstr ""
 
-#: cursesedit.C:2748
+#: cursesedit.C:2749
 msgid "From: header cannot be empty."
 msgstr ""
 
-#: cursesedit.C:2823
+#: cursesedit.C:2824
 msgid "Assembling MIME message..."
 msgstr ""
 
-#: cursesedit.C:2848
+#: cursesedit.C:2849
 msgid "Encrypting/signing..."
 msgstr ""
 
-#: cursesedit.C:2880
+#: cursesedit.C:2881
 msgid "Saving message in %1%..."
 msgstr ""
 
-#: cursesedit.C:2903
+#: cursesedit.C:2904
 msgid "Sending message..."
 msgstr ""
 
-#: cursesedit.C:2914
+#: cursesedit.C:2915
 msgid ""
 "The mail server rejected the message with the following error:\n"
 "\n"
@@ -840,18 +840,18 @@ msgid ""
 "F.Y.I: A copy of the unsent message was also saved in the sent-mail folder."
 msgstr ""
 
-#: cursesedit.C:2950
+#: cursesedit.C:2951
 msgid "Posting message..."
 msgstr ""
 
-#: cursesedit.C:2961
+#: cursesedit.C:2962
 msgid ""
 "The NetNews server rejected the message with the following error:\n"
 "\n"
 "    %1%%2%%3%"
 msgstr ""
 
-#: cursesedit.C:2963
+#: cursesedit.C:2964
 msgid ""
 "\n"
 "However, a copy of the message was already mailed to its listed recipients.\n"
@@ -859,59 +859,59 @@ msgid ""
 "in order to prevent sending a duplicate copy to the original recipients."
 msgstr ""
 
-#: cursesedit.C:3203
+#: cursesedit.C:3204
 msgid "FULLHDRS_K:^F"
 msgstr ""
 
-#: cursesedit.C:3204 cursesmessagedisplay.C:1106
+#: cursesedit.C:3205 cursesmessagedisplay.C:1106
 msgid "Full Hdrs"
 msgstr ""
 
-#: cursesedit.C:3205
+#: cursesedit.C:3206
 msgid "SEND_K:^X"
 msgstr ""
 
-#: cursesedit.C:3206
+#: cursesedit.C:3207
 msgid "Send"
 msgstr ""
 
-#: cursesedit.C:3207
+#: cursesedit.C:3208
 msgid "POSTPONE_K:^P"
 msgstr ""
 
-#: cursesedit.C:3208
+#: cursesedit.C:3209
 msgid "Postpone"
 msgstr ""
 
-#: cursesedit.C:3209
+#: cursesedit.C:3210
 msgid "ATTACHMENT_K:^T"
 msgstr ""
 
-#: cursesedit.C:3210
+#: cursesedit.C:3211
 msgid "Attach"
 msgstr ""
 
-#: cursesedit.C:3213
+#: cursesedit.C:3214
 msgid "ATTACHKEY_K:^E"
 msgstr ""
 
-#: cursesedit.C:3214
+#: cursesedit.C:3215
 msgid "Attach Key"
 msgstr ""
 
-#: cursesedit.C:3298
+#: cursesedit.C:3299
 msgid "Autosaving..."
 msgstr ""
 
-#: cursesedit.C:3927
+#: cursesedit.C:3928
 msgid "Memorize new headers in this message? (Y/N) "
 msgstr ""
 
-#: cursesedit.C:3977
+#: cursesedit.C:3978
 msgid "Memorize headers in this message as account defaults? (Y/N) "
 msgstr ""
 
-#: cursesedit.C:4030
+#: cursesedit.C:4031
 msgid "EDIT MESSAGE"
 msgstr ""
 
@@ -1908,163 +1908,163 @@ msgstr ""
 msgid "Follow up to: %1%? (Y/N) "
 msgstr ""
 
-#: cursesmessage.C:2185
+#: cursesmessage.C:2186
 msgid "Cc original author? (Y/N) "
 msgstr ""
 
-#: cursesmessage.C:2212
+#: cursesmessage.C:2213
 msgid "Reply to mailing list? (Y/N) "
 msgstr ""
 
-#: cursesmessage.C:2230
+#: cursesmessage.C:2231
 msgid "Reply to all? (Y/N) "
 msgstr ""
 
-#: cursesmessage.C:2301
+#: cursesmessage.C:2302
 msgid "%1% writes:"
 msgstr ""
 
-#: cursesmessage.C:2431
+#: cursesmessage.C:2432
 msgid "Fwd entire message as an attachment? (Y/N) "
 msgstr ""
 
-#: cursesmessage.C:2467
+#: cursesmessage.C:2468
 msgid "Downloading message..."
 msgstr ""
 
-#: cursesmessage.C:2548
+#: cursesmessage.C:2549
 msgid "---------- Forwarded message ----------"
 msgstr ""
 
-#: cursesmessage.C:2684
+#: cursesmessage.C:2685
 msgid "Blind forward to: "
 msgstr ""
 
-#: cursesmessage.C:2700
+#: cursesmessage.C:2701
 msgid "Error - invalid mail list format"
 msgstr ""
 
-#: cursesmessage.C:2835
+#: cursesmessage.C:2841
 msgid "mail server on %1%"
 msgstr ""
 
-#: cursesmessage.C:2841 myserver.C:443
+#: cursesmessage.C:2847 myserver.C:443
 msgid "Connecting to %1%..."
 msgstr ""
 
-#: cursesmessage.C:2931 cursesmessagedisplay.C:816
+#: cursesmessage.C:2937 cursesmessagedisplay.C:816
 msgid "Passphrase (if required): "
 msgstr ""
 
-#: cursesmessage.C:2991
+#: cursesmessage.C:2997
 msgid "Sign, encrypt, then %1%"
 msgstr ""
 
-#: cursesmessage.C:2992
+#: cursesmessage.C:2998
 msgid "Sign, then %1%"
 msgstr ""
 
-#: cursesmessage.C:2993
+#: cursesmessage.C:2999
 msgid "Encrypt, then %1%"
 msgstr ""
 
-#: cursesmessage.C:3003
+#: cursesmessage.C:3009
 msgid "SELECTDSN_K:D"
 msgstr ""
 
-#: cursesmessage.C:3004
+#: cursesmessage.C:3010
 msgid "Delivery notifications"
 msgstr ""
 
-#: cursesmessage.C:3107
+#: cursesmessage.C:3113
 msgid "success"
 msgstr ""
 
-#: cursesmessage.C:3113
+#: cursesmessage.C:3119
 msgid "delay"
 msgstr ""
 
-#: cursesmessage.C:3119
+#: cursesmessage.C:3125
 msgid "fail"
 msgstr ""
 
-#: cursesmessage.C:3125
+#: cursesmessage.C:3131
 msgid "never"
 msgstr ""
 
-#: cursesmessage.C:3129
+#: cursesmessage.C:3135
 msgid "Send message (NOTIFY=%1%)? (Y) "
 msgstr ""
 
-#: cursesmessage.C:3133
+#: cursesmessage.C:3139
 msgid "DSNNEVER_K:N"
 msgstr ""
 
-#: cursesmessage.C:3134
+#: cursesmessage.C:3140
 msgid "Never"
 msgstr ""
 
-#: cursesmessage.C:3137
+#: cursesmessage.C:3143
 msgid "DSNSUCCESS_K:S"
 msgstr ""
 
-#: cursesmessage.C:3138
+#: cursesmessage.C:3144
 msgid "Success"
 msgstr ""
 
-#: cursesmessage.C:3141
+#: cursesmessage.C:3147
 msgid "DSNDELAY_K:D"
 msgstr ""
 
-#: cursesmessage.C:3142
+#: cursesmessage.C:3148
 msgid "Delay"
 msgstr ""
 
-#: cursesmessage.C:3145
+#: cursesmessage.C:3151
 msgid "DSNFAIL_K:F"
 msgstr ""
 
-#: cursesmessage.C:3146
+#: cursesmessage.C:3152
 msgid "Fail"
 msgstr ""
 
-#: cursesmessage.C:3217 encryptionmenu.C:250
+#: cursesmessage.C:3223 encryptionmenu.C:250
 msgid "SELECT PRIVATE KEY"
 msgstr ""
 
-#: cursesmessage.C:3218
+#: cursesmessage.C:3224
 msgid "Select key to sign this message with, and press ENTER"
 msgstr ""
 
-#: cursesmessage.C:3219
+#: cursesmessage.C:3225
 msgid "Sign with this key"
 msgstr ""
 
-#: cursesmessage.C:3220
+#: cursesmessage.C:3226
 msgid "Cancel, do not sign message"
 msgstr ""
 
-#: cursesmessage.C:3230
+#: cursesmessage.C:3236
 msgid "SELECT PUBLIC KEYS"
 msgstr ""
 
-#: cursesmessage.C:3231
+#: cursesmessage.C:3237
 msgid "Select recipients' encryption keys, then press ENTER"
 msgstr ""
 
-#: cursesmessage.C:3232
+#: cursesmessage.C:3238
 msgid "Encrypt to selected keys"
 msgstr ""
 
-#: cursesmessage.C:3233
+#: cursesmessage.C:3239
 msgid "Cancel, do not encrypt"
 msgstr ""
 
-#: cursesmessage.C:3412 myfolder.C:1833
+#: cursesmessage.C:3418 myfolder.C:1833
 msgid "Reading message..."
 msgstr ""
 
-#: cursesmessage.C:3436
+#: cursesmessage.C:3442
 msgid "Decrypting/verifying message..."
 msgstr ""
 
@@ -3929,11 +3929,11 @@ msgstr ""
 msgid "remote configuration"
 msgstr ""
 
-#: myserverremoteconfig.C:244 myserverremoteconfig.C:469
+#: myserverremoteconfig.C:244 myserverremoteconfig.C:470
 msgid "Unable to open the remote configuration folder."
 msgstr ""
 
-#: myserverremoteconfig.C:493
+#: myserverremoteconfig.C:494
 msgid ""
 "Unable to find remotely-saved configuration file. Remotely-saved "
 "configuration was probably deleted."

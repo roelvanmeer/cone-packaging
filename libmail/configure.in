@@ -1,6 +1,6 @@
-# $Id: configure.in,v 1.6 2007/04/05 02:35:33 mrsam Exp $
+# $Id: configure.in,v 1.7 2009/10/31 03:41:59 mrsam Exp $
 #
-# Copyright 2002-2003, Double Precision Inc.
+# Copyright 2002-2009, Double Precision Inc.
 #
 # See COPYING for distribution information.
 #
@@ -29,6 +29,25 @@ AC_DEFINE_UNQUOTED(SENDMAIL, "$SENDMAIL",
 			     [ Local sendmail program ])
 
 dnl Checks for libraries.
+
+AC_ARG_WITH(libidn, AC_HELP_STRING([--with-libidn=[DIR]],
+		    [Support IDN (needs GNU Libidn)]),
+		    libidn=$withval, libidn=yes)
+
+if test "$libidn" != "no"
+then
+	PKG_CHECK_MODULES(LIBIDN, libidn >= 0.0.0, [libidn=yes], [libidn=no])
+        if test "$libidn" != "yes"
+	then
+		libidn=no
+         	AC_MSG_WARN([Libidn not found])
+	else
+		libidn=yes
+		AC_DEFINE(LIBIDN, 1, [Define to 1 if you want Libidn.])
+       	fi
+fi
+AC_MSG_CHECKING([if Libidn should be used])
+AC_MSG_RESULT($libidn)
 
 dnl Checks for header files.
 AC_CHECK_HEADERS(sys/time.h sys/wait.h unistd.h sys/select.h fcntl.h utime.h termios.h)

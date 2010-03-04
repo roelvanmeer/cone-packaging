@@ -1,66 +1,80 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::Header::list
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::HEADER::LIST" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::HEADER::LIST" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::Header::list - Create a list of headers.
+mail::Header::list \- Create a list of headers\&.
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
-#include <libmail/headers\.H>
+#include <libmail/headers\&.H>
 
 mail::Header::list headers;
 
     headers << mail::Header::encoded("Subject", "Hello", "iso\-8859\-1")
             << mail::header::addresslist("To")
-                                        ("John", "john@example\.com")
-                                        ("Tom", "tom@example\.com")
+                                        ("John", "john@example\&.com")
+                                        ("Tom", "tom@example\&.com")
             << mail::Header::mime("Content\-Type", "text/plain")
                                  ("charset", "iso\-8859\-1");
 
 std::cout << (std::string)headers;
 
 .fi
-.RE
 .SH "USAGE"
 .PP
-This is a helper class for formatting a list of headers\. Each header is specified, using the
+This is a helper class for formatting a list of headers\&. Each header is specified, using the
 <<
 operator, which can take any combination of
 \fBmail::Header::addresslist\fR(3x),
 \fBmail::Header::encoded\fR(3x),
 \fBmail::Header::mime\fR(3x), or
-\fBmail::Header::plain\fR(3x)\.
+\fBmail::Header::plain\fR(3x)\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 The
 <<
-operator makes an internal copy of the header object\. The original object may be destroyed after the operator returns\.
+operator makes an internal copy of the header object\&. The original object may be destroyed after the operator returns\&.
+.sp .5v
+.RE
 .PP
 The
 \fBstd::string\fR
-operator formats all headers, and returns the set of E\-mail headers as a single string\. Long headers are folded accordingly\.
+operator formats all headers, and returns the set of E\-mail headers as a single string\&. Long headers are folded accordingly\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::Header::addresslist\fR(3x),
 \fBmail::Header::encoded\fR(3x),
 \fBmail::Header::mime\fR(3x),
-\fBmail::Header::plain\fR(3x)\.
+\fBmail::Header::plain\fR(3x)\&.

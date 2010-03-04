@@ -1,28 +1,35 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::account::checkNewMail
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::CHECK" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::CHECK" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::account::checkNewMail - Check for new mail
+mail::account::checkNewMail \- Check for new mail
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 
 class myCallback : public mail::callback {
@@ -31,18 +38,15 @@ public:
     void fail(std::string msg);
 };
 .fi
-.RE
 .sp
-.RS 4
 .nf
 mail::account *account;
 .fi
-.RE
-.HP 22
+.HP \w'account->checkNewMail('u
 .BI "account->checkNewMail(myCallback\ &" "callback" ");"
 .SH "USAGE"
 .PP
-This request checks for new messages in the currently open folder\. With some accounts this request also checks for any messages that were removed from the folder by another process or application\.
+This request checks for new messages in the currently open folder\&. With some accounts this request also checks for any messages that were removed from the folder by another process or application\&.
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 The application must wait until
@@ -50,36 +54,44 @@ The application must wait until
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\. The
+method is invoked\&. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed\. The
+method is invoked when this request is succesfully processed\&. The
 \fBfail\fR
-method is invoked if this request cannot be processed\. The application must not destroy
+method is invoked if this request cannot be processed\&. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\.
+method is invoked\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 \fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
+method may be invoked even after other callback methods were invoked\&. This indicates that the request was partially completed before the error was encountered\&.
+.sp .5v
+.RE
 .PP
 This request may result in additional callback methods invoked before the
 \fBsuccess\fR
-method is invoked\. The currently opened folder\'s
+method is invoked\&. The currently opened folder\'s
 callback::folder\'s object\'s
 \fBnewMessages\fR
-method will be invoked if the current folder has any new messages\. The
+method will be invoked if the current folder has any new messages\&. The
 \fBmessagesRemoved\fR
 and
 \fBmessageChanged\fR
-methods may also be invoked\.
+methods may also be invoked\&.

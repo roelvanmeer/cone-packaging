@@ -1,4 +1,4 @@
-/* $Id: rfc2047decode.H,v 1.2 2004/05/03 00:04:05 mrsam Exp $
+/* $Id: rfc2047decode.H,v 1.3 2009/11/08 23:52:31 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -28,24 +28,18 @@ namespace rfc2047 {
 
 	class decoder {
 
-		std::vector<unicode_char> unicodes;
-
-		const struct unicode_info *nativeCharset;
+		std::string decodedbuf;
 
 	public:
 		decoder();
 		~decoder();
 
 	private:
-		static int rfc2047_decode_callback(const char *text,
-						   int text_len,
-						   const char *charset,
-						   const char *language,
-						   void *voidarg);
+		static void rfc2047_decode_callback(const char *text,
+						    size_t text_len,
+						    void *voidarg);
 
-		int rfc2047_callback(const char *text, int text_len,
-				     const char *charset,
-				     const char *language);
+		void rfc2047_callback(const char *text, size_t text_len);
 	public:
 
 		// Decode to unicode chars.
@@ -70,17 +64,17 @@ namespace rfc2047 {
 		void decode(std::vector<mail::address> &addr_cpy,
 			    const struct unicode_info &nativeInfo);
 
-		// Decode without translating to any charset, and without
-		// prepending [CHARSET]
+		// Decode without transcoding to a specific charset.
 
 		static std::string decodeSimple(std::string str);
 
-		// Decode and translate, if possible, to charset 'myCharset',
-		// but without prepending [CHARSET].
+	private:
+		static void decodeSimpleCallback(const char *chset,
+						 const char *lang,
+						 const char *content,
+						 size_t cnt,
+						 void *dummy);
 
-		static std::string decodeEnhanced(std::string str,
-						  const struct unicode_info
-						  &myCharset);
 	};
 }
 

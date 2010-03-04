@@ -1,70 +1,76 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::Header::addresslist
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::HEADER::ADDRES" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::HEADER::ADDRES" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::Header::addresslist - An E-mail header that contains addresses.
+mail::Header::addresslist \- An E\-mail header that contains addresses\&.
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
-#include <libmail/headers\.H>
+#include <libmail/headers\&.H>
 
 std::vector<mail::emailAddress> address_list;
 mail::emailAddress addr;
 
 mail::Header::addresslist tohdr("To", address_list);
 
-mail::Header::addresslist cchdr("Cc")("John", "john@example\.com")
-                                     ("Tom", "tom@example\.com")
+mail::Header::addresslist cchdr("Cc")("John", "john@example\&.com")
+                                     ("Tom", "tom@example\&.com")
                                      (addr);
 
-std::cout << tohdr\.toString();
+std::cout << tohdr\&.toString();
 
 .fi
-.RE
 .SH "USAGE"
 .PP
 This class creates a header that contains addresses, such as the
 \(lqTo:\(rq
 or the
 \(lqCc:\(rq
-header\. Two arguments are provided to the constructor: the header\'s name, and a vector containing the addresses\.
+header\&. Two arguments are provided to the constructor: the header\'s name, and a vector containing the addresses\&.
 .PP
-This is not the appropriate class to create structured MIME headers\. Use
+This is not the appropriate class to create structured MIME headers\&. Use
 \fBmail::Header::mime\fR(3x)
-to create structured MIME headers\.
+to create structured MIME headers\&.
 .PP
 The
 \fBtoString()\fR
 returns the header as a single text string:
-\(lq\fIname\fR: \fIvalue\fR\(rq\. Long headers are folded accordingly\.
+\(lq\fIname\fR: \fIvalue\fR\(rq\&. Long headers are folded accordingly\&.
 .SS "Dynamic address list generation"
 .PP
-This class has an alternative constructor that receives a single parameter: the header\'s name, which initializes an empty address list\. The address list is populated by repeatedly calling the
+This class has an alternative constructor that receives a single parameter: the header\'s name, which initializes an empty address list\&. The address list is populated by repeatedly calling the
 \(lq()\(rq
-operator\.
+operator\&.
 .PP
 One version of the
 \(lq()\(rq
-operator receives the explicit name and address components of an E\-mail address\. Alternatively, a
+operator receives the explicit name and address components of an E\-mail address\&. Alternatively, a
 mail::emailAddress
-object may be provided\.
+object may be provided\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::Header::encoded\fR(3x),
 \fBmail::Header::list\fR(3x),
 \fBmail::Header::mime\fR(3x),
-\fBmail::Header::plain\fR(3x)\.
+\fBmail::Header::plain\fR(3x)\&.

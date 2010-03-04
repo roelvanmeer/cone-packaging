@@ -1,28 +1,35 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::folder::setRights
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::FOLDER::SETRIG" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::FOLDER::SETRIG" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::folder::setRights - Change access control lists
+mail::folder::setRights \- Change access control lists
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 
 class myCallback : public mail::callback {
@@ -31,82 +38,87 @@ public:
     void fail(std::string msg);
 };
 .fi
-.RE
-.HP 18
+.HP \w'folder->setRights('u
 .BI "folder->setRights(myCallback\ &" "callback" ", std::string\ &" "errorIdentifier" ", std::vector<std::string>\ &" "errorRights" ", std::string\ " "identifier" ", std::string\ " "rights" ");"
 .SH "USAGE"
 .PP
-This function implements folder access control lists (ACLs)\. Access control lists define who is allowed to do certain operations on a folder, or on messages in the folder\. Folder ACLs are implement only for IMAP accounts on IMAP servers that implement access control lists\. This function will fail if
+This function implements folder access control lists (ACLs)\&. Access control lists define who is allowed to do certain operations on a folder, or on messages in the folder\&. Folder ACLs are implement only for IMAP accounts on IMAP servers that implement access control lists\&. This function will fail if
 \fIfolder\fR
-is not a folder on an IMAP server that supports access control lists\.
+is not a folder on an IMAP server that supports access control lists\&.
 .PP
 This function changes
 \fIfolder\fR\'s access control list entry for
-\fIidentifier\fR\. Any existing access rights for
+\fIidentifier\fR\&. Any existing access rights for
 \fIidentifier\fR
 are replaced by
-\fIrights\fR\. If the access control list does not have an entry for
-\fIidentifier\fR, one is created\. With some servers, setting
+\fIrights\fR\&. If the access control list does not have an entry for
+\fIidentifier\fR, one is created\&. With some servers, setting
 \fIidentifier\fR\'s rights to an empty string automatically removes
 \fIidentifier\fR
-from the access control list\.
+from the access control list\&.
 .SS "Identifier"
 .PP
-Not all servers support every one of the following access control list identifiers\. See the server\'s documentation to check which access control list identifiers are implemented by the server:
+Not all servers support every one of the following access control list identifiers\&. See the server\'s documentation to check which access control list identifiers are implemented by the server:
 .PP
 \(lqanonymous\(rq, or \(lqanyone\(rq
 .RS 4
-This identifier refers to universal access rights given to everyone, including anonymous users (if supported by server)\.
+This identifier refers to universal access rights given to everyone, including anonymous users (if supported by server)\&.
 .RE
 .PP
 \(lqauthuser\(rq
 .RS 4
 Same as
-\(lqanyone\(rq, except for anonymous users\. If the server does not implement anonymous access, then
+\(lqanyone\(rq, except for anonymous users\&. If the server does not implement anonymous access, then
 \(lqanonymous\(rq,
 \(lqanyone\(rq, and
 \(lqauthuser\(rq
-are equivalent\.
+are equivalent\&.
 .RE
 .PP
 \(lqowner\(rq
 .RS 4
-The owner of the mailbox that contains the folder\.
+The owner of the mailbox that contains the folder\&.
 .RE
 .PP
 \(lqadministrators\(rq
 .RS 4
-Any member of a group that\'s defined as an administrator group, in an implementation\-defined way\.
+Any member of a group that\'s defined as an administrator group, in an implementation\-defined way\&.
 .RE
 .PP
 \(lquser=\fIusername\fR\(rq
 .RS 4
 A single system user, identified by
-\fIusername\fR\.
+\fIusername\fR\&.
 .RE
 .PP
 \(lqgroup=\fIgroupname\fR\(rq
 .RS 4
 Any system user that\'s part of a group identified by
-\fIgroupname\fR\. Groups are created and managed by IMAP server\-specific tools\. See the server\'s documentation for information on creating and managing groups (if the groups are even implemented by the server in the first place)\.
+\fIgroupname\fR\&. Groups are created and managed by IMAP server\-specific tools\&. See the server\'s documentation for information on creating and managing groups (if the groups are even implemented by the server in the first place)\&.
 .RE
 .PP
 \(lq\-\fIidentifier\fR\(rq
 .RS 4
 An access control list identifier may be prefixed by a
 \(lq\-\(rq, which refers to a
-\(lqnegative right\(rq\. Negative rights explicitly revoke the associated access rights from the
+\(lqnegative right\(rq\&. Negative rights explicitly revoke the associated access rights from the
 \fIidentifier\fR
-instead of granting the right\.
+instead of granting the right\&.
 .sp
-Negative rights are not implemented by all servers\. See the server\'s documentation to check if the server implements negative access rights\.
+Negative rights are not implemented by all servers\&. See the server\'s documentation to check if the server implements negative access rights\&.
 .RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 \fIusername\fR
@@ -114,88 +126,90 @@ and
 \fIgroupname\fR
 must specified using the
 UTF\-8
-character set\.
+character set\&.
+.sp .5v
+.RE
 .SS "Access rights"
 .PP
 At this time, the following access rights are supported:
 .PP
 \(lqa\(rq
 .RS 4
-Administrator access: view and change folder access control lists\.
+Administrator access: view and change folder access control lists\&.
 .RE
 .PP
 \(lqc\(rq
 .RS 4
-Create subfolders\.
+Create subfolders\&.
 .RE
 .PP
 \(lqe\(rq
 .RS 4
-Expunge deleted messages from the folder\.
+Expunge deleted messages from the folder\&.
 .RE
 .PP
 \(lqi\(rq
 .RS 4
-Insert, or add messages to the folder\.
+Insert, or add messages to the folder\&.
 .RE
 .PP
 \(lql\(rq
 .RS 4
-List, or view the folder\'s existence\. If a folder does not have the
+List, or view the folder\'s existence\&. If a folder does not have the
 \(lql\(rq
-access right, the server will not include this folder when it\'s asked to list all folders in the folder directory\. However, if the
+access right, the server will not include this folder when it\'s asked to list all folders in the folder directory\&. However, if the
 \(lqr\(rq
-access right is present, the folder may be opened if the folder\'s name is known\.
+access right is present, the folder may be opened if the folder\'s name is known\&.
 .RE
 .PP
 \(lqr\(rq
 .RS 4
-Read, or open the folder\. An attempt to open the folder will fail without the
+Read, or open the folder\&. An attempt to open the folder will fail without the
 \(lqr\(rq
-access right, even if the folder\'s name is known\.
+access right, even if the folder\'s name is known\&.
 .RE
 .PP
 \(lqp\(rq
 .RS 4
 
 \(lqPost messages\(rq
-to the folder\. This access right is currently listed in the ACL specification; however its intention is not clear, and most servers do not do anything useful with this access right\. It is listed here for information purposes only\.
+to the folder\&. This access right is currently listed in the ACL specification; however its intention is not clear, and most servers do not do anything useful with this access right\&. It is listed here for information purposes only\&.
 .RE
 .PP
 \(lqs\(rq
 .RS 4
-Allow changing the read/unread status of messages in the folder\. The server will not automatically clear the
-unread
+Allow changing the read/unread status of messages in the folder\&. The server will not automatically clear the
+\fIunread\fR
 message status flag on messages after they are read, or let this status flag be explicitly changed, without the
 \(lqs\(rq
-access right\.
+access right\&.
 .RE
 .PP
 \(lqt\(rq
 .RS 4
-Allow tagging of messages as deleted or undeleted\. The server will prohibit changing the messages\'
-deleted
+Allow tagging of messages as deleted or undeleted\&. The server will prohibit changing the messages\'
+\fIdeleted\fR
 message status flag without the
 \(lqt\(rq
-access right\.
+access right\&.
 .RE
 .PP
 \(lqw\(rq
 .RS 4
 Allow changing the
-draft,
-replied, and
-marked
-message status flags\. The server will not allow changes to these flags without the
+\fIdraft\fR,
+\fIreplied\fR, and
+\fImarked\fR
+message status flags\&. The server will not allow changes to these flags without the
 \(lqw\(rq
-access right\.
+access right\&.
 .RE
 .PP
 \(lqx\(rq
 .RS 4
-Allow this folder to be removed\. The server will not this folder to be deleted without the
+Allow this folder to be removed\&. The server will not this folder to be deleted without the
 \(lqx\(rq
-access right\.
+access right\&.
 .RE
 .SS "Adding or removing access rights"
 .PP
@@ -204,29 +218,29 @@ If
 begins with
 \(lq+\(rq, the remaining access rights are added to any existing rights that
 \fIidentifier\fR
-already has\. If
+already has\&. If
 \fIrights\fR
 begins with
 \(lq\-\(rq, the remaining access rights are removed from
 \fIidentifier\fR
-existing access rights\.
+existing access rights\&.
 .SS "Extended error reporting"
 .PP
-Most IMAP servers have restrictions on which combinations of access rights are valid for which folders\. See the IMAP server\'s documentation to check for any access rights restrictions\. The most common restriction is that the
+Most IMAP servers have restrictions on which combinations of access rights are valid for which folders\&. See the IMAP server\'s documentation to check for any access rights restrictions\&. The most common restriction is that the
 \(lqe\(rq,
 \(lqt\(rq, and
 \(lqx\(rq
-access rights must either be set together, as a group, or not\. The server will reject or ignore an attempt to set prohibited combinations of access rights for a given folder\.
+access rights must either be set together, as a group, or not\&. The server will reject or ignore an attempt to set prohibited combinations of access rights for a given folder\&.
 .PP
-Some IMAP servers implement an extended form of the access control list protocol which makes it possible to obtain the server\'s restrictions\. When an attempt to set an invalid access right combination is rejected,
+Some IMAP servers implement an extended form of the access control list protocol which makes it possible to obtain the server\'s restrictions\&. When an attempt to set an invalid access right combination is rejected,
 \fIerrorIdentifier\fR
 will be set to indicate which identifier\'s access right combination was rejected (usually it will be set to the same value as
-\fIidentifier\fR\.
+\fIidentifier\fR\&.
 .PP
 
 \fIerrorRights\fR
-will be set to an array of strings, each strings consisting of one or more access rights\. The first array element,
-\fIerrorRights\fR[0] will contain the minimum access rights required for this folder (which may be an empty string if the folder does not require any minimum access rights for the identifier)\. Each remaining string lists an optional access right allowed for this folder\. If a string contains more than one access right, it means that these access rights must be added or removed from the access control list together, as a group\.
+will be set to an array of strings, each strings consisting of one or more access rights\&. The first array element,
+\fIerrorRights\fR[0] will contain the minimum access rights required for this folder (which may be an empty string if the folder does not require any minimum access rights for the identifier)\&. Each remaining string lists an optional access right allowed for this folder\&. If a string contains more than one access right, it means that these access rights must be added or removed from the access control list together, as a group\&.
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 The application must wait until
@@ -234,31 +248,39 @@ The application must wait until
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\. The
+method is invoked\&. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed\. The
+method is invoked when this request is succesfully processed\&. The
 \fBfail\fR
-method is invoked if this request cannot be processed\. The application must not destroy
+method is invoked if this request cannot be processed\&. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\.
+method is invoked\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 \fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
+method may be invoked even after other callback methods were invoked\&. This indicates that the request was partially completed before the error was encountered\&.
+.sp .5v
+.RE
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::delRights\fR(3x),
 \fBmail::account::getMyRights\fR(3x),
-\fBmail::account::getRights\fR(3x)\.
+\fBmail::account::getRights\fR(3x)\&.

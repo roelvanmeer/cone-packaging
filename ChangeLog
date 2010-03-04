@@ -1,3 +1,14 @@
+0.80
+
+2009-10-30  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* cone/libmail: Link with libidn if this library is installed. Added
+	getAddrAddr() and setAddrAddr() methods to mail::emailAddress that
+	use libidn, if installed, to decode/encode the hostname portion of the
+	email address.
+
+	The GNU IDN library is now required to build Cone
+
 0.79
 
 2009-06-27  Sam Varshavchik  <mrsam@courier-mta.com>

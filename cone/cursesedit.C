@@ -1,4 +1,4 @@
-/* $Id: cursesedit.C,v 1.32 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: cursesedit.C,v 1.33 2009/11/08 23:52:31 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -679,10 +679,11 @@ void CursesEdit::init()
 				{
 					string str=
 						mail::rfc2047::decoder::
-						decodeEnhanced(hdr,
-							       *Gettext::
-							       defaultCharset()
-							       );
+						decoder()
+						.decode(hdr,
+							*Gettext::
+							defaultCharset()
+							);
 					ch->hiddenValue=str;
 					if (ch->field)
 						ch->field->setText(str);

@@ -1,4 +1,4 @@
-/* $Id: cursesmessage.C,v 1.29 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: cursesmessage.C,v 1.32 2009/11/08 23:52:31 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -1446,8 +1446,8 @@ static string decode(string hdrname,
 
 	while (b != e)
 	{
-		string s= mail::address(b->getAddrName(),
-					b->getAddr()).toString();
+		string s= mail::address(b->getDisplayName(),
+					b->getDisplayAddr()).toString();
 
 		vector<wchar_t> s_wc;
 
@@ -2111,11 +2111,12 @@ void CursesMessage::reply()
 
 	if (shown[n].envelope->from.size() > 0)
 	{
-		mail::address &addr=shown[n].envelope->from[0];
+		mail::emailAddress addr(shown[n].envelope->from[0]);
 
-		senderName=mail::rfc2047::decoder()
-			.decode(addr.getName().size()
-				? addr.getName():addr.getAddr(), *my_chset);
+		senderName=addr.getDisplayName();
+
+		if (senderName.size() == 0)
+			senderName=addr.getDisplayAddr();
 	}
 
 	//
@@ -2707,8 +2708,13 @@ bool CursesMessage::getBounceTo(mail::smtpInfo &smtpInfo)
 		vector<mail::address>::iterator b, e;
 
 		for (b=addrBuf.begin(), e=addrBuf.end(); b != e; ++b)
-			addrList.push_back(mail::emailAddress(b->getName(),
-							      b->getAddr()));
+		{
+			mail::emailAddress addr;
+
+			addr.setDisplayName(b->getName());
+			addr.setDisplayAddr(b->getAddr());
+			addrList.push_back(addr);
+		}
 	}
 
 	if (!AddressBook::searchAll(addrList, addrListRet))

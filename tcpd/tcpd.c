@@ -1,5 +1,5 @@
 /*
-** Copyright 1998 - 2007 Double Precision, Inc.
+** Copyright 1998 - 2009 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
@@ -52,7 +52,7 @@
 
 #include	<netdb.h>
 
-static const char rcsid[]="$Id: tcpd.c,v 1.46 2009/06/27 16:32:38 mrsam Exp $";
+static const char rcsid[]="$Id: tcpd.c,v 1.47 2009/07/30 02:29:54 mrsam Exp $";
 
 static const char *accessarg=0;
 static const char *accesslocal=0;
@@ -65,6 +65,7 @@ static const char *maxprocsarg=0;
 static const char *warnarg=0;
 static const char *maxperiparg=0;
 static const char *maxpercarg=0;
+static const char *droparg=0;
 static const char *nodnslookup=0;
 static const char *noidentlookup=0;
 static const char *stderrarg=0;
@@ -83,6 +84,7 @@ static struct args arginfo[]={
 	{"access", &accessarg},
 	{"accesslocal", &accesslocal},
 	{"denymsg", &denymsgarg},
+	{"drop", &droparg},
 	{"address", &ipaddrarg},
 	{"block", 0, setup_block},
 	{"group", &grouparg},
@@ -1095,6 +1097,20 @@ static int doit(int argn, int argc, char **argv)
 	}
 }
 
+static void denied(int sockfd)
+{
+	if (denymsgarg) {
+		if (write(sockfd, denymsgarg, strlen(denymsgarg)) < 0 ||
+		    write(sockfd, "\n", 1) < 0)
+		{
+			sox_close(sockfd);
+			_exit(1);
+		}
+	}
+	sox_close(sockfd);
+	_exit(0);
+}
+
 static void accepted(int n, int sockfd, RFC1035_NETADDR *sin, int sinl,
 		     const char *prog,
 		     char **args)
@@ -1192,16 +1208,7 @@ static void accepted(int n, int sockfd, RFC1035_NETADDR *sin, int sinl,
 
 		if (allowaccess(&addr,0) == 0)
 		{
-			if (denymsgarg) {
-				if (write(sockfd, denymsgarg, strlen(denymsgarg)) < 0 ||
-				    write(sockfd, "\n", 1) < 0)
-				{
-					sox_close(sockfd);
-					_exit(1);
-				}
-			}
-			sox_close(sockfd);
-			_exit(0);
+			denied(sockfd);
 		}
 
 		run(sockfd, &addr, addrport, prog, args);
@@ -1584,6 +1591,52 @@ static void check_blocklist(struct blocklist_s *p, const RFC1035_ADDR *ia)
 }
 #endif
 
+static void check_drop(int sockfd)
+{
+	const char *p, *q;
+	char *r;
+
+	p=droparg;
+
+	if (p && !*p)
+		p="BLOCK";
+
+	for (; p && *p; q=p)
+	{
+		if (*p == ',')
+		{
+			q= ++p;
+			continue;
+		}
+
+		for (q=p; *q; ++q)
+			if (*q == ',')
+				break;
+
+		r=malloc(q-p+1);
+
+		if (!r)
+		{
+			perror("malloc");
+			_exit(1);
+		}
+
+		memcpy(r, p, q-p);
+		r[q-p]=0;
+
+		p=getenv(r);
+		free(r);
+
+		if (p && *p)
+		{
+			fprintf(stderr,
+				"WARN: dropped blocked connection from %s\n",
+				getenv("TCPREMOTEIP"));
+			denied(sockfd);
+		}
+	}
+}
+
 static void proxy();
 
 static void run(int fd, const RFC1035_ADDR *addr, int addrport,
@@ -1676,6 +1729,7 @@ const char *p;
 	for (bl=blocklist; bl; bl=bl->next)
 		check_blocklist(bl, addr);
 
+	check_drop(fd);
 	sox_close(0);
 	sox_close(1);
 	sox_dup(fd);

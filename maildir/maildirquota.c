@@ -1,5 +1,5 @@
 /*
-** Copyright 1998 - 2006 Double Precision, Inc.
+** Copyright 1998 - 2009 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
@@ -48,7 +48,7 @@
 #include	<ctype.h>
 #include	<numlib/numlib.h>
 
-static const char rcsid[]="$Id: maildirquota.c,v 1.30 2006/05/28 15:29:52 mrsam Exp $";
+static const char rcsid[]="$Id: maildirquota.c,v 1.31 2009/09/05 21:44:05 mrsam Exp $";
 
 static void parsequotastr(const char *, struct maildirquota *);
 
@@ -982,19 +982,30 @@ void maildir_quota_set(const char *dir, const char *quota)
 
 static void do_deliver_warning(const char *msgfile, const char *dir)
 {
-int	fdin, fd, ret;
-FILE *fpout;
-time_t	t;
-size_t	l, msg_len;
-char	*qname = 0;
-struct stat	sb;
-char	hostname[256];
-char	buf[4096];
-size_t	n;
-struct	maildirsize info;
-struct maildir_tmpcreate_info createInfo;
+	int	fdin, fd, ret;
+	FILE *fpout;
+	time_t	t;
+	size_t	l, msg_len;
+	char	*qname = 0;
+	struct stat	sb;
+	char	hostname[256];
+	char	buf[4096];
+	size_t	n;
+	struct	maildirsize info;
+	struct maildir_tmpcreate_info createInfo;
 
-	if ((fdin=open(msgfile, O_RDONLY)) < 0)
+	fdin=-1;
+
+	if (msgfile && *msgfile)
+		fdin=open(msgfile, O_RDONLY);
+
+	if (fdin < 0)
+	{
+		msgfile=QUOTAWARNMSG;
+		fdin=open(msgfile, O_RDONLY);
+	}
+
+	if (fdin < 0)
 		return;
 
 	l = strlen(dir)+sizeof("/quotawarn");
@@ -1039,7 +1050,7 @@ struct maildir_tmpcreate_info createInfo;
 	sprintf(buf+strlen(buf), "Message-Id: <%lu.overquota@%-1.256s>\n",
 		(unsigned long)t, hostname);
 
-	if (stat(msgfile, &sb) < 0) {
+	if (fstat(fdin, &sb) < 0) {
 		close(fdin);
 		return;
 	}
@@ -1103,7 +1114,8 @@ struct maildir_tmpcreate_info createInfo;
 	maildir_tmpcreate_free(&createInfo);
 }
 
-void maildir_deliver_quota_warning(const char *dir, const int percent)
+void maildir_deliver_quota_warning(const char *dir, const int percent,
+				   const char *msgquotafile)
 {
 	size_t l;
 	char *p;
@@ -1122,7 +1134,7 @@ void maildir_deliver_quota_warning(const char *dir, const int percent)
 	if (stat(p, &sb) == 0)
 	{
 		strcat(strcpy(p, dir), "/..");
-		maildir_deliver_quota_warning(p, percent);
+		maildir_deliver_quota_warning(p, percent, msgquotafile);
 		free(p);
 		return;
 	}
@@ -1137,7 +1149,7 @@ void maildir_deliver_quota_warning(const char *dir, const int percent)
 			if (maildir_readquota(&info) >= percent)
 			{
 				maildir_closequotafile(&info);
-				do_deliver_warning(QUOTAWARNMSG, dir);
+				do_deliver_warning(msgquotafile, dir);
 				return;
 			}
 			maildir_closequotafile(&info);

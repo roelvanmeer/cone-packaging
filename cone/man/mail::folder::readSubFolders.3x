@@ -1,28 +1,35 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::folder::readSubFolders
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::FOLDER::READSU" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::FOLDER::READSU" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::folder::readSubFolders - Enumerate subfolders
+mail::folder::readSubFolders \- Enumerate subfolders
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 
 class myCallback : public mail::callback {
@@ -31,37 +38,37 @@ public:
     void fail(std::string msg);
 };
 .fi
-.RE
 .sp
-.sp
-.RS 4
 .nf
 class myFolderCallback : public mail::callback::folderlist {
 public:
     void success(const std::vector<const mail::folder *> &folders);
 };
 .fi
-.RE
 .sp
-.RS 4
 .nf
 mail::folder *folder;
 .fi
-.RE
-.HP 23
+.HP \w'folder->readSubFolders('u
 .BI "folder->readSubFolders(myFolderCallback\ &" "folderCallback" ", myCallback\ &" "callback" ");"
 .SH "USAGE"
 .PP
-A mail account contains folders that are arranged in a tree\-like hierarchy\.
+A mail account contains folders that are arranged in a tree\-like hierarchy\&.
 \fBmail::folder::readSubFolders\fR
 enumerates
-\fIfolder\fR\'s subfolders\.
+\fIfolder\fR\'s subfolders\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 Use
 \fBmail::folder::hasSubFolders\fR(3x)
@@ -71,7 +78,9 @@ contains subfolders, and invoke
 \fBmail::folder::readSubFolders\fR
 only if
 \fBmail::folder::hasSubFolders\fR
-returns true\.
+returns true\&.
+.sp .5v
+.RE
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 The application must wait until
@@ -79,134 +88,182 @@ The application must wait until
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\. The
+method is invoked\&. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed\. The
+method is invoked when this request is succesfully processed\&. The
 \fBfail\fR
-method is invoked if this request cannot be processed\. The application must not destroy
+method is invoked if this request cannot be processed\&. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\.
+method is invoked\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 \fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
+method may be invoked even after other callback methods were invoked\&. This indicates that the request was partially completed before the error was encountered\&.
+.sp .5v
+.RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 The application must not destroy
 \fIfolderCallback\fR
-until this request fails or succeeds\.
+until this request fails or succeeds\&.
 \fIfolderCallback\fR\'s
 \fBsuccess\fR
 method is invoked just before the
 \fIcallback\fR\'s
 \fBsuccess\fR
-method\.
+method\&.
+.sp .5v
+.RE
 .PP
 The
-\fBfolderCallback\.success\fR
+\fBfolderCallback\&.success\fR
 method receives a vector of pointers to
 mail::folder
 objects, that enumerates
-\fIfolder\fR\'s subfolders\. The vector will be empty if
+\fIfolder\fR\'s subfolders\&. The vector will be empty if
 \fIfolder\fR
-does not have any subfolders\.
+does not have any subfolders\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 Subfolders received by
 \fBmail::callback::folder::success\fR
 are linked to the same account that
 \fIfolder\fR
-is linked to\.
+is linked to\&.
+.sp .5v
+.RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 mail::folders are linked to their corresponding
-mail::accounts\. A
+mail::accounts\&. A
 mail::folder
 created by one
 mail::account
 may not be used with a different
-mail::folder\. All
+mail::folder\&. All
 mail::folders created by a
 mail::account
 are invalidated when this
 mail::account
-object is destroyed\. Note that the
+object is destroyed\&. Note that the
 mail::folder
 objects are not automatically destroyed; the application is still responsible for destroying any remaining
 mail::folders, after their a
 mail::account
-is destroyed\.
+is destroyed\&.
+.sp .5v
+.RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 The
-\fBfolderCallback\.success\fR
+\fBfolderCallback\&.success\fR
 method receives a (possibly empty) vector of pointers to
 mail::folder
-objects\. These objects will be destroyed when
-\fBfolderCallback\.success\fR
-terminates\. The application must use
+objects\&. These objects will be destroyed when
+\fBfolderCallback\&.success\fR
+terminates\&. The application must use
 \fBmail::folder::clone\fR(3x)
 to create copies of
 mail::folder
-objects it wants to use later\.
+objects it wants to use later\&.
+.sp .5v
+.RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 Both
-\fBfolderCallback\.success\fR
+\fBfolderCallback\&.success\fR
 and
-\fBmyCallback\.success\fR
-method will be invoked if this request succeeds\.
-\fBfolderCallback\.success\fR
+\fBmyCallback\&.success\fR
+method will be invoked if this request succeeds\&.
+\fBfolderCallback\&.success\fR
 will be invoked before
-\fBmyCallback\.success\fR
-(since by definition this indicates that the request has been completed)\.
+\fBmyCallback\&.success\fR
+(since by definition this indicates that the request has been completed)\&.
+.sp .5v
+.RE
 .PP
 
 \fIcallback\fR\'s
 \fBsuccess\fR
 method is then invoked, after all
 mail::folder
-objects are destroyed\.
+objects are destroyed\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::readTopLevelFolders\fR(3x),
 \fBmail::folder::clone\fR(3x),
-\fBmail::folder::getParentFolder\fR(3x)\.
+\fBmail::folder::getParentFolder\fR(3x)\&.

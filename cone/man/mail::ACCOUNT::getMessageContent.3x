@@ -1,28 +1,35 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::ACCOUNT::getMessageContent
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::GETME" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::GETME" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::ACCOUNT::getMessageContent - Read message content
+mail::ACCOUNT::getMessageContent \- Read message content
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/sync\.H>
+#include <libmail/sync\&.H>
 
 
 class myStoreCallback : public mail::ACCOUNT::Store {
@@ -33,78 +40,95 @@ public:
 
 myStoreCallback storeCallback;
 .fi
-.RE
 .sp
-.RS 4
 .nf
 mail::ACCOUNT *mail;
 .fi
-.RE
-.HP 32
+.HP \w'bool\ ok=mail->getMessageContent('u
 .BI "bool ok=mail->getMessageContent(const\ std::vector<size_t>\ &" "msgList" ", bool\ " "peek" ", mail::readMode\ " "requestType" ", " "storeCallback" ");"
-.HP 32
+.HP \w'bool\ ok=mail->getMessageContent('u
 .BI "bool ok=mail->getMessageContent(size_t\ " "messageNum" ", bool\ " "peek" ", const\ mail::mimestruct\ &" "messagePart" ", mail::readMode\ " "requestType" ", " "storeCallback" ");"
 .sp
-.RS 4
 .nf
 std::string errmsg=mail\->getErrmsg();
 .fi
-.RE
 .SH "USAGE"
 .PP
 
 \fBmail::ACCOUNT::getMessagesContent\fR
-reads messages in the currently open folder\. There are two alternative versions of this method\.
+reads messages in the currently open folder\&. There are two alternative versions of this method\&.
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'The first version receives a list of message numbers\. This version is capable of returning headers and/or content of multiple messages\.
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+The first version receives a list of message numbers\&. This version is capable of returning headers and/or content of multiple messages\&.
 .sp
 
 \fImsgList\fR
-specifies a list of messages\. Messages are numbered starting with message #0 and up to one less than
+specifies a list of messages\&. Messages are numbered starting with message #0 and up to one less than
 \fBmail::ACCOUNT::getFolderIndexSize\fR(3x)
 (when
 \fBmail::account::getFolderIndexSize\fR
-returns 6, the messages are numbered 0 through 5)\. Only the messages that appear in
+returns 6, the messages are numbered 0 through 5)\&. Only the messages that appear in
 \fImsgList\fR
-are processed by this request\. When a message is removed from the folder, by
-\fBmail::ACCOUNT::updateFolderIndexInfo\fR(3x), the following messages are renumbered accordingly\.
+are processed by this request\&. When a message is removed from the folder, by
+\fBmail::ACCOUNT::updateFolderIndexInfo\fR(3x), the following messages are renumbered accordingly\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
-Most mail servers allow multiple applications to open the same folder\. Therefore, changes to the folder\'s contents can occur at any time\. Before making this request, the application should use
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+Most mail servers allow multiple applications to open the same folder\&. Therefore, changes to the folder\'s contents can occur at any time\&. Before making this request, the application should use
 \fBmail::ACCOUNT::checkNewMail\fR(3x)
-to verify that no unexpected changes have been made to the folder\'s contents\.
+to verify that no unexpected changes have been made to the folder\'s contents\&.
+.sp .5v
+.RE
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'The second version receives a single message number, and a
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+The second version receives a single message number, and a
 mail::mimestruct
-object that refers to a single MIME attachment or a section of this message\. The
+object that refers to a single MIME attachment or a section of this message\&. The
 mail::mimestruct
 object was previously obtained from
-\fBmail::ACCOUNT::getMessageStructure\fR(3x), for this message\. This method returns a recursive tree of
+\fBmail::ACCOUNT::getMessageStructure\fR(3x), for this message\&. This method returns a recursive tree of
 mail::mimestruct
-objects which enumerates the individual MIME sections in the message\.
+objects which enumerates the individual MIME sections in the message\&.
 \fImessagePart\fR
-must be a reference to one of these objects (or to a copy of these objects)\.
+must be a reference to one of these objects (or to a copy of these objects)\&.
 .RE
 .PP
 Setting
 \fIpeek\fR
 to true does not reset the
-unread
-message status flag for this message\. Otherwise the
-unread
-message status flag will be reset\.
+\fIunread\fR
+message status flag for this message\&. Otherwise the
+\fIunread\fR
+message status flag will be reset\&.
 .PP
 
 \fIstoreCallback\fR\'s
 \fBstore\fR
-method receives the requested content, which is determined by the remaining parameters\.
+method receives the requested content, which is determined by the remaining parameters\&.
 .PP
 
 \fIrequestType\fR
@@ -112,48 +136,56 @@ identifies the type of information to return from the selected MIME section, and
 .PP
 mail::readHeadersFolded
 .RS 4
-Return only the headers of the MIME section\. Folded headers are unfolded (the newline and the leading space on the next line are replaced with a single space character)\.
+Return only the headers of the MIME section\&. Folded headers are unfolded (the newline and the leading space on the next line are replaced with a single space character)\&.
 .RE
 .PP
 mail::readHeaders
 .RS 4
-Return only the headers of the MIME section\. The headers are returned as\-is, without unfolding them\.
+Return only the headers of the MIME section\&. The headers are returned as\-is, without unfolding them\&.
 .RE
 .PP
 mail::readContents
 .RS 4
-Return the content of the MIME section\.
+Return the content of the MIME section\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
-The MIME section is not decoded\. Check the
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+The MIME section is not decoded\&. Check the
 Content\-Transfer\-Encoding
-header to know what you\'re getting\.
+header to know what you\'re getting\&.
+.sp .5v
+.RE
 .RE
 .PP
 mail::readBoth
 .RS 4
-Return the entire MIME section, as is: its headers, a blank line, then the contents\.
+Return the entire MIME section, as is: its headers, a blank line, then the contents\&.
 .RE
 .PP
-The callback method may not receive the entire requested content at once\. Typically the method will be invoked multiple times; each time the method receives the next portion of the requested content\. When requesting headers and/or content of multiple messages, they may be returned in any order, and the
+The callback method may not receive the entire requested content at once\&. Typically the method will be invoked multiple times; each time the method receives the next portion of the requested content\&. When requesting headers and/or content of multiple messages, they may be returned in any order, and the
 \fImessageNumber\fR
-parameter indicates which message\'s contents are being returned (note, however, that the entire contents of a given message are returned in their entirety, even when the callback method gets invoked multiple times for that message, before content from the next message are returned)\.
+parameter indicates which message\'s contents are being returned (note, however, that the entire contents of a given message are returned in their entirety, even when the callback method gets invoked multiple times for that message, before content from the next message are returned)\&.
 .SH "RETURN CODES"
 .PP
 This method returns
 true
 if it succeeds, or
 false
-if it fails\. If the method fails, use
-mail::ACCOUNT::getErrmsg()
-to read a brief description of the error\.
+if it fails\&. If the method fails, use
+\fImail::ACCOUNT::getErrmsg()\fR
+to read a brief description of the error\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::ACCOUNT::getMessageContentDecoded\fR(3x),
 \fBmail::ACCOUNT::getMessageEnvelope\fR(3x),
-\fBmail::ACCOUNT::getMessageStructure\fR(3x)\.
+\fBmail::ACCOUNT::getMessageStructure\fR(3x)\&.

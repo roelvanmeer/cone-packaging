@@ -1,42 +1,48 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::account::resume
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::RESUM" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::RESUM" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::account::resume - Resume after a suspend
+mail::account::resume \- Resume after a suspend
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
       
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 .fi
-.RE
-.HP 27
+.HP \w'void\ mail::account::resume('u
 .BI "void mail::account::resume(void);"
 .SH "USAGE"
 .PP
 This function should be invoked when the application resumes after it was suspended, or after any other lengthy delay in calling
-\fBmail::account::process\fR\. The application could\'ve been suspended while
+\fBmail::account::process\fR\&. The application could\'ve been suspended while
 
 
 
 LibMAIL
-was in a middle of processing a background event\. After resuming, the jump in the system clock may result in
+was in a middle of processing a background event\&. After resuming, the jump in the system clock may result in
 
 
 
@@ -46,7 +52,7 @@ concluding that the remote mail server timed out without responding, when the ac
 
 
 LibMAIL
-just hasn\'t read it yet\.
+just hasn\'t read it yet\&.
 .PP
 
 \fBmail::account::process\fR
@@ -55,8 +61,8 @@ resets
 
 
 LibMAIL
-\'s internal timeouts\. Note that not much can be done if the application remained suspended long enough for the remote mail server to shut down the connection itself\.
+\'s internal timeouts\&. Note that not much can be done if the application remained suspended long enough for the remote mail server to shut down the connection itself\&.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::account::process\fR(3x)\.
+\fBmail::account::process\fR(3x)\&.

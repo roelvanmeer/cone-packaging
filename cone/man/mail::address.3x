@@ -1,35 +1,42 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::address
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ADDRESS" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ADDRESS" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::address - An E-mail address
+mail::address \- An E\-mail address
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
-#include <libmail/rfcaddr\.H>
+#include <libmail/rfcaddr\&.H>
 
-mail::address address("John Smith", "johnsmith@example\.com");
+mail::address address("John Smith", "johnsmith@example\&.com");
 
-std::string addr=address\.getAddr();
-std::string name=address\.getName();
+std::string addr=address\&.getAddr();
+std::string name=address\&.getName();
 
-address\.setAddr(addr);
-address\.setName(name);
+address\&.setAddr(addr);
+address\&.setName(name);
 
-std::string str=address\.toString();
+std::string str=address\&.toString();
 
 std::vector<mail::address> addressList;
 
@@ -42,43 +49,48 @@ bool error=mail::address::fromString(std::string addresses,
                                      addressList,
                                      errorIndex);
 
-std::string stdAddr=address\.getCanonAddress();
+std::string stdAddr=address\&.getCanonAddress();
 
 mail::address addr1, addr2;
 
 bool same= addr1 == addr2;
 bool notsame= addr1 != addr2;
 .fi
-.RE
 .SH "USAGE"
 .PP
 
 mail::address
-represents a single E\-mail address\. An E\-mail address consists of the recipient\'s name, and the actual address in the format of
-\fIuser\fR@\fIdomain\fR\. The name and the address components may be accessed or changed by
+represents a single E\-mail address\&. An E\-mail address consists of the recipient\'s name, and the actual address in the format of
+\fIuser\fR@\fIdomain\fR\&. The name and the address components may be accessed or changed by
 \fBgetName()\fR,
 \fBgetAddr()\fR,
 \fBsetName()\fR
 and
 \fBsetAddr()\fR
-methods\.
+methods\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 mail::emailAddress
-would be a more appropriate class for most situations\. The name component used by
+would be a more appropriate class for most situations\&. The name component used by
 \fBgetName()\fR
 and
 \fBsetName()\fR
-methods is the Internet\-format, MIME\-encoded name\.
+methods is the Internet\-format, MIME\-encoded name\&.
 mail::emailAddress
 is a subclass of
-mail::address, and provides more convenient methods for working with the name component of an E\-mail address\.
+mail::address, and provides more convenient methods for working with the name component of an E\-mail address\&.
 .PP
 The
 \fBtoString\fR
@@ -88,59 +100,61 @@ methods, defined below, will take a vector of either
 mail::emailAddress
 or
 mail::address
-objects, and in all other ways both classes are freely interchangable, and may be converted to one another\.
+objects, and in all other ways both classes are freely interchangable, and may be converted to one another\&.
+.sp .5v
+.RE
 .PP
 The
 \fBtoString\fR
-method converts an address to a text string formatted as "name <user@domain>"\. A second
+method converts an address to a text string formatted as "name <user@domain>"\&. A second
 \fBtoString\fR
-function creates an E\-mail header that contains a comma\-separated list of E\-mail addresses\. The first parameter must be the header\'s name (with a trailing space character); the second parameter is a reference to a vector of
+function creates an E\-mail header that contains a comma\-separated list of E\-mail addresses\&. The first parameter must be the header\'s name (with a trailing space character); the second parameter is a reference to a vector of
 mail::address
-objects\. An optional third parameter sets the maximum line width; the text string returned by
+objects\&. An optional third parameter sets the maximum line width; the text string returned by
 \fBtoString\fR
-will have newline characters, if necessary to make sure that each line is shorter than the specified maximum\.
+will have newline characters, if necessary to make sure that each line is shorter than the specified maximum\&.
 .PP
 
 \fBfromString\fR
 does the opposite: it converts the contents of an E\-mail header to an array of
 mail::address
-objects\. The first parameter is the E\-mail header\'s contents (\fIwithout\fR
-Header\-Name:)\. The second parameter is a reference to a vector of
+objects\&. The first parameter is the E\-mail header\'s contents (\fIwithout\fR
+Header\-Name:)\&. The second parameter is a reference to a vector of
 mail::address
-objects\.
+objects\&.
 \fBfromString\fR
-returns false if a fatal error has occured (out of memory, or something else)\.
+returns false if a fatal error has occured (out of memory, or something else)\&.
 \fIerrorIndex\fR
 is normally set to
-string::npos\. If the header cannot be parsed;
+string::npos\&. If the header cannot be parsed;
 \fIerrorIndex\fR
 is set to the index of the character in
 \fIaddresses\fR
 where a syntax error was found (the header is still parsed, and any recognizable addresses are still saved in
-\fIaddressList\fR)\.
+\fIaddressList\fR)\&.
 .PP
 
 \fIaddressList\fR
-should be empty\. Otherwise the addresses are appended to
-\fIaddressList\fR\'s existing contents\.
+should be empty\&. Otherwise the addresses are appended to
+\fIaddressList\fR\'s existing contents\&.
 .SS "Comparing addresses"
 .PP
 The
 \fIdomain\fR
 part of an E\-mail address is case insensitive, however the
 \fIuser\fR
-part of an E\-mail address is not case insensitive\. It is up to each individual
+part of an E\-mail address is not case insensitive\&. It is up to each individual
 \fIdomain\fR
 whether or not the
 \fIuser\fR
-part is case sensitive, or not\. Since it is not possible to determine whether
+part is case sensitive, or not\&. Since it is not possible to determine whether
 \fIuser\fR
 is case sensitive; the
 \fBgetCanonAddress\fR
 method returns the E\-mail address as
 \fIuser\fR@\fIdomain\fR, with only the
 \fIdomain\fR
-part converted to lowercase\.
+part converted to lowercase\&.
 .PP
 The object also defines the equality and non\-equality operators, which compare the address portion of two
 mail::address
@@ -151,4 +165,4 @@ part of each domain being case insensitive
 .PP
 
 \fBmail::emailAddress\fR(3x),
-\fBmail::envelope\fR(3x)\.
+\fBmail::envelope\fR(3x)\&.

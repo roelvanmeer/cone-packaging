@@ -1,6 +1,6 @@
-/* $Id: addressbookget.C,v 1.6 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: addressbookget.C,v 1.8 2009/10/31 22:38:07 mrsam Exp $
 **
-** Copyright 2002-2004, Double Precision Inc.
+** Copyright 2002-2009, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -131,9 +131,12 @@ void mail::addressbook::GetAddressList<T>::readContents(string successMsg)
 			while (b != e)
 			{
 				mail::emailAddress
-					convAddress(fromutf8(b->getName()),
-						    b->getAddr());
+					convAddress(mail::address("",
+								  b->getAddr()\
+								  ));
 
+				convAddress
+					.setDisplayName(fromutf8(b->getName()));
 				*b=convAddress;
 				++b;
 			}

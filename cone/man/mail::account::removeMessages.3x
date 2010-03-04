@@ -1,28 +1,35 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::account::removeMessages
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::REMOV" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::REMOV" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::account::removeMessages - Remove messages from the folder
+mail::account::removeMessages \- Remove messages from the folder
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 
 class myCallback : public mail::callback {
@@ -31,89 +38,123 @@ public:
     void fail(std::string msg);
 };
 .fi
-.RE
 .sp
-.RS 4
 .nf
 mail::account *account;
 .fi
-.RE
-.HP 24
+.HP \w'account->removeMessages('u
 .BI "account->removeMessages(const\ std::vector<size_t>\ " "msgList" ", myCallback\ &" "callback" ");"
 .SH "USAGE"
 .PP
-This function removes messages from the currently open folder\.
+This function removes messages from the currently open folder\&.
 \fImsgList\fR
-is a list of messages to be removed\.
+is a list of messages to be removed\&.
 .PP
 This request invokes methods in the currently opened folder\'s
 mail::callback::folder
 object, as follows:
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+
 \fBmail::account::messagesRemoved\fR
-is invoked for all messages removed from the folder\. Obviously, this method will be invoked, one at a time, for each message identified in
-\fImsgList\fR\.
+is invoked for all messages removed from the folder\&. Obviously, this method will be invoked, one at a time, for each message identified in
+\fImsgList\fR\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
-Messages are removed one at a time\. Each call to
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+Messages are removed one at a time\&. Each call to
 \fBmail::account::messagesRemoved\fR
 renumbers the remaining messages in the folder, and depending on the account type,
 \fBmail::account::messagesRemoved\fR
 may not necessarily receive an exact copy of
-\fImsgList\fR\. For example, with an IMAP account if
+\fImsgList\fR\&. For example, with an IMAP account if
 \fImsgList\fR
 contains
 1,
 2, and
 3, the
 \fBmail::account::messagesRemoved\fR
-function will probably be called three times\. Each time it will receive a single range of removed messages, set to messages
-1\-1, all three times\. This is because IMAP servers remove messages one message at a time\. The first invocation of
+function will probably be called three times\&. Each time it will receive a single range of removed messages, set to messages
+1\-1, all three times\&. This is because IMAP servers remove messages one message at a time\&. The first invocation of
 \fBmail::account::messagesRemoved\fR
-indicates that message #1 was removed, with the remaining messages renumbered; and old messages #2 and #3 becoming messages #1 and #2\. The second invocation of
+indicates that message #1 was removed, with the remaining messages renumbered; and old messages #2 and #3 becoming messages #1 and #2\&. The second invocation of
 \fBmail::account::messagesRemoved\fR\'s
 \fImessageNumber\fR
 parameter of
 1
-refers to the old message #2, which is now message #1\. Ditto for the third invocation of
-\fBmail::account::messagesRemoved\fR\.
+refers to the old message #2, which is now message #1\&. Ditto for the third invocation of
+\fBmail::account::messagesRemoved\fR\&.
 .sp
 On the other hand, with an IMAP account the
 \fBmail::account::messagesRemoved\fR
 method will be invoked once, giving a single range of removed messages,
-1\-3\. Application must be prepared to handle either situation\.
+1\-3\&. Application must be prepared to handle either situation\&.
+.sp .5v
+.RE
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'The
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+The
 \fBmail::account::messagesChanged\fR
-method may be invoked for any other messages in the folder with changed status flags\.
+method may be invoked for any other messages in the folder with changed status flags\&.
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+
 \fBmail::account::newMessages\fR
-may also be invoked if any messages were added to this folder\. The application should use
-\fBmail::account::getFolderIndexSize\fR(3x), and compare it to the previously\-known folder size, in order to determine how many messages were added to the folder (new messages are always added to the end of the message list)\.
+may also be invoked if any messages were added to this folder\&. The application should use
+\fBmail::account::getFolderIndexSize\fR(3x), and compare it to the previously\-known folder size, in order to determine how many messages were added to the folder (new messages are always added to the end of the message list)\&.
 .RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 This request should not be used with accounts on IMAP servers that do not implement the
-\fIUIDPLUS\fR\&[1]
-IMAP extension\.
+\m[blue]\fBUIDPLUS\fR\m[]\&\s-2\u[1]\d\s+2
+IMAP extension\&.
 \(lqUIDPLUS\(rq
-is required to directly support this functionality\. An alternative, much slower, fallback implementation will be used with IMAP servers that do not implement this protocol extension\.
+is required to directly support this functionality\&. An alternative, much slower, fallback implementation will be used with IMAP servers that do not implement this protocol extension\&.
+.sp .5v
+.RE
 .SH "RETURN CODES"
 .PP
 The application must wait until
@@ -121,34 +162,42 @@ The application must wait until
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\. The
+method is invoked\&. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed\. The
+method is invoked when this request is succesfully processed\&. The
 \fBfail\fR
-method is invoked if this request cannot be processed\. The application must not destroy
+method is invoked if this request cannot be processed\&. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\.
+method is invoked\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 \fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
+method may be invoked even after other callback methods were invoked\&. This indicates that the request was partially completed before the error was encountered\&.
+.sp .5v
+.RE
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::saveFolderIndexInfo\fR(3x),
 \fBmail::account::getFolderIndexInfo\fR(3x),
-\fBmail::account::updateNotify\fR(3x)\.
+\fBmail::account::updateNotify\fR(3x)\&.
 .SH "NOTES"
 .IP " 1." 4
 UIDPLUS

@@ -1,49 +1,55 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::ACCOUNT::logout
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::LOGOU" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::LOGOU" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::ACCOUNT::logout - Close a mail account
+mail::ACCOUNT::logout \- Close a mail account
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/sync\.H>
+#include <libmail/sync\&.H>
 
 mail::ACCOUNT *mail;
 .fi
-.RE
-.HP 13
+.HP \w'mail->logout('u
 .BI "mail->logout(void);"
 .SH "USAGE"
 .PP
 
 \fBmail::ACCOUNT::logout\fR
-closes a mail account\. This method should be called before destroying the
+closes a mail account\&. This method should be called before destroying the
 \fBmail::ACCOUNT\fR
-object\. Some types of mail accounts require certain processing before they are closed\. Destroying the object without
+object\&. Some types of mail accounts require certain processing before they are closed\&. Destroying the object without
 \fBmail::ACCOUNT::logout\fR
-may result in some changes to the mail account\'s contents not being permanently saved\.
+may result in some changes to the mail account\'s contents not being permanently saved\&.
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 The
 \fBmail::ACCOUNT\fR
-object should be destroyed after this function returns\. The object should not be recycled, and connected to another mail account\.
+object should be destroyed after this function returns\&. The object should not be recycled, and connected to another mail account\&.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::ACCOUNT::login\fR(3x)\.
+\fBmail::ACCOUNT::login\fR(3x)\&.

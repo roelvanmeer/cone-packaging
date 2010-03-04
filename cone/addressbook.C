@@ -1,6 +1,6 @@
-/* $Id: addressbook.C,v 1.13 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: addressbook.C,v 1.15 2009/10/31 22:38:07 mrsam Exp $
 **
-** Copyright 2003-2006, Double Precision Inc.
+** Copyright 2003-2009, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -532,7 +532,7 @@ bool AddressBook::searchAll(vector<mail::emailAddress> &addrList, // Orig list
 		{
 			mail::emailAddress addr= *curAddr;
 
-			if (addr.getAddrName().size() == 0)
+			if (addr.getDisplayName().size() == 0)
 			{
 				struct passwd *pw=getpwnam(addr.getAddr()
 							   .c_str());
@@ -546,7 +546,7 @@ bool AddressBook::searchAll(vector<mail::emailAddress> &addrList, // Orig list
 					if (n != nn.npos)
 						nn=nn.substr(0, n);
 
-					addr.setAddrName(nn);
+					addr.setDisplayName(nn);
 				}
 			}
 
@@ -666,12 +666,19 @@ AddAddressBookScreen::AddAddressBookScreen(CursesMainScreen *mainScreen,
 	// Get any defaults from the take addresses screen.
 
 	if (AddressBook::importAddr.size() > 0)
-		addresses.push_back( mail::emailAddress(AddressBook::importName,
-							AddressBook::importAddr));
+	{
+		mail::emailAddress addr;
+
+		addr.setDisplayName(AddressBook::importName);
+		addr.setDisplayAddr(AddressBook::importAddr);
+
+		addresses.push_back(addr);
+	}
+		
 	if (addresses.size() == 1)
 	{
-		name_field.setText(addresses[0].getAddrName());
-		addresses[0].setAddrName("");
+		name_field.setText(addresses[0].getDisplayName());
+		addresses[0].setDisplayName("");
 	}
 
 	// We want to decode MIME encoded addresses.  Hack.
@@ -685,8 +692,8 @@ AddAddressBookScreen::AddAddressBookScreen(CursesMainScreen *mainScreen,
 
 		for (b=addresses.begin(), e=addresses.end(); b != e; ++b)
 			decodedAddresses
-				.push_back(mail::address(b->getAddrName(),
-							 b->getAddr()));
+				.push_back(mail::address(b->getDisplayName(),
+							 b->getDisplayAddr()));
 	}
 
 	string s=mail::address::toString("", decodedAddresses, 0);
@@ -747,9 +754,27 @@ void AddAddressBookScreen::save()
 		vector<mail::address>::iterator b, e;
 
 		for (b=addrBuf.begin(), e=addrBuf.end(); b != e; ++b)
-			newEntry.addresses
-				.push_back(mail::emailAddress(b->getName(),
-							      b->getAddr()));
+		{
+			mail::emailAddress addr;
+
+			std::string errmsg;
+
+			errmsg=addr.setDisplayName(b->getName());
+
+			if (errmsg == "")
+				errmsg=addr.setDisplayAddr(b->getAddr());
+
+			if (errmsg != "")
+			{
+				addr_field.requestFocus();
+				statusBar->clearstatus();
+				statusBar->status(errmsg,
+						  statusBar->SYSERROR);
+				statusBar->beepError();
+				return;
+			}
+			newEntry.addresses.push_back(addr);
+		}
 	}
 
 	if (newEntry.addresses.size() == 0)
@@ -764,7 +789,7 @@ void AddAddressBookScreen::save()
 	if (newEntry.addresses.size() == 1 &&
 	    newEntry.addresses[0].getName().size() == 0)
 	{
-		newEntry.addresses[0].setAddrName(name_field.getText());
+		newEntry.addresses[0].setDisplayName(name_field.getText());
 	}
 
 	if (addressBook->add(newEntry))
@@ -1943,10 +1968,10 @@ AddressBookTakeScreen::addressButton
 ::addressButton(AddressBookTakeScreen *myScreenArg,
 		mail::emailAddress addrArg)
 	: CursesButton(myScreenArg,
-		       mail::address(addrArg.getAddrName(),
-				     addrArg.getAddr()).toString()),
-	  name(addrArg.getAddrName()),
-	  addr(addrArg.getAddr())
+		       mail::address(addrArg.getDisplayName(),
+				     addrArg.getDisplayAddr()).toString()),
+	  name(addrArg.getDisplayName()),
+	  addr(addrArg.getDisplayAddr())
 {
 	setStyle(MENU);
 }
@@ -2079,10 +2104,10 @@ bool AddressBookTakeScreen
 ::indexSort::operator()(const mail::emailAddress &a,
 			const mail::emailAddress &b)
 {
-	int n=a.getAddrName().compare(b.getAddrName());
+	int n=a.getDisplayName().compare(b.getDisplayName());
 
 	if (n)
 		return n < 0;
 
-	return a.getAddr().compare(b.getAddr()) < 0;
+	return a.getDisplayAddr().compare(b.getDisplayAddr()) < 0;
 }

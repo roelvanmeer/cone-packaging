@@ -1,16 +1,16 @@
-.\"  <!-- $Id: couriertcpd.sgml,v 1.11 2009/05/10 14:48:33 mrsam Exp $ -->
+.\"  <!-- $Id: couriertcpd.sgml,v 1.13 2009/10/11 11:30:31 mrsam Exp $ -->
 .\"  <!-- Copyright 2000-2009 Double Precision, Inc.  See COPYING for -->
 .\"  <!-- distribution information. -->
 '\" t
 .\"     Title: couriertcpd
 .\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
 .\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
-.\"      Date: 06/27/2009
+.\"      Date: 10/30/2009
 .\"    Manual: Double Precision, Inc.
 .\"    Source: Double Precision, Inc.
 .\"  Language: English
 .\"
-.TH "COURIERTCPD" "1" "06/27/2009" "Double Precision, Inc." "Double Precision, Inc."
+.TH "COURIERTCPD" "1" "10/30/2009" "Double Precision, Inc." "Double Precision, Inc."
 .\" -----------------------------------------------------------------
 .\" * set default formatting
 .\" -----------------------------------------------------------------
@@ -101,6 +101,18 @@ options can be used\&.
 Specifies an optional message to be returned to the client if the
 \fI\-access\fR
 option rejects them\&. The default is to drop the TCP connection without sending back any messages\&.
+.RE
+.PP
+\-drop=\fIvar\fR
+.RS 4
+If the environment variable
+\fIvar\fR
+is set to a nonempty value, terminate immediately\&. Do not run the
+\fBprogram\fR
+to handle the connection\&. See DNS ACCESS LISTS, below, for more information\&.
+\fIvar\fR
+defaults to
+\(lqBLOCK\(rq, if not specified\&.
 .RE
 .PP
 \-group=\fIgroup\fR
@@ -514,8 +526,7 @@ An alternative to listing banned IP addresses is to use an external DNS\-based I
 There is no provision to support IPv6\-based lists, because none yet exist\&. IPv6\-based access list support will be added in the future\&.
 .PP
 
-\fBcouriertcpd\fR
-does not automatically reject connections from any IP address listed on a DNS\-based list\&. If the connecting IP address is listed couriertcpd simply sets an environment variable\&. It\'s up to the
+\fBcouriertcpd\fR\'s default configuration does not automatically reject connections from any IP address listed on a DNS\-based list\&. If the connecting IP address is listed couriertcpd simply sets an environment variable\&. It\'s up to the
 \fBprogram\fR, run by
 \fBcouriertcpd\fR, to read the environment variable and choose what to do if the environment variable is set\&.
 .PP
@@ -541,11 +552,32 @@ sets the environment variable if the access list includes any A record entry for
 .PP
 The contents of the environment variable will be the contents of any TXT record for the listed IP address\&.
 \fIvar\fR[/\fIn\&.n\&.n\&.n\fR] can be optionally followed by a comma and a text message, which will be used instead of the TXT record\&. The text message may include a single @ character somewhere in it, which will be replaced by the listed IP address\&.
+.PP
+When the
+\fB\-drop\fR
+option is given in addition to
+\fB\-block\fR,
+\fBcouriertcpd\fR
+drops the connection, rather than running the
+\fBprogram\fR\&. First, all
+\fB\-block\fR
+options are processed and the environment variables are set, based on the results of any matching DNS lookups\&. The
+\fB\-drop\fR
+gets processed after all DNS lookups\&.
+\fB\-drop\fR
+takes a list of comma\-separated environment variables (if not specified,
+\fBBLOCK\fR
+is the default list)\&. If any environment variable named by the
+\fB\-drop\fR
+option is set to a non\-empty string,
+\fBcouriertcpd\fR
+drops the connection instead of executing the
+\fBprogram\fR\&.
 .SS "MULTIPLE DNS LISTS"
 .PP
 Multiple
 \fB\-block\fR
-options can be used\&. The connecting IP address will be looked up in multiple access lists\&. This is implemented as follows\&.
+options can be used\&. The connecting IP address gets looked up in multiple access lists\&. This is implemented as follows\&.
 .PP
 
 \fBcouriertcpd\fR
@@ -557,7 +589,7 @@ skips the DNS list lookup (this is also true if only one
 \fB\-block\fR
 option is specified)\&. Therefore, if multiple
 \fB\-block\fR
-options are used, and an IP address is found in the first access list, the remaininglists that use the same environment variable will not be checked\&. But other lists that use a different environment variable WILL be checked\&.
+options are used, and an IP address is found in the first access list, the remaining lists that use the same environment variable will not be checked\&. But other lists that use a different environment variable WILL be checked\&.
 .PP
 The same
 \fIzone\fR

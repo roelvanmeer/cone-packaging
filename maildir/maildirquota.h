@@ -2,7 +2,7 @@
 #define	maildirquota_h
 
 /*
-** Copyright 1998 - 2003 Double Precision, Inc.
+** Copyright 1998 - 2009 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
@@ -20,7 +20,7 @@
 extern "C" {
 #endif
 
-static const char maildirquota_h_rcsid[]="$Id: maildirquota.h,v 1.8 2004/05/25 02:08:41 mrsam Exp $";
+static const char maildirquota_h_rcsid[]="$Id: maildirquota.h,v 1.9 2009/09/05 21:44:05 mrsam Exp $";
 
 #define	MDQUOTA_SIZE	'S'	/* Total size of all messages in maildir */
 #define	MDQUOTA_BLOCKS	'B'	/* Total # of blocks for all messages in
@@ -140,7 +140,8 @@ void maildir_quota_recalculate(const char *maildir);
 int maildirquota_countfolder(const char *folder);
 int maildirquota_countfile(const char *filename);
 
-void maildir_deliver_quota_warning(const char *dir, const int percent);
+void maildir_deliver_quota_warning(const char *dir, const int percent,
+				   const char *msgquotafile);
 
 #ifdef  __cplusplus
 }

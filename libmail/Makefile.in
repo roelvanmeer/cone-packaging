@@ -15,9 +15,9 @@
 
 @SET_MAKE@
 
-# $Id: Makefile.am,v 1.16 2007/11/05 05:11:29 mrsam Exp $
+# $Id: Makefile.am,v 1.17 2009/10/31 03:41:59 mrsam Exp $
 #
-# Copyright 2002-2007, Double Precision Inc.
+# Copyright 2002-2009, Double Precision Inc.
 #
 # See COPYING for distribution information.
 #
@@ -61,7 +61,8 @@ CONFIG_HEADER = libmail_config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
-libmail_la_LIBADD =
+am__DEPENDENCIES_1 =
+libmail_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libmail_la_OBJECTS = mail.lo addmessage.lo addmessageimport.lo \
 	addmessageremoveattachments.lo addressbook.lo \
 	addressbookadd.lo addressbookget.lo addressbookopen.lo \
@@ -97,7 +98,7 @@ mailtool_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(CXXFLAGS) $(mailtool_LDFLAGS) $(LDFLAGS) -o $@
 am_testsuite_OBJECTS = testsuite.$(OBJEXT)
 testsuite_OBJECTS = $(am_testsuite_OBJECTS)
-am__DEPENDENCIES_1 = libmail.la ../rfc2045/librfc2045.la \
+am__DEPENDENCIES_2 = libmail.la ../rfc2045/librfc2045.la \
 	../rfc822/librfc822.la ../rfc822/libencode.la \
 	../maildir/libmaildir.la ../liblock/liblock.la \
 	../unicode/libunicode.la ../libhmac/libhmac.la \
@@ -183,6 +184,8 @@ INSTINCLUDES = @INSTINCLUDES@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBCOURIERTLS = @LIBCOURIERTLS@
+LIBIDN_CFLAGS = @LIBIDN_CFLAGS@
+LIBIDN_LIBS = @LIBIDN_LIBS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
@@ -204,6 +207,7 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PKG_CONFIG = @PKG_CONFIG@
 RANLIB = @RANLIB@
 SED = @SED@
 SENDMAIL = @SENDMAIL@
@@ -267,6 +271,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 CONFIG_STATUS_DEPENDENCIES = ../tcpd/couriertls.config
 noinst_LTLIBRARIES = libmail.la
+AM_CFLAGS = $(LIBIDN_CFLAGS)
 libmail_la_SOURCES = misc.H mail.H mail.C \
 			addmessage.C addmessage.H \
 			addmessageimport.C \
@@ -377,6 +382,7 @@ libmail_la_SOURCES = misc.H mail.H mail.C \
 			tmpaccount.C tmpaccount.H \
 			tmpaccountadd.C tmpaccountfolder.C
 
+libmail_la_LIBADD = $(LIBIDN_LIBS)
 mailtool_SOURCES = mailtool.C
 mailtool_DEPENDENCIES = libmail.la \
 	../rfc2045/librfc2045.la \

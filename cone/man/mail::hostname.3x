@@ -1,36 +1,42 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::hostname
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::HOSTNAME" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::HOSTNAME" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::hostname - Return host name
+mail::hostname \- Return host name
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
       
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 .fi
-.RE
-.HP 36
+.HP \w'std::string\ hostname=mail::hostname('u
 .BI "std::string hostname=mail::hostname(void);"
 .SH "USAGE"
 .PP
-This function return this machine\'s network name\.
+This function return this machine\'s network name\&.
 .SH "RETURN CODES"
 .PP
-This machine\'s host name, as a string\.
+This machine\'s host name, as a string\&.

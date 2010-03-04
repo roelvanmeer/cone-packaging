@@ -1,4 +1,4 @@
-/* $Id: addressbook.C,v 1.6 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: addressbook.C,v 1.7 2009/11/08 23:52:31 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -124,7 +124,7 @@ void mail::addressbook::setIndex(size_t messageNumber,
 				 string subject)
 {
 	subject= mail::rfc2047::decoder()
-		.decodeEnhanced(subject, unicode_UTF8);
+		.decode(subject, unicode_UTF8);
 
 	if (messageNumber < index.size())
 	{

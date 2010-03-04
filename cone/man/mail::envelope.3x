@@ -1,29 +1,35 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::envelope
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ENVELOPE" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ENVELOPE" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::envelope - Message envelope information
+mail::envelope \- Message envelope information
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
-#include <libmail/envelope\.H>
+#include <libmail/envelope\&.H>
 
 mail::envelope myEnvelope;
 .fi
-.RE
 .SH "USAGE"
 .PP
 
@@ -38,110 +44,110 @@ header, or
 0
 if the message does not have the
 Date:
-header\.
+header\&.
 .RE
 .PP
 std::string subject
 .RS 4
 The contents of the message\'s
 Subject:
-header\. This is set to an empty string if the header is not present\.
+header\&. This is set to an empty string if the header is not present\&.
 .RE
 .PP
 std::string inreplyto
 .RS 4
 The contents of the message\'s
 In\-Reply\-To:
-header\. This is set to an empty string if the header is not present\.
+header\&. This is set to an empty string if the header is not present\&.
 .RE
 .PP
 std::string messageid
 .RS 4
 The contents of the message\'s
 Message\-ID:
-header\. This is set to an empty string if the header is not present\.
+header\&. This is set to an empty string if the header is not present\&.
 .RE
 .PP
 std::vector <std::string> references
 .RS 4
 An array (possibly empty) of message IDs taken from the
 References:
-header\.
-references
+header\&.
+\fIreferences\fR
 is guaranteed to be filled in only for an
 envelope
-representing the whole message\.
-references
+representing the whole message\&.
+\fIreferences\fR
 of
 message/rfc822
-attachments may or may not be filled in\.
+attachments may or may not be filled in\&.
 .sp
 
-references
+\fIreferences\fR
 is initialized by either the
 \fBmessageEnvelopeCallback\fR
 or the
 \fBmessageReferencesCallback\fR
 method (depending on the underlying account type) of
-mail::callback::message\.
+mail::callback::message\&.
 .RE
 .PP
 std::vector<mail::address> from
 .RS 4
 An array that lists the addresses in the message\'s
 From:
-header\. This array is empty if the header is not present\. If a message has more than one
+header\&. This array is empty if the header is not present\&. If a message has more than one
 From:
-header, this array will list the addresses from all headers, combined\.
+header, this array will list the addresses from all headers, combined\&.
 .RE
 .PP
 std::vector<mail::address> sender
 .RS 4
 An array that lists the addresses in the message\'s
 Sender:
-header\. This array is empty if the header is not present\. If a message has more than one
+header\&. This array is empty if the header is not present\&. If a message has more than one
 Sender:
-header, this array will list the addresses from all headers, combined\.
+header, this array will list the addresses from all headers, combined\&.
 .RE
 .PP
 std::vector<mail::address> replyto
 .RS 4
 An array that lists the addresses in the message\'s
 Reply\-To:
-header\. This array is empty if the header is not present\. If a message has more than one
+header\&. This array is empty if the header is not present\&. If a message has more than one
 Reply\-To:
-header, this array will list the addresses from all headers, combined\.
+header, this array will list the addresses from all headers, combined\&.
 .RE
 .PP
 std::vector<mail::address> to
 .RS 4
 An array that lists the addresses in the message\'s
 To:
-header\. This array is empty if the header is not present\. If a message has more than one
+header\&. This array is empty if the header is not present\&. If a message has more than one
 To:
-header, this array will list the addresses from all headers, combined\.
+header, this array will list the addresses from all headers, combined\&.
 .RE
 .PP
 std::vector<mail::address> cc
 .RS 4
 An array that lists the addresses in the message\'s
 Cc:
-header\. This array is empty if the header is not present\. If a message has more than one
+header\&. This array is empty if the header is not present\&. If a message has more than one
 Cc:
-header, this array will list the addresses from all headers, combined\.
+header, this array will list the addresses from all headers, combined\&.
 .RE
 .PP
 std::vector<mail::address> bcc
 .RS 4
 An array that lists the addresses in the message\'s
 Bcc:
-header\. This array is empty if the header is not present\. If a message has more than one
+header\&. This array is empty if the header is not present\&. If a message has more than one
 Bcc:
-header, this array will list the addresses from all headers, combined\.
+header, this array will list the addresses from all headers, combined\&.
 .RE
 .SH "SEE ALSO"
 .PP
 
 \fBmail::address\fR(3x),
 \fBmail::mimestruct\fR(3x),
-\fBmail::account::getFolderIndexInfo\fR(3x)\.
+\fBmail::account::getFolderIndexInfo\fR(3x)\&.

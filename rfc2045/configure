@@ -792,7 +792,6 @@ LTLIBOBJS
 LIBOBJS
 HAVE_SGML_FALSE
 HAVE_SGML_TRUE
-UNICODE_LIB
 RFC2045CHARSET
 rfc822includedir
 OTOOL64
@@ -912,7 +911,6 @@ enable_libtool_lock
 with_package
 with_version
 enable_mimecharset
-enable_unicode
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1561,7 +1559,6 @@ Optional Features:
                           optimize for fast installation [default=yes]
   --disable-libtool-lock  avoid locking (might break parallel builds)
   --enable-mimecharset=charset   Default MIME charset to set on new messages
-
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -5349,8 +5346,8 @@ esac
 
 
 
-macro_version='2.2.6'
-macro_revision='1.3012'
+macro_version='2.2.6b'
+macro_revision='1.3017'
 
 
 
@@ -5909,13 +5906,13 @@ if test "${lt_cv_nm_interface+set}" = set; then
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:5912: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:5909: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:5915: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:5912: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:5918: output\"" >&5)
+  (eval echo "\"\$as_me:5915: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -7120,7 +7117,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 7123 "configure"' > conftest.$ac_ext
+  echo '#line 7120 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -8483,11 +8480,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8486: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8483: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8490: \$? = $ac_status" >&5
+   echo "$as_me:8487: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8822,11 +8819,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8825: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8822: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8829: \$? = $ac_status" >&5
+   echo "$as_me:8826: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8927,11 +8924,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8930: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8927: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8934: \$? = $ac_status" >&5
+   echo "$as_me:8931: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8982,11 +8979,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8985: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8982: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8989: \$? = $ac_status" >&5
+   echo "$as_me:8986: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -11785,7 +11782,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11788 "configure"
+#line 11785 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11881,7 +11878,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11884 "configure"
+#line 11881 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13267,29 +13264,6 @@ fi
 
 CFLAGS="$CFLAGS -I${srcdir}/.."
 
-
-
-
-# Check whether --enable-unicode was given.
-if test "${enable_unicode+set}" = set; then
-  enableval=$enable_unicode; unicode="$enableval"
-else
-  unicode="no"
-fi
-
-
-if test -d ${srcdir}/../unicode
-then
-	if test "$unicode" != "no"
-	then
-
-cat >>confdefs.h <<_ACEOF
-#define HAVE_UNICODE 1
-_ACEOF
-
-	fi
-	UNICODE_LIB=../unicode/libunicode.la
-fi
 
 
 

@@ -1,89 +1,101 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::ACCOUNT::copyMessagesTo
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::COPYM" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::COPYM" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::ACCOUNT::copyMessagesTo - Copy messages to another folder
+mail::ACCOUNT::copyMessagesTo \- Copy messages to another folder
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/sync\.H>
+#include <libmail/sync\&.H>
 
 
 mail::ACCOUNT *mail;
 mail::folder *folder;
 .fi
-.RE
-.HP 29
+.HP \w'bool\ ok=mail->copyMessagesTo('u
 .BI "bool ok=mail->copyMessagesTo(const\ std::vector<size_t>\ &" "msgList" ", mail::folder\ *" "copyTo" ");"
 .sp
-.RS 4
 .nf
 std::string errmsg=mail\->getErrmsg();
 .fi
-.RE
 .SH "USAGE"
 .PP
 
 \fImsgList\fR
-specifies a list of messages\. Messages are numbered starting with message #0 and up to one less than
+specifies a list of messages\&. Messages are numbered starting with message #0 and up to one less than
 \fBmail::ACCOUNT::getFolderIndexSize\fR(3x)
 (when
 \fBmail::account::getFolderIndexSize\fR
-returns 6, the messages are numbered 0 through 5)\. Only the messages that appear in
+returns 6, the messages are numbered 0 through 5)\&. Only the messages that appear in
 \fImsgList\fR
-are processed by this request\. When a message is removed from the folder, by
-\fBmail::ACCOUNT::updateFolderIndexInfo\fR(3x), the following messages are renumbered accordingly\.
+are processed by this request\&. When a message is removed from the folder, by
+\fBmail::ACCOUNT::updateFolderIndexInfo\fR(3x), the following messages are renumbered accordingly\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
-Most mail servers allow multiple applications to open the same folder\. Therefore, changes to the folder\'s contents can occur at any time\. Before making this request, the application should use
+Most mail servers allow multiple applications to open the same folder\&. Therefore, changes to the folder\'s contents can occur at any time\&. Before making this request, the application should use
 \fBmail::ACCOUNT::checkNewMail\fR(3x)
-to verify that no unexpected changes have been made to the folder\'s contents\.
+to verify that no unexpected changes have been made to the folder\'s contents\&.
+.sp .5v
+.RE
 .PP
 
 \fBmail::ACCOUNT::copyMessagesTo\fR
-copies messages in the currently\-open folder to another folder\.
+copies messages in the currently\-open folder to another folder\&.
 \fIcopyTo\fR
 is a pointer to a
 mail::folder
-object, representing the folder where messages are copied to\. If
+object, representing the folder where messages are copied to\&. If
 \fIaccount\fR
 is an IMAP account and
 \fIcopyTo\fR
-is another folder in the same account, then the messages are quickly copied by the IMAP server\. Otherwise each message is individually downloaded and copied to the
+is another folder in the same account, then the messages are quickly copied by the IMAP server\&. Otherwise each message is individually downloaded and copied to the
 \fIcopyTo\fR
-folder\.
+folder\&.
 .SH "RETURN CODES"
 .PP
 This method returns
 true
 if it succeeds, or
 false
-if it fails\. If the method fails, use
-mail::ACCOUNT::getErrmsg()
-to read a brief description of the error\.
+if it fails\&. If the method fails, use
+\fImail::ACCOUNT::getErrmsg()\fR
+to read a brief description of the error\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::ACCOUNT::moveMessagesTo\fR(3x),
-\fBmail::ACCOUNT::searchMessages\fR(3x)\.
+\fBmail::ACCOUNT::searchMessages\fR(3x)\&.

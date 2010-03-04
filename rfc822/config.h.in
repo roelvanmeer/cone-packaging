@@ -6,9 +6,6 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* Whether we have libunicode.a */
-#undef HAVE_LIBUNICODE
-
 /* Define to 1 if you have the <locale.h> header file. */
 #undef HAVE_LOCALE_H
 
@@ -44,6 +41,9 @@
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
+
+/* Define to 1 if you want Libidn. */
+#undef LIBIDN
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
