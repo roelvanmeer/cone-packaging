@@ -1,4 +1,4 @@
-/* $Id: nntp.C,v 1.14 2008/07/07 03:25:41 mrsam Exp $
+/* $Id: nntp.C,v 1.15 2010/04/29 00:34:50 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -184,7 +184,7 @@ int mail::nntp::socketRead(const std::string &readbuffer)
 {
 	size_t n;
 
-	if (!tasks.empty() && (n=readbuffer.find('\n')) != readbuffer.npos)
+	if (!tasks.empty() && (n=readbuffer.find('\n')) != std::string::npos)
 	{
 		size_t i=n;
 
@@ -605,7 +605,7 @@ void mail::nntp::findFolder(string folder,
 			    callback &callback2)
 {
 	if (folder.size() == 0 ||
-	    (folder[0] == '/' && folder.find('.') == folder.npos))
+	    (folder[0] == '/' && folder.find('.') == std::string::npos))
 	{
 		mail::nntp::folder dummy(this, folder, false, true);
 

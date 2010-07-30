@@ -1,4 +1,4 @@
-/* $Id: cursesmessageflowedtext.C,v 1.2 2005/06/30 02:55:49 mrsam Exp $
+/* $Id: cursesmessageflowedtext.C,v 1.3 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -34,7 +34,7 @@ bool CursesMessage::FlowedTextParser::operator()(string text)
 
 	size_t n;
 
-	while ((n=flowedTextBuffer.find('\n')) != flowedTextBuffer.npos)
+	while ((n=flowedTextBuffer.find('\n')) != std::string::npos)
 	{
 		text=flowedTextBuffer.substr(0, n);
 		flowedTextBuffer=flowedTextBuffer.substr(n+1);

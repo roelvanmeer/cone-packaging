@@ -31,8 +31,8 @@ information.
         <td width="20%" align="left" rowspan="1" colspan="1">
         <a accesskey="p" href="leaf.html" shape="rect">Prev</a>&#160;</td>
 
-        <th width="60%" align="center" rowspan="1" colspan="1">Cone
-        mail client</th>
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="application">Cone</span> mail client</th>
 
         <td width="20%" align="right" rowspan="1" colspan="1">
         &#160;<a accesskey="n" href="libmail.html" shape="rect">Next</a></td>
@@ -41,7 +41,7 @@ information.
     <hr/>
   </div>
 
-  <div class="refentry" lang="en" xml:lang="en">
+  <div class="refentry" title="mailtool">
     <a id="mailtool" shape="rect" name="mailtool"> </a>
 
     <div class="titlepage"/>
@@ -52,7 +52,7 @@ information.
       <p>mailtool &#8212; Process mailboxes</p>
     </div>
 
-    <div class="refsynopsisdiv">
+    <div class="refsynopsisdiv" title="Synopsis">
       <h2>Synopsis</h2>
 
       <div class="cmdsynopsis">
@@ -60,8 +60,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id518210" shape="rect" name="id518210"> </a>
+    <div class="refsect1" title="USAGE">
+      <a id="id498317" shape="rect" name="id498317"> </a>
 
       <h2>USAGE</h2>
 
@@ -123,7 +123,7 @@ information.
           <dt><span class="term">inbox:<em class="replaceable"><code>path</code></em></span></dt>
 
           <dd>
-            <p>Local mbox mail folders, like &#8220;<span class="quote">mbox:<em class="replaceable"><code>path</code></em></span>&#8221;;
+            <p>Local mbox mail folders, like <span class="quote">&#8220;<span class="quote">mbox:<em class="replaceable"><code>path</code></em></span>&#8221;</span>;
             additionally, the system spool mailbox is automatically
             copied to <code class="filename">$HOME/Inbox</code>,
             which is accessible as folder <code class="literal">INBOX</code>.</p>
@@ -183,8 +183,9 @@ information.
             <p>Do not use the <a class="link" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> if the server claims the
             availability of this experimental mail access protocol,
             and fall back to IMAP compatibility mode (this option
-            is meaningful only with &#8220;<span class="quote"><code class="literal">imap://</code></span>&#8221; and
-            &#8220;<span class="quote"><code class="literal">imaps://</code></span>&#8221; URLs).</p>
+            is meaningful only with <span class="quote">&#8220;<span class="quote"><code class="literal">imap://</code></span>&#8221;</span> and
+            <span class="quote">&#8220;<span class="quote"><code class="literal">imaps://</code></span>&#8221;</span>
+            URLs).</p>
           </dd>
 
           <dt><span class="term"><code class="literal">/notls</code></span></dt>
@@ -225,7 +226,7 @@ information.
             connection will be established even if the server's
             certificate would otherwise be rejected.</p>
 
-            <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
               <h3 class="title">Note</h3>
 
               <p>This option is applicable even when an encrypted
@@ -242,8 +243,8 @@ information.
         </dl>
       </div>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id519150" shape="rect" name="id519150"> </a>
+      <div class="refsect2" title="Displaying mailbox contents">
+        <a id="id499257" shape="rect" name="id499257"> </a>
 
         <h3>Displaying mailbox contents</h3>
 
@@ -265,8 +266,8 @@ mailtool -tree imap://jsmith@mail.example.com/novalidate-cert/cram
         </div>
       </div>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id519416" shape="rect" name="id519416"> </a>
+      <div class="refsect2" title="Creating folders">
+        <a id="id499523" shape="rect" name="id499523"> </a>
 
         <h3>Creating folders</h3>
 
@@ -286,13 +287,13 @@ mailtool -create INBOX.lists announcements maildir:Maildir
 </pre>
         </div>
 
-        <p>This command creates a new folder &#8220;<span class="quote">announcements</span>&#8221; as a subfolders of
-        &#8220;<span class="quote">INBOX.lists</span>&#8221; in the
-        local maildir.</p>
+        <p>This command creates a new folder <span class="quote">&#8220;<span class="quote">announcements</span>&#8221;</span> as a subfolders
+        of <span class="quote">&#8220;<span class="quote">INBOX.lists</span>&#8221;</span> in the local
+        maildir.</p>
       </div>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id519531" shape="rect" name="id519531"> </a>
+      <div class="refsect2" title="Deleting folders">
+        <a id="id499638" shape="rect" name="id499638"> </a>
 
         <h3>Deleting folders</h3>
 
@@ -315,8 +316,8 @@ mailtool -delete INBOX.lists.announcements maildir:Maildir
         </div>
       </div>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id519626" shape="rect" name="id519626"> </a>
+      <div class="refsect2" title="Renaming folders">
+        <a id="id499733" shape="rect" name="id499733"> </a>
 
         <h3>Renaming folders</h3>
 
@@ -341,15 +342,15 @@ mailtool -rename INBOX.lists.announcements INBOX.lists Announcements maildir:Mai
 </pre>
         </div>
 
-        <p>The folder &#8220;<span class="quote">INBOX.lists.announcements</span>&#8221; is renamed
-        to &#8220;<span class="quote">INBOX.lists.Announcements</span>&#8221;. This
-        slightly unusual way to rename folder allows folders to be
-        relocated in the mail <em class="replaceable"><code>account</code></em>'s folder
+        <p>The folder <span class="quote">&#8220;<span class="quote">INBOX.lists.announcements</span>&#8221;</span> is
+        renamed to <span class="quote">&#8220;<span class="quote">INBOX.lists.Announcements</span>&#8221;</span>.
+        This slightly unusual way to rename folder allows folders
+        to be relocated in the mail <em class="replaceable"><code>account</code></em>'s folder
         hierarchy.</p>
       </div>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id519740" shape="rect" name="id519740"> </a>
+      <div class="refsect2" title="Reading folder's index">
+        <a id="id499848" shape="rect" name="id499848"> </a>
 
         <h3>Reading folder's index</h3>
 
@@ -371,8 +372,8 @@ mailtool -index INBOX imap://john@mail.example.com/novalidate-cert
         </div>
       </div>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id519811" shape="rect" name="id519811"> </a>
+      <div class="refsect2" title="Removing a message from a folder">
+        <a id="id499919" shape="rect" name="id499919"> </a>
 
         <h3>Removing a message from a folder</h3>
 
@@ -390,8 +391,9 @@ mailtool -index INBOX imap://john@mail.example.com/novalidate-cert
         <p><em class="replaceable"><code>n</code></em> may be a
         comma-separated list of message numbers, in strictly
         numerically increasing order. <code class="literal">-remove</code> confirms the list of messages to
-        remove and issues a &#8220;<span class="quote">Ready:</span>&#8221; prompt. Press <span class="keycap"><strong>ENTER</strong></span> to remove the
-        messages.</p>
+        remove and issues a <span class="quote">&#8220;<span class="quote">Ready:</span>&#8221;</span> prompt. Press
+        <span class="keycap"><strong>ENTER</strong></span> to
+        remove the messages.</p>
 
         <div class="informalexample">
           <pre class="programlisting" xml:space="preserve">
@@ -400,8 +402,8 @@ mailtool -remove INBOX 28,31 imap://john@mail.example.com/novalidate-cert
         </div>
       </div>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id519924" shape="rect" name="id519924"> </a>
+      <div class="refsect2" title="Filtering messages">
+        <a id="id500031" shape="rect" name="id500031"> </a>
 
         <h3>Filtering messages</h3>
 
@@ -415,10 +417,10 @@ mailtool -remove INBOX 28,31 imap://john@mail.example.com/novalidate-cert
         <code class="literal">-index</code> and <code class="literal">-remove</code>. <em class="replaceable"><code>folder</code></em>'s index is
         downloaded, and the summary of each message is shown, one
         message at a time. Each message's summary is followed by a
-        prompt: &#8220;<span class="quote">Delete, Skip, or
-        Exit</span>&#8221;. Pressing <span class="keycap"><strong>D</strong></span> removes the message,
-        <span class="keycap"><strong>S</strong></span> leaves the
-        message unchanged, and <span class="keycap"><strong>E</strong></span> leaves the remaining
+        prompt: <span class="quote">&#8220;<span class="quote">Delete, Skip, or Exit</span>&#8221;</span>.
+        Pressing <span class="keycap"><strong>D</strong></span>
+        removes the message, <span class="keycap"><strong>S</strong></span> leaves the message
+        unchanged, and <span class="keycap"><strong>E</strong></span> leaves the remaining
         messages unchanged.</p>
 
         <div class="informalexample">
@@ -427,7 +429,7 @@ mailtool -filter INBOX pop3://john@mail.example.com/novalidate-cert
 </pre>
         </div>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
           <p><code class="literal">-filter</code> is not meant to
@@ -437,8 +439,8 @@ mailtool -filter INBOX pop3://john@mail.example.com/novalidate-cert
         </div>
       </div>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id520038" shape="rect" name="id520038"> </a>
+      <div class="refsect2" title="Copying folders">
+        <a id="id500145" shape="rect" name="id500145"> </a>
 
         <h3>Copying folders</h3>
 
@@ -468,9 +470,9 @@ mailtool -recurse -tofolder INBOX.converted_mail \
 
         <p>This example first copies the INBOX on the IMAP server
         to <code class="filename">$HOME/Maildir</code>, then copies
-        subfolders of &#8220;<span class="quote">mail</span>&#8221;
-        on the IMAP server to the &#8220;<span class="quote">converted_mail</span>&#8221; subfolder in the
-        maildir.</p>
+        subfolders of <span class="quote">&#8220;<span class="quote">mail</span>&#8221;</span> on the IMAP server to the
+        <span class="quote">&#8220;<span class="quote">converted_mail</span>&#8221;</span> subfolder in
+        the maildir.</p>
 
         <div class="informalexample">
           <pre class="programlisting" xml:space="preserve">
@@ -486,10 +488,10 @@ mailtool -recurse -tofolder INBOX.converted_mail \
         <p>This example first copies <code class="filename">$HOME/Inbox</code> (accessed as the INBOX folder
         in inbox:mail) to <code class="filename">$HOME/Maildir</code>, then copies mbox folders
         from <code class="filename">$HOME/mail</code> to the
-        &#8220;<span class="quote">converted_mail</span>&#8221;
-        subfolder in the maildir.</p>
+        <span class="quote">&#8220;<span class="quote">converted_mail</span>&#8221;</span> subfolder in
+        the maildir.</p>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
           <p>Mail accounts that contain hybrid folders (folders
@@ -501,8 +503,8 @@ mailtool -recurse -tofolder INBOX.converted_mail \
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id520238" shape="rect" name="id520238"> </a>
+    <div class="refsect1" title="SEE ALSO">
+      <a id="id500346" shape="rect" name="id500346"> </a>
 
       <h2>SEE ALSO</h2>
 
@@ -531,7 +533,8 @@ mailtool -recurse -tofolder INBOX.converted_mail \
         <td width="20%" align="center" rowspan="1" colspan="1">
         <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
 
-        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160; LibMAIL reference</td>
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160; <span class="application">LibMAIL</span>
+        reference</td>
       </tr>
     </table>
   </div>

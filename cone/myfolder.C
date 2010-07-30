@@ -1,4 +1,4 @@
-/* $Id: myfolder.C,v 1.25 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: myfolder.C,v 1.26 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2003-2006, Double Precision Inc.
 **
@@ -110,7 +110,7 @@ myFolder::RestoreSnapshot::RestoreSnapshot(myFolder *mf)
 
 	size_t n=line.find(':');
 
-	if (n == line.npos)
+	if (n == std::string::npos)
 	{
 		i.close();
 		return;
@@ -495,7 +495,7 @@ void myFolder::newMessagesReceivedAndFiltered(size_t newMessages)
 	size_t newMessageCount = newMessages - oldMessages;
 
 	if (sort_function_name.find(SORT_THREAD)
-	    != sort_function_name.npos)
+	    != std::string::npos)
 	{
 		while (oldMessages < newMessages)
 		{
@@ -950,7 +950,7 @@ void myFolder::checkExpunged()
 
 	if (save_expunge_count > 0 &&
 	    sort_function_name.find(SORT_THREAD)
-	    != sort_function_name.npos)
+	    != std::string::npos)
 	{
 		// No clean way to do it, except another sort.
 		setSortFunctionNoSave(sort_function_name);
@@ -1971,12 +1971,12 @@ void myFolder::FolderIndexUpdate
 
 			size_t n=s.find('<');
 
-			if (n != s.npos)
+			if (n != std::string::npos)
 				s=s.substr(0, n-1);
 
 			n=s.find('>');
 
-			if (n != s.npos)
+			if (n != std::string::npos)
 				s=s.substr(n+1);
 
 			vector<string> v;
@@ -2506,7 +2506,7 @@ void myFolder::DelUndelCallback::reportProgress(size_t bytesCompleted,
 
 void myFolder::resort()
 {
-	if (sort_function_name.find(SORT_THREAD) != sort_function_name.npos)
+	if (sort_function_name.find(SORT_THREAD) != std::string::npos)
 	{
 		thread::resort(*this);
 		return;

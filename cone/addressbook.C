@@ -1,4 +1,4 @@
-/* $Id: addressbook.C,v 1.15 2009/10/31 22:38:07 mrsam Exp $
+/* $Id: addressbook.C,v 1.16 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2003-2009, Double Precision Inc.
 **
@@ -148,14 +148,14 @@ void AddressBook::init()
 
 		size_t p=name.find('=');
 
-		if (p != name.npos)
+		if (p != std::string::npos)
 		{
 			server=name.substr(p+1);
 			name=name.substr(0, p);
 
 			p=server.find('/');
 
-			if (p != server.npos)
+			if (p != std::string::npos)
 			{
 				suffix=server.substr(p+1);
 				server=server.substr(0, p);
@@ -498,7 +498,7 @@ bool AddressBook::searchAll(vector<mail::emailAddress> &addrList, // Orig list
 	{
 		string s=curAddr->getAddr();
 
-		if (s.find('@') != s.npos)
+		if (s.find('@') != std::string::npos)
 		{
 			// Not a nickname, a dupe?
 
@@ -543,7 +543,7 @@ bool AddressBook::searchAll(vector<mail::emailAddress> &addrList, // Orig list
 
 					size_t n=nn.find(',');
 
-					if (n != nn.npos)
+					if (n != std::string::npos)
 						nn=nn.substr(0, n);
 
 					addr.setDisplayName(nn);
@@ -1165,10 +1165,10 @@ bool AddressBookIndexScreen::processKey(const Curses::Key &key)
 
 			size_t ip;
 			ip=name.find(' ');
-			if (ip != name.npos)
+			if (ip != std::string::npos)
 				name=name.substr(0, ip);
 			ip=name.find('@');
-			if (ip != name.npos)
+			if (ip != std::string::npos)
 				name=name.substr(0, ip);
 
 			std::string nCheck=name;

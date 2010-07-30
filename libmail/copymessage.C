@@ -1,4 +1,4 @@
-/* $Id: copymessage.C,v 1.2 2004/06/14 00:18:42 mrsam Exp $
+/* $Id: copymessage.C,v 1.3 2010/05/02 19:50:32 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -118,14 +118,25 @@ void mail::copyMessage::FetchCallback::success(string dummy)
 
 void mail::copyMessage::FetchCallback::fail(string errmsg)
 {
+	ptr<copyMessage> cm(me);
+
 	if (me->addMessagePtr != NULL) // Report it this way
 	{
-		me->addMessagePtr->fail(errmsg);
+		addMessage *p=me->addMessagePtr;
+
 		me->addMessagePtr=NULL;
+
+		p->fail(errmsg);
 	}
 	else
 		me->callback.fail(errmsg);
-	delete me;
+
+
+	if (!cm.isDestroyed())
+	{
+		copyMessage *p=cm;
+		delete p;
+	}
 	return;
 }
 

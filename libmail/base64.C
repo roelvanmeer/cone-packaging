@@ -1,4 +1,4 @@
-/* $Id: base64.C,v 1.3 2004/04/10 03:40:13 mrsam Exp $
+/* $Id: base64.C,v 1.4 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -146,7 +146,7 @@ int mail::encodebase64::callback_func(const char *ptr, size_t len, void *vp)
 	string s=string(ptr, ptr+len);
 	size_t n;
 
-	while ((n=s.find('\n')) != s.npos)
+	while ((n=s.find('\n')) != std::string::npos)
 		s.erase(s.begin()+n);
 
 	((mail::encodebase64 *)vp)->encoded(s);

@@ -1,4 +1,4 @@
-/* $Id: smapcreate.C,v 1.2 2004/04/25 03:37:16 mrsam Exp $
+/* $Id: smapcreate.C,v 1.3 2010/04/29 00:34:50 mrsam Exp $
 **
 ** Copyright 2003-2004, Double Precision Inc.
 **
@@ -134,7 +134,7 @@ bool mail::smapCREATE::ok(std::string okMsg)
 	{
 		size_t n=path.rfind('/');
 
-		string name= n == path.npos ? path:path.substr(n+1);
+		string name= n == std::string::npos ? path:path.substr(n+1);
 
 		vector<string> words;
 

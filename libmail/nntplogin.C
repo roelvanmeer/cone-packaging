@@ -1,4 +1,4 @@
-/* $Id: nntplogin.C,v 1.2 2003/10/22 02:50:01 mrsam Exp $
+/* $Id: nntplogin.C,v 1.3 2010/04/29 00:34:50 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -57,13 +57,13 @@ void mail::nntp::LoggedInTask::gotPassword(std::string pwd)
 	myserver->savedLoginInfo.loginCallbackFunc=NULL;
 
 	if (myserver->nntpLoginInfo.pwd.find('\n') !=
-	    myserver->nntpLoginInfo.pwd.npos ||
+	    std::string::npos ||
 	    myserver->nntpLoginInfo.pwd.find('\r') !=
-	    myserver->nntpLoginInfo.pwd.npos ||
+	    std::string::npos ||
 	    myserver->nntpLoginInfo.uid.find('\n') !=
-	    myserver->nntpLoginInfo.uid.npos ||
+	    std::string::npos ||
 	    myserver->nntpLoginInfo.uid.find('\r') !=
-	    myserver->nntpLoginInfo.uid.npos)
+	    std::string::npos)
 	{
 		fail("Invalid characters in userid or password");
 		return;

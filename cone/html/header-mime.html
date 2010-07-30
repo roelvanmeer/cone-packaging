@@ -42,7 +42,7 @@ information.
     <hr/>
   </div>
 
-  <div class="refentry" lang="en" xml:lang="en">
+  <div class="refentry" title="mail::Header::mime">
     <a id="header-mime" shape="rect" name="header-mime"> </a>
 
     <div class="titlepage"/>
@@ -53,7 +53,7 @@ information.
       <p>mail::Header::mime &#8212; A structured MIME header.</p>
     </div>
 
-    <div class="refsynopsisdiv">
+    <div class="refsynopsisdiv" title="Synopsis">
       <h2>Synopsis</h2>
 
       <div class="literallayout">
@@ -79,16 +79,16 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id620976" shape="rect" name="id620976"> </a>
+    <div class="refsect1" title="USAGE">
+      <a id="id601117" shape="rect" name="id601117"> </a>
 
       <h2>USAGE</h2>
 
       <p>This class creates a structured MIME header. A structured
       MIME header, like <code class="literal">Content-Type</code>
       or <code class="literal">Content-Disposition</code> contains
-      a literal value, and zero or more &#8220;<span class="quote">name=setting</span>&#8221; parameters, separated by
-      semicolons.</p>
+      a literal value, and zero or more <span class="quote">&#8220;<span class="quote">name=setting</span>&#8221;</span> parameters,
+      separated by semicolons.</p>
 
       <p>Two arguments are provided to the constructor, the
       header's name, and its literal value. After constructing, use
@@ -129,28 +129,28 @@ information.
       </div>
 
       <p>The <code class="function">toString()</code> returns the
-      header as a single text string: &#8220;<span class="quote"><em class="replaceable"><code>name</code></em>:
-      <em class="replaceable"><code>value</code></em></span>&#8221;. Long
-      headers are folded accordingly.</p>
+      header as a single text string: <span class="quote">&#8220;<span class="quote"><em class="replaceable"><code>name</code></em>: <em class="replaceable"><code>value</code></em></span>&#8221;</span>.
+      Long headers are folded accordingly.</p>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id621621" shape="rect" name="id621621"> </a>
+      <div class="refsect2" title="Dynamic parameter generation">
+        <a id="id601763" shape="rect" name="id601763"> </a>
 
         <h3>Dynamic parameter generation</h3>
 
         <p>Parameters can also be dynamically populated by
-        repeatedly calling the &#8220;<span class="quote">()</span>&#8221;.</p>
+        repeatedly calling the <span class="quote">&#8220;<span class="quote">()</span>&#8221;</span>.</p>
 
-        <p>One version of the &#8220;<span class="quote">()</span>&#8221; operator receives the parameter
-        name and value, and corresponds to the <code class="function">set_simple</code> method. The second version
-        also receives the character set and language information,
-        and corresponds to the <code class="function">set</code>
-        function.</p>
+        <p>One version of the <span class="quote">&#8220;<span class="quote">()</span>&#8221;</span>
+        operator receives the parameter name and value, and
+        corresponds to the <code class="function">set_simple</code>
+        method. The second version also receives the character set
+        and language information, and corresponds to the
+        <code class="function">set</code> function.</p>
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id621656" shape="rect" name="id621656"> </a>
+    <div class="refsect1" title="SEE ALSO">
+      <a id="id601798" shape="rect" name="id601798"> </a>
 
       <h2>SEE ALSO</h2>
 

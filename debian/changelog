@@ -1,3 +1,10 @@
+cone (0.84-1) unstable; urgency=low
+
+  * New upstream release (Closes: #568315)
+  * Bump Standards-Version to 3.9.1
+
+ -- Varun Hiremath <varun@debian.org>  Thu, 29 Jul 2010 22:11:50 -0400
+
 cone (0.80-1) unstable; urgency=low
 
   * New upstream release

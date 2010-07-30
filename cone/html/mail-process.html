@@ -33,7 +33,8 @@ information.
         <a accesskey="p" href="mail-poll.html" shape="rect">Prev</a>&#160;</td>
 
         <th width="60%" align="center" rowspan="1" colspan="1">
-        mail::account Native API reference</th>
+        <span class="structname">mail::account</span> Native API
+        reference</th>
 
         <td width="20%" align="right" rowspan="1" colspan="1">
         &#160;<a accesskey="n" href="mail-readmsgattr.html" shape="rect">Next</a></td>
@@ -42,7 +43,7 @@ information.
     <hr/>
   </div>
 
-  <div class="refentry" lang="en" xml:lang="en">
+  <div class="refentry" title="mail::account::process">
     <a id="mail-process" shape="rect" name="mail-process"> </a>
 
     <div class="titlepage"/>
@@ -53,7 +54,7 @@ information.
       <p>mail::account::process &#8212; Process pending events</p>
     </div>
 
-    <div class="refsynopsisdiv">
+    <div class="refsynopsisdiv" title="Synopsis">
       <h2>Synopsis</h2>
 
       <div class="literallayout">
@@ -130,8 +131,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id579988" shape="rect" name="id579988"> </a>
+    <div class="refsect1" title="USAGE">
+      <a id="id560130" shape="rect" name="id560130"> </a>
 
       <h2>USAGE</h2>
 
@@ -149,9 +150,8 @@ information.
       completed requests.</p>
 
       <p>The <span class="structname">mail::pollfd</span> structure
-      is a C++ wrapper for the &#8220;<span class="quote">struct
-      <span class="structname">pollfd</span></span>&#8221; that's
-      used by the <span class="citerefentry"><span class="refentrytitle">poll</span>(2)</span> system call.
+      is a C++ wrapper for the <span class="quote">&#8220;<span class="quote">struct <span class="structname">pollfd</span></span>&#8221;</span> that's used
+      by the <span class="citerefentry"><span class="refentrytitle">poll</span>(2)</span> system call.
       <code class="function">mail::account::process</code> receives
       a reference to a vector of <span class="structname">mail::pollfd</span> objects. After <code class="function">mail::account::process</code> handles any pending
       events, the function initializes the vector with all open
@@ -181,15 +181,15 @@ information.
       descriptors.</p>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id580194" shape="rect" name="id580194"> </a>
+    <div class="refsect1" title="Return Codes">
+      <a id="id560336" shape="rect" name="id560336"> </a>
 
       <h2>Return Codes</h2>
 
       <p><code class="function">mail::account::process</code>
       always returns succesfully.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>The application should not invoke <code class="function">mail::account::process</code> again until it
@@ -199,8 +199,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id580260" shape="rect" name="id580260"> </a>
+    <div class="refsect1" title="SEE ALSO">
+      <a id="id560402" shape="rect" name="id560402"> </a>
 
       <h2>SEE ALSO</h2>
 

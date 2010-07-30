@@ -1,4 +1,4 @@
-/* $Id: headers.C,v 1.2 2004/06/23 00:55:01 mrsam Exp $
+/* $Id: headers.C,v 1.4 2010/05/02 12:03:22 mrsam Exp $
 **
 ** Copyright 2004, Double Precision Inc.
 **
@@ -86,7 +86,7 @@ string mail::Header::encoded::encode(string text, string charset, string lang)
 	if (lang.size() > 0)
 		charset += "*" + lang;
 
-	return mail::rfc2047::encode::encode(text, charset);
+	return mail::rfc2047::encode(text, charset);
 }
 
 mail::Header::encoded::encoded(string name,
@@ -144,7 +144,7 @@ mail::Header::mime mail::Header::mime::fromString(string header)
 {
 	size_t n=header.find(':');
 
-	if (n != header.npos)
+	if (n != std::string::npos)
 		++n;
 	else
 		n=header.size();

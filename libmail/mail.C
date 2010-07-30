@@ -1,4 +1,4 @@
-/* $Id: mail.C,v 1.12 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: mail.C,v 1.13 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -387,7 +387,7 @@ bool loginUrlDecode(string url, mail::loginInfo &loginInfo)
 {
 	size_t n=url.find(':');
 
-	if (n == url.npos)
+	if (n == std::string::npos)
 		return false;
 
 	loginInfo.method=url.substr(0, n);
@@ -400,7 +400,7 @@ bool loginUrlDecode(string url, mail::loginInfo &loginInfo)
 
 	n=serverStr.find('/');
 
-	if (n != url.npos)
+	if (n != std::string::npos)
 	{
 		options=serverStr.substr(n+1);
 		serverStr.erase(n);
@@ -409,7 +409,7 @@ bool loginUrlDecode(string url, mail::loginInfo &loginInfo)
 	n=serverStr.rfind('@');
 	string uidpwd="";
 
-	if (n != url.npos)
+	if (n != std::string::npos)
 	{
 		uidpwd=serverStr.substr(0, n);
 		serverStr=serverStr.substr(n+1);
@@ -420,7 +420,7 @@ bool loginUrlDecode(string url, mail::loginInfo &loginInfo)
 
 	string pwd="";
 
-	if (n != url.npos)
+	if (n != std::string::npos)
 	{
 		pwd=uidpwd.substr(n+1);
 		uidpwd=uidpwd.substr(0, n);
@@ -435,7 +435,7 @@ bool loginUrlDecode(string url, mail::loginInfo &loginInfo)
 
 		string option;
 
-		if (n == options.npos)
+		if (n == std::string::npos)
 		{
 			option=options;
 			options="";
@@ -450,7 +450,7 @@ bool loginUrlDecode(string url, mail::loginInfo &loginInfo)
 
 		n=option.find('=');
 
-		if (n != option.npos)
+		if (n != std::string::npos)
 		{
 			optionVal=option.substr(n+1);
 			option=option.substr(0, n);
@@ -749,7 +749,7 @@ string mail::mbox::translatePathCommon(string path,
 
 		size_t n=path.find('/');
 
-		if (n == path.npos)
+		if (n == std::string::npos)
 		{
 			component=path;
 			path="";

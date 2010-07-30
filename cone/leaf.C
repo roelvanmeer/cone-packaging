@@ -1,4 +1,4 @@
-/* $Id: leaf.C,v 1.12 2008/05/24 17:57:41 mrsam Exp $
+/* $Id: leaf.C,v 1.13 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2003-2004, Double Precision Inc.
 **
@@ -151,7 +151,7 @@ string LeafEditMessage::getFilenameBase()
 {
 	size_t n=filename.rfind('/');
 
-	if (n != filename.npos)
+	if (n != std::string::npos)
 		return filename.substr(n+1);
 
 	return filename;
@@ -617,7 +617,7 @@ int main(int argc, char **argv)
 			{
 				size_t n=editMessage.filename.rfind('/');
 
-				if (n != editMessage.filename.npos)
+				if (n != std::string::npos)
 					CursesFileReq::currentDir=
 						editMessage.filename
 						.substr(0, n);
@@ -711,7 +711,7 @@ int main(int argc, char **argv)
 
 				string defaultName=editMessage.filename;
 
-				if (n != editMessage.filename.npos)
+				if (n != std::string::npos)
 					defaultName=editMessage.filename
 						.substr(n+1);
 

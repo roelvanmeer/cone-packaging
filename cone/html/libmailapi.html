@@ -24,8 +24,7 @@ information.
   <div class="navheader">
     <table width="100%" summary="Navigation header">
       <tr>
-        <th colspan="3" align="center" rowspan="1">LibMAIL
-        APIs</th>
+        <th colspan="3" align="center" rowspan="1"><span class="application">LibMAIL</span> APIs</th>
       </tr>
 
       <tr>
@@ -33,7 +32,7 @@ information.
         <a accesskey="p" href="cppnamespace.html" shape="rect">Prev</a>&#160;</td>
 
         <th width="60%" align="center" rowspan="1" colspan="1">
-        LibMAIL reference</th>
+        <span class="application">LibMAIL</span> reference</th>
 
         <td width="20%" align="right" rowspan="1" colspan="1">
         &#160;<a accesskey="n" href="synchronous.html" shape="rect">Next</a></td>
@@ -42,7 +41,7 @@ information.
     <hr/>
   </div>
 
-  <div class="chapter" lang="en" xml:lang="en">
+  <div class="chapter" title="LibMAIL APIs">
     <div class="titlepage">
       <div>
         <div>
@@ -52,17 +51,12 @@ information.
     </div>
 
     <p>The <span class="application">LibMAIL</span> library
-    provides two alternative interfaces: called the
-    &#8220;<span class="quote">native</span>&#8221; and the
-    &#8220;<span class="quote">synchronous</span>&#8221; interfaces
-    (API). The native API is based on two fundamental objects:
-    <span class="structname">mail::account</span> - an
-    &#8220;<span class="quote">account</span>&#8221;; and
-    <span class="structname">mail::folder</span> - a
-    &#8220;<span class="quote">folder</span>&#8221;. The syncronous
-    API uses <span class="structname">mail::ACCOUNT</span> objects
-    instead of <span class="structname">mail::account</span>
-    objects; the synchronous API also uses <span class="structname">mail::folder</span> objects, but they are used in
+    provides two alternative interfaces: called the <span class="quote">&#8220;<span class="quote">native</span>&#8221;</span>
+    and the <span class="quote">&#8220;<span class="quote">synchronous</span>&#8221;</span> interfaces (API). The
+    native API is based on two fundamental objects: <span class="structname">mail::account</span> - an <span class="quote">&#8220;<span class="quote">account</span>&#8221;</span>; and <span class="structname">mail::folder</span> - a <span class="quote">&#8220;<span class="quote">folder</span>&#8221;</span>.
+    The syncronous API uses <span class="structname">mail::ACCOUNT</span> objects instead of
+    <span class="structname">mail::account</span> objects; the
+    synchronous API also uses <span class="structname">mail::folder</span> objects, but they are used in
     a different manner: instead of invoking <span class="structname">mail::folder</span>'s methods, the synchronous API
     provides additional <span class="structname">mail::ACCOUNT</span> methods that take a
     <span class="structname">mail::folder</span> object as an
@@ -81,7 +75,7 @@ information.
     and <code class="function">fail</code>. One of these methods
     will be invoked when the original task is completed.</p>
 
-    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
       <h3 class="title">Note</h3>
 
       <p>In some cases it's possible that the requested task can be
@@ -111,7 +105,7 @@ information.
     disconnected from mail servers, for inactivity, when no mail
     processing occurs for a significant period of time.</p>
 
-    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
       <h3 class="title">Note</h3>
 
       <p>The synchronous API is really nothing more than a small
@@ -147,7 +141,7 @@ information.
         <td width="20%" align="center" rowspan="1" colspan="1">
         <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
 
-        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::ACCOUNT Synchronous API
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;<span class="structname">mail::ACCOUNT</span> Synchronous API
         reference</td>
       </tr>
     </table>

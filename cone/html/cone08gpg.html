@@ -32,8 +32,8 @@ information.
         <td width="20%" align="left" rowspan="1" colspan="1">
         <a accesskey="p" href="cone07remoteconfig.html" shape="rect">Prev</a>&#160;</td>
 
-        <th width="60%" align="center" rowspan="1" colspan="1">Cone
-        mail client</th>
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="application">Cone</span> mail client</th>
 
         <td width="20%" align="right" rowspan="1" colspan="1">
         &#160;<a accesskey="n" href="cone09masterpassword.html" shape="rect">Next</a></td>
@@ -42,7 +42,7 @@ information.
     <hr/>
   </div>
 
-  <div class="chapter" lang="en" xml:lang="en">
+  <div class="chapter" title="Encryption And Signatures">
     <div class="titlepage">
       <div>
         <div>
@@ -56,23 +56,22 @@ information.
     installed in order to use encryption and digital
     signatures.</p>
 
-    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
       <h3 class="title">Note</h3>
 
       <p><span class="application">Cone</span> uses a newer
       MIME-based format for encrypted and signed messages.
       <span class="application">Cone</span> does not recognize or
-      use the older &#8220;<span class="quote">inline-formatted</span>&#8221; messages (this is
-      where the text messages contain keywords like
-      &#8220;<span class="quote">BEGIN PGP SIGNED
-      MESSAGE</span>&#8221;).</p>
+      use the older <span class="quote">&#8220;<span class="quote">inline-formatted</span>&#8221;</span> messages (this
+      is where the text messages contain keywords like <span class="quote">&#8220;<span class="quote">BEGIN PGP SIGNED
+      MESSAGE</span>&#8221;</span>).</p>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="MIME encryption and digital signatures">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id512094" shape="rect" name="id512094"> </a>MIME encryption and digital
+            <h4 class="title"><a id="id492194" shape="rect" name="id492194"> </a>MIME encryption and digital
             signatures</h4>
           </div>
         </div>
@@ -84,11 +83,11 @@ information.
       (like creating and signing keys) must still be done with
       <span class="application">GnuPG</span>.</p>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Signing and encrypting messages">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id512113" shape="rect" name="id512113"> </a>Signing and encrypting messages</h5>
+              <h5 class="title"><a id="id492214" shape="rect" name="id492214"> </a>Signing and encrypting messages</h5>
             </div>
           </div>
         </div>
@@ -132,41 +131,39 @@ information.
 
         <p>The original prompt is updated accordingly, after
         selecting either of these two options (the original
-        &#8220;<span class="quote">Send message?</span>&#8221;
-        prompt changes to a &#8220;<span class="quote">Sign, then
-        send message?</span>&#8221;, or some other appropriate
-        variant). The key used for signing a message is memorized
-        like any other custom message header, and is automatically
-        selected by default when sending the next message. Choose
-        &#8220;<span class="quote"><span class="keycap"><strong>S</strong></span>ign</span>&#8221; again
-        to un-select the key. A separate default signing key exists
-        for every account <span class="application">Cone</span> is
-        logged on to, and a default signing key is memorized for
-        every open folder. It is possible to memorize a different
-        key for signing replies to messages in different folders.
-        However that may prove to be a bit cumbersome. Each time a
-        message in a different folder is replied to, <span class="application">Cone</span> will prompt whether to set that
-        folder's key (or any other custom header) as the default
-        for the entire mail account. This feature is probably
-        convenient when most replies are to messages from the same
-        folder, and messages from other folders are accessed
-        infrequently.</p>
+        <span class="quote">&#8220;<span class="quote">Send
+        message?</span>&#8221;</span> prompt changes to a
+        <span class="quote">&#8220;<span class="quote">Sign, then
+        send message?</span>&#8221;</span>, or some other
+        appropriate variant). The key used for signing a message is
+        memorized like any other custom message header, and is
+        automatically selected by default when sending the next
+        message. Choose <span class="quote">&#8220;<span class="quote"><span class="keycap"><strong>S</strong></span>ign</span>&#8221;</span>
+        again to un-select the key. A separate default signing key
+        exists for every account <span class="application">Cone</span> is logged on to, and a default
+        signing key is memorized for every open folder. It is
+        possible to memorize a different key for signing replies to
+        messages in different folders. However that may prove to be
+        a bit cumbersome. Each time a message in a different folder
+        is replied to, <span class="application">Cone</span> will
+        prompt whether to set that folder's key (or any other
+        custom header) as the default for the entire mail account.
+        This feature is probably convenient when most replies are
+        to messages from the same folder, and messages from other
+        folders are accessed infrequently.</p>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
-          <p>The &#8220;<span class="quote">Sign</span>&#8221;
-          and/or the &#8220;<span class="quote">Encrypt</span>&#8221; option must be used before
-          selecting &#8220;<span class="quote">Delivery
-          notifications</span>&#8221;. After selecting
-          &#8220;<span class="quote">Delivery
-          notifications</span>&#8221;, the only remaining options
-          shown are the various delivery notifications options, and
-          <span class="keycap"><strong>Y</strong></span>, which
-          sends the message.</p>
+          <p>The <span class="quote">&#8220;<span class="quote">Sign</span>&#8221;</span> and/or the <span class="quote">&#8220;<span class="quote">Encrypt</span>&#8221;</span> option must be used
+          before selecting <span class="quote">&#8220;<span class="quote">Delivery notifications</span>&#8221;</span>.
+          After selecting <span class="quote">&#8220;<span class="quote">Delivery notifications</span>&#8221;</span>, the
+          only remaining options shown are the various delivery
+          notifications options, and <span class="keycap"><strong>Y</strong></span>, which sends the
+          message.</p>
         </div>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
           <p>Copies of encrypted sent messages are saved in their
@@ -176,11 +173,11 @@ information.
         </div>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Passphrases">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id512273" shape="rect" name="id512273"> </a>Passphrases</h5>
+              <h5 class="title"><a id="id492374" shape="rect" name="id492374"> </a>Passphrases</h5>
             </div>
           </div>
         </div>
@@ -192,32 +189,31 @@ information.
 
         <p><span class="application">Cone</span> remembers the
         passphrase, and will not ask for it again. When a master
-        single-signon password is installed (see
-        &#8220;<span class="quote">Master Passwords</span>&#8221;),
-        passphrase passwords are also saved together with all other
-        account passwords. <span class="application">Cone</span>
-        does not automatically know when, and if, the key's
-        passphrase is changed. When message signing fails,
-        <span class="application">Cone</span> automatically removes
-        the saved passphrase. Simply try again to sign the same
-        message, and <span class="application">Cone</span> will
-        prompt for the new passphrase.</p>
+        single-signon password is installed (see <span class="quote">&#8220;<span class="quote">Master
+        Passwords</span>&#8221;</span>), passphrase passwords are
+        also saved together with all other account passwords.
+        <span class="application">Cone</span> does not
+        automatically know when, and if, the key's passphrase is
+        changed. When message signing fails, <span class="application">Cone</span> automatically removes the saved
+        passphrase. Simply try again to sign the same message, and
+        <span class="application">Cone</span> will prompt for the
+        new passphrase.</p>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Decrypting messages, and verifying signatures">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id512331" shape="rect" name="id512331"> </a>Decrypting messages, and verifying
+              <h5 class="title"><a id="id492432" shape="rect" name="id492432"> </a>Decrypting messages, and verifying
               signatures</h5>
             </div>
           </div>
         </div>
 
         <p>Pressing <span class="keycap"><strong>Y</strong></span>
-        (as in &#8220;<span class="quote">decr<span class="keycap"><strong>Y</strong></span>t</span>&#8221;) attempts
-        to decrypt or verify the signature of a currently opened
-        message. The message must be opened before it can be
+        (as in <span class="quote">&#8220;<span class="quote">decr<span class="keycap"><strong>Y</strong></span>t</span>&#8221;</span>)
+        attempts to decrypt or verify the signature of a currently
+        opened message. The message must be opened before it can be
         decrypted. A signed message must also be opened, before its
         signature can be verified.</p>
 
@@ -240,11 +236,11 @@ information.
         original encrypted version is forwarded.</p>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Decrypting messages with a passphrase-protected key">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id512374" shape="rect" name="id512374"> </a>Decrypting messages with a
+              <h5 class="title"><a id="id492475" shape="rect" name="id492475"> </a>Decrypting messages with a
               passphrase-protected key</h5>
             </div>
           </div>

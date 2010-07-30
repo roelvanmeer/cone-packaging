@@ -33,7 +33,8 @@ information.
         <a accesskey="p" href="account-getmessagestructure.html" shape="rect">Prev</a>&#160;</td>
 
         <th width="60%" align="center" rowspan="1" colspan="1">
-        mail::ACCOUNT Synchronous API reference</th>
+        <span class="structname">mail::ACCOUNT</span> Synchronous
+        API reference</th>
 
         <td width="20%" align="right" rowspan="1" colspan="1">
         &#160;<a accesskey="n" href="account-getparentfolder.html" shape="rect">Next</a></td>
@@ -42,7 +43,7 @@ information.
     <hr/>
   </div>
 
-  <div class="refentry" lang="en" xml:lang="en">
+  <div class="refentry" title="mail::ACCOUNT::getMyRights">
     <a id="account-getmyrights" shape="rect" name="account-getmyrights"> </a>
 
     <div class="titlepage"/>
@@ -54,7 +55,7 @@ information.
       rights on a folder</p>
     </div>
 
-    <div class="refsynopsisdiv">
+    <div class="refsynopsisdiv" title="Synopsis">
       <h2>Synopsis</h2>
 
       <div class="literallayout">
@@ -91,8 +92,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id547562" shape="rect" name="id547562"> </a>
+    <div class="refsect1" title="USAGE">
+      <a id="id527704" shape="rect" name="id527704"> </a>
 
       <h2>USAGE</h2>
 
@@ -119,63 +120,64 @@ information.
 
       <div class="variablelist">
         <dl>
-          <dt><span class="term">&#8220;<span class="quote"><code class="literal">a</code></span>&#8221;</span></dt>
+          <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">a</code></span>&#8221;</span></span></dt>
 
           <dd>
             <p>Administrator access: view and change folder access
             control lists.</p>
           </dd>
 
-          <dt><span class="term">&#8220;<span class="quote"><code class="literal">c</code></span>&#8221;</span></dt>
+          <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">c</code></span>&#8221;</span></span></dt>
 
           <dd>
             <p>Create subfolders.</p>
           </dd>
 
-          <dt><span class="term">&#8220;<span class="quote"><code class="literal">e</code></span>&#8221;</span></dt>
+          <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">e</code></span>&#8221;</span></span></dt>
 
           <dd>
             <p>Expunge deleted messages from the folder.</p>
           </dd>
 
-          <dt><span class="term">&#8220;<span class="quote"><code class="literal">i</code></span>&#8221;</span></dt>
+          <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">i</code></span>&#8221;</span></span></dt>
 
           <dd>
             <p>Insert, or add messages to the folder.</p>
           </dd>
 
-          <dt><span class="term">&#8220;<span class="quote"><code class="literal">l</code></span>&#8221;</span></dt>
+          <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">l</code></span>&#8221;</span></span></dt>
 
           <dd>
             <p>List, or view the folder's existence. If a folder
-            does not have the &#8220;<span class="quote"><code class="literal">l</code></span>&#8221;
-            access right, the server will not include this folder
-            when it's asked to list all folders in the folder
-            directory. However, if the &#8220;<span class="quote"><code class="literal">r</code></span>&#8221;
-            access right is present, the folder may be opened if
-            the folder's name is known.</p>
+            does not have the <span class="quote">&#8220;<span class="quote"><code class="literal">l</code></span>&#8221;</span> access right,
+            the server will not include this folder when it's asked
+            to list all folders in the folder directory. However,
+            if the <span class="quote">&#8220;<span class="quote"><code class="literal">r</code></span>&#8221;</span> access right is
+            present, the folder may be opened if the folder's name
+            is known.</p>
           </dd>
 
-          <dt><span class="term">&#8220;<span class="quote"><code class="literal">r</code></span>&#8221;</span></dt>
+          <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">r</code></span>&#8221;</span></span></dt>
 
           <dd>
             <p>Read, or open the folder. An attempt to open the
-            folder will fail without the &#8220;<span class="quote"><code class="literal">r</code></span>&#8221;
-            access right, even if the folder's name is known.</p>
+            folder will fail without the <span class="quote">&#8220;<span class="quote"><code class="literal">r</code></span>&#8221;</span> access right,
+            even if the folder's name is known.</p>
           </dd>
 
-          <dt><span class="term">&#8220;<span class="quote"><code class="literal">p</code></span>&#8221;</span></dt>
+          <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">p</code></span>&#8221;</span></span></dt>
 
           <dd>
-            <p>&#8220;<span class="quote">Post
-            messages</span>&#8221; to the folder. This access right
-            is currently listed in the ACL specification; however
-            its intention is not clear, and most servers do not do
-            anything useful with this access right. It is listed
-            here for information purposes only.</p>
+            <p><span class="quote">&#8220;<span class="quote">Post
+            messages</span>&#8221;</span> to the folder. This
+            access right is currently listed in the ACL
+            specification; however its intention is not clear, and
+            most servers do not do anything useful with this access
+            right. It is listed here for information purposes
+            only.</p>
           </dd>
 
-          <dt><span class="term">&#8220;<span class="quote"><code class="literal">s</code></span>&#8221;</span></dt>
+          <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">s</code></span>&#8221;</span></span></dt>
 
           <dd>
             <p>Allow changing the read/unread status of messages in
@@ -183,40 +185,42 @@ information.
             <em class="structfield"><code>unread</code></em>
             message status flag on messages after they are read, or
             let this status flag be explicitly changed, without the
-            &#8220;<span class="quote"><code class="literal">s</code></span>&#8221; access right.</p>
+            <span class="quote">&#8220;<span class="quote"><code class="literal">s</code></span>&#8221;</span> access
+            right.</p>
           </dd>
 
-          <dt><span class="term">&#8220;<span class="quote"><code class="literal">t</code></span>&#8221;</span></dt>
+          <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">t</code></span>&#8221;</span></span></dt>
 
           <dd>
             <p>Allow tagging of messages as deleted or undeleted.
             The server will prohibit changing the messages'
             <em class="structfield"><code>deleted</code></em>
-            message status flag without the &#8220;<span class="quote"><code class="literal">t</code></span>&#8221;
-            access right.</p>
+            message status flag without the <span class="quote">&#8220;<span class="quote"><code class="literal">t</code></span>&#8221;</span> access
+            right.</p>
           </dd>
 
-          <dt><span class="term">&#8220;<span class="quote"><code class="literal">w</code></span>&#8221;</span></dt>
+          <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">w</code></span>&#8221;</span></span></dt>
 
           <dd>
             <p>Allow changing the <em class="structfield"><code>draft</code></em>, <em class="structfield"><code>replied</code></em>, and <em class="structfield"><code>marked</code></em> message status
             flags. The server will not allow changes to these flags
-            without the &#8220;<span class="quote"><code class="literal">w</code></span>&#8221; access right.</p>
+            without the <span class="quote">&#8220;<span class="quote"><code class="literal">w</code></span>&#8221;</span> access
+            right.</p>
           </dd>
 
-          <dt><span class="term">&#8220;<span class="quote"><code class="literal">x</code></span>&#8221;</span></dt>
+          <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">x</code></span>&#8221;</span></span></dt>
 
           <dd>
             <p>Allow this folder to be removed. The server will not
-            this folder to be deleted without the
-            &#8220;<span class="quote"><code class="literal">x</code></span>&#8221; access right.</p>
+            this folder to be deleted without the <span class="quote">&#8220;<span class="quote"><code class="literal">x</code></span>&#8221;</span> access
+            right.</p>
           </dd>
         </dl>
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id547953" shape="rect" name="id547953"> </a>
+    <div class="refsect1" title="RETURN CODES AND CALLBACKS">
+      <a id="id528096" shape="rect" name="id528096"> </a>
 
       <h2>RETURN CODES AND CALLBACKS</h2>
 
@@ -226,8 +230,8 @@ information.
       read a brief description of the error.</p>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id547988" shape="rect" name="id547988"> </a>
+    <div class="refsect1" title="SEE ALSO">
+      <a id="id528131" shape="rect" name="id528131"> </a>
 
       <h2>SEE ALSO</h2>
 

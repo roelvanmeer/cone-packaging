@@ -33,7 +33,8 @@ information.
         <a accesskey="p" href="account-savefolderindexinfo.html" shape="rect">Prev</a>&#160;</td>
 
         <th width="60%" align="center" rowspan="1" colspan="1">
-        mail::ACCOUNT Synchronous API reference</th>
+        <span class="structname">mail::ACCOUNT</span> Synchronous
+        API reference</th>
 
         <td width="20%" align="right" rowspan="1" colspan="1">
         &#160;<a accesskey="n" href="account-send.html" shape="rect">Next</a></td>
@@ -42,7 +43,7 @@ information.
     <hr/>
   </div>
 
-  <div class="refentry" lang="en" xml:lang="en">
+  <div class="refentry" title="mail::ACCOUNT::searchMessages">
     <a id="account-searchmessages" shape="rect" name="account-searchmessages"> </a>
 
     <div class="titlepage"/>
@@ -54,7 +55,7 @@ information.
       the current folder</p>
     </div>
 
-    <div class="refsynopsisdiv">
+    <div class="refsynopsisdiv" title="Synopsis">
       <h2>Synopsis</h2>
 
       <div class="literallayout">
@@ -109,8 +110,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id556569" shape="rect" name="id556569"> </a>
+    <div class="refsect1" title="USAGE">
+      <a id="id536712" shape="rect" name="id536712"> </a>
 
       <h2>USAGE</h2>
 
@@ -144,26 +145,26 @@ information.
         <p>Complex search criteria may be performed as follows:</p>
 
         <div class="itemizedlist">
-          <ul type="disc">
-            <li>
+          <ul class="itemizedlist" type="disc">
+            <li class="listitem">
               <p>Clear <em class="structfield"><code>mail::messageInfo::marked</code></em>
               status flags on all messages (use <a class="link" href="mail-updatefolderindexflags.html" title="mail::account::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexFlags</span>(3x)</span></a>
               or <a class="link" href="account-updatefolderindexflags.html" title="mail::ACCOUNT::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::updateFolderIndexFlags</span>(3x)</span></a>.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Execute a search with <em class="structfield"><code>mySearchParams.scope</code></em>
               set to <code class="literal">search_unmarked</code>.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Use <a class="link" href="mail-updatefolderindexflags.html" title="mail::account::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexFlags</span>(3x)</span></a>
               or <a class="link" href="account-updatefolderindexflags.html" title="mail::ACCOUNT::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::updateFolderIndexFlags</span>(3x)</span></a>
               to set the <em class="structfield"><code>mail::messageInfo::marked</code></em>
               flag on messages found by the first search.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Run additional searches, with <em class="structfield"><code>mySearchParams.scope</code></em>
               set accordingly; and use <a class="link" href="mail-updatefolderindexflags.html" title="mail::account::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexFlags</span>(3x)</span></a>
               or <a class="link" href="account-updatefolderindexflags.html" title="mail::ACCOUNT::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::updateFolderIndexFlags</span>(3x)</span></a>
@@ -173,7 +174,7 @@ information.
           </ul>
         </div>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
           <p>The <em class="structfield"><code>mail::messageInfo::marked</code></em>
@@ -194,8 +195,8 @@ information.
           closed).</p>
         </div>
 
-        <div class="refsect2" lang="en" xml:lang="en">
-          <a id="id557256" shape="rect" name="id557256"> </a>
+        <div class="refsect2" title="Search Criteria">
+          <a id="id537399" shape="rect" name="id537399"> </a>
 
           <h3>Search Criteria</h3>
 
@@ -353,7 +354,7 @@ information.
             </dl>
           </div>
 
-          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
             <h3 class="title">Note</h3>
 
             <p><em class="structfield"><code>mail::searchParams.param2</code></em>
@@ -361,7 +362,7 @@ information.
             date-related search criteria (example: <code class="literal">"12-Oct-2001"</code>).</p>
           </div>
 
-          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
             <h3 class="title">Note</h3>
 
             <p>Usenet servers offer very limited searching
@@ -389,7 +390,7 @@ information.
             searches are case insensitive.</p>
           </div>
 
-          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
             <h3 class="title">Note</h3>
 
             <p>Efficient searching is implemented for local mail,
@@ -450,8 +451,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id558486" shape="rect" name="id558486"> </a>
+    <div class="refsect1" title="Return Codes">
+      <a id="id538629" shape="rect" name="id538629"> </a>
 
       <h2>Return Codes</h2>
 
@@ -461,8 +462,8 @@ information.
       read a brief description of the error.</p>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id558522" shape="rect" name="id558522"> </a>
+    <div class="refsect1" title="SEE ALSO">
+      <a id="id538665" shape="rect" name="id538665"> </a>
 
       <h2>SEE ALSO</h2>
 

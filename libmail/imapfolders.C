@@ -1,4 +1,4 @@
-/* $Id: imapfolders.C,v 1.8 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: imapfolders.C,v 1.9 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -95,8 +95,8 @@ mail::folder *mail::imap::folderFromString(string s)
 	if (f == NULL)
 		return NULL;
 
-	f->hasMessages(words[3].find('S') != words[3].npos);
-	f->hasSubFolders(words[3].find('C') != words[3].npos);
+	f->hasMessages(words[3].find('S') != std::string::npos);
+	f->hasSubFolders(words[3].find('C') != std::string::npos);
 
 	return f;
 }
@@ -193,7 +193,7 @@ void mail::imapFolder::getParentFolder(callback::folderList &callback1,
 	{
 		size_t n=path.rfind(sep[0]);
 
-		if (n != path.npos)
+		if (n != std::string::npos)
 		{
 			mail::account &a=imapAccount;
 
@@ -910,8 +910,8 @@ void mail::imapFolder::getMyRights(callback &getCallback, string &rights)
 
 	string s=getPath();
 
-	if (s.find('\r') != s.npos ||
-	    s.find('\n') != s.npos) // Sanity check
+	if (s.find('\r') != std::string::npos ||
+	    s.find('\n') != std::string::npos) // Sanity check
 	{
 		getCallback.fail(strerror(EINVAL));
 		return;
@@ -982,8 +982,8 @@ void mail::imapFolder::getRights(callback &getCallback,
 
 	string s=getPath();
 
-	if (s.find('\r') != s.npos ||
-	    s.find('\n') != s.npos) // Sanity check
+	if (s.find('\r') != std::string::npos ||
+	    s.find('\n') != std::string::npos) // Sanity check
 	{
 		getCallback.fail(strerror(EINVAL));
 		return;
@@ -1061,12 +1061,12 @@ void mail::imapFolder::setRights(callback &setCallback,
 
 	string s=getPath();
 
-	if (s.find('\r') != s.npos ||
-	    s.find('\n') != s.npos ||
-	    identifier.find('\r') != identifier.npos ||
-	    identifier.find('\n') != identifier.npos ||
-	    rights.find('\r') != rights.npos ||
-	    rights.find('\n') != rights.npos) // Sanity check
+	if (s.find('\r') != std::string::npos ||
+	    s.find('\n') != std::string::npos ||
+	    identifier.find('\r') != std::string::npos ||
+	    identifier.find('\n') != std::string::npos ||
+	    rights.find('\r') != std::string::npos ||
+	    rights.find('\n') != std::string::npos) // Sanity check
 	{
 		setCallback.fail(strerror(EINVAL));
 		return;
@@ -1113,9 +1113,9 @@ void mail::imapFolder::setRights(callback &setCallback,
 
 	/* Fix ACL/ACL2 brokenness */
 
-	if (rights.find(ACL_DELETEMSGS[0]) != rights.npos &&
-	    rights.find(ACL_DELETEFOLDER[0]) != rights.npos &&
-	    rights.find(ACL_EXPUNGE[0]) != rights.npos)
+	if (rights.find(ACL_DELETEMSGS[0]) != std::string::npos &&
+	    rights.find(ACL_DELETEFOLDER[0]) != std::string::npos &&
+	    rights.find(ACL_EXPUNGE[0]) != std::string::npos)
 	{
 		size_t p=rights.find(ACL_DELETEMSGS[0]);
 
@@ -1173,8 +1173,8 @@ void mail::imapFolder::delRights(callback &setCallback,
 
 	string s=getPath();
 
-	if (s.find('\r') != s.npos ||
-	    s.find('\n') != s.npos) // Sanity check
+	if (s.find('\r') != std::string::npos ||
+	    s.find('\n') != std::string::npos) // Sanity check
 	{
 		setCallback.fail(strerror(EINVAL));
 		return;

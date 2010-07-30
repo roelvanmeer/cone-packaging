@@ -1,4 +1,4 @@
-/* $Id: imaphandler.C,v 1.2 2003/05/29 21:18:08 mrsam Exp $
+/* $Id: imaphandler.C,v 1.3 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -322,7 +322,7 @@ void mail::imapHandlerStructured::error(mail::imap &imapAccount)
 
 	size_t p=errbuf.find('\n');
 
-	if (p < errbuf.npos)
+	if (p < std::string::npos)
 		errbuf.erase(p);
 
 	imapAccount.fatalError("IMAP reply parse failure: ... " + errbuf);

@@ -1,6 +1,6 @@
-/* $Id: cursesmessage.C,v 1.32 2009/11/08 23:52:31 mrsam Exp $
+/* $Id: cursesmessage.C,v 1.36 2010/05/30 20:27:43 mrsam Exp $
 **
-** Copyright 2003-2008, Double Precision Inc.
+** Copyright 2003-2010, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -365,7 +365,7 @@ bool (CursesMessage::* CursesMessage::getHandler(mail::mimestruct &s))(size_t)
 
 	size_t n;
 
-	while ((n=fn.find('/')) != fn.npos)
+	while ((n=fn.find('/')) != std::string::npos)
 		fn[n]='.'; // Joker
 
 	fn= fn + ".filter";
@@ -499,7 +499,7 @@ bool CursesMessage::filterExternal(size_t n)
 
 	size_t x;
 
-	while ((x=fn.find('/')) != fn.npos)
+	while ((x=fn.find('/')) != std::string::npos)
 		fn[x]='.'; // Joker
 
 	fn= fn + ".filter";
@@ -560,7 +560,7 @@ bool CursesMessage::filterExternal(size_t n)
 						+ name.substr(i+1);
 			}
 
-			while ((i=name.find('<')) != name.npos)
+			while ((i=name.find('<')) != std::string::npos)
 				name=name.substr(0, i) + "&lt;" +
 					name.substr(i+1);
 
@@ -703,6 +703,8 @@ bool CursesMessage::reformatAddLine(string l,
 				    LineIndex::Flags flags)
 {
 	LineIndex li;
+
+	memset(&li, 0, sizeof(li));
 
 	li.whence=reformat_whence;
 	li.nbytes=l.size();
@@ -1506,7 +1508,7 @@ bool CursesMessage::reformatEnvelopeAddresses(string hdrName,
 	{
 		size_t p=hdr.find('\n');
 
-		if (p == hdr.npos)
+		if (p == std::string::npos)
 			p=hdr.size();
 
 		if (p > 0)
@@ -1550,10 +1552,10 @@ bool CursesMessage::reformatHeader(string line,
 {
 	size_t hdrname=line.find(':');
 
-	if (hdrname == line.npos)
+	if (hdrname == std::string::npos)
 		hdrname=line.find(' ');
 
-	if (hdrname != line.npos)
+	if (hdrname != std::string::npos)
 	{
 		while (++hdrname < line.size() && isspace(line[hdrname]))
 			;
@@ -2329,6 +2331,11 @@ void CursesMessage::reply()
 			if (line.size() == 0 && ifs.eof())
 				break;
 
+			if (line.size() > 0 && *--line.end() == '\r')
+			{
+				line=line.substr(0, line.size()-1);
+			}
+
 			if (reformatterPtr)
 				reformatterPtr->parse(line + "\n");
 			else
@@ -2562,6 +2569,11 @@ void CursesMessage::forward()
 				if (line.size() == 0 && i.eof())
 					break;
 
+				if (line.size() > 0 && *--line.end() == '\r')
+				{
+					line=line.substr(0, line.size()-1);
+				}
+
 				otmpfile << line << endl;
 				if (i.eof())
 					break;
@@ -2628,6 +2640,11 @@ void CursesMessage::forward()
 					{
 						good=true;
 						break;
+					}
+
+					if (line.size() > 0 && *--line.end() == '\r')
+					{
+						line=line.substr(0, line.size()-1);
 					}
 
 					if (reformatterPtr)
@@ -3567,6 +3584,7 @@ bool CursesMessage::nextLink()
 
 	if (++linkPos != links[linkRow].end())
 		return true; // Next link, same row
+	--linkPos;
 
 	std::map<size_t, std::list<link> >::iterator p, q=links.end();
 

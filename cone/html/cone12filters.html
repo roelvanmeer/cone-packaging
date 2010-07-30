@@ -32,8 +32,8 @@ information.
         <td width="20%" align="left" rowspan="1" colspan="1">
         <a accesskey="p" href="cone11encryption.html" shape="rect">Prev</a>&#160;</td>
 
-        <th width="60%" align="center" rowspan="1" colspan="1">Cone
-        mail client</th>
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="application">Cone</span> mail client</th>
 
         <td width="20%" align="right" rowspan="1" colspan="1">
         &#160;<a accesskey="n" href="cone13addressbook.html" shape="rect">Next</a></td>
@@ -42,7 +42,7 @@ information.
     <hr/>
   </div>
 
-  <div class="chapter" lang="en" xml:lang="en">
+  <div class="chapter" title="Mail Filters">
     <div class="titlepage">
       <div>
         <div>
@@ -52,10 +52,9 @@ information.
     </div>
 
     <p>This is a simple, automatic mail processing function. In
-    this context, &#8220;<span class="quote">mail
-    filtering</span>&#8221; means the ability to move,
-    automatically delete, or automatically flag all messages that
-    match a specific search criteria.</p>
+    this context, <span class="quote">&#8220;<span class="quote">mail filtering</span>&#8221;</span> means the ability
+    to move, automatically delete, or automatically flag all
+    messages that match a specific search criteria.</p>
 
     <p>Where possible, it is always more efficient to have the mail
     server filter messages, instead of a mail client like
@@ -82,23 +81,23 @@ information.
     obvious reasons.</p>
 
     <p>The best use for mail filters with a Usenet newsgroup is as
-    a simple killfile: &#8220;<span class="quote">Search From:
-    contains troll@example.com</span>&#8221;, followed by
-    &#8220;<span class="quote">Delete and
-    Expunge</span>&#8221;.</p>
+    a simple killfile: <span class="quote">&#8220;<span class="quote">Search From: contains
+    troll@example.com</span>&#8221;</span>, followed by
+    <span class="quote">&#8220;<span class="quote">Delete and
+    Expunge</span>&#8221;</span>.</p>
 
     <p>A mail filter may be installed for any folder. Each folder
     has its own mail filters. The folder's mail filter is
     automatically processed by <span class="application">Cone</span> whenever:</p>
 
     <div class="itemizedlist">
-      <ul type="disc">
-        <li>
+      <ul class="itemizedlist" type="disc">
+        <li class="listitem">
           <p>The folder is opened for the first time, or reopened
           after another folder was opened.</p>
         </li>
 
-        <li>
+        <li class="listitem">
           <p>New messages are added to the folder.</p>
         </li>
       </ul>
@@ -109,11 +108,11 @@ information.
     folder, only the new messages will be processed by the mail
     filters. Existing messages will be ignored.</p>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Mail Filter Entry Screen">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id513897" shape="rect" name="id513897"> </a>Mail Filter Entry Screen</h4>
+            <h4 class="title"><a id="id493998" shape="rect" name="id493998"> </a>Mail Filter Entry Screen</h4>
           </div>
         </div>
       </div>
@@ -145,24 +144,24 @@ information.
 
       <p>This screen is accessed by highlighting a folder on the
       Folder Listing screen, then pressing <span class="keycap"><strong>F</strong></span>. Each mail filter consists
-      of one or more &#8220;<span class="quote">steps</span>&#8221;. There are two kinds of steps: a
-      &#8220;<span class="quote">select</span>&#8221; step compiles
-      a list of messages that match a certain search criteria; the
-      selection step is followed by one or more steps that apply a
-      particular &#8220;<span class="quote">action</span>&#8221;
-      against all messages that were selected. More than one action
-      step may follow a selection step; messages are processed by
-      each action step in sequence, until another selection step,
-      which searches the remaining messages again, and compiles a
-      different list of selected messages.</p>
+      of one or more <span class="quote">&#8220;<span class="quote">steps</span>&#8221;</span>. There are two kinds of
+      steps: a <span class="quote">&#8220;<span class="quote">select</span>&#8221;</span> step compiles a list of
+      messages that match a certain search criteria; the selection
+      step is followed by one or more steps that apply a particular
+      <span class="quote">&#8220;<span class="quote">action</span>&#8221;</span> against all messages that
+      were selected. More than one action step may follow a
+      selection step; messages are processed by each action step in
+      sequence, until another selection step, which searches the
+      remaining messages again, and compiles a different list of
+      selected messages.</p>
 
       <p>Some actions cannot be naturally followed by any other
       action, and can only be followed by another selection step.
-      Consider, for example, &#8220;<span class="quote">Delete And
-      Expunge</span>&#8221; or &#8220;<span class="quote">Move to
-      another folder</span>&#8221; filtering step: at the
-      conclusion the selected messages are obviously removed, and
-      nothing else can be done with them, any more.</p>
+      Consider, for example, <span class="quote">&#8220;<span class="quote">Delete And
+      Expunge</span>&#8221;</span> or <span class="quote">&#8220;<span class="quote">Move to another
+      folder</span>&#8221;</span> filtering step: at the conclusion
+      the selected messages are obviously removed, and nothing else
+      can be done with them, any more.</p>
 
       <p>This screen initially shows any existing filtering steps
       defined for the folder. All filtering steps are processed in
@@ -173,20 +172,20 @@ information.
       removes the existing filtering step. The folder's mail filter
       is removed by highlighting each step and pressing
       <span class="keycap"><strong>DEL</strong></span>, then
-      highlighting &#8220;<span class="quote">Save
-      Filters</span>&#8221; and pressing <span class="keycap"><strong>ENTER</strong></span>.</p>
+      highlighting <span class="quote">&#8220;<span class="quote">Save Filters</span>&#8221;</span> and pressing
+      <span class="keycap"><strong>ENTER</strong></span>.</p>
 
       <p>All changes made on this screen are temporary.
-      &#8220;<span class="quote">Save Filters</span>&#8221; must be
-      selected in order for any changes made on this screen to take
-      effect. <span class="keycap"><strong>CTRL</strong></span>-<span class="keycap"><strong>C</strong></span> closes this screen without
+      <span class="quote">&#8220;<span class="quote">Save
+      Filters</span>&#8221;</span> must be selected in order for
+      any changes made on this screen to take effect. <span class="keycap"><strong>CTRL</strong></span>-<span class="keycap"><strong>C</strong></span> closes this screen without
       changing the folder's existing filter, throwing out all the
       temporary changes.</p>
 
-      <p>Highlighting &#8220;<span class="quote">Add new
-      filter</span>&#8221; and pressing <span class="keycap"><strong>ENTER</strong></span> adds a new filtering
-      step to the end of the mail filter. A sub-menu is shown to
-      define the new filtering step:</p>
+      <p>Highlighting <span class="quote">&#8220;<span class="quote">Add new filter</span>&#8221;</span> and pressing
+      <span class="keycap"><strong>ENTER</strong></span> adds a new
+      filtering step to the end of the mail filter. A sub-menu is
+      shown to define the new filtering step:</p>
 
       <div class="variablelist">
         <dl>
@@ -195,8 +194,8 @@ information.
           <dd>
             <p>Enters a new searching criteria which will be used
             to select messages for the following action steps. See
-            &#8220;<span class="quote">Search
-            criteria</span>&#8221;, below, for more
+            <span class="quote">&#8220;<span class="quote">Search
+            criteria</span>&#8221;</span>, below, for more
             information.</p>
           </dd>
 
@@ -213,9 +212,9 @@ information.
           deleted</span></dt>
 
           <dd>
-            <p>Removes the &#8220;<span class="quote">deleted</span>&#8221; mark from the selected
-            messages. The selected messages are no longer marked as
-            deleted.</p>
+            <p>Removes the <span class="quote">&#8220;<span class="quote">deleted</span>&#8221;</span> mark from the
+            selected messages. The selected messages are no longer
+            marked as deleted.</p>
           </dd>
 
           <dt><span class="term"><span class="keycap"><strong>X</strong></span> - delete and
@@ -233,9 +232,9 @@ information.
             <p>Marks, or highlights the selected messages on the
             folder index screen. Tagged messages are shown as
             highlighted on the folder index screen, preceded by
-            &#8220;<span class="quote"><code class="literal">*</code></span>&#8221;. On some displays,
-            tagged messages are flagged by a checkmark symbol
-            instead of the &#8220;<span class="quote"><code class="literal">*</code></span>&#8221;.</p>
+            <span class="quote">&#8220;<span class="quote"><code class="literal">*</code></span>&#8221;</span>. On some
+            displays, tagged messages are flagged by a checkmark
+            symbol instead of the <span class="quote">&#8220;<span class="quote"><code class="literal">*</code></span>&#8221;</span>.</p>
           </dd>
 
           <dt><span class="term"><span class="keycap"><strong>K</strong></span> - unmark, or untag the
@@ -252,9 +251,9 @@ information.
           <dd>
             <p>Watch the selected message's replies/subthreads
             (unless the message is already a part of a watched
-            thread). See <a class="link" href="cone02folderindex.html#watch" title="Watching Threads" shape="rect">&#8220;<span class="quote">Watching
-            Threads</span>&#8221;</a> in the &#8220;<span class="quote">Folder Index</span>&#8221; chapter for more
-            information on thread watching.</p>
+            thread). See <a class="link" href="cone02folderindex.html#watch" title="Watching Threads" shape="rect"><span class="quote">&#8220;<span class="quote">Watching Threads</span>&#8221;</span></a> in
+            the <span class="quote">&#8220;<span class="quote">Folder Index</span>&#8221;</span> chapter for
+            more information on thread watching.</p>
           </dd>
 
           <dt><span class="term"><span class="keycap"><strong>A</strong></span> - unwatch
@@ -274,7 +273,7 @@ information.
             Highlight the folder where the messages can be moved
             to, and press ENTER.</p>
 
-            <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
               <h3 class="title">Note</h3>
 
               <p>Messages can be moved only to folders in the same
@@ -296,7 +295,7 @@ information.
             the selected messages remain in the original
             folder.</p>
 
-            <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
               <h3 class="title">Note</h3>
 
               <p>This mail filter will be processed every time a
@@ -311,11 +310,11 @@ information.
         </dl>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Search criteria">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id502196" shape="rect" name="id502196"> </a>Search criteria</h5>
+              <h5 class="title"><a id="id482233" shape="rect" name="id482233"> </a>Search criteria</h5>
             </div>
           </div>
         </div>
@@ -335,9 +334,10 @@ information.
             <dd>
               <p>Press <span class="keycap"><strong>!</strong></span> to logically
               reverse the following search criteria. Thus, if the
-              entered search criteria was &#8220;<span class="quote">Search the <code class="literal">From</code>
-              header for <code class="literal">troll@example.com</code></span>&#8221; the
-              actual search will find messages where the
+              entered search criteria was <span class="quote">&#8220;<span class="quote">Search the
+              <code class="literal">From</code> header for
+              <code class="literal">troll@example.com</code></span>&#8221;</span>
+              the actual search will find messages where the
               <code class="literal">From</code> header does
               <span class="emphasis"><em>NOT</em></span> contain
               this text.</p>
@@ -359,10 +359,8 @@ information.
               status flags that define whether the message is a new
               message, a deleted message, a replied message, and so
               on. Selecting a status search shows three options:
-              &#8220;<span class="quote">Deleted</span>&#8221;,
-              &#8220;<span class="quote">Unread</span>&#8221;, and
-              &#8220;<span class="quote">Replied</span>&#8221;, to
-              search for all deleted, unread, or replied messages,
+              <span class="quote">&#8220;<span class="quote">Deleted</span>&#8221;</span>, <span class="quote">&#8220;<span class="quote">Unread</span>&#8221;</span>, and <span class="quote">&#8220;<span class="quote">Replied</span>&#8221;</span>, to search for
+              all deleted, unread, or replied messages,
               respectively.</p>
             </dd>
 
@@ -381,29 +379,30 @@ information.
 
             <dd>
               <p>Search for messages that are bigger or smaller
-              than a certain size. Select &#8220;<span class="quote">Larger than</span>&#8221; or
-              &#8220;<span class="quote">Smaller than</span>&#8221;
-              at the next prompt, then enter the target message
-              size, in bytes, and press <span class="keycap"><strong>ENTER</strong></span> to search.</p>
+              than a certain size. Select <span class="quote">&#8220;<span class="quote">Larger
+              than</span>&#8221;</span> or <span class="quote">&#8220;<span class="quote">Smaller
+              than</span>&#8221;</span> at the next prompt, then
+              enter the target message size, in bytes, and press
+              <span class="keycap"><strong>ENTER</strong></span> to
+              search.</p>
             </dd>
           </dl>
         </div>
 
-        <div class="section" lang="en" xml:lang="en">
+        <div class="section" title="Date-based searches">
           <div class="titlepage">
             <div>
               <div>
-                <h6 class="title"><a id="id502857" shape="rect" name="id502857"> </a>Date-based searches</h6>
+                <h6 class="title"><a id="id482894" shape="rect" name="id482894"> </a>Date-based searches</h6>
               </div>
             </div>
           </div>
 
           <p>A date-based search brings up additional prompts that
           specify the nature of the search. There are two dates
-          that are associated with every message: the
-          &#8220;<span class="quote">sent</span>&#8221; date, when
-          the message was sent; and the &#8220;<span class="quote">received</span>&#8221; date, when the message was
-          received.</p>
+          that are associated with every message: the <span class="quote">&#8220;<span class="quote">sent</span>&#8221;</span> date, when the message
+          was sent; and the <span class="quote">&#8220;<span class="quote">received</span>&#8221;</span> date, when the
+          message was received.</p>
 
           <p>The sent date is obtained from the message's
           <code class="literal">Date:</code> header. The received
@@ -414,33 +413,33 @@ information.
           for:</p>
 
           <div class="orderedlist">
-            <ol type="1">
-              <li>
+            <ol class="orderedlist" type="1">
+              <li class="listitem">
                 <p>Messages that were sent before the given
                 date.</p>
               </li>
 
-              <li>
+              <li class="listitem">
                 <p>Messages that were the sent on the given
                 date.</p>
               </li>
 
-              <li>
+              <li class="listitem">
                 <p>Messages that were the sent since (on, or after)
                 the given date.</p>
               </li>
 
-              <li>
+              <li class="listitem">
                 <p>Messages that were received before the given
                 date.</p>
               </li>
 
-              <li>
+              <li class="listitem">
                 <p>Messages that were the received on the given
                 date.</p>
               </li>
 
-              <li>
+              <li class="listitem">
                 <p>Messages that were the received since (on, or
                 after) the given date.</p>
               </li>
@@ -456,7 +455,7 @@ information.
           shown date by a month. Press the space bar to accept the
           shown date, and search for messages.</p>
 
-          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
             <h3 class="title">Note</h3>
 
             <p>Date-based searches are not currently implemented
@@ -464,11 +463,11 @@ information.
           </div>
         </div>
 
-        <div class="section" lang="en" xml:lang="en">
+        <div class="section" title="Text-based searches">
           <div class="titlepage">
             <div>
               <div>
-                <h6 class="title"><a id="id501911" shape="rect" name="id501911"> </a>Text-based searches</h6>
+                <h6 class="title"><a id="id481948" shape="rect" name="id481948"> </a>Text-based searches</h6>
               </div>
             </div>
           </div>
@@ -540,7 +539,7 @@ information.
           these options, and press <span class="keycap"><strong>ENTER</strong></span> to perform the
           search.</p>
 
-          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
             <h3 class="title">Note</h3>
 
             <p>Efficient searching is implemented for local mail,

@@ -61,10 +61,10 @@ Building Cone
        http://www.courier-mta.org/download.php#sox and follow its
        installation instructions.
 
-   Right now the primary development focus is on the Linux platform, gcc 3.2.
-   Cone should build on other POSIX platforms; and any problems are likely to
-   be minor, and trivial to resolve. A large portion of Cone's code base
-   comes from Courier, which builds on many platforms.
+   Right now the primary development focus is on the Linux platform, but Cone
+   should build on other POSIX platforms; and any problems are likely to be
+   minor, and trivial to resolve. A large portion of Cone's code base comes
+   from Courier, which builds on many platforms.
 
   Note
 

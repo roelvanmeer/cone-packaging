@@ -1,4 +1,4 @@
-/* $Id: htmlparser.C,v 1.9 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: htmlparser.C,v 1.10 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -509,7 +509,7 @@ void htmlParser::parse(string s)
 
 	charBuffer += s;
 
-	while ((n=charBuffer.find('\n')) != charBuffer.npos)
+	while ((n=charBuffer.find('\n')) != std::string::npos)
 	{
 		string line=charBuffer.substr(0, n+1);
 
@@ -1367,7 +1367,7 @@ void htmlParser::updateTagStyle(tag &tagRef, string style)
 
 		size_t n=style.find(';');
 
-		if (n == style.npos)
+		if (n == std::string::npos)
 		{
 			property=style;
 			style="";
@@ -1385,7 +1385,7 @@ void htmlParser::updateTagStyle(tag &tagRef, string style)
 
 		n=property.find(':');
 
-		if (n == property.npos)
+		if (n == std::string::npos)
 		{
 			propName=property;
 			propValue="";

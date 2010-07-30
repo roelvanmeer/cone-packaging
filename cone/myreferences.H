@@ -1,4 +1,4 @@
-/* $Id: myreferences.H,v 1.1 2003/07/09 21:33:20 mrsam Exp $
+/* $Id: myreferences.H,v 1.2 2010/05/06 02:34:09 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -55,7 +55,7 @@ public:
 	bool operator<(const messageId &a) const
 	{ return (ids && a.ids && ref->first < a.ref->first); }
 
-	const char *c_str() { return ids ? ref->first.c_str():NULL; }
+	const char *c_str() { return ids ? ref->first.c_str():""; }
 	operator std::string() const { return ids ? ref->first:
 		std::string(""); }
 };

@@ -1,4 +1,4 @@
-/* $Id: cursesfield.C,v 1.6 2008/05/24 17:57:41 mrsam Exp $
+/* $Id: cursesfield.C,v 1.7 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -515,7 +515,7 @@ bool CursesField::processKeyInFocus(const Key &key)
 
 		size_t p=cutBuffer.find('\n');
 
-		if (p == cutBuffer.npos)
+		if (p == std::string::npos)
 		{
 			s=cutBuffer;
 		}

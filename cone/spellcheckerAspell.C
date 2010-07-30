@@ -1,4 +1,4 @@
-/* $Id: spellcheckerAspell.C,v 1.6 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: spellcheckerAspell.C,v 1.7 2010/03/01 04:01:22 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -46,8 +46,12 @@ SpellChecker::SpellChecker(string languageArg, string encodingArg)
 		}
 		else
 		{
-			aspell_config_replace(config,"lang", language.c_str());
-			aspell_config_replace(config,"encoding", encoding.c_str());
+			if (language.size() > 0)
+				aspell_config_replace(config, "lang",
+						      language.c_str());
+			if (encoding.size() > 0)
+				aspell_config_replace(config, "encoding",
+						      encoding.c_str());
 		}
 #endif
 	} catch ( std::exception &e)

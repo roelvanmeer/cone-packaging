@@ -43,7 +43,7 @@ information.
     <hr/>
   </div>
 
-  <div class="section" lang="en" xml:lang="en">
+  <div class="section" title="SMAP syntax overview">
     <div class="titlepage">
       <div>
         <div>
@@ -62,7 +62,7 @@ information.
     U+000D). An SMAP command is terminated by the newline
     character, (U+000A).</p>
 
-    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
       <h3 class="title">Note</h3>
 
       <p>The server does not translate actual message contents to
@@ -70,16 +70,16 @@ information.
       to the client. The UTF-8 character set is used for:</p>
 
       <div class="itemizedlist">
-        <ul type="disc">
-          <li>
+        <ul class="itemizedlist" type="disc">
+          <li class="listitem">
             <p>Names of folders</p>
           </li>
 
-          <li>
+          <li class="listitem">
             <p>Error and status messages</p>
           </li>
 
-          <li>
+          <li class="listitem">
             <p>Search strings</p>
           </li>
         </ul>
@@ -92,7 +92,7 @@ information.
       explicitly defined character set.</p>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Maximum limitations and timeouts">
       <div class="titlepage">
         <div>
           <div>
@@ -109,7 +109,7 @@ information.
       long. SMAP clients should not send commands that exceed 8000
       characters in length.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>This, of course, does not apply to binary-formatted
@@ -126,11 +126,11 @@ information.
       themselves from being disconnected for inactivity.</p>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Words">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id673375" shape="rect" name="id673375"> </a>Words</h4>
+            <h4 class="title"><a id="id653517" shape="rect" name="id653517"> </a>Words</h4>
           </div>
         </div>
       </div>
@@ -148,11 +148,11 @@ information.
       empty is represented by two quotes: <code class="literal">""</code>.</p>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="SMAP server replies">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id673408" shape="rect" name="id673408"> </a>SMAP server replies</h4>
+            <h4 class="title"><a id="id653550" shape="rect" name="id653550"> </a>SMAP server replies</h4>
           </div>
         </div>
       </div>
@@ -178,7 +178,7 @@ information.
       word, or character, to determine the reply's format.</p>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Status replies">
       <div class="titlepage">
         <div>
           <div>
@@ -187,8 +187,10 @@ information.
         </div>
       </div>
 
-      <p>A line whose first word is either &#8220;<span class="quote">+OK</span>&#8221; or &#8220;<span class="quote">-ERR</span>&#8221; is a &#8220;<span class="quote">status reply</span>&#8221;. &#8220;<span class="quote">+OK</span>&#8221; indicates that the client's request
-      succeeded, &#8220;<span class="quote">-ERR</span>&#8221;
+      <p>A line whose first word is either <span class="quote">&#8220;<span class="quote">+OK</span>&#8221;</span>
+      or <span class="quote">&#8220;<span class="quote">-ERR</span>&#8221;</span> is a <span class="quote">&#8220;<span class="quote">status
+      reply</span>&#8221;</span>. <span class="quote">&#8220;<span class="quote">+OK</span>&#8221;</span>
+      indicates that the client's request succeeded, <span class="quote">&#8220;<span class="quote">-ERR</span>&#8221;</span>
       indicates that it failed. The rest of the line is a free-form
       message, suitable to be displayed as the original command's
       acknowledgement. The status reply does not include any actual
@@ -206,7 +208,7 @@ information.
       <p>The SMAP client must wait until the status reply is
       received before sending the next command.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>In order to allow interoperability with IMAP, server
@@ -215,7 +217,7 @@ information.
       </div>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Single line replies">
       <div class="titlepage">
         <div>
           <div>
@@ -225,32 +227,31 @@ information.
       </div>
 
       <p>A server reply where the first whitespace-delimited word
-      is the &#8220;<span class="quote">*</span>&#8221; character
-      is called a &#8220;<span class="quote">single line
-      reply</span>&#8221;. Single line replies send information,
-      requested by the original command, formatted as
+      is the <span class="quote">&#8220;<span class="quote">*</span>&#8221;</span> character is called a
+      <span class="quote">&#8220;<span class="quote">single line
+      reply</span>&#8221;</span>. Single line replies send
+      information, requested by the original command, formatted as
       whitespace-delimited words. The information carried by the
       words depends on the reply. The actual format of a single
       line reply depends on the original command, but can usually
-      be determined by the word that follows &#8220;<span class="quote">*</span>&#8221;. This single-line reply does not
-      indicate if the client's command succeeded, the client must
-      still wait to receive the final status reply. The only
-      exception to this rule is the initial connection greeting, or
-      the unexpected connection termination situation, which is
-      described later.</p>
+      be determined by the word that follows <span class="quote">&#8220;<span class="quote">*</span>&#8221;</span>.
+      This single-line reply does not indicate if the client's
+      command succeeded, the client must still wait to receive the
+      final status reply. The only exception to this rule is the
+      initial connection greeting, or the unexpected connection
+      termination situation, which is described later.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>The client must be prepared to receive multiple single
-        line and multiple line replies, followed by an
-        &#8220;<span class="quote"><code class="literal">-ERR</code></span>&#8221; status reply. This
-        happens when the server encounters an error in a middle of
-        processing the client's request.</p>
+        line and multiple line replies, followed by an <span class="quote">&#8220;<span class="quote"><code class="literal">-ERR</code></span>&#8221;</span> status reply.
+        This happens when the server encounters an error in a
+        middle of processing the client's request.</p>
       </div>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Multiple line replies">
       <div class="titlepage">
         <div>
           <div>
@@ -263,17 +264,17 @@ information.
       conveniently represented as a single line of text. An example
       would be the contents of a message. Obviously, messages
       contains many lines of text. A server reply whose first word
-      starts with the '{' character is called a &#8220;<span class="quote">multiple line reply</span>&#8221;. This name is
-      actually slightly misleading; this format may carry binary
-      data that bears no resemblance to lines of text.</p>
+      starts with the '{' character is called a <span class="quote">&#8220;<span class="quote">multiple line
+      reply</span>&#8221;</span>. This name is actually slightly
+      misleading; this format may carry binary data that bears no
+      resemblance to lines of text.</p>
 
       <p>There are two separate multi-line reply formats. The first
       format is suitable for line-oriented textual content. It's
-      called the &#8220;<span class="quote">dot-stuffed
-      format</span>&#8221;. The first word of the server reply is
-      &#8220;<span class="quote">{.<em class="replaceable"><code>nnnn</code></em>}</span>&#8221;, where
-      &#8220;<span class="quote"><em class="replaceable"><code>nnnn</code></em></span>&#8221; is a
-      decimal number. This number is the server's estimate of the
+      called the <span class="quote">&#8220;<span class="quote">dot-stuffed format</span>&#8221;</span>. The first
+      word of the server reply is <span class="quote">&#8220;<span class="quote">{.<em class="replaceable"><code>nnnn</code></em>}</span>&#8221;</span>,
+      where <span class="quote">&#8220;<span class="quote"><em class="replaceable"><code>nnnn</code></em></span>&#8221;</span> is
+      a decimal number. This number is the server's estimate of the
       total size of the multi-line reply, in bytes. It is not an
       exact byte count, just a reasonable estimate. The server is
       not required to compute the exact byte count before sending
@@ -302,17 +303,17 @@ information.
       returned data.</p>
 
       <p>The second multi-line server reply format carries binary
-      data. It begins with the word &#8220;<span class="quote">{<em class="replaceable"><code>xxxx</code></em>/<em class="replaceable"><code>yyyy</code></em>}</span>&#8221;, where
-      &#8220;<span class="quote"><em class="replaceable"><code>xxxx</code></em></span>&#8221; and
-      &#8220;<span class="quote"><em class="replaceable"><code>yyyy</code></em></span>&#8221; are
-      decimal numbers. &#8220;<span class="quote"><em class="replaceable"><code>yyyy</code></em></span>&#8221; gives the
-      server's estimate of the total size of the binary data, and
-      &#8220;<span class="quote"><em class="replaceable"><code>xxxx</code></em></span>&#8221; gives the
-      byte count of the first part that the server is about to
-      send. The server does not have to send everything as one
-      binary goop. The server is allowed to break down the binary
-      data in smaller, managable, chunks, which are sent one at a
-      time.</p>
+      data. It begins with the word <span class="quote">&#8220;<span class="quote">{<em class="replaceable"><code>xxxx</code></em>/<em class="replaceable"><code>yyyy</code></em>}</span>&#8221;</span>,
+      where <span class="quote">&#8220;<span class="quote"><em class="replaceable"><code>xxxx</code></em></span>&#8221;</span> and
+      <span class="quote">&#8220;<span class="quote"><em class="replaceable"><code>yyyy</code></em></span>&#8221;</span> are
+      decimal numbers. <span class="quote">&#8220;<span class="quote"><em class="replaceable"><code>yyyy</code></em></span>&#8221;</span>
+      gives the server's estimate of the total size of the binary
+      data, and <span class="quote">&#8220;<span class="quote"><em class="replaceable"><code>xxxx</code></em></span>&#8221;</span>
+      gives the byte count of the first part that the server is
+      about to send. The server does not have to send everything as
+      one binary goop. The server is allowed to break down the
+      binary data in smaller, managable, chunks, which are sent one
+      at a time.</p>
 
       <p>The remaining words of the multi-line reply line format
       are the same as as the dot-stuffed format's. Immediately
@@ -342,11 +343,11 @@ information.
       process.</p>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="An empty multi-line reply">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id674070" shape="rect" name="id674070"> </a>An empty multi-line reply</h4>
+            <h4 class="title"><a id="id654212" shape="rect" name="id654212"> </a>An empty multi-line reply</h4>
           </div>
         </div>
       </div>

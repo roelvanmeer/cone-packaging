@@ -1,4 +1,4 @@
-/* $Id: myserverconfig.C,v 1.27 2009/11/08 23:52:31 mrsam Exp $
+/* $Id: myserverconfig.C,v 1.28 2010/05/02 12:03:22 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -1327,7 +1327,7 @@ static string getProp(xmlNodePtr node, const char *prop)
 			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
-	return mail::rfc2047::decoder::decoder().
+	return mail::rfc2047::decoder().
 		decode(s, *Gettext::defaultCharset());
 }
 
@@ -1367,7 +1367,7 @@ static string getTextNode(xmlNodePtr node)
 			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
-	return mail::rfc2047::decoder::decoder()
+	return mail::rfc2047::decoder()
 		.decode(s, *Gettext::defaultCharset());
 }
 		
@@ -2160,7 +2160,7 @@ void myServer::config::loadserver(xmlNodePtr root,
 			const char *a=(const char *)attr->name;
 
 			string aDecode=
-				mail::rfc2047::decoder::decoder()
+				mail::rfc2047::decoder()
 				.decode(a, *Gettext::defaultCharset());
 
 			string val;

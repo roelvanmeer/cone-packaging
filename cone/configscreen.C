@@ -1,4 +1,4 @@
-/* $Id: configscreen.C,v 1.20 2009/10/31 22:38:07 mrsam Exp $
+/* $Id: configscreen.C,v 1.21 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -676,7 +676,7 @@ ConfigScreen::ConfigScreen(CursesContainer *parent)
 
 		string hh;
 
-		if (p != h.npos)
+		if (p != std::string::npos)
 		{
 			hh=h.substr(0, p);
 			h=h.substr(p+1);

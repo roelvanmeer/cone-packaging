@@ -33,7 +33,8 @@ information.
         <a accesskey="p" href="folder-readsubfolders.html" shape="rect">Prev</a>&#160;</td>
 
         <th width="60%" align="center" rowspan="1" colspan="1">
-        mail::folder Native API reference</th>
+        <span class="structname">mail::folder</span> Native API
+        reference</th>
 
         <td width="20%" align="right" rowspan="1" colspan="1">
         &#160;<a accesskey="n" href="folder-setrights.html" shape="rect">Next</a></td>
@@ -42,7 +43,7 @@ information.
     <hr/>
   </div>
 
-  <div class="refentry" lang="en" xml:lang="en">
+  <div class="refentry" title="mail::folder::renameFolder">
     <a id="folder-renamefolder" shape="rect" name="folder-renamefolder"> </a>
 
     <div class="titlepage"/>
@@ -53,7 +54,7 @@ information.
       <p>mail::folder::renameFolder &#8212; Rename a folder</p>
     </div>
 
-    <div class="refsynopsisdiv">
+    <div class="refsynopsisdiv" title="Synopsis">
       <h2>Synopsis</h2>
 
       <div class="literallayout">
@@ -124,8 +125,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id616253" shape="rect" name="id616253"> </a>
+    <div class="refsect1" title="USAGE">
+      <a id="id596395" shape="rect" name="id596395"> </a>
 
       <h2>USAGE</h2>
 
@@ -142,7 +143,7 @@ information.
       new name of the folder, in the application's character
       set.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>Some mail servers reserve certain characters which
@@ -159,7 +160,7 @@ information.
         a design flaw in the IMAP protocol.</p>
       </div>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>Maildir folders created by are compatible and can be
@@ -173,7 +174,7 @@ information.
         not be able to read one of these folders via IMAP.</p>
       </div>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>Mbox mail folders created by <span class="application">LibMAIL</span> are mostly compatible and can
@@ -188,8 +189,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id616453" shape="rect" name="id616453"> </a>
+    <div class="refsect1" title="RETURN CODES AND CALLBACKS">
+      <a id="id596595" shape="rect" name="id596595"> </a>
 
       <h2>RETURN CODES AND CALLBACKS</h2>
 
@@ -199,7 +200,7 @@ information.
       <em class="parameter"><code>callback</code></em> until either
       the <code class="function">success</code> or <code class="function">fail</code> method is invoked.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p><em class="parameter"><code>callback</code></em>'s
@@ -209,7 +210,7 @@ information.
         the error was encountered.</p>
       </div>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>The application must not destroy <em class="parameter"><code>folderCallback</code></em> until this
@@ -224,7 +225,7 @@ information.
       and should be destroyed. The new <span class="structname">mail::folder</span> object should now be used to
       refer to this folder.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p><span class="structname">mail::folder</span>s are linked
@@ -239,7 +240,7 @@ information.
         destroyed.</p>
       </div>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>The <code class="function">folderCallback.success</code>
@@ -251,7 +252,7 @@ information.
         later.</p>
       </div>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>Both <code class="function">folderCallback.success</code> and <code class="function">myCallback.success</code> method will be invoked
@@ -262,8 +263,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id616756" shape="rect" name="id616756"> </a>
+    <div class="refsect1" title="SEE ALSO">
+      <a id="id596898" shape="rect" name="id596898"> </a>
 
       <h2>SEE ALSO</h2>
 

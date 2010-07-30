@@ -1,4 +1,4 @@
-/* $Id: mymessage.C,v 1.10 2009/10/31 22:38:07 mrsam Exp $
+/* $Id: mymessage.C,v 1.11 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2003-2004, Double Precision Inc.
 **
@@ -583,7 +583,7 @@ void myMessage::newMessage(const mail::folder *folderPtr,
 
 			size_t p=mailtoUrl.find('?');
 
-			if (p != mailtoUrl.npos)
+			if (p != std::string::npos)
 			{
 				params=mailtoUrl.substr(p+1);
 				mailtoUrl=mailtoUrl.substr(0, p);
@@ -798,8 +798,8 @@ bool myMessage::getDefaultHeaders(const mail::folder *folder,
 
 			size_t p=n.find(',');
 
-			if (p != n.npos)
-				n=n.substr(0, n.npos);
+			if (p != std::string::npos)
+				n=n.substr(0, std::string::npos);
 
 			n=mail::rfc2047::encode(n, Gettext::defaultCharset()
 					      ->chset);

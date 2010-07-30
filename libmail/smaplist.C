@@ -1,4 +1,4 @@
-/* $Id: smaplist.C,v 1.7 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: smaplist.C,v 1.8 2010/04/29 00:34:50 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -152,7 +152,7 @@ mail::smapLISToneFolder
 	nameComponent=words.end()[-1];
 	size_t n=path.rfind('/');
 
-	if (n == path.npos)
+	if (n == std::string::npos)
 		path="";
 	else
 		path=path.substr(0, n);

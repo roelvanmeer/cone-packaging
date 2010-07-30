@@ -43,7 +43,7 @@ information.
     <hr/>
   </div>
 
-  <div class="section" lang="en" xml:lang="en">
+  <div class="section" title="Reading message contents">
     <div class="titlepage">
       <div>
         <div>
@@ -118,15 +118,15 @@ information.
               <dt><span class="term"><code class="literal">:ENVELOPE</code></span></dt>
 
               <dd>
-                <p>This is the same as &#8220;<span class="quote">DATE,SUBJECT,FROM,SENDER,REPLY-TO,TO,CC,BCC,IN-REPLY-TO,MESSAGE-ID,REFERENCES</span>&#8221;.</p>
+                <p>This is the same as <span class="quote">&#8220;<span class="quote">DATE,SUBJECT,FROM,SENDER,REPLY-TO,TO,CC,BCC,IN-REPLY-TO,MESSAGE-ID,REFERENCES</span>&#8221;</span>.</p>
               </dd>
 
               <dt><span class="term"><code class="literal">:MIME</code></span></dt>
 
               <dd>
-                <p>This is the same as &#8220;<span class="quote">:ENVELOPE</span>&#8221;, plus
-                &#8220;<span class="quote">MIME-VERSION</span>&#8221; and all headers
-                that start with &#8220;<span class="quote">CONTENT-</span>&#8221;.</p>
+                <p>This is the same as <span class="quote">&#8220;<span class="quote">:ENVELOPE</span>&#8221;</span>, plus
+                <span class="quote">&#8220;<span class="quote">MIME-VERSION</span>&#8221;</span> and all
+                headers that start with <span class="quote">&#8220;<span class="quote">CONTENT-</span>&#8221;</span>.</p>
               </dd>
             </dl>
           </div>
@@ -251,26 +251,27 @@ information.
           server uses either the prefix or the infix traversal
           order).</p>
 
-          <p>The server assigns a unique &#8220;<span class="quote">MIME section ID</span>&#8221; to each MIME
-          section. The method the server uses to generate a MIME
-          section ID is entirely up to the server, with one
-          exception: the MIME section ID for the entire message
-          must be an empty string. SMAP clients should treat MIME
-          section ID as opaque text strings, and must not interpret
-          them in any way (except for the blank mime ID referring
-          to the entire message).</p>
+          <p>The server assigns a unique <span class="quote">&#8220;<span class="quote">MIME section
+          ID</span>&#8221;</span> to each MIME section. The method
+          the server uses to generate a MIME section ID is entirely
+          up to the server, with one exception: the MIME section ID
+          for the entire message must be an empty string. SMAP
+          clients should treat MIME section ID as opaque text
+          strings, and must not interpret them in any way (except
+          for the blank mime ID referring to the entire
+          message).</p>
 
-          <p>&#8220;<span class="quote"><code class="literal">MIME.ID=</code><em class="replaceable"><code>id</code></em></span>&#8221;
+          <p><span class="quote">&#8220;<span class="quote"><code class="literal">MIME.ID=</code><em class="replaceable"><code>id</code></em></span>&#8221;</span>
           specifies the MIME section ID of the following headers.
-          &#8220;<span class="quote"><code class="literal">MIME.PARENT=</code><em class="replaceable"><code>id</code></em></span>&#8221;
+          <span class="quote">&#8220;<span class="quote"><code class="literal">MIME.PARENT=</code><em class="replaceable"><code>id</code></em></span>&#8221;</span>
           specifies the MIME section ID of the parent MIME section
           (this attribute is not specified for the topmost MIME
-          section, which has no parent). &#8220;<span class="quote"><code class="literal">MIME.PARENT=</code><em class="replaceable"><code>id</code></em></span>&#8221; is not
-          returned for the first, topmost MIME section, and since
-          its MIME section ID is always an empty string, its
-          inferior MIME section will have &#8220;<span class="quote"><code class="literal">MIME.PARENT=</code></span>&#8221;, the empty
-          <em class="replaceable"><code>id</code></em> referring to
-          the topmost MIME section.</p>
+          section, which has no parent). <span class="quote">&#8220;<span class="quote"><code class="literal">MIME.PARENT=</code><em class="replaceable"><code>id</code></em></span>&#8221;</span>
+          is not returned for the first, topmost MIME section, and
+          since its MIME section ID is always an empty string, its
+          inferior MIME section will have <span class="quote">&#8220;<span class="quote"><code class="literal">MIME.PARENT=</code></span>&#8221;</span>, the
+          empty <em class="replaceable"><code>id</code></em>
+          referring to the topmost MIME section.</p>
 
           <p>The SMAP client uses this information to reconstruct
           the structure of the MIME message.</p>
@@ -289,7 +290,7 @@ information.
           single <code class="literal">text/plain</code>
           section.</p>
 
-          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
             <h3 class="title">Note</h3>
 
             <p>The <code class="literal">MIME.ID</code>,
@@ -392,7 +393,7 @@ information.
             S:&#160;+OK&#160;Ok<br clear="none"/></p>
           </div>
 
-          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
             <h3 class="title">Note</h3>
 
             <p>Unlike <code class="literal">HEADERS</code>, folded

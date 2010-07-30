@@ -1,4 +1,4 @@
-/* $Id: cursesmessagedisplay.C,v 1.13 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: cursesmessagedisplay.C,v 1.14 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2003-2006, Double Precision Inc.
 **
@@ -276,7 +276,7 @@ bool CursesMessageDisplay::processKeyInFocus(const Curses::Key &key)
 
 		size_t p=url.find(':');
 
-		if (p != url.npos)
+		if (p != std::string::npos)
 		{
 			handler=myServer::getConfigDir() + "/"
 				+ url.substr(0, p) + ".handler";

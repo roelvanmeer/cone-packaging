@@ -1,4 +1,4 @@
-/* $Id: cursesscreen.C,v 1.17 2008/06/14 13:50:47 mrsam Exp $
+/* $Id: cursesscreen.C,v 1.18 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002-2006, Double Precision Inc.
 **
@@ -294,7 +294,7 @@ bool CursesScreen::writeText(const wchar_t *text, int row, int col,
 	string mb=wtomb(text);
 
 	if (col == 0 && mb.size() == (size_t)getWidth() &&
-	    mb.find_first_not_of(' ') == mb.npos &&
+	    mb.find_first_not_of(' ') == std::string::npos &&
 	    attr.getBgColor() == 0 &&
 	    !attr.getHighlight() &&
 	    !attr.getReverse() &&

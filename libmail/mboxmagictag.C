@@ -1,4 +1,4 @@
-/* $Id: mboxmagictag.C,v 1.3 2004/04/25 03:37:16 mrsam Exp $
+/* $Id: mboxmagictag.C,v 1.4 2010/04/29 00:34:50 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -30,10 +30,10 @@ mail::mboxMagicTag::mboxMagicTag(string header,
 
 		size_t colon=header.find(':');
 
-		if (colon != header.npos)
+		if (colon != std::string::npos)
 			colon=header.find(':', colon+1);
 
-		if (colon != header.npos)
+		if (colon != std::string::npos)
 		{
 			// keywords
 
@@ -111,7 +111,7 @@ mail::mboxMagicTag::mboxMagicTag()
 
 	// Just in case, dump any colons from the uid.
 
-	while ((p=h.find(':')) != h.npos)
+	while ((p=h.find(':')) != std::string::npos)
 		h=h.substr(0, p) + h.substr(p+1);
 
 	tag=":" + h;
@@ -127,7 +127,7 @@ mail::messageInfo mail::mboxMagicTag::getMessageInfo() const
 
 	size_t n=tag.find(':');
 
-	if (n != tag.npos)
+	if (n != std::string::npos)
 		info.uid=tag.substr(n+1);
 
 	info.recent=true;

@@ -1,4 +1,4 @@
-/* $Id: maildir.C,v 1.15 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: maildir.C,v 1.16 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -396,7 +396,7 @@ mail::maildir::readKeywordHelper::readKeywordHelper(mail::maildir *mdArg)
 		string f=md->index[i].lastKnownFilename;
 		size_t sep=f.rfind(MDIRSEP[0]);
 
-		if (sep != f.npos)
+		if (sep != std::string::npos)
 			f=f.substr(0, sep);
 
 		filenameMap.insert(make_pair(f, i));
@@ -878,7 +878,7 @@ bool mail::maildir::updateFlags(size_t msgNum)
 
 		size_t i=s.find(MDIRSEP[0]);
 
-		if (i != s.npos)
+		if (i != std::string::npos)
 			s=s.substr(0, i);
 
 		s += MDIRSEP "2,";

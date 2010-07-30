@@ -10,8 +10,6 @@
 
    --------------------------------------------------------------------------
 
-                                                                  Sourceforge
-
 Introduction
 
    Cone is a text-based mail client. Cone seamlessly handles multiple POP3,
@@ -124,7 +122,6 @@ References
    . file:///home/mrsam/src/cone/cone/html/index.html
    . file:///home/mrsam/src/cone/cone/html/INSTALL.html
    . file:///home/mrsam/src/cone/cone/html/INSTALL.html
-   . http://sourceforge.net/projects/courier/
    . leaf
 	file:///home/mrsam/src/cone/cone/html/leaf.html
    . http://www.courier-mta.org/

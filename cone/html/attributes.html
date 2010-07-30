@@ -43,7 +43,7 @@ information.
     <hr/>
   </div>
 
-  <div class="section" lang="en" xml:lang="en">
+  <div class="section" title="Reading message attributes">
     <div class="titlepage">
       <div>
         <div>
@@ -166,21 +166,21 @@ information.
               <dt><span class="term"><code class="literal">MARKED</code></span></dt>
 
               <dd>
-                <p>This messge is &#8220;<span class="quote">marked</span>&#8221;. &#8220;<span class="quote">MARKED</span>&#8221; is a generic flag that
-                applications may use for their own purposes. The
-                <a class="link" href="search.html" title="Searching messages" shape="rect"><code class="literal">SEARCH</code> command</a> also uses this
-                flag.</p>
+                <p>This messge is <span class="quote">&#8220;<span class="quote">marked</span>&#8221;</span>. <span class="quote">&#8220;<span class="quote">MARKED</span>&#8221;</span> is a generic
+                flag that applications may use for their own
+                purposes. The <a class="link" href="search.html" title="Searching messages" shape="rect"><code class="literal">SEARCH</code>
+                command</a> also uses this flag.</p>
               </dd>
             </dl>
           </div>
 
           <p>The server responds to a <code class="literal">*
-          FETCH</code> by returning &#8220;<span class="quote">FLAGS=<em class="replaceable"><code>list</code></em></span>&#8221;, where
-          <em class="replaceable"><code>list</code></em> is a
+          FETCH</code> by returning <span class="quote">&#8220;<span class="quote">FLAGS=<em class="replaceable"><code>list</code></em></span>&#8221;</span>,
+          where <em class="replaceable"><code>list</code></em> is a
           comma-separated list of flags that are set for this
           message. A message without any flags set results in an
           empty <em class="replaceable"><code>list</code></em>, or
-          the absence of the &#8220;<span class="quote">FLAGS=<em class="replaceable"><code>list</code></em></span>&#8221;
+          the absence of the <span class="quote">&#8220;<span class="quote">FLAGS=<em class="replaceable"><code>list</code></em></span>&#8221;</span>
           response altogether.</p>
         </dd>
 
@@ -189,16 +189,16 @@ information.
         <dd>
           <p>The <code class="literal">KEYWORDS</code> attribute is
           available when <code class="literal">KEYWORDS</code> is
-          listed as an SMAP1 capability (see &#8220;<span class="quote"><a class="link" href="conn.html" title="SMAP connection negotiation" shape="rect">SMAP
-          connection negotiation</a></span>&#8221;). Each message
-          may have one or more arbitrary tags associated with it.
-          The SMAP1 server associates no special meaning to any
+          listed as an SMAP1 capability (see <span class="quote">&#8220;<span class="quote"><a class="link" href="conn.html" title="SMAP connection negotiation" shape="rect">SMAP connection
+          negotiation</a></span>&#8221;</span>). Each message may
+          have one or more arbitrary tags associated with it. The
+          SMAP1 server associates no special meaning to any
           keyword, except to note that it's there. The SMAP1 client
           is free to name keywords in any useful manner. The name
           of each keyword may contain any UTF-8 character except
           for a comma, or a control character.</p>
 
-          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
             <h3 class="title">Note</h3>
 
             <p>Certain punctuation characters should be avoided if
@@ -214,7 +214,7 @@ information.
 
         <dd>
           <p>The server's <code class="literal">* FETCH</code>
-          reply contains &#8220;<span class="quote">SIZE=<em class="replaceable"><code>bytecount</code></em></span>&#8221;,
+          reply contains <span class="quote">&#8220;<span class="quote">SIZE=<em class="replaceable"><code>bytecount</code></em></span>&#8221;</span>,
           where <em class="replaceable"><code>bytecount</code></em>
           gives the estimated size of the message. This may not
           necessarily be an exact byte count. SMAP servers are
@@ -226,7 +226,7 @@ information.
 
         <dd>
           <p>The server's <code class="literal">* FETCH</code>
-          reply contains &#8220;<span class="quote">INTERNALDATE=<em class="replaceable"><code>rfcdate</code></em></span>&#8221;,
+          reply contains <span class="quote">&#8220;<span class="quote">INTERNALDATE=<em class="replaceable"><code>rfcdate</code></em></span>&#8221;</span>,
           where <em class="replaceable"><code>rfcdate</code></em>
           gives the date and time the message was added to the
           folder. Note that this is not necessarily the contents of

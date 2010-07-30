@@ -1,4 +1,4 @@
-/* $Id: addressbookget.C,v 1.8 2009/10/31 22:38:07 mrsam Exp $
+/* $Id: addressbookget.C,v 1.9 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002-2009, Double Precision Inc.
 **
@@ -183,7 +183,7 @@ void mail::addressbook::GetAddressList<T>::messageTextCallback(size_t n,
 {
 	size_t i;
 
-	while ((i=text.find('\n')) != text.npos)
+	while ((i=text.find('\n')) != std::string::npos)
 	{
 		string line=linebuffer + text.substr(0, i);
 
@@ -231,7 +231,7 @@ void mail::addressbook::GetAddressList<T>::addressBookLine(string text)
 	{
 		size_t i=text.find(':');
 
-		if (i == text.npos)
+		if (i == std::string::npos)
 			return;
 
 		hdr=text.substr(0, i);

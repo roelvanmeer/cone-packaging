@@ -24,8 +24,7 @@ information.
   <div class="navheader">
     <table width="100%" summary="Navigation header">
       <tr>
-        <th colspan="3" align="center" rowspan="1">Cone mail
-        client</th>
+        <th colspan="3" align="center" rowspan="1"><span class="application">Cone</span> mail client</th>
       </tr>
 
       <tr>
@@ -42,7 +41,7 @@ information.
     <hr/>
   </div>
 
-  <div class="part" lang="en" xml:lang="en">
+  <div class="part" title="Cone mail client">
     <div class="titlepage">
       <div>
         <div>
@@ -52,11 +51,11 @@ information.
       </div>
     </div>
 
-    <div class="partintro" lang="en" xml:lang="en">
+    <div class="partintro" title="Introduction">
       <div>
         <div>
           <div>
-            <h1 class="title"><a id="id495119" shape="rect" name="id495119"> </a>Introduction</h1>
+            <h1 class="title"><a id="id475155" shape="rect" name="id475155"> </a>Introduction</h1>
           </div>
         </div>
       </div>
@@ -84,7 +83,7 @@ information.
       the shell's <span class="command"><strong>fg</strong></span>
       command.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>Connections to remote mail servers may be disconnected
@@ -98,24 +97,24 @@ information.
       documentation using your favorite web browser, at <a class="ulink" href="http://www.courier-mta.org/cone/cone00index.html" target="_top" shape="rect">http://www.courier-mta.org/cone/cone00index.html</a>.
       When <span class="application">Cone</span> starts for the
       first time, it automatically creates a fake mail account
-      called &#8220;<span class="quote">Online
-      Tutorial</span>&#8221;. This fake mail account contains a
-      stripped-down HTML version of the online documentation, which
-      you are reading now. The terminal display must be at least 80
-      characters wide in order to be able to read
-      &#8220;<span class="quote">Online Tutorial</span>&#8221;.</p>
+      called <span class="quote">&#8220;<span class="quote">Online
+      Tutorial</span>&#8221;</span>. This fake mail account
+      contains a stripped-down HTML version of the online
+      documentation, which you are reading now. The terminal
+      display must be at least 80 characters wide in order to be
+      able to read <span class="quote">&#8220;<span class="quote">Online Tutorial</span>&#8221;</span>.</p>
 
-      <p>The &#8220;<span class="quote">Online
-      Tutorial</span>&#8221; mail account can always be removed,
-      but it might be convenient to keep it around for a quick
-      consultation, from time to time, even though the full HTML
-      version is a bit easier on the eyes.</p>
+      <p>The <span class="quote">&#8220;<span class="quote">Online
+      Tutorial</span>&#8221;</span> mail account can always be
+      removed, but it might be convenient to keep it around for a
+      quick consultation, from time to time, even though the full
+      HTML version is a bit easier on the eyes.</p>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Overview">
         <div class="titlepage">
           <div>
             <div>
-              <h4 class="title"><a id="id495653" shape="rect" name="id495653"> </a>Overview</h4>
+              <h4 class="title"><a id="id475689" shape="rect" name="id475689"> </a>Overview</h4>
             </div>
           </div>
         </div>
@@ -126,16 +125,16 @@ information.
         kinds of mail accounts:</p>
 
         <div class="itemizedlist">
-          <ul type="disc">
-            <li>
+          <ul class="itemizedlist" type="disc">
+            <li class="listitem">
               <p>Local mail folders, or maildirs.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Remote POP3 and IMAP mail server accounts.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>A simple newsgroup reader. <span class="application">Cone</span> doesn't have sophisticated
               features found in dedicated newsreaders, and may be a
               bit slow and memory hungry when reading large Usenet
@@ -144,7 +143,7 @@ information.
               accessible via a remote login.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Experimental SMAP mail server accounts.</p>
             </li>
           </ul>
@@ -152,14 +151,14 @@ information.
 
         <p><span class="application">Cone</span> contains an
         experimental implementation of a new remote mail access
-        protocol, &#8220;<span class="quote">SMAP</span>&#8221;. At
-        this time, SMAP is implemented by the <a class="ulink" href="http://www.courier-mta.org" target="_top" shape="rect">Courier-IMAP</a> server. SMAP offers several
+        protocol, <span class="quote">&#8220;<span class="quote">SMAP</span>&#8221;</span>. At this time, SMAP is
+        implemented by the <a class="ulink" href="http://www.courier-mta.org" target="_top" shape="rect">Courier-IMAP</a> server. SMAP offers several
         improvements over traditional IMAP-based mail accounts,
         namely:</p>
 
         <div class="itemizedlist">
-          <ul type="disc">
-            <li>
+          <ul class="itemizedlist" type="disc">
+            <li class="listitem">
               <p>Names of SMAP folders may use the full UTF-8
               character set. Most IMAP servers restrict certain
               characters from appearing in names of folders, due to
@@ -167,24 +166,24 @@ information.
               hierarchy.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Faster downloading of binary attachments. SMAP
               requires approximately 25% less bandwidth to download
               binary attachments.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Consolidated mail transmission. IMAP clients
               usually need to transmit a message twice, when
               mailing it. An IMAP client must first save the
-              message in the IMAP server's &#8220;<span class="quote">Sent Mail</span>&#8221; folder. Afterwards,
-              the IMAP client needs to send a second copy of the
+              message in the IMAP server's <span class="quote">&#8220;<span class="quote">Sent
+              Mail</span>&#8221;</span> folder. Afterwards, the
+              IMAP client needs to send a second copy of the
               message, using SMTP, in order to deliver it to the
               listed recipients. When using SMAP, <span class="application">Cone</span> transmits the message only
-              one time; the server saves it to the
-              &#8220;<span class="quote">Sent Mail</span>&#8221;
-              folder, then mails it to its designated
-              recipients.</p>
+              one time; the server saves it to the <span class="quote">&#8220;<span class="quote">Sent
+              Mail</span>&#8221;</span> folder, then mails it to
+              its designated recipients.</p>
 
               <p>Of course, <span class="application">Cone</span>
               is fully capable of using traditional SMTP, or
@@ -197,37 +196,37 @@ information.
         <p>Other features of <span class="application">Cone</span>:</p>
 
         <div class="itemizedlist">
-          <ul type="disc">
-            <li>
+          <ul class="itemizedlist" type="disc">
+            <li class="listitem">
               <p>Full SSL/TLS support with IMAP, POP3, NNTP, SMTP,
               and SMAP. SASL CRAM-MD5/CRAM-SHA1 authentication
               (except for NNTP).</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Built-in editor for creating messages.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Full UTF-8 support (requires the wide-character
               version of the <span class="application">Curses</span> library).</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Spell checker.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Local and remote (IMAP or SMAP-based)
               addressbooks.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Remote configuration (share a common configuration
               between different instances of <span class="application">Cone</span>).</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p><span class="application">Cone</span> tries to
               automatically customize itself to user's preferences,
               without requiring explicit configuration.
@@ -240,13 +239,11 @@ information.
               headers are freely editable, and default to their
               contents the last time a new message was sent by
               replying to a message in the folder, or which was
-              created while that folder was opened. A
-              &#8220;<span class="quote">power user</span>&#8221;
-              can easily use multiple mail accounts with
-              <span class="application">Cone</span>, and
-              <span class="application">Cone</span> will select the
-              appropriate mail headers when replying to messages
-              from each mail account.</p>
+              created while that folder was opened. A <span class="quote">&#8220;<span class="quote">power
+              user</span>&#8221;</span> can easily use multiple
+              mail accounts with <span class="application">Cone</span>, and <span class="application">Cone</span> will select the appropriate
+              mail headers when replying to messages from each mail
+              account.</p>
             </li>
           </ul>
         </div>
