@@ -1,6 +1,5 @@
-/* $Id: cursesfield.C,v 1.7 2010/04/29 00:34:49 mrsam Exp $
-**
-** Copyright 2002, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -9,33 +8,42 @@
 #include "cursesfield.H"
 #include "curseskeyhandler.H"
 #include "cursesmoronize.H"
+#include "widechar.H"
 #include <algorithm>
 #include <iostream>
 
-using namespace std;
+std::vector<unicode_char> CursesField::yesKeys, CursesField::noKeys;
+unicode_char CursesField::yankKey='\x19';
+unicode_char CursesField::clrEolKey='\x0B';
 
-vector<wchar_t> CursesField::yesKeys, CursesField::noKeys;
-wchar_t CursesField::yankKey='\x19';
-wchar_t CursesField::clrEolKey='\x0B';
-
-string CursesField::cutBuffer;
+std::list<CursesFlowedLine> CursesField::cutBuffer; // for cut/paste
 
 CursesField::CursesField(CursesContainer *parent,
 			 size_t widthArg,
 			 size_t maxlengthArg,
-			 string initValue)
+			 std::string initValue)
 	: Curses(parent), width(widthArg), maxlength(maxlengthArg),
 	  shiftoffset(0),
-	  cursorpos(0), selectpos(0), passwordChar(0), yesnoField(false),
+	  selectpos(0), passwordChar(0), yesnoField(false),
 	  isUnderlined(true)
 {
 	if (yesKeys.size() == 0)
-		mbtow("yY", yesKeys);
+		mail::iconvert::convert(std::string("yY"),
+					unicode_default_chset(),
+					yesKeys);
 
 	if (noKeys.size() == 0)
-		mbtow("nN", noKeys);
+		mail::iconvert::convert(std::string("nN"),
+					unicode_default_chset(),
+					yesKeys);
 
-	mbtow(initValue.c_str(), text);
+	std::vector<unicode_char> utext;
+
+	mail::iconvert::convert(initValue, unicode_default_chset(), utext);
+
+	text.set_contents(utext, std::vector<unicode_char>());
+
+	selectpos=text.before_insert.graphemes.size();
 }
 
 void CursesField::setAttribute(Curses::CursesAttr attr)
@@ -50,7 +58,9 @@ CursesField::~CursesField()
 		CursesKeyHandler::handlerListModified=true;
 }
 
-void CursesField::setOptionHelp(const vector< pair<string, string> > &help)
+void CursesField::setOptionHelp(const std::vector< std::pair<std::string,
+							     std::string> >
+				&help)
 {
 	CursesKeyHandler::handlerListModified=true;
 	optionHelp=help;
@@ -70,22 +80,28 @@ void CursesField::setCol(int col)
 	draw();
 }
 
-void CursesField::setText(string textArg)
+void CursesField::setText(std::string textArg)
 {
-	text.clear();
-	mbtow(textArg.c_str(), text);
+	std::vector<unicode_char> utext;
+
+	mail::iconvert::convert(textArg, unicode_default_chset(), utext);
+
+	text.set_contents(utext, std::vector<unicode_char>());
+
+	selectpos=text.before_insert.graphemes.size();
 	shiftoffset=0;
-	cursorpos=selectpos=text.size();
 	draw();
 }
 
-string CursesField::getText() const
+std::string CursesField::getText() const
 {
-	vector<wchar_t> w=text;
+	std::vector<unicode_char> b, a;
 
-	w.push_back(0);
+	text.get_contents(b, a);
 
-	return wtomb(&*w.begin());
+	b.insert(b.end(), a.begin(), a.end());
+
+	return mail::iconvert::convert(b, unicode_default_chset());
 }
 
 int CursesField::getWidth() const
@@ -105,21 +121,25 @@ int CursesField::getHeight() const
 	return 1;
 }
 
+void CursesField::getbeforeafter(widecharbuf &wbefore, widecharbuf &wafter)
+{
+	std::vector<unicode_char> before, after;
+	text.get_contents(before, after);
+
+	wbefore.init_unicode(before.begin(), before.end());
+	wafter.init_unicode(after.begin(), after.end());
+}
+
 void CursesField::draw()
 {
-	vector<wchar_t> v;
+	widecharbuf wbefore, wafter;
 
-	v.insert(v.end(), width, ' ');
-	v.push_back(0);
+	getbeforeafter(wbefore, wafter);
 
-	size_t i;
+	wafter.expandtabs(wbefore.expandtabs(0));
 
-	for (i=0; i<width; i++)
-		if (i + shiftoffset < text.size())
-			v[i]=passwordChar ? passwordChar:text[i+shiftoffset];
-
-	size_t a=selectpos;
-	size_t b=cursorpos;
+	size_t a=wbefore.graphemes.size();
+	size_t b=selectpos;
 
 	if (a > b)
 	{
@@ -135,54 +155,98 @@ void CursesField::draw()
 	a -= shiftoffset;
 	b -= shiftoffset;
 
-	if (a > width)
-		a=width;
-	if (b > width)
-		b=width;
+	wbefore += wafter;
 
-	v.insert(v.begin() + b, (wchar_t)0);
-	++b;
+	std::vector<unicode_char> ubeforesel, usel, uaftersel;
+	size_t usel_pos=0, uaftersel_pos=0;
 
-	v.insert(v.begin() + a, (wchar_t)0);
+	size_t p=shiftoffset;
+	size_t col=0;
 
-	++a;
-	++b;
+	size_t virtual_col=0;
+
+	for (size_t i=0; i<p && i < wbefore.graphemes.size(); ++i)
+		virtual_col += wbefore.graphemes[i].wcwidth(virtual_col);
+
+	std::vector<unicode_char> unicodes;
+
+	while (p < wbefore.graphemes.size() && col < width)
+	{
+		const widecharbuf::grapheme_t &grapheme=wbefore.graphemes[p];
+
+		size_t grapheme_width=grapheme.wcwidth(virtual_col);
+
+		if (grapheme_width + col > width)
+			break;
+
+		std::vector<unicode_char> *vp;
+
+		if (a)
+		{
+			vp= &ubeforesel;
+			--a;
+			--b;
+			usel_pos += grapheme_width;
+			uaftersel_pos += grapheme_width;
+		}
+		else if (b)
+		{
+			vp= &usel;
+			--b;
+			uaftersel_pos += grapheme_width;
+		}
+		else
+			vp= &uaftersel;
+
+		unicodes.clear();
+
+		if (passwordChar)
+			vp->insert(vp->end(), grapheme_width, passwordChar);
+		else
+			vp->insert(vp->end(), grapheme.uptr,
+				   grapheme.uptr+grapheme.cnt);
+
+		col += grapheme_width;
+		virtual_col += grapheme_width;
+		++p;
+	}
+
+	uaftersel.insert(uaftersel.end(), width-col, ' ');
 
 	bool underlined=isUnderlined;
 
-	if (v[0])
 	{
 		Curses::CursesAttr aa=attribute;
 
-		writeText(&v[0], 0, 0, aa.setUnderline(underlined));
+		if (ubeforesel.size())
+			writeText(ubeforesel, 0, 0,
+				  aa.setUnderline(underlined));
 	}
 
-	if (v[a])
 	{
 		Curses::CursesAttr aa=attribute;
 
-		writeText(&v[a], 0, a-1,
-			  aa.setReverse().setUnderline(underlined));
+		if (usel.size())
+			writeText(usel, 0, usel_pos,
+				  aa.setReverse().setUnderline(underlined));
 	}
 
-	if (v[b])
 	{
 		Curses::CursesAttr aa=attribute;
 
-		writeText(&v[b], 0, b-2,
-			  aa.setUnderline(underlined));
+		if (uaftersel.size())
+			writeText(uaftersel, 0, uaftersel_pos,
+				  aa.setUnderline(underlined));
 	}
 }
 
-
 void CursesField::erase()
 {
-	vector<wchar_t> v;
+	std::vector<unicode_char> v;
 
 	v.insert(v.end(), width, ' ');
-	v.push_back(0);
 
-	writeText(&*v.begin(), 0, 0, CursesAttr());
+	writeText(v, 0, 0, CursesAttr());
 }
 
 bool CursesField::isFocusable()
@@ -192,74 +256,84 @@ bool CursesField::isFocusable()
 
 void CursesField::focusGained()
 {
-	cursorpos=text.size();
+	text.to_before();
+
 	selectpos=0;
 	shiftoffset=0;
-	if (cursorpos >= width)
-		shiftoffset=cursorpos + 1 - width;
 	draw();
 }
 
 void CursesField::focusLost()
 {
-	cursorpos=selectpos=shiftoffset=0;
+	text.to_after();
+	selectpos=shiftoffset=0;
 	draw();
 }
-
 
 int CursesField::getCursorPosition(int &row, int &col)
 {
 	// Automatically scroll field to keep the cursor visible
 
 	row=0;
-	if (cursorpos < shiftoffset)
-	{
-		shiftoffset=cursorpos;
-		if (cursorpos < width)
-			shiftoffset=0;
-		else shiftoffset -= width/2;
 
+	size_t save_shiftoffset=shiftoffset;
+
+	widecharbuf wbefore, wafter;
+
+	col=text.adjust_shift_pos(shiftoffset, width, wbefore, wafter);
+
+	if (save_shiftoffset != shiftoffset)
 		draw();
-	}
 
-	if (cursorpos >= shiftoffset + width)
-	{
-		shiftoffset=cursorpos + 1 - width;
-		draw();
-	}
-
-	col=cursorpos - shiftoffset;
 	Curses::getCursorPosition(row, col);
 
-	return cursorpos == selectpos;
+	return selectpos == wbefore.graphemes.size();
+}
+
+// Set selection position to current position
+
+void CursesField::setselectpos()
+{
+	text.insert_to_before();
+
+	widecharbuf wbefore, wafter;
+
+	getbeforeafter(wbefore, wafter);
+
+	selectpos=wbefore.graphemes.size();
 }
 
 bool CursesField::processKeyInFocus(const Key &key)
 {
 	if (key == key.HOME)
 	{
-		cursorpos=selectpos=0;
+		text.to_after();
+		shiftoffset=0;
+		selectpos=0;
 		draw();
 		return true;
 	}
 
 	if (key == key.SHIFTHOME)
 	{
-		cursorpos=0;
+		text.to_after();
+		shiftoffset=0;
 		draw();
 		return true;
 	}
 
 	if (key == key.END)
 	{
-		cursorpos=selectpos=text.size();
+		text.to_before();
+		setselectpos();
 		draw();
 		return true;
 	}
 
 	if (key == key.SHIFTEND)
 	{
-		cursorpos=text.size();
+		setselectpos();
+		text.to_before();
 		draw();
 		return true;
 	}
@@ -297,126 +371,64 @@ bool CursesField::processKeyInFocus(const Key &key)
 		return true;
 	}
 
-	if (key == '\t' || key == key.DOWN || key == key.UP ||
+	if ((key.plain() && key.ukey == '\t') ||
+	    key == key.DOWN || key == key.UP ||
 	    key == key.SHIFTDOWN || key == key.SHIFTUP || key == key.ENTER ||
 	    key == key.PGDN || key == key.SHIFTPGDN ||
 	    key == key.PGUP || key == key.SHIFTPGUP)
 	{
-		if (cursorpos != selectpos)
-		{
-			selectpos=cursorpos;
-			draw();
-		}
-
-#if 0
-		if (key == key.PGDN || key == key.SHIFTPGDN)
-		{
-			Key k(Key::DOWN);
-
-			return Curses::processKeyInFocus(k);
-		}
-
-		if (key == key.PGUP || key == key.SHIFTPGUP)
-		{
-			Key k(Key::UP);
-
-			return Curses::processKeyInFocus(k);
-		}
-#endif
+		setselectpos();
+		draw();
 		return Curses::processKeyInFocus(key);
 	}
 
-	if (cursorpos != selectpos)
+	std::vector<unicode_char> cut_text;
+
+	if (text.inserted.empty() && key != key.SHIFT)
+		text.contents_cut(selectpos, cut_text);
+
+	if (!cut_text.empty())
 	{
-		if (key != key.SHIFT)
+		if (!(key.plain() && key.ukey == yankKey))
 		{
-			if (cursorpos < selectpos)
-			{
-				if (key != yankKey)
-				{
-					vector<wchar_t> wcut;
-
-					wcut.insert(wcut.end(),
-						    text.begin() + cursorpos,
-						    text.begin() + selectpos);
-
-					wcut.push_back(0);
-
-					cutBuffer=wtomb(&wcut[0]);
-				}
-
-				text.erase(text.begin() + cursorpos,
-					   text.begin() + selectpos);
-			}
-			else
-			{
-				if (key != yankKey)
-				{
-					vector<wchar_t> wcut;
-
-					wcut.insert(wcut.end(),
-						    text.begin() + selectpos,
-						    text.begin() + cursorpos);
-
-					wcut.push_back(0);
-					cutBuffer=wtomb(&wcut[0]);
-				}
-
-				text.erase(text.begin() + selectpos,
-					   text.begin() + cursorpos);
-				cursorpos=selectpos;
-			}
+			cutBuffer.clear();
+			cutBuffer.push_back(CursesFlowedLine(mail::iconvert
+							     ::convert(cut_text,
+								       "utf-8"),
+							     false));
 		}
 
-		selectpos=cursorpos;
+		selectpos=text.before_insert.graphemes.size();
 		draw();
 
 		if (key == key.BACKSPACE || key == key.DEL)
 			return true;
 	}
 
-	if (key == key.BACKSPACE && cursorpos > 0)
+	if (key == key.BACKSPACE)
 	{
-		left();
+		text.insert_to_before();
 
-		vector<wchar_t>::iterator b=text.begin() + cursorpos;
-		vector<wchar_t>::iterator e=b;
-
-#if HAVE_WCWIDTH
-		int w=wcwidth( *b );
-
-		if (w <= 0)
-			w=1;
-#else
-		int w=1;
-#endif
-
-		if (text.end() - e >= w)
-			e += w;
-
-		text.erase(b, e);
+		if (text.before_insert.graphemes.size() > 0)
+		{
+			text.contents_cut(text.before_insert
+					  .graphemes.size()-1, cut_text);
+			setselectpos();
+		}
 		draw();
 		return true;
 	}
 
-	if (key == key.DEL && cursorpos < text.size())
+	if (key == key.DEL)
 	{
-		vector<wchar_t>::iterator b=text.begin() + cursorpos;
-		vector<wchar_t>::iterator e=b;
+		text.insert_to_before();
 
-#if HAVE_WCWIDTH
-		int w=wcwidth( *b );
-
-		if (w <= 0)
-			w=1;
-#else
-		int w=1;
-#endif
-
-		if (text.end() - e >= w)
-			e += w;
-
-		text.erase(b, e);
+		if (text.after_insert.graphemes.size() > 0)
+		{
+			text.contents_cut(text.before_insert
+					  .graphemes.size()+1, cut_text);
+			setselectpos();
+		}
 		draw();
 		return true;
 	}
@@ -426,41 +438,36 @@ bool CursesField::processKeyInFocus(const Key &key)
 		return Curses::processKeyInFocus(key);
 	}
 
-	wchar_t k=key.key;
+	unicode_char k=key.ukey;
 
 	if (k == yankKey && !yesnoField &&
-	    optionField.size() == 0 && cutBuffer.size() > 0)
+	    optionField.size() == 0 && !cutBuffer.empty())
 		; // Will paste later
 	else if (k < ' ')
 	{
 		return Curses::processKeyInFocus(key);
 	}
 
-#if HAVE_WCWIDTH
-
-	int k_w=wcwidth(k);
-
-	if (k == yankKey)
-		k_w=1;
-	else if (k_w <= 0)
-	{
-		k_w=1;
-		k=' ';
-	}
-#else
-	int k_w=1;
-#endif
-
-	if (text.size() + k_w > maxlength)
-		return true;
-
 	bool doYesNoField=true;
 
 	if (optionField.size() > 0)
 	{
-		vector<wchar_t>::iterator p=
+		text.inserted.push_back(k);
+
+		std::vector<unicode_char> before, after;
+
+		text.get_contents(before, after);
+
+		before.insert(before.end(), after.begin(), after.end());
+
+		if (before.empty())
+			return true;
+
+		text.inserted.pop_back();
+
+		std::vector<unicode_char>::iterator p=
 			find(optionField.begin(),
-			     optionField.end(), k);
+			     optionField.end(), *before.begin());
 
 
 		if (p == optionField.end())
@@ -474,123 +481,160 @@ bool CursesField::processKeyInFocus(const Key &key)
 
 	if (doYesNoField && yesnoField)
 	{
-		vector<wchar_t>::iterator b=yesKeys.begin(), e=yesKeys.end();
+		text.inserted.push_back(k);
 
-		while (b != e)
+		std::vector<unicode_char> before, after;
+
+		text.get_contents(before, after);
+
+		before.insert(before.end(), after.begin(), after.end());
+
+		if (before.empty())
+			return true;
+
+		std::vector<unicode_char>::iterator p=
+			find(yesKeys.begin(),
+			     yesKeys.end(), *before.begin());
+
+		if (p != yesKeys.end())
 		{
-			if (*b == k)
-				break;
-
-			b++;
+			before.clear();
+			after.clear();
+			before.push_back('Y');
+			text.set_contents(before, after);
+			this->processKeyInFocus(Key(Key::ENTER));
+			// Automatic enter
+			return true;
 		}
 
-		if (b != e)
-			k='Y';
-		else
+		p=find(noKeys.begin(), noKeys.end(), *before.begin());
+
+		if (p != noKeys.end())
 		{
-			b=noKeys.begin(), e=noKeys.end();
-
-			while (b != e)
-			{
-				if (*b == k)
-					break;
-
-				b++;
-			}
-
-			if (b == e)
-				return true;
-
-			k='N';
+			before.clear();
+			after.clear();
+			before.push_back('N');
+			text.set_contents(before, after);
+			this->processKeyInFocus(Key(Key::ENTER));
+			// Automatic enter
+			return true;
 		}
-		text.clear();
-		cursorpos=0;
-		selectpos=0;
-		shiftoffset=0;
+		
+		text.inserted.pop_back();
 	}
 
 	if (k == yankKey)
 	{
-		string s="";
+		std::vector<unicode_char> ucut;
 
-		size_t p=cutBuffer.find('\n');
+		if (!cutBuffer.empty())
+			mail::iconvert::convert(cutBuffer.front().text,
+						"utf-8",
+						ucut);
 
-		if (p == std::string::npos)
-		{
-			s=cutBuffer;
-		}
-		else
-		{
-			s=cutBuffer.substr(0, p);
-			cutBuffer=cutBuffer.substr(p+1);
-		}
+		text.insert_to_before();
 
-		vector<wchar_t> w;
+		std::vector<unicode_char> before, after;
+		text.get_contents(before, after);
 
-		mbtow(s.c_str(), w);
+		before.insert(before.end(), ucut.begin(), ucut.end());
 
-		if (text.size() + w.size() > maxlength)
-		{
+		widecharbuf wbefore, wafter;
+
+		wbefore.init_unicode(before.begin(), before.end());
+		wafter.init_unicode(after.begin(), after.end());
+
+		size_t wbefore_w=wbefore.wcwidth(0);
+		size_t wafter_w=wafter.wcwidth(wbefore_w);
+
+		if (wbefore_w + wafter_w > maxlength)
 			beepError();
-			w.clear();
-		}
-
-		text.insert(text.begin() + cursorpos,
-			    w.begin(), w.end());
-		cursorpos += w.size();
+		else
+			text.set_contents(before, after);
 	}
 	else
 	{
-		text.insert(text.begin() + cursorpos, k);
-		++cursorpos;
+		text.inserted.push_back(k);
 
-		while (--k_w)
+		widecharbuf wbefore, wafter;
+
+		getbeforeafter(wbefore, wafter);
+
+		size_t wbefore_w=wbefore.wcwidth(0);
+		size_t wafter_w=wafter.wcwidth(wbefore_w);
+
+		if (wbefore_w + wafter_w > maxlength)
 		{
-			text.insert(text.begin() + cursorpos, MCPAD);
-			++cursorpos;
+			beepError();
+			text.inserted.pop_back();
 		}
 	}
 
-	selectpos=cursorpos;
+	{
+		widecharbuf wbefore, wafter;
+
+		getbeforeafter(wbefore, wafter);
+
+		selectpos=wbefore.graphemes.size();
+	}
+
 	draw();
 
 	if (yesnoField || optionField.size() > 0)
 		this->processKeyInFocus(Key(Key::ENTER)); // Automatic enter
-	else if (CursesMoronize::enabled && !passwordChar)
+	else if (CursesMoronize::enabled && !passwordChar &&
+		 !text.inserted.empty())
 	{
-		size_t n=cursorpos > 4 ? 4:cursorpos;
 		size_t i;
 		char m_buf[5];
+		std::vector<unicode_char>::iterator b(text.inserted.begin()),
+			e(text.inserted.end()), p=e;
 
-		for (i=0; i<n; i++)
+		for (i=0; i<sizeof(m_buf)-1; ++i)
 		{
-			wchar_t c=text[cursorpos - i - 1];
-
-			if ( (unsigned char)c != c)
+			if (b == p)
 				break;
 
-			m_buf[i]=c;
+			--p;
+
+			if ( *p != (unsigned char)*p)
+				break;
+			m_buf[i]= *p;
 		}
 
-		if (i > 0)
-		{
-			wchar_t repl_c;
+		m_buf[i]=0;
 
-			m_buf[i]=0;
+		if (m_buf[0] && CursesMoronize::enabled)
+		{
+			unicode_char repl_c;
 
 			i=CursesMoronize::moronize(m_buf, repl_c);
 
 			if (i > 0)
 			{
-				while (i)
+				while (i > 0)
 				{
-					CursesField::
-						processKeyInFocus(Key(Key::
-								      BACKSPACE
-								      ));
+					processKeyInFocus(Curses::Key
+							  (Curses::Key::BACKSPACE));
 					--i;
 				}
-				CursesField::processKeyInFocus(Key(repl_c));
+
+				std::vector<unicode_char> uc;
+				uc.push_back(repl_c);
+
+				std::string s(mail::iconvert::convert
+					      (uc, unicode_default_chset()));
+
+				std::vector<wchar_t> wc;
+
+				towidechar(s.begin(), s.end(), wc);
+
+				for (std::vector<wchar_t>::iterator
+					     b(wc.begin()), e(wc.end()); b != e;
+				     ++b)
+				{
+					processKeyInFocus(Curses::Key(*b));
+				}
 			}
 		}
 	}
@@ -600,77 +644,51 @@ bool CursesField::processKeyInFocus(const Key &key)
 
 void CursesField::left()
 {
-	do_left();
+	text.insert_to_before();
 
-#if HAVE_WCWIDTH
+	if (text.before_insert.graphemes.size() > 0)
+	{
+		std::vector<unicode_char> cut_text;
 
-	size_t k_w=0;
+		text.contents_cut(text.before_insert.graphemes.size()-1,
+				  cut_text);
 
-	while (cursorpos > k_w && text[cursorpos-k_w] == MCPAD)
-		++k_w;
+		std::vector<unicode_char> before, after;
+		text.get_contents(before, after);
 
-	int ww=cursorpos - k_w == 0 ? 0:wcwidth(text[cursorpos-k_w]);
+		after.insert(after.begin(), cut_text.begin(), cut_text.end());
 
-	if (ww > 1 && (size_t)(ww - 1) == k_w)
-		while ( --ww )
-			do_left();
-#endif
-
+		text.set_contents(before, after);
+	}
+	setselectpos();
+	draw();
 }
 
 void CursesField::right()
 {
-	do_right();
+	text.insert_to_before();
 
-#if HAVE_WCWIDTH
-
-	if (cursorpos > 0)
+	if (text.after_insert.graphemes.size() > 0)
 	{
-		int k_w=wcwidth(text[cursorpos-1]);
+		std::vector<unicode_char> cut_text;
 
-		if (k_w > 1)
-			while (--k_w)
-				do_right();
+		text.contents_cut(text.before_insert.graphemes.size()+1,
+				  cut_text);
+
+		std::vector<unicode_char> before, after;
+		text.get_contents(before, after);
+
+		before.insert(before.end(), cut_text.begin(), cut_text.end());
+
+		text.set_contents(before, after);
 	}
-
-	if (cursorpos < text.size())
-	{
-		int k_w=wcwidth(text[cursorpos]);
-
-		if (k_w > 1)
-		{
-			--k_w;
-			cursorpos += k_w;
-
-			int dummy1, dummy2;
-
-			getCursorPosition(dummy1, dummy2);
-			cursorpos -= k_w;
-		}
-	}
-#endif
+	setselectpos();
+	draw();
 }
 
-void CursesField::do_left()
+void CursesField::setCursorPos(size_t o)
 {
-	if (cursorpos != selectpos)
-	{
-		if (cursorpos > selectpos)
-			cursorpos=selectpos;
-	}
-	else if (cursorpos > 0)
-		--cursorpos;
-	selectpos=cursorpos;
-}
-
-void CursesField::do_right()
-{
-	if (cursorpos != selectpos)
-	{
-		if (cursorpos < selectpos)
-			cursorpos=selectpos;
-	}
-	else if (cursorpos < text.size())
-		++cursorpos;
-	selectpos=cursorpos;
+	text.to_position(o);
+	setselectpos();
+	draw();
 }

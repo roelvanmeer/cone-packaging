@@ -6,7 +6,6 @@
 #include	"sha1.h"
 #include	<string.h>
 
-static const char rcsid[]="$Id: sha1_hash.c,v 1.3 2009/06/27 16:32:38 mrsam Exp $";
 
 static const char base64tab[]=
 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";

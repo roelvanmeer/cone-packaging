@@ -1,5 +1,4 @@
-/* $Id: myserver.C,v 1.15 2009/06/27 17:12:00 mrsam Exp $
-**
+/*
 ** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -235,7 +234,7 @@ bool myServer::eventloop(myServer::Callback *callback)
 			fds.push_back(pfd);
 		}
 
-		if (callback == NULL || k1 == '\x03')
+		if (callback == NULL || (k1.plain() && k1.ukey == '\x03'))
 		{
 			if (!k1.nokey())
 			{
@@ -248,12 +247,14 @@ bool myServer::eventloop(myServer::Callback *callback)
 
 				if (rc)
 				{
-					while (k1 == '\x03' &&
+					while (k1.plain() && k1 == '\x03' &&
 					       !Typeahead::typeahead->empty())
 						Typeahead::typeahead->pop();
 					// CTRL-C kills typeahead buffer
 				}
-				else if (callback != NULL && k1 != '\x03')
+				else if (callback != NULL &&
+					 !(k1.plain() &&
+					   k1.ukey == '\x03'))
 				{
 					// Command in progress, save typeahead
 

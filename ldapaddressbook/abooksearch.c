@@ -1,5 +1,4 @@
 /*
-** $Id: abooksearch.c,v 1.8 2006/05/28 15:29:52 mrsam Exp $
 **
 ** Copyright 2003-2006, Double Precision Inc.
 **

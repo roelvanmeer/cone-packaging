@@ -1,5 +1,4 @@
-/* $Id: rfc2047decode.C,v 1.5 2009/11/08 23:52:31 mrsam Exp $
-**
+/*
 ** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -33,33 +32,13 @@ void mail::rfc2047::decoder::rfc2047_callback(const char *text, size_t text_len)
 	decodedbuf.append(text, text+text_len);
 }
 
-#if 0
-const unicode_char *mail::rfc2047::decoder::decode(string text)
-{
-	decode(text.c_str(), unicode_UTF8);
-	unicodes.push_back(0);
-	return &*unicodes.begin();
-}
-#endif
-
 string mail::rfc2047::decoder::decode(string text, string charset)
-{
-	const struct unicode_info *uc=unicode_find(charset.c_str());
-
-	if (!uc)
-		uc=&unicode_UTF8;
-
-	return decode(text, *uc);
-}
-
-string mail::rfc2047::decoder::decode(string text,
-				      const struct unicode_info &uc)
 {
 	decodedbuf.clear();
 
 	if (rfc822_display_hdrvalue("subject",
 				    text.c_str(),
-				    uc.chset,
+				    charset.c_str(),
 				    &mail::rfc2047::decoder::
 				    rfc2047_decode_callback,
 				    NULL,
@@ -70,13 +49,13 @@ string mail::rfc2047::decoder::decode(string text,
 }
 
 void mail::rfc2047::decoder::decode(vector<mail::address> &addr_cpy,
-				    const struct unicode_info &unicodeInfo)
+				    std::string charset)
 {
 	vector<mail::address>::iterator b=addr_cpy.begin(), e=addr_cpy.end();
 
 	while (b != e)
 	{
-		b->setName(decode(b->getName(), unicodeInfo));
+		b->setName(decode(b->getName(), charset));
 		b++;
 	}
 }

@@ -1,5 +1,4 @@
-/* $Id: nntpcommand.C,v 1.5 2008/05/24 17:57:41 mrsam Exp $
-**
+/*
 ** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -68,7 +67,7 @@ bool nntpCommandFolder::hasSubFolders() const
 
 string nntpCommandFolder::isNewsgroup() const
 {
-	return false;
+	return "";
 }
 
 bool nntpCommandFolder::isParentOf(string path) const

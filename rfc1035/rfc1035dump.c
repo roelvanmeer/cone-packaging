@@ -7,7 +7,6 @@
 #include	<stdlib.h>
 #include	<arpa/inet.h>
 
-static const char rcsid[]="$Id: rfc1035dump.c,v 1.6 2002/04/01 19:56:18 mrsam Exp $";
 
 static void print_hostname(FILE *f, const char *p)
 {

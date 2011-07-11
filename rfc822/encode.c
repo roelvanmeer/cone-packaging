@@ -4,7 +4,6 @@
 */
 
 /*
-** $Id: encode.c,v 1.5 2005/11/16 02:23:15 mrsam Exp $
 */
 #include	"encode.h"
 #include	<string.h>

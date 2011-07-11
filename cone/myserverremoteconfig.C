@@ -1,6 +1,5 @@
-/* $Id: myserverremoteconfig.C,v 1.11 2009/10/31 22:38:07 mrsam Exp $
-**
-** Copyright 2003-2008, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -303,7 +302,7 @@ bool myServer::remoteConfig::saveconfig2(std::string filename,
 						      )
 				<< mail::Header::encoded("Subject",
 							 subjmarker,
-							 unicode_UTF8.chset)
+							 "utf-8")
 				<< mail::Header::plain("Content-Type",
 						       CONTENTTYPE);
 

@@ -3,7 +3,6 @@
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: options.c,v 1.1 2004/04/13 02:04:33 mrsam Exp $";
 
 #include "config.h"
 #include <stdio.h>

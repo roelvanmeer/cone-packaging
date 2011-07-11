@@ -1,6 +1,5 @@
-/* $Id: htmlparsertest.C,v 1.2 2003/07/09 21:33:20 mrsam Exp $
-**
-** Copyright 2003, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -8,24 +7,25 @@
 #include "config.h"
 #include "htmlparser.H"
 #include "htmlentity.h"
+#include "unicode/unicode.h"
 #include <iomanip>
-
-using namespace std;
 
 /*
 ** Regression tests for the HTML parser.
 */
 
-class myParser: public htmlParser {
+class myParser: public Demoronize,
+		public htmlParser {
 
-	void parsedLine(string l, bool dummy);
+	void parsedLine(std::string l, bool dummy);
 public:
 	myParser();
 	~myParser();
 };
 
-myParser::myParser() : htmlParser(unicode_ISO8859_1, unicode_ISO8859_1,
-				  NULL)
+myParser::myParser() : Demoronize("iso-8859-1", Demoronize::none),
+		       htmlParser("iso-8859-1", "iso-8859-1",
+				  static_cast<Demoronize &>(*this))
 {
 }
 
@@ -33,34 +33,35 @@ myParser::~myParser()
 {
 }
 
-void myParser::parsedLine(string l, bool dummy)
+void myParser::parsedLine(std::string l, bool dummy)
 {
-	vector<pair<textAttributes, string> > parsedLine;
+	std::vector<std::pair<textAttributes, std::string> > parsedLine;
 
 	textAttributes::getAttributedText(l, parsedLine);
 
-	vector<pair<textAttributes, string> >::iterator b, e;
+	std::vector<std::pair<textAttributes, std::string> >::iterator b, e;
 
 	b=parsedLine.begin();
 	e=parsedLine.end();
 
 	while (b != e)
 	{
-		cout << b->second;
+		std::cout << b->second;
 		b++;
 	}
 
-	cout << endl;
+	std::cout << std::endl;
 }
 
 int main(int argc, char *argv[])
 {
+#if 0
 	if (argc > 1 && strcmp(argv[1], "entities") == 0)
 	{
 		size_t i;
 		for (i=0; unicodeEntityList[i].name; i++)
 		{
-			string s=unicodeEntityList[i].name;
+			std::string s=unicodeEntityList[i].name;
 
 			s += ":";
 
@@ -72,9 +73,9 @@ int main(int argc, char *argv[])
 				++l;
 			}
 
-			cout << s << "&" << unicodeEntityList[i].name
+			std::cout << s << "&" << unicodeEntityList[i].name
 			     << ";&nbsp;(" << unicodeEntityList[i].iso10646
-			     << ")<BR>" << endl;
+			     << ")<BR>" << std::endl;
 		}
 
 		exit(0);
@@ -85,7 +86,7 @@ int main(int argc, char *argv[])
 		size_t i;
 		for (i=0; unicodeEntityList[i].name; i++)
 		{
-			string s=unicodeEntityList[i].name;
+			std::string s=unicodeEntityList[i].name;
 
 			s += ":";
 
@@ -97,37 +98,37 @@ int main(int argc, char *argv[])
 				++l;
 			}
 
-			cout << s;
+			std::cout << s;
 
-			unicode_char uc[2];
+			std::vector<unicode_char> uc;
 
-			uc[0]=unicodeEntityList[i].iso10646;
-			uc[1]=0;
+			uc.push_back(unicodeEntityList[i].iso10646);
 
-			char *p=(*unicode_UTF8.u2c)(&unicode_UTF8, uc, NULL);
+			std::string p=
+				mail::iconvert::convert(uc, "utf-8");
 
-			if (p)
+			if (p.size())
 			{
-				cout << p;
-				free(p);
+				std::cout << p;
 			}
-			else cout << " ";
+			else std::cout << " ";
 
-			cout << " (" << hex << setw(4) << setfill('0')
-			     << unicodeEntityList[i].iso10646
-			     << ")" << endl;
+			std::cout << " (" << std::hex << std::setw(4)
+				  << std::setfill('0')
+				  << unicodeEntityList[i].iso10646
+				  << ")" << std::endl;
 		}
 
 		exit(0);
 	}
-
+#endif
 	myParser p;
 
 	char buffer[8192];
 
-	while (cin.read(buffer, sizeof(buffer)).gcount() > 0)
+	while (std::cin.read(buffer, sizeof(buffer)).gcount() > 0)
 	{
-		p.parse(string(buffer, buffer + cin.gcount()));
+		p.parse(std::string(buffer, buffer + std::cin.gcount()));
 	}
 
 	p.flush();

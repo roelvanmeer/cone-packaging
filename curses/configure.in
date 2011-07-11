@@ -1,6 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
 
-# $Id: configure.in,v 1.7 2009/02/15 22:50:47 mrsam Exp $
 #
 # Copyright 2002-2004, Double Precision Inc.
 #
@@ -14,13 +13,13 @@ AM_INIT_AUTOMAKE
 >confdefs.h
 
 dnl Checks for programs.
+AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_CXX
 AC_PROG_AWK
 AC_PROG_CC
 AC_PROG_RANLIB
 AC_PROG_INSTALL
 AC_PROG_LN_S
-AC_USE_SYSTEM_EXTENSIONS
 
 dnl Checks for libraries.
 
@@ -43,14 +42,6 @@ fi
 
 CURSESLIB="-l$CURSESLIBRARY"
 AC_SUBST(CURSESLIB)
-
-AC_CHECK_LIB($CURSESLIBRARY, wget_wch, [
-AC_DEFINE(WIDECURSES, 1, [Whether the curses library supports wide chars])
-])
-
-AC_CHECK_LIB($CURSESLIBRARY, wcwidth, [
-AC_DEFINE(HAVE_WCWIDTH, 1, [Whether wcwidth() is available])
-])
 
 dnl Checks for header files.
 AC_CHECK_HEADERS(sys/time.h unistd.h sys/wait.h glob.h)
@@ -100,6 +91,7 @@ AC_C_CONST
 
 dnl Checks for library functions.
 AC_TYPE_SIGNAL
+AC_SYS_LARGEFILE
 
 AC_CHECK_FUNCS(glob)
 if test "$GXX" = "yes"

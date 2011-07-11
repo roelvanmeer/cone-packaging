@@ -1,14 +1,11 @@
-/* $Id: cursesvscroll.C,v 1.1 2003/05/27 14:09:07 mrsam Exp $
-**
-** Copyright 2002, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 
 #include "curses_config.h"
 #include "cursesvscroll.H"
-
-using namespace std;
 
 CursesVScroll::CursesVScroll(CursesContainer *parent)
 	: CursesContainer(parent), firstRowShown(0)
@@ -45,16 +42,14 @@ void CursesVScroll::erase()
 {
 	size_t w=getWidth(), h=getHeight();
 
-	vector<wchar_t> spaces;
+	std::vector<unicode_char> spaces;
 
 	spaces.insert(spaces.end(), w, ' ');
-	spaces.insert(spaces.end(), 1, 0);
 
 	size_t i;
 
 	for (i=0; i<h; i++)
-		CursesContainer::writeText(&*spaces.begin(), i, 0,
-					   CursesAttr());
+		CursesContainer::writeText(spaces, i, 0, CursesAttr());
 }
 
 void CursesVScroll::deleteChild(Curses *child)
@@ -128,9 +123,9 @@ bool CursesVScroll::writeText(const char *text, int row, int col,
 	return CursesContainer::writeText(text, row, col, attr);
 }
 
-
-bool CursesVScroll::writeText(const wchar_t *text, int row, int col,
-			      const CursesAttr &attr) const
+bool CursesVScroll::writeText(const std::vector<unicode_char> &text,
+			      int row, int col,
+			      const Curses::CursesAttr &attr) const
 {
 	if (row < 0 ||
 	    (size_t)row < firstRowShown ||

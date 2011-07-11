@@ -4,14 +4,13 @@
 */
 
 /*
-** $Id: imapsubj.c,v 1.10 2006/04/11 02:24:59 mrsam Exp $
 */
+#include	"config.h"
 #include	<stdio.h>
 #include	<ctype.h>
 #include	<stdlib.h>
 #include	<string.h>
 #include	"rfc822.h"
-#include	"config.h"
 
 #if	HAVE_STRCASECMP
 
@@ -262,7 +261,10 @@ char *rfc822_coresubj(const char *s, int *hasrefwd)
 
 	for (r=q; *r; r++)
 		if ((*r & 0x80) == 0)	/* Just US-ASCII casing, thanks */
-			*r=toupper((int)(unsigned char)*r);
+		{
+			if (*r >= 'a' && *r <= 'z')
+				*r += 'A'-'a';
+		}
 	stripsubj(q, hasrefwd, 0);
 	return (q);
 }

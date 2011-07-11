@@ -9,7 +9,6 @@
 #include	<stdlib.h>
 #include	"rfc1035_res.h"
 
-static const char rcsid[]="$Id: rfc1035qa.c,v 1.9 2005/06/24 17:47:33 mrsam Exp $";
 
 /* Convenient function to do forward IP lookup */
 

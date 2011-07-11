@@ -6,7 +6,6 @@
 ** See COPYING for distribution information.
 */
 
-static const char maildirfilter_h_rcsid[]="$Id: maildirfilter.h,v 1.12 2006/07/01 00:37:09 mrsam Exp $";
 
 #include	"config.h"
 
@@ -144,6 +143,7 @@ struct maildir_filter_autoresp_info {
 	char *name;
 	int dsnflag;
 	unsigned days;
+	int noquote;
 } ;
 
 int maildir_filter_autoresp_info_init_str(struct maildir_filter_autoresp_info *, const char *);

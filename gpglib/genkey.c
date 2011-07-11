@@ -1,9 +1,8 @@
 /*
-** Copyright 2001-2003 Double Precision, Inc.  See COPYING for
+** Copyright 2001-2011 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: genkey.c,v 1.6 2003/06/16 03:18:01 mrsam Exp $";
 
 #include	"config.h"
 #include	<stdio.h>
@@ -30,8 +29,6 @@ extern pid_t libmail_gpg_pid;
 ** Generate a new key.
 */
 
-static char *toutf8(const struct unicode_info *, const char *);
-
 static int dogenkey(const char *, const char *, const char *,
 		    int,
 		    int,
@@ -42,7 +39,8 @@ static int dogenkey(const char *, const char *, const char *,
 		    int (*)(void *),
 		    void *);
 
-int libmail_gpg_genkey(const char *gpgdir, const struct unicode_info *charset,
+int libmail_gpg_genkey(const char *gpgdir,
+		       const char *charset,
 		       const char *name,
 		       const char *addr,
 		       const char *comment,
@@ -59,18 +57,19 @@ int libmail_gpg_genkey(const char *gpgdir, const struct unicode_info *charset,
 	char *argvec[4];
 	int rc;
 
-	name_u=toutf8(charset, name);
+	name_u=libmail_u_convert_toutf8(name, charset, NULL);
+
 	if (!name_u)
 		return (-1);
 
-	addr_u=toutf8(charset, addr);
+	addr_u=libmail_u_convert_toutf8(addr, charset, NULL);
 	if (!addr_u)
 	{
 		free(name_u);
 		return (-1);
 	}
 
-	comment_u=toutf8(charset, comment);
+	comment_u=libmail_u_convert_toutf8(comment, charset, NULL);
 	if (!comment_u)
 		return (-1);
 
@@ -99,19 +98,6 @@ int libmail_gpg_genkey(const char *gpgdir, const struct unicode_info *charset,
 	free(name_u);
 	free(addr_u);
 	return (rc);
-}
-
-static char *toutf8(const struct unicode_info *u, const char *ch)
-{
-	unicode_char *uc=(*u->c2u)(u, ch, NULL);
-	char *p;
-
-	if (!uc)
-		return (NULL);
-
-	p=unicode_toutf8(uc);
-	free(uc);
-	return (p);
 }
 
 static char *mkcmdbuf(const char *, const char *, const char *,

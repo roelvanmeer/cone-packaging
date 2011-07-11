@@ -1,5 +1,4 @@
-/* $Id: imap.C,v 1.15 2010/04/29 00:34:49 mrsam Exp $
-**
+/*
 ** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -630,7 +629,7 @@ int mail::imap::socketRead(const string &readbuffer)
 		if (msg != "BYE")
 			mb=save_mb;
 
-		while (mb != me && isspace((int)(unsigned char)*mb))
+		while (mb != me && unicode_isspace((unsigned char)*mb))
 			++mb;
 
 		buffer_cpy.erase(buffer_cpy.begin(), mb);
@@ -651,7 +650,7 @@ void mail::imap::setPermanentFlags(string::iterator flagb,
 
 	permanentFlags.clear();
 
-	while (flagb != flage && isspace((int)(unsigned char)*flagb))
+	while (flagb != flage && unicode_isspace((unsigned char)*flagb))
 		++flagb;
 
 	if (flagb == flage)
@@ -785,10 +784,10 @@ string mail::imap::get_word(string::iterator *b, string::iterator *e)
 {
 	string s="";
 
-	while (*b != *e && isspace((int)(unsigned char)**b))
+	while (*b != *e && unicode_isspace((unsigned char)**b))
 		++*b;
 
-	while (*b != *e && !isspace((int)(unsigned char)**b) &&
+	while (*b != *e && !unicode_isspace((unsigned char)**b) &&
 	       strchr(")]", **b) == NULL)
 	{
 		s.append(&**b, 1);
@@ -1411,7 +1410,7 @@ void mail::imapFolderHeadersCallback
 				continue;
 			}
 
-			if ( doFolding && isspace((int)(unsigned char)*b))
+			if ( doFolding && unicode_isspace((unsigned char)*b))
 			{
 				// Bingo.
 
@@ -1429,7 +1428,7 @@ void mail::imapFolderHeadersCallback
 
 		if (prevFoldingSpace)
 		{
-			if ( *b != '\n' && isspace((int)(unsigned char)*b))
+			if ( *b != '\n' && unicode_isspace((unsigned char)*b))
 			{
 				b++;
 				continue; // Eating all whitespace
@@ -1576,7 +1575,7 @@ int mail::imapCommandHandler::process(mail::imap &imapAccount, string &buffer)
 
 	while (b != e)
 	{
-		if (isspace((int)(unsigned char)*b))
+		if (unicode_isspace((unsigned char)*b))
 		{
 			b++;
 			continue;
@@ -1628,7 +1627,7 @@ int mail::imapCommandHandler::process(mail::imap &imapAccount, string &buffer)
 
 	if (imapAccount.smap)
 	{
-		while (b != e && isspace((int)(unsigned char)*b))
+		while (b != e && unicode_isspace((unsigned char)*b))
 			b++;
 
 		buffer_cpy.erase(0, b - buffer_cpy.begin());
@@ -1651,7 +1650,7 @@ int mail::imapCommandHandler::process(mail::imap &imapAccount, string &buffer)
 
 	upper(okfailWord);
 
-	while (b != e && isspace((int)(unsigned char)*b))
+	while (b != e && unicode_isspace((unsigned char)*b))
 		b++;
 
 	errmsg.erase(0, b-errmsg.begin());
@@ -1667,7 +1666,7 @@ int mail::imapCommandHandler::process(mail::imap &imapAccount, string &buffer)
 		if (b != e)
 			b++;
 
-		while (b != e && isspace((int)(unsigned char)*b))
+		while (b != e && unicode_isspace((unsigned char)*b))
 			b++;
 		errmsg.erase(0, b-errmsg.begin());
 	}

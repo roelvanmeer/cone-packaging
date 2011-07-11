@@ -115,7 +115,7 @@ information.
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id480438" shape="rect" name="id480438"> </a>Folder Index Screen</h4>
+            <h4 class="title"><a id="id523666" shape="rect" name="id523666"> </a>Folder Index Screen</h4>
           </div>
         </div>
       </div>
@@ -141,13 +141,13 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
 
 
 <B>  New Mail: 7 messages                                                      </B>
- ; Search            B Blind Fwd         D Delete            J Jump To
- $ Sort folder       C Copy              F Fwd              ^O mOre
+ ; Search            A wAtch/Unwatch     C Copy              E Extern cmd
+ $ Sort folder       B Blind Fwd         D Delete           ^O mOre
 </pre><hr />
 
-      <p>The highlighted message on this screen designates the
-      current message. Move the cursor using the cursor up/down
-      keys, <span class="keycap"><strong>PgUp</strong></span>, and
+      <p>The highlighted message on this screen marks the current
+      message. Move the cursor using the cursor up/down keys,
+      <span class="keycap"><strong>PgUp</strong></span>, and
       <span class="keycap"><strong>PgDn</strong></span>. The cursor
       left/right keys move the cursor to the previous/next flagged
       message. After running a search with the <span class="keycap"><strong>;</strong></span> command (see below), use
@@ -234,6 +234,25 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
             <p>Mark the current message for deletion. The message
             is not actually deleted. It is marked for deletion by
             the <span class="quote">&#8220;<span class="quote">expunge</span>&#8221;</span> command.</p>
+          </dd>
+
+          <dt><span class="term"><span class="keycap"><strong>E</strong></span></span></dt>
+
+          <dd>
+            <p>Assign an external command to a function key, or
+            remove an existing external command function key
+            assignment. See <a class="link" href="cone02folderindex.html#coneextcmd" title="External commands" shape="rect"><span class="quote">&#8220;<span class="quote">External
+            commands</span>&#8221;</span></a>, below.</p>
+          </dd>
+
+          <dt><span class="term"><span class="keycap"><strong>F<em class="replaceable"><code>n</code></em></strong></span></span></dt>
+
+          <dd>
+            <p>Run the external command assigned to the given
+            function key. The external command receives a copy of
+            the current message on its standard input. See
+            <a class="link" href="cone02folderindex.html#coneextcmd" title="External commands" shape="rect"><span class="quote">&#8220;<span class="quote">External
+            commands</span>&#8221;</span></a>, below.</p>
           </dd>
 
           <dt><span class="term"><span class="keycap"><strong>F</strong></span></span></dt>
@@ -496,11 +515,87 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
         </dl>
       </div>
 
+      <div class="section" title="External commands">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h5 class="title"><a id="coneextcmd" shape="rect" name="coneextcmd"> </a>External commands</h5>
+            </div>
+          </div>
+        </div>
+
+        <p>An external command is any arbitrary command that
+        <span class="application">Cone</span> runs as a child
+        process. The external command reads a copy of an email
+        message on its standard input. The external command may
+        take any arbitrary action with this email message,
+        <span class="application">Cone</span> doesn't care. This is
+        a mechanism for integrating <span class="application">Cone</span> with some custom mail processing
+        code. <span class="application">Cone</span> takes care of
+        downloading an email message from a mailbox, and delivers
+        it to an external command.</p>
+
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <h3 class="title">Note</h3>
+
+          <p>The external command must consume and read the email
+          message from its standard input. If <span class="application">Cone</span> detects that the external
+          command did not read the entire message before it
+          terminates, <span class="application">Cone</span> assumes
+          that the external command crashed, and reports an error.
+          Note that the message is sent via a pipe, and
+          <span class="application">Cone</span> may not reliably
+          detect a premature external command termination when the
+          email message is small and fits into the internal pipe
+          buffer.</p>
+        </div>
+
+        <p>An external command may be assigned to any available
+        keyboard function key. Different commands may be assigned
+        to different function keys. Press <span class="keycap"><strong>E</strong></span> then a function key. If
+        the function key is already assigned to an external
+        command, <span class="application">Cone</span> asks for a
+        confirmation to remove the existing assignment. Otherwise,
+        <span class="application">Cone</span> asks for a short 1-2
+        word command name. This is a descriptive label that gets
+        shown at the bottom of the screen, next to the function key
+        name, together with all other <span class="quote">&#8220;<span class="quote">hotkeys</span>&#8221;</span>. Press <span class="keycap"><strong>Enter</strong></span> after typing in the
+        label, then type out the external command. <span class="application">Cone</span> passes the entered command,
+        verbatim, to the system shell to execute.</p>
+
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <h3 class="title">Note</h3>
+
+          <p>Some environments and desktops may reserve certain
+          function keys for their own use. The <span class="application">Gnome</span> desktop, for example, uses
+          <span class="keycap"><strong>F1</strong></span> as an
+          application help function. Reserved function keys are not
+          available to <span class="application">Cone</span>,
+          however there's no way for <span class="application">Cone</span> to know whether or not a given
+          function key is available for its use. When <span class="application">Cone</span> may be used in multiple
+          environments or desktops, care should be taken to assign
+          external commands to function keys that are available in
+          all environments.</p>
+        </div>
+
+        <p><span class="application">Cone</span> expects the
+        external command to read its email message from standard
+        input, finish up whatever it does with this message, and
+        promptly terminate. <span class="application">Cone</span>
+        stops and waits for the external command to terminate,
+        before it proceeds. <span class="application">Cone</span>
+        stops responding to any user input until the external
+        command terminates. However, <span class="application">Cone</span> still remains in control of the
+        display. The external command should have its standard
+        output and standard error redirected, otherwise its output
+        will corrupt the terminal display.</p>
+      </div>
+
       <div class="section" title="Searching messages">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id481567" shape="rect" name="id481567"> </a>Searching messages</h5>
+              <h5 class="title"><a id="id525121" shape="rect" name="id525121"> </a>Searching messages</h5>
             </div>
           </div>
         </div>
@@ -539,6 +634,18 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
               <p>Searches only messages that are already flagged.
               Flagged messages that meet the search criteria remain
               flagged. Messages that don't are unflagged.</p>
+            </dd>
+
+            <dt><span class="term"><span class="keycap"><strong>F<em class="replaceable"><code>n</code></em></strong></span></span></dt>
+
+            <dd>
+              <p>Run an external command assigned to the given
+              function key. See <span class="quote">&#8220;<span class="quote">External
+              commands</span>&#8221;</span> for more information.
+              The external command gets invoked once for each
+              flagged message, so if ten messages are flagged, the
+              external command gets invoked ten times in a row,
+              once for each flagged message.</p>
             </dd>
 
             <dt><span class="term"><span class="keycap"><strong>C</strong></span> - Copy
@@ -596,7 +703,7 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
           <div class="titlepage">
             <div>
               <div>
-                <h6 class="title"><a id="id482223" shape="rect" name="id482223"> </a>Search criteria</h6>
+                <h6 class="title"><a id="id525706" shape="rect" name="id525706"> </a>Search criteria</h6>
               </div>
             </div>
           </div>
@@ -676,7 +783,7 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
             <div class="titlepage">
               <div>
                 <div>
-                  <h6 class="title"><a id="id482367" shape="rect" name="id482367"> </a>Date-based searches</h6>
+                  <h6 class="title"><a id="id525848" shape="rect" name="id525848"> </a>Date-based searches</h6>
                 </div>
               </div>
             </div>
@@ -751,7 +858,7 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
             <div class="titlepage">
               <div>
                 <div>
-                  <h6 class="title"><a id="id482481" shape="rect" name="id482481"> </a>Text-based searches</h6>
+                  <h6 class="title"><a id="id525963" shape="rect" name="id525963"> </a>Text-based searches</h6>
                 </div>
               </div>
             </div>
@@ -956,7 +1063,7 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
           <div class="titlepage">
             <div>
               <div>
-                <h6 class="title"><a id="id483138" shape="rect" name="id483138"> </a>Watching E-mail threads</h6>
+                <h6 class="title"><a id="id526574" shape="rect" name="id526574"> </a>Watching E-mail threads</h6>
               </div>
             </div>
           </div>
@@ -998,7 +1105,7 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id483173" shape="rect" name="id483173"> </a>Checking for new mail</h5>
+              <h5 class="title"><a id="id526608" shape="rect" name="id526608"> </a>Checking for new mail</h5>
             </div>
           </div>
         </div>
@@ -1068,7 +1175,7 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id483285" shape="rect" name="id483285"> </a>Concurrent changes to the current
+              <h5 class="title"><a id="id526720" shape="rect" name="id526720"> </a>Concurrent changes to the current
               folder's contents</h5>
             </div>
           </div>

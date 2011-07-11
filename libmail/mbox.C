@@ -1,5 +1,4 @@
-/* $Id: mbox.C,v 1.11 2009/06/27 17:12:00 mrsam Exp $
-**
+/*
 ** Copyright 2002-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -1023,12 +1022,12 @@ static time_t fromCtime(string hdr)
 
 	const char *p=hdr.c_str();
 
-	while (*p && !isspace((int)(unsigned char)*p))
+	while (*p && !unicode_isspace((unsigned char)*p))
 		p++;
 
 	p++;
 
-	while (*p && !isspace((int)(unsigned char)*p))
+	while (*p && !unicode_isspace((unsigned char)*p))
 		p++;
 
 
@@ -1525,18 +1524,7 @@ bool mail::mbox::scan(mail::file &scanFile,
 	return true;
 }
 
-void mail::mbox::mkverbotten(vector<unicode_char> &verbotten)
-{
-	verbotten.push_back('/');
-	verbotten.push_back('~');
-	verbotten.push_back(0);
-}
-
 string mail::mbox::translatePath(string path)
 {
-	vector<unicode_char> verbotten;
-
-	mkverbotten(verbotten);
-
-	return translatePathCommon(path, verbotten, "/");
+	return translatePathCommon(path, "./~:", "/");
 }

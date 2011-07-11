@@ -1,5 +1,4 @@
-/* $Id: testsuite.C,v 1.1 2003/05/27 14:09:09 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

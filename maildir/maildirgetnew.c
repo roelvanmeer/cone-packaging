@@ -37,7 +37,6 @@
 
 #include	"maildirmisc.h"
 
-static const char rcsid[]="$Id: maildirgetnew.c,v 1.5 2004/04/21 01:09:15 mrsam Exp $";
 
 static void do_maildir_getnew(const char *, const char *,
 			      void (*)(const char *, void *),

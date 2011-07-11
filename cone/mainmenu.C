@@ -1,5 +1,4 @@
-/* $Id: mainmenu.C,v 1.12 2008/07/13 16:49:05 mrsam Exp $
-**
+/*
 ** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -327,13 +326,12 @@ void MainMenuScreen::addaccount_s()
 	if (result.abortflag)
 		return;
 
-	vector<wchar_t> ka;
+	unicode_char promptKey=result.firstChar();
 
-	Curses::mbtow( ((string)result).c_str(), ka);
-	if (ka.size() == 0)
+	if (promptKey == 0)
 		return;
 
-	if (key_IMAPACCOUNT == ka[0])
+	if (key_IMAPACCOUNT == promptKey)
 	{
 		Curses::keepgoing=false;
 		myServer::nextScreen= &addAccountScreen;
@@ -341,7 +339,7 @@ void MainMenuScreen::addaccount_s()
 		return;
 	}
 
-	if (key_POP3ACCOUNT == ka[0])
+	if (key_POP3ACCOUNT == promptKey)
 	{
 		Curses::keepgoing=false;
 		myServer::nextScreen= &addAccountScreen;
@@ -349,7 +347,7 @@ void MainMenuScreen::addaccount_s()
 		return;
 	}
 
-	if (key_POP3MAILDROPACCOUNT == ka[0])
+	if (key_POP3MAILDROPACCOUNT == promptKey)
 	{
 		Curses::keepgoing=false;
 		myServer::nextScreen= &addAccountScreen;
@@ -357,7 +355,7 @@ void MainMenuScreen::addaccount_s()
 		return;
 	}
 
-	if (key_NNTPACCOUNT == ka[0])
+	if (key_NNTPACCOUNT == promptKey)
 	{
 		Curses::keepgoing=false;
 		myServer::nextScreen= &addAccountScreen;
@@ -365,14 +363,14 @@ void MainMenuScreen::addaccount_s()
 		return;
 	}
 
-	if (key_INBOXMBOX == ka[0]
-	    || key_OTHERMBOX == ka[0])
+	if (key_INBOXMBOX == promptKey
+	    || key_OTHERMBOX == promptKey)
 	{
 		string homedir= myServer::getHomeDir();
 		bool isDefaultMaildir=false;
 		string defaultLocation="";
 
-		if (key_INBOXMBOX == ka[0])
+		if (key_INBOXMBOX == promptKey)
 		{
 			string maildir=homedir + "/Maildir/.";
 
@@ -403,7 +401,8 @@ void MainMenuScreen::addaccount_s()
 		if (isMaildir(f))
 			f="maildir:" + f;
 		else
-			f= (key_INBOXMBOX == ka[0] ? "inbox:":"mbox:") + f;
+			f= (key_INBOXMBOX == promptKey
+			    ? "inbox:":"mbox:") + f;
 
 		result=myServer::
 			prompt(myServer::

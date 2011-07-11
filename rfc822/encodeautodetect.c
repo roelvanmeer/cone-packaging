@@ -1,74 +1,70 @@
 /*
-** Copyright 2003-2009 Double Precision, Inc.  See COPYING for
+** Copyright 2003-2011 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
 /*
-** $Id: encodeautodetect.c,v 1.2 2009/11/08 18:14:47 mrsam Exp $
 */
 #include	"encode.h"
 #include	<string.h>
 #include	<stdlib.h>
 #include	"../unicode/unicode.h"
 
-static const char *libmail_encode_autodetect(const char *charset, 
-					     int (*func)(void *), void *arg)
+static const char *libmail_encode_autodetect(int use7bit,
+					     int (*func)(void *), void *arg,
+					     int *binaryflag)
 {
-	const char *encoding="7bit";
 	int	l=0;
 	int	longline=0;
 	int c;
-	const struct unicode_info *ci = unicode_find(charset);
+
+	size_t charcnt=0;
+	size_t bit8cnt=0;
+
+	if (binaryflag)
+		*binaryflag=0;
 
 	while ((c = (*func)(arg)) != EOF)
 	{
 		unsigned char ch= (unsigned char)c;
 
-		if (ch >= 0x80)
-		{
+		++charcnt;
 
-			if (!charset || !*charset)
-				encoding="8bit";
-			else if (ci && ci->flags & UNICODE_BODY_QUOPRI)
-				encoding="quoted-printable";
-			else if (!ci || ci->flags & UNICODE_BODY_BASE64)
-				encoding="base64";
-			else
-				encoding="8bit";
+		++l;
+		if (ch < 0x20 || ch >= 0x80)
+		{
+			if (ch != '\t' && ch != '\r' && ch != '\n')
+			{
+				++bit8cnt;
+				l += 2;
+			}
 		}
-
-		if (ch < 0x20 &&
-		    ch != '\t' && ch != '\r' && ch != '\n')
-		{
-			if (!charset || !*charset)
-				;
-			else if (ci && ci->flags & UNICODE_BODY_QUOPRI)
-				encoding="quoted-printable";
-			else if (!ci || ci->flags & UNICODE_BODY_BASE64)
-				encoding="base64";
-                }
 
 		if (ch == 0)
+		{
+			if (binaryflag)
+				*binaryflag=1;
+
 			return "base64";
+		}
 
 		if (ch == '\n')	l=0;
-		else if (++l > 990)
+		else if (l > 990)
 		{
 			longline=1;
-			if (ci && ci->flags & UNICODE_BODY_QUOPRI)
-				encoding="quoted-printable";
 		}
 
 	}
 
-	if (longline)
+	if (use7bit || longline)
 	{
-		if (ci && ci->flags & UNICODE_BODY_QUOPRI)
-			encoding="quoted-printable";
-		else
-			encoding="base64";
+		if (bit8cnt > charcnt / 10)
+			return "base64";
+
+		return "quoted-printable";
 	}
-	return encoding;
+
+	return bit8cnt ? "8bit":"7bit";
 }
 
 struct file_info {
@@ -99,16 +95,16 @@ unsigned char **strp = (unsigned char **)arg;
 	return c;
 }
 
-const char *libmail_encode_autodetect_fp(FILE *fp, int okQp)
+const char *libmail_encode_autodetect_fp(FILE *fp, int use7bit,
+					 int *binaryflag)
 {
-	if (okQp)
-		return libmail_encode_autodetect_fppos(fp, "ISO-8859-1", 0, -1);
-	else
-		return libmail_encode_autodetect_fppos(fp, NULL, 0, -1);
+	return libmail_encode_autodetect_fpoff(fp, use7bit, 0, -1,
+					       binaryflag);
 }
 
-const char *libmail_encode_autodetect_fppos(FILE *fp, const char *charset,
-					    off_t start_pos, off_t end_pos)
+const char *libmail_encode_autodetect_fpoff(FILE *fp, int use7bit,
+					    off_t start_pos, off_t end_pos,
+					    int *binaryflag)
 {
 struct file_info fi;
 off_t orig_pos = ftell(fp);
@@ -126,14 +122,17 @@ const char *rc;
 	fi.fp = fp;
 	fi.pos = pos;
 	fi.end = end_pos;
-	rc = libmail_encode_autodetect(charset, &read_file, &fi);
+
+	rc = libmail_encode_autodetect(use7bit, &read_file, &fi,
+				       binaryflag);
   
 	if (fseek(fp, orig_pos, SEEK_SET) == (off_t)-1)
 		return NULL;
 	return rc;
 }
 
-const char *libmail_encode_autodetect_str(const char *str, const char *charset)
+const char *libmail_encode_autodetect_buf(const char *str, int use7bit)
 {
-	return libmail_encode_autodetect(charset, &read_string, &str);
+	return libmail_encode_autodetect(use7bit, &read_string, &str,
+					 NULL);
 }

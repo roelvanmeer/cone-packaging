@@ -1,3 +1,4 @@
+#include "rfc2045_config.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "rfc2045.h"
@@ -10,6 +11,7 @@ void rfc2045_error(const char *s)
 
 int main(int argc, char **argv)
 {
+	struct rfc2045src *src;
 	struct rfc2045 *rfcp;
 	struct rfc2045headerinfo *hi;
 	char *h, *v;
@@ -25,7 +27,12 @@ int main(int argc, char **argv)
 	if (argv[2][0])
 		rfcp=rfc2045_find(rfcp, argv[2]);
 
-	hi=rfc2045header_start(0, rfcp);
+	src=rfc2045src_init_fd(0);
+
+	if (!src)
+		return (0);
+
+	hi=rfc2045header_start(src, rfcp);
 
 	if (!hi)
 		return (0);

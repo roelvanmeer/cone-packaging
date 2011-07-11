@@ -4,10 +4,9 @@
 */
 
 /*
-** $Id: rfc2045xdump.c,v 1.4 1999/12/06 13:29:02 mrsam Exp $
 */
-#include	<stdio.h>
 #include	"rfc2045.h"
+#include	<stdio.h>
 
 #define	DUMP(s,n) if ( (s) ) { printf("%*s%s: %s\n", level*4, "", n, (s)); }
 

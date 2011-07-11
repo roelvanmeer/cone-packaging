@@ -1,5 +1,4 @@
-/* $Id: smaplist.C,v 1.8 2010/04/29 00:34:50 mrsam Exp $
-**
+/*
 ** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -7,7 +6,6 @@
 #include "smap.H"
 #include "misc.H"
 #include "smaplist.H"
-#include <ctype.h>
 #include <sstream>
 #include <errno.h>
 #include <cstring>

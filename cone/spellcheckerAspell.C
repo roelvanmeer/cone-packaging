@@ -1,5 +1,4 @@
-/* $Id: spellcheckerAspell.C,v 1.7 2010/03/01 04:01:22 mrsam Exp $
-**
+/*
 ** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.

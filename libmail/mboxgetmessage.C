@@ -1,5 +1,4 @@
-/* $Id: mboxgetmessage.C,v 1.5 2006/06/04 21:36:02 mrsam Exp $
-**
+/*
 ** Copyright 2002-2006, Double Precision Inc.
 **
 ** See COPYING for distribution information.

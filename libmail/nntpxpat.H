@@ -1,5 +1,4 @@
-/* $Id: nntpxpat.H,v 1.4 2003/08/27 05:38:29 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

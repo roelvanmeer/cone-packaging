@@ -83,7 +83,6 @@ will be escaped.  See the code for more info.
 #include	<time.h>
 #include	<pwd.h>
 
-static const char rfc2047_h_rcsid[]="$Id: maildircache.h,v 1.2 2001/08/26 18:03:26 mrsam Exp $";
 
 extern int maildir_cache_init(time_t, const char *, const char *,
 			      const char * const *);

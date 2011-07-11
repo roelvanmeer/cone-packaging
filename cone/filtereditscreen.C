@@ -1,5 +1,4 @@
-/* $Id: filtereditscreen.C,v 1.8 2009/06/27 17:12:00 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -256,9 +255,10 @@ void Filter::editScreen::add()
 	if (prompt.abortflag || myServer::nextScreen)
 		return;
 
-	vector<wchar_t> ka;
+	vector<unicode_char> ka;
 
-	Curses::mbtow( ((string)prompt).c_str(), ka);
+	mail::iconvert::convert((string)prompt, unicode_default_chset(), ka);
+
 	if (ka.size() == 0)
 		return;
 

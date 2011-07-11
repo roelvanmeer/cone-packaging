@@ -1,5 +1,4 @@
-/* $Id: structure.C,v 1.7 2009/06/27 17:12:00 mrsam Exp $
-**
+/*
 ** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -109,7 +108,7 @@ bool mail::mimestruct::parameterList::exists(string name) const
 }
 
 string mail::mimestruct::parameterList::get(string name,
-					    const struct unicode_info *info)
+					    string chset)
 	const
 {
 	mail::upper(name);
@@ -157,40 +156,20 @@ string mail::mimestruct::parameterList::get(string name,
 				    &langLen,
 				    &textLen);
 
-		const char *p=&*textStr.begin();
+		stringRet=&textStr[0];
 
-		const struct unicode_info *u=
-			unicode_find(&*charsetStr.begin());
-
-		if (!u)
-			u=unicode_find(unicode_default_chset());
-
-		if (!u)
-			u=&unicode_ISO8859_1;
-
-
-		string pbuf;
-
-		if (info)
+		if (chset.size() > 0 && charsetStr[0])
 		{
-			char *s=unicode_xconvert(&*textStr.begin(), u, info);
+			bool err;
 
-			if (!s)
-				LIBMAIL_THROW(strerror(errno));
+			string s=mail::iconvert::convert(stringRet,
+							 &charsetStr[0],
+							 chset,
+							 err);
 
-			try {
-				pbuf=s;
-
-				free(s);
-			} catch (...) {
-				free(s);
-				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-			}
-
-			p=pbuf.c_str();
+			if (!err)
+				stringRet=s;
 		}
-
-		stringRet=p;
 
 		rfc2231_paramDestroy(paramList);
 

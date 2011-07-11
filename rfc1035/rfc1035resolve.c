@@ -16,7 +16,6 @@
 #include	<string.h>
 #include	"rfc1035_res.h"
 
-static const char rcsid[]="$Id: rfc1035resolve.c,v 1.7 2000/05/27 04:59:27 mrsam Exp $";
 
 struct querybuf {
 	char qbuf[512];

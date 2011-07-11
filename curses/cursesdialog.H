@@ -1,5 +1,4 @@
-/* $Id: cursesdialog.H,v 1.1 2003/05/27 14:09:07 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -67,8 +66,8 @@ public:
 
 	bool writeText(const char *text, int row, int col,
 			       const CursesAttr &attr) const;
-	bool writeText(const wchar_t *text, int row, int col,
-			       const CursesAttr &attr) const;
+	bool writeText(const std::vector<unicode_char> &text, int row, int col,
+		       const Curses::CursesAttr &attr) const;
 
 };
 

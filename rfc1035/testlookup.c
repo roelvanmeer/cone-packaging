@@ -16,7 +16,6 @@
 #include	"soxwrap/soxwrap.h"
 #include	"rfc1035_res.h"
 
-static const char rcsid[]="$Id: testlookup.c,v 1.11 2004/08/15 16:41:02 mrsam Exp $";
 
 static void setns(const char *p)
 {

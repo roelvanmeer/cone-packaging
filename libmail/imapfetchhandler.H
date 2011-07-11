@@ -1,5 +1,4 @@
-/* $Id: imapfetchhandler.H,v 1.2 2003/05/29 21:18:08 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.

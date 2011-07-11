@@ -4,7 +4,6 @@
 */
 
 /*
-** $Id: rfc2045decode.c,v 1.2 1999/12/06 13:29:02 mrsam Exp $
 */
 #include	"rfc2045.h"
 

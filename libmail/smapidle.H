@@ -1,5 +1,4 @@
-/* $Id: smapidle.H,v 1.2 2004/04/06 02:06:37 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

@@ -1,6 +1,5 @@
-/* $Id: macros.H,v 1.2 2004/05/01 04:59:52 mrsam Exp $
-**
-** Copyright 2004, Double Precision Inc.
+/*
+** Copyright 2004-2010, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -15,9 +14,17 @@
 #include <vector>
 #include "unicode/unicode.h"
 
+/*
+** Memorized shortcuts and external filters
+*/
+
 class Macros {
 
 public:
+	/*
+	** Name of a shortcut
+	*/
+
 	class name {
 	public:
 		unsigned f; // If > 0, function key #+1, else n:
@@ -38,7 +45,16 @@ public:
 		}
 	};
 
+	// Shortcuts
+
 	std::map<name, std::string> macroList;
+
+	// External filters
+
+	// Key is filter name. Value is a std::pair of filter name, filter
+	// command, both use UTF-8.
+
+	std::map<int, std::pair<std::string, std::string> > filterList;
 
 	Macros();
 	~Macros();

@@ -1,11 +1,8 @@
-/* $Id: tmpaccount.C,v 1.5 2008/05/24 17:57:42 mrsam Exp $
-**
+/*
 ** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
-#include <cstring>
-
 #include "tmpaccount.H"
 #include "driver.H"
 #include "file.H"
@@ -13,6 +10,7 @@
 #include "search.H"
 #include <errno.h>
 #include <sys/stat.h>
+#include <cstring>
 
 using namespace std;
 

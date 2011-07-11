@@ -1,5 +1,4 @@
-/* $Id: cursesmessagedisplay.H,v 1.3 2005/06/18 01:06:05 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

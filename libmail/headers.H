@@ -1,5 +1,4 @@
-/* $Id: headers.H,v 1.4 2009/10/31 22:38:07 mrsam Exp $
-**
+/*
 ** Copyright 2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -183,10 +182,12 @@ class Header::listitem {
 
 	Header *h;
 public:
+	listitem(const listitem &);
 	listitem(const Header &);
 	~listitem();
 	listitem &operator=(const Header &);
 
+	listitem &operator=(const listitem &);
 	operator Header &() { return *h; }
 	operator const Header &() const { return *h; }
 };

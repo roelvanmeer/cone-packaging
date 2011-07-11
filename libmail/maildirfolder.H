@@ -1,5 +1,4 @@
-/* $Id: maildirfolder.H,v 1.3 2003/11/16 02:43:13 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.

@@ -1,5 +1,4 @@
-/* $Id: smapopen.C,v 1.3 2003/08/26 22:24:31 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

@@ -17,7 +17,6 @@
 #include	<stdio.h>
 #include	<stdlib.h>
 
-static const char rcsid[]="$Id: maildirnewshared.c,v 1.4 2004/11/14 03:01:40 mrsam Exp $";
 
 int maildir_newshared_disabled=0;
 

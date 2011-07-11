@@ -1,5 +1,4 @@
-/* $Id: addressbookadd.C,v 1.10 2009/10/31 22:38:07 mrsam Exp $
-**
+/*
 ** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -100,14 +99,14 @@ void mail::addressbook::Add::go()
 	mail::Header::list headers;
 
 	headers << mail::Header::mime("Content-Type", "text/plain")
-		("charset", unicode_UTF8.chset);
+		("charset", "utf-8");
 
 
 	mail::Attachment intro(headers,
 			       "This message is used to store Libmail's"
 			       " address book.  Please do not modify\n"
 			       "this folder, and message!\n",
-			       unicode_UTF8.chset);
+			       "utf-8");
 
 	addMessage->assembleContent(multipart_params.end()[-1], intro,
 				    *this);
@@ -149,7 +148,7 @@ void mail::addressbook::Add::addedBeef(string successMsg)
 	headers << mail::Header::addresslist("From", from_addresses);
 	headers << mail::Header::encoded("Subject",
 					 "[" + nickname + "]",
-					 unicode_UTF8.chset);
+					 "utf-8");
 
 	successFunc= &mail::addressbook::Add::addedAll;
 	addMessage->assembleMultipart(dummyRet, headers, multipart_params,

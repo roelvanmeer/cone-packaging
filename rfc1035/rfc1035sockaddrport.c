@@ -9,7 +9,6 @@
 #include	<arpa/inet.h>
 #include	<errno.h>
 
-static const char rcsid[]="$Id: rfc1035sockaddrport.c,v 1.3 2000/05/28 18:17:25 mrsam Exp $";
 
 int rfc1035_sockaddrport(const RFC1035_NETADDR *a, int al, int *port)
 {

@@ -1,5 +1,4 @@
-/* $Id: nntpnewsrc.C,v 1.1 2003/05/27 14:09:08 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -7,7 +6,6 @@
 
 #include "nntpnewsrc.H"
 #include <sstream>
-#include <ctype.h>
 
 using namespace std;
 
@@ -26,7 +24,7 @@ mail::nntp::newsrc::newsrc(string s) : subscribed(true)
 
 	string::iterator b=s.begin(), e=s.end();
 
-	while (b != e && !isspace((int)(unsigned char)*b))
+	while (b != e && !unicode_isspace((unsigned char)*b))
 	{
 		if (*b == ':')
 		{
@@ -45,7 +43,7 @@ mail::nntp::newsrc::newsrc(string s) : subscribed(true)
 
 	while (b != e)
 	{
-		if (isspace((int)(unsigned char)*b) || *b == ',')
+		if (unicode_isspace((unsigned char)*b) || *b == ',')
 		{
 			b++;
 			continue;
@@ -55,7 +53,7 @@ mail::nntp::newsrc::newsrc(string s) : subscribed(true)
 
 		while (b != e)
 		{
-			if (isspace((int)(unsigned char)*b) || *b == ',')
+			if (unicode_isspace((unsigned char)*b) || *b == ',')
 				break;
 			b++;
 		}

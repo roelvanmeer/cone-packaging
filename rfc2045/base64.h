@@ -3,7 +3,6 @@
 
 #include "../rfc2045/rfc2045_config.h"
 
-static const char base64_h_rcsid[]="$Id: base64.h,v 1.3 2003/03/07 01:49:32 mrsam Exp $";
 
 /*
 ** Copyright 2002 Double Precision, Inc.  See COPYING for

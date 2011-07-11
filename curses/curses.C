@@ -1,6 +1,6 @@
-/* $Id: curses.C,v 1.4 2004/03/27 15:54:16 mrsam Exp $
+/*
 **
-** Copyright 2002, Double Precision Inc.
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -8,6 +8,7 @@
 #include "curses_config.h"
 
 #include "mycurses.H"
+#include "widechar.H"
 #include "cursescontainer.H"
 #include "curseskeyhandler.H"
 
@@ -19,12 +20,10 @@
 #include <limits.h>
 #include <iostream>
 
-using namespace std;
-
 bool Curses::keepgoing=false;
 bool Curses::shiftmode=false;
 
-string Curses::suspendCommand;
+std::string Curses::suspendCommand;
 
 #define TABSIZE 8
 
@@ -51,10 +50,10 @@ const char Curses::Key::LEFT[]="LEFT",
 	Curses::Key::SHIFT[]="SHIFT",
 	Curses::Key::RESIZE[]="RESIZE";
 
-bool Curses::Key::operator==(const std::vector<wchar_t> &v) const
+bool Curses::Key::operator==(const std::vector<unicode_char> &v) const
 {
 	return keycode == 0 &&
-		std::find(v.begin(), v.end(), key) != v.end();
+		std::find(v.begin(), v.end(), ukey) != v.end();
 }
 
 Curses::Curses(CursesContainer *parentArg) : parent(parentArg),
@@ -217,9 +216,8 @@ bool Curses::writeText(const char *text, int r, int c,
 	return false;
 }
 
-
-bool Curses::writeText(const wchar_t *text, int r, int c,
-			       const CursesAttr &attr) const
+bool Curses::writeText(const std::vector<unicode_char> &text, int r, int c,
+		       const Curses::CursesAttr &attr) const
 {
 	CursesContainer *p=parent;
 
@@ -232,7 +230,8 @@ bool Curses::writeText(const wchar_t *text, int r, int c,
 	return false;
 }
 
-void Curses::writeText(string text, int row, int col,
+
+void Curses::writeText(std::string text, int row, int col,
 		       const CursesAttr &attr) const
 {
 	writeText(text.c_str(), row, col, attr);
@@ -253,35 +252,16 @@ void Curses::erase()
 	size_t w=getWidth();
 	size_t h=getHeight();
 
-	vector<wchar_t> spaces;
+	std::vector<unicode_char> spaces;
 
 	spaces.insert(spaces.end(), w, ' ');
-	spaces.push_back(0);
 
 	size_t i;
 
 	CursesAttr attr;
 
 	for (i=0; i<h; i++)
-		writeText(&*spaces.begin(), i, 0, attr);
-}
-
-int Curses::getTextLength(const char *text) const
-{
-	const CursesContainer *p=getParent();
-
-	if (p)
-		return p->getTextLength(text);
-	return 0;
-}
-
-int Curses::getTextLength(const wchar_t *text) const
-{
-	const CursesContainer *p=getParent();
-
-	if (p)
-		return p->getTextLength(text);
-	return 0;
+		writeText(spaces, i, 0, attr);
 }
 
 void Curses::beepError()
@@ -368,8 +348,9 @@ bool Curses::processKey(const Key &k)
 
 bool Curses::processKeyInFocus(const Key &key)
 {
-	if (key == '\t' || key == key.DOWN || key == key.SHIFTDOWN ||
-	    key == key.ENTER)
+	if ((key.plain() && key.ukey == '\t')
+	    || key == key.DOWN || key == key.SHIFTDOWN
+	    || key == key.ENTER)
 	{
 		transferNextFocus();
 		return true;
@@ -420,133 +401,6 @@ bool Curses::processKeyInFocus(const Key &key)
 	}
 
 	return false;
-}
-
-void Curses::mbtow(const char *text, vector<wchar_t> &wbuf)
-{
-	mbstate_t ps, ps_save;
-
-	memset(&ps, 0, sizeof(ps));
-
-	wbuf.clear();
-
-	size_t l=strlen(text);
-
-	while (l)
-	{
-		wchar_t wc;
-		ps_save=ps;
-
-		size_t r=mbrtowc(&wc, text, l, &ps);
-
-		if (r > l) // -1 or -2
-		{
-			wc='?';
-			r=1;
-			ps=ps_save;
-		}
-
-		if (wc == '\t')
-			wc=' ';
-
-#if HAVE_WCWIDTH
-		int nn=wcwidth(wc);
-
-		if (nn <= 0)
-		{
-			nn=1;
-			wc='?';
-		}
-#endif
-
-		wbuf.push_back(wc);
-
-#if HAVE_WCWIDTH
-		while (--nn)
-			wbuf.push_back(MCPAD);
-#endif
-
-		l -= r;
-		text += r;
-	}
-}
-
-
-string Curses::wtomb(const wchar_t *w)
-{
-	vector<char> cbuf;
-	int pass;
-	size_t ll=0;
-
-#ifdef MB_LEN_MAX
-	char scratchBuf[MB_LEN_MAX*2]; // Be safe
-#else
-	char scratchBuf[64]; // Be safe
-#endif
-
-	for (pass=0; pass<2; pass++)
-	{
-		size_t cnt=0;
-
-		if (pass)
-			cbuf.insert(cbuf.begin(), ll, ' ');
-
-		char *p= &cbuf[0];
-
-		const wchar_t *wptr=w;
-
-		mbstate_t mbs;
-		memset(&mbs, 0, sizeof(mbs));
-
-		while (*wptr)
-		{
-			if (cnt && *wptr == MCPAD)
-				// Padding after multicell widechar.
-			{
-				--cnt;
-				wptr++;
-				continue;
-			}
-
-			wchar_t wc= *wptr;
-
-#if HAVE_WCWIDTH
-			cnt=wcwidth(wc);
-
-			if (cnt <= 0)
-				wc=' ';
-			else
-				--cnt;
-#endif
-
-			size_t l=wcrtomb(pass ? p:scratchBuf,
-					 wc ? wc:' ', &mbs);
-
-			if (l == (size_t)-1)
-			{
-				l=1;
-				if (pass)
-					*p++='?';
-			}
-			else
-			{
-				if (pass)
-					p += l;
-			}
-
-			ll += l;
-			wptr++;
-		}
-
-		size_t l=wcrtomb(pass ? p:NULL, 0, &mbs);
-
-		ll += l;
-	}
-
-	if (cbuf.size() > 0 && cbuf.end()[-1] == 0)
-		cbuf.erase(cbuf.end()-1); // Drop trailing '\0
-
-	return ( string(cbuf.begin(), cbuf.end()));
 }
 
 bool Curses::isFocusable()
@@ -667,182 +521,4 @@ Curses *Curses::getPrevFocus()
 		p=p->getParent();
 	}
 	return NULL;
-}
-
-void Curses::getTextPos(vector<wchar_t> &line,
-			vector<size_t> &pos)
-{
-	pos.clear();
-	pos.insert(pos.begin(), line.size()+1, 0);
-
-	size_t i=0;
-
-	vector<wchar_t>::iterator b=line.begin(), e=line.end();
-
-	size_t col=0;
-
-	while (b != e)
-	{
-		pos[i]=col;
-
-		if (*b == '\t')
-		{
-			col += TABSIZE;
-			col -= (col % TABSIZE);
-		}
-		else
-		{
-			size_t n=1;
-
-#if HAVE_WCWIDTH
-			int nn=wcwidth(*b);
-
-			if (nn > 1)
-				n=nn;
-#endif
-			col += n;
-		}
-
-		b++;
-		i++;
-	}
-	pos[i]=col;
-}
-
-void Curses::expandTabs(vector<wchar_t> &line,
-			vector<size_t> &pos)
-{
-	size_t i=line.size();
-
-	while (i > 0)
-	{
-		if (line[--i] != '\t')
-		{
-			if (pos[i+1] > pos[i]+1) // Multicell char
-				line.insert(line.begin() + i + 1,
-					    pos[i+1] - pos[i] - 1, MCPAD);
-
-			continue;
-		}
-
-		size_t nSpaces=pos[i+1] - pos[i]; // That's how big this tab is
-
-		line[i]=' ';
-		if (nSpaces > 1)
-			line.insert(line.begin() + i, nSpaces - 1, ' ');
-	}
-}
-
-void Curses::unexpandMulticell(vector<wchar_t> &line)
-{
-#if HAVE_WCWIDTH
-
-	size_t i;
-
-	for (i=0; i<line.size(); )
-	{
-		int wc=wcwidth(line[i]);
-
-		if (wc <= 0)
-			line[i]='?';
-		else if (wc > 1)
-		{
-			if (i + wc < line.size()) // Truncated
-			{
-				while (i < line.size())
-					line[i++]='?';
-				continue;
-			}
-
-			line.erase(line.begin() + i + 1,
-				   line.begin() + i + wc);
-		}
-		i++;
-	}
-#endif
-}
-
-void Curses::wordWrap(vector<wchar_t>::iterator b,
-		      vector<wchar_t>::iterator e,
-		      vector< pair <vector<wchar_t>::iterator,vector<wchar_t>::iterator
-		      > > &lines,
-		      size_t toWidth)
-{
-	bool needBlankLine=false;
-
-	do
-	{
-		vector<wchar_t>::iterator start=b;
-		// Remember where line started
-
-		vector<wchar_t>::iterator lastspc=e;
-		// Assume entire line will fit, unless told otherwise
-
-		size_t cnt=0;
-
-		for (;;)
-		{
-			if (b == e) // Reached end of line, break here
-			{
-				lastspc=b;
-				break;
-			}
-
-			// Remember where most recent space was
-			if (*b == ' ' || *b == '\t')
-				lastspc=b;
-
-
-			// Calculate how much real estate this char needs
-
-			size_t w=1;
-
-			if (*b == '\t')
-				w= TABSIZE - (cnt % TABSIZE);
-			else
-#if HAVE_WCWIDTH
-			{
-				int wc=wcwidth(*b);
-
-				if (wc > 1)
-					w=1;
-			}
-#endif
-
-			cnt += w;
-
-			if (cnt >= toWidth)
-				break;
-			b++;
-		}
-
-		vector<wchar_t>::iterator resume;
-
-		if (lastspc == e)
-			resume=lastspc=b;
-		// If we didn't see a space, break at end of line
-
-		else
-		{
-			resume=lastspc;
-
-			if (resume != e)
-			{
-				resume++;
-
-				if (resume == e)
-					needBlankLine=true;
-			}
-		}
-
-		lines.push_back( make_pair(start, lastspc));
-		b=resume;
-	} while (b != e);
-
-	if (needBlankLine)
-		lines.push_back(make_pair(e, e));
-	// The last character was a space and we broke on it.
-	// We need to be able to rebuild the original text by reconcatenating
-	// all the lines, with a single space separator character.  Do that
-	// by appending a 0-length line.
 }

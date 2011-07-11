@@ -1,5 +1,4 @@
-/* $Id: driver.C,v 1.3 2003/11/15 18:38:33 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

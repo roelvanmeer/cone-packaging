@@ -1,5 +1,4 @@
-/* $Id: smtp.H,v 1.6 2008/07/07 03:25:41 mrsam Exp $
-**
+/*
 ** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.

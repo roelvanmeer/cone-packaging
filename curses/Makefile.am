@@ -1,4 +1,3 @@
-# $Id: Makefile.am,v 1.4 2007/07/04 02:24:38 mrsam Exp $
 #
 # Copyright 2002, Double Precision Inc.
 #
@@ -14,6 +13,7 @@ libcurses_a_SOURCES=mycurses.H curses.C \
 	cursesdialog.H cursesdialog.C \
 	cursesfield.H cursesfield.C \
 	cursesfilereq.H cursesfilereq.C \
+	cursesflowedline.H \
 	curseskeyhandler.H curseskeyhandler.C \
 	curseslabel.H curseslabel.C \
 	cursesmainscreen.H cursesmainscreen.C \
@@ -24,7 +24,8 @@ libcurses_a_SOURCES=mycurses.H curses.C \
 	cursesstatusbar.H cursesstatusbar.C \
 	cursestitlebar.H cursestitlebar.C \
 	cursesvscroll.H cursesvscroll.C \
-	timer.C timer.H
+	timer.C timer.H \
+	widechar.C widechar.H
 
 noinst_DATA=curseslib
 

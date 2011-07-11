@@ -1,5 +1,4 @@
-/* $Id: maildir.C,v 1.16 2010/04/29 00:34:49 mrsam Exp $
-**
+/*
 ** Copyright 2002-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -157,15 +156,6 @@ mail::maildir::~maildir()
 	index.clear();
 }
 
-void mail::maildir::mkverbotten(vector<unicode_char> &verbotten)
-{
-	verbotten.push_back(':');
-	verbotten.push_back('/');
-	verbotten.push_back('.');
-	verbotten.push_back('~');
-	verbotten.push_back(0);
-}
-
 void mail::maildir::resumed()
 {
 }
@@ -311,7 +301,7 @@ string mail::maildir::getfilename(size_t i)
 	char *dir=maildir_name2dir(path.c_str(), folderPath.c_str());
 
 	if (!dir)
-		LIBMAIL_THROW((strerror(errno)));
+		return n;
 
 	try {
 		fn=maildir_filename(dir, NULL,
@@ -639,7 +629,10 @@ void mail::maildir::checkNewMail(callback *callback)
 	char *d=maildir_name2dir(path.c_str(), folderPath.c_str());
 
 	if (!d)
-		LIBMAIL_THROW("Out of memory.");
+	{
+		callback->fail("Invalid folder");
+		return;
+	}
 
 	try {
 		md=d;
@@ -1091,13 +1084,8 @@ void mail::maildir::open(string pathStr, mail::callback &callback,
 
 	if (!d)
 	{
-		if (errno == EINVAL)
-		{
-			callback.fail(strerror(errno));
-			return;
-		}
-
-		LIBMAIL_THROW("Out of memory.");
+		callback.fail(strerror(errno));
+		return;
 	}
 
 	try {
@@ -1451,7 +1439,10 @@ void mail::maildir::updateKeywords(const vector<size_t> &messages,
 	{
 		char *dirs=maildir_name2dir(path.c_str(), folderPath.c_str());
 		if (!dirs)
-			LIBMAIL_THROW((strerror(errno)));
+		{
+			cb.fail(strerror(errno));
+			return;
+		}
 
 		try {
 			dir=dirs;

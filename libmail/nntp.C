@@ -1,5 +1,4 @@
-/* $Id: nntp.C,v 1.15 2010/04/29 00:34:50 mrsam Exp $
-**
+/*
 ** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -22,7 +21,6 @@
 #include <iostream>
 #include <iomanip>
 #include <time.h>
-#include <ctype.h>
 #include <errno.h>
 #include <unistd.h>
 #include <algorithm>
@@ -1076,8 +1074,6 @@ void mail::nntp::searchMessages(const searchParams &searchInfo,
 				searchCallback &callback)
 {
 	string hdr;
-	const struct unicode_info *u;
-
 	switch (searchInfo.criteria) {
 	case searchParams::from:
 		hdr="FROM";
@@ -1103,28 +1099,53 @@ void mail::nntp::searchMessages(const searchParams &searchInfo,
 
 	if (hdr.size() > 0)
 	{
-		u=unicode_find(searchInfo.charset.c_str());
-		if (u)
+		unicode_char *uc;
+		size_t ucsize;
+		libmail_u_convert_handle_t
+			h(libmail_u_convert_tou_init(searchInfo.charset.c_str(),
+						     &uc, &ucsize, 0));
+
+		if (h)
 		{
-			unicode_char *uc= (*u->c2u)(u, searchInfo.param2
-						    .c_str(), NULL);
+			libmail_u_convert(h, searchInfo.param2.c_str(),
+					  searchInfo.param2.size());
 
-			if (!uc)
-			{
-				callback.fail(strerror(errno));
-				return;
-			}
+			if (libmail_u_convert_deinit(h, NULL))
+				uc=NULL;
+		}
+		else
+		{
+			uc=NULL;
+		}
 
+		if (uc)
+		{
 			size_t i;
 
-			for (i=0; uc[i]; i++)
+			for (i=0; i<ucsize; i++)
 				if (uc[i] < 32 || uc[i] >= 127)
 					break;
 
-			if (uc[i] == 0) // Only US-ASCII, can use XPAT.
+			if (i < ucsize)
 			{
-				char *p= (*unicode_ISO8859_1.u2c)
-					(&unicode_ISO8859_1, uc, NULL);
+				free(uc);
+			}
+			else
+			{
+				char *p;
+				size_t psize;
+
+				h=libmail_u_convert_fromu_init("iso-8859-1",
+							       &p, &psize, 1);
+
+				if (h)
+				{
+					libmail_u_convert_uc(h, uc, ucsize);
+					if (libmail_u_convert_deinit(h, NULL))
+						p=NULL;
+				}
+				else
+					p=NULL;
 
 				free(uc);
 
@@ -1150,7 +1171,6 @@ void mail::nntp::searchMessages(const searchParams &searchInfo,
 				}
 				return;
 			}
-			free(uc);
 		}
 	}
 

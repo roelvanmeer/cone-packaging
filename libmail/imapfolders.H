@@ -1,5 +1,4 @@
-/* $Id: imapfolders.H,v 1.4 2004/03/22 02:56:04 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.

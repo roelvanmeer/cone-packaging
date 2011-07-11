@@ -1,11 +1,12 @@
 /*
-** Copyright 2000-2009 Double Precision, Inc.  See COPYING for
+** Copyright 2000-2011 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
 #include "rfc2045_config.h"
 #include	"rfc2045.h"
-#include	"rfc2646.h"
+#include	"rfc2045src.h"
+#include	"rfc3676parser.h"
 #include	"rfc822/rfc2047.h"
 #include	"rfc2045charset.h"
 #include	"rfc822/rfc822.h"
@@ -16,13 +17,11 @@
 #include	<string.h>
 #include	<ctype.h>
 
-static const char rcsid[]="$Id: rfc2045reply.c,v 1.21 2010/05/30 20:28:33 mrsam Exp $";
 
 extern void rfc2045_enomem();
 
 static int mkreply(struct rfc2045_mkreplyinfo *);
 static int mkforward(struct rfc2045_mkreplyinfo *);
-static struct rfc2045 *do_mixed_fwd(struct rfc2045 *, off_t *);
 
 static void mksalutation_datefmt(const char *fmt_start,
 				 const char *fmt_end,
@@ -223,7 +222,7 @@ static char *mksalutation(const char *salutation_template,
 }
 
 
-int rfc2045_makereply_do(struct rfc2045_mkreplyinfo *ri)
+int rfc2045_makereply(struct rfc2045_mkreplyinfo *ri)
 {
 	if (strcmp(ri->replymode, "forward") == 0
 	    || strcmp(ri->replymode, "forwardatt") == 0)
@@ -232,9 +231,223 @@ int rfc2045_makereply_do(struct rfc2045_mkreplyinfo *ri)
 	return (mkreply(ri));
 }
 
-static int quotereply(const char *, size_t, void *);
+struct replyinfostruct {
 
-static int flowreply(const char *, size_t, void *);
+	struct rfc2045_mkreplyinfo *ri;
+	rfc3676_parser_t parser;
+
+	size_t quote_level_adjust;
+	size_t quote_level;
+	int start_line;
+	int isflowed;
+	size_t trailing_spaces;
+	libmail_u_convert_handle_t u_handle;
+
+};
+
+/*
+** Pass original content to the RFC 3676 parser
+*/
+
+static int quotereply(const char *p, size_t l, void *voidptr)
+{
+	struct replyinfostruct *ris=(struct replyinfostruct *)voidptr;
+
+	return rfc3676parser(ris->parser, p, l);
+}
+
+/*
+** Push formatted reply downstream.
+*/
+
+static int output_reply(const char *ptr, size_t cnt, void *arg)
+{
+	struct replyinfostruct *s=(struct replyinfostruct *)arg;
+
+	(*s->ri->write_func)(ptr, cnt, s->ri->voidarg);
+	return 0;
+}
+
+/*
+** RFC 3676 parser: Start of a new line in the reply.
+*/
+static int reply_begin(size_t quote_level,
+		       void *arg)
+{
+	struct replyinfostruct *s=(struct replyinfostruct *)arg;
+	unicode_char quoteChar='>';
+
+	/*
+	** Save quote level, begin conversion from unicode to the native
+	** charset.
+	*/
+	s->quote_level=quote_level+s->quote_level_adjust;
+
+	s->u_handle=libmail_u_convert_init(libmail_u_ucs4_native,
+					   s->ri->charset,
+					   output_reply,
+					   s);
+
+	/*
+	** Emit quoting indentation, if any.
+	*/
+	s->start_line=1;
+	s->trailing_spaces=0;
+
+	if (s->u_handle)
+	{
+		size_t i;
+
+		for (i=0; i<s->quote_level; i++)
+		{
+			libmail_u_convert_uc(s->u_handle, &quoteChar, 1);
+		}
+	}
+	return 0;
+}
+
+/*
+** RFC 3676: (possibly partial) contents of a deflowed line, as unicode.
+*/
+
+static int reply_contents(const unicode_char *txt,
+			  size_t txt_size,
+			  void *arg)
+{
+	unicode_char spaceChar=' ';
+	size_t nonspc_cnt;
+
+	struct replyinfostruct *s=(struct replyinfostruct *)arg;
+
+	if (!s->u_handle || txt_size == 0)
+		return 0;
+
+	/*
+	** Space-stuff the initial character.
+	*/
+
+	if (s->start_line)
+	{
+		if (!s->isflowed)
+		{
+			/*
+			** If the original content is not flowed, the rfc3676
+			** parser does not parse the number of > quote
+			** characters and does not set the quote level.
+			*/
+
+			if ((s->quote_level > 0 && *txt != '>') || *txt == ' ')
+				libmail_u_convert_uc(s->u_handle,
+						     &spaceChar, 1);
+
+		}
+		else
+		{
+			if (s->quote_level > 0 || *txt == ' ' || *txt == '>')
+				libmail_u_convert_uc(s->u_handle,
+						     &spaceChar, 1);
+		}
+		s->start_line=0;
+	}
+
+	/*
+	** Trim any trailing spaces from the RFC 3676 parsed content.
+	*/
+
+	for (nonspc_cnt=txt_size; nonspc_cnt > 0; --nonspc_cnt)
+		if (txt[nonspc_cnt-1] != ' ')
+			break;
+
+	/*
+	** If the contents are not totally whitespace, it's ok now to emit
+	** any accumulated whitespace from previous content.
+	*/
+
+	if (nonspc_cnt)
+	{
+		while (s->trailing_spaces)
+		{
+			libmail_u_convert_uc(s->u_handle, &spaceChar, 1);
+			--s->trailing_spaces;
+		}
+
+		libmail_u_convert_uc(s->u_handle, txt, nonspc_cnt);
+	}
+
+	s->trailing_spaces += txt_size - nonspc_cnt;
+	return 0;
+}
+
+static int reply_end(void *arg)
+{
+	unicode_char newLine='\n';
+	struct replyinfostruct *s=(struct replyinfostruct *)arg;
+
+	libmail_u_convert_uc(s->u_handle, &newLine, 1);
+
+	libmail_u_convert_deinit(s->u_handle, NULL);
+	return 0;
+}
+
+/*
+** RFC 3676 parser: flowed line break. Replicate it.
+*/
+static int reply_wrap(void *arg)
+{
+	unicode_char spaceChar=' ';
+	struct replyinfostruct *s=(struct replyinfostruct *)arg;
+
+	/*
+	** It's safe to preserve trailing spaces on flowed lines.
+	*/
+
+	while (s->trailing_spaces)
+	{
+		libmail_u_convert_uc(s->u_handle, &spaceChar, 1);
+		--s->trailing_spaces;
+	}
+
+	libmail_u_convert_uc(s->u_handle, &spaceChar, 1);
+	reply_end(s);
+	reply_begin(s->quote_level-s->quote_level_adjust, s);
+	/* Undo the adjustment in reply_begin() */
+
+	return 0;
+}
+
+static void reformat(struct rfc2045_mkreplyinfo *ri, struct rfc2045 *rfc,
+		     size_t adjustLevel)
+{
+	struct replyinfostruct ris;
+
+	struct rfc3676_parser_info info;
+	int conv_err;
+
+	ris.ri=ri;
+	ris.quote_level_adjust=adjustLevel;
+
+	memset(&info, 0, sizeof(info));
+
+	info.charset=ri->charset;
+	ris.isflowed=info.isflowed=rfc2045_isflowed(rfc);
+	info.isdelsp=rfc2045_isdelsp(rfc);
+
+	info.line_begin=reply_begin;
+	info.line_contents=reply_contents;
+	info.line_flowed_notify=reply_wrap;
+	info.line_end=reply_end;
+	info.arg=&ris;
+
+	if ((ris.parser=rfc3676parser_init(&info)) != NULL)
+	{
+		rfc2045_decodetextmimesection(ri->src, rfc,
+					      ri->charset,
+					      &conv_err,
+					      quotereply,
+					      &ris);
+		rfc3676parser_deinit(ris.parser, NULL);
+	}
+}
 
 static void	replybody(struct rfc2045_mkreplyinfo *ri, struct rfc2045 *rfc)
 {
@@ -243,33 +456,7 @@ static void	replybody(struct rfc2045_mkreplyinfo *ri, struct rfc2045 *rfc)
 	if (!rfc)
 		return;
 
-	if (rfc2045_isflowed(rfc))
-	{
-		struct rfc2646parser *parser;
-		struct rfc2646reply *reply;
-
-		reply=rfc2646reply_alloc(&flowreply, ri);
-		if (!reply)
-			rfc2045_enomem();
-		parser=RFC2646REPLY_PARSEALLOC(reply);
-
-		if (!parser)
-		{
-			rfc2646reply_free(reply);
-			rfc2045_enomem();
-		}
-
-		(*ri->decodesectionfunc)(ri->fd, rfc, ri->charset,
-					 &rfc2646_parse_cb, parser);
-
-		rfc2646_free(parser);
-		rfc2646reply_free(reply);
-		return;
-	}
-
-	ri->start_line=1;
-	(*ri->decodesectionfunc)(ri->fd, rfc, ri->charset,
-				 &quotereply, ri);
+	reformat(ri, rfc, 1);
 }
 
 static void writes(struct rfc2045_mkreplyinfo *ri, const char *c)
@@ -277,95 +464,22 @@ static void writes(struct rfc2045_mkreplyinfo *ri, const char *c)
 	(*ri->write_func)(c, strlen(c), ri->voidarg);
 }
 
-static int write_wrap_func(const char *c, size_t n, void *vp)
-{
-	struct rfc2045_mkreplyinfo *ri=(struct rfc2045_mkreplyinfo *)vp;
-
-	(*ri->write_func)(c, n, ri->voidarg);
-	return (0);
-}
-
-static int write_flowed_func(const char *c, size_t n, void *vp)
-{
-	struct rfc2646parser *p=(struct rfc2646parser *)vp;
-
-	return (rfc2646_parse(p, c, n));
-}
-
-static int flowreply(const char *c, size_t l, void *voidptr)
-{
-	struct rfc2045_mkreplyinfo *ri=(struct rfc2045_mkreplyinfo *)voidptr;
-
-	(*ri->write_func)(c, l, ri->voidarg);
-	return (0);
-}
-#if 0
-static void quotereply_stripcr(const char *p, size_t l, void *voidptr)
-#else
-static int quotereply(const char *p, size_t l, void *voidptr)
-#endif
-{
-	struct rfc2045_mkreplyinfo *ri=(struct rfc2045_mkreplyinfo *)voidptr;
-	size_t	i, j;
-
-	for (i=j=0; i<l; i++)
-	{
-		if (p[i] == '\n')
-		{
-			if (ri->start_line)
-				writes(ri, p[j] == '>' ? ">": "> ");
-			ri->start_line=0;
-			(*ri->write_func)(p+j, i-j, ri->voidarg);
-			writes(ri, "\n");
-			ri->start_line=1;
-			j=i+1;
-		}
-	}
-
-	if (j < i)
-	{
-		if (ri->start_line)
-			writes(ri, p[j] == '>' ? ">": "> ");
-		ri->start_line=0;
-		(*ri->write_func)(p+j, i-j, ri->voidarg);
-	}
-	return 0;
-}
-#if 0
-static int quotereply(const char *p, size_t l, void *voidptr)
-{
-	size_t s, n;
-
-	for (s=0; s<l; )
-	{
-		for (n=s; n<l; n++)
-		{
-			if (p[n] == '\r')
-			{
-				quotereply_stripcr(p+s, n-s, voidptr);
-				++n;
-				break;
-			}
-		}
-		s=n;
-	}
-	return (0);
-}
-#endif
-	
 static void forwardbody(struct rfc2045_mkreplyinfo *ri, long nbytes)
 {
 	char	buf[BUFSIZ];
-	int	i;
+	ssize_t i;
 
 	while ((i=nbytes > sizeof(buf) ? sizeof(buf):nbytes) > 0 &&
-	       (i=read(ri->fd, buf, i)) > 0)
+	       (i=SRC_READ(ri->src, buf, i)) > 0)
 	{
 		nbytes -= i;
 		(*ri->write_func)(buf, i, ri->voidarg);
 	}
 }
 
+/*
+** Format a forward
+*/
 static int mkforward(struct rfc2045_mkreplyinfo *ri)
 {
 	off_t	start_pos, end_pos, start_body;
@@ -375,22 +489,19 @@ static int mkforward(struct rfc2045_mkreplyinfo *ri)
 	char	*subject=0;
 
 	char	*boundary=0;
-	struct	rfc2045 *mixed_fwd;
-	off_t	orig_startpos;
-	int is_flowed_fwd=0;
 
 	struct rfc2045headerinfo *hi;
-	const struct unicode_info *uiptr=NULL;
 
-	if (ri->charset && *(ri->charset))
-		uiptr = unicode_find(ri->charset);
+	struct	rfc2045 *textplain_content;
+	struct	rfc2045 *first_attachment;
+	int attachment_is_message_rfc822;
 
-	rfc2045_mimepos(ri->rfc2045partp, &start_pos, &end_pos, &start_body,
-		&dummy, &dummy);
+	/*
+	** Use the original message's subject to set the subject of the
+	** forward message.
+	*/
 
-	orig_startpos=start_pos;
-
-	hi=rfc2045header_start(ri->fd, ri->rfc2045partp);
+	hi=rfc2045header_start(ri->src, ri->rfc2045partp);
 
 	if (!hi)
 		return (-1);
@@ -424,6 +535,10 @@ static int mkforward(struct rfc2045_mkreplyinfo *ri)
 
 	if (ri->subject)
 	{
+		/*
+		** ... unless the caller overrides it.
+		*/
+
 		writes(ri, ri->subject);
 	}
 	else if (subject)
@@ -439,52 +554,132 @@ static int mkforward(struct rfc2045_mkreplyinfo *ri)
 	}
 	writes(ri, "\nMime-Version: 1.0\n");
 
-	if ((mixed_fwd=strcmp(ri->replymode, "forwardatt") == 0 ? 0:
-	     do_mixed_fwd(ri->rfc2045partp, &start_pos)) != 0)
-	{
-		/* Borrow boundary from the message */
+	/*
+	** To assemble a forward template, two things are needed:
+	**
+	** 1. The original message, as text/plain.
+	**
+	** 2. Any attachments in the original message.
+	**    A. The attachments get either copied to the forward message, or
+	**    B. The original message is attached as a single message/rfc822
+	**       entity.
+	**
+	** 2b is always produced by "forwardatt". If a suitable text/plain
+	** part of the original message could not be found, 2b is also
+	** produced even by "forward".
+	*/
 
-		boundary=strdup(rfc2045_boundary(ri->rfc2045partp));
-		if (!boundary)
-			return (-1);
- 
+	textplain_content=NULL;
+
+	attachment_is_message_rfc822=0;
+	first_attachment=NULL;
+
+	{
+		const char *content_type, *dummy;
+
+		struct rfc2045 *top_part=ri->rfc2045partp;
+
+		rfc2045_mimeinfo(top_part,
+				 &content_type, &dummy, &dummy);
+
+		if (strcmp(content_type, "multipart/signed") == 0)
+		{
+			struct rfc2045 *p=top_part->firstpart;
+
+			if (p && p->isdummy)
+				p=p->next;
+
+			if (p)
+			{
+				top_part=p;
+				rfc2045_mimeinfo(top_part,
+						 &content_type, &dummy, &dummy);
+			}
+		}
+		else if (strcmp(content_type, "multipart/x-mimegpg") == 0)
+		{
+			struct rfc2045 *p=top_part->firstpart;
+
+			if (p && p->isdummy)
+				p=p->next;
+
+			if (p)
+			{
+				const char *part_ct;
+
+				rfc2045_mimeinfo(p,
+						 &part_ct, &dummy, &dummy);
+
+				if (strcmp(part_ct, "text/x-gpg-output") == 0
+				    && p->next)
+				{
+					top_part=p->next;
+					rfc2045_mimeinfo(top_part,
+							 &content_type,
+							 &dummy, &dummy);
+				}
+			}
+		}
+
+		if (strcmp(content_type, "text/plain") == 0)
+		{
+			textplain_content=top_part;
+		}
+		else if (strcmp(content_type, "multipart/alternative") == 0)
+		{
+			textplain_content=
+				rfc2045_searchcontenttype(top_part,
+							  "text/plain");
+		}
+		else if (strcmp(content_type, "multipart/mixed") == 0)
+		{
+			struct rfc2045 *p=top_part->firstpart;
+
+			if (p->isdummy)
+				p=p->next;
+
+			textplain_content=
+				rfc2045_searchcontenttype(p, "text/plain");
+
+			/*
+			** If the first part contained a suitable text/plain,
+			** any remaining MIME parts become attachments that
+			** get copied to the forward message.
+			*/
+			if (textplain_content)
+				first_attachment=p->next;
+		}
+
+		if (strcmp(ri->replymode, "forwardatt") == 0 ||
+		    textplain_content == NULL)
+		{
+			/*
+			** Copy the entire message as the sole message/rfc822
+			** attachment in the forward message.
+			*/
+			textplain_content=NULL;
+			first_attachment=top_part;
+			attachment_is_message_rfc822=1;
+		}
+	}
+
+	boundary=strdup(rfc2045_mk_boundary(ri->rfc2045partp, ri->src));
+	if (!boundary)
+	{
+		if (subject)	free(subject);
+		return (-1);
+	}
+
+	if (first_attachment)
+	{
 		writes(ri, "Content-Type: multipart/mixed; boundary=\"");
 		writes(ri, boundary);
-		writes(ri, "\"\nContent-Transfer-Encoding: 8bit\n\n");
+		writes(ri, "\"\n\n");
 		writes(ri, RFC2045MIMEMSG);
-		writes(ri, "--");
+		writes(ri, "\n--");
 		writes(ri, boundary);
 		writes(ri, "\n");
-
-		if (rfc2045_isflowed(mixed_fwd))
-			is_flowed_fwd=1;
-
 	}
-	else
-		if (strcmp(ri->replymode, "forwardatt") == 0)
-		{
-			const char *content_type, *content_transfer_encoding,
-				*charset;
-
-			boundary=rfc2045_mk_boundary(ri->rfc2045partp,
-						     ri->fd);
-			if (!boundary)
-				return (-1);
-
-			rfc2045_mimeinfo(ri->rfc2045partp, &content_type,
-					 &content_transfer_encoding, &charset);
-			writes(ri,
-			       "Content-Type: multipart/mixed; boundary=\"");
-			writes(ri, boundary);
-			writes(ri, "\"\nContent-Transfer-Encoding: 8bit\n\n");
-			writes(ri, RFC2045MIMEMSG);
-			writes(ri, "--");
-			writes(ri, boundary);
-			writes(ri, "\n");
-		}
-		else if (rfc2045_isflowed(ri->rfc2045partp))
-			is_flowed_fwd=1;
-
 
 	if (ri->content_set_charset)
 	{
@@ -492,7 +687,7 @@ static int mkforward(struct rfc2045_mkreplyinfo *ri)
 	}
 	else
 	{
-		writes(ri, "Content-Type: text/plain; charset=\"");
+		writes(ri, "Content-Type: text/plain; format=flowed; delsp=yes; charset=\"");
 		writes(ri, ri->charset);
 		writes(ri, "\"\n");
 	}
@@ -506,17 +701,17 @@ static int mkforward(struct rfc2045_mkreplyinfo *ri)
 		(*ri->writesig_func)(ri->voidarg);
 	writes(ri, "\n");
 
-	if (!boundary)	/* Not forwarding as attachment */
+	if (ri->forwardsep)
 	{
-		if (ri->forwardsep)
-		{
-			writes(ri, ri->forwardsep);
-			writes(ri, "\n");
-		}
+		writes(ri, ri->forwardsep);
+		writes(ri, "\n");
+	}
 
+	if (textplain_content)
+	{
 		/* Copy original headers. */
 		
-		hi=rfc2045header_start(ri->fd, ri->rfc2045partp);
+		hi=rfc2045header_start(ri->src, ri->rfc2045partp);
 		for (;;)
 		{
 			if (rfc2045header_get(hi, &header, &value,
@@ -563,191 +758,86 @@ static int mkforward(struct rfc2045_mkreplyinfo *ri)
 		rfc2045header_end(hi);
 		(*ri->write_func)("\n", 1, ri->voidarg);
 
-		if (lseek(ri->fd, start_body, SEEK_SET) == -1)
-			return (-1);
-
-		start_pos=start_body;
-
-	}
-	else if (mixed_fwd)
-	{
-		if (ri->forwardsep)
-		{
-			writes(ri, ri->forwardsep);
-			writes(ri, "\n");
-		}
-
-		/* Copy original headers. */
-
-		hi=rfc2045header_start(ri->fd, ri->rfc2045partp);
-		for (;;)
-		{
-			if (rfc2045header_get(hi, &header, &value,
-					      RFC2045H_NOLC|RFC2045H_KEEPNL))
-			{
-				rfc2045header_end(hi);
-				break;
-			}
-			if (!header)
-				break;
-			if (strcasecmp(header, "subject") == 0 ||
-			    strcasecmp(header, "from") == 0 ||
-			    strcasecmp(header, "to") == 0 ||
-			    strcasecmp(header, "cc") == 0 ||
-			    strcasecmp(header, "date") == 0 ||
-			    strcasecmp(header, "message-id") == 0 ||
-			    strcasecmp(header, "resent-from") == 0 ||
-			    strcasecmp(header, "resent-to") == 0 ||
-			    strcasecmp(header, "resent-cc") == 0 ||
-			    strcasecmp(header, "resent-date") == 0 ||
-			    strcasecmp(header, "resent-message-id") == 0)
-			{
-				if (subject) free(subject);
-
-				subject=rfc822_display_hdrvalue_tobuf(header,
-								      value,
-								      ri->charset,
-								      NULL,
-								      NULL);
-				if (subject)
-				{
-					(*ri->write_func)(header,
-							  strlen(header),
-							  ri->voidarg);
-					(*ri->write_func)(": ", 2, ri->voidarg);
-					(*ri->write_func)(subject,
-							  strlen(subject),
-							  ri->voidarg);
-					(*ri->write_func)("\n", 1, ri->voidarg);
-				}
-			}
-		}
-		rfc2045header_end(hi);
-		(*ri->write_func)("\n", 1, ri->voidarg);
-
-		if (lseek(ri->fd, start_body, SEEK_SET) == -1)
-			return (-1);
-
-		/* Decode the body of the MIME section */
-
-		if (is_flowed_fwd)
-		{
-			struct rfc2646fwd *p=rfc2646fwd_alloc(&write_wrap_func,
-							      ri);
-			struct rfc2646parser *parser;
-
-			if (!p)
-				return (-1);
-
-			parser=RFC2646FWD_PARSEALLOC(p);
-
-			if (!parser)
-			{
-				rfc2646fwd_free(p);
-				return (-1);
-			}
-
-			(*ri->decodesectionfunc)(ri->fd, mixed_fwd,
-						 ri->charset,
-						 &write_flowed_func, parser);
-			rfc2646_free(parser);
-			rfc2646fwd_free(p);
-			is_flowed_fwd=0;
-		}
-		else
-			(*ri->decodesectionfunc)(ri->fd, mixed_fwd,
-						 ri->charset,
-						 &write_wrap_func, ri);
-
-		writes(ri, "\n--");
-		writes(ri, boundary);
-		writes(ri, "\n");
-	}
-	else
-	{
-		writes(ri, "\n--");
-		writes(ri, boundary);
-		writes(ri, "\nContent-Type: message/rfc822\n");
-		if (ri->forwarddescr)
-		{
-			char *p=rfc2047_encode_str(ri->forwarddescr,
-						   ri->charset ?
-						   ri->charset : "iso-8859-1",
-						   rfc2047_qp_allow_any);
-
-			writes(ri, "Content-Description: ");
-			writes(ri, p ? p:"");
-			free(p);
-			writes(ri, "\n");
-		}
-		writes(ri, "\n");
+		reformat(ri, textplain_content, 0);
 	}
 
+	if (first_attachment)
 	{
-		off_t save_start_body=ri->rfc2045partp->startbody;
-		off_t save_end_pos=ri->rfc2045partp->endpos;
-#if 0
-		char *save_te=
-			ri->rfc2045partp->content_transfer_encoding;
-#endif
+		/*
+		** There are attachments to copy
+		*/
 
-		ri->rfc2045partp->startbody=start_pos;
-		ri->rfc2045partp->endpos=end_pos;
-#if 0
-		ri->rfc2045partp->content_transfer_encoding="8bit";
-#endif
-		if (is_flowed_fwd)
+		if (attachment_is_message_rfc822)
 		{
-			struct rfc2646fwd *p=rfc2646fwd_alloc(&write_wrap_func,
-							      ri);
-			struct rfc2646parser *parser;
+			/* Copy everything as a message/rfc822 */
 
-			if (!p)
-				return (-1);
-
-#if 0
-			ri->rfc2045partp->content_transfer_encoding=save_te;
-#endif
-			parser=RFC2646FWD_PARSEALLOC(p);
-
-			if (!parser)
-			{
-				rfc2646fwd_free(p);
-				return (-1);
-			}
-
-			(*ri->decodesectionfunc)(ri->fd, ri->rfc2045partp,
-						 ri->charset,
-						 &write_flowed_func, parser);
-			rfc2646_free(parser);
-			rfc2646fwd_free(p);
-		}
-		else if (strcmp(ri->replymode, "forwardatt") == 0)
-		{
-			if (lseek(ri->fd, start_pos, SEEK_SET) == 0)
-				forwardbody(ri, end_pos - start_pos);
-		}
-		else	(*ri->decodesectionfunc)(ri->fd, ri->rfc2045partp,
-						 ri->charset,
-						 &write_wrap_func, ri);
-
-		ri->rfc2045partp->startbody=save_start_body;
-		ri->rfc2045partp->endpos=save_end_pos;
-#if 0
-		ri->rfc2045partp->content_transfer_encoding=save_te;
-#endif
-	}
-
-	if (boundary)
-	{
-		if (!mixed_fwd)	/* Already copied */
-		{
 			writes(ri, "\n--");
 			writes(ri, boundary);
-			writes(ri, "--\n");
+			writes(ri, "\nContent-Type: message/rfc822\n");
+
+			if (ri->forwarddescr)
+			{
+				char *p=rfc2047_encode_str(ri->forwarddescr,
+							   ri->charset ?
+							   ri->charset
+							   : "iso-8859-1",
+							   rfc2047_qp_allow_any
+							   );
+
+				writes(ri, "Content-Description: ");
+				writes(ri, p ? p:"");
+				free(p);
+				writes(ri, "\n");
+			}
+
+			writes(ri, "\n");
+
+			rfc2045_mimepos(first_attachment, &start_pos, &end_pos,
+					&start_body,
+					&dummy, &dummy);
+			
+			if (SRC_SEEK(ri->src, start_pos) == (off_t)-1)
+			{
+				if (subject) free(subject);
+				free(boundary);
+				return -1;
+			}
+			forwardbody(ri, end_pos - start_pos);
 		}
-		free(boundary);
+		else
+		{
+			/* Copy over individual attachments, one by one */
+
+			for (; first_attachment;
+			     first_attachment=first_attachment->next)
+			{
+				writes(ri, "\n--");
+				writes(ri, boundary);
+				writes(ri, "\n");
+
+				rfc2045_mimepos(first_attachment, &start_pos,
+						&end_pos,
+						&start_body,
+						&dummy, &dummy);
+			
+				if (SRC_SEEK(ri->src, start_pos) == (off_t)-1)
+				{
+					if (subject) free(subject);
+					free(boundary);
+					return -1;
+				}
+
+				forwardbody(ri, end_pos - start_pos);
+			}
+		}
+
+		writes(ri, "\n--");
+		writes(ri, boundary);
+		writes(ri, "--\n");
 	}
+
+	if (subject) free(subject);
+	free(boundary);
 	return (0);
 }
 
@@ -834,10 +924,6 @@ static int mkreply(struct rfc2045_mkreplyinfo *ri)
 	char	*boundary;
 
 	struct rfc2045headerinfo *hi;
-	const struct unicode_info *uiptr=NULL;
-
-	if (ri->charset && *(ri->charset))
-		uiptr = unicode_find(ri->charset);
 
 	oldtocc=0;
 	oldtolist=0;
@@ -855,7 +941,7 @@ static int mkreply(struct rfc2045_mkreplyinfo *ri)
 	rfc2045_mimepos(ri->rfc2045partp, &start_pos, &end_pos, &start_body,
 		&dummy, &dummy);
 
-	hi=rfc2045header_start(ri->fd, ri->rfc2045partp);
+	hi=rfc2045header_start(ri->src, ri->rfc2045partp);
 
 	if (!hi)
 		return (-1);
@@ -1251,7 +1337,7 @@ static int mkreply(struct rfc2045_mkreplyinfo *ri)
 
 	if (strcmp(ri->replymode, "replydsn") == 0 && ri->dsnfrom)
 	{
-		boundary=rfc2045_mk_boundary(ri->rfc2045partp, ri->fd);
+		boundary=rfc2045_mk_boundary(ri->rfc2045partp, ri->src);
 		if (!boundary)
 			return (-1);
 
@@ -1276,23 +1362,26 @@ static int mkreply(struct rfc2045_mkreplyinfo *ri)
 	}
 	else
 	{
-		writes(ri, "Content-Type: text/plain; charset=\"");
+		writes(ri, "Content-Type: text/plain; format=flowed; delsp=yes; charset=\"");
 		writes(ri, ri->charset);
 		writes(ri, "\"\n");
 	}
 	writes(ri, "Content-Transfer-Encoding: 8bit\n\n");
 
-	if (whowrote)
+	if (!ri->donotquote)
 	{
-		writes(ri, whowrote);
-		free(whowrote);
-		writes(ri, "\n\n");
-	}
-	if (lseek(ri->fd, start_body, SEEK_SET) == -1)
-		return (-1);
+		if (whowrote)
+		{
+			writes(ri, whowrote);
+			free(whowrote);
+			writes(ri, "\n\n");
+		}
+		if (SRC_SEEK(ri->src, start_body) == (off_t)-1)
+			return (-1);
 
-	replybody(ri, ri->rfc2045partp);
-	writes(ri, "\n");	/* First blank line in the reply */
+		replybody(ri, ri->rfc2045partp);
+		writes(ri, "\n");	/* First blank line in the reply */
+	}
 
 	if (ri->content_specify)
 		(*ri->content_specify)(ri->voidarg);
@@ -1334,12 +1423,12 @@ static int mkreply(struct rfc2045_mkreplyinfo *ri)
 		       "Content-Transfer-Encoding: 8bit\n\n"
 		       );
 
-		hi=rfc2045header_start(ri->fd, ri->rfc2045partp);
+		hi=rfc2045header_start(ri->src, ri->rfc2045partp);
 
 		while (hi)
 		{
-			if (rfc2045header_get(hi, &header, &value, 0) ||
-			    !header)
+			if (rfc2045header_get(hi, &header, &value,
+					      RFC2045H_NOLC) || !header)
 			{
 				rfc2045header_end(hi);
 				break;
@@ -1356,66 +1445,6 @@ static int mkreply(struct rfc2045_mkreplyinfo *ri)
 		free(boundary);
 	}
 	return (errflag);
-}
-
-/*****************************************************************************
-**
-** do_mixed_fwd determines if what we should create for forwarding should be
-** a mixture of a portion of the original message, plus attachments.  This
-** should happen when the original message has attachments.  Normally, we
-** either forward the entire message as text/plain, or as a message/rfc822
-** attachment.  When the original message has attachments, it's preferrable
-** to keep the original attachments as attachments of the forward message,
-** while putting the text portion of the original message in the forwarded
-** body.
-**
-** So, what we check here is this:
-**
-** A) This is a multipart message with at least two parts.
-** B) The first part is text/plain (if it's text/html we'll just quote the
-**    whole mess too).  If the first part is multipart/alternative, look
-**    inside the multipart/alternative for the text/plain section.
-**
-** If this is not the case, we return NULL.  Otherwise we return the
-** rfc2045 pointer to the text/plain section, and the starting position
-** of the first attachment (it's used to reset the starting position of
-** the portion of the original message that's copied into the forwarding
-** message).
-*/
-
-static struct rfc2045 *do_mixed_fwd(struct rfc2045 *p, off_t *f)
-{
-const char *content_type, *dummy;
-off_t	dummyp;
-
-	if (!p->firstpart || !p->firstpart->isdummy ||
-		!p->firstpart->next || !p->firstpart->next->next)
-		return (0);
-
-	rfc2045_mimepos(p->firstpart->next->next, f, &dummyp, &dummyp,
-		&dummyp, &dummyp);
-
-	p=p->firstpart->next;
-
-	rfc2045_mimeinfo(p, &content_type, &dummy, &dummy);
-
-	if (strcmp(content_type, "text/plain") &&
-		strcmp(content_type, "text/html") /* GRUMBLE */)
-	{
-		if (strcmp(content_type, "multipart/alternative"))
-			return (0);
-
-		for (p=p->firstpart; p; p=p->next)
-		{
-			if (p->isdummy)	continue;
-
-			rfc2045_mimeinfo(p, &content_type, &dummy, &dummy);
-			if (strcmp(content_type, "text/plain") == 0)
-				break;
-		}
-		if (!p)	return (0);
-	}
-	return (p);
 }
 
 /*

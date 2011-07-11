@@ -10,7 +10,6 @@
 #include	<errno.h>
 #include	<string.h>
 
-static const char rcsid[]="$Id: rfc1035sockaddrip.c,v 1.5 2000/05/28 18:17:25 mrsam Exp $";
 
 int rfc1035_sockaddrip(const RFC1035_NETADDR *a, int al, RFC1035_ADDR *ip)
 {

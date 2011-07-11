@@ -1,5 +1,4 @@
-/* $Id: cursesaddresslist.H,v 1.2 2004/05/30 19:12:29 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

@@ -1,6 +1,5 @@
-/* $Id: myfolder.C,v 1.26 2010/04/29 00:34:49 mrsam Exp $
-**
-** Copyright 2003-2006, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -1989,35 +1988,19 @@ void myFolder::FolderIndexUpdate
 		mail::rfc2047::decoder header_decode;
 
 		i.subject_utf8=header_decode.decode(envelope.subject,
-						    unicode_UTF8);
+						    "utf-8");
 
-		// Make sure this is valid UTF-8
+		bool err=false;
 
-		unicode_char *uc=(*unicode_UTF8.c2u)(&unicode_UTF8,
-						     i.subject_utf8.c_str(),
-						     NULL);
+		{
+			vector<unicode_char> uc;
 
-		bool good=false;
-
-		if (uc) try {
-			char *p=(*unicode_UTF8.u2c)(&unicode_UTF8, uc, NULL);
-
-			if (p)
-				try {
-					i.subject_utf8=p;
-					free(p);
-					good=true;
-				} catch (...) {
-					free(p);
-					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-				}
-			free(uc);
-		} catch (...) {
-			free(uc);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
+			if (!mail::iconvert::convert(i.subject_utf8,
+						     "utf-8", uc))
+				err=true;
 		}
 
-		if (!good)
+		if (err)
 			i.subject_utf8=Gettext(_("ERROR: "))
 				<< strerror(errno);
 
@@ -2038,25 +2021,31 @@ void myFolder::FolderIndexUpdate
 		b=envelope.from.begin();
 		e=envelope.from.end();
 
-		const mail::address *fallback_addr=NULL;
+		mail::emailAddress fallback_addr;
+		bool has_fallback_addr=false;
+
 		string fallback_pfix;
 
 		// NetNews posts only have a From: header.  If it's my post,
 		// don't leave the summary blank.
 
-		while (i.name_utf8.size() == 0 && b != e)
+		while (b != e)
 		{
-			const mail::address &a= *b++;
+			mail::emailAddress a(*b++);
 
 			if (myServer::isMyAddress(a))
 			{
-				fallback_addr= &a;
+				fallback_addr=a;
+				has_fallback_addr=true;
 				continue;
 			}
 
-			i.name_utf8=a.getName();
 			if (i.name_utf8.size() == 0)
-				i.name_utf8=a.getAddr();
+			{
+				i.name_utf8=a.getDisplayName("utf-8");
+				if (i.name_utf8.size() == 0)
+					i.name_utf8=a.getDisplayAddr("utf-8");
+			}
 		}
 
 		b=envelope.to.begin();
@@ -2064,23 +2053,27 @@ void myFolder::FolderIndexUpdate
 
 		const char *addr_pfix=_("To: ");
 
-		while (i.name_utf8.size() == 0 && b != e)
+		while (b != e)
 		{
-			const mail::address &a= *b++;
+			mail::emailAddress a(*b++);
 
 			if (myServer::isMyAddress(a))
 			{
-				fallback_addr= &a;
+				fallback_addr=a;
+				has_fallback_addr=true;
 				fallback_pfix=addr_pfix;
 				continue;
 			}
 
-			i.name_utf8=a.getName();
 			if (i.name_utf8.size() == 0)
-				i.name_utf8=a.getAddr();
+			{
+				i.name_utf8=a.getDisplayName("utf-8");
+				if (i.name_utf8.size() == 0)
+					i.name_utf8=a.getDisplayAddr("utf-8");
 
-			if (i.name_utf8.size() > 0)
-				i.name_utf8=addr_pfix + i.name_utf8;
+				if (i.name_utf8.size() > 0)
+					i.name_utf8=addr_pfix + i.name_utf8;
+			}
 		}
 
 		b=envelope.cc.begin();
@@ -2088,36 +2081,37 @@ void myFolder::FolderIndexUpdate
 
 		addr_pfix=_("Cc: ");
 
-		while (i.name_utf8.size() == 0 && b != e)
+		while (b != e)
 		{
-			const mail::address &a= *b++;
+			mail::emailAddress a(*b++);
 
 			if (myServer::isMyAddress(a))
 			{
-				fallback_addr= &a;
+				fallback_addr=a;
+				has_fallback_addr=true;
 				fallback_pfix=addr_pfix;
 				continue;
 			}
 
-			i.name_utf8=a.getName();
 			if (i.name_utf8.size() == 0)
-				i.name_utf8=a.getAddr();
-			if (i.name_utf8.size() > 0)
-				i.name_utf8=addr_pfix + i.name_utf8;
+			{
+				i.name_utf8=a.getDisplayName("utf-8");
+				if (i.name_utf8.size() == 0)
+					i.name_utf8=a.getDisplayAddr("utf-8");
+				if (i.name_utf8.size() > 0)
+					i.name_utf8=addr_pfix + i.name_utf8;
+			}
 		}
 
-		if (i.name_utf8.size() == 0 && fallback_addr)
+		if (i.name_utf8.size() == 0 && has_fallback_addr)
 		{
-			i.name_utf8= fallback_addr->getName();
+			i.name_utf8= fallback_addr.getDisplayName("utf-8");
 			if (i.name_utf8.size() == 0)
-				i.name_utf8=fallback_addr->getAddr();
+				i.name_utf8=fallback_addr.getDisplayAddr("utf-8");
 
 			if (i.name_utf8.size() > 0)
 				i.name_utf8=fallback_pfix + i.name_utf8;
 		}
-
-
-		i.name_utf8=header_decode.decode(i.name_utf8, unicode_UTF8);
 
 		bs=i.name_utf8.begin();
 		es=i.name_utf8.end();
@@ -2246,33 +2240,12 @@ myFolder::Index::~Index()
 
 void myFolder::Index::toupper()
 {
-	char *p;
-
-	p=(*unicode_UTF8.toupper_func)(&unicode_UTF8,
-				       subject_utf8.c_str(), NULL);
-	if (!p)
-		outofmemory();
-
-	try {
-		upperSubject_utf8=p;
-		free(p);
-	} catch (...) {
-		free(p);
-		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-	}
-
-	p=(*unicode_UTF8.toupper_func)(&unicode_UTF8,
-				       name_utf8.c_str(), NULL);
-	if (!p)
-		outofmemory();
-
-	try {
-		upperName_utf8=p;
-		free(p);
-	} catch (...) {
-		free(p);
-		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-	}
+	upperSubject_utf8=mail::iconvert::convert_tocase(subject_utf8,
+							 "utf-8",
+							 unicode_uc);
+	upperName_utf8=mail::iconvert::convert_tocase(name_utf8,
+						      "utf-8",
+						      unicode_uc);
 }
 
 void myFolder::Index::checkwatch(myFolder &f)

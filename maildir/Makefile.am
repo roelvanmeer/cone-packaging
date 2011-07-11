@@ -1,4 +1,3 @@
-#$Id: Makefile.am,v 1.59 2009/06/27 16:32:38 mrsam Exp $
 #
 # Copyright 1998 - 2005 Double Precision, Inc.  See COPYING for
 # distribution information.
@@ -49,7 +48,7 @@ libmaildir_la_SOURCES=autoresponse.c autoresponse.h \
 	maildirwatch.c maildirwatch.h loginexec.c loginexec.h
 
 noinst_PROGRAMS=deliverquota maildirmake testmaildirfilter maildirkwtest \
-	maildirkw maildiracl maildiraclttest
+	maildirkw maildiracl maildiraclttest testmaildirsearch
 
 deliverquota_SOURCES=deliverquota.c
 deliverquota_DEPENDENCIES=libmaildir.la ../rfc822/librfc822.la \
@@ -95,6 +94,10 @@ maildiraclttest_DEPENDENCIES=libmaildir.la ../liblock/liblock.la \
 		../numlib/libnumlib.la maildir.libdeps
 maildiraclttest_LDFLAGS=-static
 
+testmaildirsearch_SOURCES=testmaildirsearch.c
+testmaildirsearch_LDADD=libmaildir.la ../unicode/libunicode.la
+testmaildirsearch_DEPENDENCIES=libmaildir.la ../unicode/libunicode.la
+
 EXTRA_DIST=README.maildirquota.html README.maildirquota.txt \
 	README.imapkeywords.html \
 	README.maildirfilter.html \
@@ -135,6 +138,11 @@ check-am:
 	test "@LIBPCRE@" != "" || exit 0 ; @SHELL@ $(srcdir)/testsuite2 2>&1 | cmp - $(srcdir)/testsuite2.txt
 	LC_ALL=C; export LC_ALL; ./maildirkwtest | cmp -s - $(srcdir)/maildirkwtest.txt
 	LC_ALL=C; export LC_ALL; ./maildiraclttest
+	./testmaildirsearch iso-8859-1 needle haystack; test $$? = 2 && exit 0; exit 1
+	./testmaildirsearch iso-8859-1 nEEdle needlE
+	./testmaildirsearch iso-8859-1 "abra  cadAbra" "abra   cadabra"
+	./testmaildirsearch iso-8859-1 "  abra  cadAbra  " " abra   cadabra"
+	./testmaildirsearch iso-8859-1 "  abra  cadAbra  " " abra   cadabra  "
 
 if HAVE_SGML
 

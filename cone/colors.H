@@ -1,5 +1,4 @@
-/* $Id: colors.H,v 1.2 2003/10/12 01:36:33 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

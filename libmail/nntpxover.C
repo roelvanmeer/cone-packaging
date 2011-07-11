@@ -1,5 +1,4 @@
-/* $Id: nntpxover.C,v 1.3 2007/04/06 17:57:29 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

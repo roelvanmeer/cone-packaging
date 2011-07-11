@@ -12,7 +12,6 @@ extern "C" {
 ** See COPYING for distribution information.
 */
 
-static const char maildir_maildirinfo_h_rcsid[]="$Id: maildirinfo.h,v 1.2 2004/01/24 21:13:25 mrsam Exp $";
 
 struct maildir_info {
 	int mailbox_type;

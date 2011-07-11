@@ -8,7 +8,6 @@
 #include	<string.h>
 #include	<stdlib.h>
 
-static const char rcsid[]="$Id: rfc1035search.c,v 1.6 2005/06/24 17:47:33 mrsam Exp $";
 
 static int found(const struct rfc1035_reply *r,
 	const struct rfc1035_rr *rrp, const char *h,

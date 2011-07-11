@@ -1,7 +1,6 @@
 # Copyright 2000-2004 Double Precision, Inc.
 # See COPYING for distribution information.
 #
-# $Id: mkultcase.pl,v 1.3 2004/02/01 06:09:09 mrsam Exp $
 #
 # Generate unicode upper/lower/titlecase translations.
 
@@ -9,7 +8,6 @@ print '/*
 ** Copyright 2000-2004 Double Precision, Inc.
 ** See COPYING for distribution information.
 **
-** $Id: mkultcase.pl,v 1.3 2004/02/01 06:09:09 mrsam Exp $
 */
 
 #include "unicode.h"
@@ -58,7 +56,7 @@ my ($code, $uc, $lc, $tc);
 
 close(U);
 
-my $tabsize=1024;
+my $tabsize=2048;
 
 grep ($bucket[ $_ % $tabsize ] .= "$_\n", keys %FLAG);
 

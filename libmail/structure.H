@@ -1,5 +1,4 @@
-/* $Id: structure.H,v 1.7 2005/06/17 02:05:58 mrsam Exp $
-**
+/*
 ** Copyright 2002-2005, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -15,8 +14,6 @@
 
 #include "namespace.H"
 #include "misc.H"
-
-struct unicode_info;
 
 LIBMAIL_START
 
@@ -80,7 +77,7 @@ public:
 
 		bool exists(std::string name) const;
 		std::string get(std::string name,
-			   const struct unicode_info *info=NULL) const;
+				std::string chset="") const;
 
 		std::string toString(std::string type) const;
 		// Create a header from "type", plus these parameters

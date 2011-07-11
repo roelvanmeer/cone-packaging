@@ -3,7 +3,6 @@
 ** See COPYING for distribution information.
 */
 
-static const char rcsid[]="$Id: spipe.c,v 1.3 2003/01/05 04:08:13 mrsam Exp $";
 
 #include	"config.h"
 #include	"spipe.h"

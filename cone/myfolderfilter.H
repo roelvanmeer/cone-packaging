@@ -1,5 +1,4 @@
-/* $Id: myfolderfilter.H,v 1.3 2003/09/01 20:58:43 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

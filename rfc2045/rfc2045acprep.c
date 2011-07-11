@@ -7,7 +7,6 @@
 #include	<ctype.h>
 #include	<string.h>
 
-/* $Id: rfc2045acprep.c,v 1.2 1999/12/06 13:29:02 mrsam Exp $ */
 
 static void start_rwprep(struct rfc2045 *);
 static void do_rwprep(const char *, size_t);

@@ -1,11 +1,11 @@
-/* $Id: file.C,v 1.3 2004/06/14 00:18:42 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 #include "libmail_config.h"
 #include "file.H"
+#include "unicode/unicode.h"
 #include <ctype.h>
 
 using namespace std;
@@ -114,7 +114,7 @@ void mail::file::genericMessageRead(mail::account *account,
 			if (l.size() == 0)
 				break;
 
-			if (isspace((int)(unsigned char)l[0]))
+			if (unicode_isspace((unsigned char)l[0]))
 			{
 				const char *p=l.c_str();
 
@@ -124,9 +124,9 @@ void mail::file::genericMessageRead(mail::account *account,
 				{
 					hdr += " ";
 
-					while (*p && isspace((int)
-							     (unsigned char)
-							     *p))
+					while (*p &&
+					       unicode_isspace((unsigned char)
+							       *p))
 						p++;
 				}
 				hdr += p;

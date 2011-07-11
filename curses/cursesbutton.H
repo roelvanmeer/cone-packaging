@@ -1,5 +1,4 @@
-/* $Id: cursesbutton.H,v 1.2 2003/06/16 03:18:01 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.

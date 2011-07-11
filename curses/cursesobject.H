@@ -1,5 +1,4 @@
-/* $Id: cursesobject.H,v 1.1 2003/05/27 14:09:07 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -21,6 +20,7 @@
 
 #include "../curses/curses_config.h"
 #include <set>
+#include <cstdio>
 
 class cursesPtrBase {
 public:

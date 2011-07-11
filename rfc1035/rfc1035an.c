@@ -10,7 +10,6 @@
 #include	<errno.h>
 #include	<string.h>
 
-static const char rcsid[]="$Id: rfc1035an.c,v 1.5 2000/05/28 18:17:25 mrsam Exp $";
 
 void rfc1035_ntoa_ipv4(const struct in_addr *in, char *buf)
 {

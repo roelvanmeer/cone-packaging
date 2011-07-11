@@ -1,11 +1,8 @@
-/* $Id: nntpgroupopen.C,v 1.7 2008/05/24 17:57:42 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
-#include <cstring>
-
 #include "nntp.H"
 #include "nntpgroupopen.H"
 #include "nntpchecknew.H"
@@ -13,6 +10,7 @@
 #include <sstream>
 #include <fstream>
 #include <errno.h>
+#include <cstring>
 
 using namespace std;
 

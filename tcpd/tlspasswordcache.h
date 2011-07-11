@@ -15,7 +15,6 @@
 extern "C" {
 #endif
 
-static const char tlspasswordcache_h_rcsid[]="$Id: tlspasswordcache.h,v 1.1 2003/06/05 01:22:16 mrsam Exp $";
 
 
 	/*

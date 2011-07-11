@@ -1,5 +1,4 @@
 /*
-** $Id: imaprefs.h,v 1.4 2003/07/09 21:33:20 mrsam Exp $
 */
 #ifndef	imaprefs_h
 #define	imaprefs_h
@@ -10,7 +9,7 @@
 */
 
 #if	HAVE_CONFIG_H
-#include	"config.h"
+#include	"../rfc822/config.h"
 #endif
 
 #ifdef  __cplusplus

@@ -10,7 +10,6 @@
 #include	<ctype.h>
 #include	"maildirrequota.h"
 
-static const char rcsid[]="$Id: maildirrequota.c,v 1.4 2002/07/02 20:01:37 mrsam Exp $";
 
 char *maildir_requota(const char *oldname, unsigned long s)
 {

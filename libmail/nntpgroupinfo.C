@@ -1,5 +1,4 @@
-/* $Id: nntpgroupinfo.C,v 1.2 2003/08/27 05:38:29 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

@@ -1,12 +1,10 @@
-/* $Id: gettext.C,v 1.19 2009/06/27 17:12:00 mrsam Exp $
-**
-** Copyright 2003-2008, Double Precision Inc.
+/*
+** Copyright 2003-2010, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 
 #include "gettext.H"
-#include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sstream>
@@ -19,8 +17,6 @@
 #if HAVE_LANGINFO_H
 #include <langinfo.h>
 #endif
-
-using namespace std;
 
 Gettext::Key key_ABORT(N_("ABORT_K:\x03"));
 Gettext::Key key_ADDADDRESSBOOK(N_("ADDADDRESSBOOK:Aa"));
@@ -70,6 +66,7 @@ Gettext::Key key_EDITREPLACE(N_("EDITREPLACE:\x12"));
 Gettext::Key key_EDITSEARCH(N_("EDITSEARCH:\x13"));
 Gettext::Key key_EXPORTADDRESSBOOKENTRY(N_("Export:Ee"));
 Gettext::Key key_EXTEDITOR(N_("EXTEDITOR:\x15"));
+Gettext::Key key_EXTFILTER(N_("EXTFILTER:Ee"));
 Gettext::Key key_ENCRYPTIONMENU(N_("ENCRYPTIONMENU:Ee"));
 Gettext::Key key_ENCRYPT(N_("ENCRYPT:Ee"));
 Gettext::Key key_EXPUNGE(N_("EXPUNGE:Xx"));
@@ -197,6 +194,7 @@ Gettext::Key key_TEXT(N_("TEXT:Tt"));
 Gettext::Key key_TODIRECTORY(N_("TODIRECTORY:\x14"));
 Gettext::Key key_TOGGLE(N_("TOGGLE:Gg"));
 Gettext::Key key_TOGGLESPACE(N_("TOGGLE_K: "));
+Gettext::Key key_TOGGLEFLOWED(N_("FLOWED_K:\x06"));
 Gettext::Key key_TOP(N_("TOP:Tt"));
 Gettext::Key key_UNDELETE(N_("UNDELETE:Uu"));
 Gettext::Key key_UNREADBULK(N_("UNREAD:Ee"));
@@ -215,7 +213,7 @@ Gettext::Key key_YANK(N_("YANK:\x19"));
 Gettext::Key key_YEARDEC1(N_("YEARDEC1:<,"));
 Gettext::Key key_YEARINC1(N_("YEARINC1:>."));
 
-Gettext::Gettext(string param) : paramStr(param)
+Gettext::Gettext(std::string param) : paramStr(param)
 {
 }
 
@@ -223,7 +221,7 @@ Gettext::~Gettext()
 {
 }
 
-Gettext &Gettext::arg(string arg)
+Gettext &Gettext::arg(std::string arg)
 {
 	args.push_back(arg);
 	return *this;
@@ -231,13 +229,13 @@ Gettext &Gettext::arg(string arg)
 
 Gettext &Gettext::arg(const char *arg)
 {
-	args.push_back(string(arg));
+	args.push_back(std::string(arg));
 	return *this;
 }
 
 Gettext &Gettext::arg(unsigned long ul)
 {
-	string buffer;
+	std::string buffer;
 
 	{
 		std::ostringstream o;
@@ -246,13 +244,13 @@ Gettext &Gettext::arg(unsigned long ul)
 		buffer=o.str();
 	}
 
-	args.push_back(string(buffer));
+	args.push_back(std::string(buffer));
 	return *this;
 }
 
 Gettext &Gettext::arg(long l)
 {
-	string buffer;
+	std::string buffer;
 
 	{
 		std::ostringstream o;
@@ -262,7 +260,7 @@ Gettext &Gettext::arg(long l)
 	}
 
 
-	args.push_back(string(buffer));
+	args.push_back(std::string(buffer));
 	return *this;
 }
 
@@ -286,17 +284,17 @@ Gettext &Gettext::arg(short s)
 	return arg ( (long) s);
 }
 
-Gettext::operator string() const
+Gettext::operator std::string() const
 {
-	string fstr="";
+	std::string fstr="";
 
-	string::const_iterator b=paramStr.begin(), e=paramStr.end();
+	std::string::const_iterator b=paramStr.begin(), e=paramStr.end();
 
 	// Substitute %n% with parameter #n
 
 	while (b != e)
 	{
-		string::const_iterator c=b;
+		std::string::const_iterator c=b;
 
 		while (c != e && *c != '%')
 			c++;
@@ -337,25 +335,6 @@ Gettext::operator string() const
 	return fstr;
 }
 
-#if 0
-wchar_t Gettext::key(const char *k)
-{
-	const char *p=strchr(k, ':');
-
-	if (p)
-		k=p+1;
-
-	wchar_t wc=0;
-
-	size_t n=mbstowcs(&wc, k, 1);
-
-	if (n != 1)
-		wc=0;
-
-	return wc;
-}
-#endif
-
 const char *Gettext::keyname(const char *k)
 {
 	const char *p=strchr(k, ':');
@@ -366,95 +345,16 @@ const char *Gettext::keyname(const char *k)
 	return k;
 }
 
-string Gettext::defaultCharsetName()
+std::string Gettext::toutf8(std::string str)
 {
-	const char *p;
-
-	p=getenv("CHARSET");
-
-	if (p && *p)
-		return p;
-
-	p=getenv("MM_CHARSET");
-
-	if (p && *p)
-		return p;
-
-#if HAVE_NL_LANGINFO
-
-	p=nl_langinfo(CODESET);
-
-	if (p && *p)
-		return string(p);
-#endif
-
-	p=getenv("LANG");
-
-	// LANG is xx_yy.CHARSET@modifier
-
-	if (p && *p && (p=strchr(p, '.')) != NULL)
-	{
-		const char *q=strchr(++p, '@');
-
-		if (!q)
-			q=p+strlen(p);
-
-		return string(p, q);
-	}
-
-	return "";
+	return mail::iconvert::convert(str, unicode_default_chset(),
+				       "utf-8");
 }
 
-const struct unicode_info *Gettext::defaultCharset()
+std::string Gettext::fromutf8(std::string str)
 {
-	const struct unicode_info *u;
-	string n=defaultCharsetName();
-
-	if (n.size() && (u=unicode_find(n.c_str())) != NULL)
-		return u;
-
-	return &unicode_ISO8859_1;
-}
-
-string Gettext::toutf8(string str)
-{
-	string u;
-
-	char *p=unicode_ctoutf8(defaultCharset(), str.c_str(), NULL);
-
-	if (!p)
-		LIBMAIL_THROW(strerror(errno));
-
-	try {
-		u=p;
-		free(p);
-	} catch (...) {
-		free(p);
-		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-	}
-
-	return u;
-}
-
-string Gettext::fromutf8(string str)
-{
-	string c;
-
-	char *p=unicode_cfromutf8(defaultCharset(),
-				  str.c_str(), NULL);
-
-	if (!p)
-		LIBMAIL_THROW(strerror(errno));
-
-	try {
-		c=p;
-		free(p);
-	} catch (...) {
-		free(p);
-		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-	}
-
-	return c;
+	return mail::iconvert::convert(str, "utf-8",
+				       unicode_default_chset());
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -480,17 +380,10 @@ void Gettext::Key::init()
 			break;
 	}
 
-	wchar_t b[10];
-
-	size_t n=mbstowcs(&b[0], p, 10);
-
-	if (n == (size_t)-1)
-		n=0;
-
-	keys.insert(keys.end(), b, b+n);
+	mail::iconvert::convert(std::string(p), unicode_default_chset(), keys);
 }
 
-bool Gettext::Key::operator==(wchar_t k)
+bool Gettext::Key::operator==(unicode_char k)
 {
 	init();
 	return (find(keys.begin(), keys.end(), k) != keys.end());

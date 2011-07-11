@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>maildir</title><link rel="stylesheet" href="style.css" type="text/css"/><meta name="generator" content="DocBook XSL Stylesheets V1.74.3"/><link rel="home" href="#maildir" title="maildir"/><link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/><meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/><link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>maildir</title><link rel="stylesheet" href="style.css" type="text/css"/><meta name="generator" content="DocBook XSL Stylesheets V1.75.2"/><link rel="home" href="#id403128" title="maildir"/><link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/><meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/><link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
 
 Copyright 1998 - 2009 Double Precision, Inc.  See COPYING for distribution
 information.
 
---></head><body><div class="refentry" lang="en" xml:lang="en"><a id="maildir" shape="rect"> </a><div class="titlepage"/><div class="refnamediv"><h2>Name</h2><p>maildir — E-mail directory</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><p>$HOME/Maildir</p></div><div class="refsect1" lang="en" xml:lang="en"><a id="id302053" shape="rect"> </a><h2>DESCRIPTION</h2><p>
-A “<span class="quote">Maildir</span>” is a structured directory that holds E-mail
+--></head><body><div class="refentry" title="maildir"><a id="id403128" shape="rect"> </a><div class="titlepage"/><div class="refnamediv"><h2>Name</h2><p>maildir — E-mail directory</p></div><div class="refsynopsisdiv" title="Synopsis"><h2>Synopsis</h2><p>$HOME/Maildir</p></div><div class="refsect1" title="DESCRIPTION"><a id="id402851" shape="rect"> </a><h2>DESCRIPTION</h2><p>
+A <span class="quote">“<span class="quote">Maildir</span>”</span> is a structured directory that holds E-mail
 messages.
 Maildirs were first implemented by the
 <span class="application">Qmail</span> mail server.
@@ -25,7 +25,7 @@ See
 in Qmail's documentation for the original definition of
 maildirs.</p><p>
 Traditionally, E-mail folders were saved as plain text files, called
-“<span class="quote">mboxes</span>”.
+<span class="quote">“<span class="quote">mboxes</span>”</span>.
 Mboxes have known limitations.
 Only one application can use an mbox at the same time.
 Locking is required in order to allow
@@ -43,8 +43,8 @@ mbox.</p><p>
 Maildirs allow multiple concurrent access by different applications.
 Maildirs do not require locking.
 Multiple applications can update a maildir at the same time, without
-stepping on each other's feet.</p><div class="refsect2" lang="en" xml:lang="en"><a id="id313287" shape="rect"> </a><h3>Maildir contents</h3><p>
-A “<span class="quote">maildir</span>” is a directory that's created by
+stepping on each other's feet.</p><div class="refsect2" title="Maildir contents"><a id="id402918" shape="rect"> </a><h3>Maildir contents</h3><p>
+A <span class="quote">“<span class="quote">maildir</span>”</span> is a directory that's created by
 <a class="ulink" href="maildirmake.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirmake</span>(1)</span></a>.
 Naturally, maildirs should not have any group or world permissions,
 unless you want other people to read your mail.
@@ -73,39 +73,39 @@ The main maildir contains a single, flat list of subfolders.
 These folders are logically nested,
 and periods serve to separate folder hierarchies.
 For example, <code class="filename">.Sent.2002</code> is considered to be a subfolder
-called “<span class="quote">2002</span>” which is a subfolder of “<span class="quote">Sent</span>”.</p><div class="refsect3" lang="en" xml:lang="en"><a id="id278670" shape="rect"> </a><h4>Folder name encoding</h4><p>
+called <span class="quote">“<span class="quote">2002</span>”</span> which is a subfolder of <span class="quote">“<span class="quote">Sent</span>”</span>.</p><div class="refsect3" title="Folder name encoding"><a id="id437458" shape="rect"> </a><h4>Folder name encoding</h4><p>
 Folder names can contain any Unicode character, except for control characters.
 US-ASCII characters, U+0x0020 - U+0x007F, except for the period,
 forward-slash, and
 ampersand characters (U+0x002E, U+0x002F, and U+0x0026) represent themselves.
-The ampersand is represent by the two character sequence “<span class="quote">&amp;-</span>”.
+The ampersand is represent by the two character sequence <span class="quote">“<span class="quote">&amp;-</span>”</span>.
 The period, forward slash, and non US-ASCII Unicode characters
 are represented using the UTF-7 character set, and encoded with
 a modified form of base64-encoding.</p><p>
-The “<span class="quote">&amp;</span>”
+The <span class="quote">“<span class="quote">&amp;</span>”</span>
 character starts the modified base64-encoded sequence; the sequence
 is
-terminated by the “<span class="quote">-</span>” character.
+terminated by the <span class="quote">“<span class="quote">-</span>”</span> character.
 The sequence of 16-bit Unicode characters is
 written in big-endian order, and
 encoded using the base64-encoding method described in section 5.2
 of <a class="ulink" href="http://www.rfc-editor.org/rfc/rfc1521.txt" target="_top" shape="rect">RFC 1521</a>,
-with the following modifications:</p><div class="itemizedlist"><ul type="disc"><li><p>
-The “<span class="quote">=</span>” padding character is omitted.
-When decoding, an incomplete 16-bit character is discarded.</p></li><li><p>
-The comma character, “<span class="quote">,</span>” is used in place of the
-“<span class="quote">/</span>” character in the base64 alphabet.</p></li></ul></div><p>
-For example, the word “<span class="quote">Resume</span>” with both "e"s being the
+with the following modifications:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+The <span class="quote">“<span class="quote">=</span>”</span> padding character is omitted.
+When decoding, an incomplete 16-bit character is discarded.</p></li><li class="listitem"><p>
+The comma character, <span class="quote">“<span class="quote">,</span>”</span> is used in place of the
+<span class="quote">“<span class="quote">/</span>”</span> character in the base64 alphabet.</p></li></ul></div><p>
+For example, the word <span class="quote">“<span class="quote">Resume</span>”</span> with both "e"s being the
 e-acute character, U+0x00e9,
 is encoded as
-“<span class="quote">R&amp;AOk-sum&amp;AOk-</span>”
+<span class="quote">“<span class="quote">R&amp;AOk-sum&amp;AOk-</span>”</span>
 (so a folder of that name would be a maildir subdirectory called
-“<span class="quote">.R&amp;AOk-sum&amp;AOk-</span>”).</p></div><div class="refsect3" lang="en" xml:lang="en"><a id="id278931" shape="rect"> </a><h4>Other maildir contents</h4><p>
+<span class="quote">“<span class="quote">.R&amp;AOk-sum&amp;AOk-</span>”</span>).</p></div><div class="refsect3" title="Other maildir contents"><a id="id402038" shape="rect"> </a><h4>Other maildir contents</h4><p>
 Software that uses maildirs may also create
 additional files besides the
 <code class="filename">tmp</code>, <code class="filename">new</code>, and
 <code class="filename">cur</code> subdirectories -- in the main maildir or a
-subfolder -- for its own purposes.</p></div></div><div class="refsect2" lang="en" xml:lang="en"><a id="id278959" shape="rect"> </a><h3>Messages</h3><p>
+subfolder -- for its own purposes.</p></div></div><div class="refsect2" title="Messages"><a id="id402065" shape="rect"> </a><h3>Messages</h3><p>
 E-mail messages are stored in separate, individual files,
 one E-mail message per file.
 The <code class="filename">tmp</code> subdirectory temporarily
@@ -118,17 +118,17 @@ The <code class="filename">new</code> subdirectory stores messages
 that have been delivered to this maildir, but have not yet been seen by any
 mail application.
 The <code class="filename">cur</code> subdirectory stores messages that have
-already been seen by mail applications.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id279001" shape="rect"> </a><h3>Adding new mail to maildirs</h3><p>The following process delivers a new message to the maildir:</p><p>A new unique filename is created using one of two possible forms:
-“<span class="quote">time.MusecPpid.host</span>”, or
-“<span class="quote">time.MusecPpid_unique.host</span>”.
-“<span class="quote">time</span>” and
-“<span class="quote">usec</span>”
+already been seen by mail applications.</p></div><div class="refsect2" title="Adding new mail to maildirs"><a id="id402107" shape="rect"> </a><h3>Adding new mail to maildirs</h3><p>The following process delivers a new message to the maildir:</p><p>A new unique filename is created using one of two possible forms:
+<span class="quote">“<span class="quote">time.MusecPpid.host</span>”</span>, or
+<span class="quote">“<span class="quote">time.MusecPpid_unique.host</span>”</span>.
+<span class="quote">“<span class="quote">time</span>”</span> and
+<span class="quote">“<span class="quote">usec</span>”</span>
 is the current system
 time, obtained from
 <span class="citerefentry"><span class="refentrytitle">gettimeofday</span>(2)</span>.
-“<span class="quote">pid</span>” is the process number of the process that is
+<span class="quote">“<span class="quote">pid</span>”</span> is the process number of the process that is
 delivering this message to the maildir.
-“<span class="quote">host</span>” is the name of the machine
+<span class="quote">“<span class="quote">host</span>”</span> is the name of the machine
 where the mail is being delivered.  In the event that the same process
 creates multiple messages, a suffix unique to each message
 is appended to the process id;
@@ -162,10 +162,10 @@ system call returned <code class="literal">ENOENT</code>, the process
 may proceed to create the file in the <code class="filename">tmp</code>
 subdirectory, and save
 the entire message in the new file.  The message saved MUST NOT have the
-“<span class="quote">From_</span>” header that is used to mboxes.
-The message also MUST NOT have any “<span class="quote">From_</span>” lines
+<span class="quote">“<span class="quote">From_</span>”</span> header that is used to mboxes.
+The message also MUST NOT have any <span class="quote">“<span class="quote">From_</span>”</span> lines
 in the contents of the message prefixed by the
-“<span class="quote">&gt;</span>” character.</p><p>When saving the message,
+<span class="quote">“<span class="quote">&gt;</span>”</span> character.</p><p>When saving the message,
 the number of
 bytes returned by the
 <span class="citerefentry"><span class="refentrytitle">write</span>(2)</span>
@@ -179,22 +179,22 @@ immediately
 moved/renamed into the <code class="filename">new</code> subdirectory.
 The name of the file in <code class="filename">new</code>
 should be
-“<span class="quote">time.MusecPpidVdevIino.host,S=<em class="replaceable"><code>cnt</code></em></span>”, or
-“<span class="quote">time.MusecPpidVdevIino_unique.host,S=<em class="replaceable"><code>cnt</code></em></span>”.
-“<span class="quote">dev</span>” is the message's device number,
-“<span class="quote">ino</span>” is the message's inode number
+<span class="quote">“<span class="quote">time.MusecPpidVdevIino.host,S=<em class="replaceable"><code>cnt</code></em></span>”</span>, or
+<span class="quote">“<span class="quote">time.MusecPpidVdevIino_unique.host,S=<em class="replaceable"><code>cnt</code></em></span>”</span>.
+<span class="quote">“<span class="quote">dev</span>”</span> is the message's device number,
+<span class="quote">“<span class="quote">ino</span>”</span> is the message's inode number
 (from the previous
 <span class="citerefentry"><span class="refentrytitle">fstat</span>(2)</span>
 call);
-and “<span class="quote">cnt</span>” is the message's size, in bytes.</p><p>
-The “<span class="quote">,S=<em class="replaceable"><code>cnt</code></em></span>”
+and <span class="quote">“<span class="quote">cnt</span>”</span> is the message's size, in bytes.</p><p>
+The <span class="quote">“<span class="quote">,S=<em class="replaceable"><code>cnt</code></em></span>”</span>
 part optimizes the <a class="ulink" href="http://www.courier-mta.org" target="_top" shape="rect"><span class="application">Courier</span></a> mail server's
 maildir quota enhancement; it allows the size of all the mail stored in
 the maildir to be added up without issuing the
 <span class="citerefentry"><span class="refentrytitle">stat</span>(2)</span>
 system call
 for each individual message (this can be quite a performance drain with
-certain network filesystems).</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id278317" shape="rect"> </a><h3>READING MAIL FROM MAILDIRS</h3><p>
+certain network filesystems).</p></div><div class="refsect2" title="READING MAIL FROM MAILDIRS"><a id="id402455" shape="rect"> </a><h3>READING MAIL FROM MAILDIRS</h3><p>
 Applications that read mail from maildirs should do it in the following
 order:</p><p>
 When opening a maildir or a maildir folder, read the <code class="filename">tmp</code>
@@ -206,13 +206,13 @@ as <em class="replaceable"><code>cur/filename:2,info</code></em>.
 Here, <em class="replaceable"><code>info</code></em> represents the state of the message,
 and it
 consists of zero or more boolean flags chosen from the following:
-“<span class="quote"><code class="literal">D</code></span>” - this is a 'draft' message,
-“<span class="quote"><code class="literal">R</code></span>” - this message has been replied to,
-“<span class="quote"><code class="literal">S</code></span>” - this message has been viewed (seen),
-“<span class="quote"><code class="literal">T</code></span>” - this
+<span class="quote">“<span class="quote"><code class="literal">D</code></span>”</span> - this is a 'draft' message,
+<span class="quote">“<span class="quote"><code class="literal">R</code></span>”</span> - this message has been replied to,
+<span class="quote">“<span class="quote"><code class="literal">S</code></span>”</span> - this message has been viewed (seen),
+<span class="quote">“<span class="quote"><code class="literal">T</code></span>”</span> - this
 message has been marked to be deleted (trashed), but is not yet
 removed (messages are removed from maildirs simply by deleting their file),
-“<span class="quote"><code class="literal">F</code></span>” - this message has been marked by the
+<span class="quote">“<span class="quote"><code class="literal">F</code></span>”</span> - this message has been marked by the
 user, for some purpose.
 These flags must be stored in alphabetical order.
 New messages contain only the <code class="literal">:2,</code>
@@ -241,7 +241,7 @@ resort.  Alternatively, applications can use the
 library to handle all the low-level dirty details for them. The voluntary
 quota enhancement is described in the
 <a class="ulink" href="maildirquota.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirquota</span>(7)</span></a>
-man page.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id322841" shape="rect"> </a><h3>Maildir Quotas</h3><p>
+man page.</p></div><div class="refsect2" title="Maildir Quotas"><a id="id446846" shape="rect"> </a><h3>Maildir Quotas</h3><p>
 This is a voluntary mechanism for enforcing "loose" quotas on the maximum
 sizes of maildirs.  This mechanism is enforced in software, and not by the
 operating system.  Therefore it is only effective as long as the maildirs
@@ -279,11 +279,9 @@ The <code class="literal">-q</code> option takes a parameter,
 <em class="replaceable"><code>quota</code></em>, which
 is a comma-separated list of quota specifications. A quota specification
 consists of a number followed by either 'S', indicating the maximum message
-size in bytes, or 'C', maximum number of messages. For example:</p><p>
-</p><div class="blockquote"><blockquote class="blockquote"><div class="informalexample"><div class="literallayout"><p><span class="command"><strong>maildirmake -q 5000000S,1000C ./Maildir</strong></span></p></div></div></blockquote></div><p>
+size in bytes, or 'C', maximum number of messages. For example:</p><div class="blockquote"><blockquote class="blockquote"><div class="informalexample"><div class="literallayout"><p><span class="command"><strong>maildirmake -q 5000000S,1000C ./Maildir</strong></span></p></div></div></blockquote></div><p>
 This sets the quota to
-5,000,000 bytes or 1000 messages, whichever comes first.</p><p>
-</p><div class="blockquote"><blockquote class="blockquote"><div class="informalexample"><div class="literallayout"><p><span class="command"><strong>maildirmake -q 1000000S ./Maildir</strong></span></p></div></div></blockquote></div><p>
+5,000,000 bytes or 1000 messages, whichever comes first.</p><div class="blockquote"><blockquote class="blockquote"><div class="informalexample"><div class="literallayout"><p><span class="command"><strong>maildirmake -q 1000000S ./Maildir</strong></span></p></div></div></blockquote></div><p>
 This sets the quota
 to 1,000,000 bytes, without limiting the number of messages.</p><p>
 A quota of an existing maildir can be changed by rerunning the
@@ -291,5 +289,5 @@ A quota of an existing maildir can be changed by rerunning the
 option.
 To delete a quota entirely, delete the
 <code class="filename"><em class="replaceable"><code>Maildir</code></em>/maildirsize</code>
-file.</p></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id322964" shape="rect"> </a><h2>SEE ALSO</h2><p>
+file.</p></div></div><div class="refsect1" title="SEE ALSO"><a id="id446978" shape="rect"> </a><h2>SEE ALSO</h2><p>
 <a class="ulink" href="maildirmake.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirmake</span>(1)</span></a>.</p></div></div></body></html>

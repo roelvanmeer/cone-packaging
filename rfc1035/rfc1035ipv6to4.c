@@ -10,7 +10,6 @@
 #include	<stdlib.h>
 #include	<arpa/inet.h>
 
-static const char rcsid[]="$Id: rfc1035ipv6to4.c,v 1.5 2003/03/12 02:45:56 mrsam Exp $";
 
 #if RFC1035_FREEBSD40
 #define	s6_addr16	__u6_addr.__u6_addr16

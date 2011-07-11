@@ -1,5 +1,5 @@
 /*
-** Copyright 1998 - 2001 Double Precision, Inc.  See COPYING for
+** Copyright 1998 - 2011 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
@@ -9,6 +9,7 @@
 #include	"rfc2045.h"
 #include	"rfc2045charset.h"
 #include	"rfc822/encode.h"
+#include	"rfc822/rfc822hdr.h"
 #if	HAVE_UNISTD_H
 #include	<unistd.h>
 #endif
@@ -20,13 +21,11 @@
 #include       <strings.h>
 #endif
 
-/* $Id: rfc2045rewrite.c,v 1.15 2006/11/04 20:20:30 mrsam Exp $ */
 
 static char *rw_boundary_root;
 static int rw_boundary_cnt;
 static const char *rw_appname;
 
-static FILE *fdin;
 static int fdout;
 static int (*fdout_func)(const char *, int, void *);
 static void *fdout_arg;
@@ -200,15 +199,14 @@ struct	rfc2045attr *a;
 	return (0);
 }
 
-static int dorw(struct rfc2045 *p)
+static int dorw(struct rfc2045 *p, struct rfc2045src *src)
 {
-int seen_mime=0;
-char	buf[BUFSIZ];
-struct libmail_encode_info qp_encode;
-int	c;
-int	bcnt;
-
-	if (fseek(fdin, p->startpos, SEEK_SET) == -1)	return (-1);
+	int seen_mime=0;
+	char	buf[BUFSIZ];
+	struct libmail_encode_info qp_encode;
+	int	bcnt;
+	struct rfc2045headerinfo *hdr;
+	char *name, *value;
 
 	/* Slurp the untouchable portion of multipart/signed */
 
@@ -219,14 +217,17 @@ int	bcnt;
 	{
 		off_t ps=p->startpos;
 
+		if ((*src->seek_func)(ps, src->arg) == (off_t)-1)
+			return (-1);
+
 		while (ps < p->endbody)
 		{
-			int n;
+			ssize_t n;
 
 			if (p->endbody - ps > sizeof(buf))
 				n=sizeof(buf);
 			else	n=p->endbody-ps;
-			n=fread(buf, 1, n, fdin);
+			n=(*src->read_func)(buf, n, src->arg);
 			if (n <= 0)	return (-1);
 
 			if (fdout_add(buf, n))	return (-1);
@@ -241,55 +242,47 @@ int	bcnt;
 		seen_mime=1;
 		if (rwmime(p))	return (-1);
 	}
-	while (fgets(buf, sizeof(buf), fdin))
+
+	hdr=rfc2045header_start(src, p);
+
+	while (1)
 	{
-		if (buf[0] == '\n')	break;
+		if (rfc2045header_get(hdr, &name, &value,
+				      RFC2045H_NOLC | RFC2045H_KEEPNL) < 0)
+		{
+			rfc2045header_end(hdr);
+			return (-1);
+		}
+
+		if (name == NULL)
+			break;
 
 		if (RFC2045_ISMIME1DEF(p->mime_version) &&
-			strncasecmp(buf, "mime-version:", 13) == 0 &&
+		    rfc822hdr_namecmp(name, "mime-version") == 0 &&
 			!seen_mime)
 		{
 			seen_mime=1;
 			rwmime(p);
-			if (strchr(buf, '\n') == NULL)
-				while ((c=getc(fdin)) >= 0 && c != '\n')
-					;
-			while ((c=getc(fdin)) >= 0 && c != '\n' && isspace(c))
-				while ((c=getc(fdin)) >= 0 && c != '\n')
-					;
-			if (c >= 0)	ungetc(c, fdin);
 			continue;
 		}
 
-		if (!RFC2045_ISMIME1DEF(p->mime_version) || (
-			strncasecmp(buf, "mime-version:", 13) &&
-			strncasecmp(buf, "content-type:", 13) &&
-			strncasecmp(buf, "content-transfer-encoding:", 26))
-			)
+		if (!RFC2045_ISMIME1DEF(p->mime_version) ||
+		    (rfc822hdr_namecmp(name, "mime-version") &&
+		     rfc822hdr_namecmp(name, "content-type") &&
+		     rfc822hdr_namecmp(name, "content-transfer-encoding")))
 		{
-			do
+			if (fdout_add(name, strlen(name)) ||
+			    fdout_add(": ", 2) ||
+			    fdout_add(value, strlen(value)) ||
+			    fdout_add("\n", 1))
 			{
-				do
-				{
-					if (fdout_add(buf, strlen(buf)))
-						return (-1);
-				} while (strchr(buf, '\n') == NULL &&
-					fgets(buf, sizeof(buf), fdin));
-
-				c=getc(fdin);
-				if (c >= 0)	ungetc(c, fdin);
-			} while (c >= 0 && c != '\n' && isspace(c) &&
-				    fgets(buf, sizeof(buf), fdin));
-		}
-		else
-			while ( (c=getc(fdin)) >= 0 &&
-				(ungetc(c, fdin), c) != '\n' && isspace(c))
-			{
-				while (fgets(buf, sizeof(buf), fdin) &&
-					strchr(buf, '\n') == NULL)
-					;
+				rfc2045header_end(hdr);
+				return (-1);
 			}
+		}
 	}
+	rfc2045header_end(hdr);
+
 	if (RFC2045_ISMIME1DEF(p->mime_version))
 	{
 		if (!seen_mime)
@@ -301,7 +294,9 @@ int	bcnt;
 	}
 
 	if (fdout_add("\n", 1))	return (-1);
-	if (fseek(fdin, p->startbody, SEEK_SET) == -1)	return (-1);
+
+	if ((*src->seek_func)(p->startbody, src->arg) == (off_t)-1)
+		return (-1);
 
 	/* For non-multipart section, just print the body */
 
@@ -340,7 +335,7 @@ int	bcnt;
 			if (p->endbody - ps > sizeof(buf))
 				n=sizeof(buf);
 			else	n=p->endbody-ps;
-			n=fread(buf, 1, n, fdin);
+			n=(*src->read_func)(buf, n, src->arg);
 			if (n <= 0)	return (-1);
 			if (convmode)
 				rfc2045_cdecode(p, buf, n);
@@ -376,7 +371,7 @@ int	bcnt;
 	int	rc;
 
 		p->firstpart->parent=0;
-		rc=dorw(p->firstpart);
+		rc=dorw(p->firstpart, src);
 		p->firstpart->parent=p;
 		return (rc);
 	}
@@ -388,58 +383,51 @@ int	bcnt;
 		if (p->isdummy)	continue;
 		sprintf(buf, "\n--%s-%d\n", rw_boundary_root, bcnt);
 		if (fdout_add(buf, strlen(buf)))	return (-1);
-		if (dorw(p) != 0)	return(-1);
+		if (dorw(p, src) != 0)	return(-1);
 	}
 	sprintf(buf, "\n--%s-%d--\n", rw_boundary_root, bcnt);
 	if (fdout_add(buf, strlen(buf)))	return (-1);
 	return (0);
 }
 
-static int rfc2045_rewrite_common(struct rfc2045 *, int, const char *);
+static int rfc2045_rewrite_common(struct rfc2045 *, struct rfc2045src *src,
+				  const char *);
 
-int rfc2045_rewrite(struct rfc2045 *p, int fdin_arg, int fdout_arg,
-	const char *appname)
+int rfc2045_rewrite(struct rfc2045 *p, struct rfc2045src *src, int fdout_arg,
+		    const char *appname)
 {
 	fdout=fdout_arg;
 	fdout_func=0;
-	return (rfc2045_rewrite_common(p, fdin_arg, appname));
+	return (rfc2045_rewrite_common(p, src, appname));
 }
 
-int rfc2045_rewrite_func(struct rfc2045 *p, int fdin_arg,
+int rfc2045_rewrite_func(struct rfc2045 *p, struct rfc2045src *src,
 	int (*funcarg)(const char *, int, void *), void *funcargarg,
 	const char *appname)
 {
 	fdout= -1;
 	fdout_func=funcarg;
 	fdout_arg=funcargarg;
-	return (rfc2045_rewrite_common(p, fdin_arg, appname));
+	return (rfc2045_rewrite_common(p, src, appname));
 }
 
 static int rfc2045_rewrite_common(struct rfc2045 *p,
-	int fdin_arg, const char *appname)
+				   struct rfc2045src *src, const char *appname)
 {
-int	rc;
-int	fd=dup(fdin_arg);
+	int	rc;
 
-	if (fd < 0)	return (-1);
 	rw_appname=appname;
-	fdin=fdopen(fd, "r");
-	if (!fdin)
-	{
-		close(fd);
-		return (-1);
-	}
 
 	fdout_ptr=fdout_buf;
 	fdout_left=sizeof(fdout_buf);
 
-	rw_boundary_root=rfc2045_mk_boundary(p, fd);
+	rw_boundary_root=rfc2045_mk_boundary(p, src);
 	if (rw_boundary_root == 0)
 		rc= -1;
 	else
 	{
 		rw_boundary_cnt=1;
-		rc=dorw(p);
+		rc=dorw(p, src);
 		free(rw_boundary_root);
 	}
 	if (rc == 0 && fdout_ptr > fdout_buf
@@ -449,6 +437,5 @@ int	fd=dup(fdin_arg);
 	}
 	if (rc == 0 && fdout_ptr > fdout_buf)
 		rc=fdout_flush();
-	fclose(fdin);
 	return (rc);
 }

@@ -7,7 +7,6 @@
 #include	"md5.h"
 #include	<string.h>
 
-static const char rcsid[]="$Id: redhat-crypt-md5.c,v 1.3 1999/12/06 13:22:43 mrsam Exp $";
 
 static char base64[]=
         "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

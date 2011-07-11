@@ -1,5 +1,4 @@
-/* $Id: cursesbutton.C,v 1.2 2003/09/16 02:38:35 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -122,7 +121,7 @@ void CursesButton::clicked()
 
 bool CursesButton::processKeyInFocus(const Key &key)
 {
-	if (key == key.ENTER || (key.plain() && key.key == ' '))
+	if (key == key.ENTER || (key.plain() && key.ukey == ' '))
 	{
 		if (toggleButton)
 		{

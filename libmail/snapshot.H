@@ -1,5 +1,4 @@
-/* $Id: snapshot.H,v 1.2 2003/08/25 03:10:31 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

@@ -1,5 +1,4 @@
-/* $Id: mboxmultilock.H,v 1.2 2004/06/14 00:18:42 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.

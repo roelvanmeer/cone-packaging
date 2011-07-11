@@ -15,7 +15,6 @@
 
 @SET_MAKE@
 
-# $Id: Makefile.am,v 1.4 2007/07/04 02:24:38 mrsam Exp $
 #
 # Copyright 2002, Double Precision Inc.
 #
@@ -68,7 +67,7 @@ am_libcurses_a_OBJECTS = curses.$(OBJEXT) cursesbutton.$(OBJEXT) \
 	cursesmultilinelabel.$(OBJEXT) cursesmoronize.$(OBJEXT) \
 	cursesobject.$(OBJEXT) cursesscreen.$(OBJEXT) \
 	cursesstatusbar.$(OBJEXT) cursestitlebar.$(OBJEXT) \
-	cursesvscroll.$(OBJEXT) timer.$(OBJEXT)
+	cursesvscroll.$(OBJEXT) timer.$(OBJEXT) widechar.$(OBJEXT)
 libcurses_a_OBJECTS = $(am_libcurses_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
@@ -141,6 +140,7 @@ PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
 PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
+PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 RANLIB = @RANLIB@
@@ -199,6 +199,7 @@ libcurses_a_SOURCES = mycurses.H curses.C \
 	cursesdialog.H cursesdialog.C \
 	cursesfield.H cursesfield.C \
 	cursesfilereq.H cursesfilereq.C \
+	cursesflowedline.H \
 	curseskeyhandler.H curseskeyhandler.C \
 	curseslabel.H curseslabel.C \
 	cursesmainscreen.H cursesmainscreen.C \
@@ -209,7 +210,8 @@ libcurses_a_SOURCES = mycurses.H curses.C \
 	cursesstatusbar.H cursesstatusbar.C \
 	cursestitlebar.H cursestitlebar.C \
 	cursesvscroll.H cursesvscroll.C \
-	timer.C timer.H
+	timer.C timer.H \
+	widechar.C widechar.H
 
 noinst_DATA = curseslib
 DISTCLEANFILES = curseslib
@@ -301,6 +303,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cursestitlebar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cursesvscroll.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/timer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/widechar.Po@am__quote@
 
 .C.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

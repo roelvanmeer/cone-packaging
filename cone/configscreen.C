@@ -1,6 +1,5 @@
-/* $Id: configscreen.C,v 1.21 2010/04/29 00:34:49 mrsam Exp $
-**
-** Copyright 2003-2008, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -231,7 +230,18 @@ ConfigScreen::ConfigScreen(CursesContainer *parent)
 	  save(this, _("SAVE")),
 	  cancel(this, _("CANCEL"))
 {
+	{
+		CursesMainScreen::Lock updateLock(mainScreen);
+		init();
+	}
+	erase();
+	draw();
+	myAddressAdd.requestFocus();
 
+}
+
+void ConfigScreen::init()
+{
 	myAddressAdd=this;
 	myListAddressAdd=this;
 	myHeadersAdd=this;
@@ -444,24 +454,15 @@ ConfigScreen::ConfigScreen(CursesContainer *parent)
 			else
 			{
 				vector<unicode_char> cpy=b->first.n;
-				cpy.push_back(0);
 
-				char *p= (*unicode_UTF8.u2c)
-					(&unicode_UTF8, &cpy[0], NULL);
+				bool err;
 
-				if (!p)
-					continue;
+				nameStr=mail::iconvert::convert(cpy,
+								unicode_default_chset(),
+								err);
 
-				try
-				{
-					nameStr=p;
-					free(p);
-				}
-				catch (...)
-				{
-					free(p);
-					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-				}
+				if (err || nameStr.size() == 0)
+					nameStr=_("[macro]");
 			}
 
 			MacroButton *mb=new MacroButton(this, n, nameStr);
@@ -604,7 +605,7 @@ ConfigScreen::ConfigScreen(CursesContainer *parent)
 		mail::emailAddress emailAddress(mail::address("", *b));
 
 		Button *bb=new Button(this, &ConfigScreen::delAddress,
-				      emailAddress.getDisplayAddr());
+				      emailAddress.getDisplayAddr(unicode_default_chset()));
 
 		if (!bb)
 			outofmemory();
@@ -652,7 +653,7 @@ ConfigScreen::ConfigScreen(CursesContainer *parent)
 		mail::emailAddress emailAddress(mail::address("", *b));
 
 		Button *bb=new Button(this, &ConfigScreen::delListAddress,
-				      emailAddress.getDisplayAddr());
+				      emailAddress.getDisplayAddr(unicode_default_chset()));
 
 		if (!bb)
 			outofmemory();
@@ -700,8 +701,6 @@ ConfigScreen::ConfigScreen(CursesContainer *parent)
 		bb->setAttribute(bca);
 		addPrompt(NULL, bb, r++);
 	}
-
-	myAddressAdd.requestFocus();
 }
 
 ConfigScreen::~ConfigScreen()
@@ -1155,7 +1154,8 @@ void ConfigScreen::doSave()
 	{
 		mail::emailAddress addr;
 
-		errmsg=addr.setDisplayAddr((*b)->address);
+		errmsg=addr.setDisplayAddr((*b)->address,
+					   unicode_default_chset());
 
 		if (errmsg != "")
 		{
@@ -1174,7 +1174,8 @@ void ConfigScreen::doSave()
 		{
 			mail::emailAddress addr;
 
-			errmsg=addr.setDisplayAddr((*b)->address);
+			errmsg=addr.setDisplayAddr((*b)->address,
+						   unicode_default_chset());
 			if (errmsg != "")
 			{
 				(*b)->requestFocus();
@@ -1201,7 +1202,8 @@ void ConfigScreen::doSave()
 	{
 		mail::emailAddress addr;
 
-		addr.setDisplayAddr((*b)->address);
+		addr.setDisplayAddr((*b)->address,
+				    unicode_default_chset());
 
 		myServer::myAddresses.push_back( addr.getAddr() );
 		b++;
@@ -1215,7 +1217,8 @@ void ConfigScreen::doSave()
 	{
 		mail::emailAddress addr;
 
-		addr.setDisplayAddr((*b)->address);
+		addr.setDisplayAddr((*b)->address,
+				    unicode_default_chset());
 
 		myServer::myListAddresses.push_back( addr.getAddr() );
 		b++;

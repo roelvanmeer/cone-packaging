@@ -1,10 +1,11 @@
 /*
-** Copyright 2000-2002 Double Precision, Inc.  See COPYING for
+** Copyright 2000-2011 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
 #include "rfc2045_config.h"
 #include	"rfc2045.h"
+#include	"rfc2045src.h"
 #include	<stdio.h>
 #include	<unistd.h>
 #include	<stdlib.h>
@@ -13,10 +14,69 @@
 #include	<sys/types.h>
 #include	<sys/stat.h>
 
-static const char rcsid[]="$Id: rfc2045header.c,v 1.5 2003/05/27 15:55:11 mrsam Exp $";
+
+struct rfc2045src_fd {
+	struct rfc2045src src;
+	int fd;
+};
+
+static void deinit_func_fd(void *);
+
+static int seek_func_fd(int64_t pos, void *);
+
+static ssize_t read_func_fd(char *buf, size_t cnt, void *);
+
+struct rfc2045src *rfc2045src_init_fd(int fd)
+{
+	struct rfc2045src_fd *ptr=malloc(sizeof(struct rfc2045src_fd));
+
+	if (!ptr)
+		return NULL;
+
+	memset(ptr, 0, sizeof(*ptr));
+
+	ptr->src.arg=ptr;
+	ptr->src.deinit_func=deinit_func_fd;
+	ptr->src.seek_func=seek_func_fd;
+	ptr->src.read_func=read_func_fd;
+	ptr->fd=fd;
+	return &ptr->src;
+}
+
+void rfc2045src_deinit(struct rfc2045src *ptr)
+{
+	(*ptr->deinit_func)(ptr->arg);
+}
+
+static void deinit_func_fd(void *ptr)
+{
+	struct rfc2045src_fd *s=(struct rfc2045src_fd *)ptr;
+
+	free(s);
+}
+
+static int seek_func_fd(off_t pos, void *ptr)
+{
+	struct rfc2045src_fd *s=(struct rfc2045src_fd *)ptr;
+
+	if (lseek(s->fd, pos, SEEK_SET) < 0)
+		return -1;
+
+	return 0;
+}
+
+static ssize_t read_func_fd(char *buf, size_t cnt, void *ptr)
+{
+	struct rfc2045src_fd *s=(struct rfc2045src_fd *)ptr;
+
+	return read(s->fd, buf, cnt);
+}
+
 
 struct rfc2045headerinfo {
-	int fd;
+
+	struct rfc2045src *src;
+
 	char *headerbuf;
 	size_t headerbufsize;
 
@@ -26,39 +86,41 @@ struct rfc2045headerinfo {
 	size_t readleft;
 
 	size_t headerleft;
+	int firstheader;
 } ;
 
-struct rfc2045headerinfo *rfc2045header_start(int fd, struct rfc2045 *rfcp)
+struct rfc2045headerinfo *rfc2045header_start(struct rfc2045src *src,
+					      struct rfc2045 *rfcp)
 {
 	off_t start_pos, dummy, start_body;
+	int firstheader;
 	struct rfc2045headerinfo *p;
 
 	if (rfcp)
 	{
 		rfc2045_mimepos(rfcp, &start_pos, &dummy, &start_body, &dummy,
 				&dummy);
+		firstheader=0;
 	}
 	else
 	{
-		struct stat stat_buf;
-
-		if (fstat(fd, &stat_buf) < 0)
-			return (NULL);
-
 		start_pos=0;
-		start_body=stat_buf.st_size;
+		start_body=0;
+		firstheader=1;
 	}
 
-	if (lseek(fd, start_pos, SEEK_SET) == -1)
-		return (NULL);
+	if (SRC_SEEK(src, start_pos) < 0)
+		return NULL;
 
 	p=(struct rfc2045headerinfo *)calloc(sizeof(struct rfc2045headerinfo),
 					     1);
 
 	if (!p)
 		return (NULL);
-	p->fd=fd;
+	p->src=src;
+
 	p->headerleft=start_body - start_pos;
+	p->firstheader=firstheader;
 	return (p);
 }
 
@@ -71,16 +133,21 @@ void rfc2045header_end(struct rfc2045headerinfo *p)
 
 static int fill(struct rfc2045headerinfo *p)
 {
-	int n;
-
-	if (p->headerleft == 0)
-		return (-1);
+	ssize_t n;
 
 	n=sizeof(p->readbuf);
-	if (n > p->headerleft)
-		n=p->headerleft;
 
-	n=read(p->fd, p->readbuf, n);
+	if (p->firstheader == 0)
+	{
+		if (p->headerleft == 0)
+			return (-1);
+
+
+		if (n > p->headerleft)
+			n=p->headerleft;
+	}
+
+	n=SRC_READ(p->src, p->readbuf, n);
 
 	if (n <= 0)
 	{
@@ -90,7 +157,10 @@ static int fill(struct rfc2045headerinfo *p)
 	}
 	p->readptr=p->readbuf;
 	p->readleft = n;
-	p->headerleft -= n;
+
+	if (p->firstheader == 0)
+		p->headerleft -= n;
+
 	return ((int)(unsigned char)p->readbuf[0]);
 }
 

@@ -6,7 +6,6 @@
 #define TLSCACHEMINSIZE (sizeof(struct hdr) + 5 * (sizeof(struct obj)+8))
 #include "tlscache.c"
 
-static const char tlscachetest_rcsid[]="$Id: tlscachetest.c,v 1.3 2006/05/28 15:29:52 mrsam Exp $";
 
 static int printcache(void *rec, size_t recsize, int *doupdate,
 		      void *arg)

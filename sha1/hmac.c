@@ -6,7 +6,6 @@
 #include	"sha1.h"
 #include	"../libhmac/hmac.h"
 
-static const char rcsid[]="$Id: hmac.c,v 1.2 2005/02/21 03:18:30 mrsam Exp $";
 
 static void alloc_context_sha1( void (*func)(void *, void *), void *arg)
 {

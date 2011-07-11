@@ -3,11 +3,10 @@
 ** See COPYING for distribution information.
 */
 
+#include	"config.h"
 #include	<sys/types.h>
 #include	<string.h>
-#include	"config.h"
 
-static const char rcsid[]="$Id: maildirflags.c,v 1.3 2002/10/01 03:16:25 mrsam Exp $";
 
 int maildir_hasflag(const char *filename, char flag)
 {

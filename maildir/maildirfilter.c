@@ -1,5 +1,5 @@
 /*
-** Copyright 2000-2008 Double Precision, Inc.
+** Copyright 2000-2010 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
@@ -41,7 +41,6 @@
 #include	<unistd.h>
 #endif
 
-static const char rcsid[]="$Id: maildirfilter.c,v 1.30 2008/11/26 03:57:28 mrsam Exp $";
 
 struct maildirfilterrule *maildir_filter_appendrule(struct maildirfilter *r,
 					const char *name,
@@ -601,6 +600,8 @@ struct maildirfilterrule *p;
 					fprintf(f, " -M \"$FROM\"");
 				fprintf(f, " -m \"%s/autoresponses/%s\"",
 					maildirpath, ai.name);
+				if (ai.noquote)
+					fprintf(f, " -N");
 				if (ai.days > 0)
 					fprintf(f,
 						" -d \"%s/autoresponses/"
@@ -833,6 +834,8 @@ int maildir_filter_autoresp_info_init_str(struct maildir_filter_autoresp_info *i
 			i->dsnflag=atoi(p+4) ? 1:0;
 		else if (strncmp(p, "days=", 5) == 0)
 			i->days=atoi(p+5);
+		else if (strcmp(p, "noquote") == 0)
+			i->noquote=1;
 	}
 	return (0);
 }
@@ -852,6 +855,8 @@ char *maildir_filter_autoresp_info_asstr(struct maildir_filter_autoresp_info *i)
 
 	const char *dsn_arg="";
 	const char *days_arg="";
+	const char *noquote_arg="";
+
 	char *p;
 
 	if (i->dsnflag)
@@ -863,10 +868,15 @@ char *maildir_filter_autoresp_info_asstr(struct maildir_filter_autoresp_info *i)
 		days_arg=days_buf;
 	}
 
-	p=malloc(strlen(i->name)+1+strlen(dsn_arg)+strlen(days_arg));
+	if (i->noquote)
+		noquote_arg=" noquote";
+
+	p=malloc(strlen(i->name)+1+strlen(dsn_arg)+strlen(days_arg)+
+		 strlen(noquote_arg));
 	if (!p)
 		return (NULL);
 
-	strcat(strcat(strcpy(p, i->name), dsn_arg), days_arg);
+	strcat(strcat(strcat(strcpy(p, i->name), dsn_arg), days_arg),
+	       noquote_arg);
 	return (p);
 }

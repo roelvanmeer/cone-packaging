@@ -1,5 +1,4 @@
-/* $Id: maildir.H,v 1.9 2004/06/14 00:18:42 mrsam Exp $
-**
+/*
 ** Copyright 2002-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -83,8 +82,9 @@ private:
 
 	// Rescan the maildirAccount
 
-	void scan(std::string folderStr, std::vector<maildirMessageInfo> &index,
-		  bool scanNew=false);
+	bool scan(std::string folderStr,
+		    std::vector<maildirMessageInfo> &index,
+		    bool scanNew=false);
 
 	class indexSort;
 
@@ -101,7 +101,6 @@ private:
 	bool watchStarting;
 
 public:
-	static void mkverbotten(std::vector<unicode_char> &uc);
 	static bool maildirmake(std::string subdir, bool isFolder);
 	static bool maildirdestroy(std::string dir);
 

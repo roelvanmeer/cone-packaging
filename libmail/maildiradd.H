@@ -1,5 +1,4 @@
-/* $Id: maildiradd.H,v 1.2 2004/08/21 02:16:10 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.

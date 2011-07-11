@@ -1,9 +1,8 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl
-dnl Copyright 2001 Double Precision, Inc.  See COPYING for
+dnl Copyright 2001-2010 Double Precision, Inc.  See COPYING for
 dnl distribution information.
 dnl
-dnl $Id: configure.in,v 1.19 2010/05/30 20:27:43 mrsam Exp $
 
 AC_INIT(webpgp, 0.10, [courier-users@lists.sourceforge.net])
 
@@ -22,7 +21,7 @@ AC_PROG_CC
 AC_LIBTOOL_DLOPEN
 AM_PROG_LIBTOOL
 AC_PROG_LN_S
-AC_PATH_PROG(GPG, gpg, /usr/bin/gpg, $LPATH)
+AC_PATH_PROGS(GPG, gpg gpg2, /usr/bin/gpg, $LPATH)
 AC_PATH_PROGS(PERL, perl5 perl, perl, $LPATH)
 
 if test "$PERL" = "perl"
@@ -38,7 +37,7 @@ mkdir conftestdir
 GNUPGHOME=`pwd`/conftestdir
 export GNUPGHOME
 
-if gpg --charset utf-8 --list-keys >/dev/null 2>&1
+if $GPG --charset utf-8 --list-keys >/dev/null 2>&1
 then
 	ac_cv_gpg_charset=utf-8
 else
@@ -83,7 +82,7 @@ fi
 rm -rf conftempdir
 mkdir conftempdir
 
-if gpg --homedir conftempdir --list-keys --allow-secret-key-import >/dev/null
+if $GPG --homedir conftempdir --list-keys --allow-secret-key-import >/dev/null
 then
 	AC_DEFINE_UNQUOTED(GPG_HAS_ALLOW_SECRET_KEY_IMPORT,1,
 	[ Whether gpg has the --allow-secret-key-import option ])
@@ -103,6 +102,7 @@ dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_TYPE_PID_T
 AC_TYPE_SIZE_T
+AC_SYS_LARGEFILE
 
 dnl Checks for library functions.
 AC_TYPE_SIGNAL

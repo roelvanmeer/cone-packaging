@@ -35,7 +35,6 @@
 #define EX_TEMPFAIL 75
 #endif
 
-static const char rcsid[]="$Id: lockmail.c,v 1.6 2006/09/20 01:41:27 mrsam Exp $";
 
 #define NTRIES_DEFAULT	60
 #define DELAY	5

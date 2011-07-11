@@ -51,7 +51,6 @@
 
 #include	"tlsclient.h"
 
-static const char rcsid[]="$Id: tlsclient.c,v 1.6 2008/06/30 00:31:15 mrsam Exp $";
 
 
 #define ERRMSG(s) (cinfo->errmsg[0]=0, \

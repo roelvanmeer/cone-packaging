@@ -1,5 +1,4 @@
-/* $Id: imapfolder.C,v 1.16 2010/04/29 00:34:49 mrsam Exp $
-**
+/*
 ** Copyright 2003-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -653,7 +652,7 @@ void mail::imapSELECT_OK::process(string &buffer)
 
 	string::iterator b=buffer.begin(), e=buffer.end();
 
-	while (b != e && isspace((int)(unsigned char)*b))
+	while (b != e && unicode_isspace((unsigned char)*b))
 		b++;
 
 	if (b == e || *b != '[')

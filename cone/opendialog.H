@@ -1,5 +1,4 @@
-/* $Id: opendialog.H,v 1.4 2005/02/24 03:39:09 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

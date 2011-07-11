@@ -10,7 +10,6 @@
 #include	<stdlib.h>
 #include	<string.h>
 
-static const char rcsid[]="$Id: testspf.c,v 1.3 2005/06/19 13:15:28 mrsam Exp $";
 
 static struct testsuite_s {
 	const char *mailfrom;

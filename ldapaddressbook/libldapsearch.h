@@ -1,5 +1,4 @@
-/* $Id: libldapsearch.h,v 1.4 2007/09/26 01:42:40 mrsam Exp $
-**
+/*
 ** Copyright 2006, Double Precision Inc.
 **
 */

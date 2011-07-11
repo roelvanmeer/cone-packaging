@@ -3,7 +3,6 @@
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: sign.c,v 1.4 2003/06/02 23:47:16 mrsam Exp $";
 
 #include	"config.h"
 #include	<stdio.h>

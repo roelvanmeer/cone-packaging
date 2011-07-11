@@ -9,7 +9,6 @@
 #include	<string.h>
 #include	<unistd.h>
 
-static const char rcsid[]="$Id: testmaildirfilter.c,v 1.5 2003/01/05 03:32:47 mrsam Exp $";
 
 int main(int argc, char **argv)
 {

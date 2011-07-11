@@ -3,7 +3,6 @@
 ** distribution information.
 */
 
-/* $Id: locklockf.c,v 1.4 2002/09/02 16:55:56 mrsam Exp $ */
 
 #if	HAVE_CONFIG_H
 #include	"config.h"

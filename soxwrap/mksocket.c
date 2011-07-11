@@ -17,7 +17,6 @@
 #include	<stdlib.h>
 #include	"soxwrap.h"
 
-static const char rcsid[]="$Id: mksocket.c,v 1.4 2009/06/13 18:10:27 mrsam Exp $";
 
 #define MKS_USEAFINET4 1
 #define MKS_ERROK 2

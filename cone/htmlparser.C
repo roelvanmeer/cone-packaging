@@ -1,6 +1,5 @@
-/* $Id: htmlparser.C,v 1.10 2010/04/29 00:34:49 mrsam Exp $
-**
-** Copyright 2003, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -12,12 +11,11 @@
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+#include <iterator>
 #include <errno.h>
-#include <cctype>
 
 #include "libmail/mail.H"
-
-using namespace std;
+#include "curses/widechar.H"
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -26,10 +24,10 @@ textAttributes::textAttributes()
 {
 }
 
-textAttributes::textAttributes(string s)
+textAttributes::textAttributes(std::string s)
 	: bold(0), underline(0), reverse(0), italic(0), bgcolor(0), fgcolor(0)
 {
-	string::iterator b=s.begin(), e=s.end();
+	std::string::iterator b=s.begin(), e=s.end();
 	unsigned *c= &bgcolor;
 
 	while (b != e)
@@ -62,7 +60,7 @@ textAttributes::textAttributes(string s)
 			// as \x80\x81
 
 			{
-				ostringstream o;
+				std::ostringstream o;
 
 				while (++b != e)
 				{
@@ -104,9 +102,9 @@ bool textAttributes::operator!=(const textAttributes &a) const
 	return ! operator==(a);
 }
 
-textAttributes::operator string() const
+textAttributes::operator std::string() const
 {
-	ostringstream o;
+	std::ostringstream o;
 	char normal='N';
 
 	if (bold)
@@ -143,7 +141,7 @@ textAttributes::operator string() const
 
 	if (url.size() > 0)
 	{
-		string::const_iterator b=url.begin(), e=url.end();
+		std::string::const_iterator b=url.begin(), e=url.end();
 
 		o << 'L';
 
@@ -183,30 +181,30 @@ void textAttributes::getAttributedText(std::string s,
 				       std::string> > &vec)
 {
 	textAttributes currentAttr;
-	string currentString;
+	std::string currentString;
 
-	string::iterator b=s.begin(), e=s.end();
+	std::string::iterator b=s.begin(), e=s.end();
 
 	while (b != e)
 	{
 		if (*b != '\x7F')
 		{
-			string::iterator c=b;
+			std::string::iterator c=b;
 
 			while (c != e && *c != '\x7F')
 				c++;
 
-			currentString += string(b, c);
+			currentString += std::string(b, c);
 			b=c;
 			continue;
 		}
 
 		++b;
-		string::iterator c=b;
+		std::string::iterator c=b;
 		while (c != e && *c != '\x7F')
 			c++;
 
-		textAttributes nextAttr(string(b, c));
+		textAttributes nextAttr(std::string(b, c));
 
 		if (nextAttr != currentAttr && currentString.size() > 0)
 		{
@@ -234,10 +232,11 @@ htmlParser::tag::~tag()
 {
 }
 
-void htmlParser::tag::getAttribute(string name,
-				   vector<unicode_char> &w)
+void htmlParser::tag::getAttribute(std::string name,
+				   std::vector<unicode_char> &w)
 {
-	list< pair<string, vector<unicode_char> > >::iterator
+	std::list< std::pair<std::string,
+			     std::vector<unicode_char> > >::iterator
 		ab=attributes.begin(),
 		ae=attributes.end();
 
@@ -255,32 +254,208 @@ void htmlParser::tag::getAttribute(string name,
 	w.clear();
 }
 
+class htmlParser::linebuf::towidth_iter :
+	public std::iterator<std::input_iterator_tag, unicode_char> {
+
+	const enhanced_char *p;
+
+public:
+	towidth_iter(const enhanced_char *pArg) : p(pArg)
+	{
+	}
+
+	towidth_iter &operator++()
+	{
+		++p;
+		return *this;
+	}
+
+	towidth_iter operator++(int)
+	{
+		towidth_iter save=*this;
+		++p;
+		return save;
+	}
+
+	unicode_char operator *()
+	{
+		return p->ch;
+	}
+
+	bool operator==(const towidth_iter &o)
+	{
+		return p == o.p;
+	}
+
+	bool operator!=(const towidth_iter &o)
+	{
+		return p != o.p;
+	}
+};
+
+
+htmlParser::linebuf::linebuf(htmlParser *parserArg, size_t desiredWidthArg)
+	: lineBreak(0), width_beforebreak(0),
+	  startingCol(0),
+	  desiredWidth(desiredWidthArg), parser(parserArg), isempty(true),
+	  lastchar(' ')
+{
+	set_opts(UNICODE_LB_OPT_PRBREAK | UNICODE_LB_OPT_SYBREAK);
+}
+
+htmlParser::linebuf::~linebuf()
+{
+	parser=NULL;
+	flush();
+}
+
+// If the word ends with a space, we can afford to fit in an
+// extra character.
+
+size_t htmlParser::linebuf::wantthiswidth()
+{
+	return (--line.end())->ch == ' ' ? desiredWidth+1:desiredWidth;
+}
+
+void htmlParser::linebuf::operator()(int lbflag, unicode_char ch,
+				     textAttributes attr)
+{
+	if (lbflag != UNICODE_LB_NONE)
+		linebreak_allowed();
+
+	line.push_back(enhanced_char(ch, attr));
+}
+
+void htmlParser::linebuf::linebreak_allowed()
+{
+	if (lineBreak >= line.size())
+		return;
+
+	// Calculate width of the last word
+	size_t w=towidechar(towidth_iter(&line[lineBreak]),
+			    towidth_iter(&line[line.size()]),
+			    towidechar_wcwidth_iter(width_beforebreak
+						    +startingCol));
+
+	if (width_beforebreak + w > wantthiswidth())
+	{
+		if (parser)
+			parser->fmtline(&line[0], &line[lineBreak], true);
+		line.erase(line.begin(), line.begin()+lineBreak);
+
+		w=towidechar(towidth_iter(&line[0]),
+			     towidth_iter(&line[line.size()]),
+			     towidechar_wcwidth_iter(startingCol));
+		width_beforebreak=0;
+
+		w=wordtoolong(w);
+	}
+
+	lineBreak=line.size();
+	width_beforebreak += w;
+}
+
+//
+// If a word is too long for a single line, forcibly break it and grapheme
+// boundaries.
+//
+size_t htmlParser::linebuf::wordtoolong(size_t w)
+{
+	if (w < wantthiswidth())
+		return w;
+
+	std::vector<enhanced_char>::iterator
+		b=line.begin(),
+		e=line.end(), p=b, s=b;
+
+	size_t col=startingCol;
+
+	w=0;
+
+	while (b != e)
+	{
+		if (b == p || !unicode_grapheme_break(b[-1].ch, b->ch))
+		{
+			++b;
+			continue;
+		}
+
+		size_t grapheme_width=
+			towidechar(towidth_iter(&*p),
+				   towidth_iter(&*b),
+				   towidechar_wcwidth_iter(col));
+		if (w + grapheme_width > desiredWidth && s < p)
+		{
+			parser->fmtline(&*s, &*p, true);
+			s=b=p;
+			col=startingCol;
+			w=0;
+			continue;
+		}
+
+		p=b;
+		col += grapheme_width;
+		w += grapheme_width;
+		++b;
+	}
+	line.erase(line.begin(), s);
+
+	return towidechar(towidth_iter(&line[0]),
+			  towidth_iter(&line[line.size()]),
+			  towidechar_wcwidth_iter(startingCol));
+}
+
+void htmlParser::linebuf::flush()
+{
+	linebreak_allowed();
+	if (parser)
+		parser->fmtline(&line[0], &line[line.size()], false);
+
+	line.clear();
+	lineBreak=0;
+	width_beforebreak=0;
+	isempty=true;
+	lastchar=' ';
+}
+
 /////////////////////////////////////////////////////////////////////////////
 
 
-htmlParser::htmlParser(const struct unicode_info &htmlCharsetArg,
-		       const struct unicode_info &txtCharsetArg,
-		       unicodeEntityAltList *txtAltListArg,
+htmlParser::htmlParser(const std::string &htmlCharsetArg,
+		       const std::string &txtCharsetArg,
+		       Demoronize &demoronizerArg,
 		       size_t desiredLineLengthArg)
-	: wordBreak(0), desiredLineLength(desiredLineLengthArg), inTag(0),
+	: currentLine(this, desiredLineLengthArg),
+	  tounicode(this),
+	  desiredLineLength(desiredLineLengthArg), inTag(0),
 	  nblanklines(0), paragraphBreak(true),
 
 	  htmlCharset(htmlCharsetArg),
 	  txtCharset(txtCharsetArg),
-	  txtAltList(txtAltListArg)
+	  demoronizer(demoronizerArg),
+	  conversionErrorFlag(false)
 {
+	if (!tounicode.begin(htmlCharset))
+		conversionErrorFlag=true;
+
+	currentLine.setDesiredWidth(0, getLineLength());
 }
 
 htmlParser::~htmlParser()
 {
 }
 
+bool htmlParser::conversionError()
+{
+	return conversionErrorFlag;
+}
+
 // Get indentation prefix for a BLOCKQUOTE
 
 static const char *
-get_blockquote_pfix(list< pair<string, vector<unicode_char> > > &attr)
+get_blockquote_pfix(std::list< std::pair<std::string, std::vector<unicode_char> > > &attr)
 {
-	list< pair<string, vector<unicode_char> > >::iterator
+	std::list< std::pair<std::string, std::vector<unicode_char> > >::iterator
 		p=attr.begin(), e=attr.end();
 
 	while (p != e)
@@ -292,7 +467,7 @@ get_blockquote_pfix(list< pair<string, vector<unicode_char> > > &attr)
 
 	if (p != e)
 	{
-		string s;
+		std::string s;
 
 		s.insert(s.end(), p->second.begin(), p->second.end());
 
@@ -307,15 +482,23 @@ get_blockquote_pfix(list< pair<string, vector<unicode_char> > > &attr)
 	( strcmp((b)->name->name, BLOCKQUOTE.name) == 0 || \
 	  strcmp((b)->name->name, TABLE.name) == 0)
 
-//
 // Take desired line length, subtract current indentation, and arrive at
 // current target line length.
 
 size_t htmlParser::getLineLength()
 {
+	size_t n=getLinePrefixWidth();
+
+	return n + 20 < desiredLineLength ? desiredLineLength - n:20;
+}
+
+// Compute width of current line prefix.
+
+size_t htmlParser::getLinePrefixWidth()
+{
 	size_t n=0;
 
-	list<tag>::iterator b=tagStack.begin(), e=tagStack.end();
+	std::list<tag>::iterator b=tagStack.begin(), e=tagStack.end();
 
 	while (b != e)
 	{
@@ -330,7 +513,7 @@ size_t htmlParser::getLineLength()
 	if (n)
 		++n;
 
-	return n + 20 < desiredLineLength ? desiredLineLength - n:20;
+	return n;
 }
 
 /* TAG OPTIONS */
@@ -352,24 +535,27 @@ size_t htmlParser::getLineLength()
 //
 // Apply the current alignment.
 
-void htmlParser::fmtline(bool wrapped)
+void htmlParser::fmtline(const enhanced_char *cb,
+			 const enhanced_char *ce, bool wrapped)
 {
-	if (currentLine.size() == 0)
+	size_t center=0;
+
+	if (cb == ce)
 		++nblanklines;  // # of consecutive blank lines.
 	else
 		nblanklines=0;
 
-	vector<unicode_char> s;
+	std::vector<unicode_char> s;
 
-	s.reserve(currentLine.size());
+	s.reserve(ce-cb);
 
-	list<tag>::iterator b=tagStack.begin(), e=tagStack.end();
+	std::list<tag>::iterator b=tagStack.begin(), e=tagStack.end();
 
-	vector<unicode_char> align;
+	std::vector<unicode_char> align;
 
 	if (b != e)
 	{
-		list<tag>::iterator epp=e;
+		std::list<tag>::iterator epp=e;
 
 		--epp;
 
@@ -382,10 +568,8 @@ void htmlParser::fmtline(bool wrapped)
 	while (b != e)
 	{
 		if ( strchr((*b).name->options, OPT_CRUFT_C))
-		{
-			currentLine.clear();
 			return;
-		}
+
 		b++;
 	}
 
@@ -403,13 +587,13 @@ void htmlParser::fmtline(bool wrapped)
 	    align[5] == 'R')
 
 	{
-		size_t n=getLineLength();
+		size_t w=towidechar(linebuf::towidth_iter(cb),
+				    linebuf::towidth_iter(ce),
+				    towidechar_wcwidth_iter(0));
+		size_t l=getLineLength();
 
-		if (n > currentLine.size())
-			currentLine.insert(currentLine.begin(),
-					   (n - currentLine.size())/2,
-					   enhanced_char(' ',
-							 textAttributes()));
+		if (w < l)
+			center=(l-w)/2;
 	}
 
 	// Prepend indentation prefix.
@@ -428,46 +612,37 @@ void htmlParser::fmtline(bool wrapped)
 	if (s.size() > 0)
 		s.push_back(' ');
 
+	if (center)
+		s.insert(s.end(), center, (unicode_char)' ');
+
 	// Scan currentLine.  Each time attributes change, insert an
 	// attribute escape sequence into the text.
 
-	std::vector<enhanced_char>::iterator cb, ce;
-
-	cb=currentLine.begin();
-	ce=currentLine.end();
+	bool first=true;
 
 	while (cb != ce)
 	{
-		if (cb == currentLine.begin() ||
-		    cb->attr != cb[-1].attr)
+		if (first || cb->attr != cb[-1].attr)
 		{
-			string a=(string)cb->attr;
+			std::string a=(std::string)cb->attr;
 			s.insert(s.end(), a.begin(), a.end());
 		}
+		first=false;
 
 		if (cb->ch != '\x7F')
 			s.push_back(cb->ch);
 		cb++;
 	}
 
-	currentLine.clear();
-	wordBreak=0;
 	paragraphBreak=false;
 
-	s.push_back(0);
+	bool errflag;
 
-	char *p=unicode_fromCharset(&txtCharset, &s[0], txtAltList);
+	std::string line(mail::iconvert::convert(s, txtCharset, errflag));
 
-	if (!p)
-		LIBMAIL_THROW((strerror(errno)));
-
-	try {
-		parsedLine(string(p), wrapped);
-		free(p);
-	} catch (...) {
-		free(p);
-		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-	}
+	if (errflag)
+		conversionErrorFlag=true;
+	parsedLine(line, wrapped);
 }
 
 const struct htmlParser::taginfo htmlParser::BLOCKQUOTE
@@ -496,66 +671,46 @@ const struct htmlParser::taginfo * const htmlParser::knownTags[]={
 	&BLOCKQUOTE, &H1, &H2, &H3, &H4, &H5, &H6, &H7, &H8,
 	&H9, &P, &PRE, &STYLE, &SCRIPT, &TABLE, &TR, &A, &B, &U, &I, NULL};
 
-//
-// Process incoming HTML.  Incoming HTML is converted to unicode as the first
-// order of business.  As such, we have to wait until we've read a newline
-// character before doing the unicode conversion.  Since this is E-mail,
-// E-mail should not have excessive line length, so we're comfortable with
-// chopping off excessively long buffers.
-
-void htmlParser::parse(string s)
+void htmlParser::flush()
 {
-	size_t n;
+	tounicode.end();
+	currentLine.flush();
+	tounicode.begin(htmlCharset);
+}
 
-	charBuffer += s;
+htmlParser::converter::converter(htmlParser *parserArg) : parser(parserArg)
+{
+}
 
-	while ((n=charBuffer.find('\n')) != std::string::npos)
+htmlParser::converter::~converter()
+{
+	parser=NULL;
+}
+
+int htmlParser::converter::converted(const unicode_char *ptr, size_t cnt)
+{
+	if (parser)
 	{
-		string line=charBuffer.substr(0, n+1);
+		std::vector<unicode_char> buf(ptr, ptr+cnt);
+		std::vector<unicode_char> tbuf;
 
-		charBuffer=charBuffer.substr(n+1);
-
-		vector<unicode_char> w;
-
-		unicode_char *u= (htmlCharset.c2u)(&htmlCharset,
-						   line.c_str(), NULL);
-
-		if (!u)
-			LIBMAIL_THROW(strerror(errno));
-
-		try {
-			size_t i;
-
-			for (i=0; u[i]; i++)
-				;
-
-			if (i > 0)
-
-				w.insert(w.end(), u, u+i);
-
-			free(u);
-		} catch (...) {
-			free(u);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-		}
-
-		parseline(w);
+		parser->parse(parser->demoronizer.expand(buf, tbuf));
 	}
+	return 0;
+}
 
-	if (charBuffer.size() > 8000)
-		charBuffer.erase(charBuffer.begin() + 8000, charBuffer.end());
+
+void htmlParser::parse(std::string s)
+{
+	tounicode(s.c_str(), s.size());
 }
 
 // Process HTML converted to unicode chars.
 
-void htmlParser::parseline(vector<unicode_char> &s)
+void htmlParser::parse(const std::vector<unicode_char> &vec)
 {
-	vector<unicode_char>::iterator b=s.begin(), e=s.end();
-
-	size_t targetLength=getLineLength();
-	list<tag>::iterator sb=tagStack.begin(), se=tagStack.end();
-
-	while (b != e)
+	for (std::vector<unicode_char>::const_iterator b=vec.begin(),
+		     e=vec.end(); b != e; ++b)
 	{
 		if (inTag == '<') // Processing a tag.
 
@@ -575,9 +730,10 @@ void htmlParser::parseline(vector<unicode_char> &s)
 
 					// Some stuff we cached might've
 					// changed, refetch it:
-					targetLength=getLineLength();
-					sb=tagStack.begin();
-					se=tagStack.end();
+					currentLine.
+						setDesiredWidth(getLinePrefixWidth(),
+								getLineLength()
+								);
 				}
 
 				if (currentTag.size() >= 8000)
@@ -594,15 +750,15 @@ void htmlParser::parseline(vector<unicode_char> &s)
 				// Some stuff we cached might've
 				// changed, refetch it:
 
-				targetLength=getLineLength();
-				sb=tagStack.begin();
-				se=tagStack.end();
+				currentLine.setDesiredWidth(getLinePrefixWidth(),
+							    getLineLength());
 			}
 			else if (currentTag.size() < 8000)
 				currentTag.push_back(*b);
-			b++;
 			continue;
 		}
+
+		unicode_char ch=*b;
 
 		if (inTag == '&') // Fetching an entity.
 		{
@@ -612,13 +768,13 @@ void htmlParser::parseline(vector<unicode_char> &s)
 			{
 				inTag=0;
 
-				string sch;
+				std::string sch;
 
 				sch.insert(sch.end(),
 					   currentTag.begin(),
 					   currentTag.end());
 
-				if ( (*b=getHtmlEntity(sch.substr(0,
+				if ( (ch=getHtmlEntity(sch.substr(0,
 								  sch.size
 								  ()-1)
 						       )) == 0)
@@ -631,138 +787,73 @@ void htmlParser::parseline(vector<unicode_char> &s)
 							  sch.begin(),
 							  sch.end());
 
-					parseline(currentTag);
-					b++;
-					sb=tagStack.begin();
-					se=tagStack.end();
+					std::vector<unicode_char>
+						buf(currentTag);
+					parse(buf);
 					continue;
 				}
 			}
 			else
 			{
-				b++;
 				continue;
 			}
 		}
-		else if (*b == '<' || *b == '&')
+		else if (ch == '<' || ch == '&')
 		{
 			currentTag.clear();
-			inTag= *b;
-			b++;
+			inTag= ch;
 			continue;
+		}
+
+		std::list<tag>::iterator se=tagStack.end();
+
+		textAttributes attr;
+		bool pre=false;
+
+		if (se != tagStack.begin())
+		{
+			--se;
+			attr=se->attr;
+			pre=se->preformatted;
 		}
 
 		// If we've just seen an <LI>, punt it:
 
 		if (leadin_prefix.size() > 0)
 		{
-			vector<unicode_char> pfix_copy=leadin_prefix;
+			std::vector<unicode_char> pfix_copy=leadin_prefix;
 
 			leadin_prefix.clear();
-			parseline(pfix_copy);
+
+			parse(pfix_copy);
 		}
 
-		if (currentLine.size() >= targetLength)
+		if (ch == ' ' && pre)
+			ch=160; // &nbsp;
+
+		if (ch == '\n')
 		{
-			vector<enhanced_char> wrapped;
-
-			if (wordBreak > 0)
+			if (pre)
 			{
-				wrapped.insert(wrapped.begin(),
-					       currentLine.begin()
-					       + wordBreak + 1,
-					       currentLine.end());
+				static const unicode_char br[]
+					={'<','B','R','>'};
 
-				currentLine.erase(currentLine.begin()
-						  + wordBreak,
-						  currentLine.end());
-			}
-
-
-			fmtline(true);
-			currentLine.insert(currentLine.end(),
-					   wrapped.begin(),
-					   wrapped.end());
-			sb=tagStack.begin();
-			se=tagStack.end();
-		}
-
-		if (isb(*b)) // Is this a blank?
-		{
-			list<tag>::iterator p;
-
-			string dummy;
-			vector<unicode_char> dummyw;
-
-			if (sb != se && (--(p=se))->preformatted)
-			{
-
-				// In preformatted section:
-
-				if (*b == '\n')
-				{
-					dummy="<BR>";
-
-					dummyw.insert(dummyw.end(),
-						      dummy.begin(),
-						      dummy.end());
-
-					parseline(dummyw);
-					b++;
-					continue;
-				}
-
-				// Other spaces are converted to &nbsp;'s
-
-				int n=1;
-
-				if (*b == '\t')
-					n= 8 - (currentLine.size() % 8);
-
-				dummy="&nbsp;";
-				dummyw.clear();
-
-				while (n--)
-					dummyw.insert(dummyw.end(),
-						      dummy.begin(),
-						      dummy.end());
-
-				parseline(dummyw);
-				b++;
+				std::vector<unicode_char> buf(br, br+4);
+				parse(buf);
 				continue;
 			}
-
-			// Collapse multiple spaces into one.
-
-			if (currentLine.size() == 0 ||
-			    currentLine[currentLine.size()-1].ch == ' ')
-			{
-				b++;
-				continue;
-			}
-
-			// Get active attribute.
-
-			list<tag>::iterator t=se;
-			textAttributes a= sb == se ? textAttributes()
-				: (--t)->attr;
-
-			wordBreak=currentLine.size();
-			currentLine.push_back(enhanced_char(' ', a));
+			ch=' ';
 		}
-		else // Not a blank char.
-		{
-			list<tag>::iterator t=se;
-			textAttributes a= sb == se ? textAttributes()
-				: (--t)->attr;
 
-			currentLine.push_back(enhanced_char(*b, a));
-		}
-		b++;
+		if (ch == '\t' && !pre)
+			ch=' ';
+
+		if (ch == '\t' || !isb(ch) || !isb(currentLine.getLastChar()))
+			currentLine.submit(ch, attr);
 	}
 }
 
-unicode_char htmlParser::getHtmlEntity(string entityName)
+unicode_char htmlParser::getHtmlEntity(std::string entityName)
 {
 	const char *cp=entityName.c_str();
 
@@ -772,11 +863,11 @@ unicode_char htmlParser::getHtmlEntity(string entityName)
 
 		if (*cp == 'x' || *cp == 'X')
 		{
-			istringstream i(entityName.substr(2));
+			std::istringstream i(entityName.substr(2));
 
 			unsigned long uln=0;
 
-			i >> hex >> uln;
+			i >> std::hex >> uln;
 
 			c=(unicode_char)uln;
 		}
@@ -791,22 +882,14 @@ unicode_char htmlParser::getHtmlEntity(string entityName)
 		return c;
 	}
 
-
-	const char *p=entityName.c_str();
-	size_t i;
-
-	for (i=0; unicodeEntityList[i].name; i++)
-		if (strcmp(unicodeEntityList[i].name, p) == 0)
-			return unicodeEntityList[i].iso10646;
-
-	return 0;
+	return unicode_html40ent_lookup(entityName.c_str());
 }
 
-void htmlParser::urlDecode(string url, vector<unicode_char> &uc)
+void htmlParser::urlDecode(std::string url, std::vector<unicode_char> &uc)
 {
 	uc.reserve(uc.size()+url.size());
 
-	string::iterator b=url.begin(), e=url.end();
+	std::string::iterator b=url.begin(), e=url.end();
 
 	while (b != e)
 	{
@@ -824,11 +907,11 @@ void htmlParser::urlDecode(string url, vector<unicode_char> &uc)
 				++b;
 				if (e-b >= 4)
 				{
-					istringstream i(string(b, b+4));
+					std::istringstream i(std::string(b, b+4));
 
 					unsigned long u=0;
 
-					i >> hex >> u;
+					i >> std::hex >> u;
 
 					if (u)
 						uc.push_back(u);
@@ -839,11 +922,11 @@ void htmlParser::urlDecode(string url, vector<unicode_char> &uc)
 
 			if (e-b >= 2)
 			{
-				istringstream i(string(b, b+2));
+				std::istringstream i(std::string(b, b+2));
 
 				unsigned long u=0;
 
-				i >> hex >> u;
+				i >> std::hex >> u;
 
 				if (u)
 					uc.push_back(u);
@@ -859,7 +942,7 @@ void htmlParser::urlDecode(string url, vector<unicode_char> &uc)
 			continue;
 		}
 
-		string::iterator p=++b;
+		std::string::iterator p=++b;
 
 		while (p != e && *p != ';')
 		{
@@ -872,7 +955,7 @@ void htmlParser::urlDecode(string url, vector<unicode_char> &uc)
 
 		unicode_char u;
 
-		if (p != e && *p == ';' && (u=getHtmlEntity(string(b, p)))!=0)
+		if (p != e && *p == ';' && (u=getHtmlEntity(std::string(b, p)))!=0)
 		{
 			uc.push_back(u);
 			b= ++p;
@@ -911,7 +994,7 @@ void htmlParser::cgiDecode(const std::vector<unicode_char> &uc,
 		if (ee == e)
 			ee=b;
 
-		string n;
+		std::string n;
 
 		n.insert(n.end(), p, ee);
 		if (ee != b)
@@ -923,24 +1006,23 @@ void htmlParser::cgiDecode(const std::vector<unicode_char> &uc,
 	}
 }
 
-
 // Opening a new tag.
 
 void htmlParser::newTag()
 {
 	inTag=0;
 
-	vector<unicode_char> tagStr=currentTag;
+	std::vector<unicode_char> tagStr=currentTag;
 
 	currentTag.clear();
 
 	tag new_tag;
 
-	vector<unicode_char>::iterator b=tagStr.begin(), e=tagStr.end();
+	std::vector<unicode_char>::iterator b=tagStr.begin(), e=tagStr.end();
 
 	skipspc(b, e);
 
-	string tagname="";
+	std::string tagname="";
 
 	while (b != e)
 	{
@@ -960,8 +1042,8 @@ void htmlParser::newTag()
 
 	while (b != e)
 	{
-		string name="";
-		vector<unicode_char> value;
+		std::string name="";
+		std::vector<unicode_char> value;
 
 		while (b != e && !isb(*b))
 		{
@@ -1029,7 +1111,7 @@ void htmlParser::newTag()
 	{
 		static unicode_char centerStr[]={'C', 'E', 'N', 'T', 'E', 'R'};
 
-		vector<unicode_char> center;
+		std::vector<unicode_char> center;
 
 		center.insert(center.end(), centerStr,
 			      centerStr
@@ -1048,12 +1130,12 @@ void htmlParser::newTag()
 	{
 		tagname="P";
 
-		string s("font-style: italic;");
-		vector<unicode_char> v;
+		std::string s("font-style: italic;");
+		std::vector<unicode_char> v;
 		v.insert(v.end(), s.begin(), s.end());
 
 		new_tag.attributes
-			.push_back( make_pair(string("STYLE"), v));
+			.push_back( make_pair(std::string("STYLE"), v));
 	}
 
 	if (tagname == "/DT")
@@ -1071,7 +1153,7 @@ void htmlParser::newTag()
 	{
 		const char *p=tagname.c_str()+1;
 
-		list<tag>::iterator b=tagStack.begin(),
+		std::list<tag>::iterator b=tagStack.begin(),
 			e=tagStack.end();
 
 		while (b != e)
@@ -1093,8 +1175,8 @@ void htmlParser::newTag()
 					// any partial line needs to be
 					// flushed.
 
-					if (currentLine.size() > 0)
-						fmtline(false);
+					if (!currentLine.empty())
+						currentLine.flush();
 					closetag(e);
 				}
 				else
@@ -1102,8 +1184,8 @@ void htmlParser::newTag()
 					// Tags that imply end of paragraph,
 					// and start of new one.
 
-					if (currentLine.size() > 0)
-						fmtline(false);
+					if (!currentLine.empty())
+						currentLine.flush();
 					closetag(e);
 					newParagraph();
 				}
@@ -1117,26 +1199,26 @@ void htmlParser::newTag()
 
 	if (tagname == "A")
 	{
-		vector<unicode_char> href;
+		std::vector<unicode_char> href;
 
 		new_tag.getAttribute("HREF", href);
 
 		if (href.size() == 0)
 			return;
 
-		string s("font-style: italic;");
-		vector<unicode_char> v;
+		std::string s("font-style: italic;");
+		std::vector<unicode_char> v;
 		v.insert(v.end(), s.begin(), s.end());
 
 		new_tag.attributes
-			.push_back( make_pair(string("STYLE"), v));
+			.push_back( make_pair(std::string("STYLE"), v));
 	}
 
 	// Visually show embedded images.
 
 	if (tagname == "IMG")
 	{
-		vector<unicode_char> txt;
+		std::vector<unicode_char> txt;
 
 		new_tag.getAttribute("ALT", txt);
 
@@ -1145,7 +1227,7 @@ void htmlParser::newTag()
 
 		if (txt.size() == 0)
 		{
-			string s="[IMAGE]";
+			std::string s="[IMAGE]";
 
 			txt.insert(txt.end(), s.begin(), s.end());
 		}
@@ -1155,14 +1237,15 @@ void htmlParser::newTag()
 			txt.push_back(']');
 		}
 
-		parseline(txt);
+		parse(txt);
 		return;
 	}
 
 	if (tagname == "BR" || tagname == "DIV")
 	{
 		bool saveParagraphBreak=paragraphBreak;
-		fmtline(false);
+
+		currentLine.flush();
 
 		paragraphBreak=saveParagraphBreak;
 		return;
@@ -1173,10 +1256,11 @@ void htmlParser::newTag()
 
 	if (tagname == "TD")
 	{
-		vector<unicode_char> w;
+		std::vector<unicode_char> spc;
 
-		w.push_back(' ');
-		parseline(w);
+		spc.push_back(' ');
+
+		parse(spc);
 		return;
 	}
 
@@ -1185,57 +1269,59 @@ void htmlParser::newTag()
 
 	if (tagname == "B")
 	{
-		string s("font-weight: bold;");
-		vector<unicode_char> v;
+		std::string s("font-weight: bold;");
+		std::vector<unicode_char> v;
 		v.insert(v.end(), s.begin(), s.end());
 
 		new_tag.attributes
-			.push_back( make_pair(string("STYLE"), v));
+			.push_back( make_pair(std::string("STYLE"), v));
 	}
 
 	if (tagname == "U")
 	{
-		string s("text-decoration: underline;");
-		vector<unicode_char> v;
+		std::string s("text-decoration: underline;");
+		std::vector<unicode_char> v;
 		v.insert(v.end(), s.begin(), s.end());
 
 		new_tag.attributes
-			.push_back( make_pair(string("STYLE"), v));
+			.push_back( make_pair(std::string("STYLE"), v));
 	}
 
 	if (tagname == "I")
 	{
-		string s("font-style: italic;");
-		vector<unicode_char> v;
+		std::string s("font-style: italic;");
+		std::vector<unicode_char> v;
 		v.insert(v.end(), s.begin(), s.end());
 
 		new_tag.attributes
-			.push_back( make_pair(string("STYLE"), v));
+			.push_back( make_pair(std::string("STYLE"), v));
 	}
 
 	if (tagname == "HR")
 	{
-		if (currentLine.size() > 0)
-			fmtline(false);
+		if (!currentLine.empty())
+			currentLine.flush();
 
-		vector<unicode_char> dummyw;
+		std::vector<unicode_char> dummyw;
 
 		size_t n=getLineLength();
 
 		dummyw.insert(dummyw.end(), n, (unicode_char)'_');
-		parseline(dummyw);
+		parse(dummyw);
+		if (!currentLine.empty())
+			currentLine.flush();
 		return;
 	}
 
 	if (tagname == "LI")
 	{
-		if (currentLine.size() > 0)
-			fmtline(false);
+		if (!currentLine.empty())
+			currentLine.flush();
 
 		if (nblanklines == 0)
-			fmtline(false);
+			currentLine.flush();
 
-		string pfix="<B>&bull;</B>&nbsp;";
+		std::string pfix="<B>&bull;</B>&nbsp;";
 
 		leadin_prefix.clear();
 		leadin_prefix.insert(leadin_prefix.begin(),
@@ -1253,7 +1339,7 @@ void htmlParser::newTag()
 
 	if (!strchr(new_tag.name->options, OPT_STACK_C))
 	{
-		list<tag>::iterator b, e;
+		std::list<tag>::iterator b, e;
 
 		while ((b=tagStack.begin()) != (e=tagStack.end()) &&
 		       (--e)->name->priority == new_tag.name->priority)
@@ -1263,8 +1349,8 @@ void htmlParser::newTag()
 	if (strcmp(new_tag.name->name, "PRE") == 0)
 	{
 		new_tag.preformatted=true;
-		if (currentLine.size() > 0)
-			fmtline(false);
+		if (!currentLine.empty())
+			currentLine.flush();
 	}
 	else if (!strchr(new_tag.name->options, OPT_NOBREAK_C))
 		newParagraph();
@@ -1278,7 +1364,7 @@ void htmlParser::opentag(std::string tagname,
 {
 	if (!tagStack.empty())
 	{
-		list<tag>::iterator last=--tagStack.end();
+		std::list<tag>::iterator last=--tagStack.end();
 
 		tagRef.attr=last->attr;
 
@@ -1290,7 +1376,7 @@ void htmlParser::opentag(std::string tagname,
 
 	if (tagname == "A")
 	{
-		vector<unicode_char> href;
+		std::vector<unicode_char> href;
 
 		tagRef.getAttribute("HREF", href);
 		tagRef.attr.url.insert(tagRef.attr.url.begin(),
@@ -1308,7 +1394,7 @@ void htmlParser::opentag(std::string tagname,
 	{
 		if (strcasecmp(b->first.c_str(), "STYLE") == 0)
 		{
-			string s;
+			std::string s;
 
 			s.insert(s.end(), b->second.begin(), b->second.end());
 
@@ -1322,11 +1408,11 @@ void htmlParser::opentag(std::string tagname,
 
 	if (tagname == "A")
 	{
-		ostringstream o;
+		std::ostringstream o;
 
 		o << "&lt;URL:";
 
-		string::iterator b=tagRef.attr.url.begin(),
+		std::string::iterator b=tagRef.attr.url.begin(),
 			e=tagRef.attr.url.end();
 
 		while (b != e)
@@ -1346,22 +1432,22 @@ void htmlParser::opentag(std::string tagname,
 
 		std::string os=o.str();
 
-		vector<unicode_char> u;
+		std::vector<unicode_char> u;
 
 		u.reserve(os.size());
 		u.insert(u.end(), os.begin(), os.end());
 
-		parseline(u);
+		parse(u);
 	}
 }
 
 // Parse a style.
 
-void htmlParser::updateTagStyle(tag &tagRef, string style)
+void htmlParser::updateTagStyle(tag &tagRef, std::string style)
 {
 	while (style.size() > 0)
 	{
-		string property;
+		std::string property;
 
 		// Get next property
 
@@ -1380,8 +1466,8 @@ void htmlParser::updateTagStyle(tag &tagRef, string style)
 
 		// Parse property name, value
 
-		string propName;
-		string propValue;
+		std::string propName;
+		std::string propValue;
 
 		n=property.find(':');
 
@@ -1449,14 +1535,14 @@ void htmlParser::updateTagStyle(tag &tagRef, string style)
 	}
 }
 
-void htmlParser::closetag(list<tag>::iterator stackPtr)
+void htmlParser::closetag(std::list<tag>::iterator stackPtr)
 {
 	leadin_prefix.clear();
 	tagStack.erase(stackPtr, tagStack.end());
 }
 
-void htmlParser::skipspc(vector<unicode_char>::iterator &b,
-			 vector<unicode_char>::iterator &e)
+void htmlParser::skipspc(std::vector<unicode_char>::iterator &b,
+			 std::vector<unicode_char>::iterator &e)
 {
 	while (b != e && isb(*b))
 		b++;
@@ -1464,13 +1550,13 @@ void htmlParser::skipspc(vector<unicode_char>::iterator &b,
 
 void htmlParser::newParagraph()
 {
-	if (paragraphBreak && currentLine.size() == 0)
+	if (paragraphBreak && currentLine.empty())
 		return;
 
-	if (currentLine.size() > 0)
-		fmtline(true);
+	if (!currentLine.empty())
+		currentLine.flush();
 
-	fmtline(false);
+	currentLine.flush();
 	paragraphBreak=true;
 }
 
@@ -1488,7 +1574,7 @@ bool htmlParser::isu(unicode_char c)
 	return ((unicode_char)((unsigned char)c) == c && strchr(u, c) != 0);
 }
 
-void htmlParser::tou(string::iterator b, string::iterator e)
+void htmlParser::tou(std::string::iterator b, std::string::iterator e)
 {
 	while (b != e)
 	{
@@ -1500,8 +1586,8 @@ void htmlParser::tou(string::iterator b, string::iterator e)
 	}
 }
 
-void htmlParser::tou(vector<unicode_char>::iterator b,
-		     vector<unicode_char>::iterator e)
+void htmlParser::tou(std::vector<unicode_char>::iterator b,
+		     std::vector<unicode_char>::iterator e)
 {
 	while (b != e)
 	{
@@ -1515,3 +1601,4 @@ void htmlParser::tou(vector<unicode_char>::iterator b,
 		b++;
 	}
 }
+

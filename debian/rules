@@ -11,4 +11,4 @@ install/cone::
 	rmdir $(DEB_DESTDIR)usr/share/man/man3/
 
 get-orig-source:
-	-uscan --upstream-version 0 --rename
+	-uscan --force-download --rename

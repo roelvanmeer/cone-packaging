@@ -1,5 +1,4 @@
-/* $Id: imapparsefmt.C,v 1.3 2009/06/27 17:12:00 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.

@@ -5,7 +5,6 @@
 ** distribution information.
 */
 
-static const char gpglib_h_rcsid[]="$Id: gpglib.h,v 1.10 2009/06/27 17:12:00 mrsam Exp $";
 
 #ifdef  __cplusplus
 extern "C" {
@@ -95,28 +94,26 @@ int libmail_gpg_inputfunc_readfp(char *buf, size_t cnt, void *vp);
 
 	/* Other functions: */
 
-struct unicode_info;
-
 int libmail_gpg_cleanup();
 int libmail_gpg_has_gpg(const char *gpgdir);
 
 int libmail_gpg_genkey(const char *gpgdir,
-	       const struct unicode_info *charset,
-	       const char *name,
-	       const char *addr,
-	       const char *comment,
-	       int skeylen,
-	       int ekeylen,
-	       unsigned expire,
-	       char expire_unit,
-	       const char *passphrase,
+		       const char *charset,
+		       const char *name,
+		       const char *addr,
+		       const char *comment,
+		       int skeylen,
+		       int ekeylen,
+		       unsigned expire,
+		       char expire_unit,
+		       const char *passphrase,
 
-	       int (*dump_func)(const char *, size_t, void *),
-	       int (*timeout_func)(void *),
-	       void *voidarg);
+		       int (*dump_func)(const char *, size_t, void *),
+		       int (*timeout_func)(void *),
+		       void *voidarg);
 
 struct gpg_list_info {
-	const struct unicode_info *charset;
+	const char *charset;
 	const char *disabled_msg;
 	const char *revoked_msg;
 	const char *expired_msg;

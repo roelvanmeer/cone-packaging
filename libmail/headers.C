@@ -1,5 +1,4 @@
-/* $Id: headers.C,v 1.4 2010/05/02 12:03:22 mrsam Exp $
-**
+/*
 ** Copyright 2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -261,6 +260,11 @@ mail::Header *mail::Header::mime::clone() const
 	return c;
 }
 
+mail::Header::listitem::listitem(const listitem &hArg)
+	: h(hArg.h->clone())
+{
+}
+
 mail::Header::listitem::listitem(const mail::Header &hArg)
 	: h(hArg.clone())
 {
@@ -268,6 +272,16 @@ mail::Header::listitem::listitem(const mail::Header &hArg)
 
 mail::Header::listitem::~listitem()
 {
+	delete h;
+}
+
+mail::Header::listitem &mail::Header::listitem::operator=(const listitem &hArg)
+{
+	Header *p=hArg.h->clone();
+
+	delete h;
+	h=p;
+	return *this;
 }
 
 mail::Header::listitem &mail::Header::listitem::operator=(const Header &hArg)

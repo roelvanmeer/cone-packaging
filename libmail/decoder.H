@@ -1,5 +1,4 @@
-/* $Id: decoder.H,v 1.2 2004/04/28 00:35:15 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.

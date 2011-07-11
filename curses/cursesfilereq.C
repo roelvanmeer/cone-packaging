@@ -1,6 +1,5 @@
-/* $Id: cursesfilereq.C,v 1.2 2004/11/20 02:37:20 mrsam Exp $
-**
-** Copyright 2002, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -41,8 +40,6 @@
 #if	HAVE_GLOB_H
 #include <glob.h>
 #endif
-
-using namespace std;
 
 CursesFileReq::Dirlist::Dirlist(CursesFileReq *parentArg)
 	: CursesVScroll(parentArg), parent(parentArg), currentRow(-1)
@@ -112,37 +109,43 @@ void CursesFileReq::Dirlist::drawItem(size_t n)
 		colNum = w+2;
 	}
 
-	vector<wchar_t> nameW;
+	std::pair<std::vector<unicode_char>, size_t> nameW;
 
-	mbtow(directory[n].name.c_str(), nameW);
-
-	if (nameW.size() >= w)
-		nameW.erase(nameW.begin() + w, nameW.end());
-	else
-		nameW.insert(nameW.end(), w-nameW.size(), ' ');
-
-	string s= (*CursesFileReq::fmtSizeFunc)(directory[n].size,
-						directory[n].isDir);
-
-	vector<wchar_t> sizeW;
-
-	mbtow(s.c_str(), sizeW);
-
-	if (sizeW.size() < nameW.size())
 	{
-		size_t i;
+		widecharbuf wc;
 
-		for (i=0; i<sizeW.size(); i++)
-			nameW[nameW.size() - sizeW.size() + i]=sizeW[i];
+		wc.init_string(directory[n].name);
+		wc.expandtabs(0);
+		nameW=wc.get_unicode_truncated(w, 0);
 	}
-	nameW.push_back(0);
 
-	writeText(&nameW[0], rowNum, colNum,
+	std::string s= (*CursesFileReq::fmtSizeFunc)(directory[n].size,
+						     directory[n].isDir);
+
+	std::pair<std::vector<unicode_char>, size_t> sizeW;
+
+	sizeW.second=0;
+	if (nameW.second < w)
+	{
+		widecharbuf wc;
+
+		wc.init_string(s);
+		wc.expandtabs(0);
+		sizeW=wc.get_unicode_truncated(w-nameW.second, 0);
+	}
+
+	nameW.first.insert(nameW.first.end(), w - nameW.second - sizeW.second,
+			   ' ');
+
+	nameW.first.insert(nameW.first.end(), sizeW.first.begin(),
+			   sizeW.first.end());
+
+	writeText(nameW.first, rowNum, colNum,
 		  CursesAttr().setReverse(currentRow >= 0 &&
 					  (size_t)currentRow == n));
 }
 
-void CursesFileReq::Dirlist::operator=(vector<Direntry> &directoryArg)
+void CursesFileReq::Dirlist::operator=(std::vector<Direntry> &directoryArg)
 {
 	directory=directoryArg;
 	currentRow= -1;
@@ -307,17 +310,17 @@ void CursesFileReq::Dirlist::focusLost()
 	draw();
 }
 
-string CursesFileReq::currentDir;
+std::string CursesFileReq::currentDir;
 
-static string defaultSizeFunc(unsigned long size, bool isDir)
+static std::string defaultSizeFunc(unsigned long size, bool isDir)
 {
 	if (isDir)
 		return " (Dir)";
 
-	string buffer;
+	std::string buffer;
 
 	{
-		ostringstream o;
+		std::ostringstream o;
 
 		o << " (" << size << ")";
 		buffer=o.str();
@@ -326,7 +329,7 @@ static string defaultSizeFunc(unsigned long size, bool isDir)
 	return buffer;
 }
 
-string (*CursesFileReq::fmtSizeFunc)(unsigned long, bool)= &defaultSizeFunc;
+std::string (*CursesFileReq::fmtSizeFunc)(unsigned long, bool)= &defaultSizeFunc;
 
 CursesFileReq::CursesFileReq(CursesMainScreen *mainScreen,
 			     const char *filenameLabelArg,
@@ -366,7 +369,7 @@ CursesFileReq::CursesFileReq(CursesMainScreen *mainScreen,
 
 	if (currentDir.size() == 0)
 	{
-		string homedir=getenv("HOME");
+		std::string homedir=getenv("HOME");
 
 		if (homedir.size() == 0)
 		{
@@ -429,13 +432,27 @@ void CursesFileReq::doresized()
 
 	size_t dls=c < w ? w-c:1;
 
-	vector<wchar_t> directoryW;
+	std::vector<unicode_char> directoryW;
 
-	mbtow(currentDir.c_str(), directoryW);
+	mail::iconvert::convert(currentDir, unicode_default_chset(),
+				directoryW);
 
-	if (directoryW.size() > dls)
+	size_t directoryW_size;
+
 	{
-		vector<wchar_t>::iterator b, e, c, lastSlash;
+		widecharbuf wc;
+
+		wc.init_unicode(directoryW.begin(), directoryW.end());
+		wc.expandtabs(0);
+
+		wc.tounicode(directoryW);
+
+		directoryW_size=wc.wcwidth(0);
+	}
+
+	if (directoryW_size > dls)
+	{
+		std::vector<unicode_char>::iterator b, e, c, lastSlash;
 
 		b=directoryW.begin();
 		e=directoryW.end();
@@ -448,7 +465,7 @@ void CursesFileReq::doresized()
 				lastSlash=c;
 		}
 
-		vector<wchar_t> replVector;
+		std::vector<unicode_char> replVector;
 
 		replVector.push_back('/');
 		replVector.push_back('.');
@@ -458,29 +475,48 @@ void CursesFileReq::doresized()
 
 		replVector.insert(replVector.end(), lastSlash, e);
 
-		size_t suffixSize=replVector.size();
+		size_t suffixSize;
 
-		lastSlash=b;
+		{
+			widecharbuf wc;
+
+			wc.init_unicode(replVector.begin(), replVector.end());
+
+			suffixSize=wc.wcwidth(0);
+		}
 
 		if (suffixSize < dls)
 		{
-			size_t cnt= dls-suffixSize;
-			vector<wchar_t>::iterator p;
+			widecharbuf wc;
 
-			for (p=b; cnt; p++, --cnt)
+			wc.init_unicode(directoryW.begin(), lastSlash);
+
+			directoryW=wc.get_unicode_truncated(dls-suffixSize, 0)
+				.first;
+
+			lastSlash=b=directoryW.begin();
+			e=directoryW.end();
+
+			for (c=b; c != e; ++c)
 			{
-				if (*p == '/')
-					lastSlash=p;
+				if (*c == '/')
+					lastSlash=c;
 			}
+
+		}
+		else
+		{
+			lastSlash=directoryW.begin();
 		}
 
 		directoryW.erase(lastSlash, directoryW.end());
+
 		directoryW.insert(directoryW.end(),
 				  replVector.begin(), replVector.end());
 	}
 
-	directoryW.push_back(0);
-	directoryName.setText(wtomb(&*directoryW.begin()));
+	directoryName.setText(mail::iconvert::convert(directoryW,
+						      unicode_default_chset()));
 }
 
 void CursesFileReq::requestFocus()
@@ -501,14 +537,14 @@ void CursesFileReq::select(Direntry &d)
 		return;
 	}
 
-	vector<string> filenameList;
+	std::vector<std::string> filenameList;
 
 	filenameList.push_back(currentDir + "/" + d.name);
 	selected(filenameList);
 }
 
-void CursesFileReq::expand(string pattern,
-			   vector<string> &filenameList)
+void CursesFileReq::expand(std::string pattern,
+			   std::vector<std::string> &filenameList)
 {
 	filenameList.clear();
 
@@ -561,7 +597,7 @@ void CursesFileReq::expand(string pattern,
 			   
 void CursesFileReq::filenameEnter()
 {
-	string s=filenameField.getText();
+	std::string s=filenameField.getText();
 
 	if (s.size() == 0)
 		return;
@@ -571,7 +607,7 @@ void CursesFileReq::filenameEnter()
 	if (s[0] != '/')
 		s=currentDir + "/" + s;
 
-	vector<string> filenameList;
+	std::vector<std::string> filenameList;
 
 	expand(s, filenameList);
 
@@ -597,16 +633,16 @@ void CursesFileReq::filenameEnter()
 
 bool CursesFileReq::processKey(const Curses::Key &key)
 {
-	if (key == '\x03')
+	if (key.plain() && key.ukey == '\x03')
 	{
 		abort();
 		return true;
 	}
-	return key.plain() && (unsigned char)key.key == key.key &&
-		(unsigned char)key.key < ' ';
+	return key.plain() && (unsigned char)key.ukey == key.ukey &&
+		(unsigned char)key.ukey < ' ';
 }
 
-void CursesFileReq::selected(vector<string> &filenameList)
+void CursesFileReq::selected(std::vector<std::string> &filenameList)
 {
 	selectedFiles=filenameList;
 	keepgoing=false;
@@ -622,10 +658,10 @@ void CursesFileReq::opendir()
 {
 	currentDir=washfname(currentDir); // cleanup filename.
 
-	vector<Direntry> newDirList;
+	std::vector<Direntry> newDirList;
 
 	{
-		vector<string> filenames;
+		std::vector<std::string> filenames;
 
 		DIR *dirp= ::opendir(currentDir.c_str());
 
@@ -645,7 +681,7 @@ void CursesFileReq::opendir()
 
 		// stat everything, figure out if its a dir or not
 
-		vector<string>::iterator b=filenames.begin(),
+		std::vector<std::string>::iterator b=filenames.begin(),
 			e=filenames.end();
 
 		while (b != e)
@@ -656,7 +692,7 @@ void CursesFileReq::opendir()
 
 			struct stat statInfo;
 
-			string n=currentDir + "/" + *b++;
+			std::string n=currentDir + "/" + *b++;
 
 			if (stat(n.c_str(), &statInfo) < 0)
 			    continue;
@@ -674,11 +710,11 @@ void CursesFileReq::opendir()
 	dirlist=newDirList;
 }
 
-string CursesFileReq::washfname(string filename)
+std::string CursesFileReq::washfname(std::string filename)
 {
 	filename += "/"; // Temporary thing.
 
-	string::iterator b, c, e;
+	std::string::iterator b, c, e;
 
 	b=filename.begin();
 	e=filename.end();
@@ -766,7 +802,7 @@ bool CursesFileReq::DirentryComparator::operator()(const Direntry &a,
 	return (strcoll(a.name.c_str(), b.name.c_str()) < 0);
 }
 
-bool CursesFileReq::listKeys( vector< pair<string, string> > &list)
+bool CursesFileReq::listKeys( std::vector< std::pair<std::string, std::string> > &list)
 {
 	return true;
 }

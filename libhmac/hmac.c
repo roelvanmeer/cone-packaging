@@ -9,7 +9,6 @@
 
 #include	"hmac.h"
 
-static const char rcsid[]="$Id: hmac.c,v 1.4 2006/01/22 03:37:04 mrsam Exp $";
 
 struct hmac_hashinfo *hmac_list[]= {HMAC_LIST};
 

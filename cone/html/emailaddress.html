@@ -62,28 +62,38 @@ information.
         <br clear="none"/>
         mail::emailAddress&#160;address;<br clear="none"/>
         <br clear="none"/>
-        address.setDisplayName("J&#243;se&#160;Smith");<br clear="none"/>
-        address.setDisplayAddr("josesmith@example.com");<br clear="none"/>
+        bool&#160;errflag;<br clear="none"/>
         <br clear="none"/>
-        std::string&#160;addr=address.getDisplayAddr();<br clear="none"/>
-        std::string&#160;name=address.getDisplayName();<br clear="none"/>
+        address.setDisplayName("J&#243;se&#160;Smith",&#160;"iso-8859-1");<br clear="none"/>
+
+        address.setDisplayAddr("josesmith@example.com",&#160;"utf-8");<br clear="none"/>
+
+        <br clear="none"/>
+        std::string&#160;addr=address.getDisplayAddr("utf-8");<br clear="none"/>
+
+        std::string&#160;addr=address.getDisplayAddr("utf-8",&#160;errflag);<br clear="none"/>
+
+        std::string&#160;name=address.getDisplayName("utf-8");<br clear="none"/>
+
+        std::string&#160;name=address.getDisplayName("utf-8",&#160;errflag);<br clear="none"/>
+
         <br clear="none"/>
         address.setAddr(addr);<br clear="none"/>
-        address.setDisplayName(name);<br clear="none"/>
+        address.setDisplayName(name,&#160;"utf-8");<br clear="none"/>
         <br clear="none"/></p>
       </div>
     </div>
 
     <div class="refsect1" title="USAGE">
-      <a id="id605048" shape="rect" name="id605048"> </a>
+      <a id="id648478" shape="rect" name="id648478"> </a>
 
       <h2>USAGE</h2>
 
       <p><span class="structname">mail::emailAddress</span> is a
       subclass of <span class="structname">mail::address</span>
       that defines four new methods: <code class="function">getDisplayName()</code>, <code class="function">setDisplayName()</code>, <code class="function">getDisplayAddr()</code> and <code class="function">setDisplayAddr()</code>, which retrieve or set the
-      name and the address components of an E-mail address using
-      the native character set. <span class="structname">mail::emailAddress</span> can be constructed
+      name and the address components of an E-mail address
+      specified in a native character set. <span class="structname">mail::emailAddress</span> can be constructed
       from an existing <span class="structname">mail::address</span>; or, the default
       constructor initializes an empty address, then use
       <code class="function">setDisplayName()</code> and
@@ -91,6 +101,10 @@ information.
       address structure. <code class="function">setDisplayName()</code> and <code class="function">setDisplayAddr()</code> return an empty string if
       the display name or address was succesfully mapped from the
       native character, or an error message.</p>
+
+      <p>The overloaded methods that take a boolean flag will
+      initialize it to indicate if the address contains characters
+      that do not exist in the specified character set.</p>
 
       <p>Non-Latin characters in the name component use MIME
       encoding. Passing the name component to <code class="function">setDisplayName()</code> MIME-encodes it using RFC
@@ -126,7 +140,7 @@ information.
     </div>
 
     <div class="refsect1" title="SEE ALSO">
-      <a id="id605284" shape="rect" name="id605284"> </a>
+      <a id="id648728" shape="rect" name="id648728"> </a>
 
       <h2>SEE ALSO</h2>
 

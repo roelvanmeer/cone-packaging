@@ -1,5 +1,4 @@
-/* $Id: abookfind.c,v 1.2 2006/02/12 17:59:56 mrsam Exp $
-**
+/*
 ** Copyright 2006, Double Precision Inc.
 **
 ** See COPYING for distribution information.

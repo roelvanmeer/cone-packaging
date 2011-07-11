@@ -1,5 +1,4 @@
-/* $Id: myserverpromptinfo.H,v 1.2 2003/09/14 19:20:38 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -30,7 +29,7 @@ public:
 
 	// Additional options:
 	std::vector< std::pair<std::string, std::string> > optionHelp;
-	std::vector< wchar_t > optionList;
+	std::vector< unicode_char > optionList;
 
 	Curses *currentFocus; // Internal use - saves previous focus.
 
@@ -50,6 +49,8 @@ public:
 			   std::string keydescr);
 
 	operator std::string() { return value; }
+
+	unicode_char firstChar();
 
 	bool aborted() const { return abortflag; }
 };

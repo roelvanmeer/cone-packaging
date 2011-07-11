@@ -3,7 +3,6 @@
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: testgpg.c,v 1.7 2006/05/28 15:29:52 mrsam Exp $";
 
 
 #include	"config.h"
@@ -36,7 +35,7 @@ static int poll_wait(void *dummy)
 
 static void genkey(const char *d)
 {
-	libmail_gpg_genkey(d, &unicode_ISO8859_1,
+	libmail_gpg_genkey(d, "iso-8859-1",
 		   "John Smith",
 		   "john@example.com",
 		   "Dummy ISO-8859 Tëëst key",

@@ -50,14 +50,16 @@ DIST_COMMON = $(am__configure_deps) $(srcdir)/../config.guess \
 	$(srcdir)/cone.dist.in $(srcdir)/cone.sh.in \
 	$(srcdir)/config.h.in $(srcdir)/http.handler.in \
 	$(top_srcdir)/configure $(top_srcdir)/intl/Makefile.in \
-	ABOUT-NLS
+	../ABOUT-NLS ../AUTHORS ../COPYING ../ChangeLog \
+	../config.guess ../config.rpath ../config.sub ../depcomp \
+	../install-sh ../ltmain.sh ../missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/codeset.m4 \
-	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/glibc2.m4 \
-	$(top_srcdir)/m4/glibc21.m4 $(top_srcdir)/m4/iconv.m4 \
-	$(top_srcdir)/m4/intdiv0.m4 $(top_srcdir)/m4/intl.m4 \
-	$(top_srcdir)/m4/intlmacosx.m4 $(top_srcdir)/m4/intmax.m4 \
-	$(top_srcdir)/m4/inttypes-pri.m4 \
+	$(top_srcdir)/m4/fcntl-o.m4 $(top_srcdir)/m4/gettext.m4 \
+	$(top_srcdir)/m4/glibc2.m4 $(top_srcdir)/m4/glibc21.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intdiv0.m4 \
+	$(top_srcdir)/m4/intl.m4 $(top_srcdir)/m4/intlmacosx.m4 \
+	$(top_srcdir)/m4/intmax.m4 $(top_srcdir)/m4/inttypes-pri.m4 \
 	$(top_srcdir)/m4/inttypes_h.m4 $(top_srcdir)/m4/lcmessage.m4 \
 	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
 	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
@@ -67,10 +69,10 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/codeset.m4 \
 	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
 	$(top_srcdir)/m4/printf-posix.m4 $(top_srcdir)/m4/progtest.m4 \
 	$(top_srcdir)/m4/size_max.m4 $(top_srcdir)/m4/stdint_h.m4 \
-	$(top_srcdir)/m4/uintmax_t.m4 $(top_srcdir)/m4/ulonglong.m4 \
-	$(top_srcdir)/m4/visibility.m4 $(top_srcdir)/m4/wchar_t.m4 \
-	$(top_srcdir)/m4/wint_t.m4 $(top_srcdir)/m4/xsize.m4 \
-	$(top_srcdir)/configure.in
+	$(top_srcdir)/m4/threadlib.m4 $(top_srcdir)/m4/uintmax_t.m4 \
+	$(top_srcdir)/m4/ulonglong.m4 $(top_srcdir)/m4/visibility.m4 \
+	$(top_srcdir)/m4/wchar_t.m4 $(top_srcdir)/m4/wint_t.m4 \
+	$(top_srcdir)/m4/xsize.m4 $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
@@ -129,7 +131,8 @@ am_cone_OBJECTS = acl.$(OBJEXT) addressbook.$(OBJEXT) \
 	cursesmessageflowedtext.$(OBJEXT) \
 	cursesmessagehtmlparser.$(OBJEXT) \
 	disconnectcallbackstub.$(OBJEXT) encryptionmenu.$(OBJEXT) \
-	filter.$(OBJEXT) filtereditscreen.$(OBJEXT) gettext.$(OBJEXT) \
+	filter.$(OBJEXT) filtereditscreen.$(OBJEXT) \
+	fkeytraphandler.$(OBJEXT) gettext.$(OBJEXT) \
 	globalkeys.$(OBJEXT) gpg.$(OBJEXT) hierarchy.$(OBJEXT) \
 	htmlentity.$(OBJEXT) htmlparser.$(OBJEXT) init.$(OBJEXT) \
 	macros.$(OBJEXT) mainmenu.$(OBJEXT) menuscreen.$(OBJEXT) \
@@ -142,23 +145,23 @@ am_cone_OBJECTS = acl.$(OBJEXT) addressbook.$(OBJEXT) \
 	myreadfolders.$(OBJEXT) nntpcommand.$(OBJEXT) \
 	opendialog.$(OBJEXT) opensubfolders.$(OBJEXT) \
 	outputdialog.$(OBJEXT) passwordlist.$(OBJEXT) \
-	previousscreen.$(OBJEXT) rfc2646parse.$(OBJEXT) \
-	savedialog.$(OBJEXT) searchcallback.$(OBJEXT) \
-	searchprompt.$(OBJEXT) specialfolder.$(OBJEXT) \
-	spellcheckerbase.$(OBJEXT) tags.$(OBJEXT) typeahead.$(OBJEXT) \
-	wraptext.$(OBJEXT)
+	previousscreen.$(OBJEXT) savedialog.$(OBJEXT) \
+	searchcallback.$(OBJEXT) searchprompt.$(OBJEXT) \
+	specialfolder.$(OBJEXT) spellcheckerbase.$(OBJEXT) \
+	tags.$(OBJEXT) typeahead.$(OBJEXT)
 cone_OBJECTS = $(am_cone_OBJECTS)
 am__DEPENDENCIES_2 =
 am_htmlparsertest_OBJECTS = htmlparsertest.$(OBJEXT) \
 	htmlparser.$(OBJEXT) htmlentity.$(OBJEXT)
 htmlparsertest_OBJECTS = $(am_htmlparsertest_OBJECTS)
-htmlparsertest_DEPENDENCIES = ../unicode/libunicode.la
-am_leaf_OBJECTS = curseseditmessage.$(OBJEXT) gettext.$(OBJEXT) \
+htmlparsertest_DEPENDENCIES = ../curses/libcurses.a \
+	../unicode/libunicode.la
+am_leaf_OBJECTS = curseseditmessage.$(OBJEXT) \
+	fkeytraphandler.$(OBJEXT) gettext.$(OBJEXT) \
 	htmlentity.$(OBJEXT) init.$(OBJEXT) leaf.$(OBJEXT) \
 	macros.$(OBJEXT) messagesize.$(OBJEXT) \
 	myserverpromptinfo.$(OBJEXT) opendialog.$(OBJEXT) \
-	savedialog.$(OBJEXT) spellcheckerbase.$(OBJEXT) \
-	wraptext.$(OBJEXT)
+	savedialog.$(OBJEXT) spellcheckerbase.$(OBJEXT)
 leaf_OBJECTS = $(am_leaf_OBJECTS)
 am_pwtest_OBJECTS = pwtest.$(OBJEXT)
 pwtest_OBJECTS = $(am_pwtest_OBJECTS)
@@ -289,6 +292,7 @@ GMSGFMT = @GMSGFMT@
 GMSGFMT_015 = @GMSGFMT_015@
 GREP = @GREP@
 HAVE_ASPRINTF = @HAVE_ASPRINTF@
+HAVE_NEWLOCALE = @HAVE_NEWLOCALE@
 HAVE_POSIX_PRINTF = @HAVE_POSIX_PRINTF@
 HAVE_SNPRINTF = @HAVE_SNPRINTF@
 HAVE_VISIBILITY = @HAVE_VISIBILITY@
@@ -304,6 +308,7 @@ INSTOBJEXT = @INSTOBJEXT@
 INTLBISON = @INTLBISON@
 INTLLIBS = @INTLLIBS@
 INTLOBJS = @INTLOBJS@
+INTL_DEFAULT_VERBOSITY = @INTL_DEFAULT_VERBOSITY@
 INTL_LIBTOOL_SUFFIX_PREFIX = @INTL_LIBTOOL_SUFFIX_PREFIX@
 INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
 LD = @LD@
@@ -411,7 +416,6 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
 localstatedir = @localstatedir@
-lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
@@ -432,7 +436,6 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 
-#$Id: Makefile.am,v 1.53 2009/06/27 17:12:00 mrsam Exp $
 #
 # Copyright 2003-2008, Double Precision Inc.
 #
@@ -472,11 +475,12 @@ cone_SOURCES = acl.C acl.H addressbook.C addressbook.H \
 	encryptionmenu.C encryptionmenu.H \
 	filter.C filter.H \
 	filtereditscreen.C filtereditscreen.H \
+	fkeytraphandler.C fkeytraphandler.H \
 	gettext.C gettext.H \
 	globalkeys.C globalkeys.H \
 	gpg.C gpg.H \
 	hierarchy.C hierarchy.H \
-	htmlentity.c htmlentity.h \
+	htmlentity.C htmlentity.h \
 	htmlparser.C htmlparser.H \
 	init.C init.H \
 	macros.C macros.H \
@@ -501,7 +505,6 @@ cone_SOURCES = acl.C acl.H addressbook.C addressbook.H \
 	outputdialog.C outputdialog.H \
 	passwordlist.C passwordlist.H \
 	previousscreen.C previousscreen.H \
-	rfc2646parse.C rfc2646parse.H \
 	savedialog.C savedialog.H \
 	searchcallback.C searchcallback.H \
 	searchprompt.C searchprompt.H \
@@ -509,13 +512,13 @@ cone_SOURCES = acl.C acl.H addressbook.C addressbook.H \
 	spellchecker.H \
 	spellcheckerbase.C spellcheckerbase.H \
 	tags.C tags.H \
-	typeahead.C typeahead.H \
-	wraptext.C wraptext.H
+	typeahead.C typeahead.H
 
 leaf_SOURCES = \
 	curseseditmessage.C \
+	fkeytraphandler.C \
 	gettext.C \
-	htmlentity.c \
+	htmlentity.C \
 	init.C \
 	leaf.C \
 	macros.C macros.H \
@@ -523,13 +526,12 @@ leaf_SOURCES = \
 	myserverpromptinfo.C \
 	opendialog.C \
 	savedialog.C \
-	spellcheckerbase.C \
-	wraptext.C
+	spellcheckerbase.C
 
 htmlparsertest_SOURCES = htmlparsertest.C htmlparser.C htmlparser.H \
-			htmlentity.c htmlentity.h
+			htmlentity.C htmlentity.h
 
-htmlparsertest_LDADD = ../unicode/libunicode.la
+htmlparsertest_LDADD = ../curses/libcurses.a ../unicode/libunicode.la
 man3src = $(srcdir)/man/*.3x
 man1src = $(srcdir)/man/*.1
 man1_MANS = $(man1src)
@@ -602,7 +604,7 @@ pwtest_LDADD = ../tcpd/libtlsclient.la ../md5/libmd5.la \
 	`. ../tcpd/couriertls.config; echo $$cryptlibs`
 
 pwtest_LDFLAGS = -static
-EXTRA_DIST = testsuite1 testsuite1.out pwtest.txt colors.txt mkcolors.pl \
+EXTRA_DIST = ../config.rpath testsuite1 testsuite1.out pwtest.txt colors.txt mkcolors.pl \
 	fixonlinehelp.pl mkhtmlmsg.pl postproc.xsl $(SPELLSRC) \
 	m4/ChangeLog $(srcdir)/m4/*.m4
 
@@ -798,6 +800,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/encryptionmenu.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/filter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/filtereditscreen.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fkeytraphandler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gettext.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/globalkeys.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gpg.Po@am__quote@
@@ -830,7 +833,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/passwordlist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/previousscreen.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pwtest.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2646parse.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/savedialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/searchcallback.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/searchprompt.Po@am__quote@
@@ -838,7 +840,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spellcheckerbase.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tags.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/typeahead.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wraptext.Po@am__quote@
 
 .C.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

@@ -1,5 +1,4 @@
-/* $Id: curseshierarchy.C,v 1.15 2009/06/27 17:12:00 mrsam Exp $
-**
+/*
 ** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -72,7 +71,7 @@ extern void editAccountScreen(void *);
 extern void quitScreen(void *);
 extern bool isMaildir(string);
 
-extern char uplus[], uasterisk[];
+extern unicode_char ucplus, ucasterisk;
 
 CursesHierarchy::DrawIterator::DrawIterator(CursesHierarchy *meArg,
 					    bool doEraseArg,
@@ -184,17 +183,22 @@ bool CursesHierarchy::drawErase(Hierarchy::Folder *folder, bool doErase)
 	}
 	else
 	{
-		char *pfix=f->hasSubFolders() || !f->hasMessages()
-			? f->hasMessages() ? uasterisk:uplus:0;
+		const unicode_char *pfix=f->hasSubFolders() || !f->hasMessages()
+			? f->hasMessages() ? &ucasterisk:&ucplus:NULL;
 
 		color1=color_fl_folderDirName.fcolor;
 
 		if (pfix == 0)
 			color1=color_fl_folderName.fcolor;
-			   
-		if (pfix)
+		else
 		{
-			render1 = pfix;
+			std::vector<unicode_char> buf;
+
+			buf.push_back(*pfix);
+
+			render1=mail::iconvert::convert(buf,
+							unicode_default_chset()
+							);
 			render1 += " ";
 		}
 
@@ -231,10 +235,23 @@ bool CursesHierarchy::drawErase(string render1,
 				Hierarchy::Entry *e,
 				bool doErase)
 {
-	vector<wchar_t> w1, w2;
+	vector<unicode_char> w1, w2;
 
-	mbtow(render1.c_str(), w1);
-	mbtow(render2.c_str(), w2);
+	mail::iconvert::convert(render1, unicode_default_chset(), w1);
+	mail::iconvert::convert(render2, unicode_default_chset(), w2);
+
+	widecharbuf wcbuf1, wcbuf2;
+
+	wcbuf1.init_unicode(w1.begin(), w1.end());
+	wcbuf2.init_unicode(w2.begin(), w2.end());
+
+	wcbuf1.expandtabs(0);
+	wcbuf2.expandtabs(0);
+
+	w1.clear();
+	w2.clear();
+	wcbuf1.tounicode(w1);
+	wcbuf2.tounicode(w2);
 
 	Curses::CursesAttr attribute1;
 	Curses::CursesAttr attribute2;
@@ -244,32 +261,24 @@ bool CursesHierarchy::drawErase(string render1,
 
 	if (doErase)
 	{
-		vector<wchar_t>::iterator b=w1.begin(), e=w1.end();
-
-		while (b != e)
-			*b++ = ' ';
-
-		b=w2.begin();
-		e=w2.end();
-		while (b != e)
-			*b++ = ' ';
-
+		w1.clear();
+		w1.insert(w1.end(), wcbuf1.wcwidth(0), ' ');
+		w2.clear();
+		w2.insert(w2.end(), wcbuf2.wcwidth(0), ' ');
 	}
 	else if (currentRowNum == e->getRow())
 	{
 		attribute1.setReverse();
 		attribute2.setReverse();
 	}
-	w1.push_back(0);
-	w2.push_back(0);
 
 	int col1=e->getNestingLevel()*2+2;
 
-	bool flag1=writeText(&w1[0], e->getRow(), col1, attribute1);
+	bool flag1=writeText(w1, e->getRow(), col1, attribute1);
 
-	col1 += w1.size()-1;
+	col1 += wcbuf1.wcwidth(0);
 
-	bool flag2=writeText(&w2[0], e->getRow(), col1, attribute2);
+	bool flag2=writeText(w2, e->getRow(), col1, attribute2);
 
 	return (flag1 && flag2);
 }
@@ -1339,9 +1348,10 @@ bool CursesHierarchy::processKey(const Curses::Key &key)
 		    !(s=currentFolder->getServer()))
 			return true;
 
-		vector<wchar_t> ka;
+		vector<unicode_char> ka;
 
-		Curses::mbtow( ((string)prompt).c_str(), ka);
+		mail::iconvert::convert((string)prompt,
+					unicode_default_chset(), ka);
 
 		if (ka.size() == 0)
 			return true;
@@ -1900,9 +1910,12 @@ bool CursesHierarchy::processKey(const Curses::Key &key)
 				return true;
 			}
 
-			vector<wchar_t> ka;
+			vector<unicode_char> ka;
 
-			Curses::mbtow( ((string)prompt).c_str(), ka);
+			mail::iconvert::convert(((string)prompt),
+						unicode_default_chset(),
+						ka);
+
 			if (ka.size() == 0 || !serverPtr->server)
 			{
 				delete folder;

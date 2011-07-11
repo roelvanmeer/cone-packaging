@@ -1,127 +1,134 @@
-.\"  <!-- $Id: mimegpg.sgml,v 1.5 2008/07/20 16:41:21 mrsam Exp $ -->
-.\"  <!-- Copyright 1998 - 2008 Double Precision, Inc.  See COPYING for -->
-.\"  <!-- distribution information. -->
+'\" t
+.\"<!-- Copyright 1998 - 2008 Double Precision, Inc.  See COPYING for -->
+.\"<!-- distribution information. -->
 .\"     Title: mimegpg
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 08/25/2008
+.\"    Author: Sam Varshavchik
+.\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
+.\"      Date: 04/04/2011
 .\"    Manual: Double Precision, Inc.
-.\"    Source: Double Precision, Inc.
+.\"    Source: Courier Mail Server
+.\"  Language: English
 .\"
-.TH "MIMEGPG" "1" "08/25/2008" "Double Precision, Inc." "Double Precision, Inc."
+.TH "MIMEGPG" "1" "04/04/2011" "Courier Mail Server" "Double Precision, Inc."
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mimegpg - MIME-GPG utility
+mimegpg \- MIME\-GPG utility
 .SH "SYNOPSIS"
-.HP 8
+.HP \w'\fBmimegpg\fR\ 'u
 \fBmimegpg\fR [\-s] [\-E] [\-e] [\-c] [\-d] [\-p\ \fIn\fR] {\-\-} {gpg\ options...}
 .SH "DESCRIPTION"
 .PP
 The
 \fBmimegpg\fR
-tool signs, encrypts, or decrypts MIME\-formatted E\-mail messages using GnuPG\.
+tool signs, encrypts, or decrypts MIME\-formatted E\-mail messages using GnuPG\&.
 \fBmimegpg\fR
-does not contain any encryption code\. It uses the GnuPG utility for all encryption and decryption functions\.
+does not contain any encryption code\&. It uses the GnuPG utility for all encryption and decryption functions\&.
 .PP
 The
 \fB\-s\fR
-option signs an E\-mail message\. The
+option signs an E\-mail message\&. The
 \fB\-E\fR
 or the
 \fB\-e\fR
-option encrypts the E\-mail message\. Specifying both
+option encrypts the E\-mail message\&. Specifying both
 \fB\-E/\-e\fR
 and
 \fB\-s\fR
-encrypts and signs the E\-mail message in a single step\. The
+encrypts and signs the E\-mail message in a single step\&. The
 \fB\-d\fR
-option decrypts the message\. The
+option decrypts the message\&. The
 \fB\-c\fR
-option checks signatures\.
+option checks signatures\&.
 .PP
 
 \fBmimegpg\fR
-works as a filter\. It reads an E\-mail message from standard input, which must be a MIME\-formatted message\.
+works as a filter\&. It reads an E\-mail message from standard input, which must be a MIME\-formatted message\&.
 \fBmimegpg\fR
-signs, encrypts, and/or decrypts the message; then writes the encrypted, signed, or decrypted MIME message on standard output\.
+signs, encrypts, and/or decrypts the message; then writes the encrypted, signed, or decrypted MIME message on standard output\&.
 .PP
 The standard input to
 \fBmimegpg\fR
-must be a MIME E\-mail message, with a "Mime Version: 1\.0" header \- even if the message does not contain any attachments\. If the message contains any attachments, they are also signed and/or encrypted, individually\.
+must be a MIME E\-mail message, with a "Mime Version: 1\&.0" header \- even if the message does not contain any attachments\&. If the message contains any attachments, they are also signed and/or encrypted, individually\&.
 .PP
 
 \fBmimegpg\fR
-automatically runs GnuPG, with the required options\.
+automatically runs GnuPG, with the required options\&.
 \fBmimegpg\fR\'s options may also be followed by a single
 \-\-
-option; any remaining command line options are passed as additional options to GnuPG\. The
+option; any remaining command line options are passed as additional options to GnuPG\&. The
 \fB\-E/\-e\fR
 option usually requires at least one
 \fB\-r\fR
-GnuPG option, which may be specified in this fashion\.
+GnuPG option, which may be specified in this fashion\&.
 .PP
 The
 \fB\-p\fR
-option specifies a file descriptor that contains any required passphrase\. Any other valid GnuPG options may follow a double\-dash, "\-\-", as long as it makes sense for this operation (note that
+option specifies a file descriptor that contains any required passphrase\&. Any other valid GnuPG options may follow a double\-dash, "\-\-", as long as it makes sense for this operation (note that
 \fBmimegpg\fR
-automatically adds any GnuPG options that are needed to perform the given operation)\. The "\-\-no\-tty" option can be useful when
+automatically adds any GnuPG options that are needed to perform the given operation)\&. The "\-\-no\-tty" option can be useful when
 \fBmimegpg\fR
-is used in a non\-interactive mode\. As always, secret keys that are password\-protected secret keys cannot be used in the
+is used in a non\-interactive mode\&. As always, secret keys that are password\-protected secret keys cannot be used in the
 \fB\-\-no\-tty\fR
 mode, unless the
 \fB\-p\fR
-option is used\.
+option is used\&.
 .SS "SIGNING AND ENCRYPTING MESSAGES"
 .PP
 Use the
 \fB\-s\fR
-option to sign MIME message content\. Use the
+option to sign MIME message content\&. Use the
 \fB\-E\fR
-option to encrypt it\. Use both options to both sign and encrypt\. Follow with
-\-\-, then any other GnuPG options\. The
+option to encrypt it\&. Use both options to both sign and encrypt\&. Follow with
+\-\-, then any other GnuPG options\&. The
 \fB\-E\fR
 option will require at least one
 \fB\-r\fR
-GnuPG option\.
+GnuPG option\&.
 .PP
 The
 \fB\-E\fR
-option encapsulates the message content and all the attachments into a single encrypted MIME object\. Some mail software cannot handle encapsulated content\. The
+option encapsulates the message content and all the attachments into a single encrypted MIME object\&. Some mail software cannot handle encapsulated content\&. The
 \fB\-e\fR
-option encrypts each attachment separately, without encapsulation\.
+option encrypts each attachment separately, without encapsulation\&.
 .PP
-If a secret key used for signing is password protected, the prompt to enter the password will be issued directly by GnuPG\. Note that the
+If a secret key used for signing is password protected, the prompt to enter the password will be issued directly by GnuPG\&. Note that the
 \fB\-s\fR
 and the
 \fB\-e\fR
 (but not
-\fB\-E\fR) options may issue multiple password prompts in interactive mode\.
+\fB\-E\fR) options may issue multiple password prompts in interactive mode\&.
 \fBmimegpg\fR
-runs GnuPG multiple times if the MIME message contains attachments\. GnuPG will be invoked separately for each attachment in the MIME message, and each invocation will prompt for any required key password\. Note that the initial message headers are not signed and/or encrypted, except for the MIME headers themselves\. However, any
+runs GnuPG multiple times if the MIME message contains attachments\&. GnuPG will be invoked separately for each attachment in the MIME message, and each invocation will prompt for any required key password\&. Note that the initial message headers are not signed and/or encrypted, except for the MIME headers themselves\&. However, any
 message/rfc822
-MIME content \- attached messages \- are encrypted/signed in their entirety, headers and content\.
+MIME content \- attached messages \- are encrypted/signed in their entirety, headers and content\&.
 .SS "DECRYPTING AND CHECKING SIGNATURES"
 .PP
 The
 \fB\-d\fR
-option attempts to decrypt any encrypted content in a MIME message\. The
+option attempts to decrypt any encrypted content in a MIME message\&. The
 \fB\-c\fR
-option attempts to verify signatures of any signed content\. Both
+option attempts to verify signatures of any signed content\&. Both
 \fB\-c\fR
 and
 \fB\-d\fR
-can be specified at the same time\.
+can be specified at the same time\&.
 \fB\-d\fR
 looks for any
 multipart/encrypted
-MIME content, then attempts to decrypt it\.
+MIME content, then attempts to decrypt it\&.
 \fB\-c\fR
 looks for any
 multipart/signed
-MIME content, then attempts to verify the signature\.
+MIME content, then attempts to verify the signature\&.
 .PP
 The
 \fB\-c\fR
@@ -133,25 +140,31 @@ and
 multipart/encrypted
 MIME content with a
 multipart/x\-mimepgp
-section, that contains an additional attribute called "xpgpstatus"\. The value of the attribute is set to the exit code of GnuPG\. Succesfully decrypting the message and/or verifying the signature sets the exit code to 0\. A non\-zero exit code indicates that the signature could not be verified, or the message could not be decrypted\.
+section, that contains an additional attribute called "xpgpstatus"\&. The value of the attribute is set to the exit code of GnuPG\&. Succesfully decrypting the message and/or verifying the signature sets the exit code to 0\&. A non\-zero exit code indicates that the signature could not be verified, or the message could not be decrypted\&.
 .PP
 The first section in this
 multipart/x\-mimepgp
 is a
 text/plain
-section that contains any messages from GnuPG\. The second section is any decrypted or signed content\.
+section that contains any messages from GnuPG\&. The second section is any decrypted or signed content\&.
 \fBmimegpg\fR
 will include the signed content even if the signature could not be verified (check
-xpgpstatus)\. Encrypted content that could not be decrypted will not be included (obviously)\.
+xpgpstatus)\&. Encrypted content that could not be decrypted will not be included (obviously)\&.
 .PP
-Note \- any existing x\-mimegpg MIME section will have its content\-type quietly reset to multipart/mixed, in order to avoid confusion (except when this is what got decrypted)\.
+Note \- any existing x\-mimegpg MIME section will have its content\-type quietly reset to multipart/mixed, in order to avoid confusion (except when this is what got decrypted)\&.
 .SH "SEE ALSO"
 .PP
 
-\fI\fBreformime\fR(1)\fR\&[1]\.
+\m[blue]\fB\fBreformime\fR(1)\fR\m[]\&\s-2\u[1]\d\s+2\&.
+.SH "AUTHOR"
+.PP
+\fBSam Varshavchik\fR
+.RS 4
+Author
+.RE
 .SH "NOTES"
 .IP " 1." 4
 \fBreformime\fR(1)
 .RS 4
-\%reformime.html
+\%[set $man.base.url.for.relative.links]/reformime.html
 .RE

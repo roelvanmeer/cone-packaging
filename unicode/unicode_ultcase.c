@@ -2,7 +2,6 @@
 ** Copyright 2000-2003 Double Precision, Inc.
 ** See COPYING for distribution information.
 **
-** $Id: unicode_ultcase.c,v 1.2 2003/03/07 00:47:31 mrsam Exp $
 */
 
 #include "unicode_config.h"
@@ -48,7 +47,11 @@ unicode_char unicode_lc(unicode_char c)
 
 unicode_char unicode_tc(unicode_char c)
 {
-	unsigned i=find_case(c);
+	unsigned i;
+	unicode_char oc=c;
 
-	return (unicode_case_tab[i][0] != c ? c:unicode_case_tab[i][3]);
+	c=unicode_lc(c);
+	i=find_case(c);
+
+	return (unicode_case_tab[i][0] != c ? oc:unicode_case_tab[i][3]);
 }

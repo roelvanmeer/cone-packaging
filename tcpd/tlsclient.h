@@ -6,7 +6,6 @@
 ** See COPYING for distribution information.
 */
 
-static const char tlsclient_h_rcsid[]="$Id: tlsclient.h,v 1.3 2008/06/29 20:18:36 mrsam Exp $";
 
 #ifdef  __cplusplus
 extern "C" {

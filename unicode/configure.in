@@ -4,7 +4,7 @@ AC_INIT(unicode, 0.10, [courier-maildrop@lists.sourceforge.net])
 
 >confdefs.h  # Kill PACKAGE_ macros
 
-AC_CONFIG_SRCDIR(mkiso8859.pl)
+AC_CONFIG_SRCDIR(unicodecpp.C)
 
 LPATH="$PATH:/usr/local/bin"
 
@@ -17,6 +17,7 @@ AM_PROG_LIBTOOL
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_CC
+AC_PROG_CXX
 AC_PATH_PROGS(PERL, perl5 perl, perl, $LPATH)
 
 if test "$PERL" = "perl"
@@ -28,44 +29,53 @@ dnl Checks for libraries.
 
 dnl Checks for header files.
 
-AC_CHECK_HEADERS(stddef.h wchar.h)
+AC_CHECK_HEADERS(stddef.h wchar.h locale.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 
 dnl Checks for library functions.
 
-AC_ARG_ENABLE(mimecharset,
-	[  --enable-mimecharset=charset   Default MIME charset to set on new messages],
-	UNICODECHARSET="$enableval", UNICODECHARSET="us-ascii")
-
-AC_ARG_ENABLE(unicode,
-[  --disable-unicode              Disable all of unicode except iso-8859-1
-  --enable-unicode=chset,chset   Comma-sep list of unicode charsets to use],
-	unicode="$enableval",
-
-	# Disable all unicode support by default, except the maintainer :-)
-
-	unicode="no"
-	if test -f ${srcdir}/UnicodeData.txt
-	then
-		unicode=""
-	fi)
-
-AC_SUBST(unicode)
-AC_DEFINE_UNQUOTED(UNICODECHARSET,"$UNICODECHARSET",
-	[ Default unicode charset ])
+AC_CHECK_FUNCS(setlocale)
 
 AM_CONDITIONAL(UPDATE_UNICODE, test -f ${srcdir}/UnicodeData.txt)
 
-AC_ARG_ENABLE(unicode-test, [],
-	unicode_xtest="$enableval",
-	unicode_xtest="no")
+AC_SYS_LARGEFILE
 
-AC_SUBST(unicode_xtest)
+AC_C_BIGENDIAN
+
+AC_MSG_CHECKING([whether libcharset is used])
+AC_ARG_WITH(libcharset,
+	[  --with-libcharset     Use the libcharset library],
+	unicode_with_libcharset=$withval,
+	unicode_with_libcharset=no)
+AC_MSG_RESULT($unicode_with_libcharset)
+if test "$unicode_with_libcharset" = "yes"; then
+  AC_CHECK_LIB(charset,locale_charset)
+  if test "$ac_cv_lib_charset_locale_charset" = "yes"; then
+    AC_CHECK_HEADERS(localcharset.h libcharset.h)
+  else
+    AC_MSG_ERROR([libcharset was not found.  Install libcharset package.])
+  fi
+  AC_DEFINE_UNQUOTED(UNICODE_USE_LIBCHARSET, 1,
+	[ Set this to 1 to use libcharset library. ])
+else
+  AM_LANGINFO_CODESET
+fi
+
+save_LIBS="$LIBS"
+
+LIBS="$LIBS -liconv"
+
+AC_LINK_IFELSE(AC_LANG_PROGRAM([
+#include <iconv.h>
+],[
+
+iconv_open("","");
+]) ,[ : ], [LIBS="$save_LIBS"])
 
 if test "$GCC" = "yes"
 then
-	CFLAGS="$CFLAGS -Wall"
+	CFLAGS="$CFLAGS -Wall -fexceptions"
 fi
 
 AC_OUTPUT(Makefile)

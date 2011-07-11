@@ -1,5 +1,4 @@
-/* $Id: cursesmessage.H,v 1.13 2009/06/27 17:12:00 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -115,13 +114,16 @@ private:
 		std::string contents;
 		// Filename of downloaded contents.
 
-		const struct unicode_info *content_chset;
+		std::string content_chset;
 		// The charset in contents
 
 		std::string contents2;
 		// Sometimes we need a second filename.
+
+		void getflowed(bool &flowed, bool &delsp) const;
 	};
 
+	class newmsgformatter;
 public:
 	// Helper class used for reading a message part.
 
@@ -248,8 +250,6 @@ private:
 
 	size_t nlines;
 
-	const struct unicode_info *my_chset;
-
 	class FlowedTextParser;
 	class HtmlParser;
 
@@ -260,9 +260,11 @@ private:
 
 		virtual void parse(std::string text)=0;
 		virtual bool finish()=0;
+		virtual bool conversionError()=0;
 	};
 
 	reformatter *textReformatter;
+	bool conversionErrorFlag;
 
 	size_t reformat_index;	// Current section being reformatted
 	std::ifstream reformat_file; // Current file being reformatted.
@@ -307,10 +309,21 @@ private:
 			     flags=CursesMessage::LineIndex::NORMAL);
 	bool addHeader(std::string name, std::string value,
 		       bool rfc2047Encoded);
-	static bool toMyCharset(const struct unicode_info *content_chset,
-				const struct unicode_info *my_chset,
-				std::string &line);
 
+	bool toMyCharset(const std::string &content_chset,
+			 const std::string &my_chset,
+			 std::string &line,
+			 bool &errflag);
+
+	bool toMyCharset_noerror(const std::string &content_chset,
+				 const std::string &my_chset,
+				 std::string &line,
+				 bool &errflag);
+
+	bool toMyCharset_impl(const std::string &content_chset,
+			      const std::string &my_chset,
+			      std::string &line,
+			      bool &errflag);
 
 	mail::mimestruct *decrypt_find(mail::mimestruct &m, std::string );
 

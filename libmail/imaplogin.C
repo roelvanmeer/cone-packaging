@@ -1,5 +1,4 @@
-/* $Id: imaplogin.C,v 1.5 2010/04/29 00:34:49 mrsam Exp $
-**
+/*
 ** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -214,7 +213,7 @@ int mail::imapGreetingHandler::process(mail::imap &imapAccount, string &buffer)
 
 	while (b != e)
 	{
-		if (!isspace((int)(unsigned char)*b))
+		if (!unicode_isspace((unsigned char)*b))
 			break;
 		++b;
 	}
@@ -261,7 +260,7 @@ int mail::imapGreetingHandler::process(mail::imap &imapAccount, string &buffer)
 				imapAccount.smap=false;
 
 				while (b != e &&
-				       isspace((int)(unsigned char)*b))
+				       unicode_isspace((unsigned char)*b))
 					++b;
 
 				if (*b == '[')

@@ -2,7 +2,6 @@
 # Copyright 2001-2008 Double Precision, Inc.
 # See COPYING for distribution information.
 #
-# $Id: Makefile.am,v 1.9 2008/12/18 12:08:25 mrsam Exp $
 
 
 if HMACC

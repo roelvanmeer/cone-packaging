@@ -1,5 +1,4 @@
 dnl Process this file with autoconf to produce a configure script.
-dnl $Id: configure.in,v 1.17 2009/06/13 18:10:27 mrsam Exp $
 
 dnl Copyright 2000-2009 Double Precision, Inc.  See COPYING for
 dnl distribution information.
@@ -107,6 +106,7 @@ AC_DEFINE_UNQUOTED(HAVE_SOCKS, $DOSOCKS, [ Whether to use the Courier Socks libr
 
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h sys/select.h sys/poll.h pthread.h sys/stat.h fcntl.h sys/select.h sys/poll.h])
 AC_HEADER_TIME
+AC_SYS_LARGEFILE
 AC_SUBST(SOCKLIBS)
 
 

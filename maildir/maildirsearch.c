@@ -1,24 +1,38 @@
 /*
-** Copyright 2002 Double Precision, Inc.
+** Copyright 2002-2010 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
 #include "config.h"
 #include "maildirsearch.h"
 
-static const char rcsid[]="$Id: maildirsearch.c,v 1.1 2002/08/11 20:50:59 mrsam Exp $";
 
-int maildir_search_start(struct maildir_searchengine *sei, const char *s)
+int maildir_search_start_unicode(struct maildir_searchengine *sei,
+				 const unicode_char *s)
 {
 	unsigned i, j, *r;
 
-	sei->string=s;
+	size_t n;
+
+	for (n=0; s[n]; ++n)
+		;
+	++n;
+
+	if (sei->string)
+		free(sei->string);
+
+	sei->string=malloc(n * sizeof(*s));
+	if (!sei->string)
+		return (-1);
+	sei->string_l=n-1;
+
+	memcpy(sei->string, s, n * sizeof(*s));
 
 	if (sei->r)
 		free(sei->r);
 
 	sei->i=0;
-	if ((sei->r=r=(unsigned *)malloc(sizeof(unsigned)*strlen(s))) == 0)
+	if ((sei->r=r=(unsigned *)malloc(sizeof(unsigned)*n)) == 0)
 		return (-1);
 
 	for (i=0; s[i]; i++)
@@ -37,3 +51,73 @@ int maildir_search_start(struct maildir_searchengine *sei, const char *s)
 	return (0);
 }
 
+int maildir_search_start_str(struct maildir_searchengine *sei,
+			     const char *s)
+{
+	unicode_char *uc=malloc((strlen(s)+1) * sizeof(unicode_char));
+	size_t n;
+	int rc;
+
+	if (!uc)
+		return -1;
+
+	for (n=0; (uc[n]=(unsigned char)s[n]) != 0; ++n)
+		;
+
+	rc=maildir_search_start_unicode(sei, uc);
+	free(uc);
+	return rc;
+}
+
+int maildir_search_start_str_chset(struct maildir_searchengine *engine,
+				   const char *string,
+				   const char *chset)
+{
+#define SPC(s) ((s) == ' '|| (s) == '\t' || (s) == '\r' || (s) == '\n')
+
+	unicode_char *ucptr;
+	size_t ucsize;
+	libmail_u_convert_handle_t h=libmail_u_convert_tou_init(chset, &ucptr,
+								&ucsize, 1);
+	size_t i, j;
+	int rc;
+
+	if (h == NULL)
+		return -1;
+
+	if (libmail_u_convert(h, string, strlen(string)))
+	{
+		libmail_u_convert_deinit(h, NULL);
+		return -1;
+	}
+
+	if (libmail_u_convert_deinit(h, NULL))
+		return -1;
+
+	for (i=j=0; ucptr[i]; )
+	{
+		while (SPC(ucptr[i]))
+			++i;
+
+		if (!ucptr[i])
+			break;
+
+		while (ucptr[i])
+		{
+			ucptr[j]=unicode_lc(ucptr[i]);
+			++j;
+			if (SPC(ucptr[i]))
+				break;
+
+			++i;
+		}
+	}
+
+	while (j > 0 && SPC(ucptr[j-1]))
+		--j;
+	ucptr[j]=0;
+
+	rc=maildir_search_start_unicode(engine, ucptr);
+	free(ucptr);
+	return rc;
+}

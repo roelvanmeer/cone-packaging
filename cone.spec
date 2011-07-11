@@ -1,4 +1,3 @@
-# $Id: cone.spec.in,v 1.18 2009/10/31 22:38:06 mrsam Exp $
 
 # Custom build against libcurses-5.3
 
@@ -32,7 +31,7 @@ BuildRequires: ncurses-devel
 
 Summary: CONE mail reader
 Name: cone
-Version: 0.84
+Version: 0.89
 Release: 1%{?dist}%{cone_release}
 URL: http://www.courier-mta.org/cone
 Source0: %{name}-%{version}.tar.bz2

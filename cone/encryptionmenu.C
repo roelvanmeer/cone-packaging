@@ -1,5 +1,4 @@
-/* $Id: encryptionmenu.C,v 1.6 2004/11/30 02:22:11 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -7,6 +6,8 @@
 
 #include "config.h"
 #include "encryptionmenu.H"
+
+#include "unicode/unicode.h"
 
 #include "gettext.H"
 #include "init.H"
@@ -168,9 +169,9 @@ void EncryptionMenu::delkey_s()
 	if ((string)prompt == "N")
 		return;
 
-	vector<wchar_t> ka;
+	vector<unicode_char> ka;
 
-	Curses::mbtow( ((string)prompt).c_str(), ka);
+	mail::iconvert::convert((string)prompt, unicode_default_chset(), ka);
 
 	if (ka.size() > 0 &&
 	    (key_PRIVATEKEY == ka[0]))
@@ -621,7 +622,7 @@ void EncryptionMenu::NewKey::doGenerate()
 		outputDialog.output(_("Creating new encryption key, please ignore any messages below:\n\n"));
 
 		libmail_gpg_genkey("",
-			       Gettext::defaultCharset(),
+			       unicode_default_chset(),
 			       name.c_str(),
 			       address.c_str(),
 			       comment.c_str(),

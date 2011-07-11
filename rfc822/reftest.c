@@ -4,7 +4,6 @@
 */
 
 /*
-** $Id: reftest.c,v 1.7 2003/05/30 01:24:16 mrsam Exp $
 */
 
 #include	"config.h"

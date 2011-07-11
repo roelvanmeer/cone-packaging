@@ -45,7 +45,6 @@
 
 #define exit(_a_) _exit(_a_)
 
-static const char rcsid[]="$Id: maildircache.c,v 1.9 2006/05/28 15:29:52 mrsam Exp $";
 
 static const char * const *authvars;
 static char **authvals;

@@ -3,7 +3,6 @@
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: fork.c,v 1.3 2006/05/28 15:29:52 mrsam Exp $";
 
 #include	"config.h"
 #include	<stdio.h>

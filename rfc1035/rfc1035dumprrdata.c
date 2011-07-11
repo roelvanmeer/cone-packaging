@@ -9,7 +9,6 @@
 #include	<sys/types.h>
 #include	<arpa/inet.h>
 
-static const char rcsid[]="$Id: rfc1035dumprrdata.c,v 1.8 2004/05/08 02:24:22 mrsam Exp $";
 
 static char *dumpsoa(struct rfc1035_reply *r, struct rfc1035_rr *rr)
 {

@@ -1,5 +1,4 @@
-/* $Id: smtpfolder.C,v 1.4 2008/05/24 17:57:42 mrsam Exp $
-**
+/*
 ** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -246,11 +245,18 @@ void mail::smtpAddMessage::go()
 					return;
 				}
 
-				if (rfc2045_rewrite(rfcp,
-						    fileno(temporaryFile),
+				struct rfc2045src *src=
+					rfc2045src_init_fd
+					(fileno(temporaryFile));
+
+				if (src == NULL ||
+				    rfc2045_rewrite(rfcp,
+						    src,
 						    fd_copy,
 						    "mail::account") < 0)
 				{
+					if (src)
+						rfc2045src_deinit(src);
 					close(fd_copy);
 					fclose(tmpfile2);
 					fail(strerror(errno));
@@ -260,6 +266,7 @@ void mail::smtpAddMessage::go()
 				fclose(temporaryFile);
 				temporaryFile=tmpfile2;
 				flag8bit=false;
+				rfc2045src_deinit(src);
 			}
 		}
 		myServer->send(temporaryFile, myInfo, &myCallback,

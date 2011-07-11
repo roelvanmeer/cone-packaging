@@ -1,12 +1,10 @@
-/* $Id: nntpfetch.C,v 1.3 2004/06/14 00:18:43 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 #include "nntpfetch.H"
 #include <sstream>
-#include <ctype.h>
 
 using namespace std;
 
@@ -114,10 +112,10 @@ void mail::nntp::FetchTaskBase::processFetchFoldedResponse(const char *cmd)
 		if (*cmd == '.')
 			++cmd;
 
-		if (*cmd && isspace((int)(unsigned char)*cmd) &&
+		if (*cmd && unicode_isspace((unsigned char)*cmd) &&
 		    foldedNewline)
 		{
-			while (*cmd && isspace((int)(unsigned char)*cmd))
+			while (*cmd && unicode_isspace((unsigned char)*cmd))
 				cmd++;
 
 			string s(" ");

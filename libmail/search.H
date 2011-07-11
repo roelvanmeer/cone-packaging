@@ -1,6 +1,5 @@
-/* $Id: search.H,v 1.6 2007/04/06 17:57:29 mrsam Exp $
-**
-** Copyright 2002, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -149,11 +148,7 @@ class searchOneMessage {
 	size_t alreadyCompleted;
 	std::string uid;
 
-	const struct unicode_info *searchCharset;
-
-	// Some additional fields used for searching.
-
-	const struct unicode_info *bodyCharset;
+	std::string searchCharset;
 
 	class Callback : public mail::callback::message {
 	public:
@@ -193,20 +188,22 @@ class searchOneMessage {
 
 	bool searchFlag;
 
+	class Searcher : public mail::Search, public mail::iconvert {
 
+		int converted(const char *str, size_t n);
 
-	mail::Search searchEngine;
+	public:
+		using mail::Search::operator bool;
+		using mail::Search::operator !;
+		using mail::iconvert::operator();
+	};
+
+	Searcher searchEngine;
 
 	mimestruct structureBuffer;
 	std::queue<mimestruct *> mimeSearch;
 
-	void prepSearch(const char *str);
-
-	std::string searchBuffer;
-
-	void beginSearch();
-	void dosearch(std::string);
-	bool endSearch();
+	std::string headerSearchBuffer;
 
 	void doDateCmp(time_t);
 

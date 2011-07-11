@@ -1,5 +1,4 @@
-/* $Id: addressbookinterfacemail.H,v 1.1 2006/02/16 02:59:42 mrsam Exp $
-**
+/*
 ** Copyright 2006, Double Precision Inc.
 **
 ** See COPYING for distribution information.

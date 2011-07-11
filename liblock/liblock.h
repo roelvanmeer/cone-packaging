@@ -1,4 +1,3 @@
-/* $Id: liblock.h,v 1.6 2009/06/27 16:32:38 mrsam Exp $ */
 
 #ifndef liblock_h
 #define liblock_h
@@ -12,13 +11,10 @@
 extern "C" {
 #endif
 
-#include	<sys/types.h>
-
-#ifndef liblock_config_h
 #if	HAVE_CONFIG_H
 #include	"config.h"
 #endif
-#endif
+#include	<sys/types.h>
 
 #define	ll_whence_start	0
 #define	ll_whence_curpos 1

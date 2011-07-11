@@ -9,7 +9,6 @@
 #include	<string.h>
 #include	<stdlib.h>
 
-static const char rcsid[]="$Id: sha1.c,v 1.3 2008/12/18 12:08:26 mrsam Exp $";
 
 #define	K0 0x5A827999
 #define	K1 0x6ED9EBA1

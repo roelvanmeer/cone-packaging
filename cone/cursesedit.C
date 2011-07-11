@@ -1,6 +1,5 @@
-/* $Id: cursesedit.C,v 1.35 2010/05/02 12:03:22 mrsam Exp $
-**
-** Copyright 2003-2008, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -32,7 +31,6 @@
 #include <sstream>
 #include <fstream>
 #include <iomanip>
-#include <ctype.h>
 #include <errno.h>
 #include <strings.h>
 #include <sys/types.h>
@@ -75,8 +73,6 @@
 #define WIFEXITED(stat_val) (((stat_val) & 255) == 0)
 #endif
 
-using namespace std;
-
 extern Gettext::Key key_ENCRYPT;
 extern Gettext::Key key_PRIVATEKEY;
 extern Gettext::Key key_SIGN;
@@ -118,7 +114,7 @@ void CursesEdit::CursesEditMessageClass::modified()
 		myEdit->restartAutosaveTimer();
 }
 
-string CursesEdit::CursesEditMessageClass::getConfigDir()
+std::string CursesEdit::CursesEditMessageClass::getConfigDir()
 {
 	return myServer::getConfigDir();
 }
@@ -126,6 +122,12 @@ string CursesEdit::CursesEditMessageClass::getConfigDir()
 void CursesEdit::CursesEditMessageClass::extedited()
 {
 	mail::account::resume();
+
+	if (myEdit->from)
+		myEdit->from->requestFocus();
+	else if (myEdit->to)
+		myEdit->to->requestFocus();
+	myEdit->message.requestFocus();
 }
 
 void CursesEdit::CursesEditMessageClass::macroDefined()
@@ -147,7 +149,7 @@ void CursesEdit::dummyFolderCallback::newMessages()
 {
 }
 
-void CursesEdit::dummyFolderCallback::messagesRemoved(vector<pair<size_t,
+void CursesEdit::dummyFolderCallback::messagesRemoved(std::vector<std::pair<size_t,
 						      size_t> > &dummy)
 {
 }
@@ -176,8 +178,8 @@ void CursesEdit::AddressList::resized()
 	parent->addressResized();
 }
 
-bool CursesEdit::AddressList::addressLookup(vector<mail::emailAddress> &in,
-					    vector<mail::emailAddress> &out)
+bool CursesEdit::AddressList::addressLookup(std::vector<mail::emailAddress> &in,
+					    std::vector<mail::emailAddress> &out)
 {
 	// Need to cancel autosaving when doing the address book lookup.
 
@@ -194,9 +196,9 @@ bool CursesEdit::AddressList::addressLookup(vector<mail::emailAddress> &in,
 // DEL on an attachment button will remove the attachment.
 
 CursesEdit::AttachmentButton::AttachmentButton(CursesEdit *parentArg,
-					       string filenameArg,
-					       string name,
-					       string encodingArg)
+					       std::string filenameArg,
+					       std::string name,
+					       std::string encodingArg)
 	: CursesButton(parentArg, name),
 	  parent(parentArg),
 	  filename(filenameArg),
@@ -221,7 +223,7 @@ bool CursesEdit::AttachmentButton::processKeyInFocus(const Curses::Key &key)
 
 //////////////////////////////////////////////////////////////////////////////
 
-CursesEdit::CustomHeader::CustomHeader(string textArg)
+CursesEdit::CustomHeader::CustomHeader(std::string textArg)
 	: label(NULL), field(NULL), isHidden(false), name(textArg)
 {
 }
@@ -277,7 +279,7 @@ CursesEdit::~CursesEdit()
 	if (!goodexit)
 		autosave_int(); // Something happened
 
-	vector<AttachmentButton *>::iterator b, e;
+	std::vector<AttachmentButton *>::iterator b, e;
 
 	b=attachmentList.begin();
 	e=attachmentList.end();
@@ -293,7 +295,7 @@ CursesEdit::~CursesEdit()
 	}
 
 
-	vector<CustomHeader *>::iterator cb, ce;
+	std::vector<CustomHeader *>::iterator cb, ce;
 
 	cb=customHeaders.begin();
 	ce=customHeaders.end();
@@ -383,10 +385,10 @@ void CursesEdit::init()
 {
 	newsgroupMode=false;
 
-	string msg=myServer::getConfigDir() + "/message.txt";
+	std::string msg=myServer::getConfigDir() + "/message.txt";
 
 	{
-		vector<mail::emailAddress> emptyList;
+		std::vector<mail::emailAddress> emptyList;
 
 		if (to)
 			to->setAddresses(emptyList);
@@ -433,9 +435,9 @@ void CursesEdit::init()
 
 	}
 
-	ifstream i(msg.c_str());
+	std::ifstream i(msg.c_str());
 
-	string subjectV;
+	std::string subjectV;
 
 	fromV.clear();
 	bccV.clear();
@@ -452,11 +454,11 @@ void CursesEdit::init()
 
 	// Initialize vanity headers.
 
-	string h=myServer::customHeaders;
+	std::string h=myServer::customHeaders;
 
 	while (h.size() > 0)
 	{
-		string hh;
+		std::string hh;
 
 		size_t n=h.find(',');
 
@@ -504,7 +506,7 @@ void CursesEdit::init()
 		}
 	}
 
-	const struct unicode_info *my_chset=Gettext::defaultCharset();
+	const std::string my_chset=unicode_default_chset();
 
 	Curses::CursesAttr attr;
 
@@ -512,9 +514,9 @@ void CursesEdit::init()
 
 	if (i.is_open())
 	{
-		string cur_hdr="";
+		std::string cur_hdr="";
 
-		string line;
+		std::string line;
 
 		// Read headers, and initialize fields.
 
@@ -523,33 +525,33 @@ void CursesEdit::init()
 			if (getline(i, line).fail() && !i.eof())
 				break;
 
-			if (line.size() > 0 && isspace((int)(unsigned char)
-						       line[0]))
+			if (line.size() > 0 &&
+			    unicode_isspace((unsigned char)line[0]))
 			{
-				string::iterator p=line.begin();
+				std::string::iterator p=line.begin();
 
 				while (p != line.end() &&
-				       isspace((int)(unsigned char)*p))
+				       unicode_isspace((unsigned char)*p))
 					++p;
 
-				cur_hdr += string(p-1, line.end());
+				cur_hdr += std::string(p-1, line.end());
 				// Wrapped header.
 				continue;
 			}
 
-			string hdr=cur_hdr;
+			std::string hdr=cur_hdr;
 			cur_hdr=line; // line is now the start of next hdr.
 
 			size_t p=hdr.find(':');
 
-			string hdrname="";
+			std::string hdrname="";
 
 			if (p != std::string::npos)
 			{
 				hdrname=hdr.substr(0, p++);
 
 				while (p < hdr.size()
-				       && isspace((int)(unsigned char)
+				       && unicode_isspace((unsigned char)
 						  hdr[p]))
 					++p;
 
@@ -634,7 +636,7 @@ void CursesEdit::init()
 
 			if (strcasecmp(hdrname.c_str(), "x-fcc") == 0)
 			{
-				string str=mail::rfc2047::decoder
+				std::string str=mail::rfc2047::decoder
 					::decodeSimple(hdr);
 				size_t i;
 
@@ -663,7 +665,7 @@ void CursesEdit::init()
 
 			// Check if it's a custom header.
 
-			vector<CustomHeader *>::iterator cb, ce;
+			std::vector<CustomHeader *>::iterator cb, ce;
 
 			cb=customHeaders.begin();
 			ce=customHeaders.end();
@@ -677,12 +679,11 @@ void CursesEdit::init()
 				if (strcasecmp(ch->name.c_str(),
 					       hdrname.c_str()) == 0)
 				{
-					string str=
+					std::string str=
 						mail::rfc2047::
 						decoder()
 						.decode(hdr,
-							*Gettext::
-							defaultCharset()
+							unicode_default_chset()
 							);
 					ch->hiddenValue=str;
 					if (ch->field)
@@ -697,9 +698,9 @@ void CursesEdit::init()
 
 		mail::rfc2047::decoder decode;
 
-		newsgroupsV=decode.decode(newsgroupsV, *my_chset);
-		followuptoV=decode.decode(followuptoV, *my_chset);
-		subjectV=decode.decode(subjectV, *my_chset);
+		newsgroupsV=decode.decode(newsgroupsV, my_chset);
+		followuptoV=decode.decode(followuptoV, my_chset);
+		subjectV=decode.decode(subjectV, my_chset);
 
 		// Newsgroups mode creates a Newsgroups: header.
 		// Mail mode creates a To: and Cc: header.
@@ -742,29 +743,29 @@ void CursesEdit::init()
 			ccLabel->setAttribute(attr);
 		}
 
-		message.load(i); // Load the rest of the message.
+		message.load(i, true, true); // Load the rest of the message.
 	}
 
 	subject.setText(subjectV);
 
 	// Initialize list of existing attachments.
 
-	vector<string> filenameList;
+	std::vector<std::string> filenameList;
 
 	myMessage::readAttFiles(filenameList);
 
-	vector<string>::iterator b=filenameList.begin(), e=filenameList.end();
+	std::vector<std::string>::iterator b=filenameList.begin(), e=filenameList.end();
 
 	while (b != e)
 	{
-		string f= *b++;
+		std::string f= *b++;
 
 		struct stat stat_buf;
 
 		if (stat(f.c_str(), &stat_buf))
 			continue;
 
-		ifstream i(f.c_str());
+		std::ifstream i(f.c_str());
 
 		if (!i.is_open())
 			continue;
@@ -783,7 +784,7 @@ void CursesEdit::init()
 
 			rfc2045_parse(rfcp, mv, sizeof(mv)-1); // rfc2045 food
 
-			string line;
+			std::string line;
 
 			while (!getline(i, line).eof())
 			{
@@ -849,8 +850,8 @@ void CursesEdit::init()
 					s.content_disposition_parameters
 						.set("FILENAME",
 						     disposition_filename,
-						     Gettext::defaultCharset()
-						     ->chset, "");
+						     unicode_default_chset(),
+						     "");
 				free(disposition_name);
 				free(disposition_filename);
 			} catch (...) {
@@ -865,8 +866,8 @@ void CursesEdit::init()
 			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
-		string name;
-		string filename;
+		std::string name;
+		std::string filename;
 
 		CursesMessage::getDescriptionOf(&s, NULL, name, filename,
 						false);
@@ -909,19 +910,21 @@ void CursesEdit::addressResized()
 
 	int chw=0;
 
-	vector<CustomHeader *>::iterator cb=customHeaders.begin(),
+	std::vector<CustomHeader *>::iterator cb=customHeaders.begin(),
 		ce=customHeaders.end();
 
 	while (cb != ce)
 	{
-		string n= (*cb++)->name + ": ";
+		std::string n= (*cb++)->name + ": ";
 
-		vector<wchar_t> wbuf;
+		widecharbuf wbuf;
 
-		Curses::mbtow(n.c_str(), wbuf);
+		wbuf.init_string(n);
 
-		if (chw < (int)wbuf.size())
-			chw=(int)wbuf.size();
+		int w=wbuf.wcwidth(0);
+
+		if (chw < w)
+			chw=w;
 	}
 
 	ww=tw;
@@ -1020,7 +1023,7 @@ void CursesEdit::addressResized()
 
 #undef SET
 
-	vector<AttachmentButton *>::iterator b, e;
+	std::vector<AttachmentButton *>::iterator b, e;
 
 	b=attachmentList.begin();
 	e=attachmentList.end();
@@ -1044,7 +1047,7 @@ void CursesEdit::addressResized()
 
 void CursesEdit::addAttachment()
 {
-	string filename=newAttachment.getText();
+	std::string filename=newAttachment.getText();
 
 	if (filename.size() == 0)
 	{
@@ -1052,7 +1055,7 @@ void CursesEdit::addAttachment()
 		return;
 	}
 
-	vector<string> flist;
+	std::vector<std::string> flist;
 
 	CursesFileReq::expand(filename, flist);
 	addAttachment(flist, "");
@@ -1060,7 +1063,7 @@ void CursesEdit::addAttachment()
 
 // Add the following attachment.
 
-void CursesEdit::addAttachment(vector<string> &fileList, string mimeContentType)
+void CursesEdit::addAttachment(std::vector<std::string> &fileList, std::string mimeContentType)
 {
 	if (fileList.size() == 0)
 		return;
@@ -1071,7 +1074,7 @@ void CursesEdit::addAttachment(vector<string> &fileList, string mimeContentType)
 	if (response.abortflag)
 		return;
 
-	string description=response;
+	std::string description=response;
 
 	response=
 		myServer::prompt( myServer::promptInfo(_("Inline attachment? (Y/N) "))
@@ -1080,19 +1083,19 @@ void CursesEdit::addAttachment(vector<string> &fileList, string mimeContentType)
 	if (response.abortflag)
 		return;
 
-	string inlineFlag=description;
+	std::string inlineFlag=description;
 
-	vector<string>::iterator b=fileList.begin(), e=fileList.end();
+	std::vector<std::string>::iterator b=fileList.begin(), e=fileList.end();
 
 	size_t attNum=0;
 	size_t attTotal=fileList.size();
 
-	string errmsg;
+	std::string errmsg;
 
 	newAttachment.setText(""); // Do it again
 	while (b != e)
 	{
-		string f= *b++;
+		std::string f= *b++;
 
 		struct stat stat_buf;
 
@@ -1108,7 +1111,7 @@ void CursesEdit::addAttachment(vector<string> &fileList, string mimeContentType)
 
 		// attach() does the heavy lifting, clean up after it.
 
-		string attachDescription=description;
+		std::string attachDescription=description;
 
 		if (attTotal > 1 && description.size() > 0)
 			attachDescription=Gettext(_("%1% (%2% of %3%)"))
@@ -1122,8 +1125,8 @@ void CursesEdit::addAttachment(vector<string> &fileList, string mimeContentType)
 
 	// After attach() is done, create a new button.
 
-		string name;
-		string filename;
+		std::string name;
+		std::string filename;
 
 		CursesMessage::getDescriptionOf(&pps, NULL, name,
 						filename, false);
@@ -1164,20 +1167,20 @@ static int encode_callback(const char *p, size_t cnt, void *vp)
 // Encode a mime attachment.  Pick its encoding, copy it to
 // config/att*.txt, with the appropriate set of headers.
 
-string CursesEdit::attach(string filename, string description,
-			  string disposition,
-			  string contentType,
+std::string CursesEdit::attach(std::string filename, std::string description,
+			  std::string disposition,
+			  std::string contentType,
 			  mail::mimestruct &pps,
 			  size_t attNum,
 			  size_t attTotal)
 {
-	string tmpname, attname;
+	std::string tmpname, attname;
 
 	myMessage::createAttFilename(tmpname, attname); // Create filenames.
 
-	string name_cpy;
+	std::string name_cpy;
 
-	string errmsg="";
+	std::string errmsg="";
 
 	statusBar->clearstatus();
 	statusBar->status(_("Creating MIME attachment..."));
@@ -1199,9 +1202,9 @@ string CursesEdit::attach(string filename, string description,
 
 		if (description.size() > 0)
 		{
-			string s=mail::rfc2047::encode(description,
-						     Gettext::defaultCharset()
-						     ->chset);
+			std::string s=
+				mail::rfc2047::encode(description,
+						      unicode_default_chset());
 
 			fprintf(fp, "Content-Description: %s\n",
 				s.c_str());
@@ -1209,7 +1212,7 @@ string CursesEdit::attach(string filename, string description,
 
 		name_cpy=filename;
 
-		string::iterator b, e, p;
+		std::string::iterator b, e, p;
 
 		b=name_cpy.begin(), e=name_cpy.end(), p=b;
 
@@ -1235,10 +1238,10 @@ string CursesEdit::attach(string filename, string description,
 			mail::mimestruct::parameterList paramList;
 
 			paramList.set("filename", name_cpy,
-				      Gettext::defaultCharset()->chset,
+				      unicode_default_chset(),
 				      "");
 
-			string s=paramList.toString(disposition);
+			std::string s=paramList.toString(disposition);
 
 			fprintf(fp, "Content-Disposition: %s\n", s.c_str());
 		}
@@ -1270,76 +1273,79 @@ string CursesEdit::attach(string filename, string description,
 		if (!ifp)
 			errmsg=strerror(errno);
 		else try {
-			const char *encoding=
-				libmail_encode_autodetect_fp(ifp, 0);
+				int binflag;
+				const char *encoding=
+					libmail_encode_autodetect_fp(ifp, 0,
+								     &binflag);
 
-			if (ferror(ifp) || fseek(ifp, 0L, SEEK_SET) < 0)
-				errmsg=strerror(errno);
+				if (ferror(ifp) || fseek(ifp, 0L, SEEK_SET) < 0)
+					errmsg=strerror(errno);
 
-			if (contentType == "auto")
-				// Didn't find mime type, guess from encoding.
-				contentType= strcmp(encoding, "base64") == 0
-					? "application/octet-stream"
-					: "text/plain";
+				if (contentType == "auto")
+					// Didn't find mime type, guess from encoding.
+					contentType= binflag
+						? "application/octet-stream"
+						: "text/plain";
 
-			fprintf(fp, "Content-Type: %s; charset=\"%s\"\n"
-				"Content-Transfer-Encoding: %s\n\n",
-				contentType.c_str(),
-				Gettext::defaultCharset()->chset,
-				encoding);
+				fprintf(fp, "Content-Type: %s; charset=\"%s\"\n"
+					"Content-Transfer-Encoding: %s\n\n",
+					contentType.c_str(),
+					unicode_default_chset(),
+					encoding);
 
-			pps.content_transfer_encoding=encoding;
-			pps.type=contentType;
-			{
-				size_t n=pps.type.find('/');
+				pps.content_transfer_encoding=encoding;
+				pps.type=contentType;
 
-
-				if (n != std::string::npos)
 				{
-					pps.subtype=pps.type.substr(n+1);
-					pps.type=pps.type.substr(0, n);
+					size_t n=pps.type.find('/');
+
+					if (n != std::string::npos)
+					{
+						pps.subtype=pps.type
+							.substr(n+1);
+						pps.type=pps.type.substr(0, n);
+					}
 				}
+
+				struct libmail_encode_info encodeInfo;
+
+				libmail_encode_start(&encodeInfo, encoding,
+						     &encode_callback,
+						     &fp);
+
+				char encodeBuf[BUFSIZ];
+				int n=0;
+
+				size_t byteCount=0;
+
+				while (errmsg.size() == 0 &&
+				       (n=fread(encodeBuf, 1, sizeof(encodeBuf), ifp))
+				       > 0)
+				{
+					if (libmail_encode(&encodeInfo, encodeBuf, n))
+						errmsg=strerror(errno);
+
+					byteCount += n;
+					myServer::reportProgress(byteCount, 0,
+								 attNum, attTotal);
+				}
+
+				if (errmsg.size() == 0)
+				{
+					myServer::reportProgress(byteCount, byteCount,
+								 attNum+1, attTotal);
+					if (n < 0 ||
+					    libmail_encode_end(&encodeInfo) < 0 ||
+					    fflush(fp) < 0 || ferror(fp) ||
+					    fstat(fileno(fp), &stat_buf) < 0)
+						errmsg=strerror(errno);
+				}
+
+				fclose(ifp);
+			} catch (...) {
+				fclose(ifp);
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
-
-			struct libmail_encode_info encodeInfo;
-
-			libmail_encode_start(&encodeInfo, encoding,
-					     &encode_callback,
-					     &fp);
-
-			char encodeBuf[BUFSIZ];
-			int n=0;
-
-			size_t byteCount=0;
-
-			while (errmsg.size() == 0 &&
-			       (n=fread(encodeBuf, 1, sizeof(encodeBuf), ifp))
-			       > 0)
-			{
-				if (libmail_encode(&encodeInfo, encodeBuf, n))
-					errmsg=strerror(errno);
-
-				byteCount += n;
-				myServer::reportProgress(byteCount, 0,
-							 attNum, attTotal);
-			}
-
-			if (errmsg.size() == 0)
-			{
-				myServer::reportProgress(byteCount, byteCount,
-							 attNum+1, attTotal);
-				if (n < 0 ||
-				    libmail_encode_end(&encodeInfo) < 0 ||
-				    fflush(fp) < 0 || ferror(fp) ||
-				    fstat(fileno(fp), &stat_buf) < 0)
-					errmsg=strerror(errno);
-			}
-
-			fclose(ifp);
-		} catch (...) {
-			fclose(ifp);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-		}
 
 		fclose(fp);
 	} catch (...) {
@@ -1362,7 +1368,7 @@ string CursesEdit::attach(string filename, string description,
 	if (name_cpy.size() > 0)
 		pps.content_disposition_parameters
 			.set("FILENAME", name_cpy,
-			     Gettext::defaultCharset()->chset, "");
+			     unicode_default_chset(), "");
 
 	if (rename(tmpname.c_str(), attname.c_str()) < 0)
 	{
@@ -1379,10 +1385,10 @@ string CursesEdit::attach(string filename, string description,
 //
 // Delete a particular attachment.
 
-void CursesEdit::delAttachment(string filename) // att*.txt
+void CursesEdit::delAttachment(std::string filename) // att*.txt
 {
 	restartAutosaveTimer();
-	vector<AttachmentButton *>::iterator b, e, p;
+	std::vector<AttachmentButton *>::iterator b, e, p;
 
 	b=attachmentList.begin();
 	e=attachmentList.end();
@@ -1447,8 +1453,8 @@ CursesEdit::SaveSink::~SaveSink()
 
 class CursesEdit::SaveSinkAutosave : public CursesEdit::SaveSink {
 public:
-	ofstream savefile;
-	string savefilename;
+	std::ofstream savefile;
+	std::string savefilename;
 
 	SaveSinkAutosave();
 	SaveSink &operator<<(std::string);
@@ -1490,24 +1496,22 @@ void CursesEdit::draw()
 {
 	CursesContainer::draw();
 
-	vector<wchar_t> dashes;
+	std::vector<unicode_char> dashes;
 
 	dashes.insert(dashes.end(), getWidth(), '-');
-	dashes.push_back(0);
 
-	writeText(&*dashes.begin(), message.getRow()-1, 0, CursesAttr());
+	writeText(dashes, message.getRow()-1, 0, CursesAttr());
 }
 
 void CursesEdit::erase()
 {
 	CursesContainer::erase();
 
-	vector<wchar_t> dashes;
+	std::vector<unicode_char> dashes;
 
 	dashes.insert(dashes.end(), getWidth(), ' ');
-	dashes.push_back(0);
 
-	writeText(&*dashes.begin(), message.getRow()-1, 0, CursesAttr());
+	writeText(dashes, message.getRow()-1, 0, CursesAttr());
 }
 
 //
@@ -1556,7 +1560,7 @@ bool CursesEdit::processKey(const Curses::Key &key)
 
 		erase();
 
-		vector<CustomHeader *>::iterator cb, ce;
+		std::vector<CustomHeader *>::iterator cb, ce;
 
 		cb=customHeaders.begin();
 		ce=customHeaders.end();
@@ -1621,7 +1625,7 @@ bool CursesEdit::processKey(const Curses::Key &key)
 		{
 			sentFolderChoice=new CursesChoiceButton(this);
 
-			vector<string> sentFolders;
+			std::vector<std::string> sentFolders;
 
 			sentFolders.push_back(_("(none)"));
 
@@ -1648,7 +1652,7 @@ bool CursesEdit::processKey(const Curses::Key &key)
 
 	if (key == key_ATTACHFILE)
 	{
-		vector<string> filenames;
+		std::vector<std::string> filenames;
 
 		// Popup an attachment dialog.
 
@@ -1690,18 +1694,13 @@ bool CursesEdit::processKey(const Curses::Key &key)
 
 		bool privateKey=false;
 
-		if ((string)prompt == "N")
+		if ((std::string)prompt == "N")
 			return true;
 
-		vector<wchar_t> ka;
-
-		Curses::mbtow( ((string)prompt).c_str(), ka);
-
-		if (ka.size() > 0 &&
-		    (key_PRIVATEKEY == ka[0]))
+		if (key_PRIVATEKEY == prompt.firstChar())
 			privateKey=true;
 
-		string fingerprint= (GPG::gpg.*(privateKey ?
+		std::string fingerprint= (GPG::gpg.*(privateKey ?
 						&GPG::select_private_key:
 						&GPG::select_public_key))
 			("", _("ATTACH KEY"),
@@ -1714,9 +1713,9 @@ bool CursesEdit::processKey(const Curses::Key &key)
 		if (myServer::nextScreen || fingerprint.size() == 0)
 			return true; // Unexpected event, or no selection.
 
-		string tmpKey= myServer::getConfigDir() + "/pgpkey.tmp";
+		std::string tmpKey= myServer::getConfigDir() + "/pgpkey.tmp";
 
-		ofstream o(tmpKey.c_str());
+		std::ofstream o(tmpKey.c_str());
 
 		if (o.bad() || o.fail())
 		{
@@ -1726,7 +1725,7 @@ bool CursesEdit::processKey(const Curses::Key &key)
 			return true;
 		}
 
-		string errmsg=GPG::exportKey(fingerprint, privateKey, o);
+		std::string errmsg=GPG::exportKey(fingerprint, privateKey, o);
 
 		if (errmsg.size() == 0 && (o.flush().fail()
 					   || (o.close(), o.fail())
@@ -1743,7 +1742,7 @@ bool CursesEdit::processKey(const Curses::Key &key)
 			return true;
 		}
 
-		vector<string> flist;
+		std::vector<std::string> flist;
 
 		flist.push_back(tmpKey);
 		addAttachment(flist, GPGKEYMIMETYPE);
@@ -1763,13 +1762,13 @@ bool CursesEdit::processKey(const Curses::Key &key)
 		{
 			myServer::promptInfo prompt=myServer::
 				prompt(myServer::
-				       promptInfo(_("Discard this message? (Y/N)" ))
+				       promptInfo(_("Discard this message? (Y/N) " ))
 				       .yesno());
 
 			if (prompt.abortflag)
 				return true;
 
-			if (!((string)prompt == "Y"))
+			if (!((std::string)prompt == "Y"))
 				return true;
 			myMessage::clearAttFiles();
 		}
@@ -1929,7 +1928,7 @@ bool CursesEdit::processKey(const Curses::Key &key)
 				     &encryptInfo))
 			{
 
-				string fromhdr, replytohdr, customhdr;
+				std::string fromhdr, replytohdr, customhdr;
 
 				saveheaders(fromhdr, replytohdr, customhdr,
 					    NULL);
@@ -1989,16 +1988,16 @@ bool CursesEdit::getPostFolder(mail::folder *&postFolder,
 	if (followupto)
 		followuptoV=followupto->getText();
 
-	string::iterator b=newsgroupsV.begin(), e;
+	std::string::iterator b=newsgroupsV.begin(), e;
 
-	while (b != newsgroupsV.end() && isspace((int)(unsigned char)*b))
+	while (b != newsgroupsV.end() && unicode_isspace((unsigned char)*b))
 		b++;
 
 	newsgroupsV.erase(newsgroupsV.begin(), b);
 
 	for (b=e=newsgroupsV.begin(); b != newsgroupsV.end(); )
 	{
-		if (!isspace((int)(unsigned char)*b++))
+		if (!unicode_isspace((unsigned char)*b++))
 			e=b;
 	}
 
@@ -2007,7 +2006,7 @@ bool CursesEdit::getPostFolder(mail::folder *&postFolder,
 	if (newsgroupsV.size() == 0)
 		return true;
 
-	string errmsg;
+	std::string errmsg;
 
 	if (nntpCommandFolder::nntpCommand.size() > 0)
 	{
@@ -2034,7 +2033,7 @@ bool CursesEdit::getPostFolder(mail::folder *&postFolder,
 
 			s=NULL;
 
-			vector<myServer *>::iterator b=
+			std::vector<myServer *>::iterator b=
 				myServer::server_list.begin(),
 				e=myServer::server_list.end();
 
@@ -2065,8 +2064,8 @@ bool CursesEdit::getPostFolder(mail::folder *&postFolder,
 
 		mail::smtpInfo nntpInfo;
 
-		nntpInfo.options.insert(make_pair(string("POST"),
-						  string("1")));
+		nntpInfo.options.insert(make_pair(std::string("POST"),
+						  std::string("1")));
 
 		postFolder=s->server->getSendFolder(nntpInfo, NULL, errmsg);
 	}
@@ -2079,7 +2078,7 @@ bool CursesEdit::getPostFolder(mail::folder *&postFolder,
 		return false;
 	}
 
-	string fromhdr, replytohdr, customhdr;
+	std::string fromhdr, replytohdr, customhdr;
 
 	saveheaders(fromhdr, replytohdr, customhdr, NULL);
 
@@ -2087,7 +2086,7 @@ bool CursesEdit::getPostFolder(mail::folder *&postFolder,
 
 	if (recipients.size() == 0)
 	{
-		vector<string> saveEncryptionKeys;
+		std::vector<std::string> saveEncryptionKeys;
 
 		CursesMessage::EncryptionInfo *encryptInfoPtr= &encryptInfo;
 
@@ -2095,7 +2094,7 @@ bool CursesEdit::getPostFolder(mail::folder *&postFolder,
 
 		while (encryptInfoPtr) // This is an IF statement, really
 		{
-			string prompt=Gettext(_("Post message%1%? (Y/N) "))
+			std::string prompt=Gettext(_("Post message%1%? (Y/N) "))
 				<< (encryptInfoPtr->signKey.size() > 0 ?
 				    encryptInfoPtr->encryptionKeys.size() > 0 ?
 				    _(" (sign and encrypt)"):_(" (sign)"):
@@ -2117,18 +2116,16 @@ bool CursesEdit::getPostFolder(mail::folder *&postFolder,
 			    myServer::nextScreen)
 				return false;
 
-			if ((string)option == "N")
+			if ((std::string)option == "N")
 			{
 				return false;
 			}
 
-			vector<wchar_t> ka;
 
-			Curses::mbtow( ((string)option).c_str(), ka);
-			if (ka.size() == 0)
-				ka.push_back(' ');
 
-			if (key_SIGN == ka[0])
+			unicode_char promptKey=option.firstChar();
+
+			if (key_SIGN == promptKey)
 			{
 				CursesMessage::initEncryptSign(encryptInfoPtr);
 				if (!Curses::keepgoing)
@@ -2136,7 +2133,7 @@ bool CursesEdit::getPostFolder(mail::folder *&postFolder,
 				continue;
 			}
 
-			if (key_ENCRYPT == ka[0])
+			if (key_ENCRYPT == promptKey)
 			{
 				CursesMessage::initEncryptEncrypt(encryptInfoPtr,
 								  saveEncryptionKeys);
@@ -2160,7 +2157,7 @@ bool CursesEdit::getPostFolder(mail::folder *&postFolder,
 		return false;
 	}
 
-	if ((string)yesno != "Y")
+	if ((std::string)yesno != "Y")
 	{
 		delete postFolder;
 		postFolder=NULL;
@@ -2192,10 +2189,10 @@ bool CursesEdit::checkSendFolder(mail::folder *postFolder,
 				 mail::folder *sentFolder,
 				 CursesMessage::EncryptionInfo &encryptInfo)
 {
-	string prompt=_("Send message? (Y/N) ");
-	string prompt2=_("send message? (Y/N) ");
+	std::string prompt=_("Send message? (Y/N) ");
+	std::string prompt2=_("send message? (Y/N) ");
 
-	string fromhdr, replytohdr, customhdr;
+	std::string fromhdr, replytohdr, customhdr;
 
 	saveheaders(fromhdr, replytohdr, customhdr, NULL);
 
@@ -2211,9 +2208,9 @@ bool CursesEdit::checkSendFolder(mail::folder *postFolder,
 		prompt2=_("mail copies to listed recipients? (Y/N) ");
 	}
 
-	vector<mail::address> addresses;
+	std::vector<mail::address> addresses;
 
-	vector<string>::iterator ab=recipients.begin(),
+	std::vector<std::string>::iterator ab=recipients.begin(),
 		ae=recipients.end();
 
 	while (ab != ae)
@@ -2222,7 +2219,7 @@ bool CursesEdit::checkSendFolder(mail::folder *postFolder,
 	// Also select the sender's public key, by default.
 
 	{
-		vector<mail::address> a;
+		std::vector<mail::address> a;
 		size_t dummy;
 
 		mail::address::fromString(fromhdr, a, dummy);
@@ -2230,11 +2227,11 @@ bool CursesEdit::checkSendFolder(mail::folder *postFolder,
 		addresses.insert(addresses.end(), a.begin(), a.end());
 	}
 
-	vector<GPG::Key_iterator> defaultKeys;
+	std::vector<GPG::Key_iterator> defaultKeys;
 
 	GPG::gpg.find_public_keys(addresses, defaultKeys);
 
-	vector<GPG::Key_iterator>::iterator kb=defaultKeys.begin(),
+	std::vector<GPG::Key_iterator>::iterator kb=defaultKeys.begin(),
 		ke=defaultKeys.end();
 
 	while (kb != ke)
@@ -2260,12 +2257,13 @@ bool CursesEdit::archiveSentFolder(SpecialFolder::Info *sentFolderInfo,
 	time_t now=time(NULL);
 	struct tm *nowtm=localtime(&now);
 	struct tm saveTm= *nowtm;
-	string thisMonth;
+	std::string thisMonth;
 
 	{
-		stringstream o;
+		std::stringstream o;
 
-		o << saveTm.tm_year + 1900 << "-" << setw(2) << setfill('0')
+		o << saveTm.tm_year + 1900 << "-"
+		  << std::setw(2) << std::setfill('0')
 		  << saveTm.tm_mon + 1;
 
 		thisMonth=o.str();
@@ -2292,7 +2290,7 @@ bool CursesEdit::archiveSentFolder(SpecialFolder::Info *sentFolderInfo,
 	if (answer.abortflag)
 		return false;
 
-	if ( (string)answer != "Y")
+	if ( (std::string)answer != "Y")
 	{
 		sentFolderInfo->lastArchivedMonth=thisMonth;
 		// Don't ask again.
@@ -2305,8 +2303,8 @@ bool CursesEdit::archiveSentFolder(SpecialFolder::Info *sentFolderInfo,
 
 
 	// If this sent folder is named foo, create directory foo-yyyy
-	stringstream o;
-	string year;
+	std::stringstream o;
+	std::string year;
 
 	o << sentFolder->getName() << "-" <<
 		(saveTm.tm_year + 1900 + (saveTm.tm_mon == 0 ? -1:0));
@@ -2322,7 +2320,7 @@ bool CursesEdit::archiveSentFolder(SpecialFolder::Info *sentFolderInfo,
 		return false;
 
 
-	string errmsg=createArchiveDir(parentFolder.folderFound, year,
+	std::string errmsg=createArchiveDir(parentFolder.folderFound, year,
 				       yearFolderDirectory);
 
 	if (!yearFolderDirectory.folderFound) // createArchiveDir failed.
@@ -2356,8 +2354,8 @@ bool CursesEdit::archiveSentFolder(SpecialFolder::Info *sentFolderInfo,
 // Create sentfolder-YYYY directory to archive sent folder
 //
 
-string CursesEdit::createArchiveDir(mail::folder *parentFolder,
-				    string subdir,
+std::string CursesEdit::createArchiveDir(mail::folder *parentFolder,
+				    std::string subdir,
 				    myServer::CreateFolderCallback &archiveDir)
 {
 	myServer::Callback callback;
@@ -2376,7 +2374,7 @@ string CursesEdit::createArchiveDir(mail::folder *parentFolder,
 		parentFolder->readSubFolders(openSubfolders, callback2);
 		myServer::eventloop(callback2);
 
-		vector<mail::folder *>::iterator b, e;
+		std::vector<mail::folder *>::iterator b, e;
 
 		b=openSubfolders.folders.begin();
 		e=openSubfolders.folders.end();
@@ -2458,7 +2456,7 @@ public:
 	SaveSink &operator<<(std::string);
 	virtual ~SaveSinkFile();
 
-	void abort(string errmsg);
+	void abort(std::string errmsg);
 };
 
 CursesEdit::SaveSinkFile::SaveSinkFile(CursesEdit &editArg)
@@ -2474,7 +2472,7 @@ CursesEdit::SaveSinkFile::SaveSinkFile(CursesEdit &editArg)
 	edit.autosaveTimer.cancelTimer();
 }
 
-void CursesEdit::SaveSinkFile::abort(string errmsg)
+void CursesEdit::SaveSinkFile::abort(std::string errmsg)
 {
 	// Fail whatever objects we have.
 
@@ -2542,7 +2540,7 @@ class CursesEdit::EncryptSinkFile : public CursesEdit::SaveSink {
 	int input_func(char *, size_t);
 	void output_func(const char *, size_t);
 
-	string errmsg;
+	std::string errmsg;
 
 	static void errhandler_func(const char *errmsg, void *errmsg_arg);
 
@@ -2582,7 +2580,7 @@ bool CursesEdit::EncryptSinkFile::init()
 	return true;
 }
 
-CursesEdit::SaveSink &CursesEdit::EncryptSinkFile::operator<<(string s)
+CursesEdit::SaveSink &CursesEdit::EncryptSinkFile::operator<<(std::string s)
 {
 	if (fwrite(&s[0], s.size(), 1, tFile) != 1)
 		; // Ignore gcc warning
@@ -2592,7 +2590,7 @@ CursesEdit::SaveSink &CursesEdit::EncryptSinkFile::operator<<(string s)
 std::string CursesEdit::EncryptSinkFile::done()
 {
 	struct libmail_gpg_info gi;
-	string passphrase_fd;
+	std::string passphrase_fd;
 
 	memset(&gi, 0, sizeof(gi));
 
@@ -2607,7 +2605,7 @@ std::string CursesEdit::EncryptSinkFile::done()
 		    fflush(passFd) < 0 || fseek(passFd, 0L, SEEK_SET) < 0)
 			return strerror(errno);
 
-		ostringstream o;
+		std::ostringstream o;
 
 		o << fileno(passFd);
 
@@ -2628,33 +2626,33 @@ std::string CursesEdit::EncryptSinkFile::done()
 	int dosign;
 	int doencode;
 
-	vector< vector<char> > argv_ptr;
-	vector<char *> argv_cp;
+	std::vector< std::vector<char> > argv_ptr;
+	std::vector<char *> argv_cp;
 
 	{
-		vector<string> argv;
+		std::vector<std::string> argv;
 
 		dosign=encryptionInfo.signKey.size() > 0;
 
 		if (dosign)
 		{
-			argv.push_back(string("--default-key"));
+			argv.push_back(std::string("--default-key"));
 			argv.push_back(encryptionInfo.signKey);
 		}
 
 		doencode=encryptionInfo.encryptionKeys.size() > 0
 			? LIBMAIL_GPG_ENCAPSULATE:0;
 
-		vector<string>::iterator ekb=encryptionInfo.encryptionKeys.begin(),
+		std::vector<std::string>::iterator ekb=encryptionInfo.encryptionKeys.begin(),
 			eke=encryptionInfo.encryptionKeys.end();
 
 		while (ekb != eke)
 		{
-			argv.push_back(string("-r"));
+			argv.push_back(std::string("-r"));
 			argv.push_back( *ekb++ );
 		}
 
-		argv.push_back(string("--no-tty"));
+		argv.push_back(std::string("--no-tty"));
 		argv.insert(argv.end(), encryptionInfo.otherArgs.begin(),
 			    encryptionInfo.otherArgs.end());
 
@@ -2703,7 +2701,7 @@ int CursesEdit::EncryptSinkFile::input_func(char *p, size_t n)
 
 void CursesEdit::EncryptSinkFile::output_func(const char *p, size_t n)
 {
-	origSink << string(p, p+n);
+	origSink << std::string(p, p+n);
 }
 
 void CursesEdit::EncryptSinkFile::errhandler_func(const char *errmsg,
@@ -2731,7 +2729,7 @@ bool CursesEdit::postpone(mail::smtpInfo *sendInfo, // Not NULL - send msg
 
 	if (sendInfo)
 	{
-		string dummy;
+		std::string dummy;
 
 		saveheaders(dummy, dummy, dummy, NULL);
 
@@ -2849,7 +2847,7 @@ bool CursesEdit::postpone(mail::smtpInfo *sendInfo, // Not NULL - send msg
 		statusBar->status(_("Encrypting/signing..."));
 		statusBar->flush();
 
-		string errmsg=encrypt.done();
+		std::string errmsg=encrypt.done();
 
 		if (errmsg.size() > 0)
 		{
@@ -2908,7 +2906,7 @@ bool CursesEdit::postpone(mail::smtpInfo *sendInfo, // Not NULL - send msg
 
 		if (!myServer::eventloop(sendCallback))
 		{
-			string errmsg=sendCallback.msg;
+			std::string errmsg=sendCallback.msg;
 
 			if (sent)  // We already filed an fcc.
 			{
@@ -2955,7 +2953,7 @@ bool CursesEdit::postpone(mail::smtpInfo *sendInfo, // Not NULL - send msg
 
 		if (!myServer::eventloop(postCallback))
 		{
-			string errmsg=postCallback.msg;
+			std::string errmsg=postCallback.msg;
 
 			if (saved || sent)
 			{
@@ -2990,7 +2988,7 @@ bool CursesEdit::postpone(mail::smtpInfo *sendInfo, // Not NULL - send msg
 
 void CursesEdit::markreplied()
 {
-	string errmsg="";
+	std::string errmsg="";
 	myServer *s;
 
 	// Not really a while loop, more like an if statement.
@@ -2999,7 +2997,7 @@ void CursesEdit::markreplied()
 	       && xuid.size() > 0
 	       && (s=myServer::getServerByUrl(xserver)) != NULL)
 	{
-		string xduid=mail::rfc2047::decoder::decodeSimple(xuid);
+		std::string xduid=mail::rfc2047::decoder::decodeSimple(xuid);
 
 		// Wanna mark something as replied
 
@@ -3103,7 +3101,7 @@ void CursesEdit::markreplied()
 
 			// Step 2: find the folder
 
-			string folderString="";
+			std::string folderString="";
 
 			{
 				myServer::Callback findCallback;
@@ -3199,19 +3197,19 @@ void CursesEdit::markreplied()
 	}
 }
 
-bool CursesEdit::listKeys( vector< pair<string, string> > &list)
+bool CursesEdit::listKeys( std::vector< std::pair<std::string, std::string> > &list)
 {
-	list.push_back(make_pair(Gettext::keyname(_("FULLHDRS_K:^F")),
+	list.push_back(std::make_pair(Gettext::keyname(_("FULLHDRS_K:^F")),
 				 _("Full Hdrs")));
-	list.push_back(make_pair(Gettext::keyname(_("SEND_K:^X")),
+	list.push_back(std::make_pair(Gettext::keyname(_("SEND_K:^X")),
 				 _("Send")));
-	list.push_back(make_pair(Gettext::keyname(_("POSTPONE_K:^P")),
+	list.push_back(std::make_pair(Gettext::keyname(_("POSTPONE_K:^P")),
 				 _("Postpone")));
-	list.push_back(make_pair(Gettext::keyname(_("ATTACHMENT_K:^T")),
+	list.push_back(std::make_pair(Gettext::keyname(_("ATTACHMENT_K:^T")),
 				 _("Attach")));
 
 	if (GPG::gpg_installed())
-		list.push_back(make_pair(Gettext::keyname(_("ATTACHKEY_K:^E")),
+		list.push_back(std::make_pair(Gettext::keyname(_("ATTACHKEY_K:^E")),
 					 _("Attach Key")));
 
 	return false;
@@ -3225,7 +3223,7 @@ bool CursesEdit::listKeys( vector< pair<string, string> > &list)
 // Compute a unique multipart boundary.  Verify that the unique string is
 // really unique.
 
-static bool search_boundary(FILE *fp, string boundary, size_t &cnt,
+static bool search_boundary(FILE *fp, std::string boundary, size_t &cnt,
 			    size_t nparts)
 {
 	try {
@@ -3257,7 +3255,7 @@ static void copy_multipart(FILE *f, // Opened att*.txt file
 
 			   CursesEdit::SaveSink &sink, // sinking there
 
-			   string boundary, // multipart delimiter
+			   std::string boundary, // multipart delimiter
 
 			   size_t partNum,	// Feedback reporting
 			   size_t nparts)	// Feedback reporting.
@@ -3274,7 +3272,7 @@ static void copy_multipart(FILE *f, // Opened att*.txt file
 		c=getc(f);
 		if (i >= sizeof(buffer) || (i > 0 && c == EOF))
 		{
-			sink << string(buffer, buffer+i);
+			sink << std::string(buffer, buffer+i);
 
 			byteCount += i;
 			i=0;
@@ -3320,7 +3318,7 @@ void CursesEdit::autosave_int()
 			autoSaveFile.savefile.flush();
 			autoSaveFile.savefile.close();
 
-			string txtname=myServer::getConfigDir()
+			std::string txtname=myServer::getConfigDir()
 				+ "/message.txt";
 
 			if (autoSaveFile.savefile.good() &&
@@ -3352,7 +3350,7 @@ void CursesEdit::autosave_int()
 
 static int encode_callbackSink(const char *p, size_t cnt, void *vp)
 {
-	(*((CursesEdit::SaveSink *)vp))	<< string(p, p+cnt);
+	(*((CursesEdit::SaveSink *)vp))	<< std::string(p, p+cnt);
 	return 0;
 }
 
@@ -3371,13 +3369,13 @@ bool CursesEdit::save(SaveSink &sink,
 		      )
 
 {
-	string oldfile=myServer::getConfigDir() + "/message.txt";
+	std::string oldfile=myServer::getConfigDir() + "/message.txt";
 
 
 	// Grab some existing headers
 
 	{
-		ifstream i(oldfile.c_str());
+		std::ifstream i(oldfile.c_str());
 
 		if (!i.is_open())
 		{
@@ -3391,14 +3389,14 @@ bool CursesEdit::save(SaveSink &sink,
 
 		while (!i.eof())
 		{
-			string line="";
+			std::string line="";
 
 			getline(i, line);
 
 			if (line.size() == 0)
 				break;
 
-			if (!isspace((int)(unsigned char)line[0]))
+			if (!unicode_isspace((unsigned char)line[0]))
 			{
 				size_t p=line.find(':');
 				keepHeader=false;
@@ -3409,7 +3407,7 @@ bool CursesEdit::save(SaveSink &sink,
 
 				if (p != std::string::npos)
 				{
-					string h=line.substr(0, p);
+					std::string h=line.substr(0, p);
 
 					if (strcasecmp(h.c_str(), "References")
 					    == 0 ||
@@ -3446,10 +3444,10 @@ bool CursesEdit::save(SaveSink &sink,
 
 		gettimeofday(&tv, NULL);
 
-		string h;
+		std::string h;
 
 		{
-			ostringstream o;
+			std::ostringstream o;
 
 			o << "cone." << tv.tv_sec << '.' << tv.tv_usec << '.'
 			  << getpid() << '.' << getuid() << "@"
@@ -3459,19 +3457,19 @@ bool CursesEdit::save(SaveSink &sink,
 
 		sink << mail::Header::encoded("Message-ID",
 					      "<" + h + ">",
-					      Gettext::defaultCharset()->chset)
+					      unicode_default_chset())
 			.toString()
 		     << "\nX-Mailer: http://www.courier-mta.org/cone/\n";
 	}
 
-	string xfcc=getFcc(saveFcc ? &sink:NULL);
+	std::string xfcc=getFcc(saveFcc ? &sink:NULL);
 
 	// Save envelope headers.
 
-	string fromhdr;
-	string replytohdr;
-	string customhdr;
-	string charset= Gettext::defaultCharset()->chset;
+	std::string fromhdr;
+	std::string replytohdr;
+	std::string customhdr;
+	std::string charset= unicode_default_chset();
 	size_t nparts;
 
 	saveheaders(fromhdr, replytohdr, customhdr, &sink);
@@ -3528,12 +3526,14 @@ bool CursesEdit::save(SaveSink &sink,
 
 	// First, save the message's contents to a temp file.
 
-	size_t lineNum;
-
 	size_t saveByteCount=0;
-	for (lineNum=0; lineNum < message.numLines(); lineNum++)
+	for (size_t lineNum=0, nLines=message.numLines();
+	     lineNum < nLines; lineNum++)
 	{
-		string s=Gettext::fromutf8(message.line_utf8(lineNum));
+		std::string s=mail::iconvert::convert
+			(message.getUTF8Text(lineNum, true),
+			 "utf-8",
+			 unicode_default_chset());
 
 		const char *p=s.c_str();
 
@@ -3556,7 +3556,7 @@ bool CursesEdit::save(SaveSink &sink,
 
 	// Compute a multipart boundary
 
-	string mp_boundary;
+	std::string mp_boundary;
 	size_t mp_cnt=0;
 
 	saveByteCount=0;
@@ -3567,12 +3567,13 @@ bool CursesEdit::save(SaveSink &sink,
 		mp_boundary += mail::hostname();
 		mp_boundary += "-";
 
-		string mpbuf;
+		std::string mpbuf;
 
 		{
-			ostringstream fmt;
+			std::ostringstream fmt;
 
-			fmt << time(NULL) << "-" << setw(4) << setfill('0')
+			fmt << time(NULL) << "-"
+			    << std::setw(4) << std::setfill('0')
 			    << mp_cnt++;
 			mpbuf=fmt.str();
 		}
@@ -3630,7 +3631,7 @@ bool CursesEdit::save(SaveSink &sink,
 	const char *encoding;
 
 	if (fseek(fp2, 0L, SEEK_SET) < 0 ||
-	    ((encoding=libmail_encode_autodetect_fp(fp2, 0)),
+	    ((encoding=libmail_encode_autodetect_fp(fp2, 0, NULL)),
 	     ferror(fp2)) || fseek(fp2, 0L, SEEK_SET) < 0)
 	{
 		fclose(fp2);
@@ -3650,17 +3651,13 @@ bool CursesEdit::save(SaveSink &sink,
 
 	// Encode message text.
 
-	string errmsg="";
+	std::string errmsg="";
 
 	try {
 		struct libmail_encode_info encodeInfo;
-		const struct unicode_info *u=
-			Gettext::defaultCharset();
 
-
-		sink << "Content-Type: text/plain; format=flowed; charset=\""
-		     << (strcmp(encoding, "7bit") == 0 &&
-			 (u->flags & UNICODE_USASCII) ? "US-ASCII":u->chset)
+		sink << "Content-Type: text/plain; format=flowed; delsp=yes; charset=\""
+		     << unicode_default_chset()
 		     << "\"\n"
 			"Content-Disposition: inline\n"
 			"Content-Transfer-Encoding: " << encoding << "\n\n";
@@ -3736,9 +3733,9 @@ bool CursesEdit::save(SaveSink &sink,
 
 // Generate an X-Fcc: header.
 
-string CursesEdit::getFcc(SaveSink *sink)
+std::string CursesEdit::getFcc(SaveSink *sink)
 {
-	string xfcc="";
+	std::string xfcc="";
 
 	if (sentFolderChoice)
 		defaultSentChoice=sentFolderChoice->getSelectedOption();
@@ -3756,7 +3753,7 @@ string CursesEdit::getFcc(SaveSink *sink)
 		if (xfcc.size() > 0 && sink)
 		{
 			(*sink) << "X-Fcc: "
-				<< (string)mail::rfc2047::encode(xfcc, "UTF-8")
+				<< (std::string)mail::rfc2047::encode(xfcc, "UTF-8")
 				<< "\n";
 		}
 	}
@@ -3785,14 +3782,14 @@ bool CursesEdit::checkheaders()
 // As a side effect, initialize the recipients and sender member objects,
 // which we want to know in advance before sending a message.
 
-void CursesEdit::saveheaders(string &fromhdr, string &replytohdr,
-			     string &customhdr,
+void CursesEdit::saveheaders(std::string &fromhdr, std::string &replytohdr,
+			     std::string &customhdr,
 			     SaveSink *sink)
 {
 	AddressList *screenHdrs[]={from, to, cc, bcc, replyto};
-	vector<mail::emailAddress> *saveBufs[]={&fromV, &toV, &ccV, &bccV,
+	std::vector<mail::emailAddress> *saveBufs[]={&fromV, &toV, &ccV, &bccV,
 					   &replytoV};
-	string headerNames[]={"From", "To", "Cc", "Bcc",
+	std::string headerNames[]={"From", "To", "Cc", "Bcc",
 			      "Reply-To"};
 
 	recipients.clear();
@@ -3804,11 +3801,11 @@ void CursesEdit::saveheaders(string &fromhdr, string &replytohdr,
 	// Take each header's actual contents, if it's shown.  If it's
 	// hidden, go to its buffer.
 
-	string charset= Gettext::defaultCharset()->chset;
+	std::string charset= unicode_default_chset();
 
 	for (i=0; i<sizeof(headerNames)/sizeof(headerNames[0]); i++)
 	{
-		vector<mail::emailAddress> addressArray;
+		std::vector<mail::emailAddress> addressArray;
 
 		if (screenHdrs[i])
 		{
@@ -3850,7 +3847,7 @@ void CursesEdit::saveheaders(string &fromhdr, string &replytohdr,
 
 	// Also write out custom headers, there.
 
-	vector<CustomHeader *>::iterator cb, ce;
+	std::vector<CustomHeader *>::iterator cb, ce;
 
 	cb=customHeaders.begin();
 	ce=customHeaders.end();
@@ -3859,15 +3856,15 @@ void CursesEdit::saveheaders(string &fromhdr, string &replytohdr,
 	{
 		CustomHeader *ch= *cb++;
 
-		string v=ch->hiddenValue;
+		std::string v=ch->hiddenValue;
 
 		if (ch->field)
 			v=ch->field->getText();
 
 		if (v.size() > 0)
 		{
-			string h=ch->name + " "
-				+ (string)mail::rfc2047::encode(v, charset);
+			std::string h=ch->name + " "
+				+ (std::string)mail::rfc2047::encode(v, charset);
 
 			if (sink)
 				(*sink) << h << "\n";
@@ -3884,10 +3881,10 @@ void CursesEdit::saveheaders(string &fromhdr, string &replytohdr,
 // After saving a message, automatically memorize the from and reply-to
 // headers so that they be the default next time.
 
-void CursesEdit::saved(string fromhdr,
-		       string replytohdr,
-		       string xfcc, string customhdr,
-		       string signKey)
+void CursesEdit::saved(std::string fromhdr,
+		       std::string replytohdr,
+		       std::string xfcc, std::string customhdr,
+		       std::string signKey)
 {
 	if (xserver.size() == 0)
 		return;
@@ -3895,7 +3892,7 @@ void CursesEdit::saved(string fromhdr,
 	if (signKey.size() == 0)
 		signKey="[]";
 
-	string::iterator b, e;
+	std::string::iterator b, e;
 
 	for (b=fromhdr.begin(), e=fromhdr.end(); b != e; b++)
 		if (*b == '\n')
@@ -3920,7 +3917,7 @@ void CursesEdit::saved(string fromhdr,
 
 	const char * const fldnames[]=
 		{"FROM", "REPLY-TO", "FCC", "CUSTOM", NULL};
-	const string fldvals[]=
+	const std::string fldvals[]=
 		{fromhdr, replytohdr, xfcc, customhdr};
 
 	size_t i;
@@ -3942,7 +3939,7 @@ void CursesEdit::saved(string fromhdr,
 				if (memorizePrompt.abortflag)
 					return;
 
-				if ((string)memorizePrompt != "Y")
+				if ((std::string)memorizePrompt != "Y")
 					return;
 
 				for (i=0; fldnames[i]; i++)
@@ -3965,7 +3962,7 @@ void CursesEdit::saved(string fromhdr,
 			if (memorizePrompt.abortflag)
 				return;
 
-			if ((string)memorizePrompt != "Y")
+			if ((std::string)memorizePrompt != "Y")
 				return;
 
 			s->updateFolderConfiguration(xfolder, "SIGNKEY",
@@ -3991,7 +3988,7 @@ void CursesEdit::saved(string fromhdr,
 			if (memorizePrompt.abortflag)
 				return;
 
-			if ((string)memorizePrompt != "Y")
+			if ((std::string)memorizePrompt != "Y")
 				return;
 
 			for (i=0; fldnames[i]; i++)
@@ -4013,7 +4010,7 @@ void CursesEdit::saved(string fromhdr,
 		if (memorizePrompt.abortflag)
 			return;
 
-		if ((string)memorizePrompt != "Y")
+		if ((std::string)memorizePrompt != "Y")
 			return;
 
 		s->updateServerConfiguration("SIGNKEY", signKey);

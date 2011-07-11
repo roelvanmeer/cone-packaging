@@ -1,6 +1,5 @@
-/* $Id: gpg.C,v 1.12 2010/04/29 00:34:49 mrsam Exp $
-**
-** Copyright 2003-2004, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -18,7 +17,6 @@
 #include <unistd.h>
 #include "gettext.H"
 #include "myserver.H"
-#include "wraptext.H"
 #include <vector>
 #include <set>
 #include <algorithm>
@@ -31,8 +29,6 @@ const char *gpgprog()
 	return GPG;
 }
 #undef GPG
-
-using namespace std;
 
 extern Gettext::Key key_TOGGLESPACE;
 extern Gettext::Key key_ABORT;
@@ -54,52 +50,64 @@ GPG::Key::~Key()
 void GPG::Key::getDescription(std::vector<std::string> &descrArray,
 			      size_t width)
 {
-	string keyDescr=longname;
+	std::string keyDescr=longname;
 
 	do
 	{
-		vector<wchar_t> l;
+		std::vector<unicode_char> unicode_buf;
 
 		size_t p=keyDescr.find('\n');
 
 		if (p == std::string::npos)
 		{
-			Curses::mbtow(keyDescr.c_str(), l);
+			mail::iconvert::convert(keyDescr,
+						unicode_default_chset(),
+						unicode_buf);
 			keyDescr="";
 		}
 		else
 		{
-			string s=keyDescr.substr(0, p);
-
-			Curses::mbtow(s.c_str(), l);
+			mail::iconvert::convert(keyDescr.substr(0, p),
+						unicode_default_chset(),
+						unicode_buf);
 			keyDescr=keyDescr.substr(p+1);
 		}
 
-		vector<size_t> metrics;
+		std::vector< std::vector<unicode_char> > wrapped_text;
 
-		Curses::getTextPos(l, metrics);
-		Curses::expandTabs(l, metrics);
+		std::back_insert_iterator<std::vector< std::vector
+						       <unicode_char> > >
+			insert_iter(wrapped_text);
 
-		l.push_back(0);
+		unicodewordwrap(unicode_buf.begin(),
+				unicode_buf.end(),
+				unicoderewrapnone(),
+				insert_iter,
+				width,
+				true);
 
-		string s=Curses::wtomb(&l[0]);
-
-		vector<string> sw=WrapText(s, width);
-
-		descrArray.insert(descrArray.end(), sw.begin(), sw.end());
+		for (std::vector< std::vector<unicode_char> >::const_iterator
+			     b(wrapped_text.begin()),
+			     e(wrapped_text.end()); b != e; ++b)
+		{
+			descrArray.push_back(mail::iconvert
+					     ::convert(*b,
+						       unicode_default_chset())
+					     );
+		}
 	} while (keyDescr.size() > 0);
 }
 
 // Provide a description of columns in longname
 
-void GPG::Key::getDescriptionColumns(vector<pair<string, int> > &columns)
+void GPG::Key::getDescriptionColumns(std::vector<std::pair<std::string, int> > &columns)
 {
 	columns.clear();
 	columns.reserve(4);
-	columns.push_back(make_pair(string(_("Key Type        ")), 0));
-	columns.push_back(make_pair(string(_("Created   ")), 18));
-	columns.push_back(make_pair(string(_("Expires   ")), 29));
-	columns.push_back(make_pair(string(_("Description")), 40));
+	columns.push_back(std::make_pair(std::string(_("Key Type        ")), 0));
+	columns.push_back(std::make_pair(std::string(_("Created   ")), 18));
+	columns.push_back(std::make_pair(std::string(_("Expires   ")), 29));
+	columns.push_back(std::make_pair(std::string(_("Description")), 40));
 }
 
 GPG::GPG()
@@ -127,18 +135,18 @@ public:
 	initHelper();
 	~initHelper();
 
-	vector<GPG::Key> keys;
+	std::vector<GPG::Key> keys;
 
 	// ... Then sort it by address.
 
-	vector< pair<string, GPG::Key *> > sortedKeys;
+	std::vector< std::pair<std::string, GPG::Key *> > sortedKeys;
 
 	class sort {
 	public:
 		sort();
 		~sort();
-		bool operator()(const pair<string, GPG::Key *> &,
-				const pair<string, GPG::Key *> &);
+		bool operator()(const std::pair<std::string, GPG::Key *> &,
+				const std::pair<std::string, GPG::Key *> &);
 	};
 
 	static int save_key(const char *fingerprint,
@@ -147,7 +155,7 @@ public:
 			    int invalid_flag,
 			    struct gpg_list_info *va);
 
-	void operator>>( vector<Key> &);
+	void operator>>( std::vector<Key> &);
 };
 
 GPG::initHelper::initHelper()
@@ -182,8 +190,8 @@ GPG::initHelper::sort::~sort()
 {
 }
 
-bool GPG::initHelper::sort::operator()(const pair<string, GPG::Key *> &a,
-				       const pair<string, GPG::Key *> &b)
+bool GPG::initHelper::sort::operator()(const std::pair<std::string, GPG::Key *> &a,
+				       const std::pair<std::string, GPG::Key *> &b)
 {
 	if (a.first == b.first)
 		return a.second->longname < b.second->longname;
@@ -191,27 +199,27 @@ bool GPG::initHelper::sort::operator()(const pair<string, GPG::Key *> &a,
 	return a.first < b.first;
 }
 
-void GPG::initHelper::operator>>( vector<Key> &keyList)
+void GPG::initHelper::operator>>( std::vector<Key> &keyList)
 {
 	sortedKeys.clear();
 	sortedKeys.reserve(keys.size());
 
-	vector<GPG::Key>::iterator kb=keys.begin(), ke=keys.end();
+	std::vector<GPG::Key>::iterator kb=keys.begin(), ke=keys.end();
 
 	while (kb != ke)
 	{
 		// Extract the address from longname
 
-		vector<mail::address> addrVec;
+		std::vector<mail::address> addrVec;
 		size_t dummy;
 		mail::address::fromString(kb->longname, addrVec, dummy);
 
-		string s;
+		std::string s;
 
 		if (addrVec.size() > 0)
 			s=addrVec[0].getAddr();
 
-		sortedKeys.push_back(make_pair(s, &*kb));
+		sortedKeys.push_back(std::make_pair(s, &*kb));
 		++kb;
 	}
 
@@ -220,7 +228,7 @@ void GPG::initHelper::operator>>( vector<Key> &keyList)
 
 	std::sort(sortedKeys.begin(), sortedKeys.end(), sort());
 
-	vector< pair<string, GPG::Key *> >::iterator
+	std::vector< std::pair<std::string, GPG::Key *> >::iterator
 		b=sortedKeys.begin(),
 		e=sortedKeys.end();
 
@@ -244,7 +252,7 @@ void GPG::init()
 	struct gpg_list_info gli;
 
 	memset(&gli, 0, sizeof(gli));
-	gli.charset=Gettext::defaultCharset();
+	gli.charset=unicode_default_chset();
 	gli.disabled_msg= _(" (disabled)");
 	gli.revoked_msg= _(" (removed)");
 	gli.expired_msg= _(" (disabled)");
@@ -273,12 +281,12 @@ void GPG::init()
 }
 
 
-GPG::Key_iterator GPG::get_secret_key(string fingerprint)
+GPG::Key_iterator GPG::get_secret_key(std::string fingerprint)
 {
 	return get_key(secret_keys, fingerprint);
 }
 
-GPG::Key_iterator GPG::get_public_key(string fingerprint)
+GPG::Key_iterator GPG::get_public_key(std::string fingerprint)
 {
 	return get_key(public_keys, fingerprint);
 }
@@ -295,7 +303,7 @@ void GPG::find_public_keys(std::vector<mail::address> &addresses,
 	return find_keys(public_keys, addresses, keys);
 }
 
-GPG::Key_iterator GPG::get_key(std::vector<GPG::Key> &keys, string fingerprint)
+GPG::Key_iterator GPG::get_key(std::vector<GPG::Key> &keys, std::string fingerprint)
 {
 	Key_iterator b=keys.begin(), e=keys.end();
 
@@ -309,21 +317,21 @@ GPG::Key_iterator GPG::get_key(std::vector<GPG::Key> &keys, string fingerprint)
 	return b;
 }
 
-void GPG::find_keys(std::vector<Key> &keys, vector<mail::address> &address_a,
+void GPG::find_keys(std::vector<Key> &keys, std::vector<mail::address> &address_a,
 		   std::vector<Key_iterator> &keys_out)
 {
 	Key_iterator b=keys.begin(), e=keys.end();
 
 	while (b != e)
 	{
-		vector<mail::address>::iterator ba=address_a.begin(),
+		std::vector<mail::address>::iterator ba=address_a.begin(),
 			ea=address_a.end();
 
 		while (ba != ea)
 		{
 			if (ba->getAddr().size() > 0)
 			{
-				vector<mail::address>::iterator
+				std::vector<mail::address>::iterator
 					bk=b->address.begin(),
 					ek=b->address.end();
 
@@ -352,8 +360,8 @@ void GPG::find_keys(std::vector<Key> &keys, vector<mail::address> &address_a,
 
 class GPG::dialog : public CursesContainer, public CursesKeyHandler {
 
-	vector<wchar_t> title;
-	vector<GPG::Key> &keys;
+	std::vector<unicode_char> utitle;
+	std::vector<GPG::Key> &keys;
 
 	class Keylist : public CursesVScroll {
 		GPG::dialog *parent;
@@ -363,12 +371,12 @@ class GPG::dialog : public CursesContainer, public CursesKeyHandler {
 
 	public:
 		bool multiMode;
-		set<size_t> selectedKeys;
+		std::set<size_t> selectedKeys;
 
 		Keylist(GPG::dialog *parentArg,
-			string fingerprintArg);
+			std::string fingerprintArg);
 		Keylist(GPG::dialog *parentArg,
-			vector<string> &selectedFingerprints);
+			std::vector<std::string> &selectedFingerprints);
 		~Keylist();
 		// This is a child of CursesFileReq, and its size is
 		// automatically extended to the bottom of its parent.
@@ -399,16 +407,16 @@ class GPG::dialog : public CursesContainer, public CursesKeyHandler {
 
 	Keylist keylist;
 	bool closing;
-	string fingerprint;
-	string cancelDescr;
-	string enterDescr;
-	void init(string);
+	std::string fingerprint;
+	std::string cancelDescr;
+	std::string enterDescr;
+	void init(std::string);
 
 public:
-	dialog(vector<GPG::Key> &keys, string fingerprintArg,
-	       string title, string cancelDescrArg, string enterDescrArg);
-	dialog(vector<GPG::Key> &keys, vector<string> &fingerprints,
-	       string title, string cancelDescrArg, string enterDescrArg);
+	dialog(std::vector<GPG::Key> &keys, std::string fingerprintArg,
+	       std::string title, std::string cancelDescrArg, std::string enterDescrArg);
+	dialog(std::vector<GPG::Key> &keys, std::vector<std::string> &fingerprints,
+	       std::string title, std::string cancelDescrArg, std::string enterDescrArg);
 	~dialog();
 	
 	bool orderlyClose() const { return closing; }
@@ -422,12 +430,12 @@ public:
 
 	void selected(size_t);
 
-	operator string()
+	operator std::string()
 	{
 		return fingerprint;
 	}
 
-	void operator>>(vector<string> &);
+	void operator>>(std::vector<std::string> &);
 
 private:
 	bool processKey(const Curses::Key &key);
@@ -435,11 +443,11 @@ private:
 };
 
 GPG::dialog::Keylist::Keylist(GPG::dialog *parentArg,
-			      string fingerprint)
+			      std::string fingerprint)
 	: CursesVScroll(parentArg),
 	  parent(parentArg), currentRow(0), multiMode(false)
 {
-	vector<GPG::Key>::iterator b=parentArg->keys.begin(),
+	std::vector<GPG::Key>::iterator b=parentArg->keys.begin(),
 		e=parentArg->keys.end();
 	size_t r=0;
 
@@ -454,11 +462,11 @@ GPG::dialog::Keylist::Keylist(GPG::dialog *parentArg,
 }
 
 GPG::dialog::Keylist::Keylist(GPG::dialog *parentArg,
-			      vector<string> &selectedFingerprints)
+			      std::vector<std::string> &selectedFingerprints)
 	: CursesVScroll(parentArg),
 	  parent(parentArg), currentRow(0), multiMode(true)
 {
-	set<string> fingerprintSet;
+	std::set<std::string> fingerprintSet;
 
 	fingerprintSet.insert(selectedFingerprints.begin(),
 			      selectedFingerprints.end());
@@ -474,11 +482,11 @@ GPG::dialog::Keylist::~Keylist()
 {
 }
 
-void GPG::dialog::operator>> (vector<string> &array)
+void GPG::dialog::operator>> (std::vector<std::string> &array)
 {
 	array.clear();
 
-	set<size_t>::iterator b=keylist.selectedKeys.begin(),
+	std::set<size_t>::iterator b=keylist.selectedKeys.begin(),
 		e=keylist.selectedKeys.end();
 
 	while (b != e)
@@ -533,46 +541,43 @@ void GPG::dialog::Keylist::draw()
 
 void GPG::dialog::Keylist::drawKey(size_t n)
 {
-	vector<wchar_t> line;
-
-	line.insert(line.end(), getWidth(), ' ');
+	std::vector<unicode_char> line;
 
 	if (n < parent->keys.size())
 	{
-		vector<wchar_t> wbuf;
-
-		mbtow(parent->keys[n].shortname.c_str(), wbuf);
-
-		size_t j;
-
-		for (j=0; j<wbuf.size(); j++)
-		{
-			if (j + 2 >= line.size())
-				break;
-			line[j+2]=wbuf[j];
-		}
+		mail::iconvert::convert(parent->keys[n].shortname,
+					unicode_default_chset(),
+					line);
+		line.insert(line.begin(), ' ');
+		line.insert(line.begin(), ' ');
 	}
-
-	line.push_back(0);
 
 	CursesAttr attr;
 
-	if (selectedKeys.count(n) > 0)
+	if (selectedKeys.count(n) > 0 && line.size() > 0)
 	{
-		vector<wchar_t> wc;
+		std::vector<unicode_char> uc;
 
-		mbtow(ucheck, wc);
+		mail::iconvert::convert(std::string(ucheck),
+					unicode_default_chset(), uc);
 
-		if (wc.size() > 0)
-			line[0]=wc[0];
+		if (uc.size() > 0)
+		    line[0]=uc[0];
 
 		attr.setHighlight();
-	}
+	}		    
 
 	if (n == currentRow)
 		attr.setReverse();
 
-	writeText(&line[0], n, 0, attr);
+	{
+		widecharbuf wc;
+
+		wc.init_unicode(line.begin(), line.end());
+
+		writeText(wc.get_unicode_fixedwidth(getWidth(), 0),
+			  n, 0, attr);
+	}
 }
  
 // Even though this is a CursesContainer subclass, its focus
@@ -625,7 +630,7 @@ bool GPG::dialog::Keylist::processKeyInFocus(const Key &key)
 		{
 			if (currentRow < parent->keys.size())
 			{
-				set<size_t>::iterator p=
+				std::set<size_t>::iterator p=
 					selectedKeys.find(currentRow);
 
 				if (p == selectedKeys.end())
@@ -694,8 +699,8 @@ bool GPG::dialog::Keylist::processKeyInFocus(const Key &key)
 	return false;
 }
 
-GPG::dialog::dialog(vector<GPG::Key> &keysArg, string fingerprintArg,
-		    string title, string cancelDescrArg, string enterDescrArg)
+GPG::dialog::dialog(std::vector<GPG::Key> &keysArg, std::string fingerprintArg,
+		    std::string title, std::string cancelDescrArg, std::string enterDescrArg)
 	: CursesContainer(mainScreen), CursesKeyHandler(PRI_DIALOGHANDLER),
 	  keys(keysArg),
 	  keylist(this, fingerprintArg), closing(false),
@@ -704,8 +709,8 @@ GPG::dialog::dialog(vector<GPG::Key> &keysArg, string fingerprintArg,
 	init(title);
 }
 
-GPG::dialog::dialog(vector<GPG::Key> &keysArg, vector<string> &fingerprints,
-		    string title, string cancelDescrArg, string enterDescrArg)
+GPG::dialog::dialog(std::vector<GPG::Key> &keysArg, std::vector<std::string> &fingerprints,
+		    std::string title, std::string cancelDescrArg, std::string enterDescrArg)
 	: CursesContainer(mainScreen), CursesKeyHandler(PRI_DIALOGHANDLER),
 	  keys(keysArg),
 	  keylist(this, fingerprints), closing(false),
@@ -714,12 +719,11 @@ GPG::dialog::dialog(vector<GPG::Key> &keysArg, vector<string> &fingerprints,
 	init(title);
 }
 
-void GPG::dialog::init(string titleArg)
+void GPG::dialog::init(std::string titleArg)
 {
 	keylist.setRow(11);
 
-	mbtow(titleArg.c_str(), title);
-	title.push_back(0);
+	mail::iconvert::convert(titleArg, unicode_default_chset(), utitle);
 }
 
 GPG::dialog::~dialog()
@@ -744,16 +748,16 @@ void GPG::dialog::draw()
 
 	size_t r=keylist.getCurrentRow();
 
-	string keyDescr;
+	std::string keyDescr;
 
-	vector<string> rows;
+	std::vector<std::string> rows;
 
 	if (r < keys.size())
 		keys[r].getDescription(rows, getWidth());
 
 	Curses::CursesAttr attr;
 
-	vector<pair<string, int> > columns;
+	std::vector<std::pair<std::string, int> > columns;
 
 	GPG::Key::getDescriptionColumns(columns);
 
@@ -761,7 +765,7 @@ void GPG::dialog::draw()
 
 	columnAttr.setUnderline();
 
-	vector<pair<string, int> >::iterator
+	std::vector<std::pair<std::string, int> >::iterator
 		cb=columns.begin(), ce=columns.end();
 
 	while (cb != ce)
@@ -772,37 +776,43 @@ void GPG::dialog::draw()
 
 	for (r=0; r<6; r++)
 	{
-		vector<wchar_t> w;
+		widecharbuf wc;
 
 		if (r < rows.size())
-			mbtow(rows[r].c_str(), w);
+			wc.init_string(rows[r]);
 
-
-		size_t n=getWidth();
-
-		if (w.size() < n)
-			w.insert(w.end(), n - w.size(), ' ');
-		else
-			w.erase(w.begin() + n, w.end());
-
-		w.push_back(0);
-
-		writeText(&w[0], r+4, 0, attr);
+		writeText(wc.get_unicode_fixedwidth(getWidth(), 0),
+			  r+4, 0, attr);
 	}
 
-	vector<wchar_t> w;
+	std::vector<unicode_char> w;
 
 	w.insert(w.end(), getWidth(), '-');
-	w.push_back(0);
-	writeText(&w[0], r+3, 0, attr);
+	writeText(w, r+3, 0, attr);
 
 	size_t ww=getWidth();
 
-	ww= title.size()-1 > ww ? 0: ww-(title.size()-1);
+	{
+		widecharbuf wc;
 
-	Curses::CursesAttr wAttr;
+		wc.init_unicode(utitle.begin(), utitle.end());
+		wc.expandtabs(0);
 
-	writeText(&title[0], 1, ww/2, wAttr);
+		size_t grapheme_width=wc.wcwidth(0);
+
+		if (grapheme_width)
+			--grapheme_width;
+
+		ww= grapheme_width > ww ? 0: ww-grapheme_width;
+
+		Curses::CursesAttr wAttr;
+
+		std::vector<unicode_char> s;
+
+		wc.tounicode(s);
+
+		writeText(s, 1, ww/2, wAttr);
+	}
 }
 
 void GPG::dialog::requestFocus()
@@ -823,14 +833,14 @@ int GPG::dialog::getHeight() const
 bool GPG::dialog::listKeys( std::vector< std::pair<std::string, std::string> >
 			    &list)
 {
-	list.push_back( make_pair(Gettext::keyname(_("ABORT:^C")),
+	list.push_back( std::make_pair(Gettext::keyname(_("ABORT:^C")),
 				  cancelDescr));
 
-	list.push_back( make_pair(Gettext::keyname(_("ENTER:Enter")),
+	list.push_back( std::make_pair(Gettext::keyname(_("ENTER:Enter")),
 				  enterDescr));
 
 	if (keylist.multiMode)
-		list.push_back( make_pair(Gettext::keyname(_("SPACE:Space")),
+		list.push_back( std::make_pair(Gettext::keyname(_("SPACE:Space")),
 					  _("Select/Unselect")));
 
 	return true;
@@ -847,8 +857,8 @@ bool GPG::dialog::processKey(const Curses::Key &key)
 			keylist.selectedKeys.clear();
 		return true;
 	}
-	return key.plain() && (unsigned char)key.key == key.key &&
-		(unsigned char)key.key < ' ';
+	return key.plain() && (unsigned char)key.ukey == key.ukey &&
+		(unsigned char)key.ukey < ' ';
 }
 
 void GPG::dialog::selected(size_t r)
@@ -858,7 +868,7 @@ void GPG::dialog::selected(size_t r)
 	closing=true;
 }
 
-string GPG::select_private_key(std::string fingerprint,
+std::string GPG::select_private_key(std::string fingerprint,
 			       std::string title,
 			       std::string prompt,
 			       std::string enterDescr,
@@ -868,7 +878,7 @@ string GPG::select_private_key(std::string fingerprint,
 			  enterDescr, abortDescr);
 }
 
-string GPG::select_public_key(std::string fingerprint,
+std::string GPG::select_public_key(std::string fingerprint,
 			      std::string title,
 			      std::string prompt,
 			      std::string enterDescr,
@@ -878,7 +888,7 @@ string GPG::select_public_key(std::string fingerprint,
 			  enterDescr, abortDescr);
 }
 
-string GPG::select_key( vector<Key> &keyVec, std::string fingerprint,
+std::string GPG::select_key( std::vector<Key> &keyVec, std::string fingerprint,
 			std::string title, std::string prompt,
 			std::string enterDescr,
 			std::string abortDescr)
@@ -892,7 +902,7 @@ string GPG::select_key( vector<Key> &keyVec, std::string fingerprint,
 
 	myServer::nextScreen=NULL;
 
-	string s;
+	std::string s;
 
 	{
 		GPG::dialog myKeylist(keyVec, fingerprint, title,
@@ -959,22 +969,22 @@ void GPG::select_public_keys(std::vector<std::string> &fingerprints,
 /////////////////////////////////////////////////////////////////////////
 //
 // Common code creates libmail_gpg_info.argv.  Since this is C++, we
-// try not to do dynamic alloc.  The caller supplies the vector<string>
+// try not to do dynamic alloc.  The caller supplies the std::vector<std::string>
 // arguments, and we allocate memory using C++ vectors.  The caller supplies
 // two vectors, as follows.  The final argv array is argv_cp
 
-void GPG::create_argv(vector<string> &argv,
-		      vector< vector<char> > &argv_ptr,
-		      vector<char *> &argv_cp)
+void GPG::create_argv(std::vector<std::string> &argv,
+		      std::vector< std::vector<char> > &argv_ptr,
+		      std::vector<char *> &argv_cp)
 {
-	vector<string>::iterator ekb, eke;
+	std::vector<std::string>::iterator ekb, eke;
 
 	ekb=argv.begin();
 	eke=argv.end();
 
 	while (ekb != eke)
 	{
-		vector<char> vc;
+		std::vector<char> vc;
 
 		vc.insert(vc.end(), ekb->begin(), ekb->end());
 		vc.push_back(0);
@@ -983,7 +993,7 @@ void GPG::create_argv(vector<string> &argv,
 		++ekb;
 	}
 
-	vector< vector<char> >::iterator ab=argv_ptr.begin(),
+	std::vector< std::vector<char> >::iterator ab=argv_ptr.begin(),
 		ae=argv_ptr.end();
 
 	while (ab != ae)
@@ -997,12 +1007,12 @@ void GPG::create_argv(vector<string> &argv,
 
 class GPG::exportKeyHelper {
 
-	ostream &oStream;
+	std::ostream &oStream;
 
-	string errmsg;
+	std::string errmsg;
 
 public:
-	exportKeyHelper(ostream &oStreamArg);
+	exportKeyHelper(std::ostream &oStreamArg);
 	~exportKeyHelper();
 
 	static int out_func(const char *p, size_t n, void *);
@@ -1011,10 +1021,10 @@ public:
 	int out_func(const char *p, size_t n);
 	int err_func(const char *p, size_t n);
 
-	operator string() const { return errmsg; }
+	operator std::string() const { return errmsg; }
 };
 
-GPG::exportKeyHelper::exportKeyHelper(ostream &oStreamArg)
+GPG::exportKeyHelper::exportKeyHelper(std::ostream &oStreamArg)
 	: oStream(oStreamArg)
 {
 }
@@ -1040,11 +1050,11 @@ int GPG::exportKeyHelper::out_func(const char *p, size_t n)
 
 int GPG::exportKeyHelper::err_func(const char *p, size_t n)
 {
-	errmsg += string(p, p+n);
+	errmsg += std::string(p, p+n);
 	return 0;
 }
 
-string GPG::exportKey(std::string fingerprint,
+std::string GPG::exportKey(std::string fingerprint,
 		      bool secret,
 		      std::ostream &oStream)
 {
@@ -1068,13 +1078,13 @@ class GPG::confirmHelper : public CursesContainer {
 
 	class keyDisplay : public CursesContainer {
 
-		vector<CursesLabel *> labels;
+		std::vector<CursesLabel *> labels;
 	public:
 		keyDisplay(CursesContainer *parent, GPG::Key &key);
 		~keyDisplay();
 
 	private:
-		CursesLabel *add(string, CursesAttr);
+		CursesLabel *add(std::string, CursesAttr);
 	};
 
 	keyDisplay key1, key2;
@@ -1107,11 +1117,11 @@ GPG::confirmHelper::keyDisplay::keyDisplay(CursesContainer *parent,
 					   GPG::Key &key)
 	: CursesContainer(parent)
 {
-	vector<pair<string, int> > columns;
+	std::vector<std::pair<std::string, int> > columns;
 
 	GPG::Key::getDescriptionColumns(columns);
 
-	vector<pair<string, int> >::iterator cb=columns.begin(),
+	std::vector<std::pair<std::string, int> >::iterator cb=columns.begin(),
 		ce=columns.end();
 
 	{
@@ -1128,7 +1138,7 @@ GPG::confirmHelper::keyDisplay::keyDisplay(CursesContainer *parent,
 		}
 	}
 
-	vector<string> description;
+	std::vector<std::string> description;
 
 	key.getDescription(description, parent ? parent->getWidth():80);
 
@@ -1141,7 +1151,7 @@ GPG::confirmHelper::keyDisplay::keyDisplay(CursesContainer *parent,
 
 GPG::confirmHelper::keyDisplay::~keyDisplay()
 {
-	vector<CursesLabel *>::iterator b=labels.begin(), e=labels.end();
+	std::vector<CursesLabel *>::iterator b=labels.begin(), e=labels.end();
 
 	while (b != e)
 	{
@@ -1152,7 +1162,7 @@ GPG::confirmHelper::keyDisplay::~keyDisplay()
 	}
 }
 
-CursesLabel *GPG::confirmHelper::keyDisplay::add(string text, CursesAttr attr)
+CursesLabel *GPG::confirmHelper::keyDisplay::add(std::string text, CursesAttr attr)
 {
 	CursesLabel *p=new CursesLabel(this, text, attr);
 

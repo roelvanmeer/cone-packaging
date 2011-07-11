@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>couriertcpd</title><link rel="stylesheet" href="style.css" type="text/css"/><meta name="generator" content="DocBook XSL Stylesheets V1.74.3"/><link rel="home" href="#couriertcpd" title="couriertcpd"/><link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/><meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/><link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>couriertcpd</title><link rel="stylesheet" href="style.css" type="text/css"/><meta name="generator" content="DocBook XSL Stylesheets V1.75.2"/><link rel="home" href="#id515938" title="couriertcpd"/><link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/><meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/><link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
 
 Copyright 1998 - 2009 Double Precision, Inc.  See COPYING for distribution
 information.
 
---></head><body><div class="refentry" lang="en" xml:lang="en"><a id="couriertcpd" shape="rect"> </a><div class="titlepage"/><div class="refnamediv"><h2>Name</h2><p>couriertcpd — the <span class="application">Courier</span> mail server
-TCP server daemon</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">couriertcpd</code>  [-pid=<em class="replaceable"><code>pidfile</code></em>] [<em class="replaceable"><code>option</code></em>...] {<em class="replaceable"><code>list</code></em>} {<em class="replaceable"><code>program</code></em>} {<em class="replaceable"><code>arg</code></em>...}</p></div><div class="cmdsynopsis"><p><code class="command">couriertcpd</code>  {-pid=<em class="replaceable"><code>pidfile</code></em>} {-stop}</p></div><div class="cmdsynopsis"><p><code class="command">couriertcpd</code>  {-pid=<em class="replaceable"><code>pidfile</code></em>} {-restart}</p></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id430934" shape="rect"> </a><h2>DESCRIPTION</h2><p>
+--></head><body><div class="refentry" title="couriertcpd"><a id="id515938" shape="rect"> </a><div class="titlepage"/><div class="refnamediv"><h2>Name</h2><p>couriertcpd — the <span class="application">Courier</span> mail server
+TCP server daemon</p></div><div class="refsynopsisdiv" title="Synopsis"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">couriertcpd</code>  [-pid=<em class="replaceable"><code>pidfile</code></em>] [<em class="replaceable"><code>option</code></em>...] {<em class="replaceable"><code>list</code></em>} {<em class="replaceable"><code>program</code></em>} {<em class="replaceable"><code>arg</code></em>...}</p></div><div class="cmdsynopsis"><p><code class="command">couriertcpd</code>  {-pid=<em class="replaceable"><code>pidfile</code></em>} {-stop}</p></div><div class="cmdsynopsis"><p><code class="command">couriertcpd</code>  {-pid=<em class="replaceable"><code>pidfile</code></em>} {-restart}</p></div></div><div class="refsect1" title="DESCRIPTION"><a id="id550208" shape="rect"> </a><h2>DESCRIPTION</h2><p>
 <span class="command"><strong>couriertcpd</strong></span> accepts incoming network connections, and runs
 <span class="command"><strong>program</strong></span> after establishing each network connection. The
 <span class="command"><strong>program</strong></span>'s standard input and output are set to the network
@@ -23,7 +23,7 @@ environment inherited by <span class="command"><strong>program</strong></span> w
 inherited by <span class="command"><strong>couriertcpd</strong></span>, plus any additional environment
 variables initialized by <span class="command"><strong>couriertcpd</strong></span>. It is also possible to
 reject certain network connections. Several options are available to specify
-which network connections will be rejected.</p></div><div class="refsect1" lang="en" xml:lang="en"><a id="id431196" shape="rect"> </a><h2>OPTIONS</h2><div class="variablelist"><dl><dt><span class="term">-access=<em class="replaceable"><code>filename</code></em></span></dt><dd><p>
+which network connections will be rejected.</p></div><div class="refsect1" title="OPTIONS"><a id="id550295" shape="rect"> </a><h2>OPTIONS</h2><div class="variablelist"><dl><dt><span class="term">-access=<em class="replaceable"><code>filename</code></em></span></dt><dd><p>
 Specifies an optional access
 file. The access file lists the IP addresses from which connections
 should be accepted or rejected. The access file is also used to
@@ -67,7 +67,7 @@ connection without sending back any messages.</p></dd><dt><span class="term">-dr
 	    <span class="command"><strong>program</strong></span> to handle the connection.
 	    See DNS ACCESS LISTS, below, for more information.
 	    <em class="replaceable"><code>var</code></em> defaults to
-	    “<span class="quote">BLOCK</span>”, if not specified.
+	    <span class="quote">“<span class="quote">BLOCK</span>”</span>, if not specified.
 	  </p></dd><dt><span class="term">-group=<em class="replaceable"><code>group</code></em></span></dt><dd><p>
 Set <span class="command"><strong>couriertcpd</strong></span>'s its
 group ID. <em class="replaceable"><code>group</code></em> may be specified numerically, or by
@@ -148,7 +148,7 @@ SIGTERM signal.</p></dd><dt><span class="term">-user=<em class="replaceable"><co
 Set <span class="command"><strong>couriertcpd</strong></span>'s user
 ID. Also, the group ID is set to the user's group ID. Using both
 <code class="option">-group</code> and <code class="option">-user</code> is not necessary. Only the
-superuser can specify <code class="option">-user</code>.</p></dd></dl></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id475288" shape="rect"> </a><h2>MULTIPLE PORT LIST</h2><a id="list" shape="rect"> </a><p>
+superuser can specify <code class="option">-user</code>.</p></dd></dl></div></div><div class="refsect1" title="MULTIPLE PORT LIST"><a id="id559878" shape="rect"> </a><h2>MULTIPLE PORT LIST</h2><a id="list" shape="rect"> </a><p>
 The <em class="replaceable"><code>list</code></em> argument can be a comma-separated list of
 multiple port
 numbers. <span class="command"><strong>couriertcpd</strong></span> will create network connections on any
@@ -178,7 +178,7 @@ and</p><div class="informalexample"><pre class="programlisting" xml:space="prese
 couriertcpd -pid=/var/run/smtp.pid -address=127.0.0.1 25,999 <em class="replaceable"><code>program</code></em>
 </pre></div><p>
 will create network connections on ports 25 and 999 of the IP address
-127.0.0.1.</p></div><div class="refsect1" lang="en" xml:lang="en"><a id="id475388" shape="rect"> </a><h2>ACCESS FILE</h2><p>
+127.0.0.1.</p></div><div class="refsect1" title="ACCESS FILE"><a id="id560011" shape="rect"> </a><h2>ACCESS FILE</h2><p>
 The access file lists IP addresses that <span class="command"><strong>couriertcpd</strong></span> will
 accept or reject connections from. An access file is optional. Without an
 access file <span class="command"><strong>couriertcpd</strong></span> accepts a connection from any IP
@@ -192,7 +192,7 @@ script, such as
 <a class="ulink" href="makesmtpaccess.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">makesmtpaccess</span>(8)</span></a>,
 from one or more plain text
 files. Blank lines in the text file are ignored. Lines that start with the #
-character are also ignored.</p><div class="refsect2" lang="en" xml:lang="en"><a id="id475427" shape="rect"> </a><h3>Rejecting and accepting connections by IP address</h3><p>
+character are also ignored.</p><div class="refsect2" title="Rejecting and accepting connections by IP address"><a id="id560051" shape="rect"> </a><h3>Rejecting and accepting connections by IP address</h3><p>
 The following line instructs <span class="command"><strong>couriertcpd</strong></span> to reject all
 connections from an IP address range:</p><div class="informalexample"><pre class="programlisting" xml:space="preserve">
 netblock&lt;tab&gt;deny
@@ -221,7 +221,7 @@ If the IP address of the connection is not found in the access file the
 connection is accepted by default. The following line causes unlisted
 connections to be rejected:</p><div class="informalexample"><pre class="programlisting" xml:space="preserve">
 *&lt;tab&gt;deny
-</pre></div></div><div class="refsect2" lang="en" xml:lang="en"><a id="id475554" shape="rect"> </a><h3>IPv6 addresses</h3><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+</pre></div></div><div class="refsect2" title="IPv6 addresses"><a id="id560177" shape="rect"> </a><h3>IPv6 addresses</h3><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
 IPv6 support in the access file is experimental, and is subject to
 change in a future release.  The following syntax is subject to change at any
 time.</p></div><p>
@@ -248,7 +248,7 @@ This will deny entire 3ffe::/16 (6bone network, which is phased out).
 :2002:c0a8&lt;tab&gt;deny
 </pre></div><p>
 This will deny 2002:c0a8::/32 (6to4 addresses derived from private
-address space).</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id475632" shape="rect"> </a><h3>Setting environment variables</h3><p>
+address space).</p></div><div class="refsect2" title="Setting environment variables"><a id="id560256" shape="rect"> </a><h3>Setting environment variables</h3><p>
 <code class="literal">allow</code> can be optionally followed by a list of environment
 variable
 assignments, separated by commas. The environment variables are set before
@@ -265,7 +265,7 @@ Note that <code class="envar">RELAYCLIENT</code> must be explicitly specified fo
 address <code class="literal">192.68.0.10</code>. The first line is NOT used for
 connections from this IP
 address. <span class="command"><strong>couriertcpd</strong></span> only reads one entry from the access
-file, the entry for the most specific IP address.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id475706" shape="rect"> </a><h3>DNS ACCESS LISTS</h3><p>An alternative to listing banned IP addresses is to use an external
+file, the entry for the most specific IP address.</p></div><div class="refsect2" title="DNS ACCESS LISTS"><a id="id560330" shape="rect"> </a><h3>DNS ACCESS LISTS</h3><p>An alternative to listing banned IP addresses is to use an external
 DNS-based IP access list.</p><p>
 There is no provision to support IPv6-based lists, because none yet
 exist. IPv6-based access list support will be added in the future.</p><p>
@@ -314,7 +314,7 @@ somewhere in it, which will be replaced by the listed IP address.</p><p>
 	<code class="option">-drop</code> option is set to a non-empty string,
 	<span class="command"><strong>couriertcpd</strong></span> drops the connection instead of
 	executing the <span class="command"><strong>program</strong></span>.
-      </p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id475856" shape="rect"> </a><h3>MULTIPLE DNS LISTS</h3><p>
+      </p></div><div class="refsect2" title="MULTIPLE DNS LISTS"><a id="id560479" shape="rect"> </a><h3>MULTIPLE DNS LISTS</h3><p>
 Multiple <code class="option">-block</code> options can be used. The connecting IP address
 gets looked up in multiple access lists. This is implemented as
 follows.</p><p>
@@ -359,7 +359,7 @@ If <em class="replaceable"><code>/n.n.n.n</code></em> is used, and
 <em class="replaceable"><code>msg</code></em> is specified for every
 <code class="option">-block</code> option for this same zone,
 <span class="command"><strong>couriertcpd</strong></span> will
-query for existence of A records only.</p></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id476008" shape="rect"> </a><h2>ENVIRONMENT VARIABLES</h2><p>
+query for existence of A records only.</p></div></div><div class="refsect1" title="ENVIRONMENT VARIABLES"><a id="id560631" shape="rect"> </a><h2>ENVIRONMENT VARIABLES</h2><p>
 <span class="command"><strong>couriertcpd</strong></span> also initializes the following environment
 variables prior to running <span class="command"><strong>program</strong></span>:</p><div class="variablelist"><dl><dt><span class="term">TCPLOCALHOST</span></dt><dd><p>
 The name of the host on the local end of
@@ -382,5 +382,5 @@ Identification string received from the
 IDENT server on the remote IP address. Not set if the IDENT server
 returned an error, or if the <code class="option">-noidentlookup</code> option was
 specified.</p></dd><dt><span class="term">TCPREMOTEPORT</span></dt><dd><p>
-TCP port of the remote end of the network connection.</p></dd></dl></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id476152" shape="rect"> </a><h2>SEE ALSO</h2><p>
+TCP port of the remote end of the network connection.</p></dd></dl></div></div><div class="refsect1" title="SEE ALSO"><a id="id560776" shape="rect"> </a><h2>SEE ALSO</h2><p>
 <a class="ulink" href="courier.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">courier</span>(8)</span></a>.</p></div></div></body></html>

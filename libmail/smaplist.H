@@ -1,5 +1,4 @@
-/* $Id: smaplist.H,v 1.2 2003/06/07 22:45:13 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

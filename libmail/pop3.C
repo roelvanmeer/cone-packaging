@@ -1,5 +1,4 @@
-/* $Id: pop3.C,v 1.18 2010/04/29 00:34:50 mrsam Exp $
-**
+/*
 ** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -20,7 +19,6 @@
 #include <sstream>
 #include <iomanip>
 #include <time.h>
-#include <ctype.h>
 #include <errno.h>
 #include <unistd.h>
 #include <algorithm>
@@ -764,7 +762,7 @@ void mail::pop3::LoginTask::uidlHandler(const char *message)
 	while (*message && isdigit((int)(unsigned char)*message))
 		msgNum=msgNum * 10 + (*message++ - '0');
 
-	while (*message && isspace((int)(unsigned char)*message))
+	while (*message && unicode_isspace((unsigned char)*message))
 		message++;
 
 	myserver->uidlMap.insert(make_pair(string(message), msgNum));
@@ -1689,10 +1687,10 @@ void mail::pop3::ReadMessageTask::serverResponse(const char *message)
 			return;
 		}
 
-		if (isspace((int)(unsigned char)*message))
+		if (unicode_isspace((unsigned char)*message))
 		{
 			while (*message &&
-			       isspace((int)(unsigned char)*message))
+			       unicode_isspace((unsigned char)*message))
 				++message;
 
 			if (currentHeader.size() > 0)

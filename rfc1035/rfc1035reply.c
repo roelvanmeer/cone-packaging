@@ -8,7 +8,6 @@
 #include	<string.h>
 #include	<errno.h>
 
-static const char rcsid[]="$Id: rfc1035reply.c,v 1.5 2005/06/24 17:47:33 mrsam Exp $";
 
 void rfc1035_replyfree(struct rfc1035_reply *p)
 {

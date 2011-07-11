@@ -4,7 +4,6 @@
 */
 
 /*
-** $Id: rfc2231encode.c,v 1.4 2004/04/17 02:14:03 mrsam Exp $
 */
 
 #if    HAVE_CONFIG_H

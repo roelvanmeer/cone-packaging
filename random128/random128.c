@@ -25,7 +25,6 @@
 
 #include	"random128.h"
 
-static const char rcsid[]="$Id: random128.c,v 1.6 2006/05/28 15:29:52 mrsam Exp $";
 
 const char *random128()
 {

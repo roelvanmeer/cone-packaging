@@ -1,5 +1,4 @@
-/* $Id: cursesmoronize.H,v 1.2 2004/05/01 02:28:21 mrsam Exp $
-**
+/*
 ** Copyright 2003-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -9,7 +8,6 @@
 #define cursesmoronize_H
 
 #include "mycurses.H"
-#include <wchar.h>
 
 ///////////////////////////////////////////////////////////////////////////
 //
@@ -22,7 +20,7 @@ class CursesMoronize {
 public:
 
 
-	static size_t moronize(const char *buf, wchar_t &nreplaced);
+	static size_t moronize(const char *buf, unicode_char &nreplaced);
 	//
 	// 'buf' should be the characters just preceding the current cursor
 	// position, IN REVERSE ORDER.  So, if the cursor is now:
@@ -40,7 +38,7 @@ public:
 	public:
 		const char *keycode;
 		size_t keycodeLen;
-		wchar_t unicode_char;
+		unicode_char uc;
 	};
 
 	static bool enabled;

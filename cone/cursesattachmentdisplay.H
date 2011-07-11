@@ -1,5 +1,4 @@
-/* $Id: cursesattachmentdisplay.H,v 1.6 2009/06/27 17:12:00 mrsam Exp $
-**
+/*
 ** Copyright 2003-2005, Double Precision Inc.
 **
 ** See COPYING for distribution information.

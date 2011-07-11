@@ -8,7 +8,6 @@
 #include	<string.h>
 #include	<stdlib.h>
 
-static const char rcsid[]="$Id: md5.c,v 1.7 2000/07/30 01:08:09 mrsam Exp $";
 
 #define	MD5_BYTE	unsigned char
 

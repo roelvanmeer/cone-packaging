@@ -3,7 +3,6 @@
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: rfc2045.c,v 1.2 2003/06/02 23:47:16 mrsam Exp $";
 
 #include	"config.h"
 #include	<stdio.h>

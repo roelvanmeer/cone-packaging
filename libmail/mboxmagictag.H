@@ -1,5 +1,4 @@
-/* $Id: mboxmagictag.H,v 1.2 2003/08/27 02:37:22 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.

@@ -1,6 +1,5 @@
-/* $Id: init.C,v 1.9 2007/04/06 17:57:29 mrsam Exp $
-**
-** Copyright 2003-2006, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -103,22 +102,11 @@ void init()
 #endif
 
 	{
-		string chset=Gettext::defaultCharsetName();
-		const struct unicode_info *myChset;
+		string chset=unicode_default_chset();
 
-		//
-		// We can only handle multibyte displays if we're linked
-		// with the wide character version of the curses library.
-		//
+		vector<unicode_char> dummy;
 
-		if (chset.size() > 0 &&
-		    ((myChset=unicode_find(chset.c_str())) == NULL
-#if WIDECURSES
-
-#else
-		     || (myChset->flags & (UNICODE_MB | UNICODE_SISO))
-#endif
-		     ))
+		if (!mail::iconvert::convert("", chset, dummy))
 		{
 			cerr << (string)
 				(Gettext(_("ERROR: Your display appears to be set to the %1% character set.\n"
@@ -133,24 +121,22 @@ void init()
 	}
 
 	{
-		const struct unicode_info *myChset=Gettext::defaultCharset();
-
-		unicode_char ucbuf[2];
-		int dummy;
-
 		size_t i;
 
 		for (i=0; CursesMoronize::moronizationList[i].keycode; i++)
 		{
-			ucbuf[0]=CursesMoronize::moronizationList[i]
-				.unicode_char;
-			ucbuf[1]=0;
+			vector<unicode_char> uc;
 
-			char *p=(*myChset->u2c)(myChset, ucbuf, &dummy);
-			if (p == NULL)
-				CursesMoronize::moronizationList[i]
-					.unicode_char=0;
-			else free(p);
+			uc.push_back(CursesMoronize::moronizationList[i].uc);
+
+			bool err;
+			string s=
+				mail::iconvert::convert(uc,
+							unicode_default_chset(),
+							err);
+
+			if (s.size() == 0 || err)
+				CursesMoronize::moronizationList[i].uc=0;
 		}
 	}
 
@@ -161,12 +147,15 @@ void init()
 	CursesStatusBar::shortcut_next_key= _("^O");
 	CursesStatusBar::shortcut_next_descr= _("mOre");
 
-#define TOKEYCODE(s) ( ((const vector<wchar_t> &)(s)).size() > 0 ? \
-		((const vector<wchar_t> &)(s))[0]:0)
+#define TOKEYCODE(s) ( ((const vector<unicode_char> &)(s)).size() > 0 ? \
+		((const vector<unicode_char> &)(s))[0]:0)
 
 	CursesStatusBar::shortcut_next_keycode=TOKEYCODE(key_MORE);
-	Curses::mbtow(_("yY"),CursesField::yesKeys);
-	Curses::mbtow(_("nN"),CursesField::noKeys);
+
+	mail::iconvert::convert(std::string(_("yY")),
+				unicode_default_chset(), CursesField::yesKeys);
+	mail::iconvert::convert(std::string(_("nN")),
+				unicode_default_chset(), CursesField::noKeys);
 	CursesField::yankKey=TOKEYCODE(key_YANK);
 	CursesField::clrEolKey=TOKEYCODE(key_CLREOL);
 

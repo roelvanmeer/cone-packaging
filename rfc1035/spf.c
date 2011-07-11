@@ -24,7 +24,6 @@
 #endif
 #endif
 
-static const char rcsid[]="$Id: spf.c,v 1.10 2008/01/29 03:55:28 mrsam Exp $";
 
 static void set_err_msg(char *errmsg_buf,
 			size_t errmsg_buf_size,

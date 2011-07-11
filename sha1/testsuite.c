@@ -9,7 +9,6 @@
 #include	<stdlib.h>
 #include	<string.h>
 
-static const char rcsid[]="$Id: testsuite.c,v 1.4 2008/12/18 12:08:26 mrsam Exp $";
 
 static char foo[1000001];
 

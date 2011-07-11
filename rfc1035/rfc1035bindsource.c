@@ -9,7 +9,6 @@
 #include	<arpa/inet.h>
 #include	<errno.h>
 
-static const char rcsid[]="$Id: rfc1035bindsource.c,v 1.1 2003/12/16 01:19:02 mrsam Exp $";
 
 /*
 **	Bind a socket to a local IP. This is used to control the source IP

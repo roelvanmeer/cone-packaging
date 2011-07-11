@@ -6,7 +6,6 @@
 #ifndef	rfc1035_spf_h
 #define	rfc1035_spf_h
 
-static const char rfc1035_spf_h_rcsid[]="$Id: spf.h,v 1.1 2004/08/15 16:41:02 mrsam Exp $";
 
 #include "rfc1035/rfc1035.h"
 

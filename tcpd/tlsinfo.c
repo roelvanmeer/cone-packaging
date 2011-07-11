@@ -11,7 +11,6 @@
 #include	<unistd.h>
 #endif
 
-static const char rcsid[]="$Id: tlsinfo.c,v 1.3 2002/07/11 16:37:42 mrsam Exp $";
 
 static const char *getenv_wrapper(const char *varname, void *dummy)
 {

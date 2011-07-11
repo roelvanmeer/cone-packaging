@@ -11,7 +11,6 @@
 #include	<sys/types.h>
 #include	<unistd.h>
 
-static const char cache_h_rcsid[]="$Id: tlscache.h,v 1.1 2002/06/24 03:45:08 mrsam Exp $";
 
 /*
 ** This module implements a cache for SSL sessions, however the interface

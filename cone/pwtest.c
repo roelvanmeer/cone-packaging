@@ -1,10 +1,10 @@
-/* $Id: pwtest.c,v 1.1 2003/06/05 01:22:14 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

@@ -19,20 +19,20 @@
 
    Table Of Contents
    Virtual shared folders
-      Terminology
-      Technical Overview
-      Functional Overview
-      Combining Courier-IMAP's and SqWebMail index files
-      IMAP Access Control List and account groups
-
+      Terminology
+      Technical Overview
+      Functional Overview
+      Combining Courier-IMAP's and SqWebMail index files
+      IMAP Access Control List and account groups
+    
    Filesystem permissions-based shared folders
-      Terminology
-      Technical Overview
-      Functional Overview
-      Accessing shared folders
-      Subscribing to a shared folder
-      Unsubscribing to a shared folder
-      Opening a shared folder
+      Terminology
+      Technical Overview
+      Functional Overview
+      Accessing shared folders
+      Subscribing to a shared folder
+      Unsubscribing to a shared folder
+      Opening a shared folder
 
                              Virtual shared folders
 
@@ -127,11 +127,11 @@ Technical Overview
    specifies the location of an account's maildir. The line contains the
    following fields, separated by a single tab character:
 
-    1. name
-    2. system userid
-    3. system groupid
-    4. virtual home directory
-    5. maildir path, relative to the virtual home directory
+    1. name
+    2. system userid
+    3. system groupid
+    4. virtual home directory
+    5. maildir path, relative to the virtual home directory
 
    "name" SHOULD be the account's login name (which in some rare
    configurations may not actually match the IMAP login used by the client;
@@ -158,9 +158,9 @@ Technical Overview
    accounts should be segregated into different groups. An account group
    entry in the index file looks like this:
 
-    1. group name
-    2. *
-    3. filename
+    1. group name
+    2. *
+    3. filename
 
    When the second tab-delimited field is a single asterisk, the first field
    is taken to be a name of an account group; and "filename" is the name of
@@ -201,13 +201,13 @@ Technical Overview
    SQWEBMAIL_SHAREDMUNGENAMES variable must also be set in order for everyone
    to be in sync. This can be done in one of two different ways:
 
-      1. Set this variable before running the sqwebmaild start command:
+      1. Set this variable before running the sqwebmaild start command:
 
  SQWEBMAIL_SHAREDMUNGENAMES=1
  export SQWEBMAIL_SHAREDMUNGENAMES
  sqwebmaild start
 
-      2. Set this environment variable in the web server's configuration
+      2. Set this environment variable in the web server's configuration
          files. With Apache, for example:
 
  SetEnv SQWEGBMAIL_SHAREDMUNGENAMES 1
@@ -269,7 +269,7 @@ Functional Overview
    installing new shared folder index files in SYSCONFDIR/shared. They must
    be installed in a way that can be done live, without shutting down the
    system, and without affecting any existing processes. This can be done
-   using the "sharedindexinstall" script, which may be found in the sbin
+   using the “sharedindexinstall” script, which may be found in the sbin
    directory. To use sharedindexinstall, first create the shared index files
    in a temporary directory called SYSCONFDIR/shared.tmp, then run the script
    to move all the files in this directory to SYSCONFDIR/shared.
@@ -304,7 +304,7 @@ Functional Overview
   Using authenumerate
 
    In most cases, systems that use a single shared index file are likely to
-   need to only run the "authenumerate" program in order to build the shared
+   need to only run the “authenumerate” program in order to build the shared
    folder index. As long as Courier's authentication modules are properly
    configured (and authdaemond is running) authenumerate will download the
    list of accounts from the configured authentication module, and generate a
@@ -491,18 +491,18 @@ IMAP Access Control List and account groups
 
 Terminology
 
-     * Sharable Maildir - a maildir that contains folders that can be shared.
-     * Sharable folder - one or more folders in a sharable Maildir that can
+     * Sharable Maildir - a maildir that contains folders that can be shared.
+     * Sharable folder - one or more folders in a sharable Maildir that can
        be shared.
 
 Technical Overview
 
-     * They are a somewhat logical extension of the base Maildir format.
-     * Older versions of Courier-IMAP and SqWebMail will completely ignore
+     * They are a somewhat logical extension of the base Maildir format.
+     * Older versions of Courier-IMAP and SqWebMail will completely ignore
        shared folders.
-     * Messages in shared folders do not count towards any individual maildir
+     * Messages in shared folders do not count towards any individual maildir
        quotas (see README.maildirquota.html).
-     * Shared folders are implemented as additional, Maildir-based folders.
+     * Shared folders are implemented as additional, Maildir-based folders.
        The messages will be soft links to the messages in the sharable
        folder. Soft links will be used instead of hard links in order to be
        able to have a folder containing large messages, and then be able to
@@ -513,17 +513,17 @@ Technical Overview
        removed, but their client (Courier-IMAP or SqWebMail) doesn't know
        that yet. That's unavoidable. You'll probably have to set some kind of
        a policy in order to keep the expected insanity to a minimum.
-     * Sharable folders are subscribed to by creating a separate maildir-type
+     * Sharable folders are subscribed to by creating a separate maildir-type
        directory within the main Maildir. It's created in a separate
        subdirectory that is ignored by other Maildir clients.
-     * The new directory will contains soft links to the messages in the
+     * The new directory will contains soft links to the messages in the
        sharable folder. "Synchronization" code will be used to synchronize
        the contents of the sharable folder, and the copy of it in the regular
        Maildir. Once links to the messages are created, they can be
        manipulated like regular messages in a Maildir. This procedure will be
        transparently performed by Courier-IMAP or SqWebMail behind the
        scenes.
-     * Access to shared folders is controlled by a combination of an explicit
+     * Access to shared folders is controlled by a combination of an explicit
        configuration, plus regular filesystem permissions. If account owners
        have shell access to the server, they can create shared folders, and
        link their mailbox to other accounts' shared folders. Then, the actual
@@ -541,35 +541,35 @@ Functional Overview
    Generally speaking, shared folders are configured using a feature-enhanced
    maildirmake command as follows:
 
-     * make install will install a maildirmake command that has a bunch of
+     * make install will install a maildirmake command that has a bunch of
        funny options. The modified maildirmake command is installed into
        Courier-IMAP's or SqWebMail's installation directory.
-     * Somebody, maybe you, will use some of these options to create a
+     * Somebody, maybe you, will use some of these options to create a
        maildir with modified permissions. The same somebody will run
        maildirmake again, with a few other options, to create folders in that
        maildir, also with modified permissions. Those permissions allows
        global read (and optionally write) access to those folders.
-     * Do NOT use this maildir as the primary mailbox, INBOX, for an account.
+     * Do NOT use this maildir as the primary mailbox, INBOX, for an account.
        Instead, you must create this maildir separately, perhaps as
        $HOME/Maildir-shared, then set it up as one of your sharable maildirs
        (see below), and access it in shared mode. Because you own it, you
        have unlimited read/write access to it. The previously mentioned
        options will select whether or not access permissions are given to
        everyone else, and they do not apply to you.
-     * Everyone else will run maildirmake with even more funny options. Those
+     * Everyone else will run maildirmake with even more funny options. Those
        options install a link from their own maildir to a maildir that
        contains sharable folders. A given maildir may contain links to more
        than one sharable maildir. As long as their system user/group
        permissions allow them to access messages, they can SUBSCRIBE via
        their IMAP client to the folder, or use the SUBSCRIBE function in
        SqWebmail.
-     * If people do not have shell access, the system administrator will have
+     * If people do not have shell access, the system administrator will have
        to run maildirmake on their behalf, in order to create the links to
        the sharable maildirs.
-     * People with write access can add messages to a sharable folder.
+     * People with write access can add messages to a sharable folder.
        Messages from a sharable folder can be removed only by the owner of
        the shared folder, or by the owner of each message.
-     * This sharable maildir implementation cannot use maildir soft-quotas.
+     * This sharable maildir implementation cannot use maildir soft-quotas.
        There cannot be a soft-quota installed in a sharable maildir. If you
        need quota support, you will have to use filesystem-based quotas.
        There are some sticky issues with updating quotas on a sharable
@@ -581,15 +581,15 @@ Functional Overview
 
    To summarize:
 
-     * Use the -S option to maildirmake to create a maildir that can contain
+     * Use the -S option to maildirmake to create a maildir that can contain
        sharable folders.
-     * Use the -s and -f options to maildirmake to create sharable folders.
+     * Use the -s and -f options to maildirmake to create sharable folders.
        The same sharable maildir may contain multiple sharable folders with
        different access permissions, as selected by the -s option.
-     * Use the --add option to install a link from a regular maildir to a
+     * Use the --add option to install a link from a regular maildir to a
        sharable maildir. Afterwards, IMAP clients will be able to subscribe
        to folders in the sharable maildir.
-     * Use the --del option to remove a link.
+     * Use the --del option to remove a link.
 
    For more information on these options, see the maildirmake manual page
    that will be installed.
@@ -617,15 +617,15 @@ Functional Overview
    because it will not have any group or world permissions. Therefore,
    maildirmake will take the following options to create a sharable folder:
 
-     * -s read will create a "moderated" folder. The folder will have group
+     * -s read will create a "moderated" folder. The folder will have group
        and world read permissions, letting anyone read messages, but only the
        owner of the sharable Maildir can add messages to the sharable folder.
-     * -s write will create an "unmoderated" folder. The folder will have
+     * -s write will create an "unmoderated" folder. The folder will have
        group and world read/write permissions, letting anyone read and add
        messages to the folder. The folder will be created with the sticky bit
        set, like the /tmp directory, preventing people from removing someone
        else's messages.
-     * -s read,group/-s write,group append a comma and the word "group" to
+     * -s read,group/-s write,group append a comma and the word "group" to
        modify the semantics of moderated and unmoderated folders only on the
        group level, not the group and world level, as far as permissions go.
        This restricts sharing the folder only to members of the same system
@@ -685,22 +685,22 @@ Accessing shared folders
 
 Subscribing to a shared folder
 
-     * Read shared-maildirs.
-     * Read the shared-folders hierarchy to determine which folders are
+     * Read shared-maildirs.
+     * Read the shared-folders hierarchy to determine which folders are
        already subscribed to.
-     * Read the folders in each maildir listed in shared-folders, and ignore
+     * Read the folders in each maildir listed in shared-folders, and ignore
        the ones that are already subscribed to. Make sure to stat() each
        folder to make sure that you can read it.
-     * If necessary, create shared-folders/name, and create the
+     * If necessary, create shared-folders/name, and create the
        shared-folders/name/shared soft link.
-     * Create shared-folders/name/.foldername, then create the standard tmp,
+     * Create shared-folders/name/.foldername, then create the standard tmp,
        new, and cur subdirectories. All the directories are created without
        any group or world permissions.
 
 Unsubscribing
 
-     * Delete everything in shared-folders/name/foldername.
-     * If this is there are no more subscribed folders in this sharable
+     * Delete everything in shared-folders/name/foldername.
+     * If this is there are no more subscribed folders in this sharable
        maildir, delete shared-folders/name for good measure as well.
 
 Opening a shared folder
@@ -709,23 +709,23 @@ Opening a shared folder
    contents of shared-folders/name/.foldername with the contents of the
    sharable folder in the original sharable maildir.
 
-     * Do the usual processing on the tmp subdirectory.
-     * Read the contents of shared-folders/name/foldername/shared/new. If you
+     * Do the usual processing on the tmp subdirectory.
+     * Read the contents of shared-folders/name/foldername/shared/new. If you
        find anything in there, rename it to ../cur, ignoring any errors from
        the rename. The sharable maildir owner can arrange for mail to be
        delivered directly to this folder, and the first one to open it will
        put the message into cur.
-     * Read the contents of shared-folder/name/foldername/shared/cur. Call
+     * Read the contents of shared-folder/name/foldername/shared/cur. Call
        this directory "A", for short.
-     * Read the contents of shared-folder/name/foldername/cur. Call this
+     * Read the contents of shared-folder/name/foldername/cur. Call this
        directory "B", for short.
-     * stat() A and B to see if they live on different devices.
-     * Remove all messages in B that do not exist in A. You want to compare
+     * stat() A and B to see if they live on different devices.
+     * Remove all messages in B that do not exist in A. You want to compare
        the filenames up to the : character.
-     * Create soft links from messages that exist in A and do not exist in B.
+     * Create soft links from messages that exist in A and do not exist in B.
        The name in B should not have any flags after the :, so it shows up as
        a new message.
-     * You can now do whatever you normally do with a maildir. Note that new
+     * You can now do whatever you normally do with a maildir. Note that new
        is completely ignored, though. Moving messages IN and OUT of the
        shared folder involves copying the message as if it were a new
        message. Copying the message INTO the shared folder means copying the

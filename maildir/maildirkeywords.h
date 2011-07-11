@@ -14,7 +14,6 @@
 extern "C" {
 #endif
 
-static const char keywords_h_rcsid[]="$Id: maildirkeywords.h,v 1.9 2009/06/27 16:32:38 mrsam Exp $";
 
 /*
 ** IMAP keywords.  This data structure is designed so that it is possible to:

@@ -6,7 +6,6 @@
 #include	"rfc1035.h"
 #include	<string.h>
 
-static const char rcsid[]="$Id: rfc1035str.c,v 1.3 2000/05/21 20:27:56 mrsam Exp $";
 
 static struct { const char *name; int num; } typetab[]={
 	{"A",		1},

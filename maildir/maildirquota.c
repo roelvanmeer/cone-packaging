@@ -48,7 +48,6 @@
 #include	<ctype.h>
 #include	<numlib/numlib.h>
 
-static const char rcsid[]="$Id: maildirquota.c,v 1.32 2010/03/19 01:09:26 mrsam Exp $";
 
 static void parsequotastr(const char *, struct maildirquota *);
 

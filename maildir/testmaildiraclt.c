@@ -28,7 +28,6 @@
 #endif
 #endif
 
-static const char rcsid[]="$Id: testmaildiraclt.c,v 1.2 2005/07/16 03:10:59 mrsam Exp $";
 
 #define CHK(x) if (!(x)) { printf("%s(%d): sanity check failed.\n", \
 			__FILE__, __LINE__); exit(1);}

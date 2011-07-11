@@ -1,4 +1,3 @@
-# $Id: Makefile.am,v 1.35 2009/12/31 03:09:39 mrsam Exp $
 #
 # Copyright 2003-2009, Double Precision Inc.
 #
@@ -66,7 +65,6 @@ dist-hook:
 	$(HTML2TXT) $(srcdir)/cone/html/INSTALL.html >$(distdir)/INSTALL
 
 
-# Added by sysconftoolize: $Id: Makefile.am,v 1.35 2009/12/31 03:09:39 mrsam Exp $
 
 # Copyright 2000 Double Precision, Inc.  See COPYING for
 # distribution information.
@@ -141,35 +139,27 @@ bump.rpm.release: cone.spec
 
 distrelease:
 	cd cone/po && make update-po
-	socksify cvs update
-	socksify cvs commit
 	$(MAKE) distcheck 'DISTCHECK_CONFIGURE_FLAGS=CPPFLAGS="-I /usr/include/ncursesw"'
 	$(MAKE) rpm
-	socksify cvs tag -F cone-latest
 	$(MAKE) -$(MAKEFLAGS)
 	$(MAKE) -$(MAKEFLAGS)
 	rm -f cone.spec
 	$(MAKE) cone.spec
 	$(MAKE) dist
 
-tagrelease:
-	socksify cvs tag -F -r cone-latest \
-               `echo cone-@VERSION@ | tr '.' '-'`
-
 upload-beta:
 	test -z "$(SFPASSWD)" && exit 1; exit 0
 	rm -f @PACKAGE@-@VERSION@.tar.bz2.sig; gpg --detach-sign --default-key mrsam@courier-mta.com @PACKAGE@-@VERSION@.tar.bz2; test -f @PACKAGE@-@VERSION@.tar.bz2.sig || exit 1
-	socksify ssh grace.speakeasy.net echo @PACKAGE@-@VERSION@.tar.bz2 `ls -l @PACKAGE@-@VERSION@.tar.bz2 | awk ' { print $$5 } '` \>courier-mta.org/@PACKAGE@.beta
 	../sftools/release.pl mrsam $(SFPASSWD) courier @PACKAGE@-devel `echo @VERSION@|sed 's/.*\(........\)/\1/'` @PACKAGE@-@VERSION@.tar.bz2 @PACKAGE@-@VERSION@.tar.bz2.sig
 
 
 upload-dist:
 	test -z "$(SFPASSWD)" && exit 1; exit 0
 	rm -f @PACKAGE@-@VERSION@.tar.bz2.sig; gpg --detach-sign --default-key mrsam@courier-mta.com @PACKAGE@-@VERSION@.tar.bz2; test -f @PACKAGE@-@VERSION@.tar.bz2.sig || exit 1
-	socksify cvs tag -F -r cone-latest \
-               `echo cone-@VERSION@ | tr '.' '-'`
+	r="`svn info . | sed -n '/Repository Root:/p' | cut -d: -f2-`"; \
+	  svn rm -m 'Remove previous tag' $$r/tags/@PACKAGE@/@VERSION@ 2>/dev/null; \
+	  svn cp -m 'Tag @PACKAGE@' $$r/trunk $$r/tags/@PACKAGE@/@VERSION@
 	socksify ../sftools/release.pl mrsam $(SFPASSWD) courier cone @VERSION@ @PACKAGE@-@VERSION@.tar.bz2 @PACKAGE@-@VERSION@.tar.bz2.sig
-	socksify ssh grace.speakeasy.net rm -f courier-mta.org/@PACKAGE@.beta
 
 .PHONY: rpm
 

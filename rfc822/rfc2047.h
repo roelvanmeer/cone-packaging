@@ -12,7 +12,6 @@ extern "C" {
 #endif
 
 
-static const char rfc2047_h_rcsid[]="$Id: rfc2047.h,v 1.12 2009/11/14 21:15:43 mrsam Exp $";
 
 struct unicode_info;
 
@@ -54,22 +53,6 @@ int rfc2047_print_unicodeaddr(const struct rfc822a *a,
 char *rfc2047_encode_str(const char *str, const char *charset,
 			 int (*qp_allow)(char c) /* See below */);
 
-/*
-** If you can live with the encoded text being generated on the fly, use
-** rfc2047_encode_callback, which calls a callback function, instead of
-** dynamically allocating memory.
-*/
-
-int rfc2047_encode_callback(const char *str, /* String to encode */
-			    const char *charset, /* Native charset */
-			    int (*qp_allow)(char c),
-			    /* Return true if c can appear in QP-encoded
-			    ** word */
-			    int (*cb_func)(const char *, size_t, void *),
-			    /* Callback function. */
-			    void *arg
-			    /* Passthrough arg to callback_function */
-			    );
 
 /* Potential arguments for qp_allow */
 

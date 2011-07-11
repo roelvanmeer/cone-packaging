@@ -1,16 +1,15 @@
 /*
-** Copyright 1998 - 2009 Double Precision, Inc.  See COPYING for
+** Copyright 1998 - 2011 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
-
+#include	"rfc822.h"
 #include	<stdio.h>
 #include	<ctype.h>
 #include	<string.h>
 #include	<stdlib.h>
 #include	<errno.h>
 
-#include	"rfc822.h"
 #include	"rfc822hdr.h"
 #include	"rfc2047.h"
 #include	"../unicode/unicode.h"
@@ -19,7 +18,6 @@
 #include <stringprep.h>
 #endif
 
-static const char rcsid[]="$Id: rfc2047.c,v 1.23 2009/11/18 03:38:50 mrsam Exp $";
 
 #define	RFC2047_ENCODE_FOLDLENGTH	76
 
@@ -83,19 +81,10 @@ static char *rfc822_encode_domain_int(const char *pfix,
 }
 
 char *rfc822_encode_domain(const char *address,
-			    const char *charset)
+			   const char *charset)
 {
-	const struct unicode_info *ui=unicode_find(charset);
-	const char *cp;
-	char *p, *q;
-
-	if (!ui)
-	{
-		errno=EINVAL;
-		return NULL;
-	}
-
-	p=unicode_convert(address, ui, &unicode_UTF8);
+	char *p=libmail_u_convert_tobuf(address, charset, "utf-8", NULL);
+	char *cp, *q;
 
 	if (!p)
 		return NULL;
@@ -259,377 +248,390 @@ static void saves2(const char *c, void *p)
 }
 
 static int encodebase64(const char *ptr, size_t len, const char *charset,
-			int (*func)(const char *, size_t, void *), void *arg,
-			size_t foldlen, size_t offset)
+			int (*qp_allow)(char),
+			int (*func)(const char *, size_t, void *), void *arg)
 {
 	unsigned char ibuf[3];
 	char obuf[4];
-	int	i, rc;
+	int	rc;
+
+	if ((rc=(*func)("=?", 2, arg)) ||
+	    (rc=(*func)(charset, strlen(charset), arg))||
+	    (rc=(*func)("?B?", 3, arg)))
+		return rc;
 
 	while (len)
 	{
-		if ((rc=(*func)("=?", 2, arg)) ||
-		    (rc=(*func)(charset, strlen(charset), arg))||
-		    (rc=(*func)("?B?", 3, arg)))
+		size_t n=len > 3 ? 3:len;
+
+		ibuf[0]= ptr[0];
+		if (n>1)
+			ibuf[1]=ptr[1];
+		else
+			ibuf[1]=0;
+		if (n>2)
+			ibuf[2]=ptr[2];
+		else
+			ibuf[2]=0;
+		ptr += n;
+		len -= n;
+
+		obuf[0] = base64tab[ ibuf[0]        >>2 ];
+		obuf[1] = base64tab[(ibuf[0] & 0x03)<<4|ibuf[1]>>4];
+		obuf[2] = base64tab[(ibuf[1] & 0x0F)<<2|ibuf[2]>>6];
+		obuf[3] = base64tab[ ibuf[2] & 0x3F ];
+		if (n < 2)
+			obuf[2] = '=';
+		if (n < 3)
+			obuf[3] = '=';
+
+		if ((rc=(*func)(obuf, 4, arg)))
 			return rc;
-		i = offset + 2 + strlen(charset) + 3;
-		offset = 0;
-
-		while (len)
-		{
-			size_t n=len > 3 ? 3:len;
-
-			ibuf[0]= ptr[0];
-			if (n>1)
-				ibuf[1]=ptr[1];
-			else
-				ibuf[1]=0;
-			if (n>2)
-				ibuf[2]=ptr[2];
-			else
-				ibuf[2]=0;
-			ptr += n;
-			len -= n;
-
-			obuf[0] = base64tab[ ibuf[0]        >>2 ];
-			obuf[1] = base64tab[(ibuf[0] & 0x03)<<4|ibuf[1]>>4];
-			obuf[2] = base64tab[(ibuf[1] & 0x0F)<<2|ibuf[2]>>6];
-			obuf[3] = base64tab[ ibuf[2] & 0x3F ];
-			if (n < 2)
-				obuf[2] = '=';
-			if (n < 3)
-				obuf[3] = '=';
-
-			if ((rc=(*func)(obuf, 4, arg)))
-				return rc;
-
-			i += 4;
-			if (foldlen && i + 2 > foldlen - 1 + 4)
-				break;
-		}
-
-		if ((rc=(*func)("?=", 2, arg)))
-			return rc;
-		if (len)
-			/*
-			 * Encoded-words must be sepalated by
-			 * linear-white-space.
-			 */
-			if ((rc=(*func)(" ", 1, arg)))
-				return rc;
 	}
+
+	if ((rc=(*func)("?=", 2, arg)))
+		return rc;
 	return 0;
 }
 
 #define ISSPACE(i) ((i)=='\t' || (i)=='\r' || (i)=='\n' || (i)==' ')
-#define DOENCODE(i) (((i) & 0x80) || (i)=='"' || (i)=='=' || \
-			((unsigned char)(i) < 0x20 && !ISSPACE(i)) || \
-			!(*qp_allow)(i))
+#define DOENCODEWORD(c) \
+	((c) < 0x20 || (c) > 0x7F || (c) == '"' || \
+	 (c) == '_' || (c) == '=' || (c) == '?' || !(*qp_allow)((char)c))
 
-int rfc2047_encode_callback_base64(const char *str, const char *charset,
+/*
+** Encode a character stream using quoted-printable encoding.
+*/
+static int encodeqp(const char *ptr, size_t len,
+		    const char *charset,
+		    int (*qp_allow)(char),
+		    int (*func)(const char *, size_t, void *), void *arg)
+{
+	size_t i;
+	int rc;
+	char buf[3];
+
+	if ((rc=(*func)("=?", 2, arg)) ||
+	    (rc=(*func)(charset, strlen(charset), arg))||
+	    (rc=(*func)("?Q?", 3, arg)))
+		return rc;
+
+	for (i=0; i<len; ++i)
+	{
+		size_t j;
+
+		for (j=i; j<len; ++j)
+		{
+			if (ptr[j] == ' ' || DOENCODEWORD(ptr[j]))
+				break;
+		}
+
+		if (j > i)
+		{
+			rc=(*func)(ptr+i, j-i, arg);
+
+			if (rc)
+				return rc;
+			if (j >= len)
+				break;
+		}
+		i=j;
+
+		if (ptr[i] == ' ')
+			rc=(*func)("_", 1, arg);
+		else
+		{
+			buf[0]='=';
+			buf[1]=xdigit[ ( ptr[i] >> 4) & 0x0F ];
+			buf[2]=xdigit[ ptr[i] & 0x0F ];
+
+			rc=(*func)(buf, 3, arg);
+		}
+
+		if (rc)
+			return rc;
+	}
+
+	return (*func)("?=", 2, arg);
+}
+
+/*
+** Calculate whether the next word should be RFC2047-encoded.
+**
+** Returns 0 if not, 1 if any character in the next word is flagged by
+** DOENCODEWORD().
+*/
+
+static int encode_word(const unicode_char *uc,
+		       size_t ucsize,
+		       int (*qp_allow)(char),
+
+		       /*
+		       ** Points to the starting offset of word in uc.
+		       ** At exit, points to the end of the word in uc.
+		       */
+		       size_t *word_ptr)
+{
+	size_t i;
+	int encode=0;
+
+	for (i=*word_ptr; i<ucsize; ++i)
+	{
+		if (ISSPACE(uc[i]))
+			break;
+
+		if (DOENCODEWORD(uc[i]))
+			encode=1;
+	}
+
+	*word_ptr=i;
+	return encode;
+}
+
+/*
+** Calculate whether the next sequence of words should be RFC2047-encoded.
+**
+** Whatever encode_word() returns for the first word, look at the next word
+** and keep going as long as encode_word() keeps returning the same value.
+*/
+
+static int encode_words(const unicode_char *uc,
+			size_t ucsize,
+			int (*qp_allow)(char),
+
+			/*
+			** Points to the starting offset of words in uc.
+			** At exit, points to the end of the words in uc.
+			*/
+
+			size_t *word_ptr)
+{
+	size_t i= *word_ptr, j, k;
+
+	int flag=encode_word(uc, ucsize, qp_allow, &i);
+
+	if (!flag)
+	{
+		*word_ptr=i;
+		return flag;
+	}
+
+	j=i;
+
+	while (j < ucsize)
+	{
+		if (ISSPACE(uc[j]))
+		{
+			++j;
+			continue;
+		}
+
+		k=j;
+
+		if (!encode_word(uc, ucsize, qp_allow, &k))
+			break;
+		i=j=k;
+	}
+
+	*word_ptr=i;
+	return flag;
+}
+
+/*
+** Encode a sequence of words.
+*/
+static int do_encode_words_method(const unicode_char *uc,
+				  size_t ucsize,
+				  const char *charset,
+				  int (*qp_allow)(char),
+				  size_t offset,
+				  int (*encoder)(const char *ptr, size_t len,
+						 const char *charset,
+						 int (*qp_allow)(char),
+						 int (*func)(const char *,
+							     size_t, void *),
+						 void *arg),
+				  int (*func)(const char *, size_t, void *),
+				  void *arg)
+{
+	char    *p;
+	size_t  psize;
+	int rc;
+	int first=1;
+
+	while (ucsize)
+	{
+		size_t j;
+		size_t i;
+
+		if (!first)
+		{
+			rc=(*func)(" ", 1, arg);
+
+			if (rc)
+				return rc;
+		}
+		first=0;
+
+		j=(RFC2047_ENCODE_FOLDLENGTH-offset)/2;
+
+		if (j >= ucsize)
+			j=ucsize;
+		else
+		{
+			/*
+			** Do not split rfc2047-encoded works across a
+			** grapheme break.
+			*/
+
+			for (i=j; i > 0; --i)
+				if (unicode_grapheme_break(uc[i-1], uc[i]))
+				{
+					j=i;
+					break;
+				}
+		}
+
+		if ((rc=libmail_u_convert_fromu_tobuf(uc, j, charset,
+						      &p, &psize,
+						      NULL)) != 0)
+			return rc;
+
+
+		if (psize && p[psize-1] == 0)
+			--psize;
+
+		rc=(*encoder)(p, psize, charset, qp_allow,
+			      func, arg);
+		free(p);
+		if (rc)
+			return rc;
+		offset=0;
+		ucsize -= j;
+		uc += j;
+	}
+	return 0;
+}
+
+static int cnt_conv(const char *dummy, size_t n, void *arg)
+{
+	*(size_t *)arg += n;
+	return 0;
+}
+
+/*
+** Encode, or not encode, words.
+*/
+
+static int do_encode_words(const unicode_char *uc,
+			   size_t ucsize,
+			   const char *charset,
+			   int flag,
+			   int (*qp_allow)(char),
+			   size_t offset,
+			   int (*func)(const char *, size_t, void *),
+			   void *arg)
+{
+	char    *p;
+	size_t  psize;
+	int rc;
+	size_t b64len, qlen;
+
+	/*
+	** Convert from unicode
+	*/
+
+	if ((rc=libmail_u_convert_fromu_tobuf(uc, ucsize, charset,
+					      &p, &psize,
+					      NULL)) != 0)
+		return rc;
+
+	if (psize && p[psize-1] == 0)
+		--psize;
+
+	if (!flag) /* If not converting, then the job is done */
+	{
+		rc=(*func)(p, psize, arg);
+		free(p);
+		return rc;
+	}
+	free(p);
+
+	/*
+	** Try first quoted-printable, then base64, then pick whichever
+	** one gives the shortest results.
+	*/
+	qlen=0;
+	b64len=0;
+
+	rc=do_encode_words_method(uc, ucsize, charset, qp_allow, offset,
+				  &encodeqp, cnt_conv, &qlen);
+	if (rc)
+		return rc;
+
+	rc=do_encode_words_method(uc, ucsize, charset, qp_allow, offset,
+				  &encodebase64, cnt_conv, &b64len);
+	if (rc)
+		return rc;
+
+	return do_encode_words_method(uc, ucsize, charset, qp_allow, offset,
+				      qlen < b64len ? encodeqp:encodebase64,
+				      func, arg);
+}
+
+/*
+** RFC2047-encoding pass.
+*/
+static int rfc2047_encode_callback(const unicode_char *uc,
+				   size_t ucsize,
+				   const char *charset,
 				   int (*qp_allow)(char),
 				   int (*func)(const char *, size_t, void *),
 				   void *arg)
 {
-int	rc;
-int	dummy=-1;
-size_t	i;
-size_t	offset=27; /* FIXME: initial offset for line length */
-const struct unicode_info *uiptr = unicode_find(charset);
-unicode_char *ustr, *uptr;
+	int	rc;
+	size_t	i;
+	int	flag;
 
-	if (!str || !*str)
-		return 0;
+	size_t	offset=27; /* FIXME: initial offset for line length */
 
-	for (i=0; str[i]; i++)
-	if (DOENCODE(str[i]))
-		break;
-	if (str[i] == 0)
-		return i? (*func)(str, strlen(str), arg): 0;
- 
-	/*
-	 * Multibyte or stateful charsets must be encoded with care of 
-	 * character boundaries.  Charsets with replaceable capability can be 
-	 * encoded replacing errorneous characters.  Otherwise, output without
-	 * care of character boundaries or errors.
-	 */
-	if (!uiptr ||
-	    !(uiptr->flags & (UNICODE_MB | UNICODE_SISO)) ||
-	    (!(uiptr->flags & UNICODE_REPLACEABLE) &&
-	     !(ustr = (uiptr->c2u)(uiptr, str, &dummy))) ||
-	    !(ustr = (uiptr->c2u)(uiptr, str, NULL)))
-		return encodebase64(str, strlen(str), charset, func, arg,
-				    RFC2047_ENCODE_FOLDLENGTH, offset);
- 
-	uptr = ustr;
-	while (*uptr)
+	while (ucsize)
 	{
-	unicode_char save_uc;
-	char *wstr=NULL;
-	size_t i, end, j;
+		/* Pass along all the whitespace */
 
-		if ((i = offset + 2 + strlen(charset) + 3) >
-		    RFC2047_ENCODE_FOLDLENGTH - 2)
-			/* Keep room for at least one character. */
-			i = RFC2047_ENCODE_FOLDLENGTH - 2;
-		offset = 0;
-
-		/*
-		 * Figure out where to break encoded-word.
-		 * Take a small chunk of Unicode string and convert it back to
-		 * the original charset.  If the result exseeds line length,
-		 * try again with a shorter chunk.  
-		 */
-		end = 0;
-		while (uptr[end] && end < (RFC2047_ENCODE_FOLDLENGTH - i) / 2)
-			end++; 
-			/*
-			 * FIXME: Unicode character with `combining'
-			 * property etc. should not be treated as
-			 * separate character.
-			 */
-		j = end;
-		while (j)
+		if (ISSPACE(*uc))
 		{
-			save_uc = uptr[j];
-			uptr[j] = (unicode_char)0;
-			wstr = (uiptr->u2c)(uiptr, uptr, &dummy);
-			uptr[j] = save_uc;
+			char c= *uc++;
+			--ucsize;
 
-			if (!wstr)
-			/* Possiblly a part of one character extracted to 
-			 * multiple Unicode characters (e.g. base unicode 
-			 * character of one combined character).  Try on 
-			 * shorter chunk.
-			 */
-			{
-				if (j == 0)
-					break;
-
-				j--;	/* FIXME */
-				continue;
-			}
-
-			if (i + ((strlen(wstr) + 3-1) / 3) * 4 + 2 >
-			    RFC2047_ENCODE_FOLDLENGTH - 1)
-			/*
-			 * Encoded string exceeded line length.
-			 * Try on shorter chunk.
-			 */
-			{
-			size_t	k=j;
-
-				j--;	/* FIXME */
-				if (j == 0)
-				/* Only one character exeeds line length.
-				 * Anyway, encode it. */
-				{
-					j = k;
-					break;
-				}
-				free(wstr);
-				continue;
-			}
-
-			break;
-		}
-
-		if (!wstr)
-		{
-			end = 1;
-			rc = encodebase64("?", 1, charset, func, arg, 0, 0);
-		}
-		else
-		{
-			end = j;
-			rc = encodebase64(wstr, strlen(wstr),
-					  charset, func, arg, 0, 0);
-			free(wstr);
-		}
-		if (rc)
-		{
-			free(ustr);
-			return rc;
-		}
-		uptr += end;
-
-		if (*uptr)
-			/*
-			 * Encoded-words must be sepalated by 
-			 * linear-white-space.
-			 */
-			if ((rc=(*func)(" ", 1, arg)))
-			{
-				free(ustr);
+			if ((rc=(*func)(&c, 1, arg)) != 0)
 				return rc;
-			}
-	}
-	free(ustr);
-	return 0;
-}
-
-#define DOENCODEWORD(c) \
-	(((c) & 0x80) || (c) == '"' || (unsigned char)(c) <= 0x20 || \
-	 (c) == '_' || (c) == '=' || (c) == '?' || !(*qp_allow)(c))
- 
-int rfc2047_encode_callback(const char *str, const char *charset,
-			    int (*qp_allow)(char),
-			    int (*func)(const char *, size_t, void *),
-			    void *arg)
-{
-int	rc;
-int     maxlen;
-const struct unicode_info *ci = unicode_find(charset);
-
-	if (!str || !*str)
-		return 0;
-
-	if (ci && ci->flags & UNICODE_SISO)
-		return rfc2047_encode_callback_base64(str, charset, qp_allow,
-						      func, arg);
-  
-	/* otherwise, output quoted-printable-encoded. */
-
-	while (*str)
-	{
-		size_t	i, j, n, c;
-
-		for (i=0; str[i]; i++)
-			if (!ISSPACE((int)(unsigned char)str[i])
-			    && DOENCODE(str[i]))
-				break;
-		if (str[i] == 0)
-			return ( i ? (*func)(str, i, arg):0);
-
-		/* Find start of word */
-
-		while (i)
-		{
-			--i;
-			if (ISSPACE((int)(unsigned char)str[i]))
-			{
-				++i;
-				break;
-			}
-		}
-		if (i)
-		{
-			rc= (*func)(str, i, arg);
-			if (rc)	return (rc);
-			str += i;
-		}
-
-		/*
-		** Figure out when to stop MIME decoding.  Consecutive
-		** MIME-encoded words are MIME-encoded together.
-		*/
-
-		i=0;
-
-		for (;;)
-		{
-			for ( ; str[i]; i++)
-				if (ISSPACE((int)(unsigned char)str[i]))
-					break;
-			if (str[i] == 0)
-				break;
-
-			for (c=i; str[c] && ISSPACE((int)(unsigned char)str[c]);
-				++c)
-				;
-			
-			for (; str[c]; c++)
-				if (ISSPACE((int)(unsigned char)str[c]) ||
-				    DOENCODE(str[c]))
-					break;
-
-			if (str[c] == 0 || ISSPACE((int)(unsigned char)str[c]))
-				break;
-			i=c;
-		}
-
-		/*
-		** Figure out whether base64 is a better choice.
-		*/
-
-		n=0;
-
-		for (j=0; j<i; j++)
-			if (DOENCODEWORD(str[j]))
-				++n;
-
-		if (n > i/10)
-		{
-			encodebase64(str, i, charset, func, arg,
-				     70, 0);
-			str += i;
 			continue;
 		}
 
+		i=0;
 
+		/* Check if the next word needs to be encoded, or not. */
 
-		/* Output mimeified text, insert spaces at 70+ character
-		** boundaries for line wrapping.
+		flag=encode_words(uc, ucsize, qp_allow, &i);
+
+		/*
+		** Then proceed to encode, or not encode, the following words.
 		*/
 
-		maxlen=strlen(charset)+10;
+		if ((rc=do_encode_words(uc, i, charset, flag,
+					qp_allow, offset,
+					func, arg)) != 0)
+			return rc;
 
-		if (maxlen < 65)
-			maxlen=74-maxlen;
-		else
-			maxlen=10;
-
-		c=0;
-		while (i)
-		{
-			if (c == 0)
-			{
-				if ( (rc=(*func)("=?", 2, arg)) != 0 ||
-					(rc=(*func)(charset, strlen(charset),
-						arg)) != 0 ||
-					(rc=(*func)("?Q?", 3, arg)) != 0)
-					return (rc);
-				c += strlen(charset)+5;
-			}
-
-			if (DOENCODEWORD(*str))
-			{
-				char	buf[3];
-
-				buf[0]='=';
-				buf[1]=xdigit[ ( *str >> 4) & 0x0F ];
-				buf[2]=xdigit[ *str & 0x0F ];
-
-				if ( (rc=*str == ' ' ? (*func)("_", 1, arg)
-				      : (*func)(buf, 3, arg)) != 0)
-					return (rc);
-				c += *str == ' ' ? 1:3;
-				++str;
-				--i;
-			}
-			else
-			{
-				for (j=0; j < i && !DOENCODEWORD(str[j]); j++)
-					if (j + c >= maxlen)
-						break;
-				if ( (rc=(*func)(str, j, arg)) != 0)
-					return (rc);
-				c += j;
-				str += j;
-				i -= j;
-			}
-
-			if (i == 0 || c >= maxlen)
-			{
-				if ( (rc=(*func)("?= ", i ? 3:2, arg)) != 0)
-					return (rc);
-				
-				c=0;
-			}
-		}
+		offset=0;
+		uc += i;
+		ucsize -= i;
 	}
-	return (0);
+
+	return 0;
 }
+
 
 static int count_char(const char *c, size_t l, void *p)
 {
@@ -651,18 +653,46 @@ char **s=(char **)p;
 char *rfc2047_encode_str(const char *str, const char *charset,
 			 int (*qp_allow)(char c))
 {
-size_t	i=1;
-char	*s, *p;
+	size_t	i=1;
+	char	*s, *p;
+	unicode_char *uc;
+	size_t ucsize;
+	int err;
 
-	(void)rfc2047_encode_callback(str, charset,
-				      qp_allow,
-				      &count_char, &i);
-	if ((s=malloc(i)) == 0)	return (0);
+	/* Convert string to unicode */
+
+	if (libmail_u_convert_tou_tobuf(str, strlen(str), charset,
+					&uc, &ucsize, &err))
+		return NULL;
+
+	/*
+	** Perform two passes: calculate size of the buffer where the
+	** encoded string gets saved into, then allocate the buffer and
+	** do a second pass to actually do it.
+	*/
+
+	if (rfc2047_encode_callback(uc, ucsize,
+				    charset,
+				    qp_allow,
+				    &count_char, &i))
+	{
+		free(uc);
+		return NULL;
+	}
+
+	if ((s=malloc(i)) == 0)
+	{
+		free(uc);
+		return NULL;
+	}
+
 	p=s;
-	(void)rfc2047_encode_callback(str, charset,
+	(void)rfc2047_encode_callback(uc, ucsize,
+				      charset,
 				      qp_allow,
 				      &save_char, &p);
 	*p=0;
+	free(uc);
 	return (s);
 }
 

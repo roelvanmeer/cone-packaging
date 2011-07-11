@@ -13,7 +13,6 @@
 #include	<ctype.h>
 #include	"dbobj.h"
 
-static const char rcsid[]="$Id: tcpdaccess.c,v 1.4 2005/05/18 17:30:37 mrsam Exp $";
 
 static struct dbobj db;
 static int db_isopen=0, db_isinit=0;

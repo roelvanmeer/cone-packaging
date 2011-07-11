@@ -1,5 +1,4 @@
-/* $Id: cursesindexdisplay.H,v 1.9 2009/06/27 17:12:00 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -10,7 +9,7 @@
 
 #include "config.h"
 #include "myfolder.H"
-
+#include "myservercallback.H"
 #include "curses/mycurses.H"
 #include "curses/curseskeyhandler.H"
 
@@ -58,6 +57,11 @@ public:
 	bool listKeys( std::vector< std::pair<std::string, std::string> > &list);
 	bool processKey(const Curses::Key &key);
 
+	// Add function keys mapped to external filters to a help list
+	static void listExternalFilterKeys(std::vector< std::pair<std::string,
+								  std::string>
+							> &list);
+
 private:
 	void drawLine(size_t n);
 	bool searchPromptBroadenNarrow(mail::ptr<myFolder> &folder,
@@ -69,6 +73,39 @@ private:
 
 	bool watchPrompt(unsigned &, unsigned &);
 
+public:
+
+
+	class FilterMessageCallback : public mail::callback::message,
+				      public myServer::Callback {
+
+		std::string filtercmd;
+
+		bool gettingMessage;
+		size_t msgnum;
+
+		pid_t childpid;
+		int pipefd;
+
+	public:
+		std::string errmsg;
+	private:
+		void reportProgress(size_t bytesCompleted,
+				    size_t bytesEstimatedTotal,
+				    size_t messagesCompleted,
+				    size_t messagesEstimatedTotal);
+
+	public:
+		static bool getFilterCmd(int n, std::string &cmd_locale);
+
+		FilterMessageCallback(std::string filtercmdarg);
+		~FilterMessageCallback();
+		void success(std::string message);
+		void fail(std::string message);
+		void messageTextCallback(size_t n, std::string text);
+
+		void finish();
+	};
 };
 
 #endif

@@ -1,5 +1,4 @@
-/* $Id: cursesmessagehtmlparser.H,v 1.1 2003/05/27 14:09:03 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -46,15 +45,18 @@ class CursesMessage::HtmlParser : public ::htmlParser,
 	void parse(std::string text);
 	bool finish();
 
+	bool conversionError();
+
+	bool conversionErrorFlag;
 public:
 	void init();
 
 	// Constructor for displaying of attributed text.
 
 	HtmlParser( CursesMessage *messagePtrArg,
-		    const struct unicode_info *content_chsetArg,
-		    const struct unicode_info *my_chsetArg,
-		    unicodeEntityAltList *txtAltListArg,
+		    const std::string &content_chsetArg,
+		    const std::string &my_chsetArg,
+		    Demoronize &demoronizer,
 		    // Alternative unicode entity representation, used for
 		    // demoronization
 
@@ -63,9 +65,9 @@ public:
 	// Constructor for formatting a plain text reply.
 	HtmlParser( std::ostream &ostreamPtrArg,
 		    bool replyArg,
-		    const struct unicode_info *content_chsetArg,
-		    const struct unicode_info *my_chsetArg,
-		    unicodeEntityAltList *txtAltListArg,
+		    const std::string &content_chsetArg,
+		    const std::string &my_chsetArg,
+		    Demoronize &demoronizer,
 		    size_t displayWidthArg);
 	~HtmlParser();
 

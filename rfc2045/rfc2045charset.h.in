@@ -3,7 +3,6 @@
 ** distribution information.
 */
 
-/* $Id: rfc2045charset.h.in,v 1.3 1999/12/06 13:29:02 mrsam Exp $ */
 
 #define	RFC2045CHARSET	"@RFC2045CHARSET@"
 

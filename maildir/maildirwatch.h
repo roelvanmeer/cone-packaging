@@ -5,7 +5,6 @@
 ** See COPYING for distribution information.
 */
 
-static const char maildirwatch_h_rcsid[]="$Id: maildirwatch.h,v 1.8 2003/08/03 03:09:19 mrsam Exp $";
 
 #ifdef  __cplusplus
 extern "C" {

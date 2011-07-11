@@ -1,6 +1,5 @@
-/* $Id: cursesmessagedisplay.C,v 1.14 2010/04/29 00:34:49 mrsam Exp $
-**
-** Copyright 2003-2006, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -15,6 +14,7 @@
 #include "cursesmessage.H"
 #include "cursesmessagedisplay.H"
 #include "cursesattachmentdisplay.H"
+#include "cursesindexdisplay.H"
 #include "gettext.H"
 #include "gpg.H"
 #include "passwordlist.H"
@@ -46,8 +46,6 @@
 #define WIFEXITED(stat_val) (((stat_val) & 255) == 0)
 #endif
 
-using namespace std;
-
 extern Gettext::Key key_LESSTHAN;
 extern Gettext::Key key_ROT13;
 extern Gettext::Key key_PRINT;
@@ -74,7 +72,7 @@ extern void folderIndexScreen(void *);
 extern void hierarchyScreen(void *);
 extern void showAttachments(void *);
 
-static string printCommand;
+static std::string printCommand;
 
 static void goNextMessage(void *vp)
 {
@@ -116,7 +114,7 @@ CursesMessageDisplay::CursesMessageDisplay(CursesContainer *parent,
 
 void CursesMessageDisplay::folderUpdated()
 {
-	string inProgress="----";
+	std::string inProgress="----";
 
 	CursesMessage *messageInfo=messageInfoPtr;
 
@@ -130,10 +128,10 @@ void CursesMessageDisplay::folderUpdated()
 
 		size_t lastLine= nLines > h ? nLines-h:0;
 
-		string buffer;
+		std::string buffer;
 
 		{
-			ostringstream o;
+			std::ostringstream o;
 
 			o << (lastLine == 0 ? 100
 			      : getFirstLineShown() * 100 / lastLine);
@@ -209,11 +207,10 @@ void CursesMessageDisplay::drawLine(size_t lineNum)
 	if (!messageInfo)
 	{
 		Curses::CursesAttr attr;
-		vector<wchar_t> l;
+		std::vector<unicode_char> l;
 
 		l.insert(l.end(), w, ' ');
-		l.push_back(0);
-		writeText(&l[0], lineNum - getFirstLineShown(), 0, attr);
+		writeText(l, lineNum - getFirstLineShown(), 0, attr);
 		return;
 	}
 
@@ -350,7 +347,7 @@ bool CursesMessageDisplay::processKeyInFocus(const Curses::Key &key)
 	{
 		mail::envelope *e=messageInfo->getEnvelope();
 
-		vector<mail::address> addrList;
+		std::vector<mail::address> addrList;
 
 		addrList.reserve(e->from.size() +
 				 e->to.size() +
@@ -505,7 +502,7 @@ bool CursesMessageDisplay::processKeyInFocus(const Curses::Key &key)
 
 	if (key == key_SAVE)
 	{
-		string filename;
+		std::string filename;
 
 		{
 			SaveDialog save_dialog(filename);
@@ -547,10 +544,10 @@ bool CursesMessageDisplay::processKeyInFocus(const Curses::Key &key)
 
 		mail::smtpInfo sendInfo;
 
-		string from;
-		string replyto;
-		string fcc;
-		string customheaders;
+		std::string from;
+		std::string replyto;
+		std::string fcc;
+		std::string customheaders;
 
 		if (!myMessage::getDefaultHeaders(messageInfo->myfolder
 						  ->getFolder(),
@@ -563,7 +560,7 @@ bool CursesMessageDisplay::processKeyInFocus(const Curses::Key &key)
 		}
 
 		{
-			vector<mail::address> addrList;
+			std::vector<mail::address> addrList;
 			size_t errIndex;
 
 			if (mail::address::fromString(from, addrList,
@@ -690,7 +687,7 @@ bool CursesMessageDisplay::processKeyInFocus(const Curses::Key &key)
 		if (printPrompt.abortflag || ptr.isDestroyed())
 			return true;
 
-		vector<const char *> args;
+		std::vector<const char *> args;
 
 		{
 			const char *p=getenv("SHELL");
@@ -742,9 +739,9 @@ bool CursesMessageDisplay::processKeyInFocus(const Curses::Key &key)
 			{
 				size_t nLines=messageInfo->nLines();
 				size_t i;
-				vector<pair<textAttributes, string> > line;
+				std::vector<std::pair<textAttributes, std::string> > line;
 
-				vector<pair<textAttributes, string> >
+				std::vector<std::pair<textAttributes, std::string> >
 					::iterator b, e;
 
 				for (i=0; i<nLines; i++)
@@ -802,8 +799,8 @@ bool CursesMessageDisplay::processKeyInFocus(const Curses::Key &key)
 	    GPG::gpg.gpg_installed())
 	{
 		mail::ptr<CursesMessage> ptr=messageInfo;
-		string passphrase;
-		vector<string> options;
+		std::string passphrase;
+		std::vector<std::string> options;
 		bool wasEncrypted=messageInfo->isEncrypted();
 
 		if (wasEncrypted)
@@ -826,26 +823,26 @@ bool CursesMessageDisplay::processKeyInFocus(const Curses::Key &key)
 			}
 		}
 
-		string::iterator b=GPG::gpg.extraDecryptVerifyOptions.begin();
+		std::string::iterator b=GPG::gpg.extraDecryptVerifyOptions.begin();
 
 		while (b != GPG::gpg.extraDecryptVerifyOptions.end())
 		{
-			if (isspace((int)(unsigned char)*b))
+			if (unicode_isspace((unsigned char)*b))
 			{
 				b++;
 				continue;
 			}
 
-			string::iterator s=b;
+			std::string::iterator s=b;
 
 			while (b != GPG::gpg.extraDecryptVerifyOptions.end())
 			{
-				if (isspace((int)(unsigned char)*b))
+				if (unicode_isspace((unsigned char)*b))
 					break;
 				b++;
 			}
 
-			options.push_back(string(s, b));
+			options.push_back(std::string(s, b));
 		}
 
 		bool decryptFailed;
@@ -885,71 +882,22 @@ bool CursesMessageDisplay::processKeyInFocus(const Curses::Key &key)
 		if (searchPrompt.abortflag || ptr.isDestroyed())
 			return true;
 
-		string search_utf8=Gettext::toutf8(searchPrompt);
-
-		// Collapse multiple spaces in the search string into one
-		// space.  Chop off leading and trailing spaces.
-
-		string::iterator i, j, k;
-
-		i=j=search_utf8.begin();
-		k=search_utf8.end();
-
-		while (i != k && *i == ' ')
-			++i;
-
-		while (i != k)
-		{
-			if (*i != ' ')
-			{
-				*j++ = *i++;
-				continue;
-			}
-
-			while (i != k && *i == ' ')
-				++i;
-
-			if (i != k)
-				*j++=' ';
-		}
-
-		search_utf8.erase(j, k);
-
-		char *p= (*unicode_UTF8.tolower_func)(&unicode_UTF8,
-						      search_utf8.c_str(),
-						      NULL);
-
-		if (!p)
-		{
-			statusBar->clearstatus();
-			statusBar->status(strerror(errno));
-			statusBar->beepError();
-			return true;
-		}
-
-		try {
-			search_utf8=p;
-			free(p);
-		} catch (...)
-		{
-			free(p);
-			throw;
-		}
-
-		if (search_utf8.size() == 0)
-			return true;
-
 		searchString=searchPrompt;
+
+		if (searchString.size() == 0)
+			return true;
 
 		mail::Search searchEngine;
 
-		if (searchEngine.setString(search_utf8) < 0)
+		if (!searchEngine.setString(searchString,
+					    unicode_default_chset()))
 		{
 			statusBar->clearstatus();
 			statusBar->status(strerror(errno));
 			statusBar->beepError();
 			return true;
 		}
+
 		searchEngine.reset();
 
 		statusBar->clearstatus();
@@ -958,24 +906,29 @@ bool CursesMessageDisplay::processKeyInFocus(const Curses::Key &key)
 
 		size_t n=messageInfo->nLines();
 
-		vector<pair<textAttributes, string> > line;
+		std::vector<std::pair<textAttributes, std::string> > line;
 
 		while (firstLineToSearch < n)
 		{
 			messageInfo->getLineImage(firstLineToSearch, line);
 
-			string s;
+			std::string s;
 
-			vector<pair<textAttributes, string> >
+			std::vector<std::pair<textAttributes, std::string> >
 				::iterator b, e;
 
 			for (b=line.begin(), e=line.end(); b != e; ++b)
 				s += Gettext::toutf8(b->second);
 
-			p= (*unicode_UTF8.tolower_func)(&unicode_UTF8,
-							s.c_str(), NULL);
+			unicode_char *uc;
+			size_t ucsize;
 
-			if (!p)
+			if (libmail_u_convert_tou_tobuf(s.c_str(),
+							s.size(),
+							"utf-8",
+							&uc,
+							&ucsize,
+							NULL))
 			{
 				statusBar->clearstatus();
 				statusBar->status(strerror(errno));
@@ -983,40 +936,21 @@ bool CursesMessageDisplay::processKeyInFocus(const Curses::Key &key)
 				return true;
 			}
 
-			try {
-				s=p;
-				free(p);
-			} catch (...)
+			if (ucsize == 0)
 			{
-				free(p);
-				throw;
-			}
-
-			if (s.size() == 0)
-			{
+				free(uc);
 				++firstLineToSearch;
 				continue;
 			}
 
-			i=s.begin();
-			j=s.end();
+			size_t i;
 
-			while (i != j)
+			for (i=0; i<ucsize; ++i)
 			{
-				if (*i != ' ')
-				{
-					searchEngine << *i;
-					++i;
-					continue;
-				}
-
-				while (i != j && *i == ' ')
-					++i;
-				if (i == j)
-					break;
-				searchEngine << ' ';
+				searchEngine << uc[i];
 			}
-			searchEngine << ' '; // EOL syntactically a space
+			free(uc);
+			searchEngine << (unicode_char)' '; // EOL
 
 			if (searchEngine)
 			{
@@ -1049,6 +983,41 @@ bool CursesMessageDisplay::processKeyInFocus(const Curses::Key &key)
 		return true;
 	}
 
+	if (key.fkey())
+	{
+		std::string local_cmd;
+
+		if (!CursesIndexDisplay::FilterMessageCallback
+		    ::getFilterCmd(key.fkeynum(), local_cmd))
+			return true;
+
+		CursesIndexDisplay::FilterMessageCallback cb(local_cmd);
+
+		std::vector<size_t> msgvec;
+
+		msgvec.push_back(messageInfo->myfolder->getServerIndex
+				 (messageInfo->myfolder->getCurrentMessage()));
+
+		messageInfo->myfolder->getServer()
+			->server->readMessageContent(msgvec, true,
+						     mail::readBoth, cb);
+
+		if (myServer::eventloop(cb))
+		{
+			cb.finish();
+
+			if (myServer::nextScreen)
+				return true;
+
+			if (cb.errmsg.size())
+			{
+				statusBar->clearstatus();
+				statusBar->status(cb.errmsg);
+				statusBar->beepError();
+			}
+		}
+		return true;
+	}
 	return false;
 }
 
@@ -1056,7 +1025,7 @@ int CursesMessageDisplay::getCursorPosition(int &row, int &col)
 {
 	size_t lrow;
 	size_t lcol;
-	string url;
+	std::string url;
 
 	CursesMessage *messageInfo=messageInfoPtr;
 
@@ -1083,64 +1052,66 @@ bool CursesMessageDisplay::processKey(const Curses::Key &key)
 				      messageInfo->myfolder->getServer());
 }
 
-bool CursesMessageDisplay::listKeys( vector< pair<string, string> > &list)
+bool CursesMessageDisplay::listKeys( std::vector< std::pair<std::string, std::string> > &list)
 {
 	GlobalKeys::listKeys(list, GlobalKeys::MESSAGESCREEN);
 
-	list.push_back(make_pair(Gettext::keyname(_("SAVE_K:S")),
+	list.push_back(std::make_pair(Gettext::keyname(_("SAVE_K:S")),
 				 _("Save")));
 
-	list.push_back(make_pair(Gettext::keyname(_("TAKEADDR_K:T")),
+	list.push_back(std::make_pair(Gettext::keyname(_("TAKEADDR_K:T")),
 				 _("Take Addr")));
 
-	list.push_back(make_pair(Gettext::keyname(_("FOLDERINDEX_K:I")),
+	list.push_back(std::make_pair(Gettext::keyname(_("FOLDERINDEX_K:I")),
 				 _("Index")));
 
-	list.push_back(make_pair(Gettext::keyname(_("BOUNCE_K:B")),
+	list.push_back(std::make_pair(Gettext::keyname(_("BOUNCE_K:B")),
 				 _("Blind Fwd")));
 
-	list.push_back(make_pair(Gettext::keyname(_("FWD_K:F")),
+	list.push_back(std::make_pair(Gettext::keyname(_("FWD_K:F")),
 				 _("Fwd")));
 
-	list.push_back(make_pair(Gettext::keyname(_("HEADERS_K:H")),
+	list.push_back(std::make_pair(Gettext::keyname(_("HEADERS_K:H")),
 				 _("Full Hdrs")));
 
-	list.push_back(make_pair(Gettext::keyname(_("NEXT_K:N")),
+	list.push_back(std::make_pair(Gettext::keyname(_("NEXT_K:N")),
 				 _("Next")));
 
-	list.push_back(make_pair(Gettext::keyname(_("PREV_K:P")),
+	list.push_back(std::make_pair(Gettext::keyname(_("PREV_K:P")),
 				 _("Prev")));
 
-	list.push_back( make_pair(Gettext::keyname(_("DELETE_K:D")),
+	list.push_back( std::make_pair(Gettext::keyname(_("DELETE_K:D")),
 				 _("Delete")));
 
-	list.push_back( make_pair(Gettext::keyname(_("UNDELETE_K:U")),
+	list.push_back( std::make_pair(Gettext::keyname(_("UNDELETE_K:U")),
 				 _("Undel/Unrd")));
 
-	list.push_back(make_pair(Gettext::keyname(_("REPLY_K:R")),
+	list.push_back(std::make_pair(Gettext::keyname(_("REPLY_K:R")),
 				 _("Reply")));
 
-	list.push_back(make_pair(Gettext::keyname(_("ROT13_K:^R")),
+	list.push_back(std::make_pair(Gettext::keyname(_("ROT13_K:^R")),
 				 _("Rot 13")));
 
-	list.push_back(make_pair(Gettext::keyname(_("PRINT_K:|")),
+	list.push_back(std::make_pair(Gettext::keyname(_("PRINT_K:|")),
 				 _("Print")));
 
-	list.push_back(make_pair(Gettext::keyname(_("VIEWATT_K:V")),
+	list.push_back(std::make_pair(Gettext::keyname(_("VIEWATT_K:V")),
 				 _("View Attchs")));
 
-	list.push_back(make_pair(Gettext::keyname(_("SPACE_K:SP")),
+	list.push_back(std::make_pair(Gettext::keyname(_("SPACE_K:SP")),
 				 _("Next Unread")));
 
-	list.push_back(make_pair(Gettext::keyname(_("SEARCH_K:/")),
+	list.push_back(std::make_pair(Gettext::keyname(_("SEARCH_K:/")),
 				 _("Search")));
+
+	CursesIndexDisplay::listExternalFilterKeys(list);
 
 	if (!messageInfoPtr.isDestroyed() &&
 	    (messageInfoPtr->isSigned() ||
 	     messageInfoPtr->isEncrypted()) &&
 	    GPG::gpg.gpg_installed())
 	{
-		list.push_back(make_pair(Gettext::keyname(_("UNENCRYPT_K:Y")),
+		list.push_back(std::make_pair(Gettext::keyname(_("UNENCRYPT_K:Y")),
 					 _("decrYpt/Vfy")));
 	}
 	return false;

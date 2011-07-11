@@ -14,7 +14,6 @@
 #include	<netinet/in.h>
 #include	<arpa/inet.h>
 
-static const char rfc1035_res_rcsid[]="$Id: rfc1035_res.h,v 1.5 2002/07/01 03:17:05 mrsam Exp $";
 
 #ifdef  __cplusplus
 extern "C" {

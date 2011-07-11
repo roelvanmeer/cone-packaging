@@ -1,5 +1,4 @@
 /*
-** $Id: rfc822hdr.h,v 1.4 2009/11/08 18:14:47 mrsam Exp $
 */
 #ifndef	rfc822hdr_h
 #define	rfc822hdr_h
@@ -9,10 +8,9 @@
 ** See COPYING for distribution information.
 */
 
-static const char rfc822hdr_h_rcsid[]="$Id: rfc822hdr.h,v 1.4 2009/11/08 18:14:47 mrsam Exp $";
 
 #if	HAVE_CONFIG_H
-#include	"config.h"
+#include	"../rfc822/config.h"
 #endif
 #include	<sys/types.h>
 #include	<stdio.h>
@@ -41,6 +39,7 @@ int rfc822hdr_read(struct rfc822hdr *, FILE *, off_t *, off_t);
 void rfc822hdr_fixname(struct rfc822hdr *);
 void rfc822hdr_collapse(struct rfc822hdr *);
 
+int rfc822hdr_namecmp(const char *a, const char *b);
 int rfc822hdr_is_addr(const char *hdr);
 
 #ifdef  __cplusplus

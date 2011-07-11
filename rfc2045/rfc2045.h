@@ -1,21 +1,25 @@
 /*
-** Copyright 1998 - 2009 Double Precision, Inc.  See COPYING for
+** Copyright 1998 - 2011 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
 /*
-** $Id: rfc2045.h,v 1.35 2009/11/22 17:33:03 mrsam Exp $
 */
 #ifndef	rfc2045_h
 #define	rfc2045_h
 
 #include	"../rfc2045/rfc2045_config.h" /* VPATH build */
+#include	"../numlib/numlib.h"
 #include	<sys/types.h>
 #include	<string.h>
 #include	<stdio.h>
 
 #ifdef  __cplusplus
 extern "C" {
+#endif
+
+#if 0
+}
 #endif
 
 #define	RFC2045_ISMIME1(p)	((p) && atoi(p) == 1)
@@ -107,7 +111,8 @@ void rfc2045_mimeinfo(const struct rfc2045 *,
 	const char **);
 
 const char *rfc2045_boundary(const struct rfc2045 *);
-	int rfc2045_isflowed(const struct rfc2045 *);
+int rfc2045_isflowed(const struct rfc2045 *);
+int rfc2045_isdelsp(const struct rfc2045 *);
 char *rfc2045_related_start(const struct rfc2045 *);
 const char *rfc2045_content_id(const struct rfc2045 *);
 const char *rfc2045_content_description(const struct rfc2045 *);
@@ -126,11 +131,33 @@ struct rfc2045id {
 } ;
 
 void rfc2045_decode(struct rfc2045 *,
-	void (*)(struct rfc2045 *, struct rfc2045id *, void *),
-	void *);
+		    void (*)(struct rfc2045 *, struct rfc2045id *, void *),
+		    void *);
 
 struct rfc2045 *rfc2045_find(struct rfc2045 *, const char *);
 
+
+/*
+** Source of an rfc2045-formatted content (internal)
+*/
+
+struct rfc2045src {
+	void (*deinit_func)(void *);
+
+	int (*seek_func)(off_t pos, void *);
+	ssize_t (*read_func)(char *buf, size_t cnt, void *);
+
+	void *arg;
+};
+/* Read from a filedesc, returns a malloced buffer */
+
+struct rfc2045src *rfc2045src_init_fd(int fd);
+
+/* Destroy a rfc2045src */
+
+void rfc2045src_deinit(struct rfc2045src *);
+
+/************************/
 
 void rfc2045_cdecode_start(struct rfc2045 *,
 	int (*)(const char *, size_t, void *), void *);
@@ -155,15 +182,17 @@ struct  rfc2045ac {
 
 struct rfc2045 *rfc2045_alloc_ac();
 int rfc2045_ac_check(struct rfc2045 *, int);
-int rfc2045_rewrite(struct rfc2045 *, int, int, const char *);
-int rfc2045_rewrite_func(struct rfc2045 *p, int,
-	int (*)(const char *, int, void *), void *,
-	const char *);
+int rfc2045_rewrite(struct rfc2045 *p, struct rfc2045src *src, int fdout_arg,
+		    const char *appname);
+int rfc2045_rewrite_func(struct rfc2045 *p, struct rfc2045src *src,
+			 int (*funcarg)(const char *, int, void *),
+			 void *funcargarg,
+			 const char *appname);
 
 /* Internal functions */
 
-int rfc2045_try_boundary(struct rfc2045 *, int, const char *);
-char *rfc2045_mk_boundary(struct rfc2045 *, int);
+int rfc2045_try_boundary(struct rfc2045 *, struct rfc2045src *, const char *);
+char *rfc2045_mk_boundary(struct rfc2045 *, struct rfc2045src *);
 const char *rfc2045_getattr(const struct rfc2045attr *, const char *);
 int rfc2045_attrset(struct rfc2045attr **, const char *, const char *);
 
@@ -184,7 +213,7 @@ struct rfc2045 *rfc2045_searchcontenttype(struct rfc2045 *, const char *);
 	** with the given content type.
 	*/
 
-int rfc2045_decodemimesection(int,	/* File descriptor */
+int rfc2045_decodemimesection(struct rfc2045src *, /* Message to decode */
 			      struct rfc2045 *,	/* MIME section to decode */
 			      int (*)(const char *, size_t, void *),
 			      /*
@@ -193,13 +222,14 @@ int rfc2045_decodemimesection(int,	/* File descriptor */
 			      */
 			      void *	/* 3rd arg to the callback function */
 			      );
-	/*
-	** Decode a given MIME section.
-	*/
+/*
+** Decode a given MIME section.
+*/
 
-int rfc2045_decodetextmimesection(int,	/* File descriptor */
+int rfc2045_decodetextmimesection(struct rfc2045src *, /* Message to decode */
 				  struct rfc2045 *, /* MIME section */
-				  const char *,	/* Character set */
+				  const char *,	/* Convert to this character set */
+				  int *, /* Set to non-0 if MIME section contained chars that could not be converted to the requested charset */
 				  int (*)(const char *, size_t, void *),
 				  /*
 				  ** Callback function that receives decoded
@@ -240,7 +270,7 @@ int rfc2045_decodetextmimesection(int,	/* File descriptor */
 				*/
 
 struct rfc2045headerinfo *
-	rfc2045header_start(int,	/* Readonly file descriptor */
+	rfc2045header_start(struct rfc2045src *,/* Readonly source */
 			    struct rfc2045 *	/* MIME section to read */
 			    );
 
@@ -281,7 +311,7 @@ int rfc2045_parse_mime_header(const char *header,
 
 struct rfc2045_mkreplyinfo {
 
-	int fd;	/* Readonly seekable filedescriptor for the original message */
+	struct rfc2045src *src; /* Original message source */
 
 	struct rfc2045 *rfc2045partp;
 	/*
@@ -329,6 +359,14 @@ struct rfc2045_mkreplyinfo {
 	/*
 	** If non-zero, the "reply" or "replydsn" message gets addressed to the
 	** "Return-Path" or "Errors-To" address, if available.
+	*/
+
+	int donotquote;
+
+	/*
+	** If donotquote is set, the contents of the original message are not
+	** quoted by any of the "reply" modes, and replysalut (below) does not
+	** get emitted.
 	*/
 
 	const char *replysalut;
@@ -381,8 +419,9 @@ struct rfc2045_mkreplyinfo {
 
 	/*
 	** Set the reply/fwd MIME headers. If this is a NULL pointer,
-	** write_func() receives a Content-Type: text/plain; charset="charset"
-	** (specified below), and "Content-Transfer-Encoding: 8bit".
+	** write_func() receives ``Content-Type: text/plain; format=flowed;
+	** delsp=yes; charset="charset" '' with the charset specified below,
+	** and "Content-Transfer-Encoding: 8bit".
 	**
 	** If this is not a NULL pointer, the effect of
 	** this function should be invocation of write_func() to perform the
@@ -427,17 +466,67 @@ struct rfc2045_mkreplyinfo {
 
 	const char *forwardsep;
 	/* This is used instead of replysalut for forwards. */
-
-	/* INTERNAL VARIABLES: */
-
-	int start_line;
-
-	void (*decodesectionfunc)(int, struct rfc2045 *, const char *,
-				  int (*)(const char *, size_t, void *),
-				  void *);
 } ;
 
-int rfc2045_makereply_unicode(struct rfc2045_mkreplyinfo *);
+int rfc2045_makereply(struct rfc2045_mkreplyinfo *);
+
+/********** Search message content **********/
+
+/*
+** Callback passed rfc2045_decodemsgtoutf8()
+*/
+
+struct rfc2045_decodemsgtoutf8_cb {
+
+	int flags; /* Optional flags, see below */
+
+	/* Define a non-null function pointer. It gets the name of a header,
+	** and the raw, unformatted, header contents.
+	** If returns non-0, the header gets converted and sent to output.
+	** If null, all headers are sent
+	*/
+
+	int (*headerfilter_func)(const char *name, const char *raw, void *arg);
+
+	/* The output function */
+	int (*output_func)(const char *data, size_t cnt, void *arg);
+
+	/* If not null, gets invoked after decoding a single header */
+	int (*headerdone_func)(const char *headername, void *arg);
+
+	void *arg; /* Passthrough arg to _funcs */
+};
+
+#define RFC2045_DECODEMSG_NOBODY 0x01
+/* Do not decode MIME content, headers only */
+
+#define RFC2045_DECODEMSG_NOHEADERS 0x02
+/*
+** Do not decode MIME headers, only body. This is the same as using a
+** headerfilter_func that always returns 0
+*/
+
+#define RFC2045_DECODEMSG_NOHEADERNAME 0x04
+/*
+** Do not prepend name: to converted header content.
+*/
+
+/*
+** Convert a message into a utf8 bytestream. The output produced by this
+** function is a catentation of decoded header and text content data, converted
+** to utf8.
+**
+** This is fed into an output function. The output function takes a single
+** octet, and returns 0 if the octet was processed, or a negative value if
+** the output was aborted.
+*/
+
+int rfc2045_decodemsgtoutf8(struct rfc2045src *src, /* The message */
+			    struct rfc2045 *p, /* The parsed message */
+
+			    /* The callback */
+			    struct rfc2045_decodemsgtoutf8_cb *callback);
+
 
 /********** Decode RFC 2231 attributes ***********/
 
@@ -469,14 +558,12 @@ int rfc2231_decodeDisposition(struct rfc2045 *rfc, const char *name,
 ** charset.
 */
 
-struct unicode_info;
-
 int rfc2231_udecodeType(struct rfc2045 *rfc, const char *name,
-			const struct unicode_info *myChset,
+			const char *myChset,
 			char **textPtr);
 
 int rfc2231_udecodeDisposition(struct rfc2045 *rfc, const char *name,
-			       const struct unicode_info *myChset,
+			       const char *myChset,
 			       char **textPtr);
 
 /*
@@ -525,6 +612,9 @@ void rfc2231_paramDecode(struct rfc2231param *paramList,
 			 int *langLen,
 			 int *textLen);
 
+#if 0
+{
+#endif
 
 #ifdef  __cplusplus
 }

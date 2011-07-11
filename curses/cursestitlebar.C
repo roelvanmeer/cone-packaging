@@ -1,5 +1,4 @@
-/* $Id: cursestitlebar.C,v 1.2 2003/10/12 01:36:33 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -47,7 +46,7 @@ void CursesTitleBar::setAttribute(CursesAttr attr)
 
 void CursesTitleBar::draw()
 {
-	int w=getWidth();
+	size_t w=getWidth();
 
 	Curses *p=getParent();
 
@@ -70,15 +69,42 @@ void CursesTitleBar::draw()
 
 	p->writeText(leftTitle, 0, 1, rev);
 
-	int l;
+	size_t l;
 
-	l=getTextLength(rightTitle.c_str());
+	{
+		widecharbuf wc;
 
-	if (l + 1< w)
-		p->writeText(rightTitle, 0, w - 1 - l, rev);
+		wc.init_string(rightTitle);
+		wc.expandtabs(0);
 
-	l=getTextLength(title.c_str());
+		l=wc.wcwidth(0);
 
-	if (l < w)
-		p->writeText(title, 0, (w-l)/2, rev);
+		if (l + 1< w)
+		{
+			std::vector<unicode_char> uc;
+
+			wc.tounicode(uc);
+
+			p->writeText(uc, 0, w - 1 - l, rev);
+		}
+	}
+
+	{
+		widecharbuf wc;
+
+		wc.init_string(title);
+		wc.expandtabs(0);
+
+		l=wc.wcwidth(0);
+
+		if (l < w)
+		{
+
+			std::vector<unicode_char> uc;
+
+			wc.tounicode(uc);
+
+			p->writeText(uc, 0, (w-l)/2, rev);
+		}
+	}
 }

@@ -1,6 +1,5 @@
-/* $Id: myserverconfig.C,v 1.28 2010/05/02 12:03:22 mrsam Exp $
-**
-** Copyright 2003-2008, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -48,8 +47,6 @@
 #include <map>
 #include <iomanip>
 
-using namespace std;
-
 #if HAVE_DIRENT_H
 # include <dirent.h>
 # define NAMLEN(dirent) strlen((dirent)->d_name)
@@ -73,19 +70,19 @@ extern CursesStatusBar *statusBar;
 
 #define INDEXFORMAT "2"
 
-unicodeEntityAltList *currentEntityAltList=NULL;
+Demoronize *currentDemoronizer;
 
-vector<string> myServer::myAddresses, myServer::myListAddresses;
-string myServer::smtpServerURL;   // Config - SMTP server URL
-string myServer::smtpServerCertificate; // Config - SMTP server certificate
-string myServer::smtpServerPassword;	// Config (not saved) - SMTP password
+std::vector<std::string> myServer::myAddresses, myServer::myListAddresses;
+std::string myServer::smtpServerURL;   // Config - SMTP server URL
+std::string myServer::smtpServerCertificate; // Config - SMTP server certificate
+std::string myServer::smtpServerPassword;	// Config (not saved) - SMTP password
 
 bool myServer::useIMAPforSending; // Config
 
 
-string myServer::remoteConfigURL;
-string myServer::remoteConfigPassword;
-string myServer::remoteConfigFolder;
+std::string myServer::remoteConfigURL;
+std::string myServer::remoteConfigPassword;
+std::string myServer::remoteConfigFolder;
 myServer::remoteConfig *myServer::remoteConfigAccount=NULL;
 
 myServer::DemoronizationType myServer::demoronizationType
@@ -93,34 +90,34 @@ myServer::DemoronizationType myServer::demoronizationType
 
 myServer::postAndMailType myServer::postAndMail=myServer::POSTANDMAIL_ASK;
 
-string myServer::getConfigFilename()
+std::string myServer::getConfigFilename()
 {
 	return myServer::getConfigDir() + "/conerc";
 }
 
-static string getCacheIndexFilename()
+static std::string getCacheIndexFilename()
 {
 	return myServer::getConfigDir() + "/cacherc";
 }
 
-static string getMacroFilename()
+static std::string getMacroFilename()
 {
 	return myServer::getConfigDir() + "/macros";
 }
 
-string PasswordList::masterPasswordFile()
+std::string PasswordList::masterPasswordFile()
 {
 	return myServer::getConfigDir() + "/passwords";
 }
 
 char *myServer::configDir=NULL;
-extern string curdir();
+extern std::string curdir();
 
-string myServer::getConfigDir()
+std::string myServer::getConfigDir()
 {
 	if (configDir)
 	{
-		string c=configDir;
+		std::string c=configDir;
 
 		if (*configDir != '/')
 			c= curdir() + "/" + c;
@@ -131,7 +128,7 @@ string myServer::getConfigDir()
 	return getHomeDir() + "/.cone";
 }
 
-static void saveError(string filename)
+static void saveError(std::string filename)
 {
 	statusBar->status(Gettext(_("%1%: %2%"))
 			  .arg(filename).arg(strerror(errno)));
@@ -150,30 +147,20 @@ bool myServer::isMyAddress(const mail::address &cmpAddr)
 
 void myServer::setDemoronizationType(DemoronizationType t)
 {
-	demoronizationType=t;
-	
-	if (currentEntityAltList)
-	{
-		unicode_destroyAltList(currentEntityAltList);
-		currentEntityAltList=NULL;
-	}
+	Demoronize::demoron_t type=
+		t == myServer::DEMORON_MIN ? Demoronize::minimum:
+		t == myServer::DEMORON_MAX ? Demoronize::maximum:
+		Demoronize::none;
 
-	switch (t) {
-	case myServer::DEMORON_OFF:
-		return;
-	case myServer::DEMORON_MIN:
-		currentEntityAltList=
-			unicode_createAltList(Gettext::defaultCharset());
-		break;
-	case myServer::DEMORON_MAX:
-		currentEntityAltList=unicode_createAltList(NULL);
-		break;
-	default:
-		return;
-	}
+	Demoronize *demoron=
+		new Demoronize(unicode_default_chset(), type);
 
-	if (!currentEntityAltList)
-		LIBMAIL_THROW((strerror(errno)));
+	if (currentDemoronizer)
+		delete currentDemoronizer;
+
+	currentDemoronizer=demoron;
+
+	myServer::demoronizationType=t;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -198,7 +185,7 @@ public:
 
 	xmlDocPtr macros; // Macros
 
-	set<string> urls; // URLs we've saved.
+	std::set<std::string> urls; // URLs we've saved.
 
 	config();
 	~config();
@@ -208,18 +195,18 @@ public:
 	// Conveniently encapsulate load function too
 
 	static bool loadconfig(xmlDocPtr doc,
-			       set<string> &cache_filenames,
-			       set<string> &aux_filenames,
-			       map<string, xmlNodePtr> &cacheMap,
-			       map<string, xmlNodePtr> &remoteMap,
+			       std::set<std::string> &cache_filenames,
+			       std::set<std::string> &aux_filenames,
+			       std::map<std::string, xmlNodePtr> &cacheMap,
+			       std::map<std::string, xmlNodePtr> &remoteMap,
 			       bool skipServerConfig,
-			       set<string> &accountNamesLoaded);
+			       std::set<std::string> &accountNamesLoaded);
 
 	static void loadserver(xmlNodePtr root,
-			       set<string> &cache_filenames,
-			       set<string> &aux_filenames,
-			       map<string, xmlNodePtr> &cacheMap,
-			       set<string> &accountNamesLoaded);
+			       std::set<std::string> &cache_filenames,
+			       std::set<std::string> &aux_filenames,
+			       std::map<std::string, xmlNodePtr> &cacheMap,
+			       std::set<std::string> &accountNamesLoaded);
 
 	static void loadmacros(Macros *, xmlDocPtr);
 };
@@ -274,15 +261,15 @@ bool ClearKeyHandler::processKey(const Curses::Key &key)
 // Read a list of available backup files.
 //
 
-void myServer::getBackupConfigFiles(vector<string> &f)
+void myServer::getBackupConfigFiles(std::vector<std::string> &f)
 {
-	string backupConfigFilename=getConfigFilename() + ".backup";
+	std::string backupConfigFilename=getConfigFilename() + ".backup";
 
 	int i;
 
 	for (i=0; i<4; i++)
 	{
-		ostringstream o;
+		std::ostringstream o;
 
 		o << backupConfigFilename;
 
@@ -295,28 +282,28 @@ void myServer::getBackupConfigFiles(vector<string> &f)
 
 static int save_password_func(const char *p, size_t n, void *vp)
 {
-	ofstream *o=(ofstream *)vp;
+	std::ofstream *o=(std::ofstream *)vp;
 
 	o->write(p, n);
 
 	return 0;
 }
 
-void myServer::savepasswords(string password)
+void myServer::savepasswords(std::string password)
 {
 	config saveConfig;
 
 	saveConfig.save();
 
-	vector<string> url_strings;
-	vector<string> password_strings;
+	std::vector<std::string> url_strings;
+	std::vector<std::string> password_strings;
 
-	set<string>::iterator b=saveConfig.urls.begin(),
+	std::set<std::string>::iterator b=saveConfig.urls.begin(),
 		e=saveConfig.urls.end();
 
 	while (b != e)
 	{
-		string pwd;
+		std::string pwd;
 
 		if (PasswordList::passwordList.get( *b, pwd) && pwd.size())
 		{
@@ -339,9 +326,9 @@ void myServer::savepasswords(string password)
 		++cb;
 	}
 
-	vector<const char *> urlp, passp;
+	std::vector<const char *> urlp, passp;
 
-	vector<string>::iterator sb=url_strings.begin(), se=url_strings.end();
+	std::vector<std::string>::iterator sb=url_strings.begin(), se=url_strings.end();
 
 	urlp.reserve(url_strings.size());
 	passp.reserve(password_strings.size());
@@ -363,15 +350,15 @@ void myServer::savepasswords(string password)
 	urlp.push_back(NULL);
 	passp.push_back(NULL);
 
-	string passFilename=PasswordList::masterPasswordFile();
-	string tmpPassFilename=passFilename + ".tmp";
+	std::string passFilename=PasswordList::masterPasswordFile();
+	std::string tmpPassFilename=passFilename + ".tmp";
 
 
-	ofstream o(tmpPassFilename.c_str());
+	std::ofstream o(tmpPassFilename.c_str());
 
 	if (tlspassword_save(&urlp[0], &passp[0], password.c_str(),
 			     save_password_func, &o)
-	    || (o << flush).bad() || o.fail())
+	    || (o << std::flush).bad() || o.fail())
 	{
 		o.close();
 		statusBar->clearstatus();
@@ -385,7 +372,7 @@ void myServer::savepasswords(string password)
 
 static int load_func(char *buf, size_t n, void *vp)
 {
-	ifstream *i=(ifstream *)vp;
+	std::ifstream *i=(std::ifstream *)vp;
 
 	i->read(buf, n);
 
@@ -402,11 +389,11 @@ static void install_passwords(const char * const *uids,
 	PasswordList::passwordList.loadPasswords(uids, pws);
 }
 
-bool myServer::loadpasswords(string password)
+bool myServer::loadpasswords(std::string password)
 {
-	string f=PasswordList::masterPasswordFile();
+	std::string f=PasswordList::masterPasswordFile();
 
-	ifstream i(f.c_str());
+	std::ifstream i(f.c_str());
 
 	return tlspassword_load(load_func, &i, password.c_str(),
 				install_passwords, NULL) == 0;
@@ -421,17 +408,17 @@ void myServer::saveconfig(bool saveRemote, // true: both local and remote save
 			  // and pick up the remote config info
 			  )
 {
-	string configFilename=getConfigFilename();
-	string tmpConfigFilename=configFilename + ".tmp";
+	std::string configFilename=getConfigFilename();
+	std::string tmpConfigFilename=configFilename + ".tmp";
 
-	string cacheFilename=getCacheIndexFilename();
-	string tmpCacheFilename=cacheFilename + ".tmp";
+	std::string cacheFilename=getCacheIndexFilename();
+	std::string tmpCacheFilename=cacheFilename + ".tmp";
 
-	string backupConfigFilename=getConfigFilename() + ".backup";
+	std::string backupConfigFilename=getConfigFilename() + ".backup";
 	struct stat stat_buf;
 
-	string macroFilename=getMacroFilename();
-	string tmpMacroFilename=macroFilename + ".tmp";
+	std::string macroFilename=getMacroFilename();
+	std::string tmpMacroFilename=macroFilename + ".tmp";
 
 	// Once a day make a backup copy of the configuration file.
 
@@ -451,20 +438,20 @@ void myServer::saveconfig(bool saveRemote, // true: both local and remote save
 			return;
 		}
 
-		string lastBackup=backupConfigFilename + ".3";
+		std::string lastBackup=backupConfigFilename + ".3";
 
 		int i;
 
 		for (i=2; i >= 0; --i)
 		{
-			ostringstream o;
+			std::ostringstream o;
 
 			o << backupConfigFilename;
 
 			if (i > 0)
 				o << "." << i;
 
-			string s=o.str();
+			std::string s=o.str();
 
 			rename(s.c_str(), lastBackup.c_str());
 			lastBackup=s;
@@ -500,7 +487,7 @@ void myServer::saveconfig(bool saveRemote, // true: both local and remote save
 
 		savedConfig.save();
 
-		string remoteMacroName="";
+		std::string remoteMacroName="";
 
 		if (savedConfig.macros)
 		{
@@ -514,7 +501,7 @@ void myServer::saveconfig(bool saveRemote, // true: both local and remote save
 			}
 		}
 
-		string errmsg="";
+		std::string errmsg="";
 
 		if (saveRemote) // Wanna save all the remote accts.
 		{
@@ -577,7 +564,7 @@ void myServer::saveconfig(bool saveRemote, // true: both local and remote save
 					 .yesno());
 
 		if (promptInfo.abortflag ||
-		    (string)promptInfo == "Y")
+		    (std::string)promptInfo == "Y")
 			continue;
 
 		remoteConfigAccount->logout();
@@ -649,14 +636,14 @@ void myServer::config::save()
 	if (myServer::smtpServerURL.size() > 0)
 		urls.insert(myServer::smtpServerURL);
 
-	vector<myServer *>::iterator
+	std::vector<myServer *>::iterator
 		serverListB=server_list.begin(),
 		serverListE=server_list.end();
 
 	doc=xmlNewDoc((xmlChar *)"1.0");
 	cachedoc=xmlNewDoc((xmlChar *)"1.0");
 
-	string myCharset=Gettext::defaultCharset()->chset;
+	std::string myCharset=unicode_default_chset();
 
 #define REMOTE (remoteDocPtr ? remoteDocPtr:doc)
 
@@ -683,10 +670,10 @@ void myServer::config::save()
 	if (remoteConfigAccount)
 	{
 		urls.insert(myServer::remoteConfigURL);
-		string sUrl=mail::rfc2047::encode(myServer::remoteConfigURL,
+		std::string sUrl=mail::rfc2047::encode(myServer::remoteConfigURL,
 						  myCharset);
 
-		string sFolder=mail::rfc2047::encode(myServer::
+		std::string sFolder=mail::rfc2047::encode(myServer::
 						     remoteConfigFolder,
 						     myCharset);
 		if (!xmlSetProp(d, (xmlChar *)"REMOTECONFIG",
@@ -703,13 +690,13 @@ void myServer::config::save()
 
 		urls.insert(p->url);
 
-		string sName=mail::rfc2047::encode(p->serverName,
+		std::string sName=mail::rfc2047::encode(p->serverName,
 						   myCharset);
-		string sUrl=mail::rfc2047::encode(p->url, myCharset);
+		std::string sUrl=mail::rfc2047::encode(p->url, myCharset);
 
-		string sNewsrc=mail::rfc2047::encode(p->newsrc,
+		std::string sNewsrc=mail::rfc2047::encode(p->newsrc,
 						     myCharset);
-		string sCert=mail::rfc2047::encode(p->certificate,
+		std::string sCert=mail::rfc2047::encode(p->certificate,
 						   myCharset);
 
 		xmlNodePtr serverNode=xmlNewNode (NULL,
@@ -791,7 +778,7 @@ void myServer::config::save()
 
 		while (fb != fe)
 		{
-			string path=mail::rfc2047::encode(*fb++,
+			std::string path=mail::rfc2047::encode(*fb++,
 							  myCharset);
 
 			xmlNodePtr f=xmlNewNode(NULL,
@@ -808,15 +795,15 @@ void myServer::config::save()
 			}
 		}
 
-		map<string, string>::iterator
+		std::map<std::string, std::string>::iterator
 			scb=p->server_configuration.begin(),
 			sce=p->server_configuration.end();
 
 		while (scb != sce)
 		{
-			string name=mail::rfc2047::encode(scb->first,
+			std::string name=mail::rfc2047::encode(scb->first,
 							  myCharset);
-			string value=mail::rfc2047::encode(scb->second,
+			std::string value=mail::rfc2047::encode(scb->second,
 							   myCharset);
 
 			xmlNodePtr f=xmlNewNode(NULL,
@@ -836,16 +823,16 @@ void myServer::config::save()
 			scb++;
 		}
 
-		map<string, map<string, string> >::iterator
+		std::map<std::string, std::map<std::string, std::string> >::iterator
 			ffb=p->folder_configuration.begin(),
 			ffe=p->folder_configuration.end();
 
 		while (ffb != ffe)
 		{
-			string path=mail::rfc2047::encode(ffb->first,
+			std::string path=mail::rfc2047::encode(ffb->first,
 							  myCharset);
 
-			map<string, string>
+			std::map<std::string, std::string>
 				::iterator cb=ffb->second.begin(),
 				ce=ffb->second.end();
 
@@ -867,11 +854,11 @@ void myServer::config::save()
 
 			while (cb != ce)
 			{
-				string name=
+				std::string name=
 					mail::rfc2047::encode(cb->first,
 							      myCharset);
 
-				string val=
+				std::string val=
 					mail::rfc2047::encode(cb->second,
 							      myCharset);
 
@@ -928,14 +915,14 @@ void myServer::config::save()
 	}
 
 
-	vector<string>::iterator sb, se;
+	std::vector<std::string>::iterator sb, se;
 
 	sb=myAddresses.begin();
 	se=myAddresses.end();
 
 	while (sb != se)
 	{
-		string address= mail::rfc2047::encode(*sb++, myCharset);
+		std::string address= mail::rfc2047::encode(*sb++, myCharset);
 
 		if (!xmlNewTextChild(REMOTE->children, NULL,
 				     (xmlChar *)"ADDRESS",
@@ -948,7 +935,7 @@ void myServer::config::save()
 
 	while (sb != se)
 	{
-		string address= mail::rfc2047::encode(*sb++, myCharset);
+		std::string address= mail::rfc2047::encode(*sb++, myCharset);
 
 		if (!xmlNewTextChild(REMOTE->children, NULL,
 				     (xmlChar *)"LISTADDRESS",
@@ -956,16 +943,16 @@ void myServer::config::save()
 			outofmemory();
 	}
 
-	map<string, SpecialFolder>::iterator b, e;
+	std::map<std::string, SpecialFolder>::iterator b, e;
 	b=SpecialFolder::folders.begin();
 	e=SpecialFolder::folders.end();
 
 	while (b != e)
 	{
-		string id=b->first;
+		std::string id=b->first;
 		SpecialFolder &sf=b->second;
 
-		vector<SpecialFolder::Info>::iterator sb, se;
+		std::vector<SpecialFolder::Info>::iterator sb, se;
 
 		sb=sf.folderList.begin();
 		se=sf.folderList.end();
@@ -977,21 +964,20 @@ void myServer::config::save()
 			xmlNodePtr f=xmlNewNode(NULL,(xmlChar *)
 						"SPECIALFOLDER");
 
-			string idString=
+			std::string idString=
 				mail::rfc2047::encode(id, myCharset);
 
-			string serverString=
+			std::string serverString=
 				mail::rfc2047::encode(sb->serverUrl,
 						      myCharset);
 
-			string pathString=
+			std::string pathString=
 				mail::rfc2047::encode(sb->serverPath,
 						      myCharset);
 
-			string nameString=
+			std::string nameString=
 				mail::rfc2047::encode(sb->nameUTF8,
-						      unicode_UTF8
-						      .chset);
+						      "utf-8");
 			if (!f || !xmlSetProp(f, (xmlChar *)"ID",
 					      (xmlChar *)
 					      idString.c_str())
@@ -1024,7 +1010,7 @@ void myServer::config::save()
 
 	urls.insert(myServer::smtpServerURL);
 
-	string smtpUrl=mail::rfc2047::encode(myServer::smtpServerURL,
+	std::string smtpUrl=mail::rfc2047::encode(myServer::smtpServerURL,
 					     myCharset);
 
 	f=xmlNewNode(NULL, (xmlChar *)"SMTP");
@@ -1048,7 +1034,7 @@ void myServer::config::save()
 	}
 
 	{
-		string c=mail::rfc2047
+		std::string c=mail::rfc2047
 			::encode(nntpCommandFolder::nntpCommand,
 				 myCharset);
 
@@ -1078,24 +1064,24 @@ void myServer::config::save()
 	}
 
 	{
-		ostringstream o;
+		std::ostringstream o;
 
 		o << CursesEditMessage::autosaveInterval;
 
-		string s=o.str();
+		std::string s=o.str();
 
-		ostringstream o1, o2;
+		std::ostringstream o1, o2;
 
 		o1 << Watch::defaultWatchDays;
 		o2 << Watch::defaultWatchDepth;
 
 
-		string o1s=o1.str();
-		string o2s=o2.str();
+		std::string o1s=o1.str();
+		std::string o2s=o2.str();
 
-		string gpgopt1=mail::rfc2047
+		std::string gpgopt1=mail::rfc2047
 			::encode(GPG::gpg.extraEncryptSignOptions, myCharset);
-		string gpgopt2=mail::rfc2047
+		std::string gpgopt2=mail::rfc2047
 			::encode(GPG::gpg.extraDecryptVerifyOptions,
 				 myCharset);
 
@@ -1160,11 +1146,11 @@ void myServer::config::save()
 			for (g=getColorGroups(); g->colors; ++g)
 				for (c=g->colors; *c; ++c)
 				{
-					ostringstream o;
+					std::ostringstream o;
 
 					o << (*c)->fcolor;
 
-					string s=o.str();
+					std::string s=o.str();
 
 					if (!xmlSetProp(f,(xmlChar *)(*c)
 							->shortname,
@@ -1180,7 +1166,7 @@ void myServer::config::save()
 			{
 				f=xmlNewNode(NULL, (xmlChar *)"TAG");
 
-				string n=mail::rfc2047::encode(Tags::tags.names
+				std::string n=mail::rfc2047::encode(Tags::tags.names
 							       [i], myCharset);
 
 				if (!f || !xmlSetProp(f, (xmlChar *)"NAME",
@@ -1195,7 +1181,7 @@ void myServer::config::save()
 		}
 	}
 
-	list<AddressBook *>::iterator
+	std::list<AddressBook *>::iterator
 		ab=AddressBook::addressBookList.begin(),
 		ae=AddressBook::addressBookList.end();
 
@@ -1208,11 +1194,11 @@ void myServer::config::save()
 		xmlNodePtr f=xmlNewNode(NULL,
 					(xmlChar *)"ADDRESSBOOK");
 
-		string nameString=mail::rfc2047::encode(p->getName(),
+		std::string nameString=mail::rfc2047::encode(p->getName(),
 							myCharset);
-		string urlString=mail::rfc2047::encode(p->getURL(),
+		std::string urlString=mail::rfc2047::encode(p->getURL(),
 						       myCharset);
-		string folderString=mail::rfc2047::encode(p->getFolder(),
+		std::string folderString=mail::rfc2047::encode(p->getFolder(),
 							  myCharset);
 
 		if (!f || !xmlSetProp(f, (xmlChar *)"NAME",
@@ -1230,32 +1216,29 @@ void myServer::config::save()
 	}
 
 	Macros *mp=Macros::getRuntimeMacros();
+	xmlNodePtr macroRootNode=NULL;
+
+	if (!mp->macroList.empty() || !mp->filterList.empty())
+	{
+		macros=xmlNewDoc((xmlChar *)"1.0");
+		macroRootNode=xmlNewDocNode(macros, NULL,
+					    (xmlChar *)"CONE", NULL);
+		if (!macroRootNode)
+			outofmemory();
+		macros->children=macroRootNode;
+	}
 
 	if (mp)
 	{
-		map<Macros::name, string>::iterator mb=mp->macroList.begin(),
-			me=mp->macroList.end();
-
-		xmlNodePtr rootNode=NULL;
-
-		while (mb != me)
+		for (std::map<Macros::name, std::string>::iterator
+			     mb=mp->macroList.begin(),
+			     me=mp->macroList.end(); mb != me; ++mb)
 		{
-			if (!macros)
-			{
-				macros=xmlNewDoc((xmlChar *)"1.0");
-				rootNode=xmlNewDocNode(macros, NULL,
-						       (xmlChar *)"CONE",
-						       NULL);
-				if (!rootNode)
-					outofmemory();
-				macros->children=rootNode;
-			}
-
 			xmlNodePtr n=xmlNewNode(NULL, (xmlChar *)"MACRO");
 			if (!n)
 				outofmemory();
 
-			if (!xmlAddChild(rootNode, n))
+			if (!xmlAddChild(macroRootNode, n))
 			{
 				xmlFreeNode(n);
 				outofmemory();
@@ -1263,47 +1246,78 @@ void myServer::config::save()
 
 			if (mb->first.f)
 			{
-				ostringstream o;
+				std::ostringstream o;
 
 				o << (mb->first.f-1);
 
-				string s=o.str();
+				std::string s=o.str();
+
+				
 
 				if (!xmlSetProp(n,
 						(xmlChar *)"FK",
-						(xmlChar *)s.c_str()))
+						(xmlChar *)
+
+						(xmlChar *)
+						((std::string)mail::rfc2047
+						 ::encode
+						 (s, myCharset)).c_str()))
 					outofmemory();
 			}
 			else
 			{
-				vector<unicode_char> nc=mb->first.n;
+				std::string s(mail::iconvert::convert
+					      (mb->first.n, "utf-8"));
 
-				nc.push_back(0);
+				s=mail::rfc2047::encode(s, "utf-8");
 
-				char *p=(*unicode_UTF8.u2c)(&unicode_UTF8,
-							    &nc[0], NULL);
-
-				if (p)
-					try
-					{
-						if (!xmlSetProp(n,
-								(xmlChar *)"NAME",
-								(xmlChar *)p))
-							outofmemory();
-						free(p);
-					}
-					catch (...)
-					{
-						free(p);
-						LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-					}
-
+				if (!xmlSetProp(n,
+						(xmlChar *)"NAME",
+						(xmlChar *)s.c_str()))
+					outofmemory();
 			}
 			if (!xmlNewTextChild(n, NULL,
 					     (xmlChar *)"TEXT",
 					     (xmlChar *)mb->second.c_str()))
 				outofmemory();
-			++mb;
+		}
+
+		for (std::map<int, std::pair<std::string, std::string>
+			      >::iterator
+			fb=mp->filterList.begin(), fe=mp->filterList.end();
+		     fb != fe; ++fb)
+		{
+			xmlNodePtr n=xmlNewNode(NULL, (xmlChar *)"FILTER");
+			if (!n)
+				outofmemory();
+
+			if (!xmlAddChild(macroRootNode, n))
+			{
+				xmlFreeNode(n);
+				outofmemory();
+			}
+
+			{
+				std::ostringstream o;
+
+				o << fb->first;
+
+				std::string s=o.str();
+
+				if (!xmlSetProp(n, (xmlChar *)"FK",
+						(xmlChar *)s.c_str())
+				    ||
+				    !xmlSetProp(n, (xmlChar *)"NAME",
+						(xmlChar *)fb->second.first
+						.c_str()))
+					outofmemory();
+			}
+
+			if (!xmlNewTextChild(n, NULL,
+					     (xmlChar *)"COMMAND",
+					     (xmlChar *)fb->second.second
+					     .c_str()))
+				outofmemory();
 		}
 	}
 }
@@ -1312,9 +1326,9 @@ void myServer::config::save()
 //
 // Get property, convert it to app's charset.
 
-static string getProp(xmlNodePtr node, const char *prop)
+static std::string getProp(xmlNodePtr node, const char *prop)
 {
-	string s="";
+	std::string s="";
 
 	char *val=(char *)xmlGetProp(node, (const xmlChar *)prop);
 
@@ -1328,15 +1342,38 @@ static string getProp(xmlNodePtr node, const char *prop)
 		}
 
 	return mail::rfc2047::decoder().
-		decode(s, *Gettext::defaultCharset());
+		decode(s, unicode_default_chset());
 }
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Get property, convert it to UTF-8
+
+static std::string getPropUTF8(xmlNodePtr node, const char *prop)
+{
+	std::string s="";
+
+	char *val=(char *)xmlGetProp(node, (const xmlChar *)prop);
+
+	if (val)
+		try {
+			s=val;
+			free(val);
+		} catch (...) {
+			free(val);
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
+		}
+
+	return mail::rfc2047::decoder().decode(s, "utf-8");
+}
+
 
 // 8-bit octet-based properties are also 2047-encoded, but the character set
 // info is irrelevant.  Get the raw encoded content.
 
-static string getPropNC(xmlNodePtr node, const char *prop)
+static std::string getPropNC(xmlNodePtr node, const char *prop)
 {
-	string s="";
+	std::string s="";
 
 	char *val=(char *)xmlGetProp(node, (const xmlChar *)prop);
 
@@ -1352,9 +1389,9 @@ static string getPropNC(xmlNodePtr node, const char *prop)
 	return mail::rfc2047::decoder::decodeSimple(s);
 }
 
-static string getTextNode(xmlNodePtr node)
+static std::string getTextNode(xmlNodePtr node)
 {
-	string s="";
+	std::string s="";
 
 	char *val=(char *)xmlNodeGetContent(node);
 
@@ -1368,12 +1405,12 @@ static string getTextNode(xmlNodePtr node)
 		}
 
 	return mail::rfc2047::decoder()
-		.decode(s, *Gettext::defaultCharset());
+		.decode(s, unicode_default_chset());
 }
 		
 bool myServer::loadconfig()
 {
-	string configFile=getConfigFilename();
+	std::string configFile=getConfigFilename();
 
 	xmlDocPtr doc;
 
@@ -1408,13 +1445,13 @@ bool myServer::loadconfig()
 	{
 		struct passwd *pw=getpwuid(getuid());
 
-		myAddresses.push_back(string(pw ? pw->pw_name:"nobody") + "@"
+		myAddresses.push_back(std::string(pw ? pw->pw_name:"nobody") + "@"
 				      + mail::hostname());
 		return false;
 	}
 
-	string cacheFilename=getCacheIndexFilename();
-	string macroFilename=getMacroFilename();
+	std::string cacheFilename=getCacheIndexFilename();
+	std::string macroFilename=getMacroFilename();
 
 	xmlDocPtr cachedoc;
 	xmlDocPtr remoteDoc=NULL;
@@ -1426,13 +1463,13 @@ bool myServer::loadconfig()
 
 	Macros *mp=Macros::getRuntimeMacros();
 
-	set<string> cache_filenames;
-	set<string> aux_filenames;
-	map<string, xmlNodePtr> cacheMap;
+	std::set<std::string> cache_filenames;
+	std::set<std::string> aux_filenames;
+	std::map<std::string, xmlNodePtr> cacheMap;
 
-	map<string, xmlNodePtr> remoteMap;
+	std::map<std::string, xmlNodePtr> remoteMap;
 
-	set<string> accountNamesLoaded;
+	std::set<std::string> accountNamesLoaded;
 
 	xmlNodePtr root=xmlDocGetRootElement(doc);
 
@@ -1460,13 +1497,13 @@ bool myServer::loadconfig()
 			if (!myServer::remoteConfigAccount)
 				outofmemory();
 
-			string tmpConfigFile=configFile + ".tmp";
-			string tmpMacroFile=macroFilename + ".tmp";
+			std::string tmpConfigFile=configFile + ".tmp";
+			std::string tmpMacroFile=macroFilename + ".tmp";
 
 			unlink(tmpConfigFile.c_str());
 			unlink(tmpMacroFile.c_str());
 
-			string errmsg=remoteConfigAccount
+			std::string errmsg=remoteConfigAccount
 				->loadconfig(tmpConfigFile, tmpMacroFile);
 
 			if (errmsg.size() > 0)
@@ -1496,7 +1533,7 @@ bool myServer::loadconfig()
 							 .yesno());
 
 				if (promptInfo.abortflag ||
-				    (string)promptInfo == "Y")
+				    (std::string)promptInfo == "Y")
 					continue;
 
 				myServer::remoteConfigAccount->logout();
@@ -1535,7 +1572,7 @@ bool myServer::loadconfig()
 								"SERVER"))
 							continue;
 
-						string name=getProp(root,
+						std::string name=getProp(root,
 								    "NAME");
 						remoteMap
 							.insert(make_pair(name,
@@ -1580,7 +1617,7 @@ bool myServer::loadconfig()
 							"SERVER"))
 						continue;
 
-					string name=getProp(cacheroot, "NAME");
+					std::string name=getProp(cacheroot, "NAME");
 
 					if (name.size() == 0)
 						continue;
@@ -1596,7 +1633,10 @@ bool myServer::loadconfig()
 	if (mp && myServer::remoteConfigURL.size() == 0)
 	{
 		if (access(macroFilename.c_str(), R_OK))
+		{
 			mp->macroList.clear();
+			mp->filterList.clear();
+		}
 		else
 		{
 			xmlDocPtr macroDoc=xmlParseFile(macroFilename.c_str());
@@ -1619,7 +1659,7 @@ bool myServer::loadconfig()
 	{
 		// Any unprocessed configs are manually inserted
 
-		map<string, xmlNodePtr>::iterator p;
+		std::map<std::string, xmlNodePtr>::iterator p;
 
 		if (remoteMap.size() > 0)
 		{
@@ -1663,7 +1703,7 @@ bool myServer::loadconfig()
 
 	// Garbage cleanup
 
-	string d=getConfigDir();
+	std::string d=getConfigDir();
 
 	DIR *dirp=opendir(d.c_str());
 	struct dirent *de;
@@ -1680,18 +1720,18 @@ bool myServer::loadconfig()
 		    // user, and we just started up, so blow away any
 		    // leftover crap.
 		    || (strcmp(suffix, ".cache") == 0 &&
-			cache_filenames.count(string(de->d_name)) == 0)
+			cache_filenames.count(std::string(de->d_name)) == 0)
 		    || (strcmp(suffix, ".newsrc") == 0 &&
-			aux_filenames.count(string(de->d_name))==0))
+			aux_filenames.count(std::string(de->d_name))==0))
 		{
-			string f=d + "/" + de->d_name;
+			std::string f=d + "/" + de->d_name;
 			unlink(f.c_str());
 		}
 
 		if (strcmp(suffix, ".maildir") == 0 &&
-		    aux_filenames.count(string(de->d_name)) == 0)
+		    aux_filenames.count(std::string(de->d_name)) == 0)
 		{
-			string f=d + "/" + de->d_name;
+			std::string f=d + "/" + de->d_name;
 
 			mail::maildir::maildirdestroy(f);
 		}
@@ -1706,12 +1746,12 @@ bool myServer::loadconfig()
 // Process a config file.  Maybe its local, mebbe its remote, don't matter.
 
 bool myServer::config::loadconfig(xmlDocPtr doc,
-				  set<string> &cache_filenames,
-				  set<string> &aux_filenames,
-				  map<string, xmlNodePtr> &cacheMap,
-				  map<string, xmlNodePtr> &remoteMap,
+				  std::set<std::string> &cache_filenames,
+				  std::set<std::string> &aux_filenames,
+				  std::map<std::string, xmlNodePtr> &cacheMap,
+				  std::map<std::string, xmlNodePtr> &remoteMap,
 				  bool skipServerConfig,
-				  set<string> &accountNamesLoaded)
+				  std::set<std::string> &accountNamesLoaded)
 {
 	xmlNodePtr root=xmlDocGetRootElement(doc);
 	size_t tagNum=1;
@@ -1737,9 +1777,9 @@ bool myServer::config::loadconfig(xmlDocPtr doc,
 			if (strcasecmp( (const char *)root->name,
 					"ADDRESSBOOK") == 0)
 			{
-				string name=getProp(root, "NAME");
-				string url=getPropNC(root, "URL");
-				string path=getPropNC(root, "FOLDER");
+				std::string name=getProp(root, "NAME");
+				std::string url=getPropNC(root, "URL");
+				std::string path=getPropNC(root, "FOLDER");
 
 				AddressBook *abook=new AddressBook();
 
@@ -1763,11 +1803,11 @@ bool myServer::config::loadconfig(xmlDocPtr doc,
 			if (strcasecmp( (const char *)root->name,
 					"SPECIALFOLDER") == 0)
 			{
-				string id=getProp(root, "ID");
-				string server=getPropNC(root, "SERVER");
-				string path=getPropNC(root, "PATH");
-				string name=getPropNC(root, "NAME");
-				string archivedMonth=getPropNC(root,
+				std::string id=getProp(root, "ID");
+				std::string server=getPropNC(root, "SERVER");
+				std::string path=getPropNC(root, "PATH");
+				std::string name=getPropNC(root, "NAME");
+				std::string archivedMonth=getPropNC(root,
 							       "ARCHIVED");
 
 				if (SpecialFolder::folders.count(id) > 0)
@@ -1806,7 +1846,7 @@ bool myServer::config::loadconfig(xmlDocPtr doc,
 				myServer::smtpServerCertificate=
 					getProp(root, "CERTIFICATE");
 
-				string useImap=getProp(root, "USEIMAP");
+				std::string useImap=getProp(root, "USEIMAP");
 
 				myServer::useIMAPforSending=
 					strcasecmp(useImap.c_str(), "TRUE")
@@ -1817,7 +1857,7 @@ bool myServer::config::loadconfig(xmlDocPtr doc,
 			if (strcasecmp( (const char *)root->name,
 					"DICTIONARY") == 0)
 			{
-				string setting=getProp(root, "NAME");
+				std::string setting=getProp(root, "NAME");
 
 				if (setting.size() > 0)
 					spellCheckerBase->
@@ -1834,14 +1874,14 @@ bool myServer::config::loadconfig(xmlDocPtr doc,
 				for (g=getColorGroups(); g->colors; ++g)
 					for (c=g->colors; *c; ++c)
 					{
-						string s=getProp(root,
+						std::string s=getProp(root,
 								 (*c)->
 								 shortname);
 
 						if (s.size() == 0)
 							continue;
 
-						istringstream i(s);
+						std::istringstream i(s);
 
 						i >> (*c)->fcolor;
 					}
@@ -1850,7 +1890,7 @@ bool myServer::config::loadconfig(xmlDocPtr doc,
 			if (strcasecmp( (const char *)root->name,
 					"OPTIONS") == 0)
 			{
-				string demoron=getProp(root,
+				std::string demoron=getProp(root,
 						       "DEMORONIZATION");
 
 				myServer::setDemoronizationType(demoron
@@ -1865,7 +1905,7 @@ bool myServer::config::loadconfig(xmlDocPtr doc,
 								: myServer
 								::DEMORON_OFF);
 
-				string postandmail=getProp(root,
+				std::string postandmail=getProp(root,
 							   "POSTANDMAIL");
 
 				myServer::postAndMail=
@@ -1895,9 +1935,9 @@ bool myServer::config::loadconfig(xmlDocPtr doc,
 					getProp(root, "GPGDECRYPTVERIFYOPTIONS"
 						);
 
-				string t=getProp(root, "AUTOSAVE");
+				std::string t=getProp(root, "AUTOSAVE");
 
-				istringstream i(t);
+				std::istringstream i(t);
 
 				i >> CursesEditMessage::autosaveInterval;
 
@@ -1913,7 +1953,7 @@ bool myServer::config::loadconfig(xmlDocPtr doc,
 
 				if (t.size() > 0)
 				{
-					istringstream ii(t);
+					std::istringstream ii(t);
 
 					ii >> Watch::defaultWatchDays;
 					if (Watch::defaultWatchDays <= 0)
@@ -1926,7 +1966,7 @@ bool myServer::config::loadconfig(xmlDocPtr doc,
 
 				if (t.size() > 0)
 				{
-					istringstream ii(t);
+					std::istringstream ii(t);
 
 					ii >> Watch::defaultWatchDepth;
 					if (Watch::defaultWatchDepth <= 0)
@@ -1941,7 +1981,7 @@ bool myServer::config::loadconfig(xmlDocPtr doc,
 			if (strcasecmp( (const char *)root->name,
 					"TAG") == 0)
 			{
-				string n=getProp(root, "NAME");
+				std::string n=getProp(root, "NAME");
 
 				if (tagNum < Tags::tags.names.size())
 					Tags::tags.names[tagNum++]=n;
@@ -1953,9 +1993,9 @@ bool myServer::config::loadconfig(xmlDocPtr doc,
 				// Remotely-saved server config, see if we
 				// have it.
 
-				string name=getProp(root, "NAME");
+				std::string name=getProp(root, "NAME");
 
-				map<string, xmlNodePtr>::iterator
+				std::map<std::string, xmlNodePtr>::iterator
 					p=remoteMap.find(name);
 
 				if (p != remoteMap.end())
@@ -2007,14 +2047,14 @@ bool myServer::config::loadconfig(xmlDocPtr doc,
 // Process server configuration.
 
 void myServer::config::loadserver(xmlNodePtr root,
-				  set<string> &cache_filenames,
-				  set<string> &aux_filenames,
-				  map<string, xmlNodePtr> &cacheMap,
-				  set<string> &accountNamesLoaded)
+				  std::set<std::string> &cache_filenames,
+				  std::set<std::string> &aux_filenames,
+				  std::map<std::string, xmlNodePtr> &cacheMap,
+				  std::set<std::string> &accountNamesLoaded)
 {
-	string name=getProp(root, "NAME");
-	string url=getPropNC(root, "URL");
-	string certificate=getPropNC(root, "CERTIFICATE");
+	std::string name=getProp(root, "NAME");
+	std::string url=getPropNC(root, "URL");
+	std::string certificate=getPropNC(root, "CERTIFICATE");
 
 	if (name.length() == 0 || url.length() == 0)
 		return;
@@ -2023,13 +2063,13 @@ void myServer::config::loadserver(xmlNodePtr root,
 	{
 		size_t cnt=0;
 
-		string newName;
+		std::string newName;
 
 		do
 		{
-			ostringstream o;
+			std::ostringstream o;
 
-			o << name << setw(3) << setfill('0') << ++cnt;
+			o << name << std::setw(3) << std::setfill('0') << ++cnt;
 
 			newName=o.str();
 		} while (accountNamesLoaded.count(newName) > 0);
@@ -2059,9 +2099,9 @@ void myServer::config::loadserver(xmlNodePtr root,
 
 	s->certificate=certificate;
 
-	map<string, xmlNodePtr>::iterator cacheP=cacheMap.find(name);
+	std::map<std::string, xmlNodePtr>::iterator cacheP=cacheMap.find(name);
 
-	map<string, xmlNodePtr> folderCacheMap;
+	std::map<std::string, xmlNodePtr> folderCacheMap;
 
 	if (cacheP != cacheMap.end())
 	{
@@ -2074,7 +2114,7 @@ void myServer::config::loadserver(xmlNodePtr root,
 					"FOLDER"))
 				continue;
 
-			string name=getPropNC(folderCache, "PATH");
+			std::string name=getPropNC(folderCache, "PATH");
 
 			if (name.size() == 0)
 				continue;
@@ -2083,8 +2123,8 @@ void myServer::config::loadserver(xmlNodePtr root,
 		}
 	}
 
-	string newsrc=getPropNC(root, "NEWSRC");
-	string auxdescr=_("NetNews configuration file");
+	std::string newsrc=getPropNC(root, "NEWSRC");
+	std::string auxdescr=_("NetNews configuration file");
 
 	if (newsrc.size() == 0)
 	{
@@ -2098,13 +2138,13 @@ void myServer::config::loadserver(xmlNodePtr root,
 		{
 			size_t cnt=0;
 
-			string newName;
+			std::string newName;
 
 			do
 			{
-				ostringstream o;
+				std::ostringstream o;
 
-				o << setw(3) << setfill('0') << ++cnt;
+				o << std::setw(3) << std::setfill('0') << ++cnt;
 
 				newName=o.str() + newsrc;
 			} while (accountNamesLoaded.count(newName) > 0);
@@ -2136,14 +2176,14 @@ void myServer::config::loadserver(xmlNodePtr root,
 	{
 		if (strcasecmp( (const char *)n->name, "NAMESPACE") == 0)
 		{
-			string path=getPropNC(n, "PATH");
+			std::string path=getPropNC(n, "PATH");
 			s->topLevelFolders.add(path);
 		}
 
 		if (strcasecmp( (const char *)n->name, "SETTING") == 0)
 		{
-			string name=getPropNC(n, "NAME");
-			string value=getPropNC(n, "VALUE");
+			std::string name=getPropNC(n, "NAME");
+			std::string value=getPropNC(n, "VALUE");
 
 			s->server_configuration.insert(make_pair(name, value));
 			continue;
@@ -2153,17 +2193,17 @@ void myServer::config::loadserver(xmlNodePtr root,
 
 		xmlAttrPtr attr=n->properties;
 
-		map<string, string> folderprops;
+		std::map<std::string, std::string> folderprops;
 
 		while (attr)
 		{
 			const char *a=(const char *)attr->name;
 
-			string aDecode=
+			std::string aDecode=
 				mail::rfc2047::decoder()
-				.decode(a, *Gettext::defaultCharset());
+				.decode(a, unicode_default_chset());
 
-			string val;
+			std::string val;
 
 			if (strcmp(a, "PATH") == 0 ||
 			    strcmp(a, "INDEX") == 0 ||
@@ -2182,35 +2222,35 @@ void myServer::config::loadserver(xmlNodePtr root,
 		for (tn=n->children; tn; tn=tn->next)
 			if (strcasecmp((const char *)tn->name, "FILTER") == 0)
 			{
-				string s=getTextNode(tn);
+				std::string s=getTextNode(tn);
 
 				if (s.size() == 0)
 					continue;
 
-				folderprops.insert(make_pair(string( (const
+				folderprops.insert(make_pair(std::string( (const
 								      char *)
 								     tn->name),
 							     s));
 			}
 
-		map<string, string>
+		std::map<std::string, std::string>
 			::iterator p=folderprops.find("PATH");
 
 		if (p == folderprops.end())
 			continue;
 
-		string path=p->second;
+		std::string path=p->second;
 
 		folderprops.erase(p);
 
-		map<string, xmlNodePtr>::iterator cp=folderCacheMap.find(path);
+		std::map<std::string, xmlNodePtr>::iterator cp=folderCacheMap.find(path);
 
 
 		if (cp != folderCacheMap.end())
 		{
-			string n="INDEX";
+			std::string n="INDEX";
 
-			string s=getPropNC(cp->second, n.c_str());
+			std::string s=getPropNC(cp->second, n.c_str());
 
 			if (s.size() > 0)
 				folderprops.insert(make_pair(n, s));
@@ -2266,78 +2306,106 @@ void myServer::config::loadmacros(Macros *mp, xmlDocPtr docPtr)
 
 	for (root=root->children; root; root=root->next)
 	{
-		if (strcasecmp( (const char *)root->name, "MACRO"))
-			continue;
-
-		string macroName=getProp(root, "NAME");
-		string fkeyNum=getProp(root, "FK");
-
-		Macros::name mn(0);
-
-		if (fkeyNum.size() > 0)
+		if (strcasecmp( (const char *)root->name, "MACRO") == 0)
 		{
-			int fkn=0;
+			std::string macroName=getProp(root, "NAME");
+			std::string fkeyNum=getProp(root, "FK");
 
-			istringstream i(fkeyNum);
+			Macros::name mn(0);
 
-			i >> fkn;
-
-			mn=Macros::name(fkn);
-		}
-		else
-		{
-			if (macroName.size() == 0)
-				continue;
-
-			unicode_char *uc=(*unicode_UTF8.c2u)(&unicode_UTF8,
-							     macroName.c_str(),
-							     NULL);
-
-			if (!uc)
-				continue;
-
-			try
+			if (fkeyNum.size() > 0)
 			{
-				size_t i;
+				int fkn=0;
 
-				for (i=0; uc[i]; i++)
-					;
+				std::istringstream i(fkeyNum);
 
-				vector<unicode_char> v(uc, uc+i);
+				i >> fkn;
 
-				mn=Macros::name(v);
-			} catch (...)
-			{
-				free(uc);
-				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
+				mn=Macros::name(fkn);
 			}
-			free(uc);
-		}
-
-		xmlNodePtr c;
-
-		for (c=root->children; c; c=c->next)
-		{
-			if (strcasecmp((const char *)c->name, "TEXT") == 0)
+			else
 			{
-				std::string text_str;
-
-				char *cp=(char *)xmlNodeGetContent(c);
-
-				if (!cp)
+				if (macroName.size() == 0)
 					continue;
 
-				try {
-					text_str=cp;
-					free(cp);
-				} catch (...) {
-					free(cp);
-					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-				}
+				std::vector<unicode_char> v;
 
-				mp->macroList.insert(make_pair(mn, text_str));
-				break;
+				if (!mail::iconvert::convert(macroName,
+							     "utf-8",
+							     v))
+					continue;
+
+				mn=Macros::name(v);
 			}
+
+			xmlNodePtr c;
+
+			for (c=root->children; c; c=c->next)
+			{
+				if (strcasecmp((const char *)c->name, "TEXT")
+				    == 0)
+				{
+					std::string text_str;
+
+					char *cp=(char *)xmlNodeGetContent(c);
+
+					if (!cp)
+						continue;
+
+					try {
+						text_str=cp;
+						free(cp);
+					} catch (...) {
+						free(cp);
+						LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
+					}
+
+					mp->macroList
+						.insert(make_pair(mn,
+								  text_str));
+					break;
+				}
+			}
+		}
+
+		if (strcasecmp( (const char *)root->name, "FILTER") == 0)
+		{
+			std::string filterName=getProp(root, "NAME");
+			std::string fkeyNum=getProp(root, "FK");
+			std::string text_str;
+
+			int fkn=0;
+
+			{
+				std::istringstream i(fkeyNum);
+
+				i >> fkn;
+			}
+
+			xmlNodePtr c;
+
+			for (c=root->children; c; c=c->next)
+			{
+				if (strcasecmp((const char *)c->name, "COMMAND")
+				    == 0)
+				{
+					char *cp=(char *)xmlNodeGetContent(c);
+
+					if (!cp)
+						continue;
+
+					try {
+						text_str=cp;
+						free(cp);
+					} catch (...) {
+						free(cp);
+						LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
+					}
+					break;
+				}
+			}
+
+			mp->filterList[fkn]=make_pair(filterName, text_str);
 		}
 	}
 }
@@ -2345,12 +2413,12 @@ void myServer::config::loadmacros(Macros *mp, xmlDocPtr docPtr)
 // Return this folder's INDEX or a SNAPSHOT filename
 //
 
-string myServer::getCachedFilename(myFolder *mf, const char *name)
+std::string myServer::getCachedFilename(myFolder *mf, const char *name)
 {
 	struct stat stat_buf;
 
-	string filename=getFolderConfiguration(mf->getFolder(), name);
-	string n="";
+	std::string filename=getFolderConfiguration(mf->getFolder(), name);
+	std::string n="";
 
 	if (filename.size() > 0)
 	{
@@ -2372,7 +2440,7 @@ string myServer::getCachedFilename(myFolder *mf, const char *name)
 		do
 		{
 			{
-				ostringstream o;
+				std::ostringstream o;
 
 				o << t << "." << p << "_" << counter++
 				  << "." << mail::hostname()
@@ -2397,12 +2465,12 @@ string myServer::getCachedFilename(myFolder *mf, const char *name)
 
 void myServer::saveFolderIndex(myFolder *mf)
 {
-	string n=getCachedFilename(mf, "INDEX");
-	string t=n + ".tmp";
+	std::string n=getCachedFilename(mf, "INDEX");
+	std::string t=n + ".tmp";
 
 	xmlDocPtr doc=xmlNewDoc((xmlChar *)"1.0");
 
-	string myCharset=Gettext::defaultCharset()->chset;
+	std::string myCharset=unicode_default_chset();
 
 	try {
 		xmlNodePtr d=xmlNewDocNode(doc, NULL,
@@ -2440,16 +2508,16 @@ void myServer::saveFolderIndex(myFolder *mf)
 			rfc822_mkdate_buf(i.arrivalDate, arrivalDateStr);
 			rfc822_mkdate_buf(i.messageDate, messageDateStr);
 
-			string sizebuf;
+			std::string sizebuf;
 
 			{
-				ostringstream n;
+				std::ostringstream n;
 
 				n << i.messageSize;
 				sizebuf=n.str();
 			}
 
-			string uid=mail::rfc2047::encode(i.uid, myCharset);
+			std::string uid=mail::rfc2047::encode(i.uid, myCharset);
 
 #if 0
 			fprintf(stderr, "SUBJECT: %s, NAME: %s\n",
@@ -2457,21 +2525,21 @@ void myServer::saveFolderIndex(myFolder *mf)
 				i.name_utf8.c_str());
 			fflush(stderr);
 #endif
-			string subject=mail::rfc2047::encode(i.subject_utf8,
-							     myCharset);
-			string name=mail::rfc2047::encode(i.name_utf8,
-							     myCharset);
+			std::string subject=mail::rfc2047::encode(i.subject_utf8,
+								  "utf-8");
+			std::string name=mail::rfc2047::encode(i.name_utf8,
+							       "utf-8");
 
-			string messageid=mail::rfc2047::encode((string)
-							       i.messageid,
-							       myCharset);
+			std::string messageid=mail::rfc2047::encode((std::string)
+								    i.messageid,
+								    "utf-8");
 
-			string references;
+			std::string references;
 
 
 			{
-				vector<mail::address> vec;
-				vector<messageId>::iterator
+				std::vector<mail::address> vec;
+				std::vector<messageId>::iterator
 					rb=i.references.begin(),
 					re=i.references.end();
 
@@ -2479,7 +2547,7 @@ void myServer::saveFolderIndex(myFolder *mf)
 				while (rb != re)
 				{
 					vec.push_back(mail::address("",
-								    (string)
+								    (std::string)
 								    *rb));
 					++rb;
 				}
@@ -2529,23 +2597,23 @@ void myServer::saveFolderIndex(myFolder *mf)
 #endif
 		}
 
-		map<messageId, WatchInfo>::iterator
+		std::map<messageId, WatchInfo>::iterator
 			wb=mf->watchList.watchList.begin(),
 			we=mf->watchList.watchList.end();
 
 		while (wb != we)
 		{
-			string messageid=wb->first;
+			std::string messageid=wb->first;
 			time_t expires=wb->second.expires;
 			size_t depth=wb->second.depth;
 
 			messageid=mail::rfc2047::encode(messageid, myCharset);
 
-			ostringstream o1;
+			std::ostringstream o1;
 
 			o1 << expires;
 
-			ostringstream o2;
+			std::ostringstream o2;
 
 			o2 << depth;
 
@@ -2589,8 +2657,8 @@ void myServer::saveFolderIndex(myFolder *mf)
 
 // Load folder's index.
 
-bool myServer::loadFolderIndex(string filename,
-			       map<string, size_t> &uid_list,
+bool myServer::loadFolderIndex(std::string filename,
+			       std::map<std::string, size_t> &uid_list,
 			       myFolder *folder)
 {
 	xmlDocPtr doc;
@@ -2620,27 +2688,27 @@ bool myServer::loadFolderIndex(string filename,
 						"WATCH"))
 					continue;
 
-				string messageid=
+				std::string messageid=
 					getPropNC(root, "MESSAGEID");
 
-				string expires_s=
+				std::string expires_s=
 					getPropNC(root, "EXPIRES");
 
-				string depth_s=
+				std::string depth_s=
 					getPropNC(root, "DEPTH");
 
 
 				time_t expires=now;
 
 				{
-					istringstream i(expires_s);
+					std::istringstream i(expires_s);
 
 					i >> expires;
 				}
 
 				size_t depth=1;
 				{
-					istringstream i(depth_s);
+					std::istringstream i(depth_s);
 
 					i >> depth;
 				}
@@ -2663,7 +2731,7 @@ bool myServer::loadFolderIndex(string filename,
 						"MESSAGE"))
 					continue;
 
-				string uid=getPropNC(root, "UID");
+				std::string uid=getPropNC(root, "UID");
 
 				if (uid_list.count(uid) == 0)
 				{
@@ -2671,21 +2739,22 @@ bool myServer::loadFolderIndex(string filename,
 					continue;
 				}
 
-				string arrival=getProp(root, "ARRIVAL");
+				std::string arrival=getProp(root, "ARRIVAL");
 
-				string sent=getProp(root, "SENT");
+				std::string sent=getProp(root, "SENT");
 
-				string size=getProp(root, "SIZE");
+				std::string size=getProp(root, "SIZE");
 
-				string messageid=getPropNC(root, "MESSAGEID");
+				std::string messageid=getPropUTF8(root,
+								  "MESSAGEID");
 
-				string references=getPropNC(root,
+				std::string references=getPropNC(root,
 							    "REFERENCES");
 
-				string subject="";
-				string name="";
+				std::string subject="";
+				std::string name="";
 
-				map<string, size_t>
+				std::map<std::string, size_t>
 					::iterator ptr=uid_list.find(uid);
 
 				myFolder::Index &i=folder->
@@ -2747,7 +2816,7 @@ bool myServer::loadFolderIndex(string filename,
 				i.messageid=messageId(folder->msgIds,
 						      messageid);
 
-				vector<mail::address> refs;
+				std::vector<mail::address> refs;
 				size_t dummy;
 
 				mail::address::fromString(references, refs,
@@ -2755,7 +2824,7 @@ bool myServer::loadFolderIndex(string filename,
 
 				i.references.clear();
 				i.references.reserve(refs.size());
-				vector<mail::address>::iterator
+				std::vector<mail::address>::iterator
 					rb=refs.begin(),
 					re=refs.end();
 
@@ -2772,14 +2841,14 @@ bool myServer::loadFolderIndex(string filename,
 
 				i.messageSize=0;
 				{
-					istringstream s(size.c_str());
+					std::istringstream s(size.c_str());
 
 					s >> i.messageSize;
 				}
-				i.subject_utf8=mail::rfc2047::decoder
-					::decodeSimple(subject);
-				i.name_utf8=mail::rfc2047::decoder
-					::decodeSimple(name);
+				i.subject_utf8=mail::rfc2047::decoder()
+					.decode(subject, "utf-8");
+				i.name_utf8=mail::rfc2047::decoder()
+					.decode(name, "utf-8");
 
 				i.toupper();
 				i.checkwatch(*folder);

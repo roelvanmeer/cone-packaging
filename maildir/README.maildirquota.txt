@@ -2,15 +2,15 @@
 
    In this document:
 
-     * HOWTO.maildirquota
-     * Mission statement
-     * Definitions and goals
-     * Contents of a maildirsize
-     * Calculating maildirsize
-     * Calculating the quota for a Maildir++
-     * Delivering to a Maildir++
-     * Reading from a Maildir++
-     * Bugs
+     * HOWTO.maildirquota
+     * Mission statement
+     * Definitions and goals
+     * Contents of a maildirsize
+     * Calculating maildirsize
+     * Calculating the quota for a Maildir++
+     * Delivering to a Maildir++
+     * Reading from a Maildir++
+     * Bugs
 
 HOWTO.maildirquota
 
@@ -120,10 +120,10 @@ HOWTO.maildirquota
    This is a list of applications that have been enhanced to support the
    maildirquota extension:
 
-     * maildrop - mail delivery agent/mail filter.
-     * SqWebMail - webmail CGI binary.
-     * Courier-IMAP - an IMAP server
-     * Courier - all of the above
+     * maildrop - mail delivery agent/mail filter.
+     * SqWebMail - webmail CGI binary.
+     * Courier-IMAP - an IMAP server
+     * Courier - all of the above
 
   Quotas and deleted messages
 
@@ -148,7 +148,7 @@ Mission statement
    structure, first used in the Qmail mail server. Actually, Maildir++ is
    just a minor extension to the standard Maildir structure.
 
-   For more information, see http://www.qmail.org/man/man5/maildir.html. I am
+   For more information, see http://www.courier-mta.org/maildir.html. I am
    not going to include the definition of a Maildir in this document.
    Consider it included right here. This document only describes the
    differences.
@@ -213,19 +213,19 @@ Definitions, and goals
    the quota. There is one and only major goal that this quota implementation
    tries to achieve:
 
-     * Place as little overhead as possible on the mail system that's
+     * Place as little overhead as possible on the mail system that's
        delivering to the Maildir++
 
    That's it. To achieve that goal, certain compromises are made:
 
-     * Mail delivery will stop as soon as possible after Maildir++'s size
+     * Mail delivery will stop as soon as possible after Maildir++'s size
        goes over quota. Certain race conditions may happen with Maildir++
        going a lot over quota, in rare circumstances. That is taken into
        account, and the situation will eventually resolve itself, but you
        should not simply take your systemwide quota, multiply it by the
        number of mail accounts, and allocate that much disk space. Always
        leave room to spare.
-     * How well the quota mechanism will work will depend on whether or not
+     * How well the quota mechanism will work will depend on whether or not
        everything that accesses the Maildir++ is a Maildir++ client. You can
        have a transition period where some of your mail clients are just
        Maildir clients, and things should run more or less well. There will
@@ -277,13 +277,13 @@ Calculating maildirsize
    from scratch. These conditions are defined later. This is the procedure
    that's used to recalculate maildirsize:
 
-    1. If we find a maildirfolder within the directory, we're delivering to a
+    1. If we find a maildirfolder within the directory, we're delivering to a
        folder, so back up to the parent directory, and start again.
-    2. Read the contents of the new and cur subdirectories. Also, read the
+    2. Read the contents of the new and cur subdirectories. Also, read the
        contents of the new and cur subdirectories in each Maildir++ folder,
        except Trash. Before reading each subdirectory, stat() the
        subdirectory itself, and keep track of the latest timestamp you get.
-    3. If the filename of each message is of the form xxxxx,S=nnnnn or
+    3. If the filename of each message is of the form xxxxx,S=nnnnn or
        xxxxx,S=nnnnn:xxxxx where "xxxxx" represents arbitrary text, then use
        nnnnn as the size of the file (which will be conveniently recorded in
        the filename by a Maildir++ writer, within the conventions of filename
@@ -291,13 +291,14 @@ Calculating maildirsize
        writer, stat() it to obtain the message size. If stat() fails, a race
        condition removed the file, so just ignore it and move on to the next
        one.
-    4. When done, you have the grand total of the number of messages and
+    4. When done, you have the grand total of the number of messages and
        their total size. Create a new maildirsize by: creating the file in
        the tmp subdirectory, observing the conventions for writing to a
-       Maildir. Then rename the file as maildirsize.Afterwards, stat all new
+       Maildir. Then rename the file as maildirsize. Afterwards, stat all new
        and cur subdirectories again. If you find a timestamp later than the
-       saved timestamp, REMOVE maildirsize.
-    5. Before running this calculation procedure, the Maildir++ user wanted
+       saved timestamp, either remove maildirsize and proceed, or repeat the
+       recalculation.
+    5. Before running this calculation procedure, the Maildir++ user wanted
        to know the size of the Maildir++, so return the calculated values.
        This is done even if maildirsize was removed.
 
@@ -306,23 +307,23 @@ Calculating the quota for a Maildir++
    This is the procedure for reading the contents of maildirsize for the
    purpose of determine if the Maildir++ is over quota.
 
-    1. If maildirsize does not exist, or if its size is at least 5120 bytes,
+    1. If maildirsize does not exist, or if its size is at least 5120 bytes,
        recalculate it using the procedure defined above, and use the
        recalculated numbers. Otherwise, read the contents of maildirsize, and
        add up the totals.
-    2. The most efficient way of doing this is to: open maildirsize, then
+    2. The most efficient way of doing this is to: open maildirsize, then
        start reading it into a 5120 byte buffer (some broken NFS
        implementations may return less than 5120 bytes read even before
        reaching the end of the file). If we fill it, which, in most cases,
        will happen with one read, close it, and run the recalculation
        procedure.
-    3. In many cases the quota calculation is for the purpose of adding or
+    3. In many cases the quota calculation is for the purpose of adding or
        removing messages from a Maildir++, so keep the file descriptor to
        maildirsize open. A file descriptor will not be available if quota
        recalculation ended up removing maildirsize due to a race condition,
        so the caller may or may not get a file descriptor together with the
        Maildir++ size.
-    4. If the numbers we got indicated that the Maidlir++ is over quota, some
+    4. If the numbers we got indicated that the Maildir++ is over quota, some
        additional logic is in order: if we did not recalculate maildirsize,
        if the numbers in maildirsize indicated that we are over quota, then
        if maildirsize was more than one line long, or if the timestamp on
@@ -356,17 +357,17 @@ Delivering to a Maildir++
    Delivering to a Maildir++ is like delivering to a Maildir, with the
    following exceptions:
 
-    1. Follow the usual Maildir conventions for naming the filename used to
+    1. Follow the usual Maildir conventions for naming the filename used to
        store the message, except that append ,S=nnnnn to the name of the
        file, where nnnnn is the size of the file. This eliminates the need to
        stat() most messages when calculating the quota. If the size of the
        message is not known at the beginning, append ,S=nnnnn when renaming
        the message from tmp to new.
-    2. As soon as the size of the message is known (hopefully before it is
+    2. As soon as the size of the message is known (hopefully before it is
        written into tmp), calculate Maildir++'s quota, using the procedure
        defined previously. If the message is over quota, back out, cleaning
        up anything that was created in tmp.
-    3. If a file descriptor to maildirsize was opened for us, after moving
+    3. If a file descriptor to maildirsize was opened for us, after moving
        the file from tmp to new append a line to the file containing the
        message size, and "1".
 
@@ -374,15 +375,15 @@ Reading from a Maildir++
 
    Maildir++ readers should mind the following additional tasks:
 
-    1. Make sure to create the maildirfolder file in any new folders created
+    1. Make sure to create the maildirfolder file in any new folders created
        within the Maildir++.
-    2. When moving a message to the Trash folder, append a line to
+    2. When moving a message to the Trash folder, append a line to
        maildirsize, containing a negative message size and a '-1'.
-    3. When moving a message from the Trash folder, follow the steps
+    3. When moving a message from the Trash folder, follow the steps
        described in "Delivering to Maildir++", as far as quota logic goes.
        That is, refuse to move messages out of Trash if the Maildir++ is over
        quota.
-    4. Moving a message between other folders carries no additional
+    4. Moving a message between other folders carries no additional
        requirements.
 
 References
@@ -392,4 +393,4 @@ References
    . http://www.courier-mta.org/sqwebmail/
    . http://www.courier-mta.org/imap/
    . http://www.courier-mta.org/
-   . http://www.qmail.org/man/man5/maildir.html
+   . http://www.courier-mta.org/maildir.html

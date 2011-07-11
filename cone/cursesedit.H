@@ -1,5 +1,4 @@
-/* $Id: cursesedit.H,v 1.13 2009/06/27 17:12:00 mrsam Exp $
-**
+/*
 ** Copyright 2003-2006, Double Precision Inc.
 **
 ** See COPYING for distribution information.

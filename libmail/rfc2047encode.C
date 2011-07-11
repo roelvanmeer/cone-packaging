@@ -1,5 +1,4 @@
-/* $Id: rfc2047encode.C,v 1.5 2009/06/27 17:12:00 mrsam Exp $
-**
+/*
 ** Copyright 2002-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.

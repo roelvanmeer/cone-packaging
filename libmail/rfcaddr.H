@@ -1,6 +1,5 @@
-/* $Id: rfcaddr.H,v 1.7 2009/10/31 22:38:07 mrsam Exp $
-**
-** Copyright 2002-2009, Double Precision Inc.
+/*
+** Copyright 2002-20011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -8,6 +7,7 @@
 #define libmail_rfcaddr_h
 
 #include "libmail_config.h"
+#include "unicode/unicode.h"
 #include "namespace.H"
 
 #include <stdlib.h>
@@ -89,12 +89,13 @@ public:
 
 class emailAddress : public address {
 
-	// The name field, decoded to the application's local charset
-	std::string decodedName;
+	// The name field as unicode characters
+
+	std::vector<unicode_char> decodedName;
 
 	//! The address field, with the hostname portion decoded
 
-	std::string decodedAddr;
+	std::vector<unicode_char> decodedAddr;
 
 	void decode();
 public:
@@ -102,11 +103,36 @@ public:
 	emailAddress(const address &);
 	virtual ~emailAddress();
 
-	std::string getDisplayName() const { return decodedName; }
-	std::string getDisplayAddr() const { return decodedAddr; }
+	std::string getDisplayName(const std::string &charset,
+				   bool &errflag) const
+	{
+		return mail::iconvert::convert(decodedName, charset, errflag);
+	}
 
-	std::string setDisplayName(std::string s);
-	std::string setDisplayAddr(std::string a);
+	std::string getDisplayAddr(const std::string &charset,
+				   bool &errflag) const
+	{
+		return mail::iconvert::convert(decodedAddr, charset, errflag);
+	}
+
+	std::string getDisplayName(const std::string &charset) const
+	{
+		bool dummy;
+
+		return getDisplayName(charset, dummy);
+	}
+
+	std::string getDisplayAddr(const std::string &charset) const
+	{
+		bool dummy;
+
+		return getDisplayAddr(charset, dummy);
+	}
+
+	std::string setDisplayName(const std::string &s,
+				   const std::string &charset);
+	std::string setDisplayAddr(const std::string &a,
+				   const std::string &charset);
 
 	virtual void setName(std::string s);
 	virtual void setAddr(std::string s);

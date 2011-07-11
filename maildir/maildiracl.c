@@ -3,7 +3,6 @@
 ** See COPYING for distribution information.
 */
 
-/* $Id: maildiracl.c,v 1.1 2004/01/11 02:47:33 mrsam Exp $ */
 
 #if	HAVE_CONFIG_H
 #include	"config.h"

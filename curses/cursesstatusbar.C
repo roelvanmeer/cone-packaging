@@ -1,6 +1,5 @@
-/* $Id: cursesstatusbar.C,v 1.7 2010/04/29 00:34:49 mrsam Exp $
-**
-** Copyright 2002, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -12,12 +11,10 @@
 
 #include <algorithm>
 
-using namespace std;
-
-string CursesStatusBar::extendedErrorPrompt;
-string CursesStatusBar::shortcut_next_key;
-string CursesStatusBar::shortcut_next_descr;
-wchar_t CursesStatusBar::shortcut_next_keycode= 'O' & 31;
+std::string CursesStatusBar::extendedErrorPrompt;
+std::string CursesStatusBar::shortcut_next_key;
+std::string CursesStatusBar::shortcut_next_descr;
+unicode_char CursesStatusBar::shortcut_next_keycode= 'O' & 31;
 
 CursesStatusBar::CursesStatusBar(CursesScreen *parent) :
 	CursesContainer(parent), CursesKeyHandler(PRI_STATUSHANDLER),
@@ -95,10 +92,13 @@ bool CursesStatusBar::progressWanted()
 	return true;
 }
 
-void CursesStatusBar::progress(string progress)
+void CursesStatusBar::progress(std::string progress)
 {
 	progressText.clear();
-	mbtow(progress.c_str(), progressText);
+	mail::iconvert::convert(progress,
+				unicode_default_chset(),
+				progressText);
+
 	draw();
 	flush();
 }
@@ -124,7 +124,7 @@ void CursesStatusBar::setHotKeyDescr(CursesAttr a)
 
 void CursesStatusBar::draw()
 {
-	string spaces="";
+	std::string spaces="";
 
 	// To save some time, call rebuildShortcuts() only when necessary
 
@@ -135,7 +135,7 @@ void CursesStatusBar::draw()
 
 	size_t w=getWidth();
 
-	vector<wchar_t> statusLine=statusText;
+	std::vector<unicode_char> statusLine=statusText;
 
 	statusLine.insert(statusLine.begin(), ' ');
 
@@ -144,7 +144,7 @@ void CursesStatusBar::draw()
 		if (busyCounter > (int)sizeof(throbber))
 			busyCounter=1;
 		statusLine.insert(statusLine.begin(),
-				  (wchar_t)throbber[busyCounter-1]);
+				  (unicode_char)throbber[busyCounter-1]);
 	}
 	else
 		statusLine.insert(statusLine.begin(),
@@ -155,41 +155,39 @@ void CursesStatusBar::draw()
 				  progressText.begin(),
 				  progressText.end());
 
-	size_t statusline_w;
-
-	// Chop status line that's too big.
-
-	for (;;)
-	{
-		statusLine.push_back(0);
-		statusline_w=getTextLength(&statusLine[0]);
-		statusLine.erase(statusLine.end()-1);
-
-		if (statusline_w <= w || statusLine.size() == 0)
-			break;
-		statusLine.erase(statusLine.end()-1);
-	}
-
-	if (statusline_w < w)
-		statusLine.insert(statusLine.end(), w-statusline_w, ' ');
 
 	CursesAttr attr=attrStatusBar;
 
 	attr.setReverse();
-	statusLine.push_back(0);
-	writeText(&statusLine[0], getHeight()-3, 0, attr);
+
+	{
+		widecharbuf wc;
+
+		wc.init_unicode(statusLine.begin(), statusLine.end());
+
+		wc.expandtabs(0);
+
+		std::pair<std::vector<unicode_char>, size_t>
+			trunc(wc.get_unicode_truncated(w, 0));
+
+		if (trunc.second < w)
+			trunc.first.insert(trunc.first.end(), w-trunc.second,
+					   ' ');
+
+		writeText(trunc.first, getHeight()-3, 0, attr);
+
+	}
 
 	if (extendedErrorMsg.size() > 0)
 	{
 		statusLine.clear();
 		statusLine.insert(statusLine.begin(), w, ' ');
-		statusLine.push_back(0);
-		writeText(&statusLine[0], 0, 0, attr);
+		writeText(statusLine, 0, 0, attr);
 		size_t n;
 
 		for (n=0; n<extendedErrorMsg.size(); n++)
 		{
-			writeText(&extendedErrorMsg[n][0],
+			writeText(extendedErrorMsg[n],
 				  n+1, 0, attrStatusBar);
 		}
 	}
@@ -198,15 +196,14 @@ void CursesStatusBar::draw()
 
 	statusLine.clear();
 	statusLine.insert(statusLine.begin(), w, ' ');
-	statusLine.push_back(0);
 
 	int r=1;
 
 	if (extendedErrorMsg.size() > 0)
 		r += extendedErrorMsg.size()+1;
 
-	writeText(&statusLine[0], r, 0, CursesAttr());
-	writeText(&statusLine[0], r+1, 0, CursesAttr());
+	writeText(statusLine, r, 0, CursesAttr());
+	writeText(statusLine, r+1, 0, CursesAttr());
 
 	// Draw the current shortcut page.
 
@@ -214,55 +211,71 @@ void CursesStatusBar::draw()
 	    currentShortcutPage < shortcuts.size())
 	{
 
-		vector <vector <
-			pair< vector<wchar_t>, vector<wchar_t> > > >
+		std::vector<std::vector<
+			std::pair< std::vector<unicode_char>,
+				   std::vector<unicode_char> > > >
 			&shortcutPage= shortcuts[currentShortcutPage];
 
 		size_t i;
 
 		for (i=0; i < shortcutPage.size(); i++)
 		{
-			vector< pair< vector<wchar_t>, vector<wchar_t> > >
+			std::vector< std::pair< std::vector<unicode_char>,
+						std::vector<unicode_char> > >
 				&column=shortcutPage[i];
 
 			size_t j;
 
 			for (j=0; j<column.size(); j++)
 			{
-				pair< vector<wchar_t>, vector<wchar_t> >
+				std::pair< std::vector<unicode_char>,
+					   std::vector<unicode_char> >
 					&row=column[j];
 
-				vector<wchar_t> cpy=row.first;
+				std::vector<unicode_char> cpy=row.first;
+
+				widecharbuf wc;
+
+				wc.init_unicode(cpy.begin(), cpy.end());
+				wc.expandtabs(0);
 
 				if (shortcuts.size() > 1 ||
 				    row.first.size() > 1 ||
 				    row.second.size() > 1)
-					while (cpy.size() < max_sc_nlen)
-						cpy.insert(cpy.begin(), ' ');
+				{
+					size_t w=wc.wcwidth(0);
+
+					if (w < max_sc_nlen)
+						cpy.insert(cpy.begin(),
+							   max_sc_nlen - w,
+							   ' ');
+				}
 
 				CursesAttr h=attrHotKey;
 
-				writeText( &cpy[0], j+1,
-					   i * (max_sc_nlen + max_sc_dlen + 1),
+				writeText( cpy, j+1,
+					   i * (max_sc_nlen + max_sc_dlen + 2),
 					   h.setReverse());
 
 				CursesAttr a;
 
-				wchar_t *s=&row.second[0];
-
-				if (*s == '/' && s[1] >= '0' && s[1] <= '9')
+				if (row.second.size() > 2 &&
+				    row.second[0] == '/' &&
+				    row.second[1] >= '0' &&
+				    row.second[1] <= '9')
 				{
-					a.setBgColor(s[1] - '0');
-					s += 2;
+					a.setBgColor(row.second[1] - '0');
+					row.second.erase(row.second.begin(),
+							 row.second.begin()+2);
 				}
 				else
 				{
 					a=attrHotKeyDescr;
 				}
 
-				writeText( s, j+1,
-					   i * (max_sc_nlen + max_sc_dlen + 1)
-					   + max_sc_nlen, a);
+				writeText( row.second, j+1,
+					   i * (max_sc_nlen + max_sc_dlen + 2)
+					   + max_sc_nlen+1, a);
 			}
 		}
 	}
@@ -271,8 +284,8 @@ void CursesStatusBar::draw()
 
 class CursesStatusBarShortcutSort {
 public:
-	bool operator()(pair<string, string> a,
-			pair<string, string> b)
+	bool operator()(std::pair<std::string, std::string> a,
+			std::pair<std::string, std::string> b)
 	{
 		return (strcoll( a.first.c_str(), b.first.c_str()) < 0);
 	}
@@ -283,12 +296,12 @@ public:
 //
 
 static void createShortcuts(size_t &max_sc_nlen, size_t &max_sc_dlen,
-			    vector< pair< vector<wchar_t>,
-			    vector<wchar_t> > > &keys_w)
+			    std::vector< std::pair< std::vector<unicode_char>,
+			    std::vector<unicode_char> > > &keys_w)
 {
-	vector< pair<string, string> > keys;
+	std::vector< std::pair<std::string, std::string> > keys;
 
-	list<CursesKeyHandler *>::const_iterator
+	std::list<CursesKeyHandler *>::const_iterator
 		kb=CursesKeyHandler::begin(),
 		ke=CursesKeyHandler::end();
 
@@ -299,33 +312,55 @@ static void createShortcuts(size_t &max_sc_nlen, size_t &max_sc_dlen,
 	sort(keys.begin(), keys.end(),
 	     CursesStatusBarShortcutSort());
 
-	vector< pair<string, string> >::iterator b=keys.begin(), e=keys.end();
+	std::vector< std::pair<std::string, std::string> >::iterator
+		b=keys.begin(), e=keys.end();
 
 	while (b != e)
 	{
-		vector<wchar_t> first_w;
-		vector<wchar_t> second_w;
+		std::vector<unicode_char> first_w;
+		std::vector<unicode_char> second_w;
 
-		Curses::mbtow(b->first.c_str(), first_w);
-		Curses::mbtow(b->second.c_str(), second_w);
+		mail::iconvert::convert(b->first, unicode_default_chset(),
+					first_w);
+
+		mail::iconvert::convert(b->second, unicode_default_chset(),
+					second_w);
 
 		b++;
 
-		first_w.push_back(0);
-		second_w.push_back(0);
+		{
+			widecharbuf wc;
 
-		if (first_w.size() > max_sc_nlen)
-			max_sc_nlen=first_w.size();
+			wc.init_unicode(first_w.begin(), first_w.end());
+			wc.expandtabs(0);
 
-		size_t ss=second_w.size();
+			size_t w=wc.wcwidth(0);
 
-		if (ss > 2 && second_w[0] == '/')
-			ss -= 2;
+			if (w > max_sc_nlen)
+				max_sc_nlen=w;
+		}
 
-		if (ss > max_sc_dlen)
-			max_sc_dlen=ss;
+		{
+			std::vector<unicode_char>::iterator b=second_w.begin();
 
-		keys_w.push_back(make_pair(first_w, second_w));
+			if (second_w.size() && second_w[0] == '/' &&
+			    second_w[1] >= '0' &&
+			    second_w[1] <= '9')
+				b += 2;
+
+			widecharbuf wc;
+
+			wc.init_unicode(b, second_w.end());
+
+			wc.expandtabs(0);
+
+			size_t w=wc.wcwidth(0);
+
+			if (w > max_sc_dlen)
+				max_sc_dlen=w;
+		}
+
+		keys_w.push_back(std::make_pair(first_w, second_w));
 	}
 }
 
@@ -335,8 +370,8 @@ void CursesStatusBar::rebuildShortcuts()
 
 	currentShortcutPage=0;
 
-	vector<wchar_t> nextpage_n;
-	vector<wchar_t> nextpage_d;
+	std::vector<unicode_char> nextpage_n;
+	std::vector<unicode_char> nextpage_d;
 
 	if (shortcut_next_key.size() == 0)
 		shortcut_next_key="^O";
@@ -344,16 +379,30 @@ void CursesStatusBar::rebuildShortcuts()
 	if (shortcut_next_descr.size() == 0)
 		shortcut_next_descr="...mOre";
 
-	mbtow(shortcut_next_key.c_str(), nextpage_n);
-	mbtow(shortcut_next_descr.c_str(), nextpage_d);
+	mail::iconvert::convert(shortcut_next_key, unicode_default_chset(),
+				nextpage_n);
 
-	nextpage_n.push_back(0);
-	nextpage_d.push_back(0);
+	mail::iconvert::convert(shortcut_next_descr, unicode_default_chset(),
+				nextpage_d);
 
-	max_sc_nlen=nextpage_n.size();
-	max_sc_dlen=nextpage_d.size();
+	{
+		widecharbuf wc;
 
-	vector< pair< vector<wchar_t>, vector<wchar_t> > > keys_w;
+		wc.init_unicode(nextpage_n.begin(), nextpage_n.end());
+		wc.expandtabs(0);
+		max_sc_nlen=wc.wcwidth(0);
+	}
+
+	{
+		widecharbuf wc;
+
+		wc.init_unicode(nextpage_d.begin(), nextpage_d.end());
+		wc.expandtabs(0);
+		max_sc_dlen=wc.wcwidth(0);
+	}
+
+	std::vector< std::pair< std::vector<unicode_char>,
+				std::vector<unicode_char> > > keys_w;
 
 	createShortcuts(max_sc_nlen, max_sc_dlen, keys_w);
 
@@ -361,7 +410,7 @@ void CursesStatusBar::rebuildShortcuts()
 
 	size_t w=getWidth();
 
-	size_t ncols=w / (max_sc_nlen + 1 + max_sc_dlen);
+	size_t ncols=w / (max_sc_nlen + 2 + max_sc_dlen);
 
 	if (ncols <= 0)
 		ncols=1;
@@ -377,14 +426,17 @@ void CursesStatusBar::rebuildShortcuts()
 		if (n - i > ncols * 2)
 			multiplePages=true;
 
-		vector < vector < pair < vector<wchar_t>, vector<wchar_t> > > >
+		std::vector< std::vector< std::pair< std::vector<unicode_char>,
+						     std::vector<unicode_char>
+						     > > >
 			columns;
 
 		size_t j;
 
 		for (j=0; j < ncols; j++ )
 		{
-			vector < pair < vector<wchar_t>, vector<wchar_t> > >
+			std::vector< std::pair< std::vector<unicode_char>,
+						std::vector<unicode_char> > >
 				column;
 
 			if (i < n)
@@ -393,20 +445,19 @@ void CursesStatusBar::rebuildShortcuts()
 			}
 			else
 			{
-				vector<wchar_t> zero;
+				std::vector<unicode_char> zero;
 
-				zero.push_back(0);
-
-				column.push_back (make_pair(zero, zero));
+				column.push_back(std::make_pair(zero, zero));
 			}
 
 			// Add ^O to last cell on each page.
 
 			if (j + 1 == ncols && multiplePages)
 			{
-				pair< vector<wchar_t>, vector<wchar_t> >
-					p=make_pair(nextpage_n,
-						    nextpage_d);
+				std::pair< std::vector<unicode_char>,
+					   std::vector<unicode_char> >
+					p=std::make_pair(nextpage_n,
+							 nextpage_d);
 				column.push_back(p);
 			}
 			else if (i < n)
@@ -415,10 +466,7 @@ void CursesStatusBar::rebuildShortcuts()
 			}
 			else
 			{
-				vector<wchar_t> zero;
-
-				zero.push_back(0);
-
+				std::vector<unicode_char> zero;
 				column.push_back (make_pair(zero, zero));
 			}
 
@@ -429,8 +477,10 @@ void CursesStatusBar::rebuildShortcuts()
 	}
 }
 
-void CursesStatusBar::status(string text, statusLevel level)
+void CursesStatusBar::status(std::string text, statusLevel level)
 {
+	size_t origSize;
+
 	if (((statusText.size() > 0 || extendedErrorMsg.size() > 0) &&
 	     currentLevel > level) || fieldActive != NULL)
 	{
@@ -444,118 +494,61 @@ void CursesStatusBar::status(string text, statusLevel level)
 		return;
 	}
 
+	origSize=extendedErrorMsg.size();
+
 	busyCounter=0;
 
 	statusText.clear();
 	progressText.clear();
-
-	string::iterator b=text.begin(), e=text.end(), start;
-
-	while (b != e)
-	{
-		start=b;
-
-		while (b != e)
-		{
-			if (*b == '\n')
-				break;
-			b++;
-		}
-
-		vector<wchar_t> statusLine;
-		string l=string(start, b);
-
-		mbtow(l.c_str(), statusLine);
-
-		statusText.insert(statusText.end(),
-				  statusLine.begin(),
-				  statusLine.end());
-
-		if (b != e)
-		{
-			b++;
-			statusText.push_back('\n');
-		}
-	}
+	extendedErrorMsg.clear();
 
 	currentLevel=level;
 
+	if (origSize > 0)
+		parentScreen->resized();
+
 	size_t w=getWidth();
 
-	if (text.find('\n') == std::string::npos &&
-	    (size_t)(getTextLength(text.c_str()) + 2) < w)
+	if (w > 10)
+		w -= 4;
+
 	{
-		if (extendedErrorMsg.size() > 0)
-		{
-			extendedErrorMsg.clear();
-			parentScreen->resized();
-		}
-	}
-	else
-	{
-		// Error message too long - wrap it.
+		std::vector<unicode_char> uc;
+
+		mail::iconvert::convert(text, unicode_default_chset(), uc);
 
 		extendedErrorMsg.clear();
 
-		if (extendedErrorPrompt.size() > 0)
+		std::back_insert_iterator
+			< std::vector< std::vector<unicode_char> > >
+			insert_iter(extendedErrorMsg);
+
+		unicodewordwrap(uc.begin(), uc.end(),
+				unicoderewrapnone(),
+				insert_iter, w, true);
+	}
+
+	switch (extendedErrorMsg.size()) {
+	case 0:
+		extendedErrorMsg.push_back(std::vector<unicode_char>());
+		// FALLTHROUGH
+	case 1:
+		statusText=extendedErrorMsg.front();
+		extendedErrorMsg.clear();
+		break;
+	default:
+		extendedErrorMsg.push_back(std::vector<unicode_char>());
+
 		{
-			statusText.push_back('\n');
-			statusText.push_back('\n');
+			std::vector<unicode_char> statusLine;
 
-			vector<wchar_t> statusLine;
+			mail::iconvert::convert(extendedErrorPrompt,
+						unicode_default_chset(),
+						statusLine);
 
-			mbtow(extendedErrorPrompt.c_str(), statusLine);
-
-			statusText.insert(statusText.end(),
-					  statusLine.begin(),
-					  statusLine.end());
-
+			extendedErrorMsg.push_back(statusLine);
 		}
 
-		vector<wchar_t>::iterator b=statusText.begin(),
-			e=statusText.end(), c, d;
-
-		while (b != e)
-		{
-			c=b;
-			d=statusText.end();
-
-			while (b != e)
-			{
-				if (*b == ' ' || *b == '\n')
-				{
-					if ((size_t)(b - c) >= w)
-					{
-						if (d == statusText.end())
-							d=b;
-						break;
-					}
-
-					if (*b == '\n')
-					{
-						d=b;
-						break;
-					}
-
-					d=b;
-				}
-				b++;
-			}
-
-			if (b == e && (size_t)(b - c) < w)
-				d=b;
-
-			b=d;
-
-			vector<wchar_t> line;
-
-			line.insert(line.end(), c, b);
-			line.push_back(0);
-
-			extendedErrorMsg.push_back(line);
-			if (b != e)
-				b++;
-		}
 		clearStatusTimer.cancelTimer();
 		statusText.clear();
 		parentScreen->resized();
@@ -597,7 +590,7 @@ void CursesStatusBar::notbusy()
 
 bool CursesStatusBar::processKey(const Curses::Key &key)
 {
-	if (key == shortcut_next_keycode)
+	if (key.plain() && key.ukey == shortcut_next_keycode)
 	{
 		if (++currentShortcutPage >= shortcuts.size())
 			currentShortcutPage=0;
@@ -622,7 +615,7 @@ bool CursesStatusBar::processKey(const Curses::Key &key)
 	return true;
 }
 
-bool CursesStatusBar::listKeys( vector< pair<string, string> > &list)
+bool CursesStatusBar::listKeys( std::vector< std::pair<std::string, std::string> > &list)
 {
 	if (!fieldActive)
 		return false;
@@ -632,7 +625,7 @@ bool CursesStatusBar::listKeys( vector< pair<string, string> > &list)
 	return true;
 }
 
-CursesField *CursesStatusBar::createPrompt(string prompt, string initvalue)
+CursesField *CursesStatusBar::createPrompt(std::string prompt, std::string initvalue)
 {
 	if (fieldActive) // Old prompt?
 	{
@@ -651,7 +644,6 @@ CursesField *CursesStatusBar::createPrompt(string prompt, string initvalue)
 	dropFocus();
 
 	clearstatus();
-	mbtow(prompt.c_str(), statusText);
 
 	size_t maxW=getWidth();
 
@@ -660,11 +652,32 @@ CursesField *CursesStatusBar::createPrompt(string prompt, string initvalue)
 	else
 		maxW=0;
 
-	if (statusText.size() > maxW)
-		statusText.erase(statusText.begin() + maxW, statusText.end());
+	size_t textW;
 
-	fieldActive=new Field(this, getWidth() - statusText.size() - 2,
-			      255, initvalue);
+	{
+		std::vector<unicode_char> uc;
+
+		mail::iconvert::convert(prompt, unicode_default_chset(), uc);
+
+		widecharbuf wc;
+
+		wc.init_unicode(uc.begin(), uc.end());
+
+		std::pair<std::vector<unicode_char>, size_t>
+			fragment=wc.get_unicode_truncated(maxW, 0);
+
+		statusText=fragment.first;
+		textW=fragment.second;
+	}
+
+	size_t fieldSize=getWidth()-textW;
+
+	if (fieldSize > 2)
+		fieldSize -= 2;
+	else
+		fieldSize=1;
+
+	fieldActive=new Field(this, fieldSize, 255, initvalue);
 	if (!fieldActive)
 		return NULL;
 
@@ -673,7 +686,7 @@ CursesField *CursesStatusBar::createPrompt(string prompt, string initvalue)
 	CursesKeyHandler::handlerListModified=true;
 	// Rebuild shortcuts
 
-	fieldActive->setCol(statusText.size()+2);
+	fieldActive->setCol(textW+2);
 	draw();
 	if (fieldActive)
 		fieldActive->requestFocus();
@@ -710,7 +723,7 @@ void CursesStatusBar::fieldAbort()
 
 CursesStatusBar::Field::Field(CursesStatusBar *parent, size_t widthArg,
 			      size_t maxlengthArg,
-			      string initValue)
+			      std::string initValue)
 	: CursesField(parent, widthArg, maxlengthArg, initValue),
 	  me(parent)
 {
@@ -722,14 +735,15 @@ CursesStatusBar::Field::~Field()
 
 bool CursesStatusBar::Field::processKeyInFocus(const Key &key)
 {
-	if (key == '\t' || key == key.DOWN || key == key.UP ||
+	if ((key.plain() && key.ukey == '\t') ||
+	    key == key.DOWN || key == key.UP ||
 	    key == key.SHIFTDOWN || key == key.SHIFTUP ||
 	    key == key.PGDN || key == key.PGUP ||
 	    key == key.SHIFTPGDN || key == key.SHIFTPGUP)
 
 		return true;	// No changing focus, please.
 
-	if (key == '\x03')
+	if (key.plain() && key.ukey == '\x03')
 	{
 		setText("");
 		me->fieldAbort();
@@ -755,8 +769,9 @@ bool CursesStatusBar::Field::writeText(const char *text, int row, int col,
 	return CursesField::writeText(text, row, col, attr_cpy);
 }
 
-bool CursesStatusBar::Field::writeText(const wchar_t *text, int row, int col,
-				       const CursesAttr &attr) const
+bool CursesStatusBar::Field::writeText(const std::vector<unicode_char> &text,
+				       int row, int col,
+				       const Curses::CursesAttr &attr) const
 {
 	CursesAttr attr_cpy=attr;
 	attr_cpy.setReverse(!attr_cpy.getReverse());
@@ -764,4 +779,3 @@ bool CursesStatusBar::Field::writeText(const wchar_t *text, int row, int col,
 
 	return CursesField::writeText(text, row, col, attr_cpy);
 }
-

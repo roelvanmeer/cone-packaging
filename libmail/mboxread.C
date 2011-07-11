@@ -1,5 +1,4 @@
-/* $Id: mboxread.C,v 1.3 2004/06/14 00:18:42 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -94,9 +93,9 @@ bool mail::mbox::GenericReadTask::locked(mail::file &file)
 				const char *p=line.c_str();
 
 				if (line.size() > 0 &&
-				    isspace((int)(unsigned char)*p))
+				    unicode_isspace((unsigned char)*p))
 				{
-					while (isspace((int)(unsigned char)*p))
+					while (unicode_isspace((unsigned char)*p))
 						p++;
 
 					header += " ";

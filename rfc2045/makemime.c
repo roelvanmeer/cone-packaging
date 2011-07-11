@@ -1,5 +1,5 @@
 /*
-** Copyright 2000-2006 Double Precision, Inc.  See COPYING for
+** Copyright 2000-2010 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
@@ -40,7 +40,6 @@
 int gethostname(const char *, size_t);
 #endif
 
-static const char rcsid[]="$Id: makemime.c,v 1.16 2009/06/27 16:32:38 mrsam Exp $";
 
 struct arg_list {
 	struct arg_list *next;
@@ -650,6 +649,7 @@ static void createsimplemime(struct mimestruct *m)
 {
 struct	arg_list *a;
 struct libmail_encode_info encode_info;
+const char *orig_charset=m->textplaincharset;
 
 	/* Determine encoding by reading the file, as follows:
 	**
@@ -660,7 +660,8 @@ struct libmail_encode_info encode_info;
 
 	if (m->mimeencoding == 0)
 	{
-	long	orig_pos=ftell(m->inputfp1);
+		long	orig_pos=ftell(m->inputfp1);
+		int	binaryflag;
 
 		if (orig_pos == -1)
 		{
@@ -668,9 +669,10 @@ struct libmail_encode_info encode_info;
 			goodexit(m, 1);
 		}
 
-		m->mimeencoding=libmail_encode_autodetect_fppos(m->inputfp1,
-								m->textplaincharset,
-								0, -1);
+		m->mimeencoding=libmail_encode_autodetect_fpoff(m->inputfp1,
+								0,
+								0, -1,
+								&binaryflag);
 
 		if (ferror(m->inputfp1)
 			|| fseek(m->inputfp1, orig_pos, SEEK_SET)<0)
@@ -680,9 +682,8 @@ struct libmail_encode_info encode_info;
 		}
 
 		if (strcmp(m->mimetype, "auto") == 0)
-			m->mimetype=
-				strcmp(m->mimeencoding, "base64") == 0
-				? (m->textplaincharset=0,
+			m->mimetype=binaryflag
+				? (orig_charset=0,
 				   "application/octet-stream"):"text/plain";
 	}
 
@@ -690,12 +691,12 @@ struct libmail_encode_info encode_info;
 		fprintf(m->outputfp, "%s\n", a->arg);
 
 	fprintf(m->outputfp, "Content-Type: %s", m->mimetype);
-	if (m->textplaincharset && *m->textplaincharset)
+	if (orig_charset && *orig_charset)
 	{
 		const char *c;
 
 		fprintf(m->outputfp, "; charset=\"");
-		for (c=m->textplaincharset; *c; c++)
+		for (c=orig_charset; *c; c++)
 		{
 			if (*c != '"' && *c != '\\')
 				putc(*c, m->outputfp);

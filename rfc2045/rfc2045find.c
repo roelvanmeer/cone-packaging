@@ -4,7 +4,6 @@
 */
 
 /*
-** $Id: rfc2045find.c,v 1.3 1999/12/06 13:29:02 mrsam Exp $
 */
 #include	"rfc2045.h"
 #include	<ctype.h>

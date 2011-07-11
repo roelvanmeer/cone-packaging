@@ -1,6 +1,5 @@
-/* $Id: cursesmultilinelabel.H,v 1.1 2004/03/21 05:30:01 mrsam Exp $
-**
-** Copyright 2004, Double Precision Inc.
+/*
+** Copyright 2004-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -19,10 +18,9 @@
 
 class CursesMultilineLabel : public Curses {
 
-	std::vector<wchar_t> text;
+	std::vector<unicode_char> text;
 
-	std::vector< std::pair<std::vector<wchar_t>::iterator,
-				       std::vector<wchar_t>::iterator> > lines;
+	std::vector< std::vector<unicode_char> > lines;
 
 protected:
 	int width;

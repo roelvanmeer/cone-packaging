@@ -3,7 +3,6 @@
 ** See COPYING for distribution information.
 */
 
-/* $Id: maildirkw.c,v 1.2 2004/05/08 02:24:22 mrsam Exp $ */
 
 #if	HAVE_CONFIG_H
 #include	"config.h"

@@ -1,5 +1,4 @@
-/* $Id: filter.C,v 1.4 2003/09/01 20:58:43 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -205,27 +204,18 @@ string Filter::Step::getDescription() const
 		case mail::searchParams::text:
 
 			{
-				const struct unicode_info *u=
-					unicode_find(searchType.charset
-						     .c_str());
+				std::string chset=searchType.charset;
 
-				if (!u) u= &unicode_ISO8859_1;
+				if (chset.size() == 0)
+					chset="iso-8859-1";
 
-				char *p=unicode_xconvert(searchType
-							 .param2.c_str(),
-							 u,
-							 Gettext::
-							 defaultCharset());
+				std::string srch(mail::iconvert::convert
+						 (searchType.param2,
+						  chset,
+						  unicode_default_chset()));
 
-				if (p)
-					try {
-						s=Gettext(_("%1% contains %2%")
-							  ) << s << p;
-						free(p);
-					} catch (...) {
-						free(p);
-						throw;
-					}
+				s=Gettext(_("%1% contains %2%")
+					  ) << s << srch;
 			}
 		break;
 		default:

@@ -4,10 +4,10 @@
 */
 
 #include	"rfc822.h"
+#include	"rfc2047.h"
 #include	<stdio.h>
 #include	<stdlib.h>
 
-static const char rcsid[]="$Id: testsuite.c,v 1.8 2009/11/22 18:46:53 mrsam Exp $";
 
 static void print_func(char c, void *p)
 {
@@ -88,5 +88,47 @@ int main()
 	rfc822t_free(t3);
 	rfc822t_free(t2);
 	rfc822t_free(t1);
+
+#define FIVEUTF8 "\xe2\x85\xa4"
+
+#define FIVETIMES4 FIVEUTF8 FIVEUTF8 FIVEUTF8 FIVEUTF8
+
+#define FIVETIMES16 FIVETIMES4 FIVETIMES4 FIVETIMES4 FIVETIMES4
+
+#define FIVEMAX FIVETIMES16 FIVETIMES4 FIVETIMES4
+
+	{
+		char *p=rfc2047_encode_str(FIVEMAX, "utf-8",
+					   rfc2047_qp_allow_any);
+
+		if (p)
+		{
+			printf("%s\n", p);
+			free(p);
+		}
+	}
+
+	{
+		char *p=rfc2047_encode_str(FIVEMAX FIVEUTF8, "utf-8",
+					   rfc2047_qp_allow_any);
+
+		if (p)
+		{
+			printf("%s\n", p);
+			free(p);
+		}
+	}
+
+	{
+		char *p=rfc2047_encode_str(FIVEMAX "\xcc\x80", "utf-8",
+					   rfc2047_qp_allow_any);
+
+		if (p)
+		{
+			printf("%s\n", p);
+			free(p);
+		}
+	}
+
 	return (0);
 }
