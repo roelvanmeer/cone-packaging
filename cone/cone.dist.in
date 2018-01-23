@@ -1,4 +1,4 @@
-##VERSION: $Id: cone.dist.in,v 1.1 2003/05/27 14:09:03 mrsam Exp $
+##VERSION: $Id: cone.dist.in,v 1.2 2007/07/30 02:47:52 mrsam Exp $
 #
 # cone configuration file created from cone.dist by sysconftool
 #
@@ -20,11 +20,30 @@
 #
 #
 #########################################################################
+
+##NAME: CONE_AUTOLDAP:0
 #
-# The following variables configure encrypted connections to servers.
+# Define this variable to automatically set up an LDAP-based address book,
+# by default.
+#
+# CONE_AUTOLDAP="name=hostname/suffix"
+#
+# name - the nickname for the address book, company name, etc...
+# hostname - ldap server hostname
+# suffix - ldap search root
+
+##NAME: CONE_UNDERLINEHACK:0
+#
+# Set UNDERLINE_HACK=1 to use U+0x00A0 in place of spaces when showing
+# underlined whitespace. Recent versions of gnome terminal have a bug
+# where whitespace is not underlined
+
+UNDERLINE_HACK=0
 
 ##NAME: TLS_PROTOCOL:0
 # 
+# This, and the following variables configure encrypted connections to servers.
+#
 # TLS_PROTOCOL sets the protocol version for SSL connections.
 # The possible versions are:
 #

@@ -1,5 +1,5 @@
 /*
-** Copyright 1998 - 2006 Double Precision, Inc.
+** Copyright 1998 - 2007 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
@@ -52,7 +52,7 @@
 
 #include	<netdb.h>
 
-static const char rcsid[]="$Id: tcpd.c,v 1.44 2006/11/04 20:09:47 mrsam Exp $";
+static const char rcsid[]="$Id: tcpd.c,v 1.45 2007/08/30 01:38:49 mrsam Exp $";
 
 static const char *accessarg=0;
 static const char *accesslocal=0;
@@ -1051,6 +1051,7 @@ static int doit(int argn, int argc, char **argv)
 	}
 #endif
 
+	signal(SIGPIPE, SIG_IGN);
 	for (;;)
 	{
 		int n;
@@ -1686,6 +1687,8 @@ const char *p;
 		sox_dup(1);
 	}
 	proxy();
+	signal(SIGPIPE, SIG_DFL);
+
 	execv(prog, argv);
 	perror(prog);
 	exit(1);

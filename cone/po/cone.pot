@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: courier-cone@lists.sourceforge.net\n"
-"POT-Creation-Date: 2007-07-21 21:08-0400\n"
+"POT-Creation-Date: 2007-09-29 17:41-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,11 +36,11 @@ msgstr ""
 msgid "Address: "
 msgstr ""
 
-#: addressbook.C:631 addressbook.C:1355 configscreen.C:226
+#: addressbook.C:631 addressbook.C:1363 configscreen.C:226
 msgid "SAVE"
 msgstr ""
 
-#: addressbook.C:632 addressbook.C:1356 cone.C:130 configscreen.C:227
+#: addressbook.C:632 addressbook.C:1364 cone.C:130 configscreen.C:227
 msgid "CANCEL"
 msgstr ""
 
@@ -80,7 +80,7 @@ msgstr ""
 msgid "DELADDRESSBOOKENTRY_K:D"
 msgstr ""
 
-#: addressbook.C:1253 addressbook.C:1707 curseshierarchy.C:2137
+#: addressbook.C:1253 addressbook.C:1729 curseshierarchy.C:2137
 #: cursesindexdisplay.C:1584 cursesmessagedisplay.C:1115
 #: filtereditscreen.C:448
 msgid "Delete"
@@ -110,79 +110,87 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: addressbook.C:1345
+#: addressbook.C:1349
 msgid "Add LDAP directory"
 msgstr ""
 
-#: addressbook.C:1347
+#: addressbook.C:1351
 msgid "Directory name: "
 msgstr ""
 
-#: addressbook.C:1348
+#: addressbook.C:1352
 msgid "LDAP server hostname: "
 msgstr ""
 
-#: addressbook.C:1349
+#: addressbook.C:1353
+msgid "LDAP userid (optional): "
+msgstr ""
+
+#: addressbook.C:1354
+msgid "LDAP password (optional): "
+msgstr ""
+
+#: addressbook.C:1355
 msgid "LDAP suffix/root: "
 msgstr ""
 
-#: addressbook.C:1365
+#: addressbook.C:1375
 msgid "LDAP ADDRESSBOOK ADD"
 msgstr ""
 
-#: addressbook.C:1450 curseshierarchy.C:1949
+#: addressbook.C:1472 curseshierarchy.C:1949
 msgid "Address Book created."
 msgstr ""
 
-#: addressbook.C:1457
+#: addressbook.C:1479
 msgid "Connection to %1% failed: %2"
 msgstr ""
 
-#: addressbook.C:1592
+#: addressbook.C:1614
 msgid "Address Book List"
 msgstr ""
 
-#: addressbook.C:1601
+#: addressbook.C:1623
 msgid "ADDRESS BOOKS"
 msgstr ""
 
-#: addressbook.C:1706
+#: addressbook.C:1728
 msgid "DELETEADDRESSBOOK:D"
 msgstr ""
 
-#: addressbook.C:1708 curseshierarchy.C:2138 filtereditscreen.C:451
+#: addressbook.C:1730 curseshierarchy.C:2138 filtereditscreen.C:451
 msgid "MOVEUP:^U"
 msgstr ""
 
-#: addressbook.C:1709 curseshierarchy.C:2139 filtereditscreen.C:452
+#: addressbook.C:1731 curseshierarchy.C:2139 filtereditscreen.C:452
 msgid "Move up"
 msgstr ""
 
-#: addressbook.C:1710 curseshierarchy.C:2140 filtereditscreen.C:453
+#: addressbook.C:1732 curseshierarchy.C:2140 filtereditscreen.C:453
 msgid "MOVEDN:^D"
 msgstr ""
 
-#: addressbook.C:1711 curseshierarchy.C:2141 filtereditscreen.C:454
+#: addressbook.C:1733 curseshierarchy.C:2141 filtereditscreen.C:454
 msgid "Move down"
 msgstr ""
 
-#: addressbook.C:1712
+#: addressbook.C:1734
 msgid "ADDLDAP:A"
 msgstr ""
 
-#: addressbook.C:1713
+#: addressbook.C:1735
 msgid "Add LDAP server"
 msgstr ""
 
-#: addressbook.C:1741
+#: addressbook.C:1763
 msgid "Delete address book \"%1%\"? (Y/N) "
 msgstr ""
 
-#: addressbook.C:1862
+#: addressbook.C:1884
 msgid "TAKE ADDRESS"
 msgstr ""
 
-#: addressbook.C:2020
+#: addressbook.C:2042
 msgid "No addresses found."
 msgstr ""
 

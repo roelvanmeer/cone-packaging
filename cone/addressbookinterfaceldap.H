@@ -1,4 +1,4 @@
-/* $Id: addressbookinterfaceldap.H,v 1.2 2006/02/17 01:11:08 mrsam Exp $
+/* $Id: addressbookinterfaceldap.H,v 1.3 2007/09/26 01:42:40 mrsam Exp $
 **
 ** Copyright 2006, Double Precision Inc.
 **
@@ -35,7 +35,7 @@ public:
 	LDAP(std::string name);
 	virtual ~LDAP();
 
-	bool open(std::string host, std::string suffix);
+	bool openUrl(std::string url, std::string suffix);
 	void close();
 	bool closed();
 	void done();

@@ -1,3 +1,14 @@
+0.72
+
+2007-09-24  Mr. Sam  <mrsam@courier-mta.com>
+
+	* addressbook.C: Implement LDAP search from LDAP servers that
+	require authentication.
+
+2007-07-26  Mr. Sam  <sam@email-scan.com>
+
+	* COPYING: Updated to GPL 3
+
 0.71
 
 2007-07-03  Mr. Sam  <mrsam@courier-mta.com>

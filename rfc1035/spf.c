@@ -24,7 +24,7 @@
 #endif
 #endif
 
-static const char rcsid[]="$Id: spf.c,v 1.8 2006/04/12 23:00:26 mrsam Exp $";
+static const char rcsid[]="$Id: spf.c,v 1.9 2007/08/30 01:38:49 mrsam Exp $";
 
 static void set_err_msg(char *errmsg_buf,
 			size_t errmsg_buf_size,
@@ -998,7 +998,7 @@ static char lookup(struct rfc1035_spf_info *info)
 	{
 		set_err_msg(info->errmsg_buf, info->errmsg_buf_size,
 			    "Maximum of 20 nested SPF queries exceeded.");
-		return SPF_FAIL;
+		return SPF_UNKNOWN;
 	}
 
 	c=rfc1035_spf_gettxt(info->current_domain, record);

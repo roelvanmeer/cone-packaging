@@ -1,4 +1,4 @@
-/* $Id: libldapsearch.c,v 1.7 2006/11/12 19:35:02 mrsam Exp $
+/* $Id: libldapsearch.c,v 1.8 2007/09/26 01:42:40 mrsam Exp $
 **
 ** Copyright 2006, Double Precision Inc.
 **
@@ -26,6 +26,8 @@
 
 struct ldapsearch *l_search_alloc(const char *host,
 				  int port,
+				  const char *userid,
+				  const char *password,
 				  const char *base)
 {
 	char *buf;
@@ -59,6 +61,23 @@ struct ldapsearch *l_search_alloc(const char *host,
 		return NULL;
 	}
 	free(buf);
+
+	if (userid && *userid)
+	{
+		struct berval cred;
+
+		cred.bv_len=password && *password ? strlen(password):0;
+		cred.bv_val=password && *password ? (char *)password:NULL;
+
+		if (ldap_sasl_bind_s(p->handle, userid, NULL, &cred, NULL,
+				     NULL, NULL))
+		{
+			l_search_free(p);
+			errno=EPERM;
+			return NULL;
+		}
+	}
+
 	return p;
 }
 
