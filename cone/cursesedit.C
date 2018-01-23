@@ -1,6 +1,6 @@
-/* $Id: cursesedit.C,v 1.30 2006/07/29 00:59:00 mrsam Exp $
+/* $Id: cursesedit.C,v 1.31 2008/07/07 03:25:40 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -3064,6 +3064,7 @@ void CursesEdit::markreplied()
 				callback.noreport=true;
 				loginInfo.url=s->url;
 				loginInfo.pwd=s->password;
+				s->find_cert_by_id(loginInfo.certificates);
 				loginInfo.extraString=
 					myServer::getConfigDir()
 					+ "/" + s->newsrc;

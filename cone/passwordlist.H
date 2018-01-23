@@ -1,6 +1,6 @@
-/* $Id: passwordlist.H,v 1.2 2003/06/05 01:22:14 mrsam Exp $
+/* $Id: passwordlist.H,v 1.3 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -37,6 +37,8 @@ public:
 
 	void save(std::string url, std::string pwd);
 	// Known password.
+
+	void save();
 
 	void remove(std::string url); // URL does not exist.
 

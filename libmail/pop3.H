@@ -1,6 +1,6 @@
-/* $Id: pop3.H,v 1.10 2004/08/21 03:30:25 mrsam Exp $
+/* $Id: pop3.H,v 1.11 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2002-2004, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -248,6 +248,7 @@ public:
 	friend class NoopTask;
 
 	pop3(std::string url, std::string passwd,
+	     std::vector<std::string> &certificates,
 	     mail::loginCallback *loginCallbackFunc,
 	     callback &callback,
 	     callback::disconnect &disconnectCallback);

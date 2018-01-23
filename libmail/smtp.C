@@ -1,6 +1,6 @@
-/* $Id: smtp.C,v 1.9 2004/06/14 00:18:43 mrsam Exp $
+/* $Id: smtp.C,v 1.10 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2002-2004, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -62,8 +62,9 @@ static bool open_smtp(mail::account *&accountRet,
 	    nntpLoginInfo.method != "sendmail")
 		return false;
 
-	accountRet=new mail::smtp(oi.url, oi.pwd, callback,
-				  disconnectCallback);
+	accountRet=new mail::smtp(oi.url, oi.pwd, oi.certificates, callback,
+				  disconnectCallback,
+				  oi.loginCallbackObj);
 	return true;
 }
 
@@ -356,13 +357,16 @@ void mail::smtp::handler(vector<pollfd> &fds, int &ioTimeout)
 }
 
 mail::smtp::smtp(string url, string passwd,
+		 std::vector<std::string> &certificates,
 		 mail::callback &callback,
-		 mail::callback::disconnect &disconnectCallback)
-	: mail::fd(disconnectCallback), orderlyShutdown(false),
+		 mail::callback::disconnect &disconnectCallback,
+		 loginCallback *loginCallbackFunc)
+	: mail::fd(disconnectCallback, certificates), orderlyShutdown(false),
 	  ready2send(false), fatalError(true), pingTimeout(0)
 {
 	responseHandler=NULL;
 	smtpLoginInfo.callbackPtr= &callback;
+	smtpLoginInfo.loginCallbackFunc=loginCallbackFunc;
 
 	if (!loginUrlDecode(url, smtpLoginInfo))
 	{
@@ -647,7 +651,7 @@ void mail::smtp::starttls()
 	    || !hasCapability("STARTTLS")
 	    || socketEncrypted())
 	{
-		authenticate_hmac();
+		begin_auth();
 		return;
 	}
 
@@ -655,7 +659,7 @@ void mail::smtp::starttls()
 
 	socketWrite("STARTTLS\r\n");
 #else
-	authenticate_hmac();
+	begin_auth();
 	return;
 #endif
 }
@@ -676,6 +680,79 @@ void mail::smtp::starttlsResponse(int n, string s)
 	}
 
 	error(s);
+}
+
+void mail::smtp::begin_auth()
+{
+	if (!hasCapability("AUTH=EXTERNAL"))
+	{
+		begin_auth_nonexternal();
+		return;
+	}
+	installHandler(&mail::smtp::auth_external_response);
+	socketWrite("AUTH EXTERNAL =\r\n");
+}
+
+void mail::smtp::auth_external_response(int n, string s)
+{
+	switch (n / 100) {
+	case 1:
+	case 2:
+	case 3:
+		authenticated();
+		return;
+	}
+	begin_auth_nonexternal();
+}
+
+void mail::smtp::begin_auth_nonexternal()
+{
+	int i;
+
+	if (smtpLoginInfo.uid.size() == 0)
+	{
+		authenticate_hmac();
+		return;
+	}
+
+	for (i=0; mail::imaphmac::hmac_methods[i]; ++i)
+	{
+		if (hasCapability(string("AUTH=CRAM-") +
+				  mail::imaphmac
+				  ::hmac_methods[hmac_method_index]->getName()
+				  ))
+			break;
+	}
+
+	if (mail::imaphmac::hmac_methods[i] ||
+	    hasCapability("AUTH=LOGIN"))
+	{
+		if (smtpLoginInfo.pwd.size() == 0)
+		{
+			currentCallback=smtpLoginInfo.loginCallbackFunc;
+
+			if (currentCallback)
+			{
+				currentCallback->target=this;
+				currentCallback->getPassword();
+				return;
+			}
+		}
+	}
+	authenticate_hmac();
+}
+
+void mail::smtp::loginInfoCallback(std::string str)
+{
+	currentCallback=NULL;
+	smtpLoginInfo.pwd=str;
+	authenticate_hmac();
+}
+
+void mail::smtp::loginInfoCallbackCancel()
+{
+	currentCallback=NULL;
+	error("Login cancelled");
 }
 
 void mail::smtp::authenticate_hmac()
@@ -787,6 +864,12 @@ void mail::smtp::loginPasswdResponse(int n, string msg)
 
 void mail::smtp::loginResponse(int n, string msg)
 {
+	if ((n / 100) != 2)
+	{
+		error(msg);
+		return;
+	}
+
 	authenticated();
 }
 

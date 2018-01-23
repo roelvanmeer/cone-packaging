@@ -1,17 +1,20 @@
 /*
-** Copyright 2000-2003 Double Precision, Inc.  See COPYING for
+** Copyright 2000-2008 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
 #include "rfc2045_config.h"
+#include "../unicode/unicode.h"
 #include	"rfc2646.h"
 #include	<stdlib.h>
 #include	<string.h>
 
-static const char rcsid[]="$Id: rfc2646create.c,v 1.5 2003/03/07 00:47:31 mrsam Exp $";
+static const char rcsid[]="$Id: rfc2646create.c,v 1.6 2008/07/20 17:00:33 mrsam Exp $";
 
-struct rfc2646create *rfc2646create_alloc( int (*f)(const char *, size_t,
+struct rfc2646create *rfc2646create_alloc( int (*f)(const char *,
+						    size_t,
 						    void *),
+					   const struct unicode_info *uinfo,
 					   void *vp)
 {
 	struct rfc2646create *p=calloc(1, sizeof(struct rfc2646create));
@@ -22,20 +25,43 @@ struct rfc2646create *rfc2646create_alloc( int (*f)(const char *, size_t,
 	p->handler=f;
 	p->voidarg=vp;
 
+	p->charset=uinfo;
 	p->linesize=76;
 	p->sent_firsttime=1;
 	return (p);
 }
 
-static int wordwrap_line(const char *, size_t, size_t,
-			  struct rfc2646create *);
+static int wordwrap_line(unicode_char *, size_t, size_t,
+			 struct rfc2646create *);
 
-static int wordwrap_sent(const char *buf, size_t cnt,
+static int ismatch(const unicode_char *uc,
+		   const char *cp,
+		   size_t cnt)
+{
+	while (cnt)
+	{
+		if (*uc != *cp)
+			return -1;
+
+		++uc;
+		++cp;
+		--cnt;
+	}
+
+	return 0;
+}
+
+static int wordwrap_sent(unicode_char *buf,
+			 const char *cpbuf,
 			 struct rfc2646create *rfcptr)
 {
 	size_t	i;
 	int quote_depth=0;
 	int rc;
+	size_t cnt;
+
+	for (cnt=0; buf[cnt]; ++cnt)
+		;
 
 	for (i=0; i<cnt; i++)
 	{
@@ -73,12 +99,13 @@ static int wordwrap_sent(const char *buf, size_t cnt,
 
 	if (quote_depth)	/* Already wrapped */
 	{
-		return ((*rfcptr->handler)(buf, cnt, rfcptr->voidarg));
+		return ((*rfcptr->handler)(cpbuf, strlen(cpbuf),
+					   rfcptr->voidarg));
 	}
 
 	while (cnt > i && buf[cnt-1] == ' ')
 	{
-		if (cnt - i == 3 && strncmp(buf+i, "-- ", 3) == 0)
+		if (cnt - i == 3 && ismatch(buf+i, "-- ", 3) == 0)
 			break;
 		--cnt;
 	}
@@ -87,58 +114,92 @@ static int wordwrap_sent(const char *buf, size_t cnt,
 	{
 		size_t j;
 
-		if (cnt - i <= rfcptr->linesize)
-		{
-			rc=wordwrap_line(buf, cnt, i, rfcptr);
-			break;
-		}
+		size_t k;
+		size_t w=0;
 
-		for (j=i+rfcptr->linesize; j > i; --j)
-			if (buf[j] == ' ')
+		int found_spc=0;
+		size_t spc_index=0;
+		int no_spc=0;
+		const char *spnl;
+
+		for (k=i; ; k++)
+		{
+			if (k >= cnt)
 			{
-				++j;
-				break;
+				rc=wordwrap_line(buf, cnt, i, rfcptr);
+				return rc;
 			}
 
-		if (j > i)
-		{
-			rc=wordwrap_line(buf, j-1, i, rfcptr);
-			if (rc)
+			if (w >= rfcptr->linesize)
 				break;
 
-			i=j;
-			while (i < cnt && buf[i] == ' ')
-				++i;
-			if (i == cnt)
-				break;
-			rc=(*rfcptr->handler)(" \n", 2, rfcptr->voidarg);
-			if (rc)
-				break;
-			continue;
+			if (buf[k] == ' ')
+			{
+				found_spc=1;
+				spc_index=k;
+			}
+			w += unicode_wcwidth(buf[k]);
 		}
 
-		j=i+rfcptr->linesize;
+		if (!found_spc)
+		{
+			spc_index=k;
+			no_spc=1;
+		}
+
+		j=spc_index;
+
 		rc=wordwrap_line(buf, j, i, rfcptr);
-		if (rc || (rc=(*rfcptr->handler)(" \n", 2, rfcptr->voidarg)))
-			break;
+
+		if (j < cnt && buf[j] == ' ')
+			++j;
+
 		i=j;
+
+		spnl=" \n";
+
+		rc=(*rfcptr->handler)(spnl + no_spc, 2 - no_spc,
+				      rfcptr->voidarg);
+		if (rc)
+			break;
 	}
 	return (rc);
 }
 
-static int wordwrap_line(const char *buf,
+static int wordwrap_line(unicode_char *buf,
 			 size_t cnt, size_t i,
 			 struct rfc2646create *rfcptr)
 {
 	int rc=0;
 
-	if ((cnt - i >= 5 && strncmp(buf+i, "From ", 5) == 0) ||
+	if ((cnt - i >= 5 && ismatch(buf+i, "From ", 5) == 0) ||
 	    (cnt > i && buf[i] == '-'
-	     && (cnt - i != 3 || strncmp(buf+i, "-- ", 3))))
+	     && (cnt - i != 3 || ismatch(buf+i, "-- ", 3))))
 		rc=(*rfcptr->handler)(" ", 1, rfcptr->voidarg);
 
 	if (rc == 0)
-		rc=(*rfcptr->handler)(buf+i, cnt-i, rfcptr->voidarg);
+	{
+		/* The original unicode string is null-terminated, so we're
+		** guaranteed to have at least one more byte for this.
+		*/
+		unicode_char save_char;
+		char *cp;
+
+		buf += i;
+		cnt -= i;
+
+		save_char=buf[cnt];
+		buf[cnt]=0;
+		cp=(*rfcptr->charset->u2c)(rfcptr->charset, buf, NULL);
+		buf[cnt]=save_char;
+
+		if (cp)
+		{
+			rc=(*rfcptr->handler)(cp, strlen(cp), rfcptr->voidarg);
+			free(cp);
+		}
+	}
+
 	return (rc);
 }
 
@@ -152,8 +213,10 @@ int rfc2646create_parse(struct rfc2646create *rfcptr,
 	if (strcnt + rfcptr->buflen > rfcptr->bufsize)
 	{
 		size_t l=strcnt + rfcptr->buflen + 256;
-		char *newbuf= rfcptr->buffer ? realloc(rfcptr->buffer, l)
-			: malloc(l);
+		char *newbuf= rfcptr->buffer
+			? (char *)realloc(rfcptr->buffer,
+				  l * sizeof(*rfcptr->buffer))
+			: (char *)malloc(l * sizeof(*rfcptr->buffer));
 
 		if (!newbuf)
 			return (-1);
@@ -163,7 +226,8 @@ int rfc2646create_parse(struct rfc2646create *rfcptr,
 	}
 
 	if (strcnt)
-		memcpy(rfcptr->buffer + rfcptr->buflen, str, strcnt);
+		memcpy(rfcptr->buffer + rfcptr->buflen, str,
+		       strcnt * sizeof(*str));
 
 	rfcptr->buflen += strcnt;
 
@@ -173,13 +237,24 @@ int rfc2646create_parse(struct rfc2646create *rfcptr,
 	rc=0;
 	for (;;)
 	{
+		unicode_char *uc;
+
 		size_t i;
 
 		for (i=0; i<cnt; i++)
 			if (ptr[i] == '\n')
 				break;
 		if (i >= cnt)	break;
-		rc=wordwrap_sent(ptr, i, rfcptr);
+
+		ptr[i]=0;
+		uc=(*rfcptr->charset->c2u)(rfcptr->charset, ptr, NULL);
+
+		if (uc)
+		{
+			rc=wordwrap_sent(uc, ptr, rfcptr);
+			free(uc);
+		}
+		ptr[i]='\n';
 		if (rc)
 			break;
 		++i;
@@ -201,13 +276,14 @@ int rfc2646create_free(struct rfc2646create *rfcptr)
 	int rc=0;
 
 	if (rfcptr->buflen)
-		rc=wordwrap_sent(rfcptr->buffer, rfcptr->buflen, rfcptr);
-
-	if (rc == 0)
-		rc=(*rfcptr->handler)("\n", 1, rfcptr->voidarg);
+		rc=rfc2646create_parse(rfcptr, "\n", 1);
 
 	if (rfcptr->buffer)
+	{
+		if (rc == 0)
+			rc=(*rfcptr->handler)("\n", 1, rfcptr->voidarg);
 		free(rfcptr->buffer);
+	}
 	free(rfcptr);
 	return (rc);
 }

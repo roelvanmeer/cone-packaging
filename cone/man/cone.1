@@ -4,14 +4,11 @@
 .\"     Title: cone
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 05/24/2008
-.\"    Manual: 
-
-
-Cone: COnsole Newsreader And Emailer
+.\"      Date: 08/25/2008
+.\"    Manual: Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "CONE" "1" "05/24/2008" "" "Cone: COnsole Newsreader An"
+.TH "CONE" "1" "08/25/2008" "" "Cone: COnsole Newsreader And E"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -24,64 +21,34 @@ cone - Read and send E-mail messages
 .SH "USAGE"
 .PP
 
-
-
-
 Cone
 is a console newsreader and E\-mail\. It is an interactive program for reading and sending E\-mail messages\.
-
-
-
 Cone
 is designed to be intuitive and easy to learn\. Starting
-
-
-
 Cone
 for the first time displays two links: one for the default system mailbox, and a second link to a quick online tutorial\. The online tutorial provides a brief overview of using
-
-
-
 Cone
 for reading and sending E\-mail\.
 .PP
 Pressing
 Q
 on most screens exits
-
-
-
 Cone\.
-
-
-
 Cone
 tries to gracefully log out and shut down all server connections\. If
-
-
-
 Cone
 cannot log out of a remote server because the remote server is down, press
 CTRL\-C
 (after
 Q
 to terminate
-
-
-
 Cone)\.
 .PP
 Use
 CTRL\-Z
 to temporarily suspend
-
-
-
 Cone
 and drop back to the shell prompt\.
-
-
-
 Cone
 remains suspended in the background, and may be restarted by using the shell\'s
 \fBfg\fR
@@ -94,23 +61,14 @@ command\.
 Note
 .PP
 Connections to remote mail servers may be disconnected for inactivity if
-
-
-
 Cone
 remains suspended for a prolonged period of time\. When suspended,
-
-
-
 Cone
 cannot maintain any active connections to remote mail servers\.
 .PP
 The
 \fB\-c\fR
 option names a directory where
-
-
-
 Cone
 saves its configuration files, and defaults to
 \fI$HOME/\.cone\fR\. The configuration directory will be created, if necessary\.
@@ -118,17 +76,8 @@ saves its configuration files, and defaults to
 The
 \fB\-r\fR
 option recovers a backup copy of
-
-
-
 Cone\'s configuration file\. This option is primarily used when remote configuration is enabled, but the folder that contains
-
-
-
 Cone\'s configuration on a remote server was deleted, or is not available\. In all cases,
-
-
-
 Cone
 makes a daily local configuration file backup\. The
 \fB\-r\fR
@@ -136,21 +85,12 @@ option searches for local configuration file backups, and offers an option to re
 .SS "Reading local mail with Cone"
 .PP
 
-
-
-
 Cone
 reads local mail from either maildirs (the preferred format) or mailbox files (or "mboxes")\. When mboxes are used,
-
-
-
 Cone
 does not read the system mailbox file directly (usually
 \fI/var/spool/\fR\fI\fIsomething\fR\fR)\. All messages in the system mailbox are automatically moved to
 \fI$HOME/Inbox\fR, which is then accessed as if it was the system mailbox\. Starting
-
-
-
 Cone
 for the first time on an mbox\-based system automatically copies all existing mail from the system mailbox file to
 \fI$HOME/Inbox\fR\.
@@ -158,42 +98,24 @@ for the first time on an mbox\-based system automatically copies all existing ma
 This is an intentional design choice\. Normal user application cannot create new files in
 \fI/var/spool\fR; all they can do is read the mailbox file from
 \fI/var/spool\fR\. Therefore, the only way to update the mailbox file is by rewriting it from scratch (more or less)\. While the mailbox file is in the process of being rewritten, if the
-
-
-
 Cone
 process is interrupted, or killed, the resulted in a corrupted system mailbox\. There are way to minimize this vulnerability, but it cannot be eliminated completely\. Some Linux kernels use an
 \(lqOOM killer\(rq
 that may terminate any process when the system memory is low\. There is no way to completely prevent corrupted system mailbox files on those kernels\.
 .PP
 
-
-
-
 Cone
 uses an alternative way of updating mboxes\.
-
-
-
 Cone
 updates mboxes by creating a new mbox file separately, then replacing the original mbox file with the new version\. Unfortunately this cannot be done with the system mailbox file, because of the restricted access rights on the system spool directory\. To solve this problem
-
-
-
 Cone
 automatically copies the system mailbox file to
 \fI$HOME/Inbox\fR, each time the system mailbox file is opened and whenever new mail is available\.
 .SS "Viewing MIME attachments"
 .PP
 
-
-
-
 Cone
 displays text and simple HTML content by itself\. Other kinds of attachments may be viewed by using a helper script\.
-
-
-
 Cone
 invokes a helper script to open a MIME attachment\. The helper script\'s name is
 \(lq\fITYPE\fR\.\fISUBTYPE\fR\.filter\(rq, where
@@ -201,9 +123,6 @@ invokes a helper script to open a MIME attachment\. The helper script\'s name is
 and
 \(lqSUBTYPE\(rq
 corresponds to the MIME type and subtype, accordingly\.
-
-
-
 Cone
 looks for helper scripts in
 \fI$HOME/\.cone\fR
@@ -223,9 +142,6 @@ MIME attachments\.
 Helper scripts
 .RS
 .PP
-
-
-
 
 Cone
 runs each helper script twice:
@@ -263,9 +179,6 @@ Note
 This is a temporary file, whose extension will not necessary be the file extension associated with this MIME type\.
 .PP
 The helper script should read and process the file specified by the third argument\.
-
-
-
 Cone
 interprets anything the helper script writes to standard output as HTML\.
 .sp
@@ -276,39 +189,24 @@ interprets anything the helper script writes to standard output as HTML\.
 Note
 .PP
 
-
-
-
 Cone
 waits until the helper script terminates before displaying the rest of the message\. Most helper scripts should run in the background\. However, note that
-
-
-
 Cone
 removes the temporary file when the original message is closed; the temporary file may be removed any time after the helper script terminates\. The helper script should make its own private copy of the file, if necessary\.
 .RE
 .SS "Activating URLs"
 .PP
 
-
-
-
 Cone
 has limited ability to activate
 URLs in
 HTML
 messages\.
-
-
-
 Cone
 handles
 \(lqmailto:\(rq
 URLs by itself\. For other
 URLs
-
-
-
 Cone
 runs
 \fI@datadir@/cone/\fR\fI\fImethod\fR\fR\fI\.handler\fR
@@ -316,9 +214,6 @@ with the
 URL
 passed as an argument\.
 .PP
-
-
-
 
 Cone
 installs
@@ -337,9 +232,6 @@ binaries are found in the current
 .br
 Note
 .PP
-
-
-
 
 Cone
 also looks
@@ -361,9 +253,6 @@ option\.
 \fI@datadir@/cone/IMAGE\.GIF\.filter\fR, \fI@datadir@/cone/IMAGE\.JPEG\.filter\fR, \fI@datadir@/cone/IMAGE\.PNG\.filter\fR, \fI@datadir@/cone/APPLICATION\.PDF\.filter\fR
 .RS 4
 Default helper scripts distributed with
-
-
-
 Cone\.
 .RE
 .SH "SEE ALSO"

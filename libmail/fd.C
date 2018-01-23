@@ -1,4 +1,4 @@
-/* $Id: fd.C,v 1.9 2008/05/24 17:57:41 mrsam Exp $
+/* $Id: fd.C,v 1.10 2008/07/07 03:25:41 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -30,9 +30,10 @@ using namespace std;
 
 string mail::fd::rootCertRequiredErrMsg;
 
-mail::fd::fd(mail::callback::disconnect &disconnect_callback) :
+mail::fd::fd(mail::callback::disconnect &disconnect_callback,
+	     std::vector<std::string> &certificatesArg) :
 	mail::account(disconnect_callback), socketfd(-1),
-	ioDebugFlag(false), writtenFlag(false),
+	ioDebugFlag(false), certificates(certificatesArg), writtenFlag(false),
 	tls(NULL)
 {
 }
@@ -317,7 +318,7 @@ string mail::fd::starttls(mail::loginInfo &loginInfo,
 	if (tls)
 		return "";
 
-	if ((tls=new mail::fdTLS(starttlsFlag)) == NULL)
+	if ((tls=new mail::fdTLS(starttlsFlag, certificates)) == NULL)
 		return strerror(errno);
 
 	tls->fd=socketfd;
@@ -326,6 +327,11 @@ string mail::fd::starttls(mail::loginInfo &loginInfo,
 	tls->tls_info.app_data=tls;
 	tls->tls_info.getconfigvar= &mail::fdTLS::get_tls_config_var;
 	tls->tls_info.tls_err_msg= &mail::fdTLS::get_tls_err_msg;
+	tls->tls_info.getpemclientcert4ca=
+		&mail::fdTLS::get_tls_client_certs;
+	tls->tls_info.releasepemclientcert4ca=
+		&mail::fdTLS::free_tls_client_certs;
+
 	tls->domain="";
 
 	if (loginInfo.options.count("novalidate-cert") == 0)

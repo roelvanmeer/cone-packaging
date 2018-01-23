@@ -1,6 +1,6 @@
-/* $Id: pop3maildrop.H,v 1.3 2004/08/21 03:30:25 mrsam Exp $
+/* $Id: pop3maildrop.H,v 1.4 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -39,7 +39,8 @@ public:
 		     mail::callback &callback,
 		     std::string pathArg,
 		     std::string pop3url,
-		     std::string pop3pass);
+		     std::string pop3pass,
+		     std::vector<std::string> &certificates);
 	~pop3maildrop();
 
 	// Hook into POP3:

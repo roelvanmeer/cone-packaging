@@ -1,4 +1,4 @@
-##VERSION: $Id: cone.dist.in,v 1.5 2008/05/24 17:57:41 mrsam Exp $
+##VERSION: $Id: cone.dist.in,v 1.7 2008/07/13 14:27:33 mrsam Exp $
 #
 # cone configuration file created from cone.dist by sysconftool
 #
@@ -67,8 +67,6 @@ UNDERLINE_HACK=0
 # extension, as opposed to IMAP over SSL on port 993.
 #
 # It takes the same values for OpenSSL/GnuTLS as TLS_PROTOCOL
-
-TLS_STARTTLS_PROTOCOL=TLS1
 
 ##NAME: TLS_CIPHER_LIST:0
 #
@@ -158,52 +156,19 @@ TLS_CERTS=X509
 
 ##NAME: TLS_CERTFILE:0
 #
-# TLS_CERTFILE - certificate to use.  TLS_CERTFILE is required for SSL/TLS
-# servers, and is optional for SSL/TLS clients.  TLS_CERTFILE is usually
-# treated as confidential, and must not be world-readable. Set TLS_CERTFILE
-# instead of TLS_DHCERTFILE if this is a garden-variety certificate
+# TLS_CERTFILE - certificate to use.
 #
-# VIRTUAL HOSTS (servers only):
+# For diagnostic purposes only.
 #
-# Due to technical limitations in the original SSL/TLS protocol, a dedicated
-# IP address is required for each virtual host certificate. If you have
-# multiple certificates, install each certificate file as
-# $TLS_CERTFILE.aaa.bbb.ccc.ddd, where "aaa.bbb.ccc.ddd" is the IP address
-# for the certificate's domain name. So, if TLS_CERTFILE is set to
-# /etc/certificate.pem, then you'll need to install the actual certificate
-# files as /etc/certificate.pem.192.168.0.0.2, /etc/certificate.pem.192.68.0.0.3
-# and so on, for each IP address.
-#
-# GnuTLS only (servers only):
-#
-# GnuTLS implements a new TLS extension that eliminates the need to have a
-# dedicated IP address for each SSL/TLS domain name. Install each certificate
-# as $TLS_CERTFILE.domain, so if TLS_CERTFILE is set to /etc/certificate.pem,
-# then you'll need to install the actual certificate files as
-# /etc/certificate.pem.host1.example.com, /etc/certificate.pem.host2.example.com
-# and so on.
-#
-# Note that this TLS extension also requires a corresponding support in the
-# client. Older SSL/TLS clients may not support this feature.
-#
-# This is an experimental feature.
+# Use the "CERTIFICATES" option in the main menu to load client certificates
+# into Cone, then choose one of the loaded certificates for each account.
 
-##NAME: TLS_TRUSTCERTS:0
+##NAME: TLS_TRUSTCERTS:1
 #
 # TLS_TRUSTCERTS=pathname - load trusted certificates from pathname.
-# pathname can be a file or a directory. If a file, the file should
-# contain a list of trusted certificates, in PEM format. If a
-# directory, the directory should contain the trusted certificates,
-# in PEM format, one per file and hashed using OpenSSL's c_rehash
-# script. TLS_TRUSTCERTS is used by SSL/TLS clients (by specifying
-# the -domain option) and by SSL/TLS servers (TLS_VERIFYPEER is set
-# to PEER or REQUIREPEER).
-#
-#
-# TLS_TRUSTCERTS=
+# Use this setting to define SSL certificate authorities
 
-@ROOTCERTS@
-
+TLS_TRUSTCERTS=@cacerts@
 
 ##NAME: TLS_VERIFYPEER:0
 #

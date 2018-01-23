@@ -3,18 +3,18 @@
 .\"  <!-- distribution information. -->
 .\"     Title: maildirkw
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 05/13/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 08/25/2008
 .\"    Manual: Double Precision, Inc.
 .\"    Source: Double Precision, Inc.
 .\"
-.TH "MAILDIRKW" "1" "05/13/2007" "Double Precision, Inc." "Double Precision, Inc."
+.TH "MAILDIRKW" "1" "08/25/2008" "Double Precision, Inc." "Double Precision, Inc."
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-maildirkw \- set maildir message keywords
+maildirkw - set maildir message keywords
 .SH "SYNOPSIS"
 .HP 10
 \fBmaildirkw\fR [\-c] [\-l] [\-a] [\-r] {\fImaildir\fR} {\fImessage\fR} [\fIkeyword\fR...]
@@ -26,58 +26,58 @@ maildirkw \- set maildir message keywords
 \fBmaildirkw\fR
 modifies
 Courier\-IMAP
-compatible maildir message keywords. This command allows an easy way to set or clear custom IMAP keywords associated with a particular message.
+compatible maildir message keywords\. This command allows an easy way to set or clear custom IMAP keywords associated with a particular message\.
 \fImaildir\fR
-is the pathname to a maildir, or a maildir folder. The
+is the pathname to a maildir, or a maildir folder\. The
 \fB\-L\fR
-option lists all messages in the maildir, and their associated keywords.
+option lists all messages in the maildir, and their associated keywords\.
 \fImessage\fR
-specified which message's keywords should be set. One or more
-\fIkeyword\fRs specifies a list of keywords to be set for this message. The specified list of
+specified which message\'s keywords should be set\. One or more
+\fIkeyword\fRs specifies a list of keywords to be set for this message\. The specified list of
 \fIkeyword\fRs replaces any keywords presently set for the
 \fImessage\fR, unless the
 \fB\-a\fR
 or the
 \fB\-r\fR
-option is specified.
+option is specified\.
 .PP
 The
 \fB\-a\fR
 option adds the
 \fIkeyword\fR
 to existing keywords that are set for
-\fImessage\fR. The
+\fImessage\fR\. The
 \fB\-r\fR
 removes
 \fIkeyword\fRs from
-\fImessage\fR, leaving any remaining keywords set in place.
+\fImessage\fR, leaving any remaining keywords set in place\.
 .PP
 The
 \fB\-l\fR
 should be used if
-Courier\-IMAP's configuration file has the
+Courier\-IMAP\'s configuration file has the
 IMAP_USELOCKS
-option set.
+option set\.
 \fB\-l\fR
-enables a compatible locking mechanism to update the message's keywords.
+enables a compatible locking mechanism to update the message\'s keywords\.
 .PP
 
 \fB\-c\fR
-enables case\-sensitive keywords. IMAP keywords are normally case insensitive.
+enables case\-sensitive keywords\. IMAP keywords are normally case insensitive\.
 \fB\-c\fR
 needs to be used if the
 \fISMAP1\fR\&[1]
-protocol extension is used, which uses case sensitive keywords.
+protocol extension is used, which uses case sensitive keywords\.
 .SH "SEE ALSO"
 .PP
 
 \fI\fBmaildiracl\fR(1)\fR\&[2],
-\fI\fBmaildirmake\fR(1)\fR\&[3].
-.SH "REFERENCES"
+\fI\fBmaildirmake\fR(1)\fR\&[3]\.
+.SH "NOTES"
 .IP " 1." 4
 SMAP1
 .RS 4
-\%http://www.courier\-mta.org/cone/smap1.html
+\%http://www.courier-mta.org/cone/smap1.html
 .RE
 .IP " 2." 4
 \fBmaildiracl\fR(1)

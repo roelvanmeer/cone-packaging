@@ -1,6 +1,6 @@
-/* $Id: pop3maildrop.C,v 1.5 2004/08/21 03:30:25 mrsam Exp $
+/* $Id: pop3maildrop.C,v 1.6 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2002-2003, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -48,7 +48,8 @@ static bool open_pop3maildrop(mail::account *&accountRet,
 					  oi.extraString,
 					  pop3method +
 					  oi.url.substr(oi.url.find(':')),
-					  oi.pwd);
+					  oi.pwd,
+					  oi.certificates);
 
 	return true;
 }
@@ -117,6 +118,7 @@ public:
 
 	pop3acct(mail::pop3maildrop *myMaildropArg,
 		 std::string url, std::string passwd,
+		 std::vector<std::string> &certificates,
 		 mail::loginCallback *loginCallbackFunc,
 		 callback &callback,
 		 callback::disconnect &disconnectCallback);
@@ -151,11 +153,13 @@ private:
 
 mail::pop3maildrop::pop3acct::pop3acct(mail::pop3maildrop *myMaildropArg,
 				       std::string url, std::string passwd,
+				       std::vector<std::string> &certificates,
 				       mail::loginCallback *loginCallbackFunc,
 				       callback &callback,
 				       callback::disconnect
 				       &disconnectCallback)
-	: pop3(url, passwd, loginCallbackFunc, callback, disconnectCallback),
+	: pop3(url, passwd, certificates,
+	       loginCallbackFunc, callback, disconnectCallback),
 	  myMaildrop(myMaildropArg)
 {
 }
@@ -244,7 +248,8 @@ mail::pop3maildrop::pop3maildrop(mail::callback::disconnect
 				 mail::callback &callback,
 				 std::string pathArg,
 				 std::string pop3url,
-				 std::string pop3pass)
+				 std::string pop3pass,
+				 std::vector<std::string> &certificates)
 	: maildir((mail::callback::disconnect &)*this),
 	  myPop3Acct(NULL)
 {
@@ -290,6 +295,7 @@ mail::pop3maildrop::pop3maildrop(mail::callback::disconnect
 		myPop3Acct=new pop3acct(this,
 					pop3url,
 					pop3pass,
+					certificates,
 					loginCallbackFunc,
 					*h,
 					disconnect_callback);

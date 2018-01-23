@@ -8,6 +8,7 @@
 #define COURIERTCPD_EXPOSE_OPENSSL 1
 #include	"libcouriertls.h"
 #include	<openssl/rand.h>
+#include	<openssl/x509.h>
 #include	"tlscache.h"
 #include	"rfc1035/rfc1035.h"
 #include	"soxwrap/soxwrap.h"
@@ -101,12 +102,14 @@ static int ssl_verify_callback(int goodcert, X509_STORE_CTX *x509)
 		X509_STORE_CTX_get_ex_data(x509,
 					   SSL_get_ex_data_X509_STORE_CTX_idx()
 					   );
-	const struct tls_info *info=SSL_get_app_data(ssl);
+	struct tls_info *info=SSL_get_app_data(ssl);
 
 	if (info->peer_verify_domain || get_peer_verify_level(info))
 	{
 		if (!goodcert)
 			return (0);
+
+		info->certificate_verified=1;
 	}
 
 	return (1);
@@ -366,6 +369,114 @@ static int process_certfile(SSL_CTX *ctx, const char *certfile, const char *ip,
 	return (*func)(ctx, certfile);
 }
 
+static int client_cert_cb(ssl_handle ssl, X509 **x509, EVP_PKEY **pkey)
+{
+	struct tls_info *info=(struct tls_info *)SSL_get_app_data(ssl);
+	int i;
+	const char *pem_cert;
+	size_t pem_cert_size;
+	STACK_OF(X509_NAME) *client_cas;
+	int cert_num=0;
+	int rc;
+
+	if (info->getpemclientcert4ca == NULL)
+		return 0;
+
+	rc=0;
+	client_cas=SSL_get_client_CA_list(ssl);
+
+	if (info->loadpemclientcert4ca)
+		(*info->loadpemclientcert4ca)(info->app_data);
+
+	for (cert_num=0; (*info->getpemclientcert4ca)(cert_num, &pem_cert,
+						      &pem_cert_size,
+						      info->app_data);
+	     ++cert_num)
+	{
+		BIO *certbio;
+		int err;
+		X509 *x;
+
+		ERR_clear_error();
+
+		certbio=BIO_new_mem_buf((void *)pem_cert, pem_cert_size);
+
+		if (!certbio)
+		{
+			rc= -1;
+			break;
+		}
+
+		x=PEM_read_bio_X509(certbio, x509, NULL, NULL);
+
+		if (!x)
+		{
+			BIO_free(certbio);
+			continue;
+		}
+
+		for (i=0; client_cas && i<client_cas->stack.num; i++)
+		{
+			X509_NAME *cert=(X509_NAME *)client_cas->stack.data[i];
+
+			if (X509_NAME_cmp(cert,
+					  x->cert_info->issuer) == 0)
+				break;
+		}
+
+		if (!client_cas || i >= client_cas->stack.num)
+		{
+			BIO_free(certbio);
+			continue;
+		}
+
+		while ((x=PEM_read_bio_X509(certbio, NULL,
+					    NULL, 0)) != NULL)
+		{
+			if (SSL_CTX_add_extra_chain_cert(SSL_get_SSL_CTX(ssl),
+							 x)
+			    != 1)
+			{
+				X509_free(x);
+				rc= -1;
+				break;
+			}
+		}
+
+		err = ERR_peek_last_error();
+		if (rc || ERR_GET_LIB(err) != ERR_LIB_PEM ||
+		    ERR_GET_REASON(err) != PEM_R_NO_START_LINE)
+		{
+			BIO_free(certbio);
+			continue;
+		}
+		BIO_free(certbio);
+
+		ERR_clear_error();
+
+		certbio=BIO_new_mem_buf((void *)pem_cert, pem_cert_size);
+
+		if (!certbio)
+		{
+			rc= -1;
+			break;
+		}
+
+		if (!PEM_read_bio_PrivateKey(certbio, pkey, NULL, NULL))
+		{
+			BIO_free(certbio);
+			continue;
+		}
+
+		BIO_free(certbio);
+		rc=1;
+		break;
+	}
+	ERR_clear_error();
+	(*info->releasepemclientcert4ca)(info->app_data);
+	return rc;
+}
+
 SSL_CTX *tls_create(int isserver, const struct tls_info *info)
 {
 	SSL_CTX *ctx;
@@ -435,6 +546,7 @@ SSL_CTX *tls_create(int isserver, const struct tls_info *info)
 
 	memcpy(info_copy, info, sizeof(*info_copy));
 	info_copy->isserver=isserver;
+	info_copy->certificate_verified=0;
 
 	if (!protocol || !*protocol)
 		protocol="SSL23";
@@ -493,7 +605,8 @@ SSL_CTX *tls_create(int isserver, const struct tls_info *info)
 			|| (!SSL_CTX_load_verify_locations(ctx, peer_cert_file,
 				peer_cert_dir)))
 		{
-			sslerror(info, peer_cert_dir, -1);
+			sslerror(info, peer_cert_file ?
+				 peer_cert_file:peer_cert_dir, -1);
 			tls_destroy(ctx);
 			return (0);
 		}
@@ -561,6 +674,8 @@ SSL_CTX *tls_create(int isserver, const struct tls_info *info)
 	}
 	SSL_CTX_set_verify(ctx, get_peer_verify_level(info),
 			   ssl_verify_callback);
+	if (!isserver)
+		SSL_CTX_set_client_cert_cb(ctx, client_cert_cb);
 	return (ctx);
 }
 
@@ -1089,6 +1204,13 @@ int tls_connecting(SSL *ssl)
 	return info->accept_interrupted || info->connect_interrupted;
 }
 
+int tls_certificate_verified(ssl_handle ssl)
+{
+	struct tls_info *info=(struct tls_info *)SSL_get_app_data(ssl);
+
+	return info->certificate_verified;
+}
+
 #define MAXDOMAINSIZE	256
 
 static time_t asn1toTime(ASN1_TIME *asn1Time)
@@ -1301,3 +1423,139 @@ char *tls_get_encryption_desc(ssl_handle ssl)
 	return strdup(protocolbuf);
 }
 
+
+/* ------------------- */
+
+int tls_validate_pem_cert(const char *buf, size_t buf_size)
+{
+	int rc;
+	BIO *certbio;
+	int err;
+	EVP_PKEY *pk;
+
+	ERR_clear_error();
+
+	rc=0;
+	certbio=BIO_new_mem_buf((void *)buf, buf_size);
+
+	if (!certbio)
+		return (0);
+
+	X509 *x=PEM_read_bio_X509(certbio, NULL, NULL, NULL);
+
+	if (x)
+	{
+		X509_free(x);
+
+		while ((x=PEM_read_bio_X509(certbio, NULL, NULL, NULL)) != NULL)
+			X509_free(x);
+
+		err = ERR_peek_last_error();
+                if (ERR_GET_LIB(err) == ERR_LIB_PEM &&
+		    ERR_GET_REASON(err) == PEM_R_NO_START_LINE)
+		{
+			rc=1;
+		}
+	}
+
+	ERR_clear_error();
+	BIO_free(certbio);
+
+	certbio=BIO_new_mem_buf((void *)buf, buf_size);
+
+	if (!certbio)
+		return (0);
+
+	if (!(pk=PEM_read_bio_PrivateKey(certbio, NULL, NULL, NULL)))
+	{
+		BIO_free(certbio);
+		ERR_clear_error();
+		return 0;
+	}
+
+	EVP_PKEY_free(pk);
+	return rc;
+}
+
+static size_t conv_name_to_rfc2553(const char *p, char *q)
+{
+#define PUTC(c) if (q) *q++=(c); ++n
+
+	size_t n=0;
+	const char *sep="";
+
+	while (*p)
+	{
+		if (*p == '/')
+		{
+			++p;
+			continue;
+		}
+
+		while (*sep)
+		{
+			PUTC(*sep);
+			++sep;
+		}
+		sep=",";
+
+		while (*p && *p != '/')
+		{
+			if (*p == '\\' && p[1])
+				++p;
+			if (*p == '\\' || *p == ',')
+			{
+				PUTC('\\');
+			}
+			PUTC(*p);
+			++p;
+		}
+	}
+	PUTC(0);
+#undef PUTC
+
+	return n;
+}
+
+char *tls_cert_name(const char *buf, size_t buf_size)
+{
+	int rc;
+	BIO *certbio;
+	char *p, *q;
+	X509 *x;
+	size_t cnt;
+
+	rc=0;
+	certbio=BIO_new_mem_buf((void *)buf, buf_size);
+
+	if (!certbio)
+	{
+		ERR_clear_error();
+		return (0);
+	}
+
+	x=PEM_read_bio_X509(certbio, NULL, NULL, NULL);
+	p=0;
+	q=0;
+
+	if (x)
+	{
+		p=X509_NAME_oneline(x->cert_info->subject, NULL, 0);
+		X509_free(x);
+	}
+	ERR_clear_error();
+	BIO_free(certbio);
+
+	if (p)
+	{
+		cnt=conv_name_to_rfc2553(p, NULL);
+
+		q=malloc(cnt);
+
+		if (q)
+			conv_name_to_rfc2553(p, q);
+		free(p);
+	}
+
+	return q;
+}

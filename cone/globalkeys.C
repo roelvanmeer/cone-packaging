@@ -1,6 +1,6 @@
-/* $Id: globalkeys.C,v 1.5 2006/02/16 02:59:42 mrsam Exp $
+/* $Id: globalkeys.C,v 1.6 2008/07/07 03:25:40 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -91,6 +91,15 @@ bool GlobalKeys::processKey(const Curses::Key &key,
 		}
 
 		if (currentScreen == ADDRESSBOOKLISTSCREEN)
+		{
+			Curses::keepgoing=false;
+			myServer::nextScreen=&mainMenu;
+			myServer::nextScreenArg=NULL;
+			PreviousScreen::previousScreen();
+			return true;
+		}
+
+		if (currentScreen == CERTIFICATESCREEN)
 		{
 			Curses::keepgoing=false;
 			myServer::nextScreen=&mainMenu;

@@ -1,6 +1,6 @@
-/* $Id: imaplogin.C,v 1.3 2007/04/06 17:57:29 mrsam Exp $
+/* $Id: imaplogin.C,v 1.4 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2002-2004, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -66,6 +66,8 @@ public:
 	~imapLoginHandler();
 
 	void installed(imap &imapAccount);
+	void installedtls(imap &imapAccount);
+	void installedtlsnonext(imap &imapAccount);
 
 	friend class imapCRAMHandler;
 
@@ -401,6 +403,39 @@ void mail::imapLoginHandler::timedOut(const char *errmsg)
 
 void mail::imapLoginHandler::installed(mail::imap &imapAccount)
 {
+	next_cram_func=0;
+
+	currentCmd="STARTTLS";
+
+#if HAVE_LIBCOURIERTLS
+
+	if (!myimap->socketEncrypted() &&
+	    myimap->hasCapability("STARTTLS") &&
+	    myLoginInfo.options.count("notls") == 0)
+	{
+		myimap->imapcmd((myimap->smap ? "\\SMAP1":"STARTTLS"),
+				"STARTTLS\r\n");
+		return;
+	}
+
+#endif
+	installedtls(imapAccount);
+}
+
+void mail::imapLoginHandler::installedtls(mail::imap &imapAccount)
+{
+	if (!preauthenticated && imapAccount.hasCapability("AUTH=EXTERNAL"))
+	{
+		currentCmd="LOGINEXT";
+		imapAccount.imapcmd(imapAccount.smap ? "\\SMAP1":"LOGINEXT",
+				    "AUTHENTICATE EXTERNAL =\r\n");
+		return;
+	}
+	installedtlsnonext(imapAccount);
+}
+
+void mail::imapLoginHandler::installedtlsnonext(mail::imap &imapAccount)
+{
 	if (!preauthenticated && myLoginInfo.loginCallbackFunc)
 	{
 		loginMethod="LOGIN";
@@ -460,22 +495,6 @@ void mail::imapLoginHandler::loginCallbackPwd(std::string arg)
 {
 	myLoginInfo.pwd=arg;
 
-	next_cram_func=0;
-
-	currentCmd="STARTTLS";
-
-#if HAVE_LIBCOURIERTLS
-
-	if (!myimap->socketEncrypted() &&
-	    myimap->hasCapability("STARTTLS") &&
-	    myLoginInfo.options.count("notls") == 0)
-	{
-		myimap->imapcmd((myimap->smap ? "\\SMAP1":"STARTTLS"),
-				"STARTTLS\r\n");
-		return;
-	}
-
-#endif
 	logincram(*myimap, "Login FAILED");
 }
 
@@ -715,6 +734,16 @@ bool mail::imapLoginHandler::taggedMessage(mail::imap &imapAccount, string name,
 	if (imapAccount.smap)
 		name=currentCmd;
 
+	if (name == "LOGINEXT")
+	{
+		if (!okfail)
+		{
+			installedtlsnonext(imapAccount);
+			return true;
+		}
+		name="LOGIN";
+	}
+
 	if (!okfail)
 	{
 		if (name == "LOGIN")
@@ -737,7 +766,10 @@ bool mail::imapLoginHandler::taggedMessage(mail::imap &imapAccount, string name,
 			return true;
 
 		completed=0;
-		logincram(imapAccount, "Login FAILED");
+		currentCmd="TLSCAPABILITY";
+
+		imapAccount.imapcmd(imapAccount.smap ?
+				    "\\SMAP1":"TLSCAPABILITY", "CAPABILITY\r\n");
 		return true;
 	}
 
@@ -752,6 +784,12 @@ bool mail::imapLoginHandler::taggedMessage(mail::imap &imapAccount, string name,
 			imapAccount.imapcmd("CAPABILITY", "CAPABILITY\r\n");
 			return true;
 		}
+	}
+
+	if (name == "TLSCAPABILITY")
+	{
+		installedtls(imapAccount);
+		return true;
 	}
 
 	if (name == "CAPABILITY")

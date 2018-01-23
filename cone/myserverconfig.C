@@ -1,6 +1,6 @@
-/* $Id: myserverconfig.C,v 1.22 2006/02/04 04:57:45 mrsam Exp $
+/* $Id: myserverconfig.C,v 1.24 2008/07/13 15:50:10 mrsam Exp $
 **
-** Copyright 2003-2006, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -32,6 +32,7 @@
 #include "gpg.H"
 #include "tags.H"
 #include "colors.H"
+#include "certificates.H"
 #include "tcpd/tlspasswordcache.h"
 #include <errno.h>
 #include <unistd.h>
@@ -42,7 +43,7 @@
 #include <libxml/tree.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-
+#include <fcntl.h>
 #include <set>
 #include <map>
 #include <iomanip>
@@ -76,7 +77,9 @@ unicodeEntityAltList *currentEntityAltList=NULL;
 
 vector<string> myServer::myAddresses, myServer::myListAddresses;
 string myServer::smtpServerURL;   // Config - SMTP server URL
+string myServer::smtpServerCertificate; // Config - SMTP server certificate
 string myServer::smtpServerPassword;	// Config (not saved) - SMTP password
+
 bool myServer::useIMAPforSending; // Config
 
 
@@ -315,7 +318,7 @@ void myServer::savepasswords(string password)
 	{
 		string pwd;
 
-		if (PasswordList::passwordList.get( *b, pwd))
+		if (PasswordList::passwordList.get( *b, pwd) && pwd.size())
 		{
 			url_strings.push_back( *b );
 			password_strings.push_back( pwd );
@@ -323,7 +326,19 @@ void myServer::savepasswords(string password)
 		++b;
 	}
 
-		
+	std::map<std::string, Certificates::cert>::iterator
+		cb=certs->certs.begin(), ce=certs->certs.end();
+
+	while (cb != ce)
+	{
+		url_strings.push_back("ssl:" + cb->first);
+
+		password_strings.push_back(Gettext::toutf8(cb->second.name)
+					   + "\n" +
+					   cb->second.cert);
+		++cb;
+	}
+
 	vector<const char *> urlp, passp;
 
 	vector<string>::iterator sb=url_strings.begin(), se=url_strings.end();
@@ -694,6 +709,8 @@ void myServer::config::save()
 
 		string sNewsrc=mail::rfc2047::encode(p->newsrc,
 						     myCharset);
+		string sCert=mail::rfc2047::encode(p->certificate,
+						   myCharset);
 
 		xmlNodePtr serverNode=xmlNewNode (NULL,
 						  (xmlChar *)
@@ -721,6 +738,11 @@ void myServer::config::save()
 			    !xmlSetProp(remoteServerNode,
 					(xmlChar *)"NAME",
 					(xmlChar *)sName.c_str()) ||
+
+			    (sCert.size() > 0 &&
+			     !xmlSetProp(remoteServerNode,
+					 (xmlChar *)"CERTIFICATE",
+					 (xmlChar *)sCert.c_str())) ||
 			    !xmlAddChild(doc->children, remoteServerNode))
 			{
 				if (remoteServerNode)
@@ -740,6 +762,10 @@ void myServer::config::save()
 		    !xmlSetProp(serverNode,
 				(xmlChar *)"URL",
 				(xmlChar *)sUrl.c_str()) ||
+		    (sCert.size() > 0 &&
+		     !xmlSetProp(serverNode,
+				 (xmlChar *)"CERTIFICATE",
+				 (xmlChar *)sCert.c_str())) ||
 		    !xmlSetProp(serverCacheNode,
 				(xmlChar *)"NAME",
 				(xmlChar *)sName.c_str()) ||
@@ -1008,6 +1034,12 @@ void myServer::config::save()
 	    || (myServer::useIMAPforSending &&
 		!xmlSetProp(f, (xmlChar *)"USEIMAP",
 			    (xmlChar *)"TRUE"))
+
+	    || (myServer::smtpServerCertificate.size() > 0 &&
+		!xmlSetProp(f,
+			    (xmlChar *)"CERTIFICATE",
+			    (xmlChar *)myServer::smtpServerCertificate
+			    .c_str()))
 	    || !xmlAddChild(REMOTE->children, f))
 	{
 		if (f)
@@ -1346,6 +1378,7 @@ bool myServer::loadconfig()
 	xmlDocPtr doc;
 
 	myServer::smtpServerURL="";
+	myServer::smtpServerCertificate="";
 	myServer::useIMAPforSending=false;
 	nntpCommandFolder::nntpCommand="";
 
@@ -1770,6 +1803,9 @@ bool myServer::config::loadconfig(xmlDocPtr doc,
 			{
 				myServer::smtpServerURL=getProp(root, "URL");
 
+				myServer::smtpServerCertificate=
+					getProp(root, "CERTIFICATE");
+
 				string useImap=getProp(root, "USEIMAP");
 
 				myServer::useIMAPforSending=
@@ -1978,6 +2014,7 @@ void myServer::config::loadserver(xmlNodePtr root,
 {
 	string name=getProp(root, "NAME");
 	string url=getPropNC(root, "URL");
+	string certificate=getPropNC(root, "CERTIFICATE");
 
 	if (name.length() == 0 || url.length() == 0)
 		return;
@@ -2019,6 +2056,8 @@ void myServer::config::loadserver(xmlNodePtr root,
 
 
 	myServer *s=new myServer(name, url);
+
+	s->certificate=certificate;
 
 	map<string, xmlNodePtr>::iterator cacheP=cacheMap.find(name);
 

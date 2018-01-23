@@ -1,6 +1,6 @@
-# $Id: Makefile.am,v 1.24 2007/06/30 15:40:53 mrsam Exp $
+# $Id: Makefile.am,v 1.25 2008/07/20 16:24:52 mrsam Exp $
 #
-# Copyright 2000 Double Precision, Inc.  See COPYING for
+# Copyright 2000-2008 Double Precision, Inc.  See COPYING for
 # distribution information.
 
 
@@ -9,7 +9,7 @@ CLEANFILES=charsetlist.c
 noinst_SCRIPTS=mkiso8859.pl mkkoi8r.pl mkkoi8u.pl mkibm864.pl big5.pl gb2312.pl \
 	update.sh \
 	mkultcase.pl unicodefilter.pl charsetlist.pl mkiso8859.pl \
-	iso2022jp.pl ksx1001.pl
+	iso2022jp.pl ksx1001.pl mkeastasianwidth.pl
 noinst_PROGRAMS=unicode-info
 
 unicode_info_SOURCES=unicodeinfo.c
@@ -59,6 +59,7 @@ update-www-eastasia:
 	@SHELL@ $(srcdir)/update.sh Unihan-3.2.0.txt.gz http://www.unicode.org/Public/3.2-Update/Unihan-3.2.0.txt.gz
 	@SHELL@ $(srcdir)/update.sh CP949.TXT http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP949.TXT
 	@SHELL@ $(srcdir)/update.sh big5-iso.txt http://www.info.gov.hk/digital21/chi/hkscs/download/big5-iso.txt
+	@SHELL@ $(srcdir)/update.sh EastAsianWidth.txt http://www.unicode.org/Public/UNIDATA/EastAsianWidth.txt
 
 ISO8859CFILES=iso88591.c iso88592.c iso88593.c iso88594.c iso88595.c\
 	iso88596.c iso88597.c iso88598.c iso88599.c iso885910.c iso885913.c\
@@ -81,6 +82,7 @@ libunicode_la_SOURCES=unicode.h iso8859.c windows874u.c unicode.c unicode2.c \
 			$(IBMCFILES) big5.c big5.h gb2312.c gb2312.h \
 			iso2022jp.c iso2022jp.h shiftjis.c eucjp.c \
 			ksx1001.h ksx1001.c \
+			unicode_wcwidth.c eastasianwidth.h \
 			charsetlist.c
 
 EXTRA_DIST=$(noinst_SCRIPTS) $(ISO8859CFILES) charsetlist.txt
@@ -137,4 +139,7 @@ iso2022jp.h: Unihan-3.2.0.txt.gz iso2022jp.pl
 
 ksx1001.h: CP949.TXT ksx1001.pl
 	@PERL@ $(srcdir)/ksx1001.pl > ksx1001.h
+
+eastasianwidth.h: EastAsianWidth.txt mkeastasianwidth.pl
+	@PERL@ $(srcdir)/mkeastasianwidth.pl >eastasianwidth.h
 endif

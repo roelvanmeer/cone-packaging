@@ -1,6 +1,6 @@
-/* $Id: mainmenu.H,v 1.5 2003/11/16 02:43:13 mrsam Exp $
+/* $Id: mainmenu.H,v 1.6 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -45,6 +45,7 @@ public:
 	static void setupscreen_s();
 	static void addaccount_s();
 	static void addressbook_s();
+	static void certificates_s();
 	static void writescreen_s();
 	static void masterpassword_s();
 	static void encryptionmenu_s();

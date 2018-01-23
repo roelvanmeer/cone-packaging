@@ -1,11 +1,11 @@
 #ifndef	gpglib_h
 #define	gpglib_h
 /*
-** Copyright 2001-2004 Double Precision, Inc.  See COPYING for
+** Copyright 2001-2008 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
-static const char gpglib_h_rcsid[]="$Id: gpglib.h,v 1.8 2004/04/13 02:04:33 mrsam Exp $";
+static const char gpglib_h_rcsid[]="$Id: gpglib.h,v 1.9 2008/07/07 03:25:41 mrsam Exp $";
 
 #ifdef  __cplusplus
 extern "C" {

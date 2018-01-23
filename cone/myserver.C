@@ -1,6 +1,6 @@
-/* $Id: myserver.C,v 1.13 2004/06/23 00:55:00 mrsam Exp $
+/* $Id: myserver.C,v 1.14 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2003-2004, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -37,6 +37,8 @@ Hierarchy myServer::hierarchy;
 
 unsigned myServer::cmdcount=0;
 string myServer::customHeaders="";
+
+Certificates *myServer::certs;
 
 extern void folderIndexScreen(void *);
 extern void hierarchyScreen(void *);
@@ -343,6 +345,43 @@ bool myServer::eventloop(myServer::Callback &callback)
 	return rc;
 }
 
+void myServer::find_cert_by_id(std::vector<std::string> &certArg)
+{
+	find_cert_by_id(certArg, certificate);
+}
+
+void myServer::find_cert_by_id(std::vector<std::string> &certArg,
+			       std::string certificate)
+{
+	certArg.clear();
+	if (certificate.size() > 0)
+	{
+		std::map<std::string, Certificates::cert>::iterator
+			p=certs->certs.find(certificate);
+
+		if (p != certs->certs.end())
+		{
+			certArg.reserve(1);
+			certArg.push_back(p->second.cert);
+		}
+	}
+}
+
+void myServer::find_cert_by_url(std::string url,
+				std::vector<std::string> &certArg)
+{
+	certArg.clear();
+
+	std::vector<myServer *>::iterator b, e;
+
+	for (b=server_list.begin(), e=server_list.end(); b != e; ++b)
+		if ( (*b)->url == url && (*b)->certificate.size() > 0)
+		{
+			(*b)->find_cert_by_id(certArg);
+			break;
+		}
+}
+
 /////////////////////////////////////////////////////////////////////////
 //
 // Log in to the server.  The are several available mechanism.
@@ -373,7 +412,9 @@ bool myServer::login(string passwordStr,
 
 	loginInfo.url=url;
 	loginInfo.pwd=passwordStr;
+	find_cert_by_id(loginInfo.certificates);
 	loginInfo.loginCallbackObj=loginPrompt;
+
 	loginInfo.extraString=getConfigDir() + "/" + newsrc;
 
 	if (loginPrompt)
@@ -396,8 +437,6 @@ bool myServer::login(string passwordStr,
 		if (loginPrompt && callback.interrupted) // Libmail wants pwd
 		{
 			loginPrompt->promptPassword(serverName, passwordStr);
-			loginPrompt->reset();
-			loginPrompt->myCallback= &callback;
 		}
 
 		statusBar->clearstatus();

@@ -6,10 +6,11 @@
 */
 
 /*
-** $Id: rfc2646.h,v 1.7 2003/03/07 01:49:32 mrsam Exp $
+** $Id: rfc2646.h,v 1.8 2008/07/20 17:00:33 mrsam Exp $
 */
 
 #include	"../rfc2045/rfc2045_config.h" /* VPATH */
+#include	"../unicode/unicode.h"
 #include	<stdlib.h>
 #include	<string.h>
 
@@ -129,6 +130,8 @@ struct rfc2646create {
 	size_t bufsize;
 	size_t buflen;
 
+	const struct unicode_info *charset;
+
 	int linesize;
 	int has_sent_paragraph;
 	int last_sent_quotelevel;
@@ -140,6 +143,7 @@ struct rfc2646create {
 
 struct rfc2646create *rfc2646create_alloc( int (*)(const char *, size_t,
 						    void *),
+					   const struct unicode_info *,
 					   void *);
 
 int rfc2646create_parse(struct rfc2646create *,

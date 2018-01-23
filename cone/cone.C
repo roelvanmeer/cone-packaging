@@ -1,6 +1,6 @@
-/* $Id: cone.C,v 1.20 2004/05/01 02:28:21 mrsam Exp $
+/* $Id: cone.C,v 1.22 2008/07/13 15:50:10 mrsam Exp $
 **
-** Copyright 2003-2004, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -56,6 +56,7 @@
 #include "gpg.H"
 #include "init.H"
 #include "macros.H"
+#include "configscreen.H"
 
 #include <iostream>
 
@@ -182,7 +183,8 @@ static bool isDupe(string newName, myServer *oldAcct)
 //
 // Try to add a new account
 
-myServer *addAccountTry(string account, string url, string password)
+myServer *tryCreateAccount(string account, string url, string password,
+			   string certificate)
 {
 	if (isDupe(account, NULL))
 	{
@@ -191,6 +193,8 @@ myServer *addAccountTry(string account, string url, string password)
 	}
 
 	myServer *ms=new myServer(account, url);
+
+	ms->certificate=certificate;
 
 	mail::loginInfo decodeUrl;
 
@@ -303,7 +307,7 @@ static myServer *addAccountPrompt(MainMenuScreen::AccountType *accountType)
 {
 	CursesContainer loginScreen(mainScreen);
 
-	loginScreen.setRow(4);
+	loginScreen.setRow(2);
 	loginScreen.setAlignment(Curses::PARENTCENTER);
 
 	CursesLabel title(&loginScreen,
@@ -320,15 +324,15 @@ static myServer *addAccountPrompt(MainMenuScreen::AccountType *accountType)
 	CursesLabel login_label(NULL,  _("Login: "));
 	CursesLabel password_label(NULL, _("Password: "));
 
-	CursesButton cram_field(NULL, _("Do not send password in clear text"),
-				1);
-
 	CursesField account_field(NULL);
 	CursesField server_field(NULL);
 	CursesField login_field(NULL);
 	CursesField password_field(NULL);
+	CursesButton cram_field(NULL, _("Do not send password in clear text"),
+				1);
 	CursesButton ssl_field(NULL, _("Use an encrypted connection"),
 				1);
+	ConfigScreen::CertificateButton cert_field("");
 
 	myLoginButton login_button(_("LOGIN"));
 	myCancelButton cancel_button;
@@ -349,6 +353,10 @@ static myServer *addAccountPrompt(MainMenuScreen::AccountType *accountType)
 
 	loginDialog.addPrompt(NULL, &cram_field, row += 2);
 	loginDialog.addPrompt(NULL, &ssl_field, row += 2);
+
+	if (!myServer::certs->certs.empty())
+		loginDialog.addPrompt(NULL, &cert_field, row += 2);
+
 	loginDialog.addPrompt(NULL, &login_button, row += 2);
 	loginDialog.addPrompt(NULL, &cancel_button, row += 2);
 
@@ -393,7 +401,8 @@ static myServer *addAccountPrompt(MainMenuScreen::AccountType *accountType)
 						 ? "/cram":""),
 						userid, "");
 
-		myServer *ms=addAccountTry(account, url, password);
+		myServer *ms=tryCreateAccount(account, url, password,
+					      cert_field.cert);
 
 		if (!ms)
 			continue;
@@ -490,7 +499,7 @@ void editAccountScreen(void *voidArg)
 
 	CursesContainer editScreen(mainScreen);
 
-	editScreen.setRow(4);
+	editScreen.setRow(2);
 	editScreen.setAlignment(Curses::PARENTCENTER);
 
 	CursesLabel title(&editScreen,_("Edit Account"));
@@ -511,6 +520,7 @@ void editAccountScreen(void *voidArg)
 	CursesField login_field(NULL);
 	CursesButton ssl_field(NULL, _("Use an encrypted connection"),
 				1);
+	ConfigScreen::CertificateButton cert_field(s->certificate);
 
 	myLoginButton login_button(_("UPDATE"));
 	myCancelButton cancel_button;
@@ -518,10 +528,17 @@ void editAccountScreen(void *voidArg)
 	loginDialog.addPrompt(&account_label, &account_field, 0);
 	loginDialog.addPrompt(&server_label, &server_field, 1);
 	loginDialog.addPrompt(&login_label, &login_field, 2);
-	loginDialog.addPrompt(NULL, &cram_field, 4);
-	loginDialog.addPrompt(NULL, &ssl_field, 6);
-	loginDialog.addPrompt(NULL, &login_button, 8);
-	loginDialog.addPrompt(NULL, &cancel_button, 10);
+
+	int row=2;
+
+	loginDialog.addPrompt(NULL, &cram_field, row += 2);
+	loginDialog.addPrompt(NULL, &ssl_field, row += 2);
+
+	if (!myServer::certs->certs.empty())
+		loginDialog.addPrompt(NULL, &cert_field, row += 2);
+
+	loginDialog.addPrompt(NULL, &login_button, row += 2);
+	loginDialog.addPrompt(NULL, &cancel_button, row += 2);
 
 	titleBar->setTitles(_("EDIT ACCOUNT"), "");
 
@@ -621,6 +638,7 @@ void editAccountScreen(void *voidArg)
 
 		s->url=newUrl;
 		s->serverName=account;
+		s->certificate=cert_field.cert;
 		break;
 	}
 
@@ -976,10 +994,10 @@ static void createconfig()
 	// An account for our default mailboxes, and an account that
 	// points to the folder containing online help text.
 
-	if (addAccountTry(_("My E-mail"), d, ""))
+	if (tryCreateAccount(_("My E-mail"), d, "", ""))
 	{
-		myServer *help=addAccountTry(_("Online Tutorial"),
-					     "mbox:" HELPFILE, "");
+		myServer *help=tryCreateAccount(_("Online Tutorial"),
+						"mbox:" HELPFILE, "", "");
 		if (help)
 		{
 			help->logout();
@@ -1163,6 +1181,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	signal(SIGPIPE, SIG_IGN);
 	macroPtr= &macroBuffer;
 	init(); // Common initialization between cone and leaf.
 
@@ -1406,6 +1425,12 @@ int main(int argc, char *argv[])
 		resetScreenColors();
 		if (recover)
 			doRecovery();
+
+		Certificates certs;
+
+		myServer::certs= &certs;
+
+		// certs.load();
 
 		statusBar->status(_("Loading GnuPG encryption keys..."));
 		statusBar->flush();

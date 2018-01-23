@@ -120,10 +120,10 @@ HOWTO.maildirquota
    This is a list of applications that have been enhanced to support the
    maildirquota extension:
 
-     * [1]maildrop - mail delivery agent/mail filter.
-     * [2]SqWebMail - webmail CGI binary.
-     * [3]Courier-IMAP - an IMAP server
-     * [4]Courier - all of the above
+     * maildrop - mail delivery agent/mail filter.
+     * SqWebMail - webmail CGI binary.
+     * Courier-IMAP - an IMAP server
+     * Courier - all of the above
 
   Quotas and deleted messages
 
@@ -140,7 +140,7 @@ HOWTO.maildirquota
    example, if you have both maildrop and SqWebMail installed, you must use
    this option to recompile both applications.
 
-   ---------------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
 Mission statement
 
@@ -148,8 +148,8 @@ Mission statement
    structure, first used in the Qmail mail server. Actually, Maildir++ is
    just a minor extension to the standard Maildir structure.
 
-   For more information, see [5]http://www.qmail.org/man/man5/maildir.html. I
-   am not going to include the definition of a Maildir in this document.
+   For more information, see http://www.qmail.org/man/man5/maildir.html. I am
+   not going to include the definition of a Maildir in this document.
    Consider it included right here. This document only describes the
    differences.
 
@@ -388,8 +388,8 @@ Reading from a Maildir++
 References
 
    Visible links
-   1. http://www.courier-mta.org/maildrop/
-   2. http://www.courier-mta.org/sqwebmail/
-   3. http://www.courier-mta.org/imap/
-   4. http://www.courier-mta.org/
-   5. http://www.qmail.org/man/man5/maildir.html
+   . http://www.courier-mta.org/maildrop/
+   . http://www.courier-mta.org/sqwebmail/
+   . http://www.courier-mta.org/imap/
+   . http://www.courier-mta.org/
+   . http://www.qmail.org/man/man5/maildir.html

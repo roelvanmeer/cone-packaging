@@ -1,6 +1,6 @@
-/* $Id: mainmenu.C,v 1.9 2005/06/18 01:06:05 mrsam Exp $
+/* $Id: mainmenu.C,v 1.12 2008/07/13 16:49:05 mrsam Exp $
 **
-** Copyright 2003-2004, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -38,6 +38,7 @@ extern Gettext::Key key_POP3MAILDROPACCOUNT;
 
 extern Gettext::Key key_NEWACCOUNT;
 extern Gettext::Key key_ADDRESSBOOK;
+extern Gettext::Key key_CERTIFICATES;
 extern Gettext::Key key_SETUPSCREEN;
 extern Gettext::Key key_MASTERPASSWORD;
 extern Gettext::Key key_ENCRYPTIONMENU;
@@ -46,11 +47,13 @@ extern void hierarchyScreen(void *);
 extern void addAccountScreen(void *);
 extern void setupScreen(void *);
 extern void listaddressbookScreen(void *);
+extern void certificatesScreen(void *);
 extern void encryptionMenu(void *);
 
 void mainMenu(void *dummy);
 
-extern myServer *addAccountTry(string account, string url, string password);
+extern myServer *tryCreateAccount(string account, string url,
+				  string password, string certificate);
 
 
 
@@ -61,6 +64,7 @@ MainMenuScreen::MainMenuScreen(CursesContainer *parent)
 	myAction.push_back( MenuActionStaticCallback(&MainMenuScreen::writescreen_s));
 	myAction.push_back( MenuActionStaticCallback(&MainMenuScreen::addaccount_s));
 	myAction.push_back( MenuActionStaticCallback(&MainMenuScreen::addressbook_s));
+	myAction.push_back( MenuActionStaticCallback(&MainMenuScreen::certificates_s));
 	myAction.push_back( MenuActionStaticCallback(&MainMenuScreen::setupscreen_s));
 	myAction.push_back( MenuActionStaticCallback(&MainMenuScreen::masterpassword_s));
 
@@ -68,21 +72,23 @@ MainMenuScreen::MainMenuScreen(CursesContainer *parent)
 
 	myEntries.push_back( MenuScreen::MenuEntry(_("L - LIST FOLDERS   "),
 						   myAction[0]));
-	myEntries.push_back( MenuScreen::MenuEntry(_("W - WRITE MESSAGE   "),
+	myEntries.push_back( MenuScreen::MenuEntry(_("W - WRITE MESSAGE  "),
 						   myAction[1]));
 	myEntries.push_back( MenuScreen::MenuEntry(_("N - NEW ACCOUNT    "),
 						   myAction[2]));
 	myEntries.push_back( MenuScreen::MenuEntry(_("A - ADDRESS BOOK   "),
 						   myAction[3]));
-	myEntries.push_back( MenuScreen::MenuEntry(_("S - SETUP          "),
+	myEntries.push_back( MenuScreen::MenuEntry(_("C - CERTIFICATES   "),
 						   myAction[4]));
-	myEntries.push_back( MenuScreen::MenuEntry(_("P - MASTER PASSWORD"),
+	myEntries.push_back( MenuScreen::MenuEntry(_("S - SETUP          "),
 						   myAction[5]));
+	myEntries.push_back( MenuScreen::MenuEntry(_("P - MASTER PASSWORD"),
+						   myAction[6]));
 
 	if (GPG::gpg_installed())
 		myEntries.push_back( MenuScreen
 				     ::MenuEntry(_("E - ENCRYPTION MENU"),
-						 myAction[6]));
+						 myAction[7]));
 
 
 	myKeys.push_back( MenuScreen::ShortcutKey(&myEntries[2],
@@ -96,12 +102,17 @@ MainMenuScreen::MainMenuScreen(CursesContainer *parent)
 						  key_ADDRESSBOOK));
 
 	myKeys.push_back( MenuScreen::ShortcutKey(&myEntries[4],
+						  Gettext::keyname(_("CERTIFICATES_K:C")),
+						  _("Certificates"),
+						  key_CERTIFICATES));
+
+	myKeys.push_back( MenuScreen::ShortcutKey(&myEntries[5],
 						  Gettext::keyname(_("SETUPSCREEN_K:S")),
 						  _("Setup"),
 						  key_SETUPSCREEN));
 
 
-	myKeys.push_back( MenuScreen::ShortcutKey(&myEntries[5],
+	myKeys.push_back( MenuScreen::ShortcutKey(&myEntries[6],
 						  Gettext::keyname(_("MASTERPASSWORD_K:P")),
 						  _("Master Password"),
 						  key_MASTERPASSWORD));
@@ -109,7 +120,7 @@ MainMenuScreen::MainMenuScreen(CursesContainer *parent)
 
 	if (GPG::gpg_installed())
 		myKeys.push_back( MenuScreen
-				  ::ShortcutKey(&myEntries[6],
+				  ::ShortcutKey(&myEntries[7],
 						Gettext::keyname(_("ENCRYPTION_K:E")),
 						_("Encryption"),
 						key_ENCRYPTIONMENU));
@@ -159,6 +170,19 @@ void MainMenuScreen::addressbook_s()
 	myServer::nextScreenArg=NULL;
 }
 
+void MainMenuScreen::certificates_s()
+{
+	if (PasswordList::passwordList.hasMasterPasswordFile())
+	{
+		keepgoing=false;
+		myServer::nextScreen= &certificatesScreen;
+		myServer::nextScreenArg=NULL;
+		return;
+	}
+	statusBar->beepError();
+	statusBar->status(_("Please set up a master password, first"));
+}
+
 void MainMenuScreen::writescreen_s()
 {
 	if (myMessage::checkInterrupted(false))
@@ -187,7 +211,14 @@ void MainMenuScreen::masterpassword_s()
 
 		if ((string)ask == "Y")
 		{
-			PasswordList::passwordList.setMasterPassword("");
+			if (myServer::certs->certs.empty())
+			{
+				PasswordList::passwordList
+					.setMasterPassword("");
+				return;
+			}
+			statusBar->beepError();
+			statusBar->status(_("Please uninstall all certificates before removing the master password"));
 			return;
 		}
 
@@ -382,7 +413,7 @@ void MainMenuScreen::addaccount_s()
 		if (result.abortflag || ((string)result).size() == 0)
 			return;
 
-		myServer *ms=addAccountTry(result, f, "");
+		myServer *ms=tryCreateAccount(result, f, "", "");
 
 		if (!ms)
 			return;

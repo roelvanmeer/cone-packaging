@@ -1,6 +1,6 @@
-#$Id: Makefile.am,v 1.47 2007/11/05 05:11:29 mrsam Exp $
+#$Id: Makefile.am,v 1.49 2008/07/13 14:27:32 mrsam Exp $
 #
-# Copyright 2003-2007, Double Precision Inc.
+# Copyright 2003-2008, Double Precision Inc.
 #
 # See COPYING for distribution information.
 #
@@ -28,6 +28,7 @@ cone_SOURCES= acl.C acl.H addressbook.C addressbook.H \
 	addressbookinterfaceldap.C addressbookinterfaceldap.H \
 	addressbookinterfacemail.C addressbookinterfacemail.H \
 	cache.H \
+	certificates.C certificates.H \
 	colors.C colors.H colors_inc.h \
 	cone.C \
 	configscreen.C configscreen.H \
@@ -131,6 +132,7 @@ LAMAILLIBS=../libmail/libmail.la ../maildir/libmaildir.la \
 
 libmail_la_SOURCES=
 libmail_la_LIBADD=$(LAMAILLIBS)
+libmail_la_DEPENDENCIES=$(LAMAILLIBS)
 libmail_la_LDFLAGS=-static -rpath $(libdir)
 
 #libmail.a: $(AMAILLIBS) $(LAMAILLIBS)

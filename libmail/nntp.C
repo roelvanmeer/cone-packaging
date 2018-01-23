@@ -1,6 +1,6 @@
-/* $Id: nntp.C,v 1.13 2004/06/14 00:18:42 mrsam Exp $
+/* $Id: nntp.C,v 1.14 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2003-2004, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -70,7 +70,7 @@ static bool open_nntp(mail::account *&accountRet,
 	    nntpLoginInfo.method != "nntps")
 		return false;
 
-	accountRet=new mail::nntp(oi.url, oi.pwd,
+	accountRet=new mail::nntp(oi.url, oi.pwd, oi.certificates,
 				  oi.extraString,
 				  oi.loginCallbackObj,
 				  callback,
@@ -224,11 +224,12 @@ void mail::nntp::disconnect(const char *reason)
 }
 
 mail::nntp::nntp(string url, string passwd,
+		 std::vector<std::string> &certificates,
 		 string newsrcFilenameArg,
 		 mail::loginCallback *loginCallbackFunc,
 		 callback &callback,
 		 callback::disconnect &disconnectCallbackArg)
-	: mail::fd(disconnectCallbackArg),
+	: mail::fd(disconnectCallbackArg, certificates),
 	  inactivityTimeout(0),
 	  folderCallback(NULL),
 	  hasNewgroups(false), didCacheNewsrc(false),

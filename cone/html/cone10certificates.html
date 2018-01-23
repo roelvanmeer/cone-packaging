@@ -1,0 +1,153 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>Certificates</title>
+  <link rel="stylesheet" href="manpage.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="cone00index.html" title="Cone mail client"/>
+  <link rel="prev" href="cone09masterpassword.html" title="Master Passwords"/>
+  <link rel="next" href="cone11encryption.html" title="Encryption Menu"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        Certificates</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="cone09masterpassword.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="application">Cone</span> mail client</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="cone11encryption.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="chapter" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h2 class="title"><a id="cone10certificates" shape="rect" name="cone10certificates"> </a>Certificates</h2>
+        </div>
+      </div>
+    </div>
+
+    <p><span class="application">Cone</span> can use
+    <acronym class="acronym">SSL</acronym> certificate
+    authentication, in lieu of a userid and a password, for logging
+    into a <acronym class="acronym">POP3</acronym> or an
+    <acronym class="acronym">IMAP</acronym> mailbox, or for sending
+    mail using authenticated SMTP, if this functionality is
+    supported by the server.</p>
+
+    <p>A master password must be set up before installing
+    <acronym class="acronym">SSL</acronym> certificates. See
+    <a class="xref" href="cone09masterpassword.html" title="Master Passwords" shape="rect"><i>Master Passwords</i></a>.
+    Setting up <acronym class="acronym">SSL</acronym> certificates
+    is a two-step process. First, the <acronym class="acronym">SSL</acronym> certificte must be imported into
+    <span class="application">Cone</span>. Then, the mail account
+    is configured to use <acronym class="acronym">SSL</acronym>
+    certificate authentication.</p>
+
+    <p>Pressing <span class="keycap"><strong>C</strong></span> from
+    the main menu opens the certificate import screen. Press
+    <span class="keycap"><strong>I</strong></span> to import a
+    certificate, then choose the filename using the following
+    dialogs.</p>
+
+    <p>The file with the <acronym class="acronym">SSL</acronym>
+    certificate must be a <acronym class="acronym">PEM</acronym>-formatted certificate file that holds
+    both the certificate and the corresponding key. The file should
+    have a &#8220;<span class="quote"><code class="literal">BEGIN
+    CERTIFICATE</code></span>&#8221; section followed by a
+    &#8220;<span class="quote"><code class="literal">BEGIN RSA
+    PRIVATE KEY</code></span>&#8221; section (or a
+    &#8220;<span class="quote"><code class="literal">BEGIN DH
+    PRIVATE KEY</code></span>&#8221; section). Passphrase-protected
+    keys are not supported by <span class="application">Cone</span>. If the SSL certificate is signed by
+    an intermediate certificate authority, the authority's
+    certificate should follow the private key section.</p>
+
+    <p>The certificate screen shows a list of all imported
+    certificates. A default name is initially given to an imported
+    certificate, based on its subject. Press <span class="keycap"><strong>R</strong></span> to rename a certificate.
+    Press <span class="keycap"><strong>D</strong></span> to delete
+    a certificate.</p>
+
+    <p>Importing at least one certificate activates an account
+    option for choosing an <acronym class="acronym">SSL</acronym>
+    certificate. The new button appears on the <a class="link" href="cone06newaccount.html" title="New Account" shape="rect">New Account</a> (and the Edit Account) screen. The
+    button also appears on the main <a class="link" href="cone05setup.html" title="Setup Screen" shape="rect">Setup</a>
+    screen, below the <acronym class="acronym">SMTP</acronym>
+    server's name. Choosing the button pops up a list of imported
+    <acronym class="acronym">SSL</acronym> certificates to choose
+    from.</p>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="certrenewing" shape="rect" name="certrenewing"> </a>Renewing <acronym class="acronym">SSL</acronym> certificates</h4>
+          </div>
+        </div>
+      </div>
+
+      <p>An additional prompt is issued when importing a
+      certificate with a name matching the name of one of the
+      existing certificates. Confirm the prompt to replace the
+      existing certificate with the new one. All accounts that use
+      that certificate for authenticating are automatically
+      updated.</p>
+
+      <p>To effectively renew a certificate in this manner, the new
+      certificate's name must match the name of an existing
+      certificate, exactly.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="cone09masterpassword.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="cone00index.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="cone11encryption.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">Master Passwords&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;Encryption Menu</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

@@ -1,6 +1,6 @@
-/* $Id: myserver.H,v 1.6 2006/02/16 02:59:42 mrsam Exp $
+/* $Id: myserver.H,v 1.7 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2003-2004, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -14,6 +14,7 @@
 #include "libmail/mail.H"
 #include "curses/timer.H"
 #include "myreadfolders.H"
+#include "certificates.H"
 
 #include <string>
 #include <vector>
@@ -59,6 +60,7 @@ public:
 	std::string serverDescr;
 	std::string url;
 	std::string password; // Saved by autologin
+	std::string certificate;
 
 	std::string newsrc;	// For nntp: accounts
 
@@ -117,7 +119,9 @@ public:
 	// by '*'
 
 	static std::string smtpServerURL; // Config - SMTP server URL
+	static std::string smtpServerCertificate;
 	static std::string smtpServerPassword;
+
 	static bool useIMAPforSending;
 	// Config - use main MAIL acct to send mail
 
@@ -129,7 +133,13 @@ public:
 	static remoteConfig *remoteConfigAccount;
 	// Remote configuration file
 
+	static Certificates *certs; // SSL client certs
 
+	void find_cert_by_id(std::vector<std::string> &);
+	static void find_cert_by_id(std::vector<std::string> &certArg,
+				    std::string certificate);
+	static void find_cert_by_url(std::string url,
+				     std::vector<std::string> &);
 
 	// Demoronization settings
 

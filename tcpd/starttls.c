@@ -1,5 +1,5 @@
 /*
-** Copyright 2000-2007 Double Precision, Inc.
+** Copyright 2000-2008 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 #include	"config.h"
@@ -62,7 +62,7 @@
 #endif
 #include	<locale.h>
 
-static const char rcsid[]="$Id: starttls.c,v 1.42 2007/11/05 05:11:29 mrsam Exp $";
+static const char rcsid[]="$Id: starttls.c,v 1.43 2008/06/29 20:18:36 mrsam Exp $";
 
 /* Command-line options: */
 const char *clienthost=0;
@@ -200,13 +200,83 @@ void docopy(ssl_handle ssl, int sslfd, int stdinfd, int stdoutfd)
 	}
 }
 
+struct dump_capture_subject {
+	char line[1024];
+	int line_size;
+
+	int set_subject;
+	int seen_subject;
+	int in_subject;
+	FILE *fp;
+};
+
 static void dump_to_fp(const char *p, int cnt, void *arg)
 {
+	struct dump_capture_subject *dcs=(struct dump_capture_subject *)arg;
+	char *n, *v;
+	char namebuf[64];
+
 	if (cnt < 0)
 		cnt=strlen(p);
 
-	if (fwrite(p, cnt, 1, (FILE *)arg) != 1)
+	if (dcs->fp && fwrite(p, cnt, 1, dcs->fp) != 1)
 		; // NOOP
+
+	while (cnt)
+	{
+		if (*p != '\n')
+		{
+			if (dcs->line_size < sizeof(dcs->line)-1)
+				dcs->line[dcs->line_size++]=*p;
+
+			++p;
+			--cnt;
+			continue;
+		}
+		dcs->line[dcs->line_size]=0;
+		++p;
+		--cnt;
+		dcs->line_size=0;
+
+		if (strncmp(dcs->line, "Subject:", 8) == 0)
+		{
+			if (dcs->seen_subject)
+				continue;
+
+			dcs->seen_subject=1;
+			dcs->in_subject=1;
+			continue;
+		}
+
+		if (!dcs->in_subject)
+			continue;
+
+		if (dcs->line[0] != ' ')
+		{
+			dcs->in_subject=0;
+			continue;
+		}
+
+		for (n=dcs->line; *n; n++)
+			if (*n != ' ')
+				break;
+
+		for (v=n; *v; v++)
+		{
+			*v=toupper(*v);
+			if (*v == '=')
+			{
+				*v++=0;
+				break;
+			}
+		}
+
+		namebuf[snprintf(namebuf, sizeof(namebuf)-1,
+				 "TLS_SUBJECT_%s", n)]=0;
+
+		if (dcs->set_subject)
+			setenv(namebuf, v, 1);
+	}
 }
 
 static int verify_connection(ssl_handle ssl, void *dummy)
@@ -215,7 +285,9 @@ static int verify_connection(ssl_handle ssl, void *dummy)
 	int	printx509_fd=0;
 	char	*buf;
 
-	static char protocolbuf[256];
+	struct dump_capture_subject dcs;
+
+	memset(&dcs, 0, sizeof(dcs));
 
 	if (printx509)
 	{
@@ -226,10 +298,17 @@ static int verify_connection(ssl_handle ssl, void *dummy)
                         nonsslerror("fdopen");
 	}
 
+	dcs.fp=printx509_fp;
+
+	dcs.set_subject=0;
+
+	if (tls_certificate_verified(ssl))
+		dcs.set_subject=1;
+
+	tls_dump_connection_info(ssl, server ? 1:0, dump_to_fp, &dcs);
+
 	if (printx509_fp)
 	{
-		tls_dump_connection_info(ssl, server ? 1:0, dump_to_fp,
-					 printx509_fp);
 		fclose(printx509_fp);
 	}
 
@@ -242,11 +321,9 @@ static int verify_connection(ssl_handle ssl, void *dummy)
 
 	buf=tls_get_encryption_desc(ssl);
 
-	snprintf(protocolbuf, sizeof(protocolbuf),
-		 "TLS_CONNECTED_PROTOCOL=%s",
-		 buf ? buf:"(unknown)");
+	setenv("TLS_CONNECTED_PROTOCOL",
+	       buf ? buf:"(unknown)", 1);
 
-	putenv(protocolbuf);
 	if (buf)
 		free(buf);
 	return 1;

@@ -1,4 +1,4 @@
-/* $Id: gettext.C,v 1.17 2008/05/24 17:57:41 mrsam Exp $
+/* $Id: gettext.C,v 1.18 2008/07/07 03:25:40 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -42,6 +42,7 @@ Gettext::Key key_ATTACHFILE(N_("ATTACHFILE:\x14"));
 Gettext::Key key_ATTACHKEY(N_("ATTACHKEY:\x05"));
 Gettext::Key key_BLOBS(N_("BLOBS:Ss"));
 Gettext::Key key_BOUNCE(N_("BOUNCE:Bb"));
+Gettext::Key key_CERTIFICATES(N_("CERTIFICATES:Cc"));
 Gettext::Key key_CLEAR(N_("CLEAR:Rr"));
 Gettext::Key key_CLREOL(N_("MORE:\x0B"));
 Gettext::Key key_COPY(N_("COPY:Cc"));
@@ -52,6 +53,7 @@ Gettext::Key key_DAYDEC1(N_("DAYDEC1:-_"));
 Gettext::Key key_DAYINC1(N_("DAYINC1:+="));
 Gettext::Key key_DELADDRESSBOOKENTRY(N_("DELADDRESSBOOKENTRY:Dd"));
 Gettext::Key key_DELETEADDRESSBOOK(N_("DELETEADDRESSBOOK:Dd"));
+Gettext::Key key_DELETECERTIFICATE(N_("DELETECERTIFICATE:Dd"));
 Gettext::Key key_DELETED(N_("DELETED:Dd"));
 Gettext::Key key_DELETE(N_("DELETE:Dd"));
 Gettext::Key key_DELFOLDER(N_("DELFOLDER:Dd"));
@@ -89,6 +91,7 @@ Gettext::Key key_IGNOREALL_K(N_("IGNOREALL_K:Aa"));
 Gettext::Key key_IGNORE_K(N_("IGNORE_K:Ii"));
 Gettext::Key key_IMAPACCOUNT(N_("IMAPACCOUNT:Ii"));
 Gettext::Key key_IMPORTADDRESSBOOKENTRY(N_("IMPORTADDRESSBOOK:Ii"));
+Gettext::Key key_IMPORTCERTIFICATE(N_("IMPORTCERTIFICATE:Ii"));
 Gettext::Key key_INBOXMBOX(N_("INBOXMBOX:Ss"));
 Gettext::Key key_JUMP(N_("JUMP:Jj"));
 Gettext::Key key_JUSTIFY(N_("JUSTIFY:\x0a"));
@@ -128,6 +131,7 @@ Gettext::Key key_RECVSINCE1(N_("RECVSINCE1:66"));
 Gettext::Key key_REMOTE(N_("REMOTE:Rr"));
 Gettext::Key key_RENAME(N_("RENAME:Rr"));
 Gettext::Key key_RENAMEADDRESSBOOKENTRY(N_("RENAMEADDRESSBOOKENTRY:Rr"));
+Gettext::Key key_RENAMECERTIFICATE(N_("RENAME:Rr"));
 Gettext::Key key_REPLACE0(N_("REPLACE0:0"));
 Gettext::Key key_REPLACE1(N_("REPLACE1:1"));
 Gettext::Key key_REPLACE2(N_("REPLACE2:2"));

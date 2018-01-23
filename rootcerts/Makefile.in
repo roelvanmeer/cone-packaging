@@ -14,11 +14,10 @@
 
 @SET_MAKE@
 
-# $Id: Makefile.am,v 1.5 2007/06/30 15:40:53 mrsam Exp $
+# $Id: Makefile.am,v 1.6 2008/07/12 20:17:25 mrsam Exp $
 #
-# Copyright 2001-2002 Double Precision, Inc.  See COPYING for
+# Copyright 2008 Double Precision, Inc.  See COPYING for
 # distribution information.
-
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
@@ -38,7 +37,8 @@ POST_UNINSTALL = :
 subdir = .
 DIST_COMMON = $(am__configure_deps) $(srcdir)/../install-sh \
 	$(srcdir)/../missing $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(top_srcdir)/configure
+	$(srcdir)/Makefile.in $(srcdir)/rootcertsdir.cnf.in \
+	$(top_srcdir)/configure
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -46,10 +46,9 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
-CONFIG_CLEAN_FILES =
+CONFIG_CLEAN_FILES = rootcertsdir.cnf
 SOURCES =
 DIST_SOURCES =
-DATA = $(noinst_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -83,7 +82,6 @@ LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
-OPENSSL = @OPENSSL@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -91,8 +89,6 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
-PERL = @PERL@
-REHASH = @REHASH@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
@@ -136,8 +132,6 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-EXTRA_DIST = certs.sh mkcerts.pl
-noinst_DATA = rootcerts.cnf
 DISTCLEANFILES = rootcertsdir.cnf
 all: all-am
 
@@ -175,6 +169,8 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 	cd $(srcdir) && $(AUTOCONF)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
+rootcertsdir.cnf: $(top_builddir)/config.status $(srcdir)/rootcertsdir.cnf.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
 tags: TAGS
 TAGS:
 
@@ -315,7 +311,7 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-am
-all-am: Makefile $(DATA)
+all-am: Makefile
 installdirs:
 install: install-am
 install-exec: install-exec-am
@@ -344,7 +340,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-local mostlyclean-am
+clean-am: clean-generic mostlyclean-am
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
@@ -362,8 +358,6 @@ info: info-am
 info-am:
 
 install-data-am:
-	@$(NORMAL_INSTALL)
-	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 
 install-dvi: install-dvi-am
 
@@ -399,59 +393,23 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-local
+uninstall-am:
 
-.MAKE: install-am install-data-am install-strip
+.MAKE: install-am install-strip
 
-.PHONY: all all-am am--refresh check check-am clean clean-generic \
-	clean-local dist dist-all dist-bzip2 dist-gzip dist-lzma \
-	dist-shar dist-tarZ dist-zip distcheck distclean \
-	distclean-generic distcleancheck distdir distuninstallcheck \
-	dvi dvi-am html html-am info info-am install install-am \
-	install-data install-data-am install-data-hook install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic pdf pdf-am ps ps-am uninstall uninstall-am \
-	uninstall-local
+.PHONY: all all-am am--refresh check check-am clean clean-generic dist \
+	dist-all dist-bzip2 dist-gzip dist-lzma dist-shar dist-tarZ \
+	dist-zip distcheck distclean distclean-generic distcleancheck \
+	distdir distuninstallcheck dvi dvi-am html html-am info \
+	info-am install install-am install-data install-data-am \
+	install-dvi install-dvi-am install-exec install-exec-am \
+	install-html install-html-am install-info install-info-am \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-generic pdf pdf-am ps ps-am uninstall \
+	uninstall-am
 
-
-clean-local:
-	rm -rf rootcerts.cnf certs
-
-@HAVE_OPENSSL_TRUE@rootcerts.cnf: config.status certs.sh
-@HAVE_OPENSSL_TRUE@	rm -rf certs
-@HAVE_OPENSSL_TRUE@	mkdir certs
-@HAVE_OPENSSL_TRUE@	@SHELL@ $(srcdir)/certs.sh
-@HAVE_OPENSSL_TRUE@	@REHASH@ certs >/dev/null
-@HAVE_OPENSSL_TRUE@	echo 'files="'`ls certs`'"' >rootcerts.cnf
-
-@HAVE_OPENSSL_TRUE@install-data-hook: rootcerts.cnf
-@HAVE_OPENSSL_TRUE@	rm -rf $(DESTDIR)@certdb@
-@HAVE_OPENSSL_TRUE@	-$(mkinstalldirs) $(DESTDIR)@certdb@
-@HAVE_OPENSSL_TRUE@	chmod 755 $(DESTDIR)@certdb@
-@HAVE_OPENSSL_TRUE@	ls certs | @PERL@ -ne ' chomp; if ( -l "certs/$$_" ) { print "$(LN_S) " . readlink("certs/$$_") . " $(DESTDIR)@certdb@/$$_\n"; } else { print "$(INSTALL_DATA) certs/$$_ $(DESTDIR)@certdb@\n"; }' | @SHELL@
-
-@HAVE_OPENSSL_TRUE@install-perms:
-@HAVE_OPENSSL_TRUE@	echo @certdb@ 555 bin bin >permissions.dat
-@HAVE_OPENSSL_TRUE@	ls certs | sed 's:^:@certdb@/:;s:$$: 444 bin bin:' >>permissions.dat
-
-@HAVE_OPENSSL_TRUE@uninstall-local: rootcerts.cnf
-@HAVE_OPENSSL_TRUE@	. rootcerts.cnf ; cd $(DESTDIR)@certdb@ && rm -f $$files
-
-@HAVE_OPENSSL_FALSE@rootcerts.cnf:
-@HAVE_OPENSSL_FALSE@	echo 'files=""' >rootcerts.cnf
-
-@HAVE_OPENSSL_FALSE@install-data-hook:
-@HAVE_OPENSSL_FALSE@	:
-
-@HAVE_OPENSSL_FALSE@install-perms:
-@HAVE_OPENSSL_FALSE@	cp /dev/null permissions.dat
-
-@HAVE_OPENSSL_FALSE@uninstall-local:
-@HAVE_OPENSSL_FALSE@	:
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

@@ -1,6 +1,6 @@
-/* $Id: myserverlogincallback.H,v 1.1 2003/05/27 14:09:04 mrsam Exp $
+/* $Id: myserverlogincallback.H,v 1.2 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -23,7 +23,6 @@ public:
 
 	myServer::Callback *myCallback;
 
-	bool hasPrompt;
 	bool isPasswordPrompt;
 
 	void reset();

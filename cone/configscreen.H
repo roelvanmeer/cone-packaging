@@ -1,6 +1,6 @@
-/* $Id: configscreen.H,v 1.12 2004/05/01 16:33:15 mrsam Exp $
+/* $Id: configscreen.H,v 1.13 2008/07/07 03:25:40 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -32,6 +32,23 @@ struct CustomColor;
 class ConfigScreen : public CursesDialog,
 		     public CursesKeyHandler {
 
+public:
+
+	class CertificateButton : public CursesButton, public CursesKeyHandler {
+
+		bool processKey(const Curses::Key &key);
+
+		void showtext();
+	public:
+		std::string cert;
+
+		CertificateButton(std::string certArg);
+		~CertificateButton();
+
+		void clicked();
+	};
+
+private:
 	// Buttons used for addresses, folders, headers, etc...
 
 	class Button : public CursesButton {
@@ -103,6 +120,9 @@ class ConfigScreen : public CursesDialog,
 
 	CursesLabel smtpServerLabel;
 	CursesField smtpServer;
+
+	CursesLabel smtpCertificateLabel;
+	CertificateButton smtpCertificateButton;
 
 	CursesLabel smtpServerUIDLabel;
 	CursesField smtpServerUID;
@@ -188,6 +208,7 @@ public:
 	static std::string suspendCommandStr;
 
 private:
+
 	void addPrompt(CursesLabel *label,
 		       CursesField *field,
 		       size_t atRow);

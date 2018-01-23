@@ -1,6 +1,6 @@
-/* $Id: fd.H,v 1.2 2004/04/06 02:06:36 mrsam Exp $
+/* $Id: fd.H,v 1.3 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2002-2004, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -49,6 +49,8 @@ class fd : public mail::account {
 
 	bool ioDebugFlag;
 
+	std::vector<std::string> certificates;
+
 protected:
 	bool writtenFlag;
 
@@ -71,7 +73,8 @@ public:
 	// requested, but trusted SSL certificate authority list is not
 	// installed.
 
-	fd(mail::callback::disconnect &disconnect_callback);
+	fd(mail::callback::disconnect &disconnect_callback,
+	   std::vector<std::string> &certificatesArg);
 
 	virtual ~fd();
 
@@ -81,8 +84,8 @@ public:
 	// a fatal network error, a non-empty error message is returned.
 
 	std::string socketConnect(class mail::loginInfo &loginInfo,
-			     const char *plainservice,
-			     const char *sslservice);
+				  const char *plainservice,
+				  const char *sslservice);
 	//
 	// Create a new server connection, should be called shortly after
 	// the constructor.

@@ -4,14 +4,11 @@
 .\"     Title: mail::account::open
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 05/24/2008
-.\"    Manual: 
-
-
-Cone: COnsole Newsreader And Emailer
+.\"      Date: 08/25/2008
+.\"    Manual: Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::OPEN" "3x" "05/24/2008" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::OPEN" "3x" "08/25/2008" "" "Cone: COnsole Newsreader And E"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -88,6 +85,7 @@ myPromptCallback passwdCallback;
 
     accountOpenInfo\.url="imap://john@imap\.example\.com/novalidate\-cert";
     accountOpenInfo\.pwd="secret";
+    accountOpenInfo\.certificates\.push_back(pemCertStr);
     accountOpenInfo\.extraString=""; // Used by nntp:, nntps:, pop3maildrop: and pop3maildrops:
     accountOpenInfo\.loginCallbackObj= &passwdCallback;
 
@@ -342,6 +340,48 @@ needs to be initialized to a non\-NULL pointer\.
 may be set to NULL if
 \fIpwd\fR
 specifies a password\.
+.PP
+
+\fIcertificates\fR
+is a vector of strings that optionally contain
+SSL
+certificates\. The application can optionally authenticate using an
+SSL
+instead of a userid/password\. Both the userid/password and SSL certificates may be defined\. If the server does not accept an SSL certificate, the userid/password gets used as a fallback option\.
+SSL
+certificate authentication is implemented for IMAP and POP3 accounts, and for SMTP accounts (see the USAGE section)\.
+.PP
+If defined, the each string in the
+\fIcertificates\fR
+array contains a single string that contains a PEM\-formatted SSL certificate and its corresponding key\. The certificate string should contain a
+\(lq\-\-\-\-\-BEGIN CERTIFICATE\-\-\-\-\-\(rq
+section followed by a
+\(lq\-\-\-\-\-BEGIN RSA PRIVATE KEY\-\-\-\-\-\(rq
+or a
+\(lq\-\-\-\-\-BEGIN DH PRIVATE KEY\-\-\-\-\-\(rq
+section\. If the certificate supplies an intermediate authority certificate, the additional
+\(lq\-\-\-\-\-BEGIN CERTIFICATE\-\-\-\-\-\(rq
+section follows the key\.
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+Note
+.PP
+Passphrase\-protected keys are not supported\.
+.PP
+
+\fIcertificates\fR
+is a vector, and multiple certificates may be placed in the vector\. The certificate gets selected from the available multiple choices based on the peer\'s acceptable certificate authorities\.
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+Note
+.PP
+If more than one certificate is signed by the peer\'s certificate authorities, the actual certificate gets chosen at random\.
 .PP
 
 \fIloginCallbackObj\fR\'s
@@ -619,5 +659,5 @@ object is destroyed\.
 .IP " 1." 4
 IMAP
 .RS 4
-\%http://www.rfc-editor.org/rfc/rfc2060.txt
+\%http://www.rfc-editor.org/rfc/rfc3501.txt
 .RE

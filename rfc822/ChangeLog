@@ -1,3 +1,9 @@
+2008-06-13  Mr. Sam  <mrsam@courier-mta.com>
+
+	* rfc822_getaddr.c: Backslashed special characters in address names
+	weren't being dequoted correctly by rfc822_getname() and
+	rfc822_getname_orlist().
+
 2007-02-25  Mr. Sam  <mrsam@courier-mta.com>
 
 	* rfc822.c (parseaddr): rfc822a_alloc() would corrupt and misparse

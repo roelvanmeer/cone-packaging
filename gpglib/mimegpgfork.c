@@ -1,9 +1,9 @@
 /*
-** Copyright 2001-2006 Double Precision, Inc.  See COPYING for
+** Copyright 2001-2008 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: mimegpgfork.c,v 1.6 2006/05/28 15:29:52 mrsam Exp $";
+static const char rcsid[]="$Id: mimegpgfork.c,v 1.7 2008/07/07 03:25:41 mrsam Exp $";
 
 #include "config.h"
 #include <stdio.h>
@@ -40,6 +40,7 @@ static int libmail_gpgmime_fork(const char *gpgdir,
 	int pipes[3][2];
 	int n;
 	pid_t p;
+	struct sigaction sa;
 
 	for (n=0; n<3; n++)
 	{
@@ -165,7 +166,10 @@ static int libmail_gpgmime_fork(const char *gpgdir,
 	fi->gpg_errcnt=0;
 	fi->gpg_errbuf[0]=0;
 	fi->gpg_pid=p;
-	signal(SIGPIPE, SIG_IGN);
+
+	memset(&sa, 0, sizeof(sa));
+	sa.sa_handler=SIG_IGN;
+	sigaction(SIGPIPE, &sa, &fi->old_pipe_sig);
 
 	fi->gpg_readhandler=0;
 	fi->gpg_voidarg=0;
@@ -301,7 +305,7 @@ int libmail_gpgmime_finish(struct gpgmime_forkinfo *fi)
 
 	gpgmime_writeflush(fi);
 	close(fi->togpg_fd);
-	signal(SIGPIPE, SIG_DFL);
+	sigaction(SIGPIPE, &fi->old_pipe_sig, NULL);
 
 	while (!fi->gpg_errflag &&
 	       (fi->fromgpg_fd >= 0 || fi->fromgpg_errfd >= 0))

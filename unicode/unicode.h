@@ -5,7 +5,7 @@
 ** Copyright 2000-2001 Double Precision, Inc.
 ** See COPYING for distribution information.
 **
-** $Id: unicode.h,v 1.17 2004/05/23 14:28:25 mrsam Exp $
+** $Id: unicode.h,v 1.18 2008/07/20 16:24:52 mrsam Exp $
 */
 
 #ifdef	__cplusplus
@@ -138,6 +138,11 @@ extern char *unicode_ctoutf8(const struct unicode_info *, const char *,
 			     int *);
 extern char *unicode_cfromutf8(const struct unicode_info *, const char *,
 			       int *);
+
+
+	/* Return width of unicode character */
+
+extern int unicode_wcwidth(unicode_char c);
 
 	/* Internal functions: */
 

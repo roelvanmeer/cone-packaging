@@ -1,6 +1,6 @@
-/* $Id: configscreen.C,v 1.17 2007/04/06 17:57:29 mrsam Exp $
+/* $Id: configscreen.C,v 1.18 2008/07/07 03:25:40 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -27,6 +27,7 @@
 #include "myserverpromptinfo.H"
 #include "myreferences.H"
 #include "specialfolder.H"
+#include "passwordlist.H"
 
 #include <sstream>
 #include <errno.h>
@@ -39,6 +40,7 @@ extern struct CustomColor color_misc_buttonColor;
 extern CursesMainScreen *mainScreen;
 extern CursesTitleBar *titleBar;
 extern void mainMenu(void *);
+extern std::string ChooseCertificate();
 
 using namespace std;
 
@@ -184,6 +186,9 @@ ConfigScreen::ConfigScreen(CursesContainer *parent)
 	  smtpServerLabel(this, _("Outgoing SMTP Server: ")),
 	  smtpServer(this),
 
+	  smtpCertificateLabel(this, _("SMTP SSL certificate (optional): ")),
+	  smtpCertificateButton(myServer::smtpServerCertificate),
+
 	  smtpServerUIDLabel(this, _("SMTP userid (optional): ")),
 	  smtpServerUID(this),
 
@@ -284,6 +289,7 @@ ConfigScreen::ConfigScreen(CursesContainer *parent)
 	addPrompt(&dictionaryLabel, &dictionaryField, (rownum += 2));
 
 	addPrompt(&smtpServerLabel, &smtpServer, (rownum += 2));
+	addPrompt(&smtpCertificateLabel, &smtpCertificateButton, (rownum += 1));
 	addPrompt(&smtpServerUIDLabel, &smtpServerUID, (rownum += 1));
 	addPrompt(NULL, &smtpServerCRAM, (rownum += 1));
 	addPrompt(NULL, &smtpUseIMAP, (rownum += 1));
@@ -1184,21 +1190,34 @@ void ConfigScreen::doSave()
 	if (server.size() > 0)
 	{
 		string uid=smtpServerUID.getText();
-
+		
 		if (smtpServerCRAM.getSelected())
 			server += "/cram";
 
-		myServer::smtpServerURL=
+		string newurl=
 			mail::loginUrlEncode(smtpUseSSL.getSelected() ?
 					     "smtps":"smtp", server, uid, "");
+
+		if (newurl != myServer::smtpServerURL)
+		{
+			myServer::smtpServerPassword="";
+			PasswordList::passwordList.remove(myServer::smtpServerURL);
+		}
+		myServer::smtpServerURL=newurl;
 	}
 	else
 	{
+		if (myServer::smtpServerURL != "")
+			PasswordList::passwordList.remove(myServer::smtpServerURL);
+
 		myServer::smtpServerURL="";
+		myServer::smtpServerPassword="";
 	}
 
 	myServer::useIMAPforSending=
 		smtpUseIMAP.getSelected() ? true:false;
+
+	myServer::smtpServerCertificate=smtpCertificateButton.cert;
 
 	switch (htmlDemoronization.getSelectedOption()) {
 	case 0:
@@ -1345,6 +1364,7 @@ void ConfigScreen::doSave()
 	}
 
 	myServer::saveconfig(true);
+	PasswordList::passwordList.save();
 	doCancel();
 }
 
@@ -1392,4 +1412,45 @@ void setupScreen(void *dummy)
 
 	titleBar->setTitles(_("SETUP"), "");
 	myServer::eventloop();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// Pick a certificate
+
+bool ConfigScreen::CertificateButton::processKey(const Curses::Key &key)
+{
+	return false;
+}
+
+ConfigScreen::CertificateButton::CertificateButton(std::string certArg)
+	: CursesButton(NULL, ""),
+	  CursesKeyHandler(PRI_SCREENHANDLER),
+	  cert(certArg)
+{
+	showtext();
+}
+
+void ConfigScreen::CertificateButton::showtext()
+{
+	setText(cert.size() ? _("Remove certificate"):
+		_("Use certificate"));
+}
+
+ConfigScreen::CertificateButton::~CertificateButton()
+{
+}
+
+void ConfigScreen::CertificateButton::clicked()
+{
+	if (cert.size())
+	{
+		cert="";
+		showtext();
+		return;
+	}
+
+	cert=ChooseCertificate();
+	showtext();
+	requestFocus();
 }

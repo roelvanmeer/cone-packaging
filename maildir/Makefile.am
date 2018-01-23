@@ -1,4 +1,4 @@
-#$Id: Makefile.am,v 1.57 2007/06/30 15:40:53 mrsam Exp $
+#$Id: Makefile.am,v 1.58 2008/08/24 17:58:37 mrsam Exp $
 #
 # Copyright 1998 - 2005 Double Precision, Inc.  See COPYING for
 # distribution information.
@@ -143,18 +143,21 @@ deliverquota.html.in: deliverquota.sgml ../docbook/sgml2html
 
 deliverquota.8.in: deliverquota.sgml ../docbook/sgml2html
 	../docbook/sgml2man deliverquota.sgml deliverquota.8.in
+	mv deliverquota.8 deliverquota.8.in
 
 maildirmake.html.in: maildirmake.sgml ../docbook/sgml2html
 	../docbook/sgml2html maildirmake.sgml maildirmake.html.in
 
 maildirmake.1.in: maildirmake.sgml ../docbook/sgml2html
 	../docbook/sgml2man maildirmake.sgml maildirmake.1.in
+	mv maildirmake.1 maildirmake.1.in
 
 maildiracl.html.in: maildiracl.sgml ../docbook/sgml2html
 	../docbook/sgml2html maildiracl.sgml maildiracl.html.in
 
 maildiracl.1.in: maildiracl.sgml ../docbook/sgml2html
 	../docbook/sgml2man maildiracl.sgml maildiracl.1.in
+	mv maildiracl.1 maildiracl.1.in
 
 maildirquota.html: maildirquota.sgml ../docbook/sgml2html
 	../docbook/sgml2html maildirquota.sgml maildirquota.html

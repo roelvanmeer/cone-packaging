@@ -1,6 +1,6 @@
-/* $Id: myserverlogincallback.C,v 1.1 2003/05/27 14:09:04 mrsam Exp $
+/* $Id: myserverlogincallback.C,v 1.2 2008/07/07 03:25:41 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -24,7 +24,6 @@ myServerLoginCallback::~myServerLoginCallback()
 
 void myServerLoginCallback::reset()
 {
-	hasPrompt=false;
 	isPasswordPrompt=false;
 	myCallback=NULL;
 }
@@ -60,12 +59,15 @@ void myServerLoginCallback::promptPassword(string serverName,
 
 	if (response.aborted())
 	{
+		myCallback->interrupted=false;
 		callbackCancel();
 		return;
 	}
 
 	if (isPasswordPrompt)
 		password=response;
+	if (myCallback)
+		myCallback->interrupted=false;
 
 	callback(response);
 }

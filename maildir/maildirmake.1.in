@@ -3,18 +3,18 @@
 .\"  <!-- distribution information. -->
 .\"     Title: maildirmake
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 05/13/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 08/25/2008
 .\"    Manual: Double Precision, Inc.
 .\"    Source: Double Precision, Inc.
 .\"
-.TH "MAILDIRMAKE" "1" "05/13/2007" "Double Precision, Inc." "Double Precision, Inc."
+.TH "MAILDIRMAKE" "1" "08/25/2008" "Double Precision, Inc." "Double Precision, Inc."
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-maildirmake \- create maildirs and maildir folders
+maildirmake - create maildirs and maildir folders
 .SH "SYNOPSIS"
 .HP 12
 \fBmaildirmake\fR [options...] {\fImaildir\fR}
@@ -22,36 +22,36 @@ maildirmake \- create maildirs and maildir folders
 .PP
 The
 \fBmaildirmake\fR
-command creates maildirs, and maildir folders. This documentation describes the
+command creates maildirs, and maildir folders\. This documentation describes the
 \fBmaildirmake\fR
-command from the Courier mail server, which creates an extended form of maildirs that implements additional extensions beyond the basic maildir properties that were first implemented in the Qmail mail server.
+command from the Courier mail server, which creates an extended form of maildirs that implements additional extensions beyond the basic maildir properties that were first implemented in the Qmail mail server\.
 .SH "OPTIONS"
 .PP
 \-S
 .RS 4
-create a "sharable" maildir. A sharable maildir has slightly different permissions which allows creation of publicly\-shared folders.
+create a "sharable" maildir\. A sharable maildir has slightly different permissions which allows creation of publicly\-shared folders\.
 .RE
 .PP
 \-q \fIquota\fR
 .RS 4
-install a quota on the maildir. See
-\fI\fBmaildirquota\fR(7)\fR\&[1], below.
+install a quota on the maildir\. See
+\fI\fBmaildirquota\fR(7)\fR\&[1], below\.
 .RE
 .PP
 \-f \fIfolder\fR
 .RS 4
-do not create a maildir, but create a folder in an existing maildir.
+do not create a maildir, but create a folder in an existing maildir\.
 .RE
 .PP
 \-s \fImode\fR
 .RS 4
-create a publicly accessible folder in an existing sharable maildir. First, use the
+create a publicly accessible folder in an existing sharable maildir\. First, use the
 \fB\-S\fR
-option to create a sharable maildir. Then, run
+option to create a sharable maildir\. Then, run
 \fBmaildirmake\fR
 again with the
 \fB\-s\fR
-option to create publicly accessible folders.
+option to create publicly accessible folders\.
 \fImode\fR
 is a comma\-separated list of the following keywords:
 read
@@ -59,65 +59,65 @@ read
 write
 \- anyone can read and write messages to this folder;
 group
-\- only allow members of your own system group to access messages in this folder (instead of everyone).
+\- only allow members of your own system group to access messages in this folder (instead of everyone)\.
 .RE
 .PP
 \-\-add \fIname\fR=\fIpathname\fR, \-\-del \fIname\fR
 .RS 4
-create or delete the directories and links needed to access shared folders. See below for more information.
+create or delete the directories and links needed to access shared folders\. See below for more information\.
 .RE
 .SS "FOLDERS"
 .PP
 This
 \fBmaildirmake\fR
-command supports enhanced maildirs that contain folders.
+command supports enhanced maildirs that contain folders\.
 .PP
 By itself,
 \fBmaildirmake\fR
 makes a new subdirectory
-\fImaildir\fR, and creates all the necessary structures. The
+\fImaildir\fR, and creates all the necessary structures\. The
 \fB\-f\fR
 option creates a new "folder" within an existing
-\fImaildir\fR.
+\fImaildir\fR\.
 \fImaildir\fR
 must already exist, and the
 \fBmaildirmake\fR
-command will create a new folder in the maildir.
+command will create a new folder in the maildir\.
 .PP
-Folders are simply subdirectories inside the main maildir whose names start with a period, and which are themselves maildirs. For example, the command "\fBmaildirmake \-f Drafts mail/Maildir\fR" creates
-\fImail/Maildir/.Drafts\fR, that has the usual
+Folders are simply subdirectories inside the main maildir whose names start with a period, and which are themselves maildirs\. For example, the command "\fBmaildirmake \-f Drafts mail/Maildir\fR" creates
+\fImail/Maildir/\.Drafts\fR, that has the usual
 \fItmp\fR,
 \fInew\fR
 and
-\fIcur\fR. You MUST use the
+\fIcur\fR\. You MUST use the
 \fB\-f\fR
 option, instead of specifying
-\fImail/Maildir/.Drafts\fR
-directly, in order to correctly initialize certain enhanced maildir features.
+\fImail/Maildir/\.Drafts\fR
+directly, in order to correctly initialize certain enhanced maildir features\.
 .PP
-Folders cannot be created directly within other folders. Running
-\fBmaildirmake \-f Urgent mail/Maildir/.Drafts\fR
-will not work. Instead, the period character is designated as a hierarchy separator, run
-\fBmaildirmake \-f Drafts.Urgent mail/Maildir\fR
-instead. This creates
-\fImail/Maildir/.Drafts.Urgent\fR, and all mail software that supports enhanced maildirs will interpret it as a subfolder Urgent of the Drafts folder.
+Folders cannot be created directly within other folders\. Running
+\fBmaildirmake \-f Urgent mail/Maildir/\.Drafts\fR
+will not work\. Instead, the period character is designated as a hierarchy separator, run
+\fBmaildirmake \-f Drafts\.Urgent mail/Maildir\fR
+instead\. This creates
+\fImail/Maildir/\.Drafts\.Urgent\fR, and all mail software that supports enhanced maildirs will interpret it as a subfolder Urgent of the Drafts folder\.
 .SS "SHARED FOLDERS"
 .PP
-This is another extension to the Maildir format that allows folders to be shared between multiple clients.
+This is another extension to the Maildir format that allows folders to be shared between multiple clients\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
-The Courier\-IMAP folder implements two types of shared folders: filesystem permission\-based shared folders, as well as virtual shared folders based on IMAP access control lists. Use the
+The Courier\-IMAP folder implements two types of shared folders: filesystem permission\-based shared folders, as well as virtual shared folders based on IMAP access control lists\. Use the
 \fBmaildirmake\fR
-command to implement shared folders based on filesystem permissions. The
+command to implement shared folders based on filesystem permissions\. The
 \fI\fBmaildiracl\fR(1)\fR\&[2]
-command manages access control lists, which are used by virtual shared folders.
+command manages access control lists, which are used by virtual shared folders\.
 .PP
-See the Courier\-IMAP server documentation for more information.
+See the Courier\-IMAP server documentation for more information\.
 .PP
 First, you need to create a collection of sharable folders, as a separate maildir:
 .sp .RS 4 .nf \fBmaildirmake \-S /usr/local/share/maildirs/notices\fR .fi .RE
@@ -125,39 +125,39 @@ First, you need to create a collection of sharable folders, as a separate maildi
 Then, create individuals folders that will be accessed in shared mode:
 .sp .RS 4 .nf \fBmaildirmake \-s write \-f Weekly /usr/local/share/maildirs/notices\fR .fi .RE
 .PP
-In this example, the "Weekly" folder is created, with read/write access to everyone. Multiple folders can be created in the same maildir, with different access permissions. Everyone can create a sharable maildir. The access privileges for individual folders are set by the
+In this example, the "Weekly" folder is created, with read/write access to everyone\. Multiple folders can be created in the same maildir, with different access permissions\. Everyone can create a sharable maildir\. The access privileges for individual folders are set by the
 \fB\-s\fR
-option, and are implemented using traditional filesystem permissions.
+option, and are implemented using traditional filesystem permissions\.
 .PP
 Use the
 \fB\-\-add\fR
 and
 \fB\-\-del\fR
-options to add a sharable maildir to an existing maildir. Client software that implements this extension will now know where to find sharable folders:
+options to add a sharable maildir to an existing maildir\. Client software that implements this extension will now know where to find sharable folders:
 .sp .RS 4 .nf \fBmaildirmake \-\-add notices=/usr/local/share/maildirs/notices $HOME/Maildir\fR .fi .RE
 .PP
 
 \fI$HOME/Maildir\fR
-is your main maildir. The argument to
+is your main maildir\. The argument to
 \fB\-add\fR
 is
-\fInick\fR=\fIpath\fR.
+\fInick\fR=\fIpath\fR\.
 \fInick\fR
 is a nickname for this collection of sharable folders, and
 \fIpath\fR
-is the location of the sharable maildir. All folders in the sharable maildir that you have access to \-\- such as "Weekly", in this case, will now be accessible. Multiple sharable maildirs can be added, by giving each one a unique
-\fInick\fR.
+is the location of the sharable maildir\. All folders in the sharable maildir that you have access to \-\- such as "Weekly", in this case, will now be accessible\. Multiple sharable maildirs can be added, by giving each one a unique
+\fInick\fR\.
 .PP
 The
 \fB\-\-del\fR
-option "disconnects" the sharable maildir from the main maildir.
+option "disconnects" the sharable maildir from the main maildir\.
 .SS "GLOBAL SHARED FOLDERS"
 .PP
 Normally
 \fB\-add\fR
-command must be run for every maildir which needs to access the sharable maildir. Alternatively the file
+command must be run for every maildir which needs to access the sharable maildir\. Alternatively the file
 \fI@sysconfdir@/maildirshared\fR
-can be created, to specify a default set of sharable maildirs. Each line in this file takes the following format:
+can be created, to specify a default set of sharable maildirs\. Each line in this file takes the following format:
 .sp .RS 4 .nf \fInick\fR<tab>\fIpath\fR .fi .RE
 .PP
 \fInick\fR
@@ -165,12 +165,12 @@ is a short nickname for the sharable maildir,
 <tab>
 is a single tab character,
 \fIpath\fR
-is the pathname to the sharable maildir.
+is the pathname to the sharable maildir\.
 .SS "ACCESSING SHARED FOLDERS"
 .PP
-You may have read or write access to a shared folder. If you have write access, you can add messages to the shared folder. You can also delete messages that you've added.
+You may have read or write access to a shared folder\. If you have write access, you can add messages to the shared folder\. You can also delete messages that you\'ve added\.
 .PP
-Anyone can create a sharable maildir, so if the sharable maildir is actually created by you, can can delete any message, not just your own.
+Anyone can create a sharable maildir, so if the sharable maildir is actually created by you, can can delete any message, not just your own\.
 .SH "SEE ALSO"
 .PP
 
@@ -181,8 +181,8 @@ Anyone can create a sharable maildir, so if the sharable maildir is actually cre
 \fI\fBmaildirquota\fR(7)\fR\&[1],
 \fI\fBdeliverquota\fR(8)\fR\&[6],
 \fI\fBmaildropfilter\fR(7)\fR\&[7],
-\fIhttp://www.qmail.org/man/man5/maildir.html\fR.
-.SH "REFERENCES"
+\fIhttp://www\.qmail\.org/man/man5/maildir\.html\fR\.
+.SH "NOTES"
 .IP " 1." 4
 \fBmaildirquota\fR(7)
 .RS 4

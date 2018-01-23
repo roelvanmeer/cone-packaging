@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>rfc822</title><link rel="stylesheet" href="style.css" type="text/css"/><meta name="generator" content="DocBook XSL Stylesheets V1.72.0"/><link rel="start" href="#rfc822" title="rfc822"/><link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/><meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/><link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>rfc822</title><link rel="stylesheet" href="style.css" type="text/css"/><meta name="generator" content="DocBook XSL Stylesheets V1.73.2"/><link rel="start" href="#rfc822" title="rfc822"/><link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/><meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/><link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
 
 Copyright 1998 - 2007 Double Precision, Inc.  See COPYING for distribution
 information.
@@ -10,15 +10,15 @@ information.
 #include &lt;rfc2047.h&gt;
 
 cc ... -lrfc822
-</pre></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id281685" shape="rect"> </a><h2>DESCRIPTION</h2><p>
+</pre></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id386468" shape="rect"> </a><h2>DESCRIPTION</h2><p>
 The rfc822 library provides functions for parsing E-mail headers in the RFC
 822 format. This library also includes some functions to help with encoding
 and decoding 8-bit text, as defined by RFC 2047.</p><p>
 The format used by E-mail headers to encode sender and recipient
 information is defined by
-<a href="http://www.rfc-editor.org/rfc/rfc822.txt" target="_top" shape="rect">RFC 822</a>
+<a class="ulink" href="http://www.rfc-editor.org/rfc/rfc822.txt" target="_top" shape="rect">RFC 822</a>
 (and its successor,
-<a href="http://www.rfc-editor.org/rfc/rfc2822.txt" target="_top" shape="rect">RFC 2822</a>).
+<a class="ulink" href="http://www.rfc-editor.org/rfc/rfc2822.txt" target="_top" shape="rect">RFC 2822</a>).
 The format allows the actual E-mail
 address and the sender/recipient name to be expressed together, for example:
 <code class="literal">John Smith &lt;jsmith@example.com&gt;</code></p><p>
@@ -27,7 +27,7 @@ The main purposes of the rfc822 library is to:</p><p>
 its logical components: names and E-mail addresses.</p><p>
 2) Access those individual components.</p><p>
 3) Allow some limited modifications of the parsed structure, and then
-convert it back into a text string.</p><div class="refsect2" lang="en" xml:lang="en"><a id="id282329" shape="rect"> </a><h3>Tokenizing an E-mail header</h3><div class="informalexample"><pre class="programlisting" xml:space="preserve">
+convert it back into a text string.</p><div class="refsect2" lang="en" xml:lang="en"><a id="id382194" shape="rect"> </a><h3>Tokenizing an E-mail header</h3><div class="informalexample"><pre class="programlisting" xml:space="preserve">
 struct rfc822t *tokens=rfc822t_alloc_new(const char *header,
                 void (*err_func)(const char *, int, void *),
                 void *func_arg);
@@ -67,7 +67,7 @@ NOT be destroyed or altered in any way. The contents of
 modified by <code class="function">rfc822t_alloc</code>(), however the
 <span class="structname">rfc822t</span> structure contains
 pointers to portions of the supplied <em class="parameter"><code>header</code></em>,
-and they must remain valid.</p></div></div><div class="refsect2" lang="en" xml:lang="en"><a id="id282672" shape="rect"> </a><h3>Extracting E-mail addresses</h3><div class="informalexample"><pre class="programlisting" xml:space="preserve">
+and they must remain valid.</p></div></div><div class="refsect2" lang="en" xml:lang="en"><a id="id362109" shape="rect"> </a><h3>Extracting E-mail addresses</h3><div class="informalexample"><pre class="programlisting" xml:space="preserve">
 struct rfc822a *addrs=rfc822a_alloc(struct rfc822t *tokens);
 
 void rfc822a_free(addrs);
@@ -170,7 +170,7 @@ Currently <code class="function">rfc822_is_atom</code>() returns true if
 '<code class="literal">(</code>'.</p><p>
 Note that it's possible that <em class="structfield"><code>len</code></em> might be zero.
 This happens with null addresses used as return addresses for delivery status
-notifications.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id325457" shape="rect"> </a><h3>Working with E-mail addresses</h3><div class="informalexample"><pre class="programlisting" xml:space="preserve">
+notifications.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id406717" shape="rect"> </a><h3>Working with E-mail addresses</h3><div class="informalexample"><pre class="programlisting" xml:space="preserve">
 void rfc822_deladdr(struct rfc822a *addrs, int index);
 
 void rfc822tok_print(const struct rfc822token *list,
@@ -277,7 +277,7 @@ dynamically allocated buffer.</p><p>
 The function <code class="function">rfc822_getaddrs_wrap</code>() is similar to
 <code class="function">rfc822_getaddrs</code>(), except
 that the generated text is wrapped on or about the 73rd column, using
-newline characters.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id325796" shape="rect"> </a><h3>Working with dates</h3><div class="informalexample"><pre class="programlisting" xml:space="preserve">
+newline characters.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id407024" shape="rect"> </a><h3>Working with dates</h3><div class="informalexample"><pre class="programlisting" xml:space="preserve">
 time_t timestamp=rfc822_parsedt(const char *datestr)
 const char *datestr=rfc822_mkdate(time_t timestamp);
 void rfc822_mkdate_buf(time_t timestamp, char *buffer);
@@ -290,7 +290,7 @@ the given date string (0 if there was a syntax error).</p><p>
 the given timestamp.
 <code class="function">rfc822_mkdate_buf</code>() writes the date string into the
 given buffer instead,
-which must be big enough to accommodate it.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id325849" shape="rect"> </a><h3>Working with 8-bit MIME-encoded headers</h3><div class="informalexample"><pre class="programlisting" xml:space="preserve">
+which must be big enough to accommodate it.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id407074" shape="rect"> </a><h3>Working with 8-bit MIME-encoded headers</h3><div class="informalexample"><pre class="programlisting" xml:space="preserve">
 int error=rfc2047_decode(const char *text,
                 int (*callback_func)(const char *, int, const char *, void *),
                 void *callback_arg);
@@ -375,7 +375,7 @@ to a portion of the encoded text, the number of characters in this portion,
 and <em class="parameter"><code>callback_arg</code></em>.</p><p>
 The function <code class="function">rfc2047_encode_header</code>() is basically
 equivalent to <code class="function">rfc822_getaddrs</code>(), followed by
-<code class="function">rfc2047_encode_str</code>();</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id326091" shape="rect"> </a><h3>Working with subjects</h3><div class="informalexample"><pre class="programlisting" xml:space="preserve">
+<code class="function">rfc2047_encode_str</code>();</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id407293" shape="rect"> </a><h3>Working with subjects</h3><div class="informalexample"><pre class="programlisting" xml:space="preserve">
 char *basesubj=rfc822_coresubj(const char *subj);
 
 char *basesubj=rfc822_coresubj_nouc(const char *subj);
@@ -396,7 +396,7 @@ This function returns a pointer to a dynamically-allocated buffer, which
 must be <code class="function">free</code>(3)-ed after use.</p><p>
 <code class="function">rfc822_coresubj_nouc</code>() is like
 <code class="function">rfc822_coresubj</code>(), except that the subject
-is not converted to uppercase.</p></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id326194" shape="rect"> </a><h2>SEE ALSO</h2><p>
-<a href="rfc2045.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">rfc2045</span>(3)</span></a>,
-<a href="reformail.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">reformail</span>(1)</span></a>,
-<a href="reformime.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">reformime</span>(1)</span></a>.</p></div></div></body></html>
+is not converted to uppercase.</p></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id407391" shape="rect"> </a><h2>SEE ALSO</h2><p>
+<a class="ulink" href="rfc2045.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">rfc2045</span>(3)</span></a>,
+<a class="ulink" href="reformail.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">reformail</span>(1)</span></a>,
+<a class="ulink" href="reformime.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">reformime</span>(1)</span></a>.</p></div></div></body></html>

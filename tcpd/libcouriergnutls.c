@@ -1,5 +1,5 @@
 /*
-** Copyright 2007 Double Precision, Inc.
+** Copyright 2007-2008 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 #include	"config.h"
@@ -9,6 +9,7 @@
 #include	"tlscache.h"
 #include	"soxwrap/soxwrap.h"
 #include	<gnutls/gnutls.h>
+#include	<gnutls/extra.h>
 #include	<gnutls/x509.h>
 #include	<gnutls/openpgp.h>
 #include	<stdio.h>
@@ -114,7 +115,7 @@ static struct oid_name oid_name_list[]={
 	{"0.9.2342.19200300.100.1.25","dc"},
 	{"0.9.2342.19200300.100.1.1","uid"},
 	{"1.3.6.1.1.3.1","uidObject"},
-	{"1.2.840.113549.1.9.1","email"},
+	{"1.2.840.113549.1.9.1","emailaddress"},
 };
 
 static const struct intmap {
@@ -386,6 +387,7 @@ ssl_context tls_create(int isserver, const struct tls_info *info)
 
 	p->isserver=isserver;
 	p->info_cpy=*info;
+	p->info_cpy.certificate_verified=0;
 
 	if (first)
 	{
@@ -584,6 +586,11 @@ void tls_destroy(ssl_context p)
 	if (p->info_cpy.tlscache)
 		tls_cache_close(p->info_cpy.tlscache);
 	free(p);
+}
+
+int tls_certificate_verified(ssl_handle ssl)
+{
+	return ssl->info_cpy.certificate_verified;
 }
 
 static int read_cert_dir(const char *cert_dir,
@@ -805,6 +812,19 @@ static int verify_client(ssl_handle ssl, int fd)
 	if (!ssl->ctx->verify_cert)
 		return 0;
 
+	cert_list = gnutls_certificate_get_peers(ssl->session, &cert_list_size);
+	if (cert_list == NULL || cert_list_size == 0)
+	{
+		if (ssl->ctx->fail_if_no_cert)
+		{
+			(*ssl->info_cpy.tls_err_msg)
+				("No certificate supplied by peer",
+				 ssl->info_cpy.app_data);
+			return GNUTLS_E_INSUFFICIENT_CREDENTIALS;
+		}
+		return 0;
+	}
+
 	status=0;
 	rc=gnutls_certificate_verify_peers2(ssl->session, &status);
 
@@ -830,19 +850,6 @@ static int verify_client(ssl_handle ssl, int fd)
 			 "Invalid peer certificate",
 			 ssl->info_cpy.app_data);
 		return GNUTLS_E_INSUFFICIENT_CREDENTIALS;
-	}
-
-	cert_list = gnutls_certificate_get_peers(ssl->session, &cert_list_size);
-	if (cert_list == NULL || cert_list_size == 0)
-	{
-		if (ssl->ctx->fail_if_no_cert)
-		{
-			(*ssl->info_cpy.tls_err_msg)
-				("No certificate supplied by peer",
-				 ssl->info_cpy.app_data);
-			return GNUTLS_E_INSUFFICIENT_CREDENTIALS;
-		}
-		return 0;
 	}
 
 	if (gnutls_certificate_type_get(ssl->session) == GNUTLS_CRT_X509)
@@ -1019,6 +1026,7 @@ static int verify_client(ssl_handle ssl, int fd)
 		return GNUTLS_E_INSUFFICIENT_CREDENTIALS;
 	}
 
+	ssl->info_cpy.certificate_verified=1;
 	return 0;
 }
 
@@ -1033,6 +1041,8 @@ static int dohandshake(ssl_handle ssl, int fd, fd_set *r, fd_set *w)
 	if (rc == 0)
 	{
 		ssl->info_cpy.connect_interrupted=0;
+
+		
 		if (verify_client(ssl, fd))
 			return -1;
 
@@ -1141,6 +1151,7 @@ static int set_cert(ssl_handle ssl,
 {
 	int rc;
 	gnutls_datum filebuf;
+	unsigned int cert_cnt;
 
 	st->ncerts=0;
 	st->deinit_all=0;
@@ -1152,16 +1163,41 @@ static int set_cert(ssl_handle ssl,
 	switch (st->type) {
 	case GNUTLS_CRT_X509:
 
+		cert_cnt=0;
+
 		if ((rc=gnutls_x509_crt_init(&ssl->x509_crt)) < 0 ||
 		    (rc=gnutls_x509_privkey_init(&ssl->x509_key)) < 0 ||
-		    (rc=gnutls_x509_crt_import(ssl->x509_crt, &filebuf,
-					       GNUTLS_X509_FMT_PEM)) < 0 ||
 		    (rc=gnutls_x509_privkey_import(ssl->x509_key, &filebuf,
 						   GNUTLS_X509_FMT_PEM)) < 0)
 			break;
-		st->cert.x509=&ssl->x509_crt;
-		st->ncerts=1;
+
+		rc=gnutls_x509_crt_list_import(NULL, &cert_cnt,
+					       &filebuf,
+					       GNUTLS_X509_FMT_PEM,
+					       GNUTLS_X509_CRT_LIST_IMPORT_FAIL_IF_EXCEED);
+
+		if (rc != GNUTLS_E_SHORT_MEMORY_BUFFER)
+			break;
+
+		st->ncerts=cert_cnt+1;
+		st->cert.x509=gnutls_malloc(st->ncerts*sizeof(*st->cert.x509));
+
+		rc=gnutls_x509_crt_list_import(st->cert.x509, &st->ncerts,
+					       &filebuf,
+					       GNUTLS_X509_FMT_PEM, 0);
+
+		if (rc < 0)
+		{
+			st->ncerts=0;
+			st->cert.x509=0;
+			gnutls_free(st->cert.x509);
+			break;
+		}
+		st->ncerts=rc;
 		st->key.x509=ssl->x509_key;
+		ssl->x509_key=0;
+		st->deinit_all=1;
+
 		break;
 	case GNUTLS_CRT_OPENPGP:
 		if ((rc=gnutls_openpgp_key_init(&ssl->pgp_crt)) < 0 ||
@@ -1246,6 +1282,147 @@ static int get_server_cert(gnutls_session_t session,
 	return rc;
 }
 
+
+static int pick_client_cert(gnutls_session_t session,
+			    const gnutls_datum_t * req_ca_rdn, int nreqs,
+			    const gnutls_pk_algorithm_t * sign_algos,
+			    int sign_algos_length, gnutls_retr_st *st)
+{
+	ssl_handle ssl=(ssl_handle)gnutls_session_get_ptr(session);
+	int i, j;
+	const char *cert_array;
+	size_t cert_array_size;
+	int rc=0;
+
+	if (ssl->info_cpy.getpemclientcert4ca == NULL)
+		return 0;
+
+	if (st->type != GNUTLS_CRT_X509)
+		return 0;
+
+	if (ssl->info_cpy.loadpemclientcert4ca)
+		(*ssl->info_cpy.loadpemclientcert4ca)(ssl->info_cpy.app_data);
+
+	for (j=0; (*ssl->info_cpy.getpemclientcert4ca)(j, &cert_array,
+						       &cert_array_size,
+						       ssl->info_cpy.app_data);
+	     ++j)
+	{
+		gnutls_datum_t data;
+		unsigned int cert_cnt=0;
+		gnutls_x509_crt_t *certbuf;
+		size_t issuer_buf_size=0;
+		char *issuer_rdn;
+		gnutls_x509_privkey pk;
+
+		data.data=(unsigned char *)cert_array;
+		data.size=cert_array_size;
+		gnutls_x509_privkey_init(&pk);
+		if (gnutls_x509_privkey_import(pk, &data,
+					       GNUTLS_X509_FMT_PEM)
+		    != GNUTLS_E_SUCCESS)
+		{
+			gnutls_x509_privkey_deinit(pk);
+			continue;
+		}
+
+		data.data=(void *)cert_array;
+		data.size=cert_array_size;;
+
+		gnutls_x509_crt_list_import(NULL, &cert_cnt, &data,
+					    GNUTLS_X509_FMT_PEM,
+					    GNUTLS_X509_CRT_LIST_IMPORT_FAIL_IF_EXCEED);
+		if (cert_cnt == 0)
+		{
+			gnutls_x509_privkey_deinit(pk);
+			continue;
+		}
+
+		certbuf=gnutls_malloc(sizeof(*certbuf)*cert_cnt);
+
+		if (!certbuf)
+		{
+			gnutls_x509_privkey_deinit(pk);
+			continue;
+		}
+
+		if (gnutls_x509_crt_list_import(certbuf, &cert_cnt, &data,
+						GNUTLS_X509_FMT_PEM,
+						GNUTLS_X509_CRT_LIST_IMPORT_FAIL_IF_EXCEED) < 0)
+		{
+			free(certbuf);
+			gnutls_x509_privkey_deinit(pk);
+			continue;
+		}
+
+
+		gnutls_x509_crt_get_issuer_dn(certbuf[0], NULL,
+					      &issuer_buf_size);
+
+		++issuer_buf_size;
+
+		issuer_rdn=gnutls_malloc(issuer_buf_size+1);
+
+		if (gnutls_x509_crt_get_issuer_dn(certbuf[0], issuer_rdn,
+						  &issuer_buf_size)
+		    != GNUTLS_E_SUCCESS)
+		{
+			gnutls_free(issuer_rdn);
+			issuer_rdn=0;
+		}
+		else
+			issuer_rdn[issuer_buf_size]=0;
+
+		for (i=0; issuer_rdn && i<nreqs; i++)
+		{
+			size_t buf_size=0;
+			char *ca_rdn;
+
+			gnutls_x509_rdn_get(&req_ca_rdn[i], NULL, &buf_size);
+
+			++buf_size;
+
+			ca_rdn=gnutls_malloc(buf_size+1);
+
+			if (gnutls_x509_rdn_get(&req_ca_rdn[i], ca_rdn, &buf_size) !=
+			    GNUTLS_E_SUCCESS)
+			{
+				gnutls_free(ca_rdn);
+				continue;
+			}
+
+			ca_rdn[buf_size]=0;
+
+			if (strcmp(ca_rdn, issuer_rdn) == 0)
+				break;
+			gnutls_free(ca_rdn);
+		}
+
+		st->ncerts=0;
+		if (issuer_rdn && i < nreqs)
+		{
+			st->cert.x509=certbuf;
+			st->ncerts=cert_cnt;
+			st->deinit_all=1;
+			st->key.x509=pk;
+			cert_cnt=0;
+			rc=1;
+		}
+		else
+		{
+			gnutls_x509_privkey_deinit(pk);
+			while (cert_cnt)
+				gnutls_x509_crt_deinit(certbuf[--cert_cnt]);
+			gnutls_free(certbuf);
+		}
+		gnutls_free(issuer_rdn);
+		if (rc)
+			break;
+	}
+
+	return rc;
+}
+
 static int get_client_cert(gnutls_session_t session,
 			   const gnutls_datum_t * req_ca_rdn, int nreqs,
 			   const gnutls_pk_algorithm_t * sign_algos,
@@ -1271,7 +1448,13 @@ static int get_client_cert(gnutls_session_t session,
 		rc=set_cert(ssl, session, st, certfilename);
 		free(certfilename);
 	}
-
+	else
+	{
+		rc=pick_client_cert(session, req_ca_rdn, nreqs, sign_algos,
+				    sign_algos_length, st);
+		if (rc > 0)
+			rc=0;
+	}
 	return rc;
 }
 
@@ -1561,9 +1744,13 @@ RT |
 	}
 
 	if (ctx->isserver)
+	{
+		gnutls_certificate_server_set_request(ssl->session,
+						      GNUTLS_CERT_REQUEST);
 		gnutls_certificate_server_set_retrieve_function(ssl->xcred,
 								get_server_cert
 								);
+	}
 	else gnutls_certificate_client_set_retrieve_function(ssl->xcred,
 							     get_client_cert);
 
@@ -2075,4 +2262,88 @@ static void gen_encryption_desc(gnutls_session_t session,
 	(*dump_func)(buf, -1, dump_arg);
 	(*dump_func)("bits,", -1, dump_arg);
 	dump_cipher_name(session, dump_func, dump_arg);
+}
+
+
+/* ------------------- */
+
+int tls_validate_pem_cert(const char *buf, size_t buf_size)
+{
+	gnutls_datum_t dat;
+	unsigned int cert_cnt=0;
+ 	gnutls_x509_crt_t *certbuf;
+
+	dat.data=(void *)buf;
+	dat.size=buf_size;
+
+	gnutls_x509_crt_list_import(NULL, &cert_cnt, &dat,
+				    GNUTLS_X509_FMT_PEM,
+				    GNUTLS_X509_CRT_LIST_IMPORT_FAIL_IF_EXCEED);
+
+	if (cert_cnt == 0)
+		return 0;
+	certbuf=malloc(sizeof(*certbuf)*cert_cnt);
+
+	if (!certbuf)
+		return 0;
+
+	if (gnutls_x509_crt_list_import(certbuf, &cert_cnt, &dat,
+					GNUTLS_X509_FMT_PEM,
+					GNUTLS_X509_CRT_LIST_IMPORT_FAIL_IF_EXCEED) < 0)
+		return 0;
+
+	while (cert_cnt)
+		gnutls_x509_crt_deinit(certbuf[--cert_cnt]);
+	free(certbuf);
+	return (1);
+}
+
+char *tls_cert_name(const char *buf, size_t buf_size)
+{
+	gnutls_datum_t dat;
+	unsigned int cert_cnt=0;
+ 	gnutls_x509_crt_t *certbuf;
+	char *p=0;
+	size_t p_size;
+
+
+	dat.data=(void *)buf;
+	dat.size=buf_size;
+
+	gnutls_x509_crt_list_import(NULL, &cert_cnt, &dat,
+				    GNUTLS_X509_FMT_PEM,
+				    GNUTLS_X509_CRT_LIST_IMPORT_FAIL_IF_EXCEED);
+
+	if (cert_cnt == 0)
+		return 0;
+	certbuf=malloc(sizeof(*certbuf)*cert_cnt);
+
+	if (!certbuf)
+		return 0;
+
+	if (gnutls_x509_crt_list_import(certbuf, &cert_cnt, &dat,
+					GNUTLS_X509_FMT_PEM,
+					GNUTLS_X509_CRT_LIST_IMPORT_FAIL_IF_EXCEED) < 0)
+		return 0;
+
+	p_size=0;
+	gnutls_x509_crt_get_dn(certbuf[0], NULL, &p_size);
+	++p_size;
+	p=malloc(p_size+1);
+
+	if (p)
+	{
+		if (gnutls_x509_crt_get_dn(certbuf[0], p, &p_size)
+		    != GNUTLS_E_SUCCESS)
+		{
+			free(p);
+			p=0;
+		}
+		else p[p_size]=0;
+	}
+
+	while (cert_cnt)
+		gnutls_x509_crt_deinit(certbuf[--cert_cnt]);
+	free(certbuf);
+	return p;
 }

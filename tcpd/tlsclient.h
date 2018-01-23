@@ -6,7 +6,7 @@
 ** See COPYING for distribution information.
 */
 
-static const char tlsclient_h_rcsid[]="$Id: tlsclient.h,v 1.2 2001/04/17 12:27:20 mrsam Exp $";
+static const char tlsclient_h_rcsid[]="$Id: tlsclient.h,v 1.3 2008/06/29 20:18:36 mrsam Exp $";
 
 #ifdef  __cplusplus
 extern "C" {
@@ -42,6 +42,10 @@ struct couriertls_info {
 
 void couriertls_init(struct couriertls_info *);
 int couriertls_start(char **, struct couriertls_info *);
+
+const char *couriertls_get_subject(struct couriertls_info *, const char *subject);
+void couriertls_export_subject_environment(struct couriertls_info *);
+
 void couriertls_destroy(struct couriertls_info *);
 
 #ifdef  __cplusplus
