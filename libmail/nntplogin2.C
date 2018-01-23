@@ -1,10 +1,11 @@
-/* $Id: nntplogin2.C,v 1.2 2003/10/22 02:50:01 mrsam Exp $
+/* $Id: nntplogin2.C,v 1.3 2008/05/24 17:57:42 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 #include "nntplogin2.H"
+#include <cstring>
 
 #include <errno.h>
 

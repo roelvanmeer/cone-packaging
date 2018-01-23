@@ -1,6 +1,6 @@
-dnl $Id: configure.in,v 1.10 2007/11/11 18:18:55 mrsam Exp $
+dnl $Id: configure.in,v 1.11 2008/05/18 19:57:59 mrsam Exp $
 dnl
-dnl Copyright 2001 Double Precision, Inc.  See COPYING for
+dnl Copyright 2001-2008 Double Precision, Inc.  See COPYING for
 dnl distribution information.
 
 AC_INIT(rootcerts, 0.50, [courier-users@lists.sourceforge.net])
@@ -44,8 +44,6 @@ echo "dir=\"$certdb\"" >rootcertsdir.cnf
 AC_SUBST(certdb)
 
 . ../tcpd/couriertls.config
-
-REHASH=""
 
 if test "$ssllib" = "openssl"
 then

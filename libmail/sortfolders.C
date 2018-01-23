@@ -1,11 +1,12 @@
-/* $Id: sortfolders.C,v 1.1 2003/05/27 14:09:09 mrsam Exp $
+/* $Id: sortfolders.C,v 1.2 2008/05/24 17:57:42 mrsam Exp $
 **
-** Copyright 2002, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 #include "libmail_config.h"
 #include "mail.H"
+#include <cstring>
 
 mail::folder::sort::sort(bool foldersFirstArg) // TRUE: sort folders first
 	: foldersFirst(foldersFirstArg)

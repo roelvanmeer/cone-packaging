@@ -1,4 +1,4 @@
-/* $Id: cursesedit.H,v 1.11 2006/05/23 22:21:45 mrsam Exp $
+/* $Id: cursesedit.H,v 1.12 2008/05/24 17:57:41 mrsam Exp $
 **
 ** Copyright 2003-2006, Double Precision Inc.
 **
@@ -52,7 +52,9 @@
 # endif
 #endif
 
-class mail::mimestruct;
+namespace mail {
+	class mimestruct;
+};
 
 class CursesEdit : public CursesContainer, public CursesKeyHandler {
 

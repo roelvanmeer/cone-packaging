@@ -1,4 +1,4 @@
-/* $Id: leaf.C,v 1.11 2005/02/24 03:39:09 mrsam Exp $
+/* $Id: leaf.C,v 1.12 2008/05/24 17:57:41 mrsam Exp $
 **
 ** Copyright 2003-2004, Double Precision Inc.
 **
@@ -525,7 +525,7 @@ int main(int argc, char **argv)
 		filename=CursesFileReq::washfname(filename);
 
 		if ((loadfile=new ifstream(filename.c_str())) == NULL ||
-		    !loadfile->is_open() && errno != ENOENT)
+		    (!loadfile->is_open() && errno != ENOENT))
 		{
 			perror(filename.c_str());
 			exit(1);

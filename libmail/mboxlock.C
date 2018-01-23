@@ -1,4 +1,4 @@
-/* $Id: mboxlock.C,v 1.1 2003/05/27 14:09:08 mrsam Exp $
+/* $Id: mboxlock.C,v 1.2 2008/05/24 17:57:42 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -8,6 +8,7 @@
 #include "mboxlock.H"
 #include "mboxopen.H"
 #include "file.H"
+#include <cstring>
 
 #include <errno.h>
 #include <sys/types.h>

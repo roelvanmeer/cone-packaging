@@ -1,4 +1,4 @@
-/* $Id: cursesmessage.H,v 1.11 2006/02/16 02:59:42 mrsam Exp $
+/* $Id: cursesmessage.H,v 1.12 2008/05/24 17:57:41 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -27,10 +27,11 @@
 #include "cache.H"
 #include "previousscreen.H"
 
-class mail::account;
-
-class mail::envelope;
-class mail::mimestruct;
+namespace mail {
+	class account;
+	class envelope;
+	class mimestruct;
+};
 
 class CursesMessageDisplay;
 class Curses;

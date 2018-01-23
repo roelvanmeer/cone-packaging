@@ -1,11 +1,12 @@
-/* $Id: fdtls.C,v 1.2 2003/06/11 22:36:32 mrsam Exp $
+/* $Id: fdtls.C,v 1.3 2008/05/24 17:57:42 mrsam Exp $
 **
-** Copyright 2002, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 #include "libmail_config.h"
 #include "fdtls.H"
+#include <cstdlib>
 
 #if HAVE_LIBCOURIERTLS
 

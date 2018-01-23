@@ -1,6 +1,6 @@
-/* $Id: smtpfolder.C,v 1.3 2006/06/04 21:36:02 mrsam Exp $
+/* $Id: smtpfolder.C,v 1.4 2008/05/24 17:57:42 mrsam Exp $
 **
-** Copyright 2002-2006, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -8,6 +8,7 @@
 #include "smtpfolder.H"
 #include <errno.h>
 #include "rfc2045/rfc2045.h"
+#include <cstring>
 
 using namespace std;
 

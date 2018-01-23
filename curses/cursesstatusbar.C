@@ -1,4 +1,4 @@
-/* $Id: cursesstatusbar.C,v 1.5 2003/10/12 01:36:33 mrsam Exp $
+/* $Id: cursesstatusbar.C,v 1.6 2008/05/24 17:57:41 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -431,10 +431,10 @@ void CursesStatusBar::rebuildShortcuts()
 
 void CursesStatusBar::status(string text, statusLevel level)
 {
-	if ((statusText.size() > 0 || extendedErrorMsg.size() > 0) &&
-	    currentLevel > level || fieldActive != NULL)
+	if (((statusText.size() > 0 || extendedErrorMsg.size() > 0) &&
+	     currentLevel > level) || fieldActive != NULL)
 	{
-		// Message to low of a priority
+		// Message too low of a priority
 
 		if (CursesKeyHandler::handlerListModified || busyCounter)
 		{

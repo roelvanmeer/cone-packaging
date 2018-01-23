@@ -1,6 +1,6 @@
-/* $Id: gettext.C,v 1.16 2006/04/11 02:24:59 mrsam Exp $
+/* $Id: gettext.C,v 1.17 2008/05/24 17:57:41 mrsam Exp $
 **
-** Copyright 2003-2005, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -14,6 +14,7 @@
 #include "unicode/unicode.h"
 #include "libmail/mail.H"
 #include <errno.h>
+#include <cstring>
 
 #if HAVE_LANGINFO_H
 #include <langinfo.h>

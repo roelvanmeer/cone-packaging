@@ -1,10 +1,11 @@
-/* $Id: addressbook.C,v 1.4 2005/02/24 03:39:09 mrsam Exp $
+/* $Id: addressbook.C,v 1.5 2008/05/24 17:57:41 mrsam Exp $
 **
-** Copyright 2002-2004, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 #include "libmail_config.h"
+#include <cstring>
 
 #include "addressbook.H"
 #include "addressbookadd.H"

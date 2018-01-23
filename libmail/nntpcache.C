@@ -1,6 +1,6 @@
-/* $Id: nntpcache.C,v 1.3 2006/06/04 21:36:02 mrsam Exp $
+/* $Id: nntpcache.C,v 1.4 2008/05/24 17:57:42 mrsam Exp $
 **
-** Copyright 2003-2006, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <cstring>
 
 mail::nntp::CacheTask::CacheTask(mail::callback *callbackArg,
 				 nntp &myserverArg,

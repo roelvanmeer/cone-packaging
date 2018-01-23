@@ -1,12 +1,13 @@
-/* $Id: addmessage.C,v 1.3 2004/06/23 00:55:01 mrsam Exp $
+/* $Id: addmessage.C,v 1.4 2008/05/24 17:57:41 mrsam Exp $
 **
-** Copyright 2002-2004, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 #include "libmail_config.h"
 #include "addmessage.H"
 #include "attachments.H"
+#include <cstring>
 #include <errno.h>
 
 // Default method implementation.

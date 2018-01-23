@@ -2313,8 +2313,6 @@ echo "dir=\"$certdb\"" >rootcertsdir.cnf
 
 . ../tcpd/couriertls.config
 
-REHASH=""
-
 if test "$ssllib" = "openssl"
 then
 	# Extract the first word of "openssl", so it can be a program name with args.

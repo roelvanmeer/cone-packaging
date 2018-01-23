@@ -1,14 +1,14 @@
-/* $Id: rfc2047decode.C,v 1.2 2004/05/03 00:04:05 mrsam Exp $
+/* $Id: rfc2047decode.C,v 1.3 2008/05/24 17:57:42 mrsam Exp $
 **
-** Copyright 2002, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 #include "libmail_config.h"
-
 #include "rfc2047decode.H"
 #include "rfc822/rfc2047.h"
 #include "mail.H"
+#include <cstring>
 
 using namespace std;
 

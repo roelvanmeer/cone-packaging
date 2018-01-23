@@ -1,6 +1,6 @@
-#$Id: Makefile.am,v 1.31 2007/11/04 23:52:16 mrsam Exp $
+#$Id: Makefile.am,v 1.32 2008/05/08 15:38:46 mrsam Exp $
 #
-# Copyright 1998 - 2005 Double Precision, Inc.  See COPYING for
+# Copyright 1998 - 2008 Double Precision, Inc.  See COPYING for
 # distribution information.
 
 
@@ -46,7 +46,7 @@ couriertcpd_LDADD= libspipe.la \
         ../waitlib/libwaitlib.a\
 	../soxwrap/libsoxwrap.a\
 	../md5/libmd5.la ../random128/librandom128.la \
-	@LIBGDBM@ @LIBDB@ $(couriertcpd_t:%=-Wl,%)
+	$(couriertcpd_t:%=-Wl,%)
 couriertcpd_LDFLAGS=-static
 
 

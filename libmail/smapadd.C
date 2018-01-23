@@ -1,14 +1,13 @@
-/* $Id: smapadd.C,v 1.4 2003/06/25 00:46:57 mrsam Exp $
+/* $Id: smapadd.C,v 1.5 2008/05/24 17:57:42 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
-
 #include "smapadd.H"
 #include <errno.h>
 #include <sstream>
-
+#include <cstring>
 #include <sys/types.h>
 #include <sys/stat.h>
 

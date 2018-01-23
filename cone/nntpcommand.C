@@ -1,6 +1,6 @@
-/* $Id: nntpcommand.C,v 1.4 2007/04/06 17:57:29 mrsam Exp $
+/* $Id: nntpcommand.C,v 1.5 2008/05/24 17:57:41 mrsam Exp $
 **
-** Copyright 2003-2006, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -12,6 +12,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <cstdlib>
+#include <cstring>
 
 #include <sys/types.h>
 #if HAVE_UNISTD_H

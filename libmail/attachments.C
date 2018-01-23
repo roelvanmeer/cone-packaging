@@ -1,6 +1,6 @@
-/* $Id: attachments.C,v 1.3 2004/06/23 00:55:01 mrsam Exp $
+/* $Id: attachments.C,v 1.4 2008/05/24 17:57:41 mrsam Exp $
 **
-** Copyright 2004, Double Precision Inc.
+** Copyright 2004-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -17,6 +17,7 @@
 #include <errno.h>
 #include <sstream>
 #include <iomanip>
+#include <cstring>
 
 using namespace std;
 

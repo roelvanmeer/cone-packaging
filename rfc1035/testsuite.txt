@@ -29,4 +29,4 @@ pass
 unknown
 fail: Address does not pass the Sender Policy Framework
 pass
-fail: Maximum of 20 nested SPF queries exceeded.
+unknown

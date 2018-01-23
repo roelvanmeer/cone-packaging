@@ -1,5 +1,5 @@
 /*
-** Copyright 2000-2007 Double Precision, Inc.
+** Copyright 2000-2008 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 #include	"config.h"
@@ -436,6 +436,9 @@ SSL_CTX *tls_create(int isserver, const struct tls_info *info)
 	memcpy(info_copy, info, sizeof(*info_copy));
 	info_copy->isserver=isserver;
 
+	if (!protocol || !*protocol)
+		protocol="SSL23";
+
 	ctx=SSL_CTX_new(protocol && strcmp(protocol, "SSL2") == 0
 							? SSLv2_method():
 		protocol && strcmp(protocol, "SSL3") == 0 ? SSLv3_method():
@@ -451,8 +454,10 @@ SSL_CTX *tls_create(int isserver, const struct tls_info *info)
 	SSL_CTX_set_app_data(ctx, info_copy);
 	SSL_CTX_set_options(ctx, SSL_OP_ALL);
 
-	if (ssl_cipher_list)
-		SSL_CTX_set_cipher_list(ctx, ssl_cipher_list);
+	if (!ssl_cipher_list)
+		ssl_cipher_list="SSLv3:TLSv1:!SSLv2:HIGH:!LOW:!MEDIUM:!EXP:!NULL@STRENGTH";
+
+	SSL_CTX_set_cipher_list(ctx, ssl_cipher_list);
 	SSL_CTX_set_timeout(ctx, session_timeout);
 
 	info_copy->tlscache=NULL;
@@ -681,6 +686,8 @@ static SSL_SESSION *cache_get(SSL *ssl, unsigned char *id, int id_len,
 	fprintf(stderr, "INFO: TLSCACHE: session %s\n",
 		wi.ret ? "found":"not found");
 #endif
+	if (wi.ret)
+		SSL_set_session_id_context(ssl, id, id_len);
 	return wi.ret;
 }
 

@@ -1,6 +1,6 @@
-/* $Id: spellcheckerPspell.C,v 1.1 2003/05/27 14:09:04 mrsam Exp $
+/* $Id: spellcheckerPspell.C,v 1.2 2008/05/24 17:57:41 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -8,8 +8,8 @@
 #include "config.h"
 #include "spellcheckerPspell.H"
 #include "libmail/mail.H"
-
 #include <errno.h>
+#include <cstring>
 
 using namespace std;
 

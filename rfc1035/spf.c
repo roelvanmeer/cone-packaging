@@ -24,7 +24,7 @@
 #endif
 #endif
 
-static const char rcsid[]="$Id: spf.c,v 1.9 2007/08/30 01:38:49 mrsam Exp $";
+static const char rcsid[]="$Id: spf.c,v 1.10 2008/01/29 03:55:28 mrsam Exp $";
 
 static void set_err_msg(char *errmsg_buf,
 			size_t errmsg_buf_size,
@@ -1390,7 +1390,7 @@ static char *transform(char *macro,
 	** number, but MUST support at least a value of 9.
 	*/
 
-	if (transformer_count > n)
+	if (transformer_count > n || transformer_count <= 0)
 		transformer_count=n;
 
 	if (transformer_reverse)

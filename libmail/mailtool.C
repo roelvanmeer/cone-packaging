@@ -1,6 +1,6 @@
-/* $Id: mailtool.C,v 1.9 2007/04/06 17:57:29 mrsam Exp $
+/* $Id: mailtool.C,v 1.10 2008/05/24 17:57:42 mrsam Exp $
 **
-** Copyright 2002-2004, Double Precision Inc.
+** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -16,6 +16,7 @@
 #include "addmessage.H"
 #include "smtpinfo.H"
 #include "rfc822/rfc822.h"
+#include <cstring>
 
 #if HAVE_TERMIOS_H
 #include <termios.h>
