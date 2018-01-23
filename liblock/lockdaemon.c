@@ -32,7 +32,7 @@
 
 #define exit(_a_) _exit(_a_)
 
-static const char rcsid[]="$Id: lockdaemon.c,v 1.10 2006/05/28 15:29:52 mrsam Exp $";
+static const char rcsid[]="$Id: lockdaemon.c,v 1.11 2007/05/05 03:04:41 mrsam Exp $";
 
 static int start1(const char *, int);
 
@@ -145,11 +145,14 @@ int	lockfd;
 		lockfd=open(lockfile, O_RDWR|O_CREAT, 0600);
 	}
 
-	if (lockfd < 0)
+	if (lockfd < 0 || dup2(lockfd, 99) != 99)
 	{
 		perror(lockfile);
 		exit(1);
 	}
+
+	close(lockfd);
+	lockfd=99;
 
 #ifdef	FD_CLOEXEC
 	if (fcntl(lockfd, F_SETFD, FD_CLOEXEC) < 0)

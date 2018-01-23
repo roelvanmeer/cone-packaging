@@ -1,275 +1,148 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::folder::hasSubFolders</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="mail::folder Native API reference"
-HREF="libmail-folder.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::folder::hasMessages"
-HREF="folder-hasmessages.html"><LINK
-REL="NEXT"
-TITLE="mail::folder::isparentof"
-HREF="folder-isparentof.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="folder-hasmessages.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="folder-isparentof.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="FOLDER-HASSUBFOLDERS"
-></A
->mail::folder::hasSubFolders</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN10461"
-></A
-><H2
->Name</H2
->mail::folder::hasSubFolders&nbsp;--&nbsp;Determine if the folder is capable of storing other folders</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN10464"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->#include&nbsp;&#60;libmail/mail.H&#62;<br>
-<br>
-mail::folder&nbsp;*folder;</P
-><DIV
-CLASS="FUNCSYNOPSIS"
-><P
-></P
-><A
-NAME="AEN10466"
-></A
-><P
-><CODE
-><CODE
-CLASS="FUNCDEF"
->bool flag=folder-&#62;<TT
-CLASS="FUNCTION"
->hasSubFolders</TT
-></CODE
->(void);</CODE
-></P
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN10471"
-></A
-><H2
->USAGE</H2
-><P
->Some folders contain messages.
-Other folders contain other folder (subfolders).
-Some IMAP servers are capable of creating dual-purpose folders that contain
-both messages and other subfolders.
-The
-<TT
-CLASS="FUNCTION"
->hasSubFolders</TT
-> indicates whether
-<TT
-CLASS="PARAMETER"
-><I
->folder</I
-></TT
-> is capable of containing other folders
-(subfolders).</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN10476"
-></A
-><H2
->Return Codes</H2
-><P
->A <TT
-CLASS="LITERAL"
->true</TT
-> result indicates that
-<TT
-CLASS="PARAMETER"
-><I
->folder</I
-></TT
-> is capable of storing other folders.
-It may not necessarily mean that
-<TT
-CLASS="PARAMETER"
-><I
->folder</I
-></TT
-> actually contains any folders, it might
-very well be an empty folder.</P
-><P
->Applications should interpret a <TT
-CLASS="LITERAL"
->true</TT
-> result to mean
-that the
-<A
-HREF="folder-createsubfolder.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::folder::createSubFolder</SPAN
->(3x)</SPAN
-></A
->
-function may be used
-to create subfolders.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN10488"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="folder-hasmessages.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::folder::hasMessages</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="folder-hasmessages.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="folder-isparentof.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::folder::hasMessages</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="libmail-folder.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::folder::isparentof</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>mail::folder::hasSubFolders</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="libmail-folder.html" title="mail::folder Native API reference"/>
+  <link rel="prev" href="folder-hasmessages.html" title="mail::folder::hasMessages"/>
+  <link rel="next" href="folder-isparentof.html" title="mail::folder::isparentof"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::folder::hasSubFolders</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="folder-hasmessages.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="structname">mail::folder</span> Native API
+        reference</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="folder-isparentof.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="folder-hassubfolders" shape="rect" name="folder-hassubfolders"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::folder::hasSubFolders &#8212; Determine if the
+      folder is capable of storing other folders</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        #include&#160;&lt;libmail/mail.H&gt;<br clear="none"/>
+        <br clear="none"/>
+        mail::folder&#160;*folder;<br clear="none"/></p>
+      </div>
+
+      <div class="funcsynopsis">
+        <table border="0" summary="Function synopsis" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="1" colspan="1"><code class="funcdef">bool
+            flag=folder-&gt;<b class="fsfunc">hasSubFolders</b>(</code></td>
+
+            <td rowspan="1" colspan="1"><code>void)</code>;</td>
+
+            <td rowspan="1" colspan="1">&#160;</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id453186" shape="rect" name="id453186"> </a>
+
+      <h2>USAGE</h2>
+
+      <p>Some folders contain messages. Other folders contain other
+      folder (subfolders). Some IMAP servers are capable of
+      creating dual-purpose folders that contain both messages and
+      other subfolders. The <code class="function">hasSubFolders</code> indicates whether <em class="parameter"><code>folder</code></em> is capable of containing
+      other folders (subfolders).</p>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id453210" shape="rect" name="id453210"> </a>
+
+      <h2>Return Codes</h2>
+
+      <p>A <code class="literal">true</code> result indicates that
+      <em class="parameter"><code>folder</code></em> is capable of
+      storing other folders. It may not necessarily mean that
+      <em class="parameter"><code>folder</code></em> actually
+      contains any folders, it might very well be an empty
+      folder.</p>
+
+      <p>Applications should interpret a <code class="literal">true</code> result to mean that the <a href="folder-createsubfolder.html" title="mail::folder::createSubFolder" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::createSubFolder</span>(3x)</span></a>
+      function may be used to create subfolders.</p>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id453262" shape="rect" name="id453262"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="folder-hasmessages.html" title="mail::folder::hasMessages" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::hasMessages</span>(3x)</span></a>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="folder-hasmessages.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="libmail-folder.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="folder-isparentof.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::folder::hasMessages&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::folder::isparentof</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

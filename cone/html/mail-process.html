@@ -1,529 +1,240 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::account::process</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="mail::account Native API reference"
-HREF="native.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::account::poll"
-HREF="mail-poll.html"><LINK
-REL="NEXT"
-TITLE="mail::account::readMessageAttributes"
-HREF="mail-readmsgattr.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="mail-poll.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="mail-readmsgattr.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="MAIL-PROCESS"
-></A
->mail::account::process</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN7192"
-></A
-><H2
->Name</H2
->mail::account::process&nbsp;--&nbsp;Process pending events</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN7195"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->#include&nbsp;&#60;libmail/mail.H&#62;<br>
-<br>
-<br>
-class&nbsp;myCallback&nbsp;:&nbsp;public&nbsp;mail::callback&nbsp;{<br>
-public:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success(std::string&nbsp;msg);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;fail(std::string&nbsp;msg);<br>
-};</P
-><P
-CLASS="LITERALLAYOUT"
->#include&nbsp;&#60;sys/time.h&#62;<br>
-#include&nbsp;&#60;sys/types.h&#62;<br>
-#include&nbsp;&#60;unistd.h&#62;<br>
-<br>
-mail::account::function(&nbsp;<TT
-CLASS="REPLACEABLE"
-><I
->parameter list</I
-></TT
->,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;myCallback&nbsp;&#38;<TT
-CLASS="REPLACEABLE"
-><I
->callback</I
-></TT
->)<br>
-<br>
-for&nbsp;(;;)<br>
-{<br>
-&nbsp;&nbsp;std::vector&#60;mail::pollfd&#62;&nbsp;pollfds;<br>
-&nbsp;&nbsp;int&nbsp;timeout;<br>
-<br>
-&nbsp;&nbsp;timeout=15&nbsp;*&nbsp;60&nbsp;*&nbsp;60&nbsp;*&nbsp;1000;</P
-><DIV
-CLASS="FUNCSYNOPSIS"
-><P
-></P
-><A
-NAME="AEN7200"
-></A
-><P
-><CODE
-><CODE
-CLASS="FUNCDEF"
-><TT
-CLASS="FUNCTION"
->mail::account::process</TT
-></CODE
->(<TT
-CLASS="PARAMETER"
-><I
->pollfds</I
-></TT
->, <TT
-CLASS="PARAMETER"
-><I
->timeout</I
-></TT
->);</CODE
-></P
-><P
-></P
-></DIV
-><P
-CLASS="LITERALLAYOUT"
-><br>
-&nbsp;&nbsp;if&nbsp;(myCallback.completed())<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
-<br>
-&nbsp;&nbsp;if&nbsp;(mail::account::poll(pollfds,&nbsp;timeout)&nbsp;&#60;&nbsp;0&nbsp;&#38;&#38;&nbsp;errno&nbsp;!=&nbsp;EINTR)<br>
-&nbsp;&nbsp;{<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error();<br>
-&nbsp;&nbsp;}<br>
-}</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN7209"
-></A
-><H2
->USAGE</H2
-><P
->This function processes all pending events
-for all opened mail accounts.
-Most <CODE
-CLASS="STRUCTNAME"
->mail</CODE
-> requests
-are not immediately processed
-(some are, but most aren't).
-A <CODE
-CLASS="STRUCTNAME"
->mail</CODE
-> request usually includes a
-<CODE
-CLASS="STRUCTNAME"
->mail::callback</CODE
->-derived object as one of its
-arguments.
-When the mail request completes the
-<TT
-CLASS="FUNCTION"
->success</TT
-> or
-<TT
-CLASS="FUNCTION"
->fail</TT
-> method (some
-<CODE
-CLASS="STRUCTNAME"
->mail::callback</CODE
-> subclasses use additional or
-alternative methods) is invoked.
-If the mail request cannot be completed immediately, 
-<TT
-CLASS="FUNCTION"
-><TT
-CLASS="REPLACEABLE"
-><I
->mail::account::function</I
-></TT
-></TT
->
-still returns right away.
-<TT
-CLASS="FUNCTION"
->mail::account::process</TT
-> handles any pending events for
-all outstanding <CODE
-CLASS="STRUCTNAME"
->mail</CODE
-> requests.
-The
-<TT
-CLASS="FUNCTION"
->success</TT
-> or
-<TT
-CLASS="FUNCTION"
->fail</TT
-> method will be invoked
-for all completed requests.</P
-><P
->The <CODE
-CLASS="STRUCTNAME"
->mail::pollfd</CODE
-> structure is a C++ wrapper for
-the <SPAN
-CLASS="QUOTE"
->"struct <CODE
-CLASS="STRUCTNAME"
->pollfd</CODE
->"</SPAN
-> that's used by the
-<SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->poll</SPAN
->(2)</SPAN
->
-system call.
-<TT
-CLASS="FUNCTION"
->mail::account::process</TT
-> receives a reference to a
-vector of <CODE
-CLASS="STRUCTNAME"
->mail::pollfd</CODE
-> objects.
-After
-<TT
-CLASS="FUNCTION"
->mail::account::process</TT
-> handles any pending events,
-the function initializes the vector with all open file descriptors on which
-activity is expected before
-<TT
-CLASS="FUNCTION"
->mail::account::process</TT
-> expects any more events to
-occur.</P
-><P
->Any existing contents of the <CODE
-CLASS="STRUCTNAME"
->mail::pollfd</CODE
-> vector
-will be destroyed.
-On the other hand, <TT
-CLASS="PARAMETER"
-><I
->timeout</I
-></TT
-> must be initialized
-prior to invoking
-<TT
-CLASS="FUNCTION"
->mail::account::process</TT
->.
-<TT
-CLASS="PARAMETER"
-><I
->timeout</I
-></TT
-> contains a time interval, in milliseconds,
-before the calling application expects to process any regularly-scheduled
-event.
-If <TT
-CLASS="FUNCTION"
->mail::account::process</TT
-> expects any regularly-scheduled
-event to occur earlier, it will replace <TT
-CLASS="PARAMETER"
-><I
->timeout</I
-></TT
-> with
-the smaller timeout interval.</P
-><P
->The expectation is that the application's main loops alternatively invokes
-<TT
-CLASS="FUNCTION"
->mail::account::process</TT
-> and
-<SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->poll</SPAN
->(2)</SPAN
->.
-<SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->poll</SPAN
->(2)</SPAN
-> waits for some I/O occur,
-or a timeout expiring;
-<TT
-CLASS="FUNCTION"
->mail::account::process</TT
-> processes any resulting events,
-then the cycle repeats.</P
-><P
->The application may add its own file descriptors to the
-<CODE
-CLASS="STRUCTNAME"
->mail::pollfd</CODE
-> vector, before calling
-<SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->poll</SPAN
->(2)</SPAN
->.
-The application is reponsible for handling any I/O activity from its own
-file descriptors.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN7256"
-></A
-><H2
->Return Codes</H2
-><P
-><TT
-CLASS="FUNCTION"
->mail::account::process</TT
->
-always returns succesfully.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->The application should not invoke
-<TT
-CLASS="FUNCTION"
->mail::account::process</TT
->
-again until it either invokes
-<SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->poll</SPAN
->(2)</SPAN
->
-(directly or via
-<A
-HREF="mail-poll.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::poll</SPAN
->(3x)</SPAN
-></A
->),
-or until the application
-calls another 
-<TT
-CLASS="APPLICATION"
->LibMAIL</TT
->
- function.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN7271"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="mail-open.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::open</SPAN
->(3x)</SPAN
-></A
->,
-<A
-HREF="mail-poll.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::poll</SPAN
->(3x)</SPAN
-></A
->,
-<A
-HREF="mail-resume.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::resume</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="mail-poll.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="mail-readmsgattr.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::account::poll</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="native.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::account::readMessageAttributes</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>mail::account::process</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="native.html" title="mail::account Native API reference"/>
+  <link rel="prev" href="mail-poll.html" title="mail::account::poll"/>
+  <link rel="next" href="mail-readmsgattr.html" title="mail::account::readMessageAttributes"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::account::process</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="mail-poll.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="structname">mail::account</span> Native API
+        reference</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="mail-readmsgattr.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="mail-process" shape="rect" name="mail-process"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::account::process &#8212; Process pending events</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        #include&#160;&lt;libmail/mail.H&gt;<br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        class&#160;myCallback&#160;:&#160;public&#160;mail::callback&#160;{<br clear="none"/>
+
+        public:<br clear="none"/>
+        &#160;&#160;&#160;&#160;void&#160;success(std::string&#160;msg);<br clear="none"/>
+
+        &#160;&#160;&#160;&#160;void&#160;fail(std::string&#160;msg);<br clear="none"/>
+
+        };<br clear="none"/></p>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        #include&#160;&lt;sys/time.h&gt;<br clear="none"/>
+        #include&#160;&lt;sys/types.h&gt;<br clear="none"/>
+        #include&#160;&lt;unistd.h&gt;<br clear="none"/>
+        <br clear="none"/>
+        mail::account::function(&#160;<em class="replaceable"><code>parameter&#160;list</code></em>,<br clear="none"/>
+
+        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;myCallback&#160;&amp;<em class="replaceable"><code>callback</code></em>)<br clear="none"/>
+
+        <br clear="none"/>
+        for&#160;(;;)<br clear="none"/>
+        {<br clear="none"/>
+        &#160;&#160;std::vector&lt;mail::pollfd&gt;&#160;pollfds;<br clear="none"/>
+
+        &#160;&#160;int&#160;timeout;<br clear="none"/>
+        <br clear="none"/>
+        &#160;&#160;timeout=15&#160;*&#160;60&#160;*&#160;60&#160;*&#160;1000;<br clear="none"/>
+        </p>
+      </div>
+
+      <div class="funcsynopsis">
+        <table border="0" summary="Function synopsis" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="1" colspan="1"><code class="funcdef"><b class="fsfunc">mail::account::process</b>(</code></td>
+
+            <td rowspan="1" colspan="1">&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">pollfds</var>,</td>
+          </tr>
+
+          <tr>
+            <td rowspan="1" colspan="1">&#160;</td>
+
+            <td rowspan="1" colspan="1">&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">timeout</var><code>)</code>;</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        <br clear="none"/>
+        &#160;&#160;if&#160;(myCallback.completed())<br clear="none"/>
+        &#160;&#160;&#160;&#160;&#160;&#160;break;<br clear="none"/>
+        <br clear="none"/>
+        &#160;&#160;if&#160;(mail::account::poll(pollfds,&#160;timeout)&#160;&lt;&#160;0&#160;&amp;&amp;&#160;errno&#160;!=&#160;EINTR)<br clear="none"/>
+
+        &#160;&#160;{<br clear="none"/>
+        &#160;&#160;&#160;&#160;&#160;error();<br clear="none"/>
+        &#160;&#160;}<br clear="none"/>
+        }<br clear="none"/></p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id422143" shape="rect" name="id422143"> </a>
+
+      <h2>USAGE</h2>
+
+      <p>This function processes all pending events for all opened
+      mail accounts. Most <span class="structname">mail</span>
+      requests are not immediately processed (some are, but most
+      aren't). A <span class="structname">mail</span> request
+      usually includes a <span class="structname">mail::callback</span>-derived object as one of
+      its arguments. When the mail request completes the
+      <code class="function">success</code> or <code class="function">fail</code> method (some <span class="structname">mail::callback</span> subclasses use additional
+      or alternative methods) is invoked. If the mail request
+      cannot be completed immediately, <code class="function"><em class="replaceable"><code>mail::account::function</code></em></code>
+      still returns right away. <code class="function">mail::account::process</code> handles any pending
+      events for all outstanding <span class="structname">mail</span> requests. The <code class="function">success</code> or <code class="function">fail</code> method will be invoked for all
+      completed requests.</p>
+
+      <p>The <span class="structname">mail::pollfd</span> structure
+      is a C++ wrapper for the &#8220;<span class="quote">struct
+      <span class="structname">pollfd</span></span>&#8221; that's
+      used by the <span class="citerefentry"><span class="refentrytitle">poll</span>(2)</span> system call.
+      <code class="function">mail::account::process</code> receives
+      a reference to a vector of <span class="structname">mail::pollfd</span> objects. After <code class="function">mail::account::process</code> handles any pending
+      events, the function initializes the vector with all open
+      file descriptors on which activity is expected before
+      <code class="function">mail::account::process</code> expects
+      any more events to occur.</p>
+
+      <p>Any existing contents of the <span class="structname">mail::pollfd</span> vector will be destroyed. On
+      the other hand, <em class="parameter"><code>timeout</code></em> must be initialized
+      prior to invoking <code class="function">mail::account::process</code>. <em class="parameter"><code>timeout</code></em> contains a time
+      interval, in milliseconds, before the calling application
+      expects to process any regularly-scheduled event. If
+      <code class="function">mail::account::process</code> expects
+      any regularly-scheduled event to occur earlier, it will
+      replace <em class="parameter"><code>timeout</code></em> with
+      the smaller timeout interval.</p>
+
+      <p>The expectation is that the application's main loops
+      alternatively invokes <code class="function">mail::account::process</code> and <span class="citerefentry"><span class="refentrytitle">poll</span>(2)</span>. <span class="citerefentry"><span class="refentrytitle">poll</span>(2)</span> waits for some I/O
+      occur, or a timeout expiring; <code class="function">mail::account::process</code> processes any
+      resulting events, then the cycle repeats.</p>
+
+      <p>The application may add its own file descriptors to the
+      <span class="structname">mail::pollfd</span> vector, before
+      calling <span class="citerefentry"><span class="refentrytitle">poll</span>(2)</span>. The application is
+      reponsible for handling any I/O activity from its own file
+      descriptors.</p>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id422348" shape="rect" name="id422348"> </a>
+
+      <h2>Return Codes</h2>
+
+      <p><code class="function">mail::account::process</code>
+      always returns succesfully.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p>The application should not invoke <code class="function">mail::account::process</code> again until it
+        either invokes <span class="citerefentry"><span class="refentrytitle">poll</span>(2)</span> (directly or via
+        <a href="mail-poll.html" title="mail::account::poll" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::poll</span>(3x)</span></a>),
+        or until the application calls another <span class="application">LibMAIL</span> function.</p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id422414" shape="rect" name="id422414"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="mail-open.html" title="mail::account::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::open</span>(3x)</span></a>,
+      <a href="mail-poll.html" title="mail::account::poll" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::poll</span>(3x)</span></a>,
+      <a href="mail-resume.html" title="mail::account::resume" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::resume</span>(3x)</span></a>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="mail-poll.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="native.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="mail-readmsgattr.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::account::poll&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::account::readMessageAttributes</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

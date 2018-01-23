@@ -339,7 +339,10 @@ static unicode_char *c2u_euckr_doconv(const struct unicode_info *u,
 
 	len = strlen(euckr_str);
 	uc = (unicode_char*)malloc((len+1) * sizeof(unicode_char) *2);
-	
+
+	if (!uc)
+		return NULL;
+
 	for(i=0; i<len;) {
 		/* 2 Characters replaced by KS X 1003 */
 		if ((compat & EUCKR_CP949_EXTENSION)
@@ -454,7 +457,10 @@ static char *u2c_euckr_doconv(const struct unicode_info *u,
 	while(str[len])
 		len++;
 	s = malloc((len+1)*2);
-	
+
+	if (!s)
+		return NULL;
+
 	for(i=0; str[i]; i++)
 	{
 		int ksx_char = 0;

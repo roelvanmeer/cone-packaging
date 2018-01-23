@@ -1,299 +1,184 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->Remote Configuration</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="Cone mail client"
-HREF="cone00index.html"><LINK
-REL="PREVIOUS"
-TITLE="New Account"
-HREF="cone06newaccount.html"><LINK
-REL="NEXT"
-TITLE="Encryption And Signatures"
-HREF="cone08gpg.html"></HEAD
-><BODY
-CLASS="CHAPTER"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="cone06newaccount.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="cone08gpg.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="CONE07REMOTECONFIG"
-></A
->Remote Configuration</H1
-><P
->This is an advanced feature.
-When <SPAN
-CLASS="QUOTE"
->"Remote Configuration"</SPAN
-> is enabled,
-an IMAP or an
-<A
-HREF="smap1.html"
->SMAP</A
-> folder on a remote folder keeps
-a copy of <TT
-CLASS="APPLICATION"
->Cone</TT
->'s
-configuration.
-This allows <TT
-CLASS="APPLICATION"
->Cone</TT
->'s configuration to be accessed from multiple systems.
-An otherwise empty IMAP/SMAP folder must be reserved for this purpose.
-Highlight the folder with the cursor on the folder listing screen, then
-press <B
-CLASS="KEYCAP"
->U</B
-> then <B
-CLASS="KEYCAP"
->R</B
->.</P
-><P
->Answer <B
-CLASS="KEYCAP"
->N</B
-> to the <SPAN
-CLASS="QUOTE"
->"Import remote configuration"</SPAN
->
-question, and <TT
-CLASS="APPLICATION"
->Cone</TT
-> will save its configuration to the remote folder, and
-automatically update the saved configuration, when needed.</P
-><P
->Repeat the process by running <TT
-CLASS="APPLICATION"
->Cone</TT
-> on another system, and answer
-<B
-CLASS="KEYCAP"
->Y</B
-> to this question to import the previously saved
-configuration in this folder.
-<TT
-CLASS="APPLICATION"
->Cone</TT
-> imports and reads the saved configuration, and will also automatically
-udpate the saved copy, when needed.</P
-><P
->Although this feature allows the same configuration to be accessed
-from multiple locations, only one instance of <TT
-CLASS="APPLICATION"
->Cone</TT
-> should be running at
-any given time and using the same remote configuration folder.
-Random errors will be reported if multiple instances of <TT
-CLASS="APPLICATION"
->Cone</TT
-> try to
-open the same
-remote configuration folder, and the IMAP/SMAP server does not allow the same
-folder to be opened by two or more clients.
-Even if the server allows multiple access, <TT
-CLASS="APPLICATION"
->Cone</TT
-> configuration will keep
-getting overwritten by the other <TT
-CLASS="APPLICATION"
->Cone</TT
->';s saved configuration, leading to
-unpredictable results.</P
-><DIV
-CLASS="SECTION"
-><H1
-CLASS="SECTION"
-><A
-NAME="AEN1731"
->Saved settings</A
-></H1
-><P
->Not all configuration information will be saved remotely.
-When remote configuration is enabled, the following configuration will be
-saved in the remote configuration folder:</P
-><P
-></P
-><UL
-><LI
-><P
->Location and login information for remote accounts (IMAP, POP3, SMTP, and
-NetNews).
-Location of local mail accounts is not saved.
-It doesn't make much sense to share location of local mailboxes between
-different systems.</P
-></LI
-><LI
-><P
->Customized headers, E-mail addresses, special folders, and folder sort
-order.</P
-></LI
-></UL
-><P
->The following configuration information will not be saved remotely:</P
-><P
-></P
-><UL
-><LI
-><P
->Location of local mail accounts.</P
-></LI
-><LI
-><P
->Cached data, including newsgroup subscription information.
-The configuration and login information of NetNews accounts is saved
-remotely, however the available newsgroup list, subscription information,
-and list of read and unread articles is not saved.
-The <TT
-CLASS="FILENAME"
->newsrc</TT
-> configuration file, which contains all that,
-can be quite big, and its not feasible to save it remotely.</P
-></LI
-></UL
-><DIV
-CLASS="SECTION"
-><H2
-CLASS="SECTION"
-><A
-NAME="AEN1746"
->Disabling remote configuration</A
-></H2
-><P
->To disable remote configuration, open the setup screen from the main menu,
-highlight <SPAN
-CLASS="QUOTE"
->"Turn off remote configuration"</SPAN
->, and press
-<B
-CLASS="KEYCAP"
->ENTER</B
->.</P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="cone06newaccount.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="cone08gpg.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->New Account</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="cone00index.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Encryption And Signatures</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>Remote Configuration</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="cone00index.html" title="Cone mail client"/>
+  <link rel="prev" href="cone06newaccount.html" title="New Account"/>
+  <link rel="next" href="cone08gpg.html" title="Encryption And Signatures"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">Remote
+        Configuration</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="cone06newaccount.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="application">Cone</span> mail client</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="cone08gpg.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="chapter" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h2 class="title"><a id="cone07remoteconfig" shape="rect" name="cone07remoteconfig"> </a>Remote Configuration</h2>
+        </div>
+      </div>
+    </div>
+
+    <p>This is an advanced feature. When &#8220;<span class="quote">Remote Configuration</span>&#8221; is enabled, an IMAP
+    or an <a href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> folder on a remote folder keeps a copy of
+    <span class="application">Cone</span>'s configuration. This
+    allows <span class="application">Cone</span>'s configuration to
+    be accessed from multiple systems. An otherwise empty IMAP/SMAP
+    folder must be reserved for this purpose. Highlight the folder
+    with the cursor on the folder listing screen, then press
+    <span><strong class="keycap">U</strong></span> then
+    <span><strong class="keycap">R</strong></span>.</p>
+
+    <p>Answer <span><strong class="keycap">N</strong></span> to the
+    &#8220;<span class="quote">Import remote
+    configuration</span>&#8221; question, and <span class="application">Cone</span> will save its configuration to the
+    remote folder, and automatically update the saved
+    configuration, when needed.</p>
+
+    <p>Repeat the process by running <span class="application">Cone</span> on another system, and answer
+    <span><strong class="keycap">Y</strong></span> to this question
+    to import the previously saved configuration in this folder.
+    <span class="application">Cone</span> imports and reads the
+    saved configuration, and will also automatically udpate the
+    saved copy, when needed.</p>
+
+    <p>Although this feature allows the same configuration to be
+    accessed from multiple locations, only one instance of
+    <span class="application">Cone</span> should be running at any
+    given time and using the same remote configuration folder.
+    Random errors will be reported if multiple instances of
+    <span class="application">Cone</span> try to open the same
+    remote configuration folder, and the IMAP/SMAP server does not
+    allow the same folder to be opened by two or more clients. Even
+    if the server allows multiple access, <span class="application">Cone</span> configuration will keep getting
+    overwritten by the other <span class="application">Cone</span>'s saved configuration, leading to
+    unpredictable results.</p>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id351307" shape="rect" name="id351307"> </a>Saved settings</h4>
+          </div>
+        </div>
+      </div>
+
+      <p>Not all configuration information will be saved remotely.
+      When remote configuration is enabled, the following
+      configuration will be saved in the remote configuration
+      folder:</p>
+
+      <div class="itemizedlist">
+        <ul type="disc">
+          <li>
+            <p>Location and login information for remote accounts
+            (IMAP, POP3, SMTP, and NetNews). Location of local mail
+            accounts is not saved. It doesn't make much sense to
+            share location of local mailboxes between different
+            systems.</p>
+          </li>
+
+          <li>
+            <p>Customized headers, E-mail addresses, special
+            folders, and folder sort order.</p>
+          </li>
+        </ul>
+      </div>
+
+      <p>The following configuration information will not be saved
+      remotely:</p>
+
+      <div class="itemizedlist">
+        <ul type="disc">
+          <li>
+            <p>Location of local mail accounts.</p>
+          </li>
+
+          <li>
+            <p>Cached data, including newsgroup subscription
+            information. The configuration and login information of
+            NetNews accounts is saved remotely, however the
+            available newsgroup list, subscription information, and
+            list of read and unread articles is not saved. The
+            <code class="filename">newsrc</code> configuration
+            file, which contains all that, can be quite big, and
+            its not feasible to save it remotely.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="section" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h5 class="title"><a id="id351365" shape="rect" name="id351365"> </a>Disabling remote configuration</h5>
+            </div>
+          </div>
+        </div>
+
+        <p>To disable remote configuration, open the setup screen
+        from the main menu, highlight &#8220;<span class="quote">Turn off remote configuration</span>&#8221;, and
+        press <span><strong class="keycap">ENTER</strong></span>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="cone06newaccount.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="cone00index.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="cone08gpg.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">New Account&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;Encryption And Signatures</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

@@ -1,294 +1,132 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->leaf</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="Cone mail client"
-HREF="cone00index.html"><LINK
-REL="PREVIOUS"
-TITLE="cone"
-HREF="cone.html"><LINK
-REL="NEXT"
-TITLE="mailtool"
-HREF="mailtool.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="cone.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="mailtool.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="LEAF"
-></A
->leaf</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN2388"
-></A
-><H2
->Name</H2
->leaf&nbsp;--&nbsp;Lightweight Editor of Ascii(and more) Files</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN2391"
-></A
-><H2
->Synopsis</H2
-><P
-><B
-CLASS="COMMAND"
->leaf</B
-> [-d <TT
-CLASS="REPLACEABLE"
-><I
->dictionary</I
-></TT
->] [+<TT
-CLASS="REPLACEABLE"
-><I
->n</I
-></TT
->] [<TT
-CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
->]</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN2400"
-></A
-><H2
->USAGE</H2
-><P
-><B
-CLASS="COMMAND"
->leaf</B
-> is a simple console text file editor, with
-paragraph word-wrapping and spell checking.
-<B
-CLASS="COMMAND"
->leaf</B
-> is based on the text editor in the <TT
-CLASS="APPLICATION"
->Cone</TT
->
-mail reader and composer.
-<B
-CLASS="COMMAND"
->leaf</B
-> opens <TT
-CLASS="REPLACEABLE"
-><I
->filename</I
-></TT
->, position
-the cursor on the first line, or line #<TT
-CLASS="REPLACEABLE"
-><I
->n</I
-></TT
->,
-if specified.</P
-><P
->This is not really the best editor for program sources.
-<B
-CLASS="COMMAND"
->leaf</B
-> is meant to be used as a quick editor for writing
-short notes and memos.
-As text is typed, words will automatically flow to wrap within a typical
-80-character terminal display, even on larger display (due to
-<B
-CLASS="COMMAND"
->leaf</B
->'s heritage as an editor for E-mail messages, which
-are traditionally formatted to fit an 80-character display).
-Word wrapping is "lazy": only long text lines are wrapped.
-Short text lines are not folded together.
-Individual paragraphs are separated by blank lines of text.
-Press <B
-CLASS="KEYCAP"
->CTRL</B
->-<B
-CLASS="KEYCAP"
->J</B
-> to optimally
-rewrap the paragraph under the cursor.
-The bottom two lines on the screen list which keys to press for other
-functions.</P
-><P
->The <CODE
-CLASS="OPTION"
->-d</CODE
-> sets the name of the dictionary used for spell
-checking (overriding the default spell checking dictionary set by the
-<CODE
-CLASS="ENVAR"
->DICTIONARY</CODE
-> environment variable).
-<CODE
-CLASS="OPTION"
->+<TT
-CLASS="REPLACEABLE"
-><I
->n</I
-></TT
-></CODE
-> sets the initial cursor
-position to line #<TT
-CLASS="REPLACEABLE"
-><I
->n</I
-></TT
->.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN2420"
-></A
-><H2
->SEE ALSO</H2
-><P
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->emacs</SPAN
->(1)</SPAN
->,
-<SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->vi</SPAN
->(1)</SPAN
-></P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="cone.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="mailtool.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->cone</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="cone00index.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mailtool</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>leaf</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="cone00index.html" title="Cone mail client"/>
+  <link rel="prev" href="cone.html" title="cone"/>
+  <link rel="next" href="mailtool.html" title="mailtool"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">leaf</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="cone.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="application">Cone</span> mail client</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="mailtool.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="leaf" shape="rect" name="leaf"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>leaf &#8212; Lightweight Editor of Ascii(and more)
+      Files</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="cmdsynopsis">
+        <p><code class="command">leaf</code> [-d <em class="replaceable"><code>dictionary</code></em>] [+<em class="replaceable"><code>n</code></em>] [<em class="replaceable"><code>filename</code></em>]</p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id359011" shape="rect" name="id359011"> </a>
+
+      <h2>USAGE</h2>
+
+      <p><span><strong class="command">leaf</strong></span> is a
+      simple console text file editor, with paragraph word-wrapping
+      and spell checking. <span><strong class="command">leaf</strong></span> is based on the text editor in
+      the <span class="application">Cone</span> mail reader and
+      composer. <span><strong class="command">leaf</strong></span>
+      opens <em class="replaceable"><code>filename</code></em>,
+      position the cursor on the first line, or line #<em class="replaceable"><code>n</code></em>, if specified.</p>
+
+      <p>This is not really the best editor for program sources.
+      <span><strong class="command">leaf</strong></span> is meant
+      to be used as a quick editor for writing short notes and
+      memos. As text is typed, words will automatically flow to
+      wrap within a typical 80-character terminal display, even on
+      larger display (due to <span><strong class="command">leaf</strong></span>'s heritage as an editor for
+      E-mail messages, which are traditionally formatted to fit an
+      80-character display). Word wrapping is "lazy": only long
+      text lines are wrapped. Short text lines are not folded
+      together. Individual paragraphs are separated by blank lines
+      of text. Press <span><strong class="keycap">CTRL</strong></span>-<span><strong class="keycap">J</strong></span> to optimally rewrap the paragraph
+      under the cursor. The bottom two lines on the screen list
+      which keys to press for other functions.</p>
+
+      <p>The <code class="option">-d</code> sets the name of the
+      dictionary used for spell checking (overriding the default
+      spell checking dictionary set by the <code class="envar">DICTIONARY</code> environment variable). <code class="option">+<em class="replaceable"><code>n</code></em></code>
+      sets the initial cursor position to line #<em class="replaceable"><code>n</code></em>.</p>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id359114" shape="rect" name="id359114"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><span class="citerefentry"><span class="refentrytitle">emacs</span>(1)</span>, <span class="citerefentry"><span class="refentrytitle">vi</span>(1)</span></p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="cone.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="cone00index.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="mailtool.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">cone&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mailtool</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

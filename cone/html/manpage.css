@@ -1,12 +1,10 @@
+body { margin-top: 0px; margin-bottom: 0px; background-image: url(bg.gif); font-family: times new roman,serif; color: #000000;}
 
-.LITERALLAYOUT, .STRUCTNAME, dt { font-family: courier new }
-.NOTE { background-color: #dddddd }
+a { color: #0000FF; }
+a:visited { color: #880000; }
+a:hover { color: #000000 }
 
-.TOC dl dt { font-family: sans serif }
-.TOC dl dt a { font-family: courier new }
+h1 { font-family: arial,helvetica,sans serif; font-size: 200% }
+h2 { font-family: arial,helvetica,sans serif; font-size: 150% }
 
-.VARIABLELIST dl dt { background-color: #ddddff }
-
-.APPLICATION { font-family: serif; font-style: italic }
-
-.CALSTABLE { background-color: #ffffff }
+ul li { padding-top: 5px; }

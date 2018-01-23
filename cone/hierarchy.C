@@ -1,4 +1,4 @@
-/* $Id: hierarchy.C,v 1.2 2003/07/27 19:11:51 mrsam Exp $
+/* $Id: hierarchy.C,v 1.3 2007/04/06 17:57:29 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -16,6 +16,7 @@
 #include "libmail/mail.H"
 
 #include <queue>
+#include <algorithm>
 
 using namespace std;
 

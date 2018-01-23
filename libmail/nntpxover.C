@@ -1,4 +1,4 @@
-/* $Id: nntpxover.C,v 1.2 2003/08/27 05:38:29 mrsam Exp $
+/* $Id: nntpxover.C,v 1.3 2007/04/06 17:57:29 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -9,6 +9,7 @@
 #include "generic.H"
 #include "envelope.H"
 
+#include <algorithm>
 #include <sstream>
 
 using namespace std;

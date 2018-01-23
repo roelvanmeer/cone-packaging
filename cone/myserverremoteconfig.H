@@ -1,6 +1,6 @@
-/* $Id: myserverremoteconfig.H,v 1.3 2004/06/12 23:48:52 mrsam Exp $
+/* $Id: myserverremoteconfig.H,v 1.4 2007/02/03 20:04:50 mrsam Exp $
 **
-** Copyright 2003, Double Precision Inc.
+** Copyright 2003-2007, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -12,6 +12,7 @@
 #include "libmail/mail.H"
 #include "libmail/structure.H"
 #include <fstream>
+#include <stdio.h>
 
 ////////////////////////////////////////////////////////////////////
 //
@@ -23,6 +24,7 @@ class myServer::remoteConfig : public mail::callback::disconnect,
 	mail::account *account;
 	mail::folder *folder;
 
+	std::ifstream lastFilenameSaved, lastMacroFilenameSaved;
 public:
 	remoteConfig();
 	~remoteConfig();
@@ -54,11 +56,15 @@ private:
 	std::string errmsg;
 
 	bool saveconfig2(std::string filename,
-			 std::string subjmarker);
+			 std::string subjmarker,
+			 std::ifstream &savedCpy);
 	bool loadconfig2(std::string filename,
 			 std::string subjmarker,
-			 bool optional);
+			 bool optional,
+			 std::ifstream &savedCpy);
 
+	bool configFileUnchanged(std::ifstream &savedCpy,
+				 FILE *newCpy);
 	// Loading a message from a remote folder.
 
 	class loadCallback : public mail::callback::message {

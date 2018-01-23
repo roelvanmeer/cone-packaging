@@ -1,4 +1,4 @@
-/* $Id: init.C,v 1.8 2006/06/04 21:36:01 mrsam Exp $
+/* $Id: init.C,v 1.9 2007/04/06 17:57:29 mrsam Exp $
 **
 ** Copyright 2003-2006, Double Precision Inc.
 **
@@ -28,6 +28,7 @@
 #include "messagesize.H"
 #include <string>
 #include <iostream>
+#include <climits>
 
 #include "init.H"
 #include "buildversion.H"

@@ -1,309 +1,171 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->Encryption Menu</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="Cone mail client"
-HREF="cone00index.html"><LINK
-REL="PREVIOUS"
-TITLE="Master Passwords"
-HREF="cone09masterpassword.html"><LINK
-REL="NEXT"
-TITLE="Mail Filters"
-HREF="cone11filters.html"></HEAD
-><BODY
-CLASS="CHAPTER"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="cone09masterpassword.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="cone11filters.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="CONE10ENCRYPTION"
-></A
->Encryption Menu</H1
-><P
->Choosing <SPAN
-CLASS="QUOTE"
->"Encryption Menu"</SPAN
-> from <TT
-CLASS="APPLICATION"
->Cone</TT
->'s main menu
-(which is available if <TT
-CLASS="APPLICATION"
->GnuPG</TT
-> is installed)
-opens a menu with the following selections:</P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->New encryption key</DT
-><DD
-><P
->This selection creates a pair of public and private keys,
-which may be used for signing and encryption.
-Fill in the fields on the next screen with the appropriate information:
-the name, the E-mail address, and the comment associated with the keypair;
-how big the encryption keys should be (a different length may be chosen
-for creating signed content, and for creating encrypted content); whether
-the keys have an expiration date; and the passphrase, or a password, for the
-private key.  The passphrase must be entered twice, in both fields, and both
-fields must match.  Leave both passphrase fields empty to create a private key
-without a passphrase.</P
-></DD
-><DT
->Delete key</DT
-><DD
-><P
->This selection deletes an existing key.
-Public and private keys are deleted separately.
-All installed keys are displayed in a vertical list.
-Highlight a key with the cursor, and press <B
-CLASS="KEYCAP"
->ENTER</B
-> to delete
-it.</P
-><P
->The top half of the screen shows detailed information about the current key
-that's highlighted by the cursor.  Due to limited amount of available space,
-keys with more than one signatures may not have all signatures shown.</P
-></DD
-><DT
->Sign key</DT
-><DD
-><P
->This selection signs an existing public key with one of the private keys.
-The public key, and the private key are selected one at a time.
-All installed keys are displayed in a vertical list.
-Highlight a key with the cursor, and press <B
-CLASS="KEYCAP"
->ENTER</B
-> to select
-it.</P
-><P
->The top half of the screen shows detailed information about the current key
-that's highlighted by the cursor.  Due to limited amount of available space,
-keys with more than one signatures may not have all signatures shown.</P
-><P
->After selecting the public key, and then the private key, the last prompt
-asks for the signature's trust level, which is used by
-<TT
-CLASS="APPLICATION"
->GnuPG</TT
-> to calculate the key's trustworthiness.</P
-></DD
-><DT
->Edit key</DT
-><DD
-><P
->This last selection provides a convenient means for accessing advanced
-key management features through the <TT
-CLASS="APPLICATION"
->GnuPG</TT
->
-application which are not directly implemented in <TT
-CLASS="APPLICATION"
->Cone</TT
->.
-Selecting <SPAN
-CLASS="QUOTE"
->"Edit key"</SPAN
-> shows a list of all available keys.
-Highlight an available key with the cursor, and press <B
-CLASS="KEYCAP"
->ENTER</B
->.
-<TT
-CLASS="APPLICATION"
->Cone</TT
-> then runs <TT
-CLASS="APPLICATION"
->GnuPG</TT
-> and opens
-<TT
-CLASS="APPLICATION"
->GnuPG</TT
-> key management menu that provides access
-to additional key management features, such as advanced signature and
-passphrase management.
-After <TT
-CLASS="APPLICATION"
->GnuPG</TT
-> exits <TT
-CLASS="APPLICATION"
->Cone</TT
-> resumes running
-automatically.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="90%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
-><TT
-CLASS="APPLICATION"
->Cone</TT
-> does not run while <TT
-CLASS="APPLICATION"
->GnuPG</TT
-> is running, and
-it waits for <TT
-CLASS="APPLICATION"
->GnuPG</TT
-> to finish before resuming.
-If <TT
-CLASS="APPLICATION"
->GnuPG</TT
-> runs for an extended period of time,
-<TT
-CLASS="APPLICATION"
->Cone</TT
->';s connections to remote mail server may be terminated due to
-inactivity.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DD
-></DL
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="cone09masterpassword.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="cone11filters.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Master Passwords</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="cone00index.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Mail Filters</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>Encryption Menu</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="cone00index.html" title="Cone mail client"/>
+  <link rel="prev" href="cone09masterpassword.html" title="Master Passwords"/>
+  <link rel="next" href="cone11filters.html" title="Mail Filters"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">Encryption
+        Menu</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="cone09masterpassword.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="application">Cone</span> mail client</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="cone11filters.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="chapter" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h2 class="title"><a id="cone10encryption" shape="rect" name="cone10encryption"> </a>Encryption Menu</h2>
+        </div>
+      </div>
+    </div>
+
+    <p>Choosing &#8220;<span class="quote">Encryption
+    Menu</span>&#8221; from <span class="application">Cone</span>'s
+    main menu (which is available if <span class="application">GnuPG</span> is installed) opens a menu with the
+    following selections:</p>
+
+    <div class="variablelist">
+      <dl>
+        <dt><span class="term">New encryption key</span></dt>
+
+        <dd>
+          <p>This selection creates a pair of public and private
+          keys, which may be used for signing and encryption. Fill
+          in the fields on the next screen with the appropriate
+          information: the name, the E-mail address, and the
+          comment associated with the keypair; how big the
+          encryption keys should be (a different length may be
+          chosen for creating signed content, and for creating
+          encrypted content); whether the keys have an expiration
+          date; and the passphrase, or a password, for the private
+          key. The passphrase must be entered twice, in both
+          fields, and both fields must match. Leave both passphrase
+          fields empty to create a private key without a
+          passphrase.</p>
+        </dd>
+
+        <dt><span class="term">Delete key</span></dt>
+
+        <dd>
+          <p>This selection deletes an existing key. Public and
+          private keys are deleted separately. All installed keys
+          are displayed in a vertical list. Highlight a key with
+          the cursor, and press <span><strong class="keycap">ENTER</strong></span> to delete it.</p>
+
+          <p>The top half of the screen shows detailed information
+          about the current key that's highlighted by the cursor.
+          Due to limited amount of available space, keys with more
+          than one signatures may not have all signatures
+          shown.</p>
+        </dd>
+
+        <dt><span class="term">Sign key</span></dt>
+
+        <dd>
+          <p>This selection signs an existing public key with one
+          of the private keys. The public key, and the private key
+          are selected one at a time. All installed keys are
+          displayed in a vertical list. Highlight a key with the
+          cursor, and press <span><strong class="keycap">ENTER</strong></span> to select it.</p>
+
+          <p>The top half of the screen shows detailed information
+          about the current key that's highlighted by the cursor.
+          Due to limited amount of available space, keys with more
+          than one signatures may not have all signatures
+          shown.</p>
+
+          <p>After selecting the public key, and then the private
+          key, the last prompt asks for the signature's trust
+          level, which is used by <span class="application">GnuPG</span> to calculate the key's
+          trustworthiness.</p>
+        </dd>
+
+        <dt><span class="term">Edit key</span></dt>
+
+        <dd>
+          <p>This last selection provides a convenient means for
+          accessing advanced key management features through the
+          <span class="application">GnuPG</span> application which
+          are not directly implemented in <span class="application">Cone</span>. Selecting &#8220;<span class="quote">Edit key</span>&#8221; shows a list of all
+          available keys. Highlight an available key with the
+          cursor, and press <span><strong class="keycap">ENTER</strong></span>. <span class="application">Cone</span> then runs <span class="application">GnuPG</span> and opens <span class="application">GnuPG</span> key management menu that
+          provides access to additional key management features,
+          such as advanced signature and passphrase management.
+          After <span class="application">GnuPG</span> exits
+          <span class="application">Cone</span> resumes running
+          automatically.</p>
+
+          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <h3 class="title">Note</h3>
+
+            <p><span class="application">Cone</span> does not run
+            while <span class="application">GnuPG</span> is
+            running, and it waits for <span class="application">GnuPG</span> to finish before resuming.
+            If <span class="application">GnuPG</span> runs for an
+            extended period of time, <span class="application">Cone</span>'s connections to remote mail
+            server may be terminated due to inactivity.</p>
+          </div>
+        </dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="cone09masterpassword.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="cone00index.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="cone11filters.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">Master Passwords&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;Mail Filters</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

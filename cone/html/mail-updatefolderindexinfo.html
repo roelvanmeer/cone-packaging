@@ -1,386 +1,201 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::account::updateFolderIndexInfo</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="mail::account Native API reference"
-HREF="native.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::account::updateFolderIndexFlags"
-HREF="mail-updatefolderindexflags.html"><LINK
-REL="NEXT"
-TITLE="mail::account::updateKeywords"
-HREF="mail-updatekeywords.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="mail-updatefolderindexflags.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="mail-updatekeywords.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="MAIL-UPDATEFOLDERINDEXINFO"
-></A
->mail::account::updateFolderIndexInfo</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN8431"
-></A
-><H2
->Name</H2
->mail::account::updateFolderIndexInfo&nbsp;--&nbsp;Update status of the currently open folder</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN8434"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->#include&nbsp;&#60;libmail/mail.H&#62;<br>
-<br>
-<br>
-class&nbsp;myCallback&nbsp;:&nbsp;public&nbsp;mail::callback&nbsp;{<br>
-public:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success(std::string&nbsp;msg);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;fail(std::string&nbsp;msg);<br>
-};</P
-><P
-CLASS="LITERALLAYOUT"
->mail::account&nbsp;*account;</P
-><DIV
-CLASS="FUNCSYNOPSIS"
-><P
-></P
-><A
-NAME="AEN8437"
-></A
-><P
-><CODE
-><CODE
-CLASS="FUNCDEF"
->account-&#62;<TT
-CLASS="FUNCTION"
->updateFolderIndexInfo</TT
-></CODE
->(myCallback &#38;<TT
-CLASS="PARAMETER"
-><I
->callback</I
-></TT
->);</CODE
-></P
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN8443"
-></A
-><H2
->USAGE</H2
-><P
->This function requests that the status of the currently open folder be updated.
-Messages marked as deleted are removed.
-The application will also be notified about
-changes to the folder made by any other
-application that has the same folder opened.</P
-><P
->This request invokes methods in the currently opened folder's
-<CODE
-CLASS="STRUCTNAME"
->mail::callback::folder</CODE
-> object, as follows:</P
-><P
-></P
-><UL
-><LI
-><P
->The <TT
-CLASS="FUNCTION"
->mail::account::messageChanged</TT
-> method is invoked for
-all messages which have an updated status flag set.</P
-></LI
-><LI
-><P
-><TT
-CLASS="FUNCTION"
->mail::account::messagesRemoved</TT
-> is invoked for all
-messages removed from the folder (those that were marked as deleted by this
-application and those that were removed from the folder by any other
-application that has this folder opened).</P
-></LI
-><LI
-><P
-><TT
-CLASS="FUNCTION"
->mail::account::newMessages</TT
-> is invoked if any messages
-were added to this folder.
-The application should use
-<A
-HREF="mail-getfolderindexsize.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::getFolderIndexSize</SPAN
->(3x)</SPAN
-></A
->,
-and compare it to the previously-known folder size, in order to determine
-how many messages were added to the folder (new messages are always added to
-the end of the message list).</P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN8462"
-></A
-><H2
->Return Codes</H2
-><P
->The application must wait until
-<TT
-CLASS="PARAMETER"
-><I
->callback</I
-></TT
->'s
-<TT
-CLASS="FUNCTION"
->success</TT
-> or
-<TT
-CLASS="FUNCTION"
->fail</TT
-> method is invoked.
-The <TT
-CLASS="FUNCTION"
->success</TT
-> method is invoked when this request is
-succesfully processed.
-The <TT
-CLASS="FUNCTION"
->fail</TT
-> method is invoked if this request cannot
-be processed.
-The application must not destroy
-<TT
-CLASS="PARAMETER"
-><I
->callback</I
-></TT
-> until either the
-<TT
-CLASS="FUNCTION"
->success</TT
-> or
-<TT
-CLASS="FUNCTION"
->fail</TT
-> method is invoked.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
-><TT
-CLASS="PARAMETER"
-><I
->callback</I
-></TT
->'s
-<TT
-CLASS="FUNCTION"
->fail</TT
-> method may be invoked even after other
-callback methods were invoked.
-This indicates that the request was partially completed before the error
-was encountered.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN8477"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="mail-savefolderindexinfo.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::saveFolderIndexInfo</SPAN
->(3x)</SPAN
-></A
->,
-<A
-HREF="mail-getfolderindexinfo.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::getFolderIndexInfo</SPAN
->(3x)</SPAN
-></A
->,
-<A
-HREF="mail-updatenotify.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::updateNotify</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="mail-updatefolderindexflags.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="mail-updatekeywords.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::account::updateFolderIndexFlags</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="native.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::account::updateKeywords</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>mail::account::updateFolderIndexInfo</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="native.html" title="mail::account Native API reference"/>
+  <link rel="prev" href="mail-updatefolderindexflags.html" title="mail::account::updateFolderIndexFlags"/>
+  <link rel="next" href="mail-updatekeywords.html" title="mail::account::updateKeywords"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::account::updateFolderIndexInfo</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="mail-updatefolderindexflags.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="structname">mail::account</span> Native API
+        reference</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="mail-updatekeywords.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="mail-updatefolderindexinfo" shape="rect" name="mail-updatefolderindexinfo"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::account::updateFolderIndexInfo &#8212; Update status
+      of the currently open folder</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        #include&#160;&lt;libmail/mail.H&gt;<br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        class&#160;myCallback&#160;:&#160;public&#160;mail::callback&#160;{<br clear="none"/>
+
+        public:<br clear="none"/>
+        &#160;&#160;&#160;&#160;void&#160;success(std::string&#160;msg);<br clear="none"/>
+
+        &#160;&#160;&#160;&#160;void&#160;fail(std::string&#160;msg);<br clear="none"/>
+
+        };<br clear="none"/></p>
+      </div>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        mail::account&#160;*account;<br clear="none"/></p>
+      </div>
+
+      <div class="funcsynopsis">
+        <table border="0" summary="Function synopsis" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="1" colspan="1"><code class="funcdef">account-&gt;<b class="fsfunc">updateFolderIndexInfo</b>(</code></td>
+
+            <td rowspan="1" colspan="1">myCallback &amp;&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">callback</var><code>)</code>;</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id434449" shape="rect" name="id434449"> </a>
+
+      <h2>USAGE</h2>
+
+      <p>This function requests that the status of the currently
+      open folder be updated. Messages marked as deleted are
+      removed. The application will also be notified about changes
+      to the folder made by any other application that has the same
+      folder opened.</p>
+
+      <p>This request invokes methods in the currently opened
+      folder's <span class="structname">mail::callback::folder</span> object, as
+      follows:</p>
+
+      <div class="itemizedlist">
+        <ul type="disc">
+          <li>
+            <p>The <code class="function">mail::account::messageChanged</code> method
+            is invoked for all messages which have an updated
+            status flag set.</p>
+          </li>
+
+          <li>
+            <p><code class="function">mail::account::messagesRemoved</code> is
+            invoked for all messages removed from the folder (those
+            that were marked as deleted by this application and
+            those that were removed from the folder by any other
+            application that has this folder opened).</p>
+          </li>
+
+          <li>
+            <p><code class="function">mail::account::newMessages</code> is invoked
+            if any messages were added to this folder. The
+            application should use <a href="mail-getfolderindexsize.html" title="mail::account::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexSize</span>(3x)</span></a>,
+            and compare it to the previously-known folder size, in
+            order to determine how many messages were added to the
+            folder (new messages are always added to the end of the
+            message list).</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id434528" shape="rect" name="id434528"> </a>
+
+      <h2>Return Codes</h2>
+
+      <p>The application must wait until <em class="parameter"><code>callback</code></em>'s <code class="function">success</code> or <code class="function">fail</code> method is invoked. The <code class="function">success</code> method is invoked when this request
+      is succesfully processed. The <code class="function">fail</code> method is invoked if this request
+      cannot be processed. The application must not destroy
+      <em class="parameter"><code>callback</code></em> until either
+      the <code class="function">success</code> or <code class="function">fail</code> method is invoked.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p><em class="parameter"><code>callback</code></em>'s
+        <code class="function">fail</code> method may be invoked
+        even after other callback methods were invoked. This
+        indicates that the request was partially completed before
+        the error was encountered.</p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id434619" shape="rect" name="id434619"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="mail-savefolderindexinfo.html" title="mail::account::saveFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::saveFolderIndexInfo</span>(3x)</span></a>,
+      <a href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>,
+      <a href="mail-updatenotify.html" title="mail::account::updateNotify" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateNotify</span>(3x)</span></a>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="mail-updatefolderindexflags.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="native.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="mail-updatekeywords.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">
+        mail::account::updateFolderIndexFlags&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::account::updateKeywords</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

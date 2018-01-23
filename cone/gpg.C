@@ -1,4 +1,4 @@
-/* $Id: gpg.C,v 1.9 2004/05/03 00:04:05 mrsam Exp $
+/* $Id: gpg.C,v 1.10 2007/04/06 17:57:29 mrsam Exp $
 **
 ** Copyright 2003-2004, Double Precision Inc.
 **
@@ -21,6 +21,7 @@
 #include "wraptext.H"
 #include <vector>
 #include <set>
+#include <algorithm>
 #include <errno.h>
 
 extern char ucheck[];

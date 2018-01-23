@@ -7,7 +7,7 @@
 #include	<stdio.h>
 #include	<stdlib.h>
 
-static const char rcsid[]="$Id: testsuite.c,v 1.6 2006/05/28 15:29:52 mrsam Exp $";
+static const char rcsid[]="$Id: testsuite.c,v 1.7 2007/02/26 04:13:41 mrsam Exp $";
 
 static void print_func(char c, void *p)
 {
@@ -64,23 +64,28 @@ struct rfc822a *a=rfc822a_alloc(t);
 
 int main()
 {
-struct	rfc822t *t1, *t2, *t3, *t4;
-struct	rfc822a *a1, *a2, *a3, *a4;
+	struct	rfc822t *t1, *t2, *t3, *t4, *t5;
+	struct	rfc822a *a1, *a2, *a3, *a4, *a5;
 
 	t1=tokenize("nobody@example.com (Nobody (is) here\\) right)");
 	t2=tokenize("Distribution  list: nobody@example.com daemon@example.com");
 	t3=tokenize("Mr Nobody <nobody@example.com>, Mr. Nobody <nobody@example.com>");
 	t4=tokenize("nobody@example.com, <nobody@example.com>, Mr. Nobody <nobody@example.com>");
 
+	t5=tokenize("=?UTF-8?Q?Test?= <nobody@example.com>, foo=bar <nobody@example.com>");
+
 	a1=doaddr(t1);
 	a2=doaddr(t2);
 	a3=doaddr(t3);
 	a4=doaddr(t4);
+	a5=doaddr(t5);
 
+	rfc822a_free(a5);
 	rfc822a_free(a4);
 	rfc822a_free(a3);
 	rfc822a_free(a2);
 	rfc822a_free(a1);
+	rfc822t_free(t5);
 	rfc822t_free(t4);
 	rfc822t_free(t3);
 	rfc822t_free(t2);

@@ -1,0 +1,361 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>Installing Cone</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="prev" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="next" href="README.html" title="Building Cone"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">Installing
+        <span class="application">Cone</span></th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="index.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        &#160;</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="README.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="section" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h2 class="title" style="clear: both"><a id="INSTALL" shape="rect" name="INSTALL"> </a>Installing <span class="application">Cone</span></h2>
+        </div>
+      </div>
+    </div>
+
+    <p>First, make sure that all the necessary requirements
+    (<a href="README.html" title="Building Cone" shape="rect">README</a>) are satisfied. See RPM instructions below if
+    building for Red Hat Linux. See additional notes below for
+    upgrade instructions. Otherwise:</p>
+
+    <div class="itemizedlist">
+      <ul type="disc">
+        <li>
+          <p>Download the Courier Socks 5 proxy client library from
+          <a href="http://www.courier-mta.org/download.php#sox" target="_top" shape="rect">http://www.courier-mta.org/download.php#sox</a>
+          and follow its installation instructions. Binary RPMs can
+          be built from the source code tarball by following the
+          procedure outlined in <a href="http://www.courier-mta.org/FAQ.html#rpm" target="_top" shape="rect">http://www.courier-mta.org/FAQ.html#rpm</a>
+          using the &#8220;<span class="quote">courier-sox-<em class="replaceable"><code>version</code></em></span>&#8221;
+          tarball, and installing the &#8220;<span class="quote">courier-sox</span>&#8221; and &#8220;<span class="quote">courier-sox-devel</span>&#8221; binary RPMs
+          afterwards.</p>
+
+          <p>This step can be omitted if Socks 5 support is not
+          required. <span class="application">Cone</span> will
+          compile without the Socks 5 proxy toolkit.</p>
+        </li>
+
+        <li>
+          <p>Download the source code tarball from <a href="http://www.courier-mta.org/download.php#cone" target="_top" shape="rect">http://www.courier-mta.org/download.php#cone</a>
+          and unpack it.</p>
+        </li>
+
+        <li>
+          <p>Set the appropriate environment variables if the
+          compiler or linker needs any custom command line flags.
+          Run &#8220;<span class="quote"><span><strong class="command">./configure
+          --help</strong></span></span>&#8221; to list the
+          available environment variables that specify additional
+          arbitrary parameters for the C/C++ compiler.</p>
+        </li>
+
+        <li>
+          <p>Run &#8220;<span class="quote"><span><strong class="command">./configure <em class="replaceable"><code>[options]</code></em></strong></span></span>&#8221;.
+          See below for a list of available options.</p>
+        </li>
+
+        <li>
+          <p>Run <span><strong class="command">make</strong></span>.</p>
+
+          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <h3 class="title">Note</h3>
+
+            <p>The GNU version of the <code class="literal">command</code> is required. On BSD systems
+            it's the <span><strong class="command">gmake</strong></span>. Use
+            <span><strong class="command">gmake</strong></span> in
+            this, and the following steps.</p>
+          </div>
+        </li>
+
+        <li>
+          <p>Run <span><strong class="command">make
+          check</strong></span>.</p>
+        </li>
+
+        <li>
+          <p>Run <span><strong class="command">make
+          install</strong></span>.</p>
+        </li>
+
+        <li>
+          <p>Run <span><strong class="command">make
+          install-configure</strong></span>.</p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <h3 class="title">Note</h3>
+
+      <p>Do not forget &#8220;<span class="quote"><span><strong class="command">make
+      install-configure</strong></span></span>&#8221;. It is
+      required.</p>
+    </div>
+
+    <p>Unless other options are used, <span class="application">Cone</span> installs in <code class="filename">/usr/local</code>:</p>
+
+    <div class="variablelist">
+      <dl>
+        <dt><span class="term"><code class="filename">/usr/local/etc</code></span></dt>
+
+        <dd>
+          <p>The configuration file.</p>
+        </dd>
+
+        <dt><span class="term"><code class="filename">/usr/local/bin</code></span></dt>
+
+        <dd>
+          <p>The shell script that runs <span class="application">Cone</span>.</p>
+        </dd>
+
+        <dt><span class="term"><code class="filename">/usr/local/libexec</code></span></dt>
+
+        <dd>
+          <p>The <span class="application">Cone</span> program
+          itself.</p>
+        </dd>
+
+        <dt><span class="term"><code class="filename">/usr/local/share</code></span></dt>
+
+        <dd>
+          <p>Documentation, online help, other files.</p>
+        </dd>
+
+        <dt><span class="term"><code class="filename">/usr/local/lib</code> and <code class="filename">/usr/local/include</code></span></dt>
+
+        <dd>
+          <p>The development libraries and include files (only if
+          <em class="parameter"><code>--with-devel</code></em> was
+          specified to the <span><strong class="command">configure</strong></span> script).</p>
+        </dd>
+      </dl>
+    </div>
+
+    <p>These installation directories, and other options, may be
+    controlled by additional options to the <span><strong class="command">configure</strong></span> script:</p>
+
+    <div class="variablelist">
+      <dl>
+        <dt><span class="term"><em class="parameter"><code>--prefix</code></em>, <em class="parameter"><code>--bindir</code></em>, and
+        others...</span></dt>
+
+        <dd>
+          <p><span><strong class="command">./configure
+          --help</strong></span> lists about a dozen parameters to
+          the <span><strong class="command">./configure</strong></span> that specify the
+          directories where various files should be installed.</p>
+        </dd>
+
+        <dt><span class="term"><em class="parameter"><code>--with-certdb</code></em>, <em class="parameter"><code>--without-certdb</code></em>, <em class="parameter"><code>--with-certdb=<em class="replaceable"><code>filename</code></em></code></em></span></dt>
+
+        <dd>
+          <p>Install or do not install a default set of trusted SSL
+          certificate authorities. When using SSL <span class="application">Cone</span> normally checks the server's
+          SSL certificate, which must be signed by a trusted
+          certificate authority. <span class="application">Cone</span>'s source distribution includes
+          the same list of trusted certificate authorities as the
+          <a href="http://www.mozilla.org" target="_top" shape="rect"><span class="application">Mozilla</span></a>
+          browser. <span class="application">Cone</span>'s
+          certificate list is installed by default, unless <a href="http://www.courier-mta.org" target="_top" shape="rect"><span class="application">Courier</span></a> is
+          also installed, in which case <span class="application">Cone</span>'s default configuration points
+          to <span class="application">Courier</span>'s
+          <code class="filename">rootcerts</code> directory (which
+          contains the same certificate as <span class="application">Cone</span>'s).</p>
+
+          <p><em class="parameter"><code>--with-certdb</code></em>
+          installs <span class="application">Cone</span>'s trusted
+          SSL certificate authority list, even if <span class="application">Courier</span> is also installed, in
+          <code class="filename">/usr/local/share/cone/rootcerts</code> (which
+          is derived from the <em class="parameter"><code>--datadir</code></em> default option,
+          as explained by <span><strong class="command">./configure
+          --help</strong></span>). <em class="parameter"><code>--with-certdb=<em class="replaceable"><code>filename</code></em></code></em>
+          installs the trusted SSL certificate authority list in
+          the directory <em class="replaceable"><code>filename</code></em>. <em class="parameter"><code>--without-certdb</code></em> does not
+          install <span class="application">Cone</span>'s trusted
+          SSL certificate authority list.</p>
+        </dd>
+
+        <dt><span class="term"><em class="parameter"><code>--with-devel</code></em></span></dt>
+
+        <dd>
+          <p>Install <a href="libmail.html" title="LibMAIL reference" shape="rect"><span class="application">LibMAIL</span></a> , the mail library used
+          by <span class="application">Cone</span> to access and
+          handle E-mail messages.</p>
+        </dd>
+
+        <dt><span class="term"><em class="parameter"><code>--with-spellcheck=pspell</code></em></span></dt>
+
+        <dd>
+          <p><span class="application">Cone</span> can use either
+          <span><strong class="command">aspell</strong></span> or
+          <span><strong class="command">pspell</strong></span> for
+          spell checking. <span><strong class="command">aspell</strong></span> is used if both are
+          installed. This option selects <span><strong class="command">pspell</strong></span> instead.</p>
+        </dd>
+      </dl>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h3 class="title"><a id="id327235" shape="rect" name="id327235"> </a>Upgrading from an earlier version of
+            <span class="application">Cone</span></h3>
+          </div>
+        </div>
+      </div>
+
+      <p>Upgrading <span class="application">Cone</span> consists
+      simply of building the new version, and installing it. The
+      new version will overwrite the previous version. Special
+      upgrade instructions are given below.</p>
+
+      <div class="section" lang="en" xml:lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h4 class="title"><a id="id327274" shape="rect" name="id327274"> </a>Upgrading from version 0.59 and
+              earlier</h4>
+            </div>
+          </div>
+        </div>
+
+        <p>The address book format has changed in version 0.60. The
+        old address book format will be automatically converted to
+        the new format, when necessary, so no manual intervention
+        is necessary. If <span class="application">Cone</span> is
+        later downgraded to an earlier version, addresses in an
+        address book that contain non-English characters will not
+        be shown correctly.</p>
+      </div>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h3 class="title"><a id="id327303" shape="rect" name="id327303"> </a>RPM builds</h3>
+          </div>
+        </div>
+      </div>
+
+      <p>Use the following procedure to build <span class="application">Cone</span>.</p>
+
+      <p>The first step is to create a work area for building RPMs.
+      Skip this step if an RPM build directory is already
+      configured.</p>
+      <pre class="programlisting" xml:space="preserve">
+echo "%_topdir    $HOME/rpm" &gt; $HOME/.rpmmacros
+mkdir $HOME/rpm
+cd $HOME/rpm
+mkdir SOURCES SPECS BUILD SRPMS RPMS
+</pre>
+
+      <p>Finally, download the source code to <span class="application">Cone</span> from <a href="http://www.courier-mta.org/download.php#cone" target="_top" shape="rect">http://www.courier-mta.org/download.php#cone</a>. Do
+      not unpack the tarball. Execute &#8220;<span class="quote"><span><strong class="command">rpmbuild -ta
+      cone-<em class="replaceable"><code>version</code></em>.tar.bz2</strong></span></span>&#8221;.
+      Two binary RPMs will be created: the main binary package
+      contains <span class="application">Cone</span>. The
+      &#8220;<span class="quote">devel</span>&#8221; package
+      contains the <span class="application">LibMAIL</span> library
+      and development files. It is only necessary to install the
+      main package to run <span class="application">Cone</span> the
+      &#8220;<span class="quote">devel</span>&#8221; subpackage is
+      only needed for additional development with <span class="application">LibMAIL</span> .</p>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h3 class="title"><a id="id327445" shape="rect" name="id327445"> </a>CVS Source checkouts</h3>
+          </div>
+        </div>
+      </div>
+
+      <p>It is also possible to check out the source from CVS,
+      however additional requirements apply. Besides the usual
+      prerequisites for building <span class="application">Cone</span>, additional development software
+      must be installed. See the &#8220;<span class="quote">Download via CVS</span>&#8221; instructions at
+      <a href="http://www.courier-mta.org/status.html" target="_top" shape="rect">http://www.courier-mta.org/status.html</a>.
+      <span class="application">Cone</span> has the same
+      requirements as <span class="application">Courier</span> for
+      CVS builds (technically, <span class="application">Cone</span> does not need libtool, but that may
+      change in the future). Make sure that the prerequisite
+      software is installed, then check out the &#8220;
+      <span class="quote"><span class="application">Cone</span></span>&#8221; module from CVS,
+      tagged at revision &#8220; <span class="quote"><span class="application">Cone</span>-latest</span>&#8221;. The
+      <code class="literal">HEAD</code> may be checked out, but
+      carries more of the usual risks.</p>
+
+      <p>After the module is checked out, run the <code class="filename">autobloat</code> shell script to rebuild the
+      autoconf/automake scripts.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="index.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        &#160;</td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="README.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1"><span class="application">Cone</span>: COnsole
+        Newsreader And Emailer&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;Building <span class="application">Cone</span></td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

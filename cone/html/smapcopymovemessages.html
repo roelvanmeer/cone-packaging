@@ -1,0 +1,194 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>Copying and moving messages</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1"/>
+  <link rel="prev" href="add.html" title="Adding messages to folders"/>
+  <link rel="next" href="search.html" title="Searching messages"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">Copying and
+        moving messages</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="add.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        Appendix&#160;A.&#160;Simple Mail Access Protocol, Version
+        1</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="search.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="section" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title"><a id="smapcopymovemessages" shape="rect" name="smapcopymovemessages"> </a>Copying and moving
+          messages</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="literallayout">
+      <p><br clear="none"/>
+      C:&#160;COPY&#160;3-5&#160;8&#160;""&#160;Folders&#160;"Sent&#160;Mail"<br clear="none"/>
+
+      S:&#160;*&#160;COPY&#160;3&#160;NEWUID=1043320248/3601<br clear="none"/>
+
+      S:&#160;*&#160;COPY&#160;4&#160;NEWUID=1043320248/3602<br clear="none"/>
+
+      S:&#160;*&#160;COPY&#160;5&#160;NEWUID=1043320248/3603<br clear="none"/>
+
+      S:&#160;*&#160;COPY&#160;8&#160;NEWUID=1043320248/3604<br clear="none"/>
+
+      S:&#160;+OK&#160;Messages&#160;copied<br clear="none"/></p>
+    </div>
+
+    <p>The <code class="literal">COPY</code> command copies
+    messages from the currently open folder to another folder.
+    <code class="literal">COPY</code> is followed by
+    whitespace-delimited words that enumerate messages to be
+    copied, an empty word, then whitespace-delimited words that
+    name the folder the messages are copied to.</p>
+
+    <p>&#8220;<span class="quote"><em class="replaceable"><code>m</code></em>-<em class="replaceable"><code>n</code></em></span>&#8221; can be a
+    shortcut designation for messages #m through #n, inclusive. The
+    message number list must be in a numerically-increasing order,
+    with no overlaps.</p>
+
+    <p>The server responds with one ore more <code class="literal">* COPY</code> single line replies, one reply for each
+    copied message. The next word contains the message number of
+    the copied message, followed by a list of attributes. At
+    present time only one attribute is defined: &#8220;<span class="quote"><code class="literal">UID=</code><code class="literal">id</code></span>&#8221; gives the assigned unique id
+    of the saved message in the destination folder.</p>
+
+    <div class="literallayout">
+      <p><br clear="none"/>
+      C:&#160;MOVE&#160;3-5&#160;8&#160;""&#160;Folders&#160;"Sent&#160;Mail"<br clear="none"/>
+
+      S:&#160;*&#160;COPY&#160;3&#160;NEWUID=1043320248/3601<br clear="none"/>
+
+      S:&#160;*&#160;COPY&#160;4&#160;NEWUID=1043320248/3602<br clear="none"/>
+
+      S:&#160;*&#160;COPY&#160;5&#160;NEWUID=1043320248/3603<br clear="none"/>
+
+      S:&#160;*&#160;COPY&#160;8&#160;NEWUID=1043320248/3604<br clear="none"/>
+
+      S:&#160;*&#160;EXPUNGE&#160;3-5&#160;8<br clear="none"/>
+      S:&#160;+OK&#160;Messages&#160;copied<br clear="none"/></p>
+    </div>
+
+    <p>The <code class="literal">MOVE</code> command is like
+    <code class="literal">COPY</code> except that the messages are
+    moved to the folder, instead of copied. Or, to put it another
+    way, the messages are automatically removed from the current
+    folder after they are copied.</p>
+
+    <p>The server also responds with &#8220;<span class="quote"><code class="literal">* COPY</code></span>&#8221; that
+    indicates messages that were copied to the destination folder;
+    the subsequent &#8220;<span class="quote"><code class="literal">* EXPUNGE</code></span>&#8221; messages indicate the
+    messages were removed from the original folder.</p>
+
+    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <h3 class="title">Note</h3>
+
+      <p>The server's response to <code class="literal">COPY</code>
+      or <code class="literal">MOVE</code> may include additional
+      &#8220;<span class="quote"><code class="literal">*
+      EXPUNGE</code></span>&#8221;, &#8220;<span class="quote"><code class="literal">* EXISTS</code></span>&#8221;,
+      and &#8220;<span class="quote"><code class="literal">*
+      FETCH</code></span>&#8221; messages reflecting changes to the
+      folder's contents by other applications that have the same
+      folder opened.</p>
+
+      <p>Servers may, but are not required to, notify of other
+      changes to the folder's contents as part of the response to
+      <code class="literal">COPY</code> and <code class="literal">MOVE</code>.</p>
+    </div>
+
+    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <h3 class="title">Note</h3>
+
+      <p>Servers have several choices for handling requests to copy
+      a message that were removed by another application. A server
+      may handle this situation by doing any one of the
+      following:</p>
+
+      <div class="itemizedlist">
+        <ul type="disc">
+          <li>
+            <p>Respond with an &#8220;<span class="quote"><code class="literal">-ERR</code></span>&#8221;
+            and do nothing.</p>
+          </li>
+
+          <li>
+            <p>Copy some or all remaining messages, then report an
+            &#8220;<span class="quote"><code class="literal">-ERR</code></span>&#8221;.</p>
+          </li>
+
+          <li>
+            <p>Copy all remaining messages, as if the nonexistent
+            messages were not specified at all by the client's
+            <code class="literal">MOVE</code> or <code class="literal">COPY</code>.</p>
+          </li>
+        </ul>
+      </div>
+
+      <p>In all cases the server's response must reflect which
+      messages, if any, were actually copied. It is the user's
+      responsibility to avoid running multiple applications that
+      issue conflicting SMAP requests.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="add.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="smap1.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="search.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">Adding messages to folders&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;Searching messages</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

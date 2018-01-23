@@ -1,4 +1,4 @@
-/* $Id: search.H,v 1.5 2004/06/12 23:48:52 mrsam Exp $
+/* $Id: search.H,v 1.6 2007/04/06 17:57:29 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -144,7 +144,7 @@ class searchOneMessage {
 	searchParams searchInfo;
 	time_t cmpDate;
 
-	ptr<mail::account> ptr;
+	mail::ptr<mail::account> ptr;
 	size_t messageNum;
 	size_t alreadyCompleted;
 	std::string uid;

@@ -1,0 +1,94 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>Logging off</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1"/>
+  <link rel="prev" href="search.html" title="Searching messages"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">Logging off</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="search.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        Appendix&#160;A.&#160;Simple Mail Access Protocol, Version
+        1</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;</td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="section" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title"><a id="smaplogout" shape="rect" name="smaplogout"> </a>Logging off</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="literallayout">
+      <p><br clear="none"/>
+      C:&#160;LOGOUT<br clear="none"/>
+      S:&#160;*&#160;BYE&#160;Goodbye<br clear="none"/></p>
+    </div>
+
+    <p>The SMAP client disconnects from the server by sending the
+    <code class="literal">LOGOUT</code> command. The server
+    terminates the connection after sending the <code class="literal">* BYE</code> reply. The server should also try to
+    send the <code class="literal">* BYE</code> command at any time
+    the connection to the client needs to be terminated due to some
+    unexpected reason. The client always be prepared to handle
+    <code class="literal">* BYE</code>.</p>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="search.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="smap1.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;</td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">Searching messages&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

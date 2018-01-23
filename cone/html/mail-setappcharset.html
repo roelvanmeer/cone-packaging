@@ -1,294 +1,152 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::setAppCharset</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="Miscellaneous functions"
-HREF="libmail-misc.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::loginUrlDecode"
-HREF="mail-loginurldecode.html"><LINK
-REL="NEXT"
-TITLE="mail::upper"
-HREF="mail-upper.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="mail-loginurldecode.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="mail-upper.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="MAIL-SETAPPCHARSET"
-></A
->mail::setAppCharset</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN8945"
-></A
-><H2
->Name</H2
->mail::setAppCharset&nbsp;--&nbsp;Set application character set</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN8948"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->#include&nbsp;&#60;libmail/misc.H&#62;<br>
-#include&nbsp;&#60;langinfo.h&#62;<br>
-<br>
-const&nbsp;char&nbsp;*myCharset=nl_langinfo(CODESET);</P
-><DIV
-CLASS="FUNCSYNOPSIS"
-><P
-></P
-><A
-NAME="AEN8950"
-></A
-><P
-><CODE
-><CODE
-CLASS="FUNCDEF"
->mail::<TT
-CLASS="FUNCTION"
->setAppCharset</TT
-></CODE
->(const char *<TT
-CLASS="PARAMETER"
-><I
->myCharset</I
-></TT
->);</CODE
-></P
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN8956"
-></A
-><H2
->USAGE</H2
-><P
->This function should be used to specify the application's character set.
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
 
-<TT
-CLASS="APPLICATION"
->LibMAIL</TT
->
- automatically translates names of
-folders between the application's character set, and the mail server's
-character set.</P
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->&#13;<TT
-CLASS="APPLICATION"
->LibMAIL</TT
->
- supports a limited number of character
-sets.  The full 
-<TT
-CLASS="APPLICATION"
->LibMAIL</TT
->
- configuration supports
-the <TT
-CLASS="LITERAL"
->ISO-8859</TT
-> character set family, most
-<TT
-CLASS="LITERAL"
->windows</TT
-> character sets, and <TT
-CLASS="LITERAL"
->KOI8-R</TT
->.
-Some East Asian character sets (Japanese,
-traditional and simplified Chinese) are experimental, and have not been
-fully tested.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN8967"
-></A
-><H2
->Return Codes</H2
-><P
->This function returns <TT
-CLASS="LITERAL"
->true</TT
-> if the character set was
-succesfully installed; <TT
-CLASS="LITERAL"
->false</TT
-> if the character set is not
-supported.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN8972"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="mail-open.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::open</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="mail-loginurldecode.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="mail-upper.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::loginUrlDecode</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="libmail-misc.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::upper</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  <title>mail::setAppCharset</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="libmail-misc.html" title="Miscellaneous functions"/>
+  <link rel="prev" href="mail-loginurldecode.html" title="mail::loginUrlDecode"/>
+  <link rel="next" href="mail-upper.html" title="mail::upper"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::setAppCharset</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="mail-loginurldecode.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        Miscellaneous functions</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="mail-upper.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="mail-setappcharset" shape="rect" name="mail-setappcharset"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::setAppCharset &#8212; Set application character
+      set</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        #include&#160;&lt;libmail/misc.H&gt;<br clear="none"/>
+        #include&#160;&lt;langinfo.h&gt;<br clear="none"/>
+        <br clear="none"/>
+        const&#160;char&#160;*myCharset=nl_langinfo(CODESET);<br clear="none"/>
+        </p>
+      </div>
+
+      <div class="funcsynopsis">
+        <table border="0" summary="Function synopsis" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="1" colspan="1"><code class="funcdef">mail::<b class="fsfunc">setAppCharset</b>(</code></td>
+
+            <td rowspan="1" colspan="1">const char *&#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">myCharset</var><code>)</code>;</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id439325" shape="rect" name="id439325"> </a>
+
+      <h2>USAGE</h2>
+
+      <p>This function should be used to specify the application's
+      character set. <span class="application">LibMAIL</span>
+      automatically translates names of folders between the
+      application's character set, and the mail server's character
+      set.</p>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p><span class="application">LibMAIL</span> supports a
+        limited number of character sets. The full <span class="application">LibMAIL</span> configuration supports the
+        <code class="literal">ISO-8859</code> character set family,
+        most <code class="literal">windows</code> character sets,
+        and <code class="literal">KOI8-R</code>. Some East Asian
+        character sets (Japanese, traditional and simplified
+        Chinese) are experimental, and have not been fully
+        tested.</p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id439407" shape="rect" name="id439407"> </a>
+
+      <h2>Return Codes</h2>
+
+      <p>This function returns <code class="literal">true</code> if
+      the character set was succesfully installed; <code class="literal">false</code> if the character set is not
+      supported.</p>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id439430" shape="rect" name="id439430"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="mail-open.html" title="mail::account::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::open</span>(3x)</span></a>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="mail-loginurldecode.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="libmail-misc.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="mail-upper.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::loginUrlDecode&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::upper</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

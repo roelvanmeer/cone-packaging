@@ -19,20 +19,20 @@
 
    Table Of Contents
    Virtual shared folders
-      Terminology                                        
-      Technical Overview                                 
-      Functional Overview                                
-      Combining Courier-IMAP's and SqWebMail index files 
-      IMAP Access Control List and account groups        
-      
+      Terminology
+      Technical Overview
+      Functional Overview
+      Combining Courier-IMAP's and SqWebMail index files
+      IMAP Access Control List and account groups
+
    Filesystem permissions-based shared folders
-      Terminology                                        
-      Technical Overview                                 
-      Functional Overview                                
-      Accessing shared folders                           
-      Subscribing to a shared folder                     
-      Unsubscribing to a shared folder                   
-      Opening a shared folder                            
+      Terminology
+      Technical Overview
+      Functional Overview
+      Accessing shared folders
+      Subscribing to a shared folder
+      Unsubscribing to a shared folder
+      Opening a shared folder
 
                              Virtual shared folders
 
@@ -113,10 +113,10 @@ Technical Overview
    directory. The following table provides the default locations of the
    configuration file:
 
-   Courier-IMAP:                   /usr/lib/courier-imap/etc/shared/index  
-   Courier:                        /usr/lib/courier/etc/shared/index       
-   Courier (Red Hat/Fedora build): /etc/courier/shared/index               
-   SqWebMail (standalone build):   /usr/local/share/sqwebmail/shared/index 
+   Courier-IMAP:                   /usr/lib/courier-imap/etc/shared/index
+   Courier:                        /usr/lib/courier/etc/shared/index
+   Courier (Red Hat/Fedora build): /etc/courier/shared/index
+   SqWebMail (standalone build):   /usr/local/share/sqwebmail/shared/index
 
      NOTE:
 
@@ -278,7 +278,7 @@ Functional Overview
    like this (this example uses Courier-IMAP, for SqWebMail the directory
    locations will be different):
 
-   ---------------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
  #!/bin/sh
  sysconfdir="/usr/lib/courier-imap/etc"  # Or /etc/courier, or whatever...
@@ -293,7 +293,7 @@ Functional Overview
 
  $sbindir/sharedindexinstall
 
-   ---------------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
     NOTE
 
@@ -311,7 +311,7 @@ Functional Overview
    suitably-formatted list on standard output. So the complete shared folder
    index update script will look like this:
 
-   ---------------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
  #!/bin/sh
  sysconfdir="/usr/lib/courier-imap/etc"
@@ -324,7 +324,7 @@ Functional Overview
 
  $sbindir/sharedindexinstall
 
-   ---------------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
    The functionality to enumerate accounts is new to Courier-IMAP 3.0. When
    upgrading from an earlier versions, systems that are configured to use a
@@ -405,7 +405,7 @@ Functional Overview
    within each universe; otherwise split on the account name if all users can
    potentially access all shared mailboxes.
 
-   ---------------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
  #!/bin/sh
  sysconfdir="/usr/lib/courier-imap/etc"
@@ -420,7 +420,7 @@ Functional Overview
  rm -f $sysconfdir/shared.tmp/.tmplist
  $sbindir/sharedindexinstall
 
-   ---------------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
  #!/bin/sh
  sysconfdir="/usr/lib/courier-imap/etc"
@@ -435,7 +435,7 @@ Functional Overview
  rm -f $sysconfdir/shared.tmp/.tmplist
  $sbindir/sharedindexinstall
 
-   ---------------------------------------------------------------------------
+   --------------------------------------------------------------------------
 
    authenumerate is saved to a temporary file, instead of being piped
    directly, is so that its exit code can be checked. We want to abort the
@@ -731,3 +731,24 @@ Opening a shared folder
        message. Copying the message INTO the shared folder means copying the
        message into the underlying sharable folder's tmp/cur directory, and
        it will show up after the next sync.
+
+References
+
+   Visible links
+   . file:///home/mrsam/src/cone/maildir/README.sharedfolders.html#newshared
+   . file:///home/mrsam/src/cone/maildir/README.sharedfolders.html#newsharedterm
+   . file:///home/mrsam/src/cone/maildir/README.sharedfolders.html#newsharedtech
+   . file:///home/mrsam/src/cone/maildir/README.sharedfolders.html#newsharedfunc
+   . file:///home/mrsam/src/cone/maildir/README.sharedfolders.html#combo
+   . file:///home/mrsam/src/cone/maildir/README.sharedfolders.html#imapacl
+   . file:///home/mrsam/src/cone/maildir/README.sharedfolders.html#oldshared
+   . file:///home/mrsam/src/cone/maildir/README.sharedfolders.html#oldsharedterm
+   . file:///home/mrsam/src/cone/maildir/README.sharedfolders.html#oldsharedtech
+   . file:///home/mrsam/src/cone/maildir/README.sharedfolders.html#oldsharedfunc
+   . file:///home/mrsam/src/cone/maildir/README.sharedfolders.html#oldsharedaccess
+   . file:///home/mrsam/src/cone/maildir/README.sharedfolders.html#oldsharedsub
+   . file:///home/mrsam/src/cone/maildir/README.sharedfolders.html#oldsharedunsub
+   . file:///home/mrsam/src/cone/maildir/README.sharedfolders.html#oldsharedopen
+   . file:///home/mrsam/src/cone/maildir/maildiracl
+   . file:///home/mrsam/src/cone/maildir/README.sharedfolders.html#newsharedtech
+   . file:///home/mrsam/src/cone/maildir/README.maildirquota.html

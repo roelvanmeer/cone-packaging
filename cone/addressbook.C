@@ -1,4 +1,4 @@
-/* $Id: addressbook.C,v 1.10 2006/02/16 02:59:42 mrsam Exp $
+/* $Id: addressbook.C,v 1.11 2007/04/06 17:57:29 mrsam Exp $
 **
 ** Copyright 2003-2006, Double Precision Inc.
 **
@@ -45,6 +45,7 @@
 #include <list>
 #include <set>
 #include <map>
+#include <algorithm>
 
 #include "addressbookinterfacemail.H"
 #include "addressbookinterfaceldap.H"

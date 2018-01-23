@@ -1,5 +1,5 @@
 /*
-** Copyright 2004 Double Precision, Inc.
+** Copyright 2004-2007 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
@@ -35,7 +35,7 @@
 #include	"config.h"
 #include	"maildir/maildirnewshared.h"
 
-static const char rcsid[]="$Id: maildirnewshared2.c,v 1.1 2004/01/20 02:52:04 mrsam Exp $";
+static const char rcsid[]="$Id: maildirnewshared2.c,v 1.2 2007/04/16 22:31:53 mrsam Exp $";
 
 static struct maildir_shindex_cache *shared_cache=NULL;
 
@@ -88,6 +88,12 @@ maildir_shared_cache_read(struct maildir_shindex_cache *parent,
 			return NULL;
 		subhierarchy="";
 	}
+
+
+	if (!subhierarchy)
+		return NULL;
+	/* Should not happen, bad usage. subhierarchy allowed to be NULL only
+	** when indexfile is also NULL */
 
 	p=do_shared_cache_read(indexfile, subhierarchy);
 

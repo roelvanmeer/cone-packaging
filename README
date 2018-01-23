@@ -1,56 +1,58 @@
-   Link: start
+   Link: Cone: COnsole Newsreader And Emailer (start)
    Link: Cone: COnsole Newsreader And Emailer (parent)
    Link: Installing Cone (previous)
    Link: Mailing list (next)
 
-   <<< Previous         Cone: COnsole Newsreader And Emailer         Next >>>
+                                 Building Cone
+   Prev                                                                  Next
 
    --------------------------------------------------------------------------
 
-                                 Building Cone
+Building Cone
 
    Cone is distributed in source code form, licensed under GPL. See COPYING
    for more information. The following prerequisites must be installed to
    build and run Cone:
 
-     * A wide-character version of the curses library. ncurses supports wide
+     o A wide-character version of the curses library. ncurses supports wide
        characters starting with version 5.3, if enabled at compile time.
 
-     * Libxml2
+     o Libxml2
 
-     * OpenSSL 0.9.7 or higher.
+     o OpenSSL 0.9.7 or higher.
 
-     * Cone optionally supports LDAP address books. LDAP support requires
+     o Cone optionally supports LDAP address books. LDAP support requires
        OpenLDAP.
 
-       NOTE: It is not sufficient to have only the OpenLDAP runtime
-             libraries installed. The OpenLDAP development kit must be
-             installed as well. On most systems it's usually called
-             the "devel" component, that must be installed in addition
-             to the base OpenLDAP component. Verify that the
-             /usr/include/ldap.h file exist, before trying to build
-             Cone. If not, the required OpenLDAP development libraries
-             are missing, and must be installed.
+  Note
 
-       NOTE: LDAP-based address books are highly recommended for
-             corporate and organizational environments. Cone's basic
-             address books (local address books and IMAP/SMAP
-             folder-based address books) have somewhat limited search
-             functionality -- addresses are looked up by exact
-             nicknames only. LDAP-based address books are more
-             powerful, they may be searched not just by exact
-             nicknames, but also by last name or full names. Partial
-             searches are also possible.
+       It is not sufficient to have only the OpenLDAP runtime libraries
+       installed. The OpenLDAP development kit must be installed as well. On
+       most systems it's usually called the "devel" component, that must be
+       installed in addition to the base OpenLDAP component. Verify that the
+       /usr/include/ldap.h file exist, before trying to build Cone. If not,
+       the required OpenLDAP development libraries are missing, and must be
+       installed.
 
-     * aspell or pspell
+  Note
 
-     * Where available, FAM, the File Alteration Monitor
+       LDAP-based address books are highly recommended for corporate and
+       organizational environments. Cone's basic address books (local address
+       books and IMAP/SMAP folder-based address books) have somewhat limited
+       search functionality -- addresses are looked up by exact nicknames
+       only. LDAP-based address books are more powerful, they may be searched
+       not just by exact nicknames, but also by last name or full names.
+       Partial searches are also possible.
 
-     * gcc 3.2, or higher
+     o aspell or pspell
 
-     * gmake (if not already installed)
+     o Where available, FAM, the File Alteration Monitor
 
-     * The Courier Socks 5 proxy client API toolkit is required for Socks 5
+     o gcc 3.2, or higher
+
+     o gmake (if not already installed)
+
+     o The Courier Socks 5 proxy client API toolkit is required for Socks 5
        support. Other Socks 5 proxy client libraries may or may not work.
        Download the Courier Socks 5 proxy client library from
        http://www.courier-mta.org/download.php#sox and follow its
@@ -61,17 +63,13 @@
    be minor, and trivial to resolve. A large portion of Cone's code base
    comes from Courier, which builds on many platforms.
 
-   NOTE: Cone requires a wide-character-capable version of Curses. At this
-         time not all Linux distribution provide a widechar-enabled Curses
-         library. Cone will compile against a non-widechar Curses, but will
-         not be able to display UTF-8, or other variable-length character
-         sets.
+  Note
 
-         Download Red Hat RPMs (Red Hat 9, and earlier) for the
-         wide-character version of the ncurses library from
-         http://www.courier-mta.org/beta/ncurses/.
+   Cone requires a wide-character-capable version of Curses. Cone will
+   compile against a non-widechar Curses, but will not be able to display
+   UTF-8, or other variable-length character sets.
 
-Reading local mail with Cone
+  Reading local mail with Cone
 
    Cone reads local mail from either maildirs (the preferred format) or
    mailbox files (or "mboxes"). When mboxes are used, Cone does not read the
@@ -102,18 +100,18 @@ Reading local mail with Cone
 
    --------------------------------------------------------------------------
 
-   <<< Previous                       Home                           Next >>>
-   Installing Cone                     Up                        Mailing list
+   Prev                                                                  Next
+   Installing Cone                 Home | ToC                    Mailing list
 
 References
 
    Visible links
-   . file:///home/mrsam/src/cone/cone/html/book.html
    . file:///home/mrsam/src/cone/cone/html/index.html
-   . file:///home/mrsam/src/cone/cone/html/install.html
-   . file:///home/mrsam/src/cone/cone/html/x14176.html
-   . file:///home/mrsam/src/cone/cone/html/install.html
-   . file:///home/mrsam/src/cone/cone/html/x14176.html
+   . file:///home/mrsam/src/cone/cone/html/index.html
+   . file:///home/mrsam/src/cone/cone/html/INSTALL.html
+   . file:///home/mrsam/src/cone/cone/html/maillist.html
+   . file:///home/mrsam/src/cone/cone/html/INSTALL.html
+   . file:///home/mrsam/src/cone/cone/html/maillist.html
    . http://dickey.his.com/ncurses/ncurses.html
    . http://www.xmlsoft.org/
    . http://www.openssl.org/
@@ -123,8 +121,7 @@ References
    . http://oss.sgi.com/projects/fam/
    . http://www.courier-mta.org/download.php#sox
    . http://www.courier-mta.org/
-   . http://www.courier-mta.org/beta/ncurses/
-   . file:///home/mrsam/src/cone/cone/html/install.html
-   . file:///home/mrsam/src/cone/cone/html/book.html
-   . file:///home/mrsam/src/cone/cone/html/x14176.html
+   . file:///home/mrsam/src/cone/cone/html/INSTALL.html
+   . file:///home/mrsam/src/cone/cone/html/maillist.html
    . file:///home/mrsam/src/cone/cone/html/index.html
+   . file:///home/mrsam/src/cone/cone/html/bk01-toc.html

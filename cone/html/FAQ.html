@@ -1,0 +1,182 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>FAQ</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="prev" href="moredocs.html" title="Additional documentation"/>
+  <link rel="next" href="cone00index.html" title="Cone mail client"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">FAQ</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="moredocs.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        &#160;</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="cone00index.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="section" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h2 class="title" style="clear: both"><a id="FAQ" shape="rect" name="FAQ"> </a>FAQ</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="variablelist">
+      <dl>
+        <dt><span class="term">Logging into the UW-IMAP server
+        shows the following message: &#8220;<span class="quote"><code class="literal">ALERT: NO $HOME/.mh_profile
+        not found, mh format names disabled</code></span>&#8221;;
+        and <span class="application">Cone</span> lists several
+        funny-named folders, like &#8220;<span class="quote"><code class="literal">#ftp</code></span>&#8221; and
+        &#8220;<span class="quote"><code class="literal">#news</code></span>&#8221;</span></dt>
+
+        <dd>
+          <p>When connecting to an IMAP server for the first time,
+          <span class="application">Cone</span> reads server's list
+          of default mailboxes. UW-IMAP server's list of default
+          mailboxes includes optional folders it is capable of
+          supporting, even if those folders are not actually
+          configured and enabled, which includes MH folders. When
+          <span class="application">Cone</span> asks for the number
+          of messages in the &#8220;<span class="quote">#mhinbox</span>&#8221; folder, the UW-IMAP server
+          reports an error unless the account already has an
+          MH-format mailbox (which is usually not the case).</p>
+
+          <p>Therefore, manual adjustments are needed after opening
+          an UW-IMAP account for the first time. Highlight each
+          unwanted mail folder, and press <span><strong class="keycap">D</strong></span> to delete it. Leave only
+          &#8220;<span class="quote">INBOX</span>&#8221; and
+          &#8220;<span class="quote">Folders</span>&#8221;. The
+          &#8220;<span class="quote">Folders</span>&#8221;
+          directory will usually open the server account's home
+          directory. The default UW-IMAP server configuration
+          provides IMAP access to the entire server account's home
+          directory. In most cases mail folders will not exist in
+          the home directory, but in a subdirectory, such as
+          &#8220;<span class="quote">Mail</span>&#8221;. Display
+          the contents of the account's home directory by opening
+          &#8220;<span class="quote">Folders</span>&#8221;,
+          highlight the &#8220;<span class="quote">Mail</span>&#8221; subdirectory, then press
+          <span><strong class="keycap">U</strong></span>, then
+          <span><strong class="keycap">T</strong></span>. This
+          action creates a top-level shortcut to <code class="filename">$HOME/Mail</code>, after which the top-level
+          &#8220;<span class="quote">Folders</span>&#8221; entry
+          may be deleted, leaving the UW-IMAP server account
+          showing only &#8220;<span class="quote">INBOX</span>&#8221; and &#8220;<span class="quote">Mail</span>&#8221; as the initial list of
+          folders. This is usually the preferred UW-IMAP server
+          configuration.</p>
+        </dd>
+
+        <dt><span class="term"><span class="application">Cone</span> refuses to start on a UTF-8
+        terminal, reporting &#8220;<span class="quote"><code class="literal">ERROR: Your display appears to be set to the
+        UTF-8 character set. This application cannot display this
+        character set. If this application did not read the display
+        character set name correctly, the name of the display's
+        character set name can be manually specified using the
+        CHARSET environment variable. Otherwise reconfigure your
+        display to use a supported character set and try
+        again.</code></span>&#8221;</span></dt>
+
+        <dd>
+          <p>Cone requires the wide-character version of the Curses
+          library in order to support UTF-8 displays. Some Linux
+          distributions (or other systems) may not include a
+          wide-character Curses library. The <a href="INSTALL.html" title="Installing Cone" shape="rect">INSTALL</a> file
+          contains instructions for building a UTF-8 capable
+          version of <span class="application">Cone</span> for Red
+          Hat 9, and earlier.</p>
+        </dd>
+
+        <dt><span class="term"><span class="application">Cone</span> refuses to start on a UTF-8
+        terminal, reporting &#8220;<span class="quote"><code class="literal">ERROR: Your display appears to be set to the
+        ANSI_X3.4-1968 character set. This application cannot
+        display this character set. If this application did not
+        read the display character set name correctly, the name of
+        the display's character set name can be manually specified
+        using the CHARSET environment variable. Otherwise
+        reconfigure your display to use a supported character set
+        and try again.</code></span>&#8221;</span></dt>
+
+        <dd>
+          <p>This error is reported if <code class="envar">LC_ALL</code>, <code class="envar">LANG</code>,
+          or some other locale-related variable is not set. A
+          similar error naming some other character set indicates
+          that this character set is not supported by <span class="application">Cone</span>. <span class="application">Cone</span> supports most ISO-8859 and
+          Cyrillic character sets. When built with a wide-character
+          enabled Curses library <span class="application">Cone</span> can also display UTF-8, and
+          some East Asian character sets.</p>
+        </dd>
+
+        <dt><span class="term"><span class="application">Cone</span> reports the following error when
+        trying to connect to a POP3 server: &#8220;<span class="quote">This POP3 server does not appear to implement the
+        POP3 UIDL command.</span>&#8221;</span></dt>
+
+        <dd>
+          <p>The server is running old POP3 code that does not
+          implement all the modern POP3 features. Instead of trying
+          to configure a POP3 account, configure a POP3 maildrop
+          account instead. A POP3 maildrop account will work with
+          servers that do not implement the modern POP3
+          protocol.</p>
+        </dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="moredocs.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        &#160;</td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="cone00index.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">Additional documentation&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160; <span class="application">Cone</span>
+        mail client</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

@@ -1,19 +1,20 @@
-   Link: start
+   Link: Cone: COnsole Newsreader And Emailer (start)
    Link: Cone: COnsole Newsreader And Emailer (parent)
    Link: Cone: COnsole Newsreader And Emailer (previous)
    Link: Building Cone (next)
 
-   <<< Previous         Cone: COnsole Newsreader And Emailer         Next >>>
+                                Installing Cone
+   Prev                                                                  Next
 
    --------------------------------------------------------------------------
 
-                                Installing Cone
+Installing Cone
 
    First, make sure that all the necessary requirements (README) are
    satisfied. See RPM instructions below if building for Red Hat Linux. See
    additional notes below for upgrade instructions. Otherwise:
 
-     * Download the Courier Socks 5 proxy client library from
+     o Download the Courier Socks 5 proxy client library from
        http://www.courier-mta.org/download.php#sox and follow its
        installation instructions. Binary RPMs can be built from the source
        code tarball by following the procedure outlined in
@@ -24,30 +25,33 @@
        This step can be omitted if Socks 5 support is not required. Cone will
        compile without the Socks 5 proxy toolkit.
 
-     * Download the source code tarball from
+     o Download the source code tarball from
        http://www.courier-mta.org/download.php#cone and unpack it.
 
-     * Set the appropriate environment variables if the compiler or linker
+     o Set the appropriate environment variables if the compiler or linker
        needs any custom command line flags. Run "./configure --help" to list
        the available environment variables that specify additional arbitrary
        parameters for the C/C++ compiler.
 
-     * Run "./configure [options]". See below for a list of available
+     o Run "./configure [options]". See below for a list of available
        options.
 
-     * Run make.
+     o Run make.
 
-       NOTE: The GNU version of the command is required. On BSD
-             systems it's the gmake. Use gmake in this, and the
-             following steps.
+  Note
 
-     * Run make check.
+       The GNU version of the command is required. On BSD systems it's the
+       gmake. Use gmake in this, and the following steps.
 
-     * Run make install.
+     o Run make check.
 
-     * Run make install-configure.
+     o Run make install.
 
-   NOTE: Do not forget "make install-configure". It is required.
+     o Run make install-configure.
+
+  Note
+
+   Do not forget "make install-configure". It is required.
 
    Unless other options are used, Cone installs in /usr/local:
 
@@ -89,7 +93,7 @@
            authority. Cone's source distribution includes the same list of
            trusted certificate authorities as the Mozilla browser. Cone's
            certificate list is installed by default, unless Courier is also
-           installed, in which case Cone';s default configuration points to
+           installed, in which case Cone's default configuration points to
            Courier's rootcerts directory (which contains the same certificate
            as Cone's).
 
@@ -103,7 +107,7 @@
 
    --with-devel
 
-           Install  LibMAIL, the mail library used by Cone to access and
+           Install LibMAIL , the mail library used by Cone to access and
            handle E-mail messages.
 
    --with-spellcheck=pspell
@@ -111,13 +115,13 @@
            Cone can use either aspell or pspell for spell checking. aspell is
            used if both are installed. This option selects pspell instead.
 
-Upgrading from an earlier version of Cone
+  Upgrading from an earlier version of Cone
 
    Upgrading Cone consists simply of building the new version, and installing
    it. The new version will overwrite the previous version. Special upgrade
    instructions are given below.
 
-  Upgrading from version 0.59 and earlier
+    Upgrading from version 0.59 and earlier
 
    The address book format has changed in version 0.60. The old address book
    format will be automatically converted to the new format, when necessary,
@@ -125,37 +129,17 @@ Upgrading from an earlier version of Cone
    earlier version, addresses in an address book that contain non-English
    characters will not be shown correctly.
 
-RPM builds
+  RPM builds
 
-   Red Hat 9, and earlier does not have a wide-character enabled curses
-   library. Use the following procedure to build Cone with full UTF-8
-   support.
+   Use the following procedure to build Cone.
 
    The first step is to create a work area for building RPMs. Skip this step
    if an RPM build directory is already configured.
 
-   echo "%_topdir    $HOME/rpm" > $HOME/.rpmmacros
-   mkdir $HOME/rpm
-   cd $HOME/rpm
-   mkdir SOURCES SPECS BUILD SRPMS RPMS
-
-   NOTE: For Red Hat 9, and earlier:
-         Download the source RPM for ncurses 5.3 from
-         http://www.courier-mta.org/beta/ncurses/. This custom RPM does not
-         replace the existing version of curses shipped by Red Hat, and will
-         not affect any existing software. It does not replace the Red
-         Hat-shipped package, only installs an alternative version of curses.
-
-         Run "rpm -i filename" to install the source RPM in the RPM build
-         directory. Go to the SPECS directory, where the file
-         ncurses-compat.spec is now installed, and run "rpmbuild -ba
-         ncurses-compat.spec".
-
-         The build script creates two binary RPMS: ncurses53 and
-         ncurses53-devel. Use "rpm -i" to install both packages, as root.
-
-         Fedora Core 1 includes a wide-character version of ncurses; and does
-         not need the custom ncurses build.
+ echo "%_topdir    $HOME/rpm" > $HOME/.rpmmacros
+ mkdir $HOME/rpm
+ cd $HOME/rpm
+ mkdir SOURCES SPECS BUILD SRPMS RPMS
 
    Finally, download the source code to Cone from
    http://www.courier-mta.org/download.php#cone. Do not unpack the tarball.
@@ -165,7 +149,7 @@ RPM builds
    to install the main package to run Cone the "devel" subpackage is only
    needed for additional development with LibMAIL .
 
-CVS Source checkouts
+  CVS Source checkouts
 
    It is also possible to check out the source from CVS, however additional
    requirements apply. Besides the usual prerequisites for building Cone,
@@ -173,8 +157,8 @@ CVS Source checkouts
    CVS" instructions at http://www.courier-mta.org/status.html. Cone has the
    same requirements as Courier for CVS builds (technically, Cone does not
    need libtool, but that may change in the future). Make sure that the
-   prerequisite software is installed, then check out the "Cone" module from
-   CVS, tagged at revision "Cone-latest". The HEAD may be checked out, but
+   prerequisite software is installed, then check out the " Cone" module from
+   CVS, tagged at revision " Cone-latest". The HEAD may be checked out, but
    carries more of the usual risks.
 
    After the module is checked out, run the autobloat shell script to rebuild
@@ -182,29 +166,30 @@ CVS Source checkouts
 
    --------------------------------------------------------------------------
 
-   <<< Previous                              Home                    Next >>>
-   Cone: COnsole Newsreader And Emailer       Up                Building Cone
+   Prev                                                                  Next
+   Cone: COnsole Newsreader And Emailer    Home | ToC           Building Cone
 
 References
 
    Visible links
-   . file:///home/mrsam/src/cone/cone/html/book.html
    . file:///home/mrsam/src/cone/cone/html/index.html
    . file:///home/mrsam/src/cone/cone/html/index.html
-   . file:///home/mrsam/src/cone/cone/html/readme.html
    . file:///home/mrsam/src/cone/cone/html/index.html
-   . file:///home/mrsam/src/cone/cone/html/readme.html
-   . file:///home/mrsam/src/cone/cone/html/readme.html
+   . file:///home/mrsam/src/cone/cone/html/README.html
+   . file:///home/mrsam/src/cone/cone/html/index.html
+   . file:///home/mrsam/src/cone/cone/html/README.html
+   . Building Cone
+	file:///home/mrsam/src/cone/cone/html/README.html
    . http://www.courier-mta.org/download.php#sox
    . http://www.courier-mta.org/FAQ.html#rpm
    . http://www.courier-mta.org/download.php#cone
    . http://www.mozilla.org/
    . http://www.courier-mta.org/
-   . file:///home/mrsam/src/cone/cone/html/libmail.html
-   . http://www.courier-mta.org/beta/ncurses/
+   . LibMAIL reference
+	file:///home/mrsam/src/cone/cone/html/libmail.html
    . http://www.courier-mta.org/download.php#cone
    . http://www.courier-mta.org/status.html
    . file:///home/mrsam/src/cone/cone/html/index.html
-   . file:///home/mrsam/src/cone/cone/html/book.html
-   . file:///home/mrsam/src/cone/cone/html/readme.html
+   . file:///home/mrsam/src/cone/cone/html/README.html
    . file:///home/mrsam/src/cone/cone/html/index.html
+   . file:///home/mrsam/src/cone/cone/html/bk01-toc.html

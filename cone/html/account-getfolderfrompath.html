@@ -1,254 +1,143 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::ACCOUNT::getFolderFromPath</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="mail::ACCOUNT Synchronous API reference"
-HREF="synchronous.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::ACCOUNT::getFolderIndexSize"
-HREF="account-getfolderindexsize.html"><LINK
-REL="NEXT"
-TITLE="mail::ACCOUNT::getFolderFromString"
-HREF="account-getfolderfromstring.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="account-getfolderindexsize.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="account-getfolderfromstring.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="ACCOUNT-GETFOLDERFROMPATH"
-></A
->mail::ACCOUNT::getFolderFromPath</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN3524"
-></A
-><H2
->Name</H2
->mail::ACCOUNT::getFolderFromPath&nbsp;--&nbsp;A direct short-cut to a folder</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN3527"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->#include&nbsp;&#60;libmail/sync.H&#62;<br>
-<br>
-mail::ACCOUNT&nbsp;*mail;<br>
-mail::folder&nbsp;*folder;<br>
-<br>
-std::string&nbsp;folderPath=folder-&#62;getPath();<br>
-<br>
-...</P
-><DIV
-CLASS="FUNCSYNOPSIS"
-><P
-></P
-><A
-NAME="AEN3529"
-></A
-><P
-><CODE
-><CODE
-CLASS="FUNCDEF"
->mail::folder *f=mail-&#62;<TT
-CLASS="FUNCTION"
->getFolderFromPath</TT
-></CODE
->(std::string <TT
-CLASS="PARAMETER"
-><I
->folderPath</I
-></TT
->);</CODE
-></P
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN3535"
-></A
-><H2
->USAGE</H2
-><P
->This function is the
-<CODE
-CLASS="STRUCTNAME"
->mail::ACCOUNT</CODE
-> equivalent of
-<A
-HREF="mail-findfolder.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::findFolder</SPAN
->(3x)</SPAN
-></A
->.
-See the description of this function for more information.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN3543"
-></A
-><H2
->RETURN CODES AND CALLBACKS</H2
-><P
->This function returns a NULL pointer if it cannot allocate memory for the
-new <CODE
-CLASS="STRUCTNAME"
->mail::folder</CODE
-> object.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN3547"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="mail-findfolder.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::account::findFolder</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="account-getfolderindexsize.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="account-getfolderfromstring.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::ACCOUNT::getFolderIndexSize</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="synchronous.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::ACCOUNT::getFolderFromString</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>mail::ACCOUNT::getFolderFromPath</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="synchronous.html" title="mail::ACCOUNT Synchronous API reference"/>
+  <link rel="prev" href="account-getfolderindexsize.html" title="mail::ACCOUNT::getFolderIndexSize"/>
+  <link rel="next" href="account-getfolderfromstring.html" title="mail::ACCOUNT::getFolderFromString"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::ACCOUNT::getFolderFromPath</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="account-getfolderindexsize.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="structname">mail::ACCOUNT</span> Synchronous
+        API reference</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="account-getfolderfromstring.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="account-getfolderfrompath" shape="rect" name="account-getfolderfrompath"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::ACCOUNT::getFolderFromPath &#8212; A direct
+      short-cut to a folder</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        <br clear="none"/>
+        #include&#160;&lt;libmail/sync.H&gt;<br clear="none"/>
+        <br clear="none"/>
+        mail::ACCOUNT&#160;*mail;<br clear="none"/>
+        mail::folder&#160;*folder;<br clear="none"/>
+        <br clear="none"/>
+        std::string&#160;folderPath=folder-&gt;getPath();<br clear="none"/>
+        <br clear="none"/>
+        ...<br clear="none"/></p>
+      </div>
+
+      <div class="funcsynopsis">
+        <table border="0" summary="Function synopsis" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="1" colspan="1"><code class="funcdef">mail::folder *f=mail-&gt;<b class="fsfunc">getFolderFromPath</b>(</code></td>
+
+            <td rowspan="1" colspan="1">std::string &#160;</td>
+
+            <td rowspan="1" colspan="1"><var class="pdparam">folderPath</var><code>)</code>;</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id385149" shape="rect" name="id385149"> </a>
+
+      <h2>USAGE</h2>
+
+      <p>This function is the <span class="structname">mail::ACCOUNT</span> equivalent of <a href="mail-findfolder.html" title="mail::account::findFolder" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::findFolder</span>(3x)</span></a>.
+      See the description of this function for more
+      information.</p>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id385178" shape="rect" name="id385178"> </a>
+
+      <h2>RETURN CODES AND CALLBACKS</h2>
+
+      <p>This function returns a NULL pointer if it cannot allocate
+      memory for the new <span class="structname">mail::folder</span> object.</p>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id385192" shape="rect" name="id385192"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="mail-findfolder.html" title="mail::account::findFolder" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::findFolder</span>(3x)</span></a>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="account-getfolderindexsize.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="synchronous.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="account-getfolderfromstring.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::ACCOUNT::getFolderIndexSize&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::ACCOUNT::getFolderFromString</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

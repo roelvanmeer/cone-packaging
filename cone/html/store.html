@@ -1,396 +1,184 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->Modifying message attributes</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="Simple Mail Access Protocol, Version 1"
-HREF="smap1.html"><LINK
-REL="PREVIOUS"
-TITLE="Reading message contents"
-HREF="x13200.html"><LINK
-REL="NEXT"
-TITLE="More comments on concurrency"
-HREF="x13443.html"></HEAD
-><BODY
-CLASS="SECTION"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="x13200.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
->Simple Mail Access Protocol, Version 1</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="x13443.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECTION"
-><H1
-CLASS="SECTION"
-><A
-NAME="STORE"
->Modifying message attributes</A
-></H1
-><P
-><P
-CLASS="LITERALLAYOUT"
->C:&nbsp;STORE&nbsp;4&nbsp;6-7&nbsp;+FLAGS=DELETED<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;4&nbsp;FLAGS=SEEN,DELETED<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;6&nbsp;FLAGS=SEEN,DELETED<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;7&nbsp;FLAGS=SEEN,DELETED<br>
-S:&nbsp;+OK&nbsp;STORE&nbsp;completed<br>
-C:&nbsp;STORE&nbsp;4&nbsp;"INTERNALDATE=Mon,&nbsp;20&nbsp;Jan&nbsp;2003&nbsp;18:43:09&nbsp;-0500"<br>
-S:&nbsp;*&nbsp;FETCH&nbsp;4&nbsp;"INTERNALDATE=Mon,&nbsp;20&nbsp;Jan&nbsp;2003&nbsp;18:43:09&nbsp;-0500"<br>
-S:&nbsp;+OK&nbsp;STORE&nbsp;completed</P
-></P
-><P
->The <TT
-CLASS="LITERAL"
->STORE</TT
-> command updates attributes of existing messages.
-A list of message numbers, as whitespace-delimited words, follows the
-<TT
-CLASS="LITERAL"
->STORE</TT
->.
-<SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="REPLACEABLE"
-><I
->m</I
-></TT
->-<TT
-CLASS="REPLACEABLE"
-><I
->n</I
-></TT
->"</SPAN
->
-designates messages #m through #n, inclusively.</P
-><P
->One or more words follow the message number list; they specify which
-attributes to set.
-Attribute settings are generally specified as
-<TT
-CLASS="REPLACEABLE"
-><I
->name</I
-></TT
->=<TT
-CLASS="REPLACEABLE"
-><I
->value</I
-></TT
->.
-As is with the <TT
-CLASS="LITERAL"
->FETCH</TT
-> command, servers should ignore
-attributes they do not recognize.
-The following attributes are defined at this time:</P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->FLAGS=<TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
-></DT
-><DD
-><P
->Sets the messages flags precisely
-to <TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
->, which is a
-comma-separated list of message flags.
-See <SPAN
-CLASS="QUOTE"
->"<A
-HREF="attributes.html"
->Reading message attributes</A
->"</SPAN
->
-for a list of defined message flags.</P
-></DD
-><DT
->+FLAGS=<TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
-></DT
-><DD
-><P
->Adds the flags in <TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
-> to the messages' flags.
-Other flags, if they are set for a message, remain set.</P
-></DD
-><DT
->-FLAGS=<TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
-></DT
-><DD
-><P
->Remove the flags in <TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
-> from the messages' flags.
-Other flags, if they are set for a message, remain set.</P
-></DD
-><DT
->KEYWORDS=<TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
-></DT
-><DD
-><P
->If the server's capability list includes
-<SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->KEYWORD<TT
-CLASS="LITERAL"
-></TT
-></TT
->"</SPAN
->,
-then set the keywords associated with the message
-to <TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
->, which is a
-comma-separated list of keywords.
-See <SPAN
-CLASS="QUOTE"
->"<A
-HREF="conn.html"
->SMAP connection negotiation</A
->"</SPAN
->
-for more information.</P
-></DD
-><DT
->+KEYWORDS=<TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
-></DT
-><DD
-><P
->Adds keywords named in <TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
->, which is a
-comma-separated list of keywords, to the existing keywords already set
-for the message.
-Existing keywords remain unaffected.</P
-></DD
-><DT
->-KEYWORDS=<TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
-></DT
-><DD
-><P
->Removes keywords named in <TT
-CLASS="REPLACEABLE"
-><I
->list</I
-></TT
->, which is a
-comma-separated list of keywords, from the list of existing keywords
-associated with this message.</P
-></DD
-><DT
->INTERNALDATE=<TT
-CLASS="REPLACEABLE"
-><I
->date</I
-></TT
-></DT
-><DD
-><P
->Set the <TT
-CLASS="LITERAL"
->INTERNALDATE</TT
-> timestamp on a message to
-<TT
-CLASS="REPLACEABLE"
-><I
->date</I
-></TT
->, which is an RFC-2822 formatted date/time
-value.
-See <SPAN
-CLASS="QUOTE"
->"<A
-HREF="attributes.html"
->Reading message attributes</A
->"</SPAN
->
-for more information on the <TT
-CLASS="LITERAL"
->INTERNALDATE</TT
-> attribute.</P
-></DD
-></DL
-></DIV
-><P
->The server's response includes
-<SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->* FETCH</TT
->"</SPAN
-> single line replies that
-give the updated attributes of all affected messages.
-This is specifically needed when updating message flags, and is optional
-when updating <TT
-CLASS="LITERAL"
->INTERNALDATE</TT
->s (there's not much point in
-echoing back the same timestamp).</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="x13200.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="x13443.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Reading message contents</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="smap1.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->More comments on concurrency</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>Modifying message attributes</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1"/>
+  <link rel="prev" href="smapmessagecontents.html" title="Reading message contents"/>
+  <link rel="next" href="smapconcurrency.html" title="More comments on concurrency"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">Modifying
+        message attributes</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="smapmessagecontents.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        Appendix&#160;A.&#160;Simple Mail Access Protocol, Version
+        1</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="smapconcurrency.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="section" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title"><a id="store" shape="rect" name="store"> </a>Modifying message attributes</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="literallayout">
+      <p><br clear="none"/>
+      C:&#160;STORE&#160;4&#160;6-7&#160;+FLAGS=DELETED<br clear="none"/>
+      S:&#160;*&#160;FETCH&#160;4&#160;FLAGS=SEEN,DELETED<br clear="none"/>
+      S:&#160;*&#160;FETCH&#160;6&#160;FLAGS=SEEN,DELETED<br clear="none"/>
+      S:&#160;*&#160;FETCH&#160;7&#160;FLAGS=SEEN,DELETED<br clear="none"/>
+      S:&#160;+OK&#160;STORE&#160;completed<br clear="none"/>
+      C:&#160;STORE&#160;4&#160;"INTERNALDATE=Mon,&#160;20&#160;Jan&#160;2003&#160;18:43:09&#160;-0500"<br clear="none"/>
+
+      S:&#160;*&#160;FETCH&#160;4&#160;"INTERNALDATE=Mon,&#160;20&#160;Jan&#160;2003&#160;18:43:09&#160;-0500"<br clear="none"/>
+
+      S:&#160;+OK&#160;STORE&#160;completed<br clear="none"/></p>
+    </div>
+
+    <p>The <code class="literal">STORE</code> command updates
+    attributes of existing messages. A list of message numbers, as
+    whitespace-delimited words, follows the <code class="literal">STORE</code>. &#8220;<span class="quote"><em class="replaceable"><code>m</code></em>-<em class="replaceable"><code>n</code></em></span>&#8221; designates
+    messages #m through #n, inclusively.</p>
+
+    <p>One or more words follow the message number list; they
+    specify which attributes to set. Attribute settings are
+    generally specified as <em class="replaceable"><code>name</code></em>=<em class="replaceable"><code>value</code></em>. As is with the
+    <code class="literal">FETCH</code> command, servers should
+    ignore attributes they do not recognize. The following
+    attributes are defined at this time:</p>
+
+    <div class="variablelist">
+      <dl>
+        <dt><span class="term">FLAGS=<em class="replaceable"><code>list</code></em></span></dt>
+
+        <dd>
+          <p>Sets the messages flags precisely to <em class="replaceable"><code>list</code></em>, which is a
+          comma-separated list of message flags. See
+          &#8220;<span class="quote"><a href="attributes.html" title="Reading message attributes" shape="rect">Reading
+          message attributes</a></span>&#8221; for a list of
+          defined message flags.</p>
+        </dd>
+
+        <dt><span class="term">+FLAGS=<em class="replaceable"><code>list</code></em></span></dt>
+
+        <dd>
+          <p>Adds the flags in <em class="replaceable"><code>list</code></em> to the messages'
+          flags. Other flags, if they are set for a message, remain
+          set.</p>
+        </dd>
+
+        <dt><span class="term">-FLAGS=<em class="replaceable"><code>list</code></em></span></dt>
+
+        <dd>
+          <p>Remove the flags in <em class="replaceable"><code>list</code></em> from the messages'
+          flags. Other flags, if they are set for a message, remain
+          set.</p>
+        </dd>
+
+        <dt><span class="term">KEYWORDS=<em class="replaceable"><code>list</code></em></span></dt>
+
+        <dd>
+          <p>If the server's capability list includes
+          &#8220;<span class="quote"><code class="literal">KEYWORD</code></span>&#8221;, then set the
+          keywords associated with the message to <em class="replaceable"><code>list</code></em>, which is a
+          comma-separated list of keywords. See &#8220;<span class="quote"><a href="conn.html" title="SMAP connection negotiation" shape="rect">SMAP
+          connection negotiation</a></span>&#8221; for more
+          information.</p>
+        </dd>
+
+        <dt><span class="term">+KEYWORDS=<em class="replaceable"><code>list</code></em></span></dt>
+
+        <dd>
+          <p>Adds keywords named in <em class="replaceable"><code>list</code></em>, which is a
+          comma-separated list of keywords, to the existing
+          keywords already set for the message. Existing keywords
+          remain unaffected.</p>
+        </dd>
+
+        <dt><span class="term">-KEYWORDS=<em class="replaceable"><code>list</code></em></span></dt>
+
+        <dd>
+          <p>Removes keywords named in <em class="replaceable"><code>list</code></em>, which is a
+          comma-separated list of keywords, from the list of
+          existing keywords associated with this message.</p>
+        </dd>
+
+        <dt><span class="term">INTERNALDATE=<em class="replaceable"><code>date</code></em></span></dt>
+
+        <dd>
+          <p>Set the <code class="literal">INTERNALDATE</code>
+          timestamp on a message to <em class="replaceable"><code>date</code></em>, which is an
+          RFC-2822 formatted date/time value. See
+          &#8220;<span class="quote"><a href="attributes.html" title="Reading message attributes" shape="rect">Reading
+          message attributes</a></span>&#8221; for more information
+          on the <code class="literal">INTERNALDATE</code>
+          attribute.</p>
+        </dd>
+      </dl>
+    </div>
+
+    <p>The server's response includes &#8220;<span class="quote"><code class="literal">* FETCH</code></span>&#8221;
+    single line replies that give the updated attributes of all
+    affected messages. This is specifically needed when updating
+    message flags, and is optional when updating <code class="literal">INTERNALDATE</code>s (there's not much point in
+    echoing back the same timestamp).</p>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="smapmessagecontents.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="smap1.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="smapconcurrency.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">Reading message contents&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;More comments on concurrency</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

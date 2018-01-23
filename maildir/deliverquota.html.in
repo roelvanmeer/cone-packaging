@@ -1,278 +1,62 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-  <!-- $Id: deliverquota.sgml,v 1.3 2002/06/10 03:51:44 mrsam Exp $ -->
-  <!-- Copyright 1998 - 2001 Double Precision, Inc.  See COPYING for -->
-  <!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->deliverquota</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.7"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><H1
-><A
-NAME="DELIVERQUOTA"
-></A
->deliverquota</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN10"
-></A
-><H2
->Name</H2
->deliverquota&nbsp;--&nbsp;deliver to a maildir with a quota</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN13"
-></A
-><H2
->Synopsis</H2
-><P
-><B
-CLASS="COMMAND"
->deliverquota</B
-> [-c] [-w <VAR
-CLASS="REPLACEABLE"
->percent</VAR
->] {<VAR
-CLASS="REPLACEABLE"
->maildir</VAR
->} {<VAR
-CLASS="REPLACEABLE"
->quota</VAR
->}</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN23"
-></A
-><H2
->DESCRIPTION</H2
-><P
-><B
-CLASS="COMMAND"
->deliverquota</B
-> delivers mail to a
-<VAR
-CLASS="REPLACEABLE"
->maildir</VAR
-> taking into account any
+<?xml version="1.0"?>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>deliverquota</title><link rel="stylesheet" href="style.css" type="text/css"/><meta name="generator" content="DocBook XSL Stylesheets V1.72.0"/><link rel="start" href="#deliverquota" title="deliverquota"/><link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/><meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/><link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 1998 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+--></head><body><div class="refentry" lang="en" xml:lang="en"><a id="deliverquota" shape="rect"> </a><div class="titlepage"/><div class="refnamediv"><h2>Name</h2><p>deliverquota — deliver to a maildir with a quota</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">deliverquota</code>  [-c] [-w <em class="replaceable"><code>percent</code></em>] {<em class="replaceable"><code>maildir</code></em>} {<em class="replaceable"><code>quota</code></em>}</p></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id282319" shape="rect"> </a><h2>DESCRIPTION</h2><p>
+<span><strong class="command">deliverquota</strong></span> delivers mail to a
+<em class="replaceable"><code>maildir</code></em> taking into account any
 software-imposed quota on the maildir.
 This manually-enforced quota mechanism is described in the
-<A
-HREF="maildirquota.html"
-TARGET="_top"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->maildirquota</SPAN
->(7)</SPAN
-></A
->
+<a href="maildirquota.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirquota</span>(7)</span></a>
 and
-<A
-HREF="maildirmake.html"
-TARGET="_top"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->maildirmake</SPAN
->(1)</SPAN
-></A
->
+<a href="maildirmake.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirmake</span>(1)</span></a>
 manual pages.
 Instead of setting up your mail
 server to deliver the message directly
 to a maildir, configure the mail server to
-run the <B
-CLASS="COMMAND"
->deliverquota</B
-> program in order to deliver the
+run the <span><strong class="command">deliverquota</strong></span> program in order to deliver the
 message,
 and specify the
 location of the maildir as the argument to
-<B
-CLASS="COMMAND"
->deliverquota</B
->.</P
-><P
->The second argument to <B
-CLASS="COMMAND"
->deliverquota</B
-> is optional.
-If present, <VAR
-CLASS="REPLACEABLE"
->quota</VAR
-> specifies a new quota setting
+<span><strong class="command">deliverquota</strong></span>.</p><p>
+The second argument to <span><strong class="command">deliverquota</strong></span> is optional.
+If present, <em class="replaceable"><code>quota</code></em> specifies a new quota setting
 for this maildir.
-Specifying <VAR
-CLASS="REPLACEABLE"
->quota</VAR
-> is equivalent to running
-<A
-HREF="maildirmake.html"
-TARGET="_top"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->maildirmake</SPAN
->(1)</SPAN
-></A
->
-with the <VAR
-CLASS="OPTION"
->-q</VAR
-> option.
-The second argument to <B
-CLASS="COMMAND"
->deliverquota</B
-> is considered obsolete,
-and may be removed in the future.</P
-><P
-><B
-CLASS="COMMAND"
->deliverquota</B
-> reads the message from standard input
+Specifying <em class="replaceable"><code>quota</code></em> is equivalent to running
+<a href="maildirmake.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirmake</span>(1)</span></a>
+with the <code class="option">-q</code> option.
+The second argument to <span><strong class="command">deliverquota</strong></span> is considered obsolete,
+and may be removed in the future.</p><p>
+<span><strong class="command">deliverquota</strong></span> reads the message from standard input
 and delivers it
-to <VAR
-CLASS="REPLACEABLE"
->maildir</VAR
->.
-<VAR
-CLASS="REPLACEABLE"
->maildir</VAR
->
+to <em class="replaceable"><code>maildir</code></em>.
+<em class="replaceable"><code>maildir</code></em>
 may specify a path directly to a maildir folder,
-not the main <VAR
-CLASS="REPLACEABLE"
->maildir</VAR
->
+not the main <em class="replaceable"><code>maildir</code></em>
 (as long as the folder was created by the
-<A
-HREF="maildirmake.html"
-TARGET="_top"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->maildirmake</SPAN
->(1)</SPAN
-></A
-> command.</P
-><P
->The <VAR
-CLASS="OPTION"
->-c</VAR
-> option automatically creates the maildir,
-and all missing parent subdirectories (as '<B
-CLASS="COMMAND"
->mkdir -p</B
->').
-This option should be used with caution.</P
-><P
->The <VAR
-CLASS="OPTION"
->-w N</VAR
-> option places a warning message
+<a href="maildirmake.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirmake</span>(1)</span></a> command.</p><p>
+The <code class="option">-c</code> option automatically creates the maildir,
+and all missing parent subdirectories (as '<span><strong class="command">mkdir -p</strong></span>').
+This option should be used with caution.</p><p>
+The <code class="option">-w N</code> option places a warning message
 into the maildir if the maildir has a quota setting, and after
 the message was successfully delivered the maildir was at least
-<VAR
-CLASS="REPLACEABLE"
->N</VAR
-> percent full.
+<em class="replaceable"><code>N</code></em> percent full.
 The warning message is copied verbatim from
-<TT
-CLASS="FILENAME"
->@sysconfdir@/quotawarnmsg</TT
-> with the addition of the
-"<TT
-CLASS="LITERAL"
->Date:</TT
->" and
-"<TT
-CLASS="LITERAL"
->Message-Id:</TT
->" headers.
+<code class="filename">@sysconfdir@/quotawarnmsg</code> with the addition of the
+"<code class="literal">Date:</code>" and
+"<code class="literal">Message-Id:</code>" headers.
 The warning is repeated every 24 hours (at least), until the maildir drops
 below
-<VAR
-CLASS="REPLACEABLE"
->N</VAR
-> percent full.</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN67"
-></A
-><H2
->RETURN CODE</H2
-><P
-><B
-CLASS="COMMAND"
->deliverquota</B
-> delivers the message to the maildir
+<em class="replaceable"><code>N</code></em> percent full.</p></div><div class="refsect1" lang="en" xml:lang="en"><a id="id282682" shape="rect"> </a><h2>RETURN CODE</h2><p>
+<span><strong class="command">deliverquota</strong></span> delivers the message to the maildir
 and terminates with
-exit code 0 if the message can be delivered without going over quota.</P
-><P
->If the maildir is over its specified quota, <B
-CLASS="COMMAND"
->deliverquota</B
->
-terminates with exit code 77 (EX_NOPERM).</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN73"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="maildirquota.html"
-TARGET="_top"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->maildirquota</SPAN
->(7)</SPAN
-></A
->,
-<A
-HREF="maildirmake.html"
-TARGET="_top"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->maildirmake</SPAN
->(1)</SPAN
-></A
->,
-<A
-HREF="http://www.qmail.org/man/man5/maildir.html"
-TARGET="_top"
->http://www.qmail.org/man/man5/maildir.html</A
->.</P
-></DIV
-></BODY
-></HTML
->
+exit code 0 if the message can be delivered without going over quota.</p><p>
+If the maildir is over its specified quota, <span><strong class="command">deliverquota</strong></span>
+terminates with exit code 77 (EX_NOPERM).</p></div><div class="refsect1" lang="en" xml:lang="en"><a id="id282709" shape="rect"> </a><h2>SEE ALSO</h2><p>
+<a href="maildirquota.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirquota</span>(7)</span></a>,
+<a href="maildirmake.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">maildirmake</span>(1)</span></a>,
+<a href="http://www.qmail.org/man/man5/maildir.html" target="_top" shape="rect">http://www.qmail.org/man/man5/maildir.html</a>.
+</p></div></div></body></html>

@@ -1,300 +1,172 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->Address Book</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="Cone mail client"
-HREF="cone00index.html"><LINK
-REL="PREVIOUS"
-TITLE="Mail Filters"
-HREF="cone11filters.html"><LINK
-REL="NEXT"
-TITLE="LDAP Address Books"
-HREF="cone13ldapaddressbook.html"></HEAD
-><BODY
-CLASS="CHAPTER"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="cone11filters.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="cone13ldapaddressbook.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="CHAPTER"
-><H1
-><A
-NAME="CONE12ADDRESSBOOK"
-></A
->Address Book</H1
-><P
->When writing a new message, <TT
-CLASS="APPLICATION"
->Cone</TT
-> looks up addresses in the defined
-address books automatically.
-The <SPAN
-CLASS="QUOTE"
->"Address Book"</SPAN
-> option off the Main Menu accesses
-various address book-related maintenance functions.</P
-><P
->The <SPAN
-CLASS="QUOTE"
->"Address Book"</SPAN
-> option first lists all defined address books.
-Normally there's only one: <SPAN
-CLASS="QUOTE"
->"Local Address Book"</SPAN
-> - a simple,
-private, address book maintained by <TT
-CLASS="APPLICATION"
->Cone</TT
->.</P
-><P
-><TT
-CLASS="APPLICATION"
->Cone</TT
-> can use a folder on a remote IMAP or SMAP server as an address book,
-permitting the address book to be shared between multiple account.
-When compiled with LDAP support, <TT
-CLASS="APPLICATION"
->Cone</TT
-> can also use an LDAP server-based
-address book.</P
-><P
->All known address book are listed on this screen.
-Press <B
-CLASS="KEYCAP"
->A</B
-> to add a new LDAP server-based address book
-(IMAP and SMAP server-based address books are added directly from the
-<SPAN
-CLASS="QUOTE"
->"Folder Listing"</SPAN
-> screen, by highlighting the IMAP or SMAP
-folder, then pressing <B
-CLASS="KEYCAP"
->U</B
->se <B
-CLASS="KEYCAP"
->A</B
->addressbook).
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
 
-Highlighting the name of the address book, and hitting
-<B
-CLASS="KEYCAP"
->Enter</B
-> displays all the entries in the address book
-(except for LDAP address books, which cannot be browsed or modified).</P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
-><B
-CLASS="KEYCAP"
->A</B
-></DT
-><DD
-><P
->Manually add an entry to the address book.</P
-></DD
-><DT
-><B
-CLASS="KEYCAP"
->D</B
-></DT
-><DD
-><P
->Delete the address book entry.</P
-></DD
-><DT
-><B
-CLASS="KEYCAP"
->E</B
-></DT
-><DD
-><P
->Export the contents of the address book to a file.
-See below for more information.</P
-></DD
-><DT
-><B
-CLASS="KEYCAP"
->I</B
-></DT
-><DD
-><P
->Import the contents of the address book from a file.
-See below for more information.</P
-></DD
-><DT
-><B
-CLASS="KEYCAP"
->Enter</B
-></DT
-><DD
-><P
->Press <B
-CLASS="KEYCAP"
->Enter</B
-> to edit the contents of an address book
-entry.</P
-></DD
-><DT
-><B
-CLASS="KEYCAP"
->R</B
-></DT
-><DD
-><P
->Rename the address book entry (change the entry's nickname).</P
-></DD
-></DL
-></DIV
-><DIV
-CLASS="SECTION"
-><H1
-CLASS="SECTION"
-><A
-NAME="AEN2182"
->Import/Export address book</A
-></H1
-><P
->The contents of the address book can be imported or exported to a file.
-The address book is exported one address book entry per line:</P
-><DIV
-CLASS="INFORMALEXAMPLE"
-><P
-></P
-><A
-NAME="AEN2185"
-></A
-><P
-CLASS="LITERALLAYOUT"
->nickname:&nbsp;"Name"&nbsp;&#60;user@domain&#62;</P
-><P
-></P
-></DIV
-></DIV
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="cone11filters.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="cone13ldapaddressbook.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Mail Filters</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="cone00index.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->LDAP Address Books</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+  <title>Address Book</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="cone00index.html" title="Cone mail client"/>
+  <link rel="prev" href="cone11filters.html" title="Mail Filters"/>
+  <link rel="next" href="cone13ldapaddressbook.html" title="LDAP Address Books"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">Address
+        Book</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="cone11filters.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="application">Cone</span> mail client</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="cone13ldapaddressbook.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="chapter" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h2 class="title"><a id="cone12addressbook" shape="rect" name="cone12addressbook"> </a>Address Book</h2>
+        </div>
+      </div>
+    </div>
+
+    <p>When writing a new message, <span class="application">Cone</span> looks up addresses in the defined
+    address books automatically. The &#8220;<span class="quote">Address Book</span>&#8221; option off the Main Menu
+    accesses various address book-related maintenance
+    functions.</p>
+
+    <p>The &#8220;<span class="quote">Address Book</span>&#8221;
+    option first lists all defined address books. Normally there's
+    only one: &#8220;<span class="quote">Local Address
+    Book</span>&#8221; - a simple, private, address book maintained
+    by <span class="application">Cone</span>.</p>
+
+    <p><span class="application">Cone</span> can use a folder on a
+    remote IMAP or SMAP server as an address book, permitting the
+    address book to be shared between multiple account. When
+    compiled with LDAP support, <span class="application">Cone</span> can also use an LDAP server-based
+    address book.</p>
+
+    <p>All known address book are listed on this screen. Press
+    <span><strong class="keycap">A</strong></span> to add a new
+    LDAP server-based address book (IMAP and SMAP server-based
+    address books are added directly from the &#8220;<span class="quote">Folder Listing</span>&#8221; screen, by highlighting
+    the IMAP or SMAP folder, then pressing <span><strong class="keycap">U</strong></span>se <span><strong class="keycap">A</strong></span>addressbook). Highlighting the name
+    of the address book, and hitting <span><strong class="keycap">Enter</strong></span> displays all the entries in the
+    address book (except for LDAP address books, which cannot be
+    browsed or modified).</p>
+
+    <div class="variablelist">
+      <dl>
+        <dt><span class="term"><span><strong class="keycap">A</strong></span></span></dt>
+
+        <dd>
+          <p>Manually add an entry to the address book.</p>
+        </dd>
+
+        <dt><span class="term"><span><strong class="keycap">D</strong></span></span></dt>
+
+        <dd>
+          <p>Delete the address book entry.</p>
+        </dd>
+
+        <dt><span class="term"><span><strong class="keycap">E</strong></span></span></dt>
+
+        <dd>
+          <p>Export the contents of the address book to a file. See
+          below for more information.</p>
+        </dd>
+
+        <dt><span class="term"><span><strong class="keycap">I</strong></span></span></dt>
+
+        <dd>
+          <p>Import the contents of the address book from a file.
+          See below for more information.</p>
+        </dd>
+
+        <dt><span class="term"><span><strong class="keycap">Enter</strong></span></span></dt>
+
+        <dd>
+          <p>Press <span><strong class="keycap">Enter</strong></span> to edit the contents of an
+          address book entry.</p>
+        </dd>
+
+        <dt><span class="term"><span><strong class="keycap">R</strong></span></span></dt>
+
+        <dd>
+          <p>Rename the address book entry (change the entry's
+          nickname).</p>
+        </dd>
+      </dl>
+    </div>
+
+    <div class="section" lang="en" xml:lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h4 class="title"><a id="id356004" shape="rect" name="id356004"> </a>Import/Export address book</h4>
+          </div>
+        </div>
+      </div>
+
+      <p>The contents of the address book can be imported or
+      exported to a file. The address book is exported one address
+      book entry per line:</p>
+
+      <div class="informalexample">
+        <div class="literallayout">
+          <p><br clear="none"/>
+          nickname:&#160;"Name"&#160;&lt;user@domain&gt;<br clear="none"/></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="cone11filters.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="cone00index.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="cone13ldapaddressbook.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">Mail Filters&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;LDAP Address Books</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

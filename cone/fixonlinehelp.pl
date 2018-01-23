@@ -11,8 +11,8 @@ while (defined($l=<IN>))
 {
     unless ($l =~ /::B::/)
     {
-	$l =~ s/><PRE/><HR><PRE/;
-	$l =~ s/<\/PRE/<\/PRE><HR/;
+	$l =~ s/<pre/<hr \/><pre/;
+	$l =~ s/<\/pre/<\/pre><hr \//;
 	print OUT $l;
 	next;
     }

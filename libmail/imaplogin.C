@@ -1,4 +1,4 @@
-/* $Id: imaplogin.C,v 1.2 2004/04/25 03:37:15 mrsam Exp $
+/* $Id: imaplogin.C,v 1.3 2007/04/06 17:57:29 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -17,6 +17,7 @@
 #include <errno.h>
 #include <stdio.h>
 
+#include <algorithm>
 #include <iostream>
 #include <iomanip>
 #include <sstream>

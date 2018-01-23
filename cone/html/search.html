@@ -1,710 +1,309 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->Searching messages</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="Simple Mail Access Protocol, Version 1"
-HREF="smap1.html"><LINK
-REL="PREVIOUS"
-TITLE="Copying and moving messages"
-HREF="x13547.html"><LINK
-REL="NEXT"
-TITLE="Logging off"
-HREF="x13789.html"></HEAD
-><BODY
-CLASS="SECTION"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="x13547.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
->Simple Mail Access Protocol, Version 1</TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="x13789.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><DIV
-CLASS="SECTION"
-><H1
-CLASS="SECTION"
-><A
-NAME="SEARCH"
->Searching messages</A
-></H1
-><P
-><P
-CLASS="LITERALLAYOUT"
->C:&nbsp;SEARCH&nbsp;MARKED&nbsp;NOT&nbsp;TO&nbsp;"nobody@example.com"<br>
-S:&nbsp;*&nbsp;SEARCH&nbsp;1&nbsp;3-5&nbsp;7<br>
-S:&nbsp;+OK&nbsp;Messages&nbsp;searched<br>
-C:&nbsp;SEARCH&nbsp;1-5,15-20&nbsp;LARGER&nbsp;10000<br>
-S:&nbsp;*&nbsp;SEARCH&nbsp;1&nbsp;3-5&nbsp;17<br>
-S:&nbsp;+OK&nbsp;Messages&nbsp;searched</P
-></P
-><P
->The <TT
-CLASS="LITERAL"
->SEARCH</TT
-> command instructs the server to search messages
-in the currently open folder.
-The next whitespace delimited word specifies the set of messages to search.
-The remaining words specify the search criteria.
-The set of messages to search is specified in one of four ways:</P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->MARKED</DT
-><DD
-><P
->Search only the messages that have the <TT
-CLASS="LITERAL"
->MARKED</TT
-> flag already
-set.</P
-></DD
-><DT
->UNMARKED</DT
-><DD
-><P
->Search only the messages that do not have the <TT
-CLASS="LITERAL"
->MARKED</TT
-> flag
-set.</P
-></DD
-><DT
->ALL</DT
-><DD
-><P
->Search all messages.</P
-></DD
-><DT
-><TT
-CLASS="REPLACEABLE"
-><I
->range</I
-></TT
-></DT
-><DD
-><P
-><TT
-CLASS="REPLACEABLE"
-><I
->range</I
-></TT
-> is a comma-separated range of message
-numbers to search.
-Consecutive message numbers may be given as
-<TT
-CLASS="REPLACEABLE"
-><I
->A</I
-></TT
->-<TT
-CLASS="REPLACEABLE"
-><I
->B</I
-></TT
->, indicating
-messages A through B, inclusive.</P
-></DD
-></DL
-></DIV
-><P
->Each <TT
-CLASS="LITERAL"
->SEARCH</TT
-> command specifies a single search criteria.
-Simple criterias are combined to form more complicated searches by using
-a series of <TT
-CLASS="LITERAL"
->SEARCH</TT
-> and <TT
-CLASS="LITERAL"
->STORE</TT
-> commands.
-First, all messages have their <TT
-CLASS="LITERAL"
->MARKED</TT
-> flag cleared.
-The list of messages found by the first <TT
-CLASS="LITERAL"
->SEARCH MARKED</TT
->
-command is fed into the <TT
-CLASS="LITERAL"
->STORE</TT
-> command, setting their
-marked flags.
-Then additional searches are performed, using <TT
-CLASS="LITERAL"
->SEARCH MARKED</TT
->
-or <TT
-CLASS="LITERAL"
->SEARCH UNMARKED</TT
->, with or without the
-<TT
-CLASS="LITERAL"
->NOT</TT
-> keyword, forming a complex query.</P
-><P
->The <TT
-CLASS="LITERAL"
->NOT</TT
-> keyword optional follows, and indicates that the
-following search criteria specification should be logically inverted.
-For example, if the search is for messages with the subject line containing
-<SPAN
-CLASS="QUOTE"
->"foo"</SPAN
->, the search will not be for messages whose subject line does
-not contain <SPAN
-CLASS="QUOTE"
->"foo"</SPAN
->.</P
-><P
->The available search criteria are:</P
-><P
-></P
-><DIV
-CLASS="VARIABLELIST"
-><DL
-><DT
->REPLIED</DT
-><DD
-><P
->Search for messages that have the <TT
-CLASS="LITERAL"
->REPLIED</TT
-> flag set.</P
-></DD
-><DT
->DELETED</DT
-><DD
-><P
->Search for messages that have the <TT
-CLASS="LITERAL"
->DELETED</TT
-> flag set.</P
-></DD
-><DT
->DRAFT</DT
-><DD
-><P
->Search for messages that have the <TT
-CLASS="LITERAL"
->DRAFT</TT
-> flag set.</P
-></DD
-><DT
->SEEN</DT
-><DD
-><P
->Search for messages that have the <TT
-CLASS="LITERAL"
->SEEN</TT
-> flag set.</P
-></DD
-><DT
->FROM <TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
-></DT
-><DD
-><P
->Search for messages that have <TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
->
-in their <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->From:</TT
->"</SPAN
-> header.</P
-></DD
-><DT
->TO <TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
-></DT
-><DD
-><P
->Search for messages that have <TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
->
-in their <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->To:</TT
->"</SPAN
-> header.</P
-></DD
-><DT
->CC <TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
-></DT
-><DD
-><P
->Search for messages that have <TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
->
-in their <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->Cc:</TT
->"</SPAN
-> header.</P
-></DD
-><DT
->BCC <TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
-></DT
-><DD
-><P
->Search for messages that have <TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
->
-in their <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->Bcc:</TT
->"</SPAN
-> header.</P
-></DD
-><DT
->SUBJECT <TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
-></DT
-><DD
-><P
->Search for messages that have <TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
->
-in their <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="LITERAL"
->Subject:</TT
->"</SPAN
-> header.</P
-></DD
-><DT
->HEADER <TT
-CLASS="REPLACEABLE"
-><I
->header</I
-></TT
->
-<TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
-></DT
-><DD
-><P
->Search for messages that have <TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
->
-in their <SPAN
-CLASS="QUOTE"
->"<TT
-CLASS="REPLACEABLE"
-><I
->header</I
-></TT
->"</SPAN
-> (without the
-colon) header.</P
-></DD
-><DT
->BODY <TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
-></DT
-><DD
-><P
->Search for messages that have <TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
->
-in their content.</P
-></DD
-><DT
->TEXT <TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
-></DT
-><DD
-><P
->Search for messages that have <TT
-CLASS="REPLACEABLE"
-><I
->string</I
-></TT
->
-in their content or headers.</P
-></DD
-><DT
->BEFORE <TT
-CLASS="REPLACEABLE"
-><I
->mm-ddd-yyyy</I
-></TT
-></DT
-><DD
-><P
->Search for messages whose <TT
-CLASS="LITERAL"
->INTERNALDATE</TT
->
-is earlier than <TT
-CLASS="REPLACEABLE"
-><I
->mm-ddd-yyyy</I
-></TT
->.</P
-></DD
-><DT
->ON <TT
-CLASS="REPLACEABLE"
-><I
->mm-ddd-yyyy</I
-></TT
-></DT
-><DD
-><P
->Search for messages whose <TT
-CLASS="LITERAL"
->INTERNALDATE</TT
->
-is <TT
-CLASS="REPLACEABLE"
-><I
->mm-ddd-yyyy</I
-></TT
->.</P
-></DD
-><DT
->SINCE <TT
-CLASS="REPLACEABLE"
-><I
->mm-ddd-yyyy</I
-></TT
-></DT
-><DD
-><P
->Search for messages whose <TT
-CLASS="LITERAL"
->INTERNALDATE</TT
->
-is on or after <TT
-CLASS="REPLACEABLE"
-><I
->mm-ddd-yyyy</I
-></TT
->.</P
-></DD
-><DT
->SENTBEFORE <TT
-CLASS="REPLACEABLE"
-><I
->mm-ddd-yyyy</I
-></TT
-></DT
-><DD
-><P
->Search for messages whose <TT
-CLASS="LITERAL"
->Date:</TT
-> header
-is prior to <TT
-CLASS="REPLACEABLE"
-><I
->mm-ddd-yyyy</I
-></TT
->.</P
-></DD
-><DT
->SENTON <TT
-CLASS="REPLACEABLE"
-><I
->mm-ddd-yyyy</I
-></TT
-></DT
-><DD
-><P
->Search for messages whose <TT
-CLASS="LITERAL"
->Date:</TT
->
-header reads <TT
-CLASS="REPLACEABLE"
-><I
->mm-ddd-yyyy</I
-></TT
->.</P
-></DD
-><DT
->SENTSINCE <TT
-CLASS="REPLACEABLE"
-><I
->mm-ddd-yyyy</I
-></TT
-></DT
-><DD
-><P
->Search for messages whose <TT
-CLASS="LITERAL"
->Date:</TT
-> header
-reads on or after <TT
-CLASS="REPLACEABLE"
-><I
->mm-ddd-yyyy</I
-></TT
->.</P
-></DD
-><DT
->LARGER <TT
-CLASS="REPLACEABLE"
-><I
->n</I
-></TT
-></DT
-><DD
-><P
->Search for messages whose estimated size is more than
-<TT
-CLASS="REPLACEABLE"
-><I
->n</I
-></TT
-> bytes.</P
-></DD
-><DT
->SMALLER <TT
-CLASS="REPLACEABLE"
-><I
->n</I
-></TT
-></DT
-><DD
-><P
->Search for messages whose estimated size is less than
-<TT
-CLASS="REPLACEABLE"
-><I
->n</I
-></TT
-> bytes.</P
-></DD
-></DL
-></DIV
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
->All text strings above use the UTF-8 character set.
-For header or content searches, the search string must be converted to the
-header's (MIME-encoded) or content's character set.  Searching should be
-case insensitive.</P
-><P
->Date-based searches specify months by their short English names.</P
-></TD
-></TR
-></TABLE
-></DIV
-><P
->The server's <TT
-CLASS="LITERAL"
->* SEARCH</TT
-> reply enumerates messages found
-by the search.
-For extremely large folders, the server may send multiple
-<TT
-CLASS="LITERAL"
->* SEARCH</TT
-> replies in order to keep line lengths under the
-maximum.
-No
-<TT
-CLASS="LITERAL"
->* SEARCH</TT
-> replies are sent when no messages are found
-by the search criteria.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="x13547.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="x13789.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->Copying and moving messages</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="smap1.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->Logging off</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>Searching messages</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1"/>
+  <link rel="prev" href="smapcopymovemessages.html" title="Copying and moving messages"/>
+  <link rel="next" href="smaplogout.html" title="Logging off"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">Searching
+        messages</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="smapcopymovemessages.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        Appendix&#160;A.&#160;Simple Mail Access Protocol, Version
+        1</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="smaplogout.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="section" lang="en" xml:lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title"><a id="search" shape="rect" name="search"> </a>Searching messages</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="literallayout">
+      <p><br clear="none"/>
+      C:&#160;SEARCH&#160;MARKED&#160;NOT&#160;TO&#160;"nobody@example.com"<br clear="none"/>
+
+      S:&#160;*&#160;SEARCH&#160;1&#160;3-5&#160;7<br clear="none"/>
+      S:&#160;+OK&#160;Messages&#160;searched<br clear="none"/>
+      C:&#160;SEARCH&#160;1-5,15-20&#160;LARGER&#160;10000<br clear="none"/>
+
+      S:&#160;*&#160;SEARCH&#160;1&#160;3-5&#160;17<br clear="none"/>
+      S:&#160;+OK&#160;Messages&#160;searched<br clear="none"/></p>
+    </div>
+
+    <p>The <code class="literal">SEARCH</code> command instructs
+    the server to search messages in the currently open folder. The
+    next whitespace delimited word specifies the set of messages to
+    search. The remaining words specify the search criteria. The
+    set of messages to search is specified in one of four ways:</p>
+
+    <div class="variablelist">
+      <dl>
+        <dt><span class="term">MARKED</span></dt>
+
+        <dd>
+          <p>Search only the messages that have the <code class="literal">MARKED</code> flag already set.</p>
+        </dd>
+
+        <dt><span class="term">UNMARKED</span></dt>
+
+        <dd>
+          <p>Search only the messages that do not have the
+          <code class="literal">MARKED</code> flag set.</p>
+        </dd>
+
+        <dt><span class="term">ALL</span></dt>
+
+        <dd>
+          <p>Search all messages.</p>
+        </dd>
+
+        <dt><span class="term"><em class="replaceable"><code>range</code></em></span></dt>
+
+        <dd>
+          <p><em class="replaceable"><code>range</code></em> is a
+          comma-separated range of message numbers to search.
+          Consecutive message numbers may be given as <em class="replaceable"><code>A</code></em>-<em class="replaceable"><code>B</code></em>, indicating messages A
+          through B, inclusive.</p>
+        </dd>
+      </dl>
+    </div>
+
+    <p>Each <code class="literal">SEARCH</code> command specifies a
+    single search criteria. Simple criterias are combined to form
+    more complicated searches by using a series of <code class="literal">SEARCH</code> and <code class="literal">STORE</code>
+    commands. First, all messages have their <code class="literal">MARKED</code> flag cleared. The list of messages
+    found by the first <code class="literal">SEARCH MARKED</code>
+    command is fed into the <code class="literal">STORE</code>
+    command, setting their marked flags. Then additional searches
+    are performed, using <code class="literal">SEARCH MARKED</code>
+    or <code class="literal">SEARCH UNMARKED</code>, with or
+    without the <code class="literal">NOT</code> keyword, forming a
+    complex query.</p>
+
+    <p>The <code class="literal">NOT</code> keyword optional
+    follows, and indicates that the following search criteria
+    specification should be logically inverted. For example, if the
+    search is for messages with the subject line containing
+    &#8220;<span class="quote">foo</span>&#8221;, the search will
+    not be for messages whose subject line does not contain
+    &#8220;<span class="quote">foo</span>&#8221;.</p>
+
+    <p>The available search criteria are:</p>
+
+    <div class="variablelist">
+      <dl>
+        <dt><span class="term">REPLIED</span></dt>
+
+        <dd>
+          <p>Search for messages that have the <code class="literal">REPLIED</code> flag set.</p>
+        </dd>
+
+        <dt><span class="term">DELETED</span></dt>
+
+        <dd>
+          <p>Search for messages that have the <code class="literal">DELETED</code> flag set.</p>
+        </dd>
+
+        <dt><span class="term">DRAFT</span></dt>
+
+        <dd>
+          <p>Search for messages that have the <code class="literal">DRAFT</code> flag set.</p>
+        </dd>
+
+        <dt><span class="term">SEEN</span></dt>
+
+        <dd>
+          <p>Search for messages that have the <code class="literal">SEEN</code> flag set.</p>
+        </dd>
+
+        <dt><span class="term">FROM <em class="replaceable"><code>string</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages that have <em class="replaceable"><code>string</code></em> in their
+          &#8220;<span class="quote"><code class="literal">From:</code></span>&#8221; header.</p>
+        </dd>
+
+        <dt><span class="term">TO <em class="replaceable"><code>string</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages that have <em class="replaceable"><code>string</code></em> in their
+          &#8220;<span class="quote"><code class="literal">To:</code></span>&#8221; header.</p>
+        </dd>
+
+        <dt><span class="term">CC <em class="replaceable"><code>string</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages that have <em class="replaceable"><code>string</code></em> in their
+          &#8220;<span class="quote"><code class="literal">Cc:</code></span>&#8221; header.</p>
+        </dd>
+
+        <dt><span class="term">BCC <em class="replaceable"><code>string</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages that have <em class="replaceable"><code>string</code></em> in their
+          &#8220;<span class="quote"><code class="literal">Bcc:</code></span>&#8221; header.</p>
+        </dd>
+
+        <dt><span class="term">SUBJECT <em class="replaceable"><code>string</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages that have <em class="replaceable"><code>string</code></em> in their
+          &#8220;<span class="quote"><code class="literal">Subject:</code></span>&#8221; header.</p>
+        </dd>
+
+        <dt><span class="term">HEADER <em class="replaceable"><code>header</code></em> <em class="replaceable"><code>string</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages that have <em class="replaceable"><code>string</code></em> in their
+          &#8220;<span class="quote"><em class="replaceable"><code>header</code></em></span>&#8221;
+          (without the colon) header.</p>
+        </dd>
+
+        <dt><span class="term">BODY <em class="replaceable"><code>string</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages that have <em class="replaceable"><code>string</code></em> in their
+          content.</p>
+        </dd>
+
+        <dt><span class="term">TEXT <em class="replaceable"><code>string</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages that have <em class="replaceable"><code>string</code></em> in their content
+          or headers.</p>
+        </dd>
+
+        <dt><span class="term">BEFORE <em class="replaceable"><code>mm-ddd-yyyy</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages whose <code class="literal">INTERNALDATE</code> is earlier than <em class="replaceable"><code>mm-ddd-yyyy</code></em>.</p>
+        </dd>
+
+        <dt><span class="term">ON <em class="replaceable"><code>mm-ddd-yyyy</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages whose <code class="literal">INTERNALDATE</code> is <em class="replaceable"><code>mm-ddd-yyyy</code></em>.</p>
+        </dd>
+
+        <dt><span class="term">SINCE <em class="replaceable"><code>mm-ddd-yyyy</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages whose <code class="literal">INTERNALDATE</code> is on or after <em class="replaceable"><code>mm-ddd-yyyy</code></em>.</p>
+        </dd>
+
+        <dt><span class="term">SENTBEFORE <em class="replaceable"><code>mm-ddd-yyyy</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages whose <code class="literal">Date:</code> header is prior to <em class="replaceable"><code>mm-ddd-yyyy</code></em>.</p>
+        </dd>
+
+        <dt><span class="term">SENTON <em class="replaceable"><code>mm-ddd-yyyy</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages whose <code class="literal">Date:</code> header reads <em class="replaceable"><code>mm-ddd-yyyy</code></em>.</p>
+        </dd>
+
+        <dt><span class="term">SENTSINCE <em class="replaceable"><code>mm-ddd-yyyy</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages whose <code class="literal">Date:</code> header reads on or after
+          <em class="replaceable"><code>mm-ddd-yyyy</code></em>.</p>
+        </dd>
+
+        <dt><span class="term">LARGER <em class="replaceable"><code>n</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages whose estimated size is more than
+          <em class="replaceable"><code>n</code></em> bytes.</p>
+        </dd>
+
+        <dt><span class="term">SMALLER <em class="replaceable"><code>n</code></em></span></dt>
+
+        <dd>
+          <p>Search for messages whose estimated size is less than
+          <em class="replaceable"><code>n</code></em> bytes.</p>
+        </dd>
+      </dl>
+    </div>
+
+    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <h3 class="title">Note</h3>
+
+      <p>All text strings above use the UTF-8 character set. For
+      header or content searches, the search string must be
+      converted to the header's (MIME-encoded) or content's
+      character set. Searching should be case insensitive.</p>
+
+      <p>Date-based searches specify months by their short English
+      names.</p>
+    </div>
+
+    <p>The server's <code class="literal">* SEARCH</code> reply
+    enumerates messages found by the search. For extremely large
+    folders, the server may send multiple <code class="literal">*
+    SEARCH</code> replies in order to keep line lengths under the
+    maximum. No <code class="literal">* SEARCH</code> replies are
+    sent when no messages are found by the search criteria.</p>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="smapcopymovemessages.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="smap1.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="smaplogout.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">Copying and moving messages&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;Logging off</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

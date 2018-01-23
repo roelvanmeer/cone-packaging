@@ -1,321 +1,151 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><link rel='stylesheet' type='text/css' href='manpage.css'>
-<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
-<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
-<!-- distribution information. -->
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
-<link rel="icon" href="icon.gif" type="image/gif" />
-<TITLE
->mail::folder::clone</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
-REL="HOME"
-HREF="book.html"><LINK
-REL="UP"
-TITLE="mail::folder Native API reference"
-HREF="libmail-folder.html"><LINK
-REL="PREVIOUS"
-TITLE="mail::folder::addMessage"
-HREF="folder-addmessage.html"><LINK
-REL="NEXT"
-TITLE="mail::folder::create"
-HREF="folder-create.html"></HEAD
-><BODY
-CLASS="REFENTRY"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="NAVHEADER"
-><TABLE
-SUMMARY="Header navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TH
-COLSPAN="3"
-ALIGN="center"
-></TH
-></TR
-><TR
-><TD
-WIDTH="10%"
-ALIGN="left"
-VALIGN="bottom"
-><A
-HREF="folder-addmessage.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="80%"
-ALIGN="center"
-VALIGN="bottom"
-></TD
-><TD
-WIDTH="10%"
-ALIGN="right"
-VALIGN="bottom"
-><A
-HREF="folder-create.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-></TABLE
-><HR
-ALIGN="LEFT"
-WIDTH="100%"></DIV
-><H1
-><A
-NAME="FOLDER-CLONE"
-></A
->mail::folder::clone</H1
-><DIV
-CLASS="REFNAMEDIV"
-><A
-NAME="AEN9319"
-></A
-><H2
->Name</H2
->mail::folder::clone&nbsp;--&nbsp;Clone a <CODE
-CLASS="STRUCTNAME"
->mail::folder</CODE
-> object</DIV
-><DIV
-CLASS="REFSYNOPSISDIV"
-><A
-NAME="AEN9323"
-></A
-><H2
->Synopsis</H2
-><P
-CLASS="LITERALLAYOUT"
->mail::folder&nbsp;*folder;<br>
-<br>
-mail::folder&nbsp;*folderCopy;</P
-><DIV
-CLASS="FUNCSYNOPSIS"
-><P
-></P
-><A
-NAME="AEN9325"
-></A
-><P
-><CODE
-><CODE
-CLASS="FUNCDEF"
->folderCopy=folder-&#62;<TT
-CLASS="FUNCTION"
->clone</TT
-></CODE
->(void);</CODE
-></P
-><P
-></P
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN9330"
-></A
-><H2
->USAGE</H2
-><P
->This function creates a new
-<CODE
-CLASS="STRUCTNAME"
->mail::folder</CODE
-> object that refers to the
-same mail folder, in every possible way.
-This is usually used by some callback methods that receive pointers to
-<CODE
-CLASS="STRUCTNAME"
->mail::folder</CODE
->s, and wish to preserve them for the
-main application (<CODE
-CLASS="STRUCTNAME"
->mail::folder</CODE
->s received by
-callback methods are usually destroyed as soon as the callback method
-terminates).</P
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN9336"
-></A
-><H2
->RETURN CODES AND CALLBACKS</H2
-><DIV
-CLASS="NOTE"
-><P
-></P
-><TABLE
-CLASS="NOTE"
-WIDTH="100%"
-BORDER="0"
-><TR
-><TD
-WIDTH="25"
-ALIGN="CENTER"
-VALIGN="TOP"
->NOTE:</TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-><P
-><CODE
-CLASS="STRUCTNAME"
->mail::folder</CODE
->s are linked to their corresponding
-<CODE
-CLASS="STRUCTNAME"
->mail::account</CODE
->s.
-A <CODE
-CLASS="STRUCTNAME"
->mail::folder</CODE
-> created by one
-<CODE
-CLASS="STRUCTNAME"
->mail::account</CODE
-> may not be used with a different
-<CODE
-CLASS="STRUCTNAME"
->mail::folder</CODE
->.
-All
-<CODE
-CLASS="STRUCTNAME"
->mail::folder</CODE
->s created by
-a <CODE
-CLASS="STRUCTNAME"
->mail::account</CODE
-> are invalidated when
-this <CODE
-CLASS="STRUCTNAME"
->mail::account</CODE
-> object is destroyed.
-Note that the
-<CODE
-CLASS="STRUCTNAME"
->mail::folder</CODE
-> objects are not automatically destroyed;
-the application is still responsible for destroying any remaining
-<CODE
-CLASS="STRUCTNAME"
->mail::folder</CODE
->s, after their
-a <CODE
-CLASS="STRUCTNAME"
->mail::account</CODE
-> is destroyed.</P
-></TD
-></TR
-></TABLE
-></DIV
-></DIV
-><DIV
-CLASS="REFSECT1"
-><A
-NAME="AEN9351"
-></A
-><H2
->SEE ALSO</H2
-><P
-><A
-HREF="folder-createsubfolder.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::folder::createSubFolder</SPAN
->(3x)</SPAN
-></A
->,
-<A
-HREF="folder-readsubfolders.html"
-><SPAN
-CLASS="CITEREFENTRY"
-><SPAN
-CLASS="REFENTRYTITLE"
->mail::folder::readSubFolders</SPAN
->(3x)</SPAN
-></A
->.</P
-></DIV
-><DIV
-CLASS="NAVFOOTER"
-><HR
-ALIGN="LEFT"
-WIDTH="100%"><TABLE
-SUMMARY="Footer navigation table"
-WIDTH="100%"
-BORDER="0"
-CELLPADDING="0"
-CELLSPACING="0"
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
-><A
-HREF="folder-addmessage.html"
-ACCESSKEY="P"
->&#60;&#60;&#60; Previous</A
-></TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="book.html"
-ACCESSKEY="H"
->Home</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
-><A
-HREF="folder-create.html"
-ACCESSKEY="N"
->Next &#62;&#62;&#62;</A
-></TD
-></TR
-><TR
-><TD
-WIDTH="33%"
-ALIGN="left"
-VALIGN="top"
->mail::folder::addMessage</TD
-><TD
-WIDTH="34%"
-ALIGN="center"
-VALIGN="top"
-><A
-HREF="libmail-folder.html"
-ACCESSKEY="U"
->Up</A
-></TD
-><TD
-WIDTH="33%"
-ALIGN="right"
-VALIGN="top"
->mail::folder::create</TD
-></TR
-></TABLE
-></DIV
-></BODY
-></HTML
->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii"/>
+
+  <title>mail::folder::clone</title>
+  <link rel="stylesheet" href="style.css" type="text/css"/>
+  
+  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="up" href="libmail-folder.html" title="mail::folder Native API reference"/>
+  <link rel="prev" href="folder-addmessage.html" title="mail::folder::addMessage"/>
+  <link rel="next" href="folder-create.html" title="mail::folder::create"/>
+  <link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/>
+  <meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/>
+  <link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+
+Copyright 2002 - 2007 Double Precision, Inc.  See COPYING for distribution
+information.
+
+-->
+</head>
+
+<body>
+  <div class="navheader">
+    <table width="100%" summary="Navigation header">
+      <tr>
+        <th colspan="3" align="center" rowspan="1">
+        mail::folder::clone</th>
+      </tr>
+
+      <tr>
+        <td width="20%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="folder-addmessage.html" shape="rect">Prev</a>&#160;</td>
+
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="structname">mail::folder</span> Native API
+        reference</th>
+
+        <td width="20%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="folder-create.html" shape="rect">Next</a></td>
+      </tr>
+    </table>
+    <hr/>
+  </div>
+
+  <div class="refentry" lang="en" xml:lang="en">
+    <a id="folder-clone" shape="rect" name="folder-clone"> </a>
+
+    <div class="titlepage"/>
+
+    <div class="refnamediv">
+      <h2>Name</h2>
+
+      <p>mail::folder::clone &#8212; Clone a <span class="structname">mail::folder</span> object</p>
+    </div>
+
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+
+      <div class="literallayout">
+        <p><br clear="none"/>
+        mail::folder&#160;*folder;<br clear="none"/>
+        <br clear="none"/>
+        mail::folder&#160;*folderCopy;<br clear="none"/></p>
+      </div>
+
+      <div class="funcsynopsis">
+        <table border="0" summary="Function synopsis" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="1" colspan="1"><code class="funcdef">folderCopy=folder-&gt;<b class="fsfunc">clone</b>(</code></td>
+
+            <td rowspan="1" colspan="1"><code>void)</code>;</td>
+
+            <td rowspan="1" colspan="1">&#160;</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id442830" shape="rect" name="id442830"> </a>
+
+      <h2>USAGE</h2>
+
+      <p>This function creates a new <span class="structname">mail::folder</span> object that refers to the
+      same mail folder, in every possible way. This is usually used
+      by some callback methods that receive pointers to
+      <span class="structname">mail::folder</span>s, and wish to
+      preserve them for the main application (<span class="structname">mail::folder</span>s received by callback
+      methods are usually destroyed as soon as the callback method
+      terminates).</p>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id442853" shape="rect" name="id442853"> </a>
+
+      <h2>RETURN CODES AND CALLBACKS</h2>
+
+      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <h3 class="title">Note</h3>
+
+        <p><span class="structname">mail::folder</span>s are linked
+        to their corresponding <span class="structname">mail::account</span>s. A <span class="structname">mail::folder</span> created by one
+        <span class="structname">mail::account</span> may not be
+        used with a different <span class="structname">mail::folder</span>. All <span class="structname">mail::folder</span>s created by a <span class="structname">mail::account</span> are invalidated when this
+        <span class="structname">mail::account</span> object is
+        destroyed. Note that the <span class="structname">mail::folder</span> objects are not
+        automatically destroyed; the application is still
+        responsible for destroying any remaining <span class="structname">mail::folder</span>s, after their a
+        <span class="structname">mail::account</span> is
+        destroyed.</p>
+      </div>
+    </div>
+
+    <div class="refsect1" lang="en" xml:lang="en">
+      <a id="id442919" shape="rect" name="id442919"> </a>
+
+      <h2>SEE ALSO</h2>
+
+      <p><a href="folder-createsubfolder.html" title="mail::folder::createSubFolder" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::createSubFolder</span>(3x)</span></a>,
+      <a href="folder-readsubfolders.html" title="mail::folder::readSubFolders" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::readSubFolders</span>(3x)</span></a>.</p>
+    </div>
+  </div>
+
+  <div class="navfooter">
+    <hr/>
+
+    <table width="100%" summary="Navigation footer">
+      <tr>
+        <td width="40%" align="left" rowspan="1" colspan="1">
+        <a accesskey="p" href="folder-addmessage.html" shape="rect">Prev</a>&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="u" href="libmail-folder.html" shape="rect">Up</a></td>
+
+        <td width="40%" align="right" rowspan="1" colspan="1">
+        &#160;<a accesskey="n" href="folder-create.html" shape="rect">Next</a></td>
+      </tr>
+
+      <tr>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::folder::addMessage&#160;</td>
+
+        <td width="20%" align="center" rowspan="1" colspan="1">
+        <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
+
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;mail::folder::create</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

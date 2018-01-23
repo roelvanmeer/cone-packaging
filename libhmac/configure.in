@@ -3,11 +3,15 @@ dnl
 dnl Copyright 1998 - 2001 Double Precision, Inc.  See COPYING for
 dnl distribution information.
 
-dnl $Id: configure.in,v 1.12 2005/02/21 03:18:30 mrsam Exp $
+dnl $Id: configure.in,v 1.13 2007/02/26 04:13:40 mrsam Exp $
 
-AC_INIT(hmac.h)
+AC_INIT(libhmac, 1.00, [courier-users@lists.sourceforge.net])
 
-AM_INIT_AUTOMAKE(libhmac, 1.00, 0)
+>confdefs.h  # Kill PACKAGE_ macros
+
+AC_CONFIG_SRCDIR(hmac.h)
+AM_INIT_AUTOMAKE([foreign no-define])
+
 
 AM_CONFIG_HEADER(config.h)
 
