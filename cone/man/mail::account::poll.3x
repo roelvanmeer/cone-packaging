@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::account::poll
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::POLL" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::POLL" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::account::poll \- Wait for the next event
+mail::account::poll - Wait for the next event
 .SH "SYNOPSIS"
 .HP 20
 .BI "mail::account::poll(std::vector<mail::pollfd>\ &" "pollfds" ", int\ " "timeout" ");"
@@ -27,15 +27,15 @@ mail::account::poll \- Wait for the next event
 \fBmail::account::poll\fR
 is a C++ wrapper around the
 \fBpoll\fR(2)
-system call, that receives C++ objects as arguments, instead of an array count, and a pointer.
+system call, that receives C++ objects as arguments, instead of an array count, and a pointer\.
 .SH "RETURN CODES"
 .PP
 
 \fBmail::account::poll\fR
 returns the exit code from
-\fBpoll\fR(2).
+\fBpoll\fR(2)\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::process\fR(3x),
-\fBpoll\fR(2).
+\fBpoll\fR(2)\.

@@ -1,9 +1,11 @@
-# $Id: Makefile.am,v 1.15 2007/07/04 02:24:38 mrsam Exp $
+# $Id: Makefile.am,v 1.16 2007/11/05 05:11:29 mrsam Exp $
 #
-# Copyright 2002-2004, Double Precision Inc.
+# Copyright 2002-2007, Double Precision Inc.
 #
 # See COPYING for distribution information.
 #
+
+CONFIG_STATUS_DEPENDENCIES=../tcpd/couriertls.config
 
 noinst_LTLIBRARIES=libmail.la
 noinst_PROGRAMS=mailtool testsuite
@@ -123,7 +125,7 @@ mailtool_DEPENDENCIES=libmail.la \
 	../rfc2045/librfc2045.la \
 	../rfc822/librfc822.la ../rfc822/libencode.la \
 	../maildir/libmaildir.la \
-	@LIBCOURIERTLS@ ../tcpd/libcouriertls.dep \
+	@LIBCOURIERTLS@ \
 	../liblock/liblock.la ../unicode/libunicode.la \
 	../libhmac/libhmac.la ../md5/libmd5.la ../sha1/libsha1.la \
 	../numlib/libnumlib.la ../tcpd/libspipe.la ../soxwrap/libsoxwrap.a \
@@ -132,7 +134,7 @@ mailtool_DEPENDENCIES=libmail.la \
 mailtool_LDADD=libmail.la ../rfc2045/librfc2045.la \
 	../rfc822/librfc822.la ../rfc822/libencode.la \
 	../maildir/libmaildir.la \
-	@LIBCOURIERTLS@ `cat ../tcpd/libcouriertls.dep` \
+	@LIBCOURIERTLS@ \
 	../liblock/liblock.la ../unicode/libunicode.la \
 	../libhmac/libhmac.la ../md5/libmd5.la ../sha1/libsha1.la \
 	../numlib/libnumlib.la ../tcpd/libspipe.la ../soxwrap/libsoxwrap.a \
@@ -179,7 +181,7 @@ uninstall-includes:
 BUILT_SOURCES=libcouriertls.h
 DISTCLEANFILES=libcouriertls.h mimetypefiles.h
 
-libcouriertls.h: ../tcpd/libcouriertls.dep
+libcouriertls.h: ../tcpd/couriertls.config
 	cp /dev/null libcouriertls.h ; . ../tcpd/couriertls.config ; \
 		test "$$couriertls" != "" || exit 0 ; \
 		echo '#define HAVE_LIBCOURIERTLS 1' >libcouriertls.h

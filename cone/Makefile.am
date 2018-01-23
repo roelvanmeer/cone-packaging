@@ -1,10 +1,12 @@
-#$Id: Makefile.am,v 1.46 2007/07/22 01:13:37 mrsam Exp $
+#$Id: Makefile.am,v 1.47 2007/11/05 05:11:29 mrsam Exp $
 #
 # Copyright 2003-2007, Double Precision Inc.
 #
 # See COPYING for distribution information.
 #
 SUBDIRS=intl po
+
+CONFIG_STATUS_DEPENDENCIES = ../tcpd/couriertls.config
 
 noinst_PROGRAMS=cone leaf htmlparsertest pwtest
 noinst_SCRIPTS=cone.sh cone.dist
@@ -156,20 +158,21 @@ helpfile.H: config.status
 buildversion.H: config.status
 	echo '#define BUILDVERSION "@target_cpu@-@target_vendor@-@target_os@/'`date`'"' >buildversion.H
 
-cone_DEPENDENCIES=../tcpd/libtlsclient.a ../curses/libcurses.a \
+cone_DEPENDENCIES=../tcpd/libtlsclient.la ../curses/libcurses.a \
 	../gpglib/libgpg.la \
-	libmail.la libcouriertls.dep \
+	libmail.la \
 	dummyspellchecker.a ../soxwrap/libsoxwrap.a \
 	@LDAPSEARCH@ \
 	../soxwrap/soxlibs.dep @SPELL_OBJ@
 
-cone_LDADD=@SPELL_OBJ@ $(SPELL_LIB) ../tcpd/libtlsclient.a \
+cone_LDADD=@SPELL_OBJ@ $(SPELL_LIB) ../tcpd/libtlsclient.la \
 	../curses/libcurses.a ../gpglib/libgpg.la libmail.la \
 	@LDAPSEARCH@ \
 	../soxwrap/libsoxwrap.a \
 	`cat ../curses/curseslib ../soxwrap/soxlibs.dep` \
-	 @LIBINTL@ @XMLLIBS@ `cat libcouriertls.dep` \
-	`cat ../maildir/maildir.libdeps`
+	 @LIBINTL@ @XMLLIBS@ \
+	`cat ../maildir/maildir.libdeps` \
+	`. ../tcpd/couriertls.config; echo $$cryptlibs`
 
 leaf_DEPENDENCIES=../curses/libcurses.a dummyspellchecker.a @SPELL_OBJ@ \
 	../libmail/objectmonitor.o \
@@ -182,15 +185,11 @@ leaf_LDADD=@SPELL_OBJ@ $(SPELL_LIB) ../curses/libcurses.a \
 	 @LIBINTL@ ../unicode/libunicode.la
 
 pwtest_SOURCES=pwtest.c
-pwtest_DEPENDENCIES=../tcpd/libtlsclient.a libcouriertls.dep \
+pwtest_DEPENDENCIES=../tcpd/libtlsclient.la \
 	../md5/libmd5.la
-pwtest_LDADD=../tcpd/libtlsclient.a `cat libcouriertls.dep` ../md5/libmd5.la
+pwtest_LDADD=../tcpd/libtlsclient.la ../md5/libmd5.la \
+	`. ../tcpd/couriertls.config; echo $$cryptlibs`
 pwtest_LDFLAGS=-static
-
-libcouriertls.dep: ../tcpd/libcouriertls.dep
-	cp /dev/null libcouriertls.dep ; . ../tcpd/couriertls.config ; \
-		test "$$couriertls" != "" || exit 0 ; \
-		cp ../tcpd/libcouriertls.dep libcouriertls.dep
 
 dummyspellchecker.a: $(ALLSPELLOBJ)
 	rm -f dummyspellchecker.a
@@ -278,6 +277,6 @@ colors_inc.h: colors.txt mkcolors.pl
 
 CLEANFILES=dummyspellchecker.a libmail.la man.timestamp \
           helpfile.H help.txt
-DISTCLEANFILES=libcouriertls.dep sgmltimestamp buildversion.H
+DISTCLEANFILES=sgmltimestamp buildversion.H
 
 ACLOCAL_AMFLAGS = -I m4

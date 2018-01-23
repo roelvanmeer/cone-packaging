@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::folder::hasMessages
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::FOLDER::HASMES" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::FOLDER::HASMES" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::folder::hasMessages \- Determine if the folder is capable of storing messages
+mail::folder::hasMessages - Determine if the folder is capable of storing messages
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,61 +25,63 @@ mail::folder::hasMessages \- Determine if the folder is capable of storing messa
 
 
 
-#include <libmail/mail.H>
+#include <libmail/mail\.H>
 
 mail::folder *folder;
 .fi
 .RE
 .HP 30
-.BI "bool flag=folder\->hasMessages(void);"
+.BI "bool flag=folder->hasMessages(void);"
 .SH "USAGE"
 .PP
-Some folders contain messages. Other folders contain other folder (subfolders). Some IMAP servers are capable of creating dual\-purpose folders that contain both messages and other subfolders. The
+Some folders contain messages\. Other folders contain other folder (subfolders)\. Some IMAP servers are capable of creating dual\-purpose folders that contain both messages and other subfolders\. The
 \fBhasMessages\fR
 method indicates whether
 \fIfolder\fR
-is capable of storing messages.
+is capable of storing messages\.
 .SH "RETURN CODES"
 .PP
 A
 true
 result indicates that
 \fIfolder\fR
-is capable of storing messages. It may not necessarily mean that
+is capable of storing messages\. It may not necessarily mean that
 \fIfolder\fR
-actually contains any messages, it might very well be an empty folder.
+actually contains any messages, it might very well be an empty folder\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
 POP3
 folders return a
 true, even though application cannot directly add messages to
 POP3
-folders. Applications should interpret a
+folders\. Applications should interpret a
 true
 result to mean that:
+.sp
 .RS 4
 \h'-04'\(bu\h'+03'
 \fBmail::folder::open\fR(3x)
-may be used to open this folder.
+may be used to open this folder\.
 .RE
+.sp
 .RS 4
-\h'-04'\(bu\h'+03'This folder's
+\h'-04'\(bu\h'+03'This folder\'s
 \fBmail::folder::addmessage\fR(3x)
 method, and using this folder as a parameter to
 \fBmail::folder::copyMessagesTo\fR(3x)
-will probably work.
+will probably work\.
 .RE
 .PP
 Applications should interpret a
 false
-result as a guarantee that neither of the above procedures will work.
+result as a guarantee that neither of the above procedures will work\.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::folder::hasSubFolders\fR(3x).
+\fBmail::folder::hasSubFolders\fR(3x)\.

@@ -105,6 +105,13 @@ Installing Cone
            authority list in the directory filename. --without-certdb does
            not install Cone's trusted SSL certificate authority list.
 
+   --with-gnutls
+
+           Select the GnuTLS library even if the OpenSSL library is also
+           installed. The configure script automatically selects whichever
+           one is available. The OpenSSL library is selected if both are
+           present. Use this option to override and select GnuTLS instead.
+
    --with-devel
 
            Install LibMAIL , the mail library used by Cone to access and

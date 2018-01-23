@@ -3,26 +3,26 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::mimestruct
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::MIMESTRUCT" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::MIMESTRUCT" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::mimestruct \- Message MIME structure
+mail::mimestruct - Message MIME structure
 .SH "SYNOPSIS"
 .sp
 .RS 4
 .nf
-#include <libmail/structure.H>
+#include <libmail/structure\.H>
 
 mail::mimestruct myMimeStructure;
 .fi
@@ -31,15 +31,15 @@ mail::mimestruct myMimeStructure;
 .PP
 
 mail::mimestruct
-describes the contents of a MIME\-formatted message. A multipart MIME message has a single
+describes the contents of a MIME\-formatted message\. A multipart MIME message has a single
 mail::mimestruct
 object that represents the entire message, and series of
 mail::mimestruct
-objects, one object for each part of the multipart MIME section. The additional
+objects, one object for each part of the multipart MIME section\. The additional
 mail::mimestruct
 objects are maintained by their parent
 mail::mimestruct
-object, and are automatically destroyed when the parent object is destroyed.
+object, and are automatically destroyed when the parent object is destroyed\.
 .PP
 A
 mail::mimestruct
@@ -47,95 +47,95 @@ contains the following fields:
 .PP
 std::string mime_id
 .RS 4
-An opaque identifier of this MIME section. Applications should handle this field as an opaque text string, which is interpreted by
+An opaque identifier of this MIME section\. Applications should handle this field as an opaque text string, which is interpreted by
 
 
 
 LibMAIL
-\&. A same message, for example, may have different
+\. A same message, for example, may have different
 mime_id
-fields if it comes from an IMAP account, or a POP3 account.
+fields if it comes from an IMAP account, or a POP3 account\.
 .sp
 The only exception to this rule is that the
 mail::mimestruct
 object that represents the entire message will have an empty string in
-mime_id.
+mime_id\.
 .RE
 .PP
 std::string type
 .RS 4
-The major MIME type, in uppercase.
+The major MIME type, in uppercase\.
 .RE
 .PP
 std::string subtype
 .RS 4
-The minor MIME subtype, in uppercase.
+The minor MIME subtype, in uppercase\.
 .RE
 .PP
 mail::mimestruct::parameterList type_parameters
 .RS 4
 Additional attributes parsed from the
 Content\-Type:
-MIME header. See below for more information.
+MIME header\. See below for more information\.
 .RE
 .PP
 std::string content_id
 .RS 4
 The contents of the MIME
 Content\-ID:
-header.
+header\.
 .RE
 .PP
 std::string content_description
 .RS 4
 The contents of the MIME
 Content\-Description:
-header.
+header\.
 .RE
 .PP
 std::string content_transfer_encoding
 .RS 4
-The MIME encoding method.
+The MIME encoding method\.
 .RE
 .PP
 std::string content_md5
 .RS 4
 The contents of the MIME
 Content\-MD5:
-header.
+header\.
 .RE
 .PP
 std::string content_language
 .RS 4
 The contents of the MIME
 Content\-Language:
-header.
+header\.
 .RE
 .PP
 std::string content_disposition
 .RS 4
 The MIME
 Content\-Disposition:
-header, either "INLINE", or "ATTACHMENT" (or blank, if the header is not present).
+header, either "INLINE", or "ATTACHMENT" (or blank, if the header is not present)\.
 .RE
 .PP
 size_t content_size
 .RS 4
-The approximate size of the MIME section, in bytes (for non\-multipart MIME sections only).
+The approximate size of the MIME section, in bytes (for non\-multipart MIME sections only)\.
 .RE
 .PP
 size_t content_lines
 .RS 4
 Approximate number of lines in a
 TEXT
-MIME section.
+MIME section\.
 .RE
 .PP
 mail::mimestruct::parameterList content_disposition_parameters
 .RS 4
 Additional attributes parsed from the
 Content\-Disposition:
-MIME header. See below for more information.
+MIME header\. See below for more information\.
 .RE
 .SS "mail::mimestruct methods"
 .PP
@@ -147,7 +147,7 @@ if
 type
 is "MESSAGE" and
 subtype
-is "RFC822".
+is "RFC822"\.
 .RE
 .PP
 bool flag=messagerfc822()
@@ -158,7 +158,7 @@ if
 type
 is "MESSAGE" and
 subtype
-is "RFC822".
+is "RFC822"\.
 .RE
 .PP
 mail::envelope &myEnvelope=getEnvelope()
@@ -167,22 +167,22 @@ Returns a
 mail::envelope
 object, if
 \fBmessagerfc822\fR
-returns true.
+returns true\.
 .RE
 .PP
 size_t numChildren=getNumChildren()
 .RS 4
-Returns the number of MIME sections in a multipart MIME message.
+Returns the number of MIME sections in a multipart MIME message\.
 .RE
 .PP
 mail::mimestruct *child=getChild(size_t childNum)
 .RS 4
 Returns a pointer to a
 mail::mimestruct
-object that represents a single part of a multipart MIME message.
+object that represents a single part of a multipart MIME message\.
 \fIchildNum\fR
 must be between zero and one less than the number of parts returned by
-\fBgetNumChildren\fR.
+\fBgetNumChildren\fR\.
 .RE
 .PP
 mail::mimestruct *parent=getParent()
@@ -191,16 +191,16 @@ Returns a pointer to a
 mail::mimestruct
 object that represents the parent of this MIME part, if this
 mail::mimestruct
-object represents a single part of a multipart MIME message. Returns NULL if this
+object represents a single part of a multipart MIME message\. Returns NULL if this
 mail::mimestruct
-object represents the entire MIME message.
+object represents the entire MIME message\.
 .RE
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
 mail::mimestruct
@@ -219,9 +219,9 @@ should return a pointer to a
 mail::mimestruct
 object that represents the
 MESSAGE/RFC822
-message. However,
+message\. However,
 \fBgetNumChildren\fR
-may return 0 if the MIME message is corrupted.
+may return 0 if the MIME message is corrupted\.
 .SH "MAIL::MIMESTRUCT::PARAMETERLIST"
 .PP
 A
@@ -230,7 +230,7 @@ object holds parsed MIME attributes in the
 Content\-Type:
 and
 Content\-Disposition:
-headers. A
+headers\. A
 mail::mimestruct::parameterList
 object has the following methods:
 .PP
@@ -238,18 +238,18 @@ bool flag=exists(std::string name);
 .RS 4
 This method returns true if the attribute
 \fIname\fR
-exists.
+exists\.
 .RE
 .PP
 std::string str=get(std::string name, const struct unicode_info *info=NULL);
 .RS 4
 Returns the value of attribute
 \fIname\fR
-(uppercase). If
+(uppercase)\. If
 \fIinfo\fR
-is not NULL, the attribute's value is converted to the specified character set (if the attribute uses
+is not NULL, the attribute\'s value is converted to the specified character set (if the attribute uses
 \fIRFC 2231\fR\&[1]
-to specify its character set and language).
+to specify its character set and language)\.
 .RE
 .PP
 void set(std::string name, std::string value, std::string charset, std::string language);
@@ -257,13 +257,13 @@ void set(std::string name, std::string value, std::string charset, std::string l
 Set the attribute
 \fIname\fR
 to
-\fIvalue\fR. If
+\fIvalue\fR\. If
 \fIcharset\fR
 and/or
 \fIlanguage\fR
 are not empty strings,
-\fIname\fR's character set and language are indicated accordingly, as per
-\fIRFC 2231\fR\&[1].
+\fIname\fR\'s character set and language are indicated accordingly, as per
+\fIRFC 2231\fR\&[1]\.
 .RE
 .PP
 mail::mimestruct::parameterList::iterator begin(), end(); mail::mimestruct::parameterList::const_iterator begin() const, end() const;
@@ -272,22 +272,22 @@ The
 \fBbegin\fR
 and
 \fBend\fR
-functions return the equivalent iterators over the individual name/value MIME attributes. The iterators point to a
+functions return the equivalent iterators over the individual name/value MIME attributes\. The iterators point to a
 std::pair<std::string, std::string>;
 first
 is the attribute name (uppercased), and
 second
-is its value. (The underlying structure being iterated is a
-std::map<std::string, std::string>.)
+is its value\. (The underlying structure being iterated is a
+std::map<std::string, std::string>\.)
 .RE
 .SH "SEE ALSO"
 .PP
 
 \fBmail::envelope\fR(3x),
-\fBmail::account::readMessageAttributes\fR(3x).
-.SH "REFERENCES"
+\fBmail::account::readMessageAttributes\fR(3x)\.
+.SH "NOTES"
 .IP " 1." 4
 RFC 2231
 .RS 4
-\%http://www.rfc\-editor.org/rfc/rfc2231.txt
+\%http://www.rfc-editor.org/rfc/rfc2231.txt
 .RE

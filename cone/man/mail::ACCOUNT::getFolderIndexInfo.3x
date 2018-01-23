@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::ACCOUNT::getFolderIndexInfo
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::GETFO" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::GETFO" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::ACCOUNT::getFolderIndexInfo \- Return message status
+mail::ACCOUNT::getFolderIndexInfo - Return message status
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,81 +25,81 @@ mail::ACCOUNT::getFolderIndexInfo \- Return message status
 
 
 
-#include <libmail/sync.H>
+#include <libmail/sync\.H>
 
 mail::ACCOUNT *mail;
 .fi
 .RE
 .HP 51
-.BI "mail::messageInfo msgInfo=mail\->getFolderIndexSize(size_t\ " "messageNum" ");"
+.BI "mail::messageInfo msgInfo=mail->getFolderIndexSize(size_t\ " "messageNum" ");"
 .SH "USAGE"
 .PP
 
 \fBmail::ACCOUNT::getFolderIndexInfo\fR
-returns a structure that contains a message's unique identifier, and the message's current status flags.
+returns a structure that contains a message\'s unique identifier, and the message\'s current status flags\.
 
 
 
 \fImessageNum\fR
 must be between zero and one less than the return code from
-\fBmail::ACCOUNT::getFolderIndexSize\fR(3x).
+\fBmail::ACCOUNT::getFolderIndexSize\fR(3x)\.
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 This function returns an object with the following fields:
 .PP
 std::string uid
 .RS 4
-A unique ID that's assigned to each message in a folder. Applications should consider this unique ID as a completely opaque string, with no particular interpretation. The only assumption that applications may make is that no two messages will ever have the same uid in the same folder. A message copied to another folder will receive a different unique ID in the destination folder (the copy in the original folder is not affected).
+A unique ID that\'s assigned to each message in a folder\. Applications should consider this unique ID as a completely opaque string, with no particular interpretation\. The only assumption that applications may make is that no two messages will ever have the same uid in the same folder\. A message copied to another folder will receive a different unique ID in the destination folder (the copy in the original folder is not affected)\.
 .RE
 .PP
 bool draft
 .RS 4
-This is a draft message.
+This is a draft message\.
 .RE
 .PP
 bool replied
 .RS 4
-A reply was previously sent to this message.
+A reply was previously sent to this message\.
 .RE
 .PP
 bool marked
 .RS 4
-This message is marked for further processing.
+This message is marked for further processing\.
 .RE
 .PP
 bool deleted
 .RS 4
-This message is marked for deletion.
+This message is marked for deletion\.
 .RE
 .PP
 bool unread
 .RS 4
-The contents of this message have not been read.
+The contents of this message have not been read\.
 .RE
 .PP
 bool recent
 .RS 4
-This is the first time the folder was opened with this message in the folder.
+This is the first time the folder was opened with this message in the folder\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
-This message flag is considered obsolete, and should only be used by IMAP\-based clients that absolutely need this flag. Applications that absolutely require this flag should be evaluated for correctness, since the IMAP specification indicates that this flag's setting is not defined in situations where the same mail folder is opened by multiple applications at the same time. Since this is nearly always the case, it seems that this flag's usability is rather limited. For this reason, the
+Note
+This message flag is considered obsolete, and should only be used by IMAP\-based clients that absolutely need this flag\. Applications that absolutely require this flag should be evaluated for correctness, since the IMAP specification indicates that this flag\'s setting is not defined in situations where the same mail folder is opened by multiple applications at the same time\. Since this is nearly always the case, it seems that this flag\'s usability is rather limited\. For this reason, the
 recent
 flag was not reimplemented in
 SMAP, and will not be set for accounts that are accessed via
-SMAP.
+SMAP\.
 .RE
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
-Not all types of mail accounts support every message status flag. Unsupported message status flags will be automatically emulated, where possible. Specifically, POP3 mail accounts do not have a concept of message status flags at all. Each time a POP3 mail account is opened, the status of all messages in the POP3 account will be reset to the default status (unread message, no other flags set).
+Not all types of mail accounts support every message status flag\. Unsupported message status flags will be automatically emulated, where possible\. Specifically, POP3 mail accounts do not have a concept of message status flags at all\. Each time a POP3 mail account is opened, the status of all messages in the POP3 account will be reset to the default status (unread message, no other flags set)\.
 .SH "SEE ALSO"
 .PP
 
@@ -107,4 +107,4 @@ Not all types of mail accounts support every message status flag. Unsupported me
 \fBmail::ACCOUNT::getFolderKeywordInfo\fR(3x),
 \fBmail::ACCOUNT::getMessageEnvelope\fR(3x),
 \fBmail::ACCOUNT::getMessageStructure\fR(3x),
-\fBmail::ACCOUNT::getMyRights\fR(3x).
+\fBmail::ACCOUNT::getMyRights\fR(3x)\.

@@ -107,7 +107,6 @@ am__untar = @am__untar@
 bindir = @bindir@
 build_alias = @build_alias@
 builddir = @builddir@
-c_rehash = @c_rehash@
 certdb = @certdb@
 datadir = @datadir@
 datarootdir = @datarootdir@

@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::account::getFolderIndexSize
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::GETFO" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::GETFO" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::account::getFolderIndexSize \- Return number of messages in the current folder
+mail::account::getFolderIndexSize - Return number of messages in the current folder
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,28 +25,28 @@ mail::account::getFolderIndexSize \- Return number of messages in the current fo
 
 
 
-#include <libmail/mail.H>
+#include <libmail/mail\.H>
 
 
 mail::account *account;
 .fi
 .RE
 .HP 41
-.BI "size_t count=account\->getFolderIndexSize(void);"
+.BI "size_t count=account->getFolderIndexSize(void);"
 .SH "USAGE"
 .PP
 
 \fBmail::account::getFolderIndexSize\fR
-returns the number of messages in the currently open folder. Messages in the folder are numbered starting with zero, and ending with one less than the number returned by this function.
+returns the number of messages in the currently open folder\. Messages in the folder are numbered starting with zero, and ending with one less than the number returned by this function\.
 .PP
 For example, if
 \fBmail::account::getFolderIndexSize\fR
-returns 5 it means that there are five messages in the folder, numbered 0 through 4.
+returns 5 it means that there are five messages in the folder, numbered 0 through 4\.
 .SH "RETURN CODES"
 .PP
-This function always succeeds, returning the message count.
+This function always succeeds, returning the message count\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::readMessageAttributes\fR(3x),
-\fBmail::account::getFolderIndexInfo\fR(3x).
+\fBmail::account::getFolderIndexInfo\fR(3x)\.

@@ -143,7 +143,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id453918" shape="rect" name="id453918"> </a>
+      <a id="id469858" shape="rect" name="id469858"> </a>
 
       <h2>USAGE</h2>
 
@@ -204,7 +204,7 @@ information.
       closed.</p>
 
       <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id454009" shape="rect" name="id454009"> </a>
+        <a id="id469948" shape="rect" name="id469948"> </a>
 
         <h3>Folder Updates</h3>
 
@@ -216,11 +216,11 @@ information.
         folder's contents are reflected by invoking <em class="parameter"><code>folderCallback</code></em>'s methods.</p>
 
         <p><em class="parameter"><code>folderCallback</code></em>'s
-        methods are usually invoked by <a href="mail-removemessages.html" title="mail::account::removeMessages" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::removeMessages</span>(3x)</span></a>,
-        <a href="mail-updatefolderindexinfo.html" title="mail::account::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexInfo</span>(3x)</span></a>,
-        <a href="mail-savefolderindexinfo.html" title="mail::account::saveFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::saveFolderIndexInfo</span>(3x)</span></a>,
-        <a href="mail-updatefolderindexflags.html" title="mail::account::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexFlags</span>(3x)</span></a>,
-        and <a href="mail-checknewmail.html" title="mail::account::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::checkNewMail</span>(3x)</span></a>,
+        methods are usually invoked by <a class="link" href="mail-removemessages.html" title="mail::account::removeMessages" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::removeMessages</span>(3x)</span></a>,
+        <a class="link" href="mail-updatefolderindexinfo.html" title="mail::account::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexInfo</span>(3x)</span></a>,
+        <a class="link" href="mail-savefolderindexinfo.html" title="mail::account::saveFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::saveFolderIndexInfo</span>(3x)</span></a>,
+        <a class="link" href="mail-updatefolderindexflags.html" title="mail::account::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexFlags</span>(3x)</span></a>,
+        and <a class="link" href="mail-checknewmail.html" title="mail::account::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::checkNewMail</span>(3x)</span></a>,
         however the application must be prepared to handle any
         <em class="parameter"><code>folderCallback</code></em>'s
         method to be invoked at any time. Most mail servers reserve
@@ -242,7 +242,7 @@ information.
             <dd>
               <p>This method is invoked whenever new messages are
               added to the currently open folder. The application
-              should use <a href="mail-getfolderindexsize.html" title="mail::account::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexSize</span>(3x)</span></a>
+              should use <a class="link" href="mail-getfolderindexsize.html" title="mail::account::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexSize</span>(3x)</span></a>
               to determine how many messages now exist in the
               current folder, and use the number of messages the
               application already knows about to determine how many
@@ -250,7 +250,7 @@ information.
 
               <p>Example: The application already knows that the
               folder has three messages. After <code class="function">mail::callback::folder::newMessages</code>
-              is invoked <a href="mail-getfolderindexsize.html" title="mail::account::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexSize</span>(3x)</span></a>
+              is invoked <a class="link" href="mail-getfolderindexsize.html" title="mail::account::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexSize</span>(3x)</span></a>
               now claims there are five messages in the folder.
               This means that the last two messages in the folder
               are new messages.</p>
@@ -288,7 +288,7 @@ information.
 
             <dd>
               <p>The flags of the indicated message have changed.
-              The application should use <a href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>
+              The application should use <a class="link" href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>
               to read the current message flags.</p>
             </dd>
           </dl>
@@ -296,7 +296,7 @@ information.
       </div>
 
       <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id454282" shape="rect" name="id454282"> </a>
+        <a id="id470222" shape="rect" name="id470222"> </a>
 
         <h3>Snapshots</h3>
 
@@ -307,7 +307,7 @@ information.
         time to open a folder. Folder index snapshots speed up the
         process of opening a folder which was recently opened. At
         this time, folder index snapshots are implemented with
-        <code class="literal">NNTP</code>, <code class="literal">pop3</code>, and <a href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect"><code class="literal">SMAP</code></a>-based
+        <code class="literal">NNTP</code>, <code class="literal">pop3</code>, and <a class="link" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect"><code class="literal">SMAP</code></a>-based
         accounts. Attempts to use folder index snapshots with other
         account types will be quietly ignored.</p>
 
@@ -330,9 +330,9 @@ information.
         invoked periodically as long as the folder remains open.
         <code class="function">mail::callback::folder::saveSnapshot</code>
         receives an opaque identifier, <em class="parameter"><code>snapshotId</code></em>. <code class="function">mail::callback::folder::saveSnapshot</code>
-        should use <a href="account-getfolderindexsize.html" title="mail::ACCOUNT::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexSize</span>(3x)</span></a>
+        should use <a class="link" href="account-getfolderindexsize.html" title="mail::ACCOUNT::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexSize</span>(3x)</span></a>
         to obtain the number of messages in the folder, then use
-        <a href="account-getfolderindexinfo.html" title="mail::ACCOUNT::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>
+        <a class="link" href="account-getfolderindexinfo.html" title="mail::ACCOUNT::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>
         to save each message's folder index entry, alongside with
         the <em class="parameter"><code>snapshotId</code></em>, and
         the total number of messages.</p>
@@ -412,7 +412,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id454791" shape="rect" name="id454791"> </a>
+      <a id="id470731" shape="rect" name="id470731"> </a>
 
       <h2>RETURN CODES AND CALLBACKS</h2>
 
@@ -434,18 +434,18 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id454883" shape="rect" name="id454883"> </a>
+      <a id="id470823" shape="rect" name="id470823"> </a>
 
       <h2>SEE ALSO</h2>
 
-      <p><a href="folder-readfolderinfo.html" title="mail::folder::readFolderInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::readFolderInfo</span>(3x)</span></a>,
-      <a href="mail-checknewmail.html" title="mail::account::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::checkNewMail</span>(3x)</span></a>,
-      <a href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>,
-      <a href="mail-getfolderindexsize.html" title="mail::account::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexSize</span>(3x)</span></a>,
-      <a href="mail-removemessages.html" title="mail::account::removeMessages" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::removeMessages</span>(3x)</span></a>,
-      <a href="mail-savefolderindexinfo.html" title="mail::account::saveFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::saveFolderIndexInfo</span>(3x)</span></a>,
-      <a href="mail-updatefolderindexflags.html" title="mail::account::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexFlags</span>(3x)</span></a>,
-      <a href="mail-updatefolderindexinfo.html" title="mail::account::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexInfo</span>(3x)</span></a>.</p>
+      <p><a class="link" href="folder-readfolderinfo.html" title="mail::folder::readFolderInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::readFolderInfo</span>(3x)</span></a>,
+      <a class="link" href="mail-checknewmail.html" title="mail::account::checkNewMail" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::checkNewMail</span>(3x)</span></a>,
+      <a class="link" href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>,
+      <a class="link" href="mail-getfolderindexsize.html" title="mail::account::getFolderIndexSize" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexSize</span>(3x)</span></a>,
+      <a class="link" href="mail-removemessages.html" title="mail::account::removeMessages" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::removeMessages</span>(3x)</span></a>,
+      <a class="link" href="mail-savefolderindexinfo.html" title="mail::account::saveFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::saveFolderIndexInfo</span>(3x)</span></a>,
+      <a class="link" href="mail-updatefolderindexflags.html" title="mail::account::updateFolderIndexFlags" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexFlags</span>(3x)</span></a>,
+      <a class="link" href="mail-updatefolderindexinfo.html" title="mail::account::updateFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::updateFolderIndexInfo</span>(3x)</span></a>.</p>
     </div>
   </div>
 

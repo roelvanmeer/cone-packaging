@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::ACCOUNT::getFolderFromPath
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::GETFO" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::GETFO" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::ACCOUNT::getFolderFromPath \- A direct short\-cut to a folder
+mail::ACCOUNT::getFolderFromPath - A direct short-cut to a folder
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,30 +25,30 @@ mail::ACCOUNT::getFolderFromPath \- A direct short\-cut to a folder
 
 
 
-#include <libmail/sync.H>
+#include <libmail/sync\.H>
 
 mail::ACCOUNT *mail;
 mail::folder *folder;
 
 std::string folderPath=folder\->getPath();
 
-\&...
+\.\.\.
 .fi
 .RE
 .HP 40
-.BI "mail::folder *f=mail\->getFolderFromPath(std::string\ " "folderPath" ");"
+.BI "mail::folder *f=mail->getFolderFromPath(std::string\ " "folderPath" ");"
 .SH "USAGE"
 .PP
 This function is the
 mail::ACCOUNT
 equivalent of
-\fBmail::account::findFolder\fR(3x). See the description of this function for more information.
+\fBmail::account::findFolder\fR(3x)\. See the description of this function for more information\.
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 This function returns a NULL pointer if it cannot allocate memory for the new
 mail::folder
-object.
+object\.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::account::findFolder\fR(3x).
+\fBmail::account::findFolder\fR(3x)\.

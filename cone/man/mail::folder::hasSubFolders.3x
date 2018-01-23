@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::folder::hasSubFolders
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::FOLDER::HASSUB" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::FOLDER::HASSUB" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::folder::hasSubFolders \- Determine if the folder is capable of storing other folders
+mail::folder::hasSubFolders - Determine if the folder is capable of storing other folders
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,36 +25,36 @@ mail::folder::hasSubFolders \- Determine if the folder is capable of storing oth
 
 
 
-#include <libmail/mail.H>
+#include <libmail/mail\.H>
 
 mail::folder *folder;
 .fi
 .RE
 .HP 32
-.BI "bool flag=folder\->hasSubFolders(void);"
+.BI "bool flag=folder->hasSubFolders(void);"
 .SH "USAGE"
 .PP
-Some folders contain messages. Other folders contain other folder (subfolders). Some IMAP servers are capable of creating dual\-purpose folders that contain both messages and other subfolders. The
+Some folders contain messages\. Other folders contain other folder (subfolders)\. Some IMAP servers are capable of creating dual\-purpose folders that contain both messages and other subfolders\. The
 \fBhasSubFolders\fR
 indicates whether
 \fIfolder\fR
-is capable of containing other folders (subfolders).
+is capable of containing other folders (subfolders)\.
 .SH "RETURN CODES"
 .PP
 A
 true
 result indicates that
 \fIfolder\fR
-is capable of storing other folders. It may not necessarily mean that
+is capable of storing other folders\. It may not necessarily mean that
 \fIfolder\fR
-actually contains any folders, it might very well be an empty folder.
+actually contains any folders, it might very well be an empty folder\.
 .PP
 Applications should interpret a
 true
 result to mean that the
 \fBmail::folder::createSubFolder\fR(3x)
-function may be used to create subfolders.
+function may be used to create subfolders\.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::folder::hasMessages\fR(3x).
+\fBmail::folder::hasMessages\fR(3x)\.

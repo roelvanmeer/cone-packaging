@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::folder::addMessage
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::FOLDER::ADDMES" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::FOLDER::ADDMES" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::folder::addMessage \- Add a message to a folder
+mail::folder::addMessage - Add a message to a folder
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,7 +25,7 @@ mail::folder::addMessage \- Add a message to a folder
 
 
 
-#include <libmail/mail.H>
+#include <libmail/mail\.H>
 
 
 class myCallback : public mail::callback {
@@ -38,7 +38,7 @@ public:
 .sp
 .RS 4
 .nf
-#include <libmail/addmessage.H>
+#include <libmail/addmessage\.H>
 
 mail::folder *folder;
 time_t messageDate;
@@ -47,7 +47,7 @@ std::string messageBody;
 .fi
 .RE
 .HP 41
-.BI "mail::addMessage *msg=folder\->addMessage(myCallback\ &" "callback" ");"
+.BI "mail::addMessage *msg=folder->addMessage(myCallback\ &" "callback" ");"
 .sp
 .RS 4
 .nf
@@ -63,74 +63,74 @@ else
 .RE
 .SH "USAGE"
 .PP
-This method begins the process of manually adding a message to a folder. The
+This method begins the process of manually adding a message to a folder\. The
 \fBmail::folder::addMessage\fR
 method returns a pointer to a
 mail::addMessage
-object. The application should then define the contents of the message by invoking the object's
+object\. The application should then define the contents of the message by invoking the object\'s
 \fBsaveMessageContents\fR
-method. The entire contents of the message does not have to be specified at once. A large message may be defined by repeatedly invoking
-\fBsaveMessageContents\fR, consecutively, each time specifying the next portion of the message's contents.
+method\. The entire contents of the message does not have to be specified at once\. A large message may be defined by repeatedly invoking
+\fBsaveMessageContents\fR, consecutively, each time specifying the next portion of the message\'s contents\.
 .PP
 After the contents of the message are defined by invoking
 \fBsaveMessageContents\fR, the application must invoke the
 \fBgo\fR
-method in order to actually place the new message into the folder. The application may abort the process at any time by invoking the
+method in order to actually place the new message into the folder\. The application may abort the process at any time by invoking the
 \fBfail\fR
-method, and specifying the error message.
+method, and specifying the error message\.
 .PP
 The application does not need to explicitly destroy the
 mail::addMessage
 object, the object is automatically destroyed by
 \fBgo\fR
 or
-\fBfail\fR.
+\fBfail\fR\.
 .PP
 The application may set the following
 mail::addMessage
 fields prior to invoking
-\fBgo\fR. If not initialized, the following fields will be set to their default values.
+\fBgo\fR\. If not initialized, the following fields will be set to their default values\.
 .PP
 messageDate
 .RS 4
-The message's timestamp, as retrieved by
+The message\'s timestamp, as retrieved by
 mail::account::ARRIVALDATE
 parameter to
-\fBmail::account::readMessageAttributes\fR(3x)().
+\fBmail::account::readMessageAttributes\fR(3x)()\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
-This timestamp does not necessarily have to be the same as the timestamp in the message's
+Note
+This timestamp does not necessarily have to be the same as the timestamp in the message\'s
 Date:
-header.
+header\.
 .RE
 .PP
 messageInfo
 .RS 4
 The message flags, as returned by
-\fBmail::account::getFolderIndexInfo\fR(3x)().
+\fBmail::account::getFolderIndexInfo\fR(3x)()\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 The contents of
-uid, the message's unique ID, are ignored, only the message flags in
+uid, the message\'s unique ID, are ignored, only the message flags in
 messageInfo
-are read. The message gets automatically assigned a new unique ID when it gets added to the folder.
+are read\. The message gets automatically assigned a new unique ID when it gets added to the folder\.
 .RE
-.SH "MIME\-BASED MESSAGE COMPOSITION"
+.SH "MIME-BASED MESSAGE COMPOSITION"
 .sp
 .RS 4
 .nf
 
 
 
-#include <libmail/mail.H>
+#include <libmail/mail\.H>
 
 
 class myCallback : public mail::callback {
@@ -147,49 +147,49 @@ mail::addMessage *msg;
 .fi
 .ft
 .HP 21
-.BI "msg\->assembleContent(size_t\ &" "handleRet" ", const\ mail::Attachment\ &" "attachment" ", mail::callback\ &" "cb" ");"
+.BI "msg->assembleContent(size_t\ &" "handleRet" ", const\ mail::Attachment\ &" "attachment" ", mail::callback\ &" "cb" ");"
 .HP 27
-.BI "msg\->assembleMessageRfc822(size_t\ &" "handleRet" ", std::string\ " "headers" ", size_t\ " "handle" ", mail::callback\ &" "cb" ");"
+.BI "msg->assembleMessageRfc822(size_t\ &" "handleRet" ", std::string\ " "headers" ", size_t\ " "handle" ", mail::callback\ &" "cb" ");"
 .HP 23
-.BI "msg\->assembleMultipart(size_t\ &" "handleRet" ", std::string\ " "headers" ", const\ std::vector<size_t>\ " "parts" ", std::string\ " "multipart_type" ", const\ mail::mimestruct::parameterList\ &" "options" ", mail::callback\ &" "cb" ");"
+.BI "msg->assembleMultipart(size_t\ &" "handleRet" ", std::string\ " "headers" ", const\ std::vector<size_t>\ " "parts" ", std::string\ " "multipart_type" ", const\ mail::mimestruct::parameterList\ &" "options" ", mail::callback\ &" "cb" ");"
 .HP 24
-.BI "bool flag=msg\->assemble(void);"
+.BI "bool flag=msg->assemble(void);"
 .PP
-This is an alternative way of adding a message to a folder by assembling it one MIME section at a time. First, use the
+This is an alternative way of adding a message to a folder by assembling it one MIME section at a time\. First, use the
 \fBassembleContent\fR
 method to specify the individual content\-containing (non\-multipart
-and non\-message/rfc822) MIME sections. Before
+and non\-message/rfc822) MIME sections\. Before
 \fBassembleContent\fR
 invokes
-\fIcb\fR's
+\fIcb\fR\'s
 \fBsuccess\fR
 method it will initialize
 \fIhandleRet\fR
 with a
 \(lqhandle\(rq
-that refers to this MIME section. Use these MIME section handles to assemble the individual MIME sections into
+that refers to this MIME section\. Use these MIME section handles to assemble the individual MIME sections into
 multipart
 and
 message/rfc822
-MIME sections. The
+MIME sections\. The
 \fBassembleMessageRfc822\fR
 and
 \fBassembleMultipart\fR
-methods also create a new MIME section handle, which refers to the assembled MIME section, in the same way. Those handles themselves may also be re\-assembled into higher\-level
+methods also create a new MIME section handle, which refers to the assembled MIME section, in the same way\. Those handles themselves may also be re\-assembled into higher\-level
 multipart
 or
 message/rfc822
-MIME sections.
+MIME sections\.
 .PP
 Finally, after defining the topmost MIME section, use
 \fBassemble\fR
-to assemble the entire message. If
+to assemble the entire message\. If
 \fBassemble\fR
 returns
 true, use the
 \fBgo\fR
 (or the
-\fBfail\fR) method. If
+\fBfail\fR) method\. If
 \fBassemble\fR
 returns
 false, an
@@ -197,60 +197,60 @@ errno\-related error has occured; the application should call
 \fBfail\fR
 to report it, and clean up the
 mail::addMessage
-object.
+object\.
 .PP
 The
 \fBassembleContent\fR
 method receives a
 \fBmail::Attachment\fR(3x)
-object.
+object\.
 .PP
 The second parameter to
 \fBassembleMessageRfc822\fR
 are the MIME headers of the
 message/rfc822
-attachment. The MIME headers must be terminated by a single newline character, and include the
+attachment\. The MIME headers must be terminated by a single newline character, and include the
 Content\-Type
-header. In nearly all situations, this parameter should be set to the fixed string
+header\. In nearly all situations, this parameter should be set to the fixed string
 \(lqContent\-Type: message/rfc822\en\(rq
-(note the trailing newline). The third parameter is the handle of the attachment's top\-level MIME section.
+(note the trailing newline)\. The third parameter is the handle of the attachment\'s top\-level MIME section\.
 .PP
 The second parameter to
 \fBassembleMultipart\fR
-is a string containing MIME headers for the multipart MIME section. These headers should
+is a string containing MIME headers for the multipart MIME section\. These headers should
 \fInot\fR
 include the
 Content\-Type
-header. The
+header\. The
 Content\-Type
-header for the multipart section will be generated internally. If there are any extra headers, they must have a single trailing newline character. Most situations do not need extra headers, so this parameter should be an empty string,
-\(lq\(rq.
+header for the multipart section will be generated internally\. If there are any extra headers, they must have a single trailing newline character\. Most situations do not need extra headers, so this parameter should be an empty string,
+\(lq\(rq\.
 .PP
 The third parameter to
 \fBassembleMultipart\fR
-is the vector of previously\-defined handles of each MIME section that's to be assembled into a multipart MIME section. The fourth parameter is the actual MIME type of this section, usually
+is the vector of previously\-defined handles of each MIME section that\'s to be assembled into a multipart MIME section\. The fourth parameter is the actual MIME type of this section, usually
 \(lqmultipart/mixed\(rq
 or
 \(lqmultipart/alternative\(rq
 (any
 \(lqmultipart\(rq
-type is allowed). The fifth parameter is optional, and specifies the MIME content type parameter list (the parameter list should not include the
+type is allowed)\. The fifth parameter is optional, and specifies the MIME content type parameter list (the parameter list should not include the
 \(lqboundary\(rq
-parameter, because it's taken care of automatically by this function).
+parameter, because it\'s taken care of automatically by this function)\.
 .PP
 The last parameter to
 \fBassembleContent\fR,
 \fBassembleMessageRfc822\fR, or
 \fBassembleMultipart\fR
-is the callback object. The callback object's
+is the callback object\. The callback object\'s
 \fBsuccess\fR
-method will be invoked when the MIME section has been assembled. The
+method will be invoked when the MIME section has been assembled\. The
 \fBfail\fR
-method will be invoked if an error occured. Depending on the type of the folder the message is being added to, the MIME section may be assembled immediately (in which case
+method will be invoked if an error occured\. Depending on the type of the folder the message is being added to, the MIME section may be assembled immediately (in which case
 \fBsuccess\fR
 or
 \fBfail\fR
-gets called right before the function terminates) or the function will terminate immediately, and the callback function will be called at a later time.
+gets called right before the function terminates) or the function will terminate immediately, and the callback function will be called at a later time\.
 .SS "COPYING ATTACHMENTS FROM OTHER MESSAGES"
 .sp
 .ft B
@@ -259,34 +259,34 @@ mail::addMessage *msg;
 .fi
 .ft
 .HP 30
-.BI "msg\->assembleImportAttachment(size_t\ &" "handleRet" ", mail::account\ *" "acct" ", std::string\ " "uid" ", const\ mail::mimestruct\ &" "attachment" ", mail::callback\ &" "cb" ");"
+.BI "msg->assembleImportAttachment(size_t\ &" "handleRet" ", mail::account\ *" "acct" ", std::string\ " "uid" ", const\ mail::mimestruct\ &" "attachment" ", mail::callback\ &" "cb" ");"
 .HP 35
-.BI "msg\->assembleRemoveAttachmentsFrom(size_t\ &" "handleRet" ", mail::account\ *" "acct" ", std::string\ " "uid" ", const\ mail::mimestruct\ &" "attachment" ", const\ std::set\ &" "mimeIdList" ", mail::callback\ &" "cb" ");"
+.BI "msg->assembleRemoveAttachmentsFrom(size_t\ &" "handleRet" ", mail::account\ *" "acct" ", std::string\ " "uid" ", const\ mail::mimestruct\ &" "attachment" ", const\ std::set\ &" "mimeIdList" ", mail::callback\ &" "cb" ");"
 .PP
 The
 \fBassembleImportAttachment\fR
-function assembles a new MIME section by copying an existing MIME section from another message.
+function assembles a new MIME section by copying an existing MIME section from another message\.
 \fIacct\fR
-specifies an open mail account, with an open mail folder.
+specifies an open mail account, with an open mail folder\.
 \fIuid\fR
 specifies the unique identifier of a message in
-\fIacct\fR's open folder, which can be obtained from
-\fBmail::account::getFolderIndexInfo\fR(3x).
+\fIacct\fR\'s open folder, which can be obtained from
+\fBmail::account::getFolderIndexInfo\fR(3x)\.
 \fIattachment\fR
 specifies which attachment in message
 \fIuid\fR
-should be copied.
+should be copied\.
 \fIattachment\fR
 must be obtained using
 mail::account::MIMESTRUCTURE
 with
-\fBmail::account::readMessageAttributes\fR(3x).
+\fBmail::account::readMessageAttributes\fR(3x)\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
 \fIacct\fR
@@ -294,108 +294,108 @@ can refer to any open mail account or folder, and does not have to be the same f
 .PP
 
 \fIattachment\fR
-may refer to a multipart, or a non\-multipart MIME section. An
+may refer to a multipart, or a non\-multipart MIME section\. An
 \fIattachment\fR
-referring to a multipart MIME section imports the entire multipart MIME section, and all subsections it contains.
+referring to a multipart MIME section imports the entire multipart MIME section, and all subsections it contains\.
 \fBassembleRemoveAttachmentsFrom\fR
-also copies the entire multipart MIME section, but skips selected MIME subsections. Any subsection appearing in
+also copies the entire multipart MIME section, but skips selected MIME subsections\. Any subsection appearing in
 \fImimeIdList\fR
-is not copied.
+is not copied\.
 \fImimeIdList\fR
 is a list of MIME section identifiers, obtained from
-\fBmail::mimestruct\fR(3x)'s
+\fBmail::mimestruct\fR(3x)\'s
 mime_id
-field.
+field\.
 .PP
 
 \fBassembleRemoveAttachmentsFrom\fR
 implements the
 \(lqRemove Attachments\(rq
-function in a typical mail client, which removes individual attachments from a message. To do that, set
+function in a typical mail client, which removes individual attachments from a message\. To do that, set
 \fIattachment\fR
 to the top\-level MIME section that refers to the entire message (literally the same object returned by
 \fBmail::account::readMessageAttributes\fR(3x)) and specify the attachments to remove in
-\fImimeIdList\fR. Use
+\fImimeIdList\fR\. Use
 \fBmail::folder::addMessage\fR(3x)
 to add the message to the same folder as the original message (this must be done before invoking
-\fBassembleRemoveAttachmentsFrom\fR, of course), then when that's done remove the original message.
+\fBassembleRemoveAttachmentsFrom\fR, of course), then when that\'s done remove the original message\.
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 
 \fBmail::addMessage::fail\fR
-automatically invokes the callback object's
+automatically invokes the callback object\'s
 \fBfail\fR
-method, prior to returning.
+method, prior to returning\.
 \fBmail::addMessage::go\fR
-automatically invokes the callback object's
+automatically invokes the callback object\'s
 \fBsuccess\fR
-method, when the message is added.
+method, when the message is added\.
 \fBmail::addMessage::go\fR
 will invoke
 \fBfail\fR
-if the message cannot be added to the folder, for some reason.
+if the message cannot be added to the folder, for some reason\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 The
 \fBmail::folder::addMessage\fR
 function returns a NULL pointer if the
 mail::addMessage
-object cannot be created. This does not necessarily indicate an out\-of\-memory condition. It is not possible to manually add messages to some types of folders. For example, messages cannot be manually added to POP3 folders, since this is not supported by the POP3 protocol.
+object cannot be created\. This does not necessarily indicate an out\-of\-memory condition\. It is not possible to manually add messages to some types of folders\. For example, messages cannot be manually added to POP3 folders, since this is not supported by the POP3 protocol\.
 .PP
-The callback object's
+The callback object\'s
 \fBfail\fR
-method gets invoked just prior to this function returning NULL, in these kinds of situations.
+method gets invoked just prior to this function returning NULL, in these kinds of situations\.
 .PP
 The application must wait until
-\fIcallback\fR's
+\fIcallback\fR\'s
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked. The
+method is invoked\. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed. The
+method is invoked when this request is succesfully processed\. The
 \fBfail\fR
-method is invoked if this request cannot be processed. The application must not destroy
+method is invoked if this request cannot be processed\. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked.
+method is invoked\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
-\fIcallback\fR's
+\fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked. This indicates that the request was partially completed before the error was encountered.
+method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
 \fIfolder\fR
 does not necessarily have to be a
 mail::folder
-object that refers to the currently open folder. Any
+object that refers to the currently open folder\. Any
 mail::folder
 object from an active
 mail::account
-object may be used.
+object may be used\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::getFolderIndexInfo\fR(3x)(),
-\fBmail::account::readMessageAttributes\fR(3x)().
+\fBmail::account::readMessageAttributes\fR(3x)()\.

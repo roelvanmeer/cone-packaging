@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::folder::renameFolder
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::FOLDER::RENAME" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::FOLDER::RENAME" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::folder::renameFolder \- Rename a folder
+mail::folder::renameFolder - Rename a folder
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,7 +25,7 @@ mail::folder::renameFolder \- Rename a folder
 
 
 
-#include <libmail/mail.H>
+#include <libmail/mail\.H>
 
 
 class myCallback : public mail::callback {
@@ -52,50 +52,50 @@ mail::folder *folder;
 .fi
 .RE
 .HP 21
-.BI "folder\->renameFolder(const\ mail::folder\ *" "newParent" ", std::string\ " "name" ", myFolderCallback\ &" "folderCallback" ", myCallback\ &" "callback" ");"
+.BI "folder->renameFolder(const\ mail::folder\ *" "newParent" ", std::string\ " "name" ", myFolderCallback\ &" "folderCallback" ", myCallback\ &" "callback" ");"
 .SH "USAGE"
 .PP
-This function renames an existing folder.
+This function renames an existing folder\.
 \fIfolder\fR
 is an existing folder or a folder directory (see
 \fBmail::folder::createSubFolder\fR(3x)
-for more information on folders and folder directories).
-\fInewParent\fR, if not NULL, specifies the new parent folder directory. A NULL
+for more information on folders and folder directories)\.
+\fInewParent\fR, if not NULL, specifies the new parent folder directory\. A NULL
 \fInewParent\fR
-specifies that the folder should be be moved to the top level of the mail account's folder hierarchy.
+specifies that the folder should be be moved to the top level of the mail account\'s folder hierarchy\.
 .PP
 
 \fIname\fR
-specifies the new name of the folder, in the application's character set.
+specifies the new name of the folder, in the application\'s character set\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
-Some mail servers reserve certain characters which cannot be used in folder names. IMAP mail servers use a special character (usually "/" or ".") as a separator between names in a hierarchical folder path. The actual character varies from server to server. An attempt to create/rename a folder whose name includes a reserved character will fail. Different IMAP servers use different hierarchy separator characters. An attempt to create a folder may fail on one IMAP server even if another IMAP server can succesfully create a folder with the same name. This is, unfortunately, a design flaw in the IMAP protocol.
+Some mail servers reserve certain characters which cannot be used in folder names\. IMAP mail servers use a special character (usually "/" or "\.") as a separator between names in a hierarchical folder path\. The actual character varies from server to server\. An attempt to create/rename a folder whose name includes a reserved character will fail\. Different IMAP servers use different hierarchy separator characters\. An attempt to create a folder may fail on one IMAP server even if another IMAP server can succesfully create a folder with the same name\. This is, unfortunately, a design flaw in the IMAP protocol\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 Maildir folders created by are compatible and can be read by the
 \fICourier\-IMAP\fR\&[1]
-server. Names of maildir folders may contain any character, including the characters ":", "/", ".", "~", and ":". However, if the same folders are exported via IMAP, folders whose name includes these characters may not be readable by some IMAP clients. Even a
+server\. Names of maildir folders may contain any character, including the characters ":", "/", "\.", "~", and ":"\. However, if the same folders are exported via IMAP, folders whose name includes these characters may not be readable by some IMAP clients\. Even a
 
 
 
 LibMAIL
-application may not be able to read one of these folders via IMAP.
+application may not be able to read one of these folders via IMAP\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 Mbox mail folders created by
 
@@ -107,121 +107,121 @@ are mostly compatible and can be exported by IMAP servers that read mbox\-format
 
 
 LibMAIL
-and another application at the same time). Names of mbox folders can contain any character, including the characters "/", and "~". However if mbox folders are exported via IMAP, folders whose name includes these characters may not be readable by some IMAP clients.
+and another application at the same time)\. Names of mbox folders can contain any character, including the characters "/", and "~"\. However if mbox folders are exported via IMAP, folders whose name includes these characters may not be readable by some IMAP clients\.
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 The application must wait until
-\fIcallback\fR's
+\fIcallback\fR\'s
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked. The
+method is invoked\. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed. The
+method is invoked when this request is succesfully processed\. The
 \fBfail\fR
-method is invoked if this request cannot be processed. The application must not destroy
+method is invoked if this request cannot be processed\. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked.
+method is invoked\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
-\fIcallback\fR's
+\fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked. This indicates that the request was partially completed before the error was encountered.
+method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 The application must not destroy
 \fIfolderCallback\fR
-until this request fails or succeeds.
-\fIfolderCallback\fR's
+until this request fails or succeeds\.
+\fIfolderCallback\fR\'s
 \fBsuccess\fR
 method is invoked just before the
-\fIcallback\fR's
+\fIcallback\fR\'s
 \fBsuccess\fR
-method.
+method\.
 .PP
 If the folder was succesfully renamed, the
-\fBfolderCallback.success\fR
+\fBfolderCallback\.success\fR
 method receives a vector that contains a single pointer to a
 mail::folder
-object that refers to this folder under its new name. The existing
+object that refers to this folder under its new name\. The existing
 mail::folder
-object is no longer valid, and should be destroyed. The new
+object is no longer valid, and should be destroyed\. The new
 mail::folder
-object should now be used to refer to this folder.
+object should now be used to refer to this folder\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
 mail::folders are linked to their corresponding
-mail::accounts. A
+mail::accounts\. A
 mail::folder
 created by one
 mail::account
 may not be used with a different
-mail::folder. All
+mail::folder\. All
 mail::folders created by a
 mail::account
 are invalidated when this
 mail::account
-object is destroyed. Note that the
+object is destroyed\. Note that the
 mail::folder
 objects are not automatically destroyed; the application is still responsible for destroying any remaining
 mail::folders, after their a
 mail::account
-is destroyed.
+is destroyed\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 The
-\fBfolderCallback.success\fR
+\fBfolderCallback\.success\fR
 method receives a (possibly empty) vector of pointers to
 mail::folder
-objects. These objects will be destroyed when
-\fBfolderCallback.success\fR
-terminates. The application must use
+objects\. These objects will be destroyed when
+\fBfolderCallback\.success\fR
+terminates\. The application must use
 \fBmail::folder::clone\fR(3x)
 to create copies of
 mail::folder
-objects it wants to use later.
+objects it wants to use later\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 Both
-\fBfolderCallback.success\fR
+\fBfolderCallback\.success\fR
 and
-\fBmyCallback.success\fR
-method will be invoked if this request succeeds.
-\fBfolderCallback.success\fR
+\fBmyCallback\.success\fR
+method will be invoked if this request succeeds\.
+\fBfolderCallback\.success\fR
 will be invoked before
-\fBmyCallback.success\fR
-(since by definition this indicates that the request has been completed).
+\fBmyCallback\.success\fR
+(since by definition this indicates that the request has been completed)\.
 .SH "SEE ALSO"
 .PP
 
@@ -229,10 +229,10 @@ will be invoked before
 \fBmail::folder::create\fR(3x),
 \fBmail::folder::createSubFolder\fR(3x),
 \fBmail::folder::destroy\fR(3x),
-\fBmail::folder::readSubFolders\fR(3x).
-.SH "REFERENCES"
+\fBmail::folder::readSubFolders\fR(3x)\.
+.SH "NOTES"
 .IP " 1." 4
-Courier\-IMAP
+Courier-IMAP
 .RS 4
-\%http://www.courier\-mta.org
+\%http://www.courier-mta.org
 .RE

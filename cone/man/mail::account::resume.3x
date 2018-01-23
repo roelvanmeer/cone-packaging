@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::account::resume
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::RESUM" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::RESUM" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::account::resume \- Resume after a suspend
+mail::account::resume - Resume after a suspend
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,7 +25,7 @@ mail::account::resume \- Resume after a suspend
       
 
 
-#include <libmail/mail.H>
+#include <libmail/mail\.H>
 
 .fi
 .RE
@@ -34,12 +34,12 @@ mail::account::resume \- Resume after a suspend
 .SH "USAGE"
 .PP
 This function should be invoked when the application resumes after it was suspended, or after any other lengthy delay in calling
-\fBmail::account::process\fR. The application could've been suspended while
+\fBmail::account::process\fR\. The application could\'ve been suspended while
 
 
 
 LibMAIL
-was in a middle of processing a background event. After resuming, the jump in the system clock may result in
+was in a middle of processing a background event\. After resuming, the jump in the system clock may result in
 
 
 
@@ -49,7 +49,7 @@ concluding that the remote mail server timed out without responding, when the ac
 
 
 LibMAIL
-just hasn't read it yet.
+just hasn\'t read it yet\.
 .PP
 
 \fBmail::account::process\fR
@@ -58,8 +58,8 @@ resets
 
 
 LibMAIL
-\'s internal timeouts. Note that not much can be done if the application remained suspended long enough for the remote mail server to shut down the connection itself.
+\'s internal timeouts\. Note that not much can be done if the application remained suspended long enough for the remote mail server to shut down the connection itself\.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::account::process\fR(3x).
+\fBmail::account::process\fR(3x)\.

@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::ACCOUNT::deleteFolder
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::DELET" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::DELET" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::ACCOUNT::deleteFolder \- Delete a folder
+mail::ACCOUNT::deleteFolder - Delete a folder
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,14 +25,14 @@ mail::ACCOUNT::deleteFolder \- Delete a folder
 
 
 
-#include <libmail/sync.H>
+#include <libmail/sync\.H>
 
 mail::ACCOUNT *mail;
 mail::folder *folder;
 .fi
 .RE
 .HP 27
-.BI "bool ok=mail\->deleteFolder(const\ mail::folder\ *" "folder" ", bool\ " "deleteDirectory" ");"
+.BI "bool ok=mail->deleteFolder(const\ mail::folder\ *" "folder" ", bool\ " "deleteDirectory" ");"
 .sp
 .RS 4
 .nf
@@ -41,31 +41,31 @@ std::string errmsg=mail\->getErrmsg();
 .RE
 .SH "USAGE"
 .PP
-This function deletes an existing folder.
+This function deletes an existing folder\.
 \fIdeleteDirectory\fR
-specifies whether the existing folder is regular folder, or a folder directory.
+specifies whether the existing folder is regular folder, or a folder directory\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
-This function only removes the actual folder in the mail account. The
+This function only removes the actual folder in the mail account\. The
 \fIfolder\fR
-object is not affected, the application is still responsible for destroying the object, when it is no longer needed.
+object is not affected, the application is still responsible for destroying the object, when it is no longer needed\.
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 This method returns
 true
 if it succeeds, or
 false
-if it fails. If the method fails, use
+if it fails\. If the method fails, use
 mail::ACCOUNT::getErrmsg()
-to read a brief description of the error.
+to read a brief description of the error\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::ACCOUNT::getFolderFromPath\fR(3x),
 \fBmail::ACCOUNT::getFolderFromString\fR(3x),
-\fBmail::folder::createSubFolder\fR(3x).
+\fBmail::folder::createSubFolder\fR(3x)\.

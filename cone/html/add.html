@@ -91,8 +91,7 @@ information.
     over at some later point in time. A single rejected
     <code class="literal">ADD</code> does not abort the upload, the
     client can retry or explicitly issue some other command (such
-    as the <a href="add.html#rset" title="The RSET command" shape="rect"><code class="literal">RSET</code></a> command) to abort
-    it.</p>
+    as the <a class="link" href="add.html#rset" title="The RSET command" shape="rect"><code class="literal">RSET</code></a> command) to abort it.</p>
 
     <p>The following attributes and/or keywords follow the
     <code class="literal">ADD</code> command:</p>
@@ -140,7 +139,7 @@ information.
 
         <dd>
           <p>Sets delivery status notification options for the sent
-          message, as described by <a href="http://www.rfc-editor.org/rfc/rfc1891.txt" target="_top" shape="rect">RFC 1891</a>. This is an optional keyword
+          message, as described by <a class="ulink" href="http://www.rfc-editor.org/rfc/rfc1891.txt" target="_top" shape="rect">RFC 1891</a>. This is an optional keyword
           that may not be implemented by all servers. Servers that
           do not implement delivery status notifications should
           reject this keyword.</p>
@@ -158,11 +157,10 @@ information.
         <dd>
           <p>The <code class="literal">FLAGS</code>, <code class="literal">KEYWORDS</code>, and <code class="literal">INTERNALDATE</code> set their corresponding
           attributes, when the message is to be saved in a folder.
-          See &#8220;<span class="quote"><a href="attributes.html" title="Reading message attributes" shape="rect">Reading
-          message attributes</a></span>&#8221; for more
-          information. These keywords are optional, and the server
-          will use implementation-defined defaults if they are not
-          specified.</p>
+          See &#8220;<span class="quote"><a class="link" href="attributes.html" title="Reading message attributes" shape="rect">Reading message attributes</a></span>&#8221;
+          for more information. These keywords are optional, and
+          the server will use implementation-defined defaults if
+          they are not specified.</p>
         </dd>
 
         <dt><span class="term">{.<em class="replaceable"><code>nnnn</code></em>} or {<em class="replaceable"><code>xxxx</code></em>/<em class="replaceable"><code>yyyy</code></em>}</span></dt>
@@ -247,7 +245,7 @@ information.
 
       <p>This command does absolutely nothing. Its main purpose is
       the side effect of aborting the current upload of a new
-      message via the <a href="add.html" title="Adding messages to folders" shape="rect"><code class="literal">ADD</code></a> command.</p>
+      message via the <a class="link" href="add.html" title="Adding messages to folders" shape="rect"><code class="literal">ADD</code></a> command.</p>
     </div>
   </div>
 

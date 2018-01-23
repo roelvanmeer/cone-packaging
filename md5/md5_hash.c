@@ -1,12 +1,13 @@
 /*
-** Copyright 2000 Double Precision, Inc.
+** Copyright 2007 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
 #include	"md5.h"
 #include	<string.h>
+#include	<stdio.h>
 
-static const char rcsid[]="$Id: md5_hash.c,v 1.5 2002/12/12 04:23:58 mrsam Exp $";
+static const char rcsid[]="$Id: md5_hash.c,v 1.6 2007/10/07 02:50:45 mrsam Exp $";
 
 static const char base64tab[]=
 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -43,4 +44,25 @@ int	d, e, f, g;
 
 	hash_buffer[j]=0;
 	return (hash_buffer);
+}
+
+const char *md5_hash_raw(const char *passw)
+{
+	MD5_DIGEST digest;
+	static char hash_buffer[sizeof(digest)*2+1];
+	size_t j=0,i=0;
+
+	char
+		tmp_buf[3];
+
+	md5_digest(passw, strlen(passw), digest);
+	for (j=0; j<sizeof(digest); j++)
+	{
+		sprintf(tmp_buf,"%02x",digest[j]);
+		hash_buffer[i++]=tmp_buf[0];
+		hash_buffer[i++]=tmp_buf[1];
+	}
+	hash_buffer[i]=0;
+
+	return(hash_buffer);
 }

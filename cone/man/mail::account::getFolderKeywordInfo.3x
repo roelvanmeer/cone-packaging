@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::account::getFolderKeywordInfo
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::GETFO" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::GETFO" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::account::getFolderKeywordInfo \- Return message keywords
+mail::account::getFolderKeywordInfo - Return message keywords
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,14 +25,14 @@ mail::account::getFolderKeywordInfo \- Return message keywords
 
 
 
-#include <libmail/mail.H>
+#include <libmail/mail\.H>
 
 
 mail::account *account;
 .fi
 .RE
 .HP 30
-.BI "account\->getFolderKeywordInfo(size_t\ " "messageNum" ", std::set<std::string>\ &" "keywords" ");"
+.BI "account->getFolderKeywordInfo(size_t\ " "messageNum" ", std::set<std::string>\ &" "keywords" ");"
 .SH "USAGE"
 .PP
 
@@ -40,18 +40,18 @@ mail::account *account;
 retrieves the current keywords for message #\fImessagenum\fR
 and places them into
 \fIkeywords\fR
-(removing any existing contents). If the message does not have any keywords set,
+(removing any existing contents)\. If the message does not have any keywords set,
 \fIkeywords\fR
-will be an empty set.
+will be an empty set\.
 \fImessageNum\fR
 must be between zero and one less than the return code from
-\fBmail::account::getFolderIndexSize\fR(3x).
+\fBmail::account::getFolderIndexSize\fR(3x)\.
 .SH "RETURN CODES"
 .PP
-This function returns immediately.
+This function returns immediately\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::updateKeywords\fR(3x),
 \fBmail::account::getFolderIndexInfo\fR(3x),
-\fBmail::account::getFolderIndexSize\fR(3x).
+\fBmail::account::getFolderIndexSize\fR(3x)\.

@@ -1,8 +1,8 @@
-dnl $Id: configure.in,v 1.14 2007/09/26 02:36:59 mrsam Exp $
+dnl $Id: configure.in,v 1.15 2007/10/11 01:46:34 mrsam Exp $
 dnl
 dnl Copyright 1998 - 2004 Double Precision, Inc.  See COPYING for
 dnl distribution information.
-dnl $Id: configure.in,v 1.14 2007/09/26 02:36:59 mrsam Exp $
+dnl $Id: configure.in,v 1.15 2007/10/11 01:46:34 mrsam Exp $
 
 AC_PREREQ(2.59)
 AC_INIT(liblock, 0.60, courier-users@lists.sourceforge.net)
@@ -80,7 +80,7 @@ fi
 
 dnl Checks for library functions.
 
-AC_CHECK_FUNCS(setpgrp sysconf)
+AC_CHECK_FUNCS(getdtablesize setpgrp sysconf)
 AC_CHECK_FUNC(setpgrp,
 	[
 	AC_FUNC_SETPGRP

@@ -1,5 +1,8 @@
 /* config.h.in.  Generated from configure.in by autoheader.  */
 
+/* How to cast a file descriptor to gnutls_transport_ptr_t */
+#undef GNUTLS_CAST_PTR_T
+
 /* Define to 1 if you have the <dirent.h> header file, and it defines `DIR'.
    */
 #undef HAVE_DIRENT_H
@@ -9,6 +12,9 @@
 
 /* Define to 1 if you have the <fcntl.h> header file. */
 #undef HAVE_FCNTL_H
+
+/* Whether libgcrypt is installed */
+#undef HAVE_GCRYPT
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
@@ -98,6 +104,12 @@
 
 /* Define to 1 if the `setpgrp' function takes no argument. */
 #undef SETPGRP_VOID
+
+/* The size of `gnutls_transport_ptr_t', as computed by sizeof. */
+#undef SIZEOF_GNUTLS_TRANSPORT_PTR_T
+
+/* The size of `long', as computed by sizeof. */
+#undef SIZEOF_LONG
 
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS

@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::ACCOUNT::send
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::SEND" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::SEND" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::ACCOUNT::send \- Send a message
+mail::ACCOUNT::send - Send a message
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,9 +25,9 @@ mail::ACCOUNT::send \- Send a message
 
 
 
-#include <libmail/sync.H>
+#include <libmail/sync\.H>
 
-#include <libmail/smtpinfo.H>
+#include <libmail/smtpinfo\.H>
 
 mail::ACCOUNT *mail;
 
@@ -41,14 +41,14 @@ myAddMessagePull message;
 
 mail::smtpInfo info;
 
-info.sender="nobody@example.com";
+info\.sender="nobody@example\.com";
 
-info.recipients.push_back("recipient@example.com");
+info\.recipients\.push_back("recipient@example\.com");
 
 .fi
 .RE
 .HP 19
-.BI "bool ok=mail\->send(" "info" ", const\ mail::folder\ *" "saveFolder" ", " "message" ");"
+.BI "bool ok=mail->send(" "info" ", const\ mail::folder\ *" "saveFolder" ", " "message" ");"
 .sp
 .RS 4
 .nf
@@ -57,7 +57,7 @@ std::string errmsg=mail\->getErrmsg();
 .RE
 .SH "USAGE"
 .PP
-This method sends a message via SMTP. The application should create a
+This method sends a message via SMTP\. The application should create a
 mail::ACCOUNT
 object, and invoke
 \fBmail::ACCOUNT::login\fR(3x)
@@ -66,39 +66,39 @@ smtp:,
 smtps:
 or
 sendmail:
-\fIurl\fR. The resulting
-mail::ACCOUNT's
+\fIurl\fR\. The resulting
+mail::ACCOUNT\'s
 \fBsend\fR
 method will be able to deliver the
-\fImessage\fR.
+\fImessage\fR\.
 .PP
 
-\fImessage\fR's
+\fImessage\fR\'s
 \fBgetMessageContents\fR
-specifies the contents of the message, which should be a valid, MIME\-formatted message.
+specifies the contents of the message, which should be a valid, MIME\-formatted message\.
 \fBgetMessageContents\fR
-does not have to return the entire contents of the message at once.
+does not have to return the entire contents of the message at once\.
 \fBaddMessage\fR
 calls
 \fBgetMessageContents\fR
-repeatedly.
+repeatedly\.
 \fBgetMessageContents\fR
-should return the next portion of the message with each call.
+should return the next portion of the message with each call\.
 \fBgetMessageContents\fR
-should return an empty string, after providing the entire message contents are provided.
+should return an empty string, after providing the entire message contents are provided\.
 \fBgetMessageContents\fR
-will be called repeatedly until it returns an empty string.
+will be called repeatedly until it returns an empty string\.
 .SS "\fIsaveFolder\fR"
 .PP
 
 \fIsaveFolder\fR, if not
-NULL, specifies that a copy of the message should also be saved in this folder. If this mail account uses the experimental
+NULL, specifies that a copy of the message should also be saved in this folder\. If this mail account uses the experimental
 SMAP
 protocol, a single copy of the message will be transmitted to the
 SMAP
-server, which will file the message in the folder, and send it to the designated recipients. Otherwise the message is manually saved to this folder using
+server, which will file the message in the folder, and send it to the designated recipients\. Otherwise the message is manually saved to this folder using
 \fBmail::folder::addMessage\fR(3x), or
-\fBmail::ACCOUNT::addMessage\fR(3x).
+\fBmail::ACCOUNT::addMessage\fR(3x)\.
 .SS "The mail::smtpInfo object"
 .PP
 
@@ -117,88 +117,87 @@ public:
 } ;
 .fi
 .RE
-.sp
 .PP
 
 sender
-specifies the sender's E\-mail address, in the form of "\fIuser\fR@\fIdomain\fR".
+specifies the sender\'s E\-mail address, in the form of "\fIuser\fR@\fIdomain\fR"\.
 recipients
-is a list of recipients' E\-mail addresses. At least one recipient must be specified.
+is a list of recipients\' E\-mail addresses\. At least one recipient must be specified\.
 .PP
 
 options
 specifies additional parameters for sending E\-mail, initialized as follows:
 .PP
-options.insert(make_pair("novalidate\-cert", "1"))
+options\.insert(make_pair("novalidate\-cert", "1"))
 .RS 4
 See
-\fBmail::account::open\fR(3x)) for a description of this option.
+\fBmail::account::open\fR(3x)) for a description of this option\.
 .RE
 .PP
-options.insert(make_pair("cram", "1"))
+options\.insert(make_pair("cram", "1"))
 .RS 4
 See
-\fBmail::account::open\fR(3x)) for a description of this option.
+\fBmail::account::open\fR(3x)) for a description of this option\.
 .RE
 .PP
-options.insert(make_pair("DSN", "\fIlist\fR"))
+options\.insert(make_pair("DSN", "\fIlist\fR"))
 .RS 4
-Request a delivery status notification.
+Request a delivery status notification\.
 \fIlist\fR
-is a comma\-separated list of the following keywords: "never" \- do not request any receipts, not even non\-delivery notices; "success" \- request a delivery confirmation receipt; "fail" \- request a non\-delivery notice; "delay" \- request a delayed delivery notice.
+is a comma\-separated list of the following keywords: "never" \- do not request any receipts, not even non\-delivery notices; "success" \- request a delivery confirmation receipt; "fail" \- request a non\-delivery notice; "delay" \- request a delayed delivery notice\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
-An error will be reported if the mail server does not implement delivery status notifications.
+Note
+An error will be reported if the mail server does not implement delivery status notifications\.
 .RE
 .PP
-options.insert(make_pair("RET", "hdrs"))
+options\.insert(make_pair("RET", "hdrs"))
 .RS 4
-Request that the delivery status notification should not include the entire original message, only its headers.
+Request that the delivery status notification should not include the entire original message, only its headers\.
 .RE
 .PP
-options.insert(make_pair("RET", "full"))
+options\.insert(make_pair("RET", "full"))
 .RS 4
-Request that the delivery status notifications should include the entire original message.
+Request that the delivery status notifications should include the entire original message\.
 .RE
 .PP
-options.insert(make_pair("NOPIPELINING", "1"))
+options\.insert(make_pair("NOPIPELINING", "1"))
 .RS 4
 Do not use the
 PIPELINING
 SMTP
-extension even if the mail server claims to support it (workaround for buggy firewalls).
+extension even if the mail server claims to support it (workaround for buggy firewalls)\.
 .RE
 .PP
-options.insert(make_pair("VERP", "1"))
+options\.insert(make_pair("VERP", "1"))
 .RS 4
 Use the
 VERP
-mailing list extension. If the
+mailing list extension\. If the
 sender
-address is "\fIsender\fR@\fIsenddomain\fR", then a delivery status notification for "\fIrecipient\fR@\fIrecipientdomain\fR" will be sent to "\fIsender\fR\-\fIrecipient\fR=\fIrecipientdomain\fR@\fIsenddomain\fR" (with certain additional details). This option is currently implemented only by the
-\fICourier mail server\fR\&[1].
+address is "\fIsender\fR@\fIsenddomain\fR", then a delivery status notification for "\fIrecipient\fR@\fIrecipientdomain\fR" will be sent to "\fIsender\fR\-\fIrecipient\fR=\fIrecipientdomain\fR@\fIsenddomain\fR" (with certain additional details)\. This option is currently implemented only by the
+\fICourier mail server\fR\&[1]\.
 .RE
 .PP
-options.insert(make_pair("SECURITY", "STARTTLS"))
+options\.insert(make_pair("SECURITY", "STARTTLS"))
 .RS 4
-The message must be sent via TLS, and the recipient's server must present a certificate signed by a trusted, private, certificate authority. This option is currently implemented only by the
-\fICourier mail server\fR\&[1].
+The message must be sent via TLS, and the recipient\'s server must present a certificate signed by a trusted, private, certificate authority\. This option is currently implemented only by the
+\fICourier mail server\fR\&[1]\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 This is not the standard
 STARTTLS
 ESMTP
-extension.
+extension\.
 STARTTLS
-is always used automatically, if it's supported by the mail server.
+is always used automatically, if it\'s supported by the mail server\.
 .RE
 .SH "RETURN CODES"
 .PP
@@ -206,16 +205,16 @@ This method returns
 true
 if it succeeds, or
 false
-if it fails. If the method fails, use
+if it fails\. If the method fails, use
 mail::ACCOUNT::getErrmsg()
-to read a brief description of the error.
+to read a brief description of the error\.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::ACCOUNT::login\fR(3x).
-.SH "REFERENCES"
+\fBmail::ACCOUNT::login\fR(3x)\.
+.SH "NOTES"
 .IP " 1." 4
 Courier mail server
 .RS 4
-\%http://www.courier\-mta.org
+\%http://www.courier-mta.org
 .RE

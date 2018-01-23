@@ -1,10 +1,11 @@
 /*
-** Copyright 2000-2006 Double Precision, Inc.
+** Copyright 2000-2007 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 #include	"config.h"
 #include	"argparse.h"
 #include	"spipe.h"
+
 #include	"libcouriertls.h"
 #include	"tlscache.h"
 #include	"rfc1035/rfc1035.h"
@@ -48,10 +49,6 @@
 #endif
 #include	<sys/socket.h>
 #include	<arpa/inet.h>
-#define	DEBUG_SAFESTACK	1	/* For openssl 0.9.6 */
-
-#include	<openssl/ssl.h>
-#include	<openssl/err.h>
 
 #if TIME_WITH_SYS_TIME
 #include        <sys/time.h>
@@ -65,7 +62,7 @@
 #endif
 #include	<locale.h>
 
-static const char rcsid[]="$Id: starttls.c,v 1.36 2007/03/06 04:45:57 mrsam Exp $";
+static const char rcsid[]="$Id: starttls.c,v 1.42 2007/11/05 05:11:29 mrsam Exp $";
 
 /* Command-line options: */
 const char *clienthost=0;
@@ -93,7 +90,7 @@ static void nonsslerror(const char *pfix)
 	fprintf(errfp, "%s: %s\n", pfix, strerror(errno));
 }
 
-void docopy(SSL *ssl, int sslfd, int stdinfd, int stdoutfd)
+void docopy(ssl_handle ssl, int sslfd, int stdinfd, int stdoutfd)
 {
 	struct tls_transfer_info transfer_info;
 
@@ -203,133 +200,22 @@ void docopy(SSL *ssl, int sslfd, int stdinfd, int stdoutfd)
 	}
 }
 
-#define MAXDOMAINSIZE	256
-
-static time_t asn1toTime(ASN1_TIME *asn1Time)
+static void dump_to_fp(const char *p, int cnt, void *arg)
 {
-	struct tm tm;
-	int offset;
+	if (cnt < 0)
+		cnt=strlen(p);
 
-	if (asn1Time == NULL || asn1Time->length < 13)
-		return 0;
-
-	memset(&tm, 0, sizeof(tm));
-
-#define N2(n)	((asn1Time->data[n]-'0')*10 + asn1Time->data[(n)+1]-'0')
-
-#define CPY(f,n) (tm.f=N2(n))
-
-	CPY(tm_year,0);
-
-	if(tm.tm_year < 50)
-		tm.tm_year += 100; /* Sux */
-
-	CPY(tm_mon, 2);
-	--tm.tm_mon;
-	CPY(tm_mday, 4);
-	CPY(tm_hour, 6);
-	CPY(tm_min, 8);
-	CPY(tm_sec, 10);
-
-	offset=0;
-
-	if (asn1Time->data[12] != 'Z')
-	{
-		if (asn1Time->length < 17)
-			return 0;
-
-		offset=N2(13)*3600+N2(15)*60;
-
-		if (asn1Time->data[12] == '-')
-			offset= -offset;
-	}
-
-#undef N2
-#undef CPY
-
-	return mktime(&tm)-offset;
+	if (fwrite(p, cnt, 1, (FILE *)arg) != 1)
+		; // NOOP
 }
 
-static void dump_x509(X509 *x509, FILE *printx509_fp)
-{
-	X509_NAME *subj=X509_get_subject_name(x509);
-	int nentries, j;
-	time_t timestamp;
-	static const char gcc_shutup[]="%Y-%m-%d %H:%M:%S";
-
-	if (!subj)
-		return;
-
-	if (printx509_fp)
-		fprintf(printx509_fp, "Subject:\n");
-
-	nentries=X509_NAME_entry_count(subj);
-	for (j=0; j<nentries; j++)
-	{
-		const char *obj_name;
-		X509_NAME_ENTRY *e;
-		ASN1_OBJECT *o;
-		ASN1_STRING *d;
-
-		int dlen;
-		unsigned char *ddata;
-
-		e=X509_NAME_get_entry(subj, j);
-		if (!e)
-			continue;
-
-		o=X509_NAME_ENTRY_get_object(e);
-		d=X509_NAME_ENTRY_get_data(e);
-
-		if (!o || !d)
-			continue;
-
-		obj_name=OBJ_nid2sn(OBJ_obj2nid(o));
-
-		dlen=ASN1_STRING_length(d);
-		ddata=ASN1_STRING_data(d);
-
-		if (printx509_fp)
-		{
-			fprintf(printx509_fp, "   %s=", obj_name);
-			if (fwrite(ddata, dlen, 1, printx509_fp) == 1)
-				fprintf(printx509_fp, "\n");
-		}
-	}
-	if (printx509_fp)
-		fprintf(printx509_fp, "\n");
-
-	timestamp=asn1toTime(X509_get_notBefore(x509));
-
-	if (timestamp && printx509_fp)
-	{
-		struct tm *tm=localtime(&timestamp);
-		char buffer[500];
-
-		buffer[strftime(buffer, sizeof(buffer)-1, gcc_shutup,
-				tm)]=0;
-
-		fprintf(printx509_fp, "Not-Before: %s\n", buffer);
-	}
-
-	timestamp=asn1toTime(X509_get_notAfter(x509));
-	if (timestamp && printx509_fp)
-	{
-		struct tm *tm=localtime(&timestamp);
-		char buffer[500];
-
-		buffer[strftime(buffer, sizeof(buffer)-1, gcc_shutup,
-				tm)]=0;
-
-		fprintf(printx509_fp, "Not-After: %s\n", buffer);
-	}
-}
-
-static int verify_connection(SSL *ssl, void *dummy)
+static int verify_connection(ssl_handle ssl, void *dummy)
 {
 	FILE	*printx509_fp=NULL;
 	int	printx509_fd=0;
-	SSL_CIPHER *cipher;
+	char	*buf;
+
+	static char protocolbuf[256];
 
 	if (printx509)
 	{
@@ -340,74 +226,31 @@ static int verify_connection(SSL *ssl, void *dummy)
                         nonsslerror("fdopen");
 	}
 
-
-	{
-		STACK_OF(X509) *peer_cert_chain=SSL_get_peer_cert_chain(ssl);
-		int i;
-
-		if (server)
-		{
-			X509 *x=SSL_get_peer_certificate(ssl);
-
-			if (x)
-			{
-				dump_x509(x, printx509_fp);
-				X509_free(x);
-			}
-		}
-
-		for (i=0; peer_cert_chain && i<peer_cert_chain->stack.num; i++)
-			dump_x509((X509 *)peer_cert_chain->stack.data[i],
-				  printx509_fp);
-	}
-
-	cipher=SSL_get_current_cipher(ssl);
-
-	if (cipher)
-	{
-		static char protocolbuf[256];
-
-		const char *c;
-
-		c=SSL_CIPHER_get_version(cipher);
-		if (c && printx509_fp)
-			fprintf(printx509_fp, "Version: %s\n", c);
-
-		strcpy(protocolbuf, "TLS_CONNECTED_PROTOCOL=");
-		strncat(protocolbuf, c ? c:"unknown", 40);
-
-		if (printx509_fp)
-			fprintf(printx509_fp, "Bits: %d\n",
-				SSL_CIPHER_get_bits(cipher, NULL));
-
-		sprintf(protocolbuf+strlen(protocolbuf), ",%dbits",
-			SSL_CIPHER_get_bits(cipher, NULL));
-
-		c=SSL_CIPHER_get_name(cipher);
-
-		if (c && printx509_fp)
-			fprintf(printx509_fp, "Cipher: %s\n", c);
-
-		c=SSL_CIPHER_get_name(cipher);
-		strncat(strcat(protocolbuf, ","), c ? c:"unknown", 40);
-		putenv(protocolbuf);
-	}
-
 	if (printx509_fp)
 	{
+		tls_dump_connection_info(ssl, server ? 1:0, dump_to_fp,
+					 printx509_fp);
 		fclose(printx509_fp);
-		close(printx509_fd);
 	}
 
 	if (statusfp)
 	{
 		fclose(statusfp);
-		errfp=stderr;
 		statusfp=NULL;
+		errfp=stderr;
 	}
+
+	buf=tls_get_encryption_desc(ssl);
+
+	snprintf(protocolbuf, sizeof(protocolbuf),
+		 "TLS_CONNECTED_PROTOCOL=%s",
+		 buf ? buf:"(unknown)");
+
+	putenv(protocolbuf);
+	if (buf)
+		free(buf);
 	return 1;
 }
-
 
 /* ----------------------------------------------------------------------- */
 
@@ -543,7 +386,7 @@ int	port_num;
 	return (fd);
 }
 
-static int connect_completed(SSL *ssl, int fd)
+static int connect_completed(ssl_handle ssl, int fd)
 {
 	struct tls_transfer_info transfer_info;
 	tls_transfer_init(&transfer_info);
@@ -575,8 +418,8 @@ static int connect_completed(SSL *ssl, int fd)
 
 static int dossl(int fd, int argn, int argc, char **argv)
 {
-	SSL_CTX *ctx;
-	SSL	*ssl;
+	ssl_context ctx;
+	ssl_handle ssl;
 
 	int	stdin_fd, stdout_fd;
 	struct tls_info info= *tls_get_default_info();
@@ -598,7 +441,12 @@ static int dossl(int fd, int argn, int argc, char **argv)
 	}
 
 	if (!connect_completed(ssl, fd))
+	{
+		tls_disconnect(ssl, fd);
+		close(fd);
+		tls_destroy(ctx);
 		return 1;
+	}
 
 	stdin_fd=0;
 	stdout_fd=1;
@@ -828,7 +676,7 @@ void (*protocol_func)(int)=0;
 
 	setlocale(LC_ALL, "");
 	errfp=stderr;
- 
+
 	argn=argparse(argc, argv, arginfo);
 
 	if (statusfd)
@@ -872,5 +720,6 @@ void (*protocol_func)(int)=0;
 	if (fd < 0)	return (1);
 	if (protocol_func)
 		(*protocol_func)(fd);
+
 	return (dossl(fd, argn, argc, argv));
 }

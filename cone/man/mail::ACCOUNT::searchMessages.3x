@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::ACCOUNT::searchMessages
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::SEARC" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::SEARC" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::ACCOUNT::searchMessages \- Search messages in the current folder
+mail::ACCOUNT::searchMessages - Search messages in the current folder
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,9 +25,9 @@ mail::ACCOUNT::searchMessages \- Search messages in the current folder
 
 
 
-#include <libmail/sync.H>
+#include <libmail/sync\.H>
 
-#include <libmail/search.H>
+#include <libmail/search\.H>
 
 mail::ACCOUNT *mail;
 
@@ -35,17 +35,17 @@ mail::ACCOUNT *mail;
 
 mail::searchParams mySearchParams;
 
-mySearchParams.criteria=\fIcriteria\fR;
-mySearchParams.searchNot=\fInotFlag\fR;
-mySearchParams.param1="\fItext\fR";
-mySearchParams.param2="\fItext\fR";
-mySearchParams.charset="\fItext\fR";
-mySearchParams.scope=\fIscope\fR;
+mySearchParams\.criteria=\fIcriteria\fR;
+mySearchParams\.searchNot=\fInotFlag\fR;
+mySearchParams\.param1="\fItext\fR";
+mySearchParams\.param2="\fItext\fR";
+mySearchParams\.charset="\fItext\fR";
+mySearchParams\.scope=\fIscope\fR;
 
 .fi
 .RE
 .HP 29
-.BI "bool ok=mail\->searchMessages(" "mySearchParams" ", std::vector<size_t>\ &" "messageList" ");"
+.BI "bool ok=mail->searchMessages(" "mySearchParams" ", std::vector<size_t>\ &" "messageList" ");"
 .sp
 .RS 4
 .nf
@@ -56,44 +56,44 @@ std::string errmsg=mail\->getErrmsg();
 .PP
 
 \fBmail::ACCOUNT::searchMessages\fR
-searches messages in the currently\-open folder.
+searches messages in the currently\-open folder\.
 \fImessageList\fR
-should be an empty array. Message numbers of messages found by the search are added to the array.
+should be an empty array\. Message numbers of messages found by the search are added to the array\.
 .PP
 
-mySearchParams.criteria
-specifies the search type.
-mySearchParams.searchNot
+mySearchParams\.criteria
+specifies the search type\.
+mySearchParams\.searchNot
 is a bool; setting it to
 true
-logically negates the search type. For example, if
-mySearchParams.criteria
+logically negates the search type\. For example, if
+mySearchParams\.criteria
 is
 mail::searchParams::on
 then setting
-mySearchParams.searchNot
+mySearchParams\.searchNot
 to
 true
-will search for messages NOT sent on the specified date.
+will search for messages NOT sent on the specified date\.
 .PP
 
-mySearchParams.param1
+mySearchParams\.param1
 and
-mySearchParams.param2
-specify additional parameters used by some search criterias.
-mySearchParams.charset
+mySearchParams\.param2
+specify additional parameters used by some search criterias\.
+mySearchParams\.charset
 specifies
-mySearchParams.param2's character set.
-mySearchParams.param1's character set is always
-ISO\-8859\-1.
+mySearchParams\.param2\'s character set\.
+mySearchParams\.param1\'s character set is always
+ISO\-8859\-1\.
 .PP
 
-mySearchParams.scope
+mySearchParams\.scope
 specifies the scope of the search, and must be set to one of the following:
 .PP
 search_all
 .RS 4
-Search all messages in the folder.
+Search all messages in the folder\.
 .RE
 .PP
 search_marked
@@ -101,7 +101,7 @@ search_marked
 Search only messages that have
 mail::messageInfo::marked
 set to
-true.
+true\.
 .RE
 .PP
 search_unmarked
@@ -109,30 +109,33 @@ search_unmarked
 Search only messages that have
 mail::messageInfo::marked
 set to
-false.
+false\.
 .RE
 .PP
 search_ranges
 .RS 4
 Search only message #rangeLo
-through message #rangeHi\-1.
+through message #rangeHi\-1\.
 .RE
 .PP
 Complex search criteria may be performed as follows:
+.sp
 .RS 4
 \h'-04'\(bu\h'+03'Clear
 mail::messageInfo::marked
 status flags on all messages (use
 \fBmail::account::updateFolderIndexFlags\fR(3x)
 or
-\fBmail::ACCOUNT::updateFolderIndexFlags\fR(3x).
+\fBmail::ACCOUNT::updateFolderIndexFlags\fR(3x)\.
 .RE
+.sp
 .RS 4
 \h'-04'\(bu\h'+03'Execute a search with
-mySearchParams.scope
+mySearchParams\.scope
 set to
-search_unmarked.
+search_unmarked\.
 .RE
+.sp
 .RS 4
 \h'-04'\(bu\h'+03'Use
 \fBmail::account::updateFolderIndexFlags\fR(3x)
@@ -140,156 +143,157 @@ or
 \fBmail::ACCOUNT::updateFolderIndexFlags\fR(3x)
 to set the
 mail::messageInfo::marked
-flag on messages found by the first search.
+flag on messages found by the first search\.
 .RE
+.sp
 .RS 4
 \h'-04'\(bu\h'+03'Run additional searches, with
-mySearchParams.scope
+mySearchParams\.scope
 set accordingly; and use
 \fBmail::account::updateFolderIndexFlags\fR(3x)
 or
 \fBmail::ACCOUNT::updateFolderIndexFlags\fR(3x)
 to set or reset the
 mail::messageInfo::marked
-flag on messages found by the search.
+flag on messages found by the search\.
 .RE
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 The
 mail::messageInfo::marked
-status flag's usage is not limited to searches.
+status flag\'s usage is not limited to searches\.
 mail::messageInfo::marked
-is a generic flag that applications may use for their own purposes. Searching is one such particular application for this flag.
+is a generic flag that applications may use for their own purposes\. Searching is one such particular application for this flag\.
 .PP
 Some IMAP servers do not implemented the
 mail::messageInfo::marked
-status flag, and there's no such thing as a status flag in the POP3 protocol. When
+status flag, and there\'s no such thing as a status flag in the POP3 protocol\. When
 mail::messageInfo::marked
 status flag is not implemented by the server,
 mail::account
-will synthesize a suitable replacement that will work just like the real thing (except that the status flags of messages will not be saved when the folder is closed).
+will synthesize a suitable replacement that will work just like the real thing (except that the status flags of messages will not be saved when the folder is closed)\.
 .SS "Search Criteria"
 .PP
 
-mySearchParams.criteria
+mySearchParams\.criteria
 must be set to one of the following constants:
 .PP
 mail::searchParams::replied
 .RS 4
 Search for messages with the
 mail::messageInfo::replied
-status flag set.
+status flag set\.
 .RE
 .PP
 mail::searchParams::deleted
 .RS 4
 Search for messages with the
 mail::messageInfo::deleted
-status flag set.
+status flag set\.
 .RE
 .PP
 mail::searchParams::draft
 .RS 4
 Search for messages with the
 mail::messageInfo::draft
-status flag set.
+status flag set\.
 .RE
 .PP
 mail::searchParams::unread
 .RS 4
 Search for messages with the
 mail::messageInfo::unread
-status flag set.
+status flag set\.
 .RE
 .PP
 mail::searchParams::from
 .RS 4
 Search for messages where
-mail::searchParams.param2
+mail::searchParams\.param2
 occurs in their
 From:
-header.
+header\.
 .RE
 .PP
 mail::searchParams::to
 .RS 4
 Search for messages where
-mail::searchParams.param2
+mail::searchParams\.param2
 occurs in their
 To:
-header.
+header\.
 .RE
 .PP
 mail::searchParams::cc
 .RS 4
 Search for messages where
-mail::searchParams.param2
+mail::searchParams\.param2
 occurs in their
 Cc:
-header.
+header\.
 .RE
 .PP
 mail::searchParams::bcc
 .RS 4
 Search for messages where
-mail::searchParams.param2
+mail::searchParams\.param2
 occurs in their
 Bcc:
-header.
+header\.
 .RE
 .PP
 mail::searchParams::subject
 .RS 4
 Search for messages where
-mail::searchParams.param2
+mail::searchParams\.param2
 occurs in their
 Subject:
-header.
+header\.
 .RE
 .PP
 mail::searchParams::header
 .RS 4
 Search for messages where
-mail::searchParams.param2
+mail::searchParams\.param2
 occurs in a header whose name is
-mail::searchParams.param1.
+mail::searchParams\.param1\.
 .RE
 .PP
 mail::searchParams::body
 .RS 4
 Search for messages where
-mail::searchParams.param2
-occurs in the message's contents.
+mail::searchParams\.param2
+occurs in the message\'s contents\.
 .RE
 .PP
 mail::searchParams::text
 .RS 4
 Search for messages where
-mail::searchParams.param2
-occurs in the message's contents or headers.
+mail::searchParams\.param2
+occurs in the message\'s contents or headers\.
 .RE
 .PP
 mail::searchParams::before
 .RS 4
 Search for messages received before the date specified by
-mail::searchParams.param2.
+mail::searchParams\.param2\.
 .RE
 .PP
 mail::searchParams::on
 .RS 4
 Search for messages received on the date specified by
-mail::searchParams.param2.
+mail::searchParams\.param2\.
 .RE
 .PP
 mail::searchParams::since
 .RS 4
 Search for messages received on or after the date specified by
-mail::searchParams.param2.
+mail::searchParams\.param2\.
 .RE
 .PP
 mail::searchParams::sentbefore
@@ -297,7 +301,7 @@ mail::searchParams::sentbefore
 Search for messages whose
 Date:
 header contains a date before the date specified by
-mail::searchParams.param2.
+mail::searchParams\.param2\.
 .RE
 .PP
 mail::searchParams::senton
@@ -305,7 +309,7 @@ mail::searchParams::senton
 Search for messages whose
 Date:
 header contains a date specified by
-mail::searchParams.param2.
+mail::searchParams\.param2\.
 .RE
 .PP
 mail::searchParams::sentsince
@@ -313,44 +317,44 @@ mail::searchParams::sentsince
 Search for messages whose
 Date:
 header contains a date specified by
-mail::searchParams.param2, or later.
+mail::searchParams\.param2, or later\.
 .RE
 .PP
 mail::searchParams::larger
 .RS 4
 Search for messages whose approximate size is at least as the number of bytes specified by
-mail::searchParams.param2.
+mail::searchParams\.param2\.
 .RE
 .PP
 mail::searchParams::smaller
 .RS 4
 Search for messages whose approximate size is less than the number of bytes specified by
-mail::searchParams.param2.
+mail::searchParams\.param2\.
 .RE
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 
-mail::searchParams.param2
+mail::searchParams\.param2
 contains a text string of the form "mm\-ddd\-yyyy" for date\-related search criteria (example:
-"12\-Oct\-2001").
+"12\-Oct\-2001")\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
-Usenet servers offer very limited searching facilities. Consequently, searching NetNews folders will be slow, and inefficient. Searching on status flags is reasonably fast, since
+Usenet servers offer very limited searching facilities\. Consequently, searching NetNews folders will be slow, and inefficient\. Searching on status flags is reasonably fast, since
 
 
 
 LibMAIL
-maintains status flags of NetNews folders internally. The following search parameters use the
+maintains status flags of NetNews folders internally\. The following search parameters use the
 NNTP XPAT
 command, provides that the search string uses only the
 US\-ASCII
@@ -360,7 +364,7 @@ mail::searchParams::to,
 mail::searchParams::cc,
 mail::searchParams::bcc,
 mail::searchParams::subject, and
-mail::searchParams::header.
+mail::searchParams::header\.
 .PP
 For all other searches, or if the search string uses characters outside of the
 US\-ASCII
@@ -369,33 +373,33 @@ character set,
 
 
 LibMAIL
-will download each message individually, in order to search it. That's going to be very, very slow.
+will download each message individually, in order to search it\. That\'s going to be very, very slow\.
 .PP
-Additionally, most Usenet servers's
+Additionally, most Usenet servers\'s
 NNTP XPAT
-is case sensitive. All other searches are case insensitive.
+is case sensitive\. All other searches are case insensitive\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
-Efficient searching is implemented for local mail, and IMAP/SMAP mailboxes only. NetNews servers' searching capabilities are very limited, and POP3 servers have no search facilities whatsoever. In all cases, searching for message status flags is supported, since message status flags are always cached locally.
+Efficient searching is implemented for local mail, and IMAP/SMAP mailboxes only\. NetNews servers\' searching capabilities are very limited, and POP3 servers have no search facilities whatsoever\. In all cases, searching for message status flags is supported, since message status flags are always cached locally\.
 .PP
-Only message headers of NetNews folders may be searched, and only English characters can be used as a search string. Some older NetNews servers may not have any searching ability whatsoever. Searching of message contents is not supported. Searching by message size, or message's date is not supported either.
+Only message headers of NetNews folders may be searched, and only English characters can be used as a search string\. Some older NetNews servers may not have any searching ability whatsoever\. Searching of message contents is not supported\. Searching by message size, or message\'s date is not supported either\.
 .PP
-Searching of POP3 folders is also not very efficient, although the search text is not limited to English characters only. POP3 folder search is accomplished by downloading the complete headers of each message, and searching it manually. Downloaded headers are not cached. The headers are also downloaded when searching by message's date. Searching by message size, or message's date is not supported for POP3 folders.
+Searching of POP3 folders is also not very efficient, although the search text is not limited to English characters only\. POP3 folder search is accomplished by downloading the complete headers of each message, and searching it manually\. Downloaded headers are not cached\. The headers are also downloaded when searching by message\'s date\. Searching by message size, or message\'s date is not supported for POP3 folders\.
 .SH "RETURN CODES"
 .PP
 This method returns
 true
 if it succeeds, or
 false
-if it fails. If the method fails, use
+if it fails\. If the method fails, use
 mail::ACCOUNT::getErrmsg()
-to read a brief description of the error.
+to read a brief description of the error\.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::ACCOUNT::copyMessagesTo\fR(3x).
+\fBmail::ACCOUNT::copyMessagesTo\fR(3x)\.

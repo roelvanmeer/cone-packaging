@@ -3,33 +3,33 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::Header::list
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::HEADER::LIST" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::HEADER::LIST" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::Header::list \- Create a list of headers.
+mail::Header::list - Create a list of headers.
 .SH "SYNOPSIS"
 .sp
 .RS 4
 .nf
-#include <libmail/headers.H>
+#include <libmail/headers\.H>
 
 mail::Header::list headers;
 
     headers << mail::Header::encoded("Subject", "Hello", "iso\-8859\-1")
             << mail::header::addresslist("To")
-                                        ("John", "john@example.com")
-                                        ("Tom", "tom@example.com")
+                                        ("John", "john@example\.com")
+                                        ("Tom", "tom@example\.com")
             << mail::Header::mime("Content\-Type", "text/plain")
                                  ("charset", "iso\-8859\-1");
 
@@ -39,31 +39,31 @@ std::cout << (std::string)headers;
 .RE
 .SH "USAGE"
 .PP
-This is a helper class for formatting a list of headers. Each header is specified, using the
+This is a helper class for formatting a list of headers\. Each header is specified, using the
 <<
 operator, which can take any combination of
 \fBmail::Header::addresslist\fR(3x),
 \fBmail::Header::encoded\fR(3x),
 \fBmail::Header::mime\fR(3x), or
-\fBmail::Header::plain\fR(3x).
+\fBmail::Header::plain\fR(3x)\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 The
 <<
-operator makes an internal copy of the header object. The original object may be destroyed after the operator returns.
+operator makes an internal copy of the header object\. The original object may be destroyed after the operator returns\.
 .PP
 The
 \fBstd::string\fR
-operator formats all headers, and returns the set of E\-mail headers as a single string. Long headers are folded accordingly.
+operator formats all headers, and returns the set of E\-mail headers as a single string\. Long headers are folded accordingly\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::Header::addresslist\fR(3x),
 \fBmail::Header::encoded\fR(3x),
 \fBmail::Header::mime\fR(3x),
-\fBmail::Header::plain\fR(3x).
+\fBmail::Header::plain\fR(3x)\.

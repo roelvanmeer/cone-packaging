@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::loginUrlDecode
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::LOGINURLDECODE" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::LOGINURLDECODE" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::loginUrlDecode \- Decode a mail account URL
+mail::loginUrlDecode - Decode a mail account URL
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,9 +25,9 @@ mail::loginUrlDecode \- Decode a mail account URL
       
 
 
-#include <libmail/mail.H>
+#include <libmail/mail\.H>
 
-#include <libmail/logininfo.H>
+#include <libmail/logininfo\.H>
 
 mail::loginInfo urlInfo;
 .fi
@@ -37,13 +37,13 @@ mail::loginInfo urlInfo;
 .sp
 .RS 4
 .nf
-std::string method=urlInfo.method;
-std::string server=urlInfo.server;
-std::string uid=urlInfo.uid;
-std::string pwd=urlInfo.pwd;
+std::string method=urlInfo\.method;
+std::string server=urlInfo\.server;
+std::string uid=urlInfo\.uid;
+std::string pwd=urlInfo\.pwd;
 std::map<std::string, std::string>::iterator
-    optionBegin=urlInfo.options.begin(),
-    optionEnd=urlInfo.options.end();
+    optionBegin=urlInfo\.options\.begin(),
+    optionEnd=urlInfo\.options\.end();
 .fi
 .RE
 .SH "USAGE"
@@ -53,29 +53,29 @@ This function does the opposite of
 .PP
 method
 .RS 4
-The protocol name.
+The protocol name\.
 .RE
 .PP
 server
 .RS 4
-The name of the mail account's server
+The name of the mail account\'s server
 .RE
 .PP
 uid
 .RS 4
-The mail account login ID.
+The mail account login ID\.
 .RE
 .PP
 pwd
 .RS 4
-The mail account's password, if specified by the URL.
+The mail account\'s password, if specified by the URL\.
 .RE
 .PP
 options
 .RS 4
 This map lists any additional options specified by the URL (all
 \(lq/\fIname\fR=\fIvalue\fR\(rq
-options are placed into this map).
+options are placed into this map)\.
 .RE
 .SH "RETURN CODES"
 .PP
@@ -87,8 +87,8 @@ if
 mail::loginInfo
 object) was initialized from the contents of a valid URL, or
 false
-if the URL was not valid.
+if the URL was not valid\.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::loginUrlEncode\fR(3x).
+\fBmail::loginUrlEncode\fR(3x)\.

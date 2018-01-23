@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::account::hasCapability
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::HASCA" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::HASCA" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::account::hasCapability \- Mail account's properties
+mail::account::hasCapability - Mail account's properties
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -26,20 +26,20 @@ mail::account *account;
 .fi
 .RE
 .HP 33
-.BI "bool flag=account\->hasCapability(std::string\ " "capability" ");"
+.BI "bool flag=account->hasCapability(std::string\ " "capability" ");"
 .SH "USAGE"
 .PP
 This function checks this
-mail::account's properties. The list of potential properties, or capabilities, depends on the account. The currently defined list of properties are:
+mail::account\'s properties\. The list of potential properties, or capabilities, depends on the account\. The currently defined list of properties are:
 .PP
 LIBMAIL_SINGLEFOLDER
 .RS 4
 Whether this account contains a single incoming mail folder (currently only
 pop3
-accounts have this capability defined).
+accounts have this capability defined)\.
 .RE
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 The
 \fBhasCapability\fR
-method returns true if the account supports the indicated capability.
+method returns true if the account supports the indicated capability\.

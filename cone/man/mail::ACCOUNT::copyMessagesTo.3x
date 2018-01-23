@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::ACCOUNT::copyMessagesTo
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::COPYM" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::COPYM" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::ACCOUNT::copyMessagesTo \- Copy messages to another folder
+mail::ACCOUNT::copyMessagesTo - Copy messages to another folder
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,7 +25,7 @@ mail::ACCOUNT::copyMessagesTo \- Copy messages to another folder
 
 
 
-#include <libmail/sync.H>
+#include <libmail/sync\.H>
 
 
 mail::ACCOUNT *mail;
@@ -33,7 +33,7 @@ mail::folder *folder;
 .fi
 .RE
 .HP 29
-.BI "bool ok=mail\->copyMessagesTo(const\ std::vector<size_t>\ &" "msgList" ", mail::folder\ *" "copyTo" ");"
+.BI "bool ok=mail->copyMessagesTo(const\ std::vector<size_t>\ &" "msgList" ", mail::folder\ *" "copyTo" ");"
 .sp
 .RS 4
 .nf
@@ -44,49 +44,49 @@ std::string errmsg=mail\->getErrmsg();
 .PP
 
 \fImsgList\fR
-specifies a list of messages. Messages are numbered starting with message #0 and up to one less than
+specifies a list of messages\. Messages are numbered starting with message #0 and up to one less than
 \fBmail::ACCOUNT::getFolderIndexSize\fR(3x)
 (when
 \fBmail::account::getFolderIndexSize\fR
-returns 6, the messages are numbered 0 through 5). Only the messages that appear in
+returns 6, the messages are numbered 0 through 5)\. Only the messages that appear in
 \fImsgList\fR
-are processed by this request. When a message is removed from the folder, by
-\fBmail::ACCOUNT::updateFolderIndexInfo\fR(3x), the following messages are renumbered accordingly.
+are processed by this request\. When a message is removed from the folder, by
+\fBmail::ACCOUNT::updateFolderIndexInfo\fR(3x), the following messages are renumbered accordingly\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
-Most mail servers allow multiple applications to open the same folder. Therefore, changes to the folder's contents can occur at any time. Before making this request, the application should use
+Most mail servers allow multiple applications to open the same folder\. Therefore, changes to the folder\'s contents can occur at any time\. Before making this request, the application should use
 \fBmail::ACCOUNT::checkNewMail\fR(3x)
-to verify that no unexpected changes have been made to the folder's contents.
+to verify that no unexpected changes have been made to the folder\'s contents\.
 .PP
 
 \fBmail::ACCOUNT::copyMessagesTo\fR
-copies messages in the currently\-open folder to another folder.
+copies messages in the currently\-open folder to another folder\.
 \fIcopyTo\fR
 is a pointer to a
 mail::folder
-object, representing the folder where messages are copied to. If
+object, representing the folder where messages are copied to\. If
 \fIaccount\fR
 is an IMAP account and
 \fIcopyTo\fR
-is another folder in the same account, then the messages are quickly copied by the IMAP server. Otherwise each message is individually downloaded and copied to the
+is another folder in the same account, then the messages are quickly copied by the IMAP server\. Otherwise each message is individually downloaded and copied to the
 \fIcopyTo\fR
-folder.
+folder\.
 .SH "RETURN CODES"
 .PP
 This method returns
 true
 if it succeeds, or
 false
-if it fails. If the method fails, use
+if it fails\. If the method fails, use
 mail::ACCOUNT::getErrmsg()
-to read a brief description of the error.
+to read a brief description of the error\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::ACCOUNT::moveMessagesTo\fR(3x),
-\fBmail::ACCOUNT::searchMessages\fR(3x).
+\fBmail::ACCOUNT::searchMessages\fR(3x)\.

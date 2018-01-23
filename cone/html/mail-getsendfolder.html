@@ -137,7 +137,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id414509" shape="rect" name="id414509"> </a>
+      <a id="id430448" shape="rect" name="id430448"> </a>
 
       <h2>USAGE</h2>
 
@@ -146,9 +146,10 @@ information.
       recipient list. The <span class="structname">mail::account</span> object must be an account
       that's capable of creating this kind of a folder (such as
       <code class="literal">smtp</code> accounts created by
-      <a href="mail-open.html" title="mail::account::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::open</span>(3x)</span></a>).
-      The message may be manually added to the folder with <a href="folder-addmessage.html" title="mail::folder::addMessage" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::addmessage</span>(3x)</span></a>,
-      or by copying a message from another folder using <a href="mail-copymessagesto.html" title="mail::account::copyMessagesTo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::copyMessagesTo</span>(3x)</span></a>.</p>
+      <a class="link" href="mail-open.html" title="mail::account::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::open</span>(3x)</span></a>).
+      The message may be manually added to the folder with
+      <a class="link" href="folder-addmessage.html" title="mail::folder::addMessage" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::addmessage</span>(3x)</span></a>,
+      or by copying a message from another folder using <a class="link" href="mail-copymessagesto.html" title="mail::account::copyMessagesTo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::copyMessagesTo</span>(3x)</span></a>.</p>
 
       <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
@@ -160,23 +161,23 @@ information.
       </div>
 
       <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id402310" shape="rect" name="id402310"> </a>
+        <a id="id418248" shape="rect" name="id418248"> </a>
 
         <h3><em class="parameter"><code>saveFolder</code></em></h3>
 
         <p><em class="parameter"><code>saveFolder</code></em>, if
         not <code class="literal">NULL</code>, specifies that a
         copy of the message should also be saved in this folder. If
-        this mail account uses the experimental <a href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> protocol, a single copy of the
+        this mail account uses the experimental <a class="link" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> protocol, a single copy of the
         message will be transmitted to the <code class="literal">SMAP</code> server, which will file the message
         in the folder, and send it to the designated recipients.
         Otherwise the message is manually saved to this folder
-        using <a href="folder-addmessage.html" title="mail::folder::addMessage" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::addMessage</span>(3x)</span></a>,
-        or <a href="account-libmail-addmessage.html" title="mail::ACCOUNT::addMessage" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::addMessage</span>(3x)</span></a>.</p>
+        using <a class="link" href="folder-addmessage.html" title="mail::folder::addMessage" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::addMessage</span>(3x)</span></a>,
+        or <a class="link" href="account-libmail-addmessage.html" title="mail::ACCOUNT::addMessage" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::ACCOUNT::addMessage</span>(3x)</span></a>.</p>
       </div>
 
       <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id402620" shape="rect" name="id402620"> </a>
+        <a id="id418558" shape="rect" name="id418558"> </a>
 
         <h3>The <span class="structname">mail::smtpInfo</span>
         object</h3>
@@ -211,7 +212,7 @@ public:
             "1"))</span></dt>
 
             <dd>
-              <p>See <a href="mail-open.html" title="mail::account::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::open</span>(3x)</span></a>)
+              <p>See <a class="link" href="mail-open.html" title="mail::account::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::open</span>(3x)</span></a>)
               for a description of this option.</p>
             </dd>
 
@@ -219,7 +220,7 @@ public:
             "1"))</span></dt>
 
             <dd>
-              <p>See <a href="mail-open.html" title="mail::account::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::open</span>(3x)</span></a>)
+              <p>See <a class="link" href="mail-open.html" title="mail::account::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::open</span>(3x)</span></a>)
               for a description of this option.</p>
             </dd>
 
@@ -281,7 +282,7 @@ public:
               delivery status notification for "<em class="replaceable"><code>recipient</code></em>@<em class="replaceable"><code>recipientdomain</code></em>" will
               be sent to "<em class="replaceable"><code>sender</code></em>-<em class="replaceable"><code>recipient</code></em>=<em class="replaceable"><code>recipientdomain</code></em>@<em class="replaceable"><code>senddomain</code></em>"
               (with certain additional details). This option is
-              currently implemented only by the <a href="http://www.courier-mta.org" target="_top" shape="rect">Courier mail server</a>.</p>
+              currently implemented only by the <a class="ulink" href="http://www.courier-mta.org" target="_top" shape="rect">Courier mail server</a>.</p>
             </dd>
 
             <dt><span class="term">options.insert(make_pair("SECURITY",
@@ -291,7 +292,7 @@ public:
               <p>The message must be sent via TLS, and the
               recipient's server must present a certificate signed
               by a trusted, private, certificate authority. This
-              option is currently implemented only by the <a href="http://www.courier-mta.org" target="_top" shape="rect">Courier mail server</a>.</p>
+              option is currently implemented only by the <a class="ulink" href="http://www.courier-mta.org" target="_top" shape="rect">Courier mail server</a>.</p>
 
               <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
                 <h3 class="title">Note</h3>
@@ -307,7 +308,7 @@ public:
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id415004" shape="rect" name="id415004"> </a>
+      <a id="id430942" shape="rect" name="id430942"> </a>
 
       <h2>RETURN CODES AND CALLBACKS</h2>
 
@@ -318,11 +319,11 @@ public:
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id415030" shape="rect" name="id415030"> </a>
+      <a id="id430969" shape="rect" name="id430969"> </a>
 
       <h2>SEE ALSO</h2>
 
-      <p><a href="mail-open.html" title="mail::account::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::open</span>(3x)</span></a>.</p>
+      <p><a class="link" href="mail-open.html" title="mail::account::open" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::open</span>(3x)</span></a>.</p>
     </div>
   </div>
 

@@ -91,7 +91,7 @@ information.
     </div>
 
     <p>The first word in each <code class="literal">* FETCH</code>
-    <a href="smapsyntax.html#singleline" title="Single line replies" shape="rect">single line reply</a> is the
+    <a class="link" href="smapsyntax.html#singleline" title="Single line replies" shape="rect">single line reply</a> is the
     message number, the remaining whitespace-delimited words
     specify the requested attributes. Each requested attribute is
     returned as a single, whitespace-delimited word in the
@@ -153,7 +153,7 @@ information.
                 least once. The server automatically sets this flag
                 after processing a <code class="literal">FETCH
                 CONTENTS</code> command, but it can also be set or
-                cleared manually by the <a href="store.html" title="Modifying message attributes" shape="rect"><code class="literal">STORE</code>
+                cleared manually by the <a class="link" href="store.html" title="Modifying message attributes" shape="rect"><code class="literal">STORE</code>
                 command</a>.</p>
               </dd>
 
@@ -168,8 +168,8 @@ information.
               <dd>
                 <p>This messge is &#8220;<span class="quote">marked</span>&#8221;. &#8220;<span class="quote">MARKED</span>&#8221; is a generic flag that
                 applications may use for their own purposes. The
-                <a href="search.html" title="Searching messages" shape="rect"><code class="literal">SEARCH</code>
-                command</a> also uses this flag.</p>
+                <a class="link" href="search.html" title="Searching messages" shape="rect"><code class="literal">SEARCH</code> command</a> also uses this
+                flag.</p>
               </dd>
             </dl>
           </div>
@@ -189,7 +189,7 @@ information.
         <dd>
           <p>The <code class="literal">KEYWORDS</code> attribute is
           available when <code class="literal">KEYWORDS</code> is
-          listed as an SMAP1 capability (see &#8220;<span class="quote"><a href="conn.html" title="SMAP connection negotiation" shape="rect">SMAP
+          listed as an SMAP1 capability (see &#8220;<span class="quote"><a class="link" href="conn.html" title="SMAP connection negotiation" shape="rect">SMAP
           connection negotiation</a></span>&#8221;). Each message
           may have one or more arbitrary tags associated with it.
           The SMAP1 server associates no special meaning to any
@@ -205,8 +205,8 @@ information.
             interoperability with IMAP is desired. IMAP prohibits
             certain characters from appearing in keywords, namely:
             spaces, parenthesis, quotes, and the following
-            characters: <span><strong class="keycap">{</strong></span>, <span><strong class="keycap">%</strong></span>, <span><strong class="keycap">*</strong></span>, <span><strong class="keycap">\</strong></span>, <span><strong class="keycap">]</strong></span>. Do not use these characters
-            if IMAP interoperability is desired.</p>
+            characters: <span class="keycap"><strong>{</strong></span>, <span class="keycap"><strong>%</strong></span>, <span class="keycap"><strong>*</strong></span>, <span class="keycap"><strong>\</strong></span>, <span class="keycap"><strong>]</strong></span>. Do not use these
+            characters if IMAP interoperability is desired.</p>
           </div>
         </dd>
 
@@ -232,7 +232,7 @@ information.
           folder. Note that this is not necessarily the contents of
           the message's <code class="literal">Date:</code> header.
           <em class="replaceable"><code>rfcdate</code></em> uses
-          the same <a href="http://www.rfc-editor.org/rfc/rfc2822.txt" target="_top" shape="rect">RFC 2822</a> date/time format as the
+          the same <a class="ulink" href="http://www.rfc-editor.org/rfc/rfc2822.txt" target="_top" shape="rect">RFC 2822</a> date/time format as the
           <code class="literal">Date:</code> header. Example:</p>
 
           <div class="literallayout">

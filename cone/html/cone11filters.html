@@ -65,7 +65,7 @@ information.
     filtering, the mail server's filters will usually be faster and
     more efficient.</p>
 
-    <p>Mail filters may be used with any IMAP, <a href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a>, or a local mail account. Mail filters
+    <p>Mail filters may be used with any IMAP, <a class="link" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a>, or a local mail account. Mail filters
     may also be used with POP3 accounts, but they'll be slow, and
     they'll have certain limitations. <span class="application">Cone</span> will have to download a copy of every
     message in the POP3 mailbox, in order to check it against the
@@ -113,7 +113,7 @@ information.
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id353669" shape="rect" name="id353669"> </a>Mail Filter Entry Screen</h4>
+            <h4 class="title"><a id="id369585" shape="rect" name="id369585"> </a>Mail Filter Entry Screen</h4>
           </div>
         </div>
       </div>
@@ -144,16 +144,16 @@ information.
 </pre><hr />
 
       <p>This screen is accessed by highlighting a folder on the
-      Folder Listing screen, then pressing <span><strong class="keycap">F</strong></span>. Each mail filter consists of one
-      or more &#8220;<span class="quote">steps</span>&#8221;. There
-      are two kinds of steps: a &#8220;<span class="quote">select</span>&#8221; step compiles a list of messages
-      that match a certain search criteria; the selection step is
-      followed by one or more steps that apply a particular
-      &#8220;<span class="quote">action</span>&#8221; against all
-      messages that were selected. More than one action step may
-      follow a selection step; messages are processed by each
-      action step in sequence, until another selection step, which
-      searches the remaining messages again, and compiles a
+      Folder Listing screen, then pressing <span class="keycap"><strong>F</strong></span>. Each mail filter consists
+      of one or more &#8220;<span class="quote">steps</span>&#8221;. There are two kinds of steps: a
+      &#8220;<span class="quote">select</span>&#8221; step compiles
+      a list of messages that match a certain search criteria; the
+      selection step is followed by one or more steps that apply a
+      particular &#8220;<span class="quote">action</span>&#8221;
+      against all messages that were selected. More than one action
+      step may follow a selection step; messages are processed by
+      each action step in sequence, until another selection step,
+      which searches the remaining messages again, and compiles a
       different list of selected messages.</p>
 
       <p>Some actions cannot be naturally followed by any other
@@ -167,30 +167,30 @@ information.
       <p>This screen initially shows any existing filtering steps
       defined for the folder. All filtering steps are processed in
       the order shown. Highlighting an existing filtering step and
-      pressing <span><strong class="keycap">CTRL</strong></span>-<span><strong class="keycap">U</strong></span>, or <span><strong class="keycap">CTRL</strong></span>-<span><strong class="keycap">D</strong></span>, moves the filtering step higher
-      or lower, thus changing its relative order in the mail
-      filter. <span><strong class="keycap">DEL</strong></span>
+      pressing <span class="keycap"><strong>CTRL</strong></span>-<span class="keycap"><strong>U</strong></span>, or <span class="keycap"><strong>CTRL</strong></span>-<span class="keycap"><strong>D</strong></span>, moves the filtering step
+      higher or lower, thus changing its relative order in the mail
+      filter. <span class="keycap"><strong>DEL</strong></span>
       removes the existing filtering step. The folder's mail filter
       is removed by highlighting each step and pressing
-      <span><strong class="keycap">DEL</strong></span>, then
+      <span class="keycap"><strong>DEL</strong></span>, then
       highlighting &#8220;<span class="quote">Save
-      Filters</span>&#8221; and pressing <span><strong class="keycap">ENTER</strong></span>.</p>
+      Filters</span>&#8221; and pressing <span class="keycap"><strong>ENTER</strong></span>.</p>
 
       <p>All changes made on this screen are temporary.
       &#8220;<span class="quote">Save Filters</span>&#8221; must be
       selected in order for any changes made on this screen to take
-      effect. <span><strong class="keycap">CTRL</strong></span>-<span><strong class="keycap">C</strong></span> closes this screen without
+      effect. <span class="keycap"><strong>CTRL</strong></span>-<span class="keycap"><strong>C</strong></span> closes this screen without
       changing the folder's existing filter, throwing out all the
       temporary changes.</p>
 
       <p>Highlighting &#8220;<span class="quote">Add new
-      filter</span>&#8221; and pressing <span><strong class="keycap">ENTER</strong></span> adds a new filtering step to
-      the end of the mail filter. A sub-menu is shown to define the
-      new filtering step:</p>
+      filter</span>&#8221; and pressing <span class="keycap"><strong>ENTER</strong></span> adds a new filtering
+      step to the end of the mail filter. A sub-menu is shown to
+      define the new filtering step:</p>
 
       <div class="variablelist">
         <dl>
-          <dt><span class="term"><span><strong class="keycap">S</strong></span> - select</span></dt>
+          <dt><span class="term"><span class="keycap"><strong>S</strong></span> - select</span></dt>
 
           <dd>
             <p>Enters a new searching criteria which will be used
@@ -200,7 +200,8 @@ information.
             information.</p>
           </dd>
 
-          <dt><span class="term"><span><strong class="keycap">D</strong></span> - mark deleted</span></dt>
+          <dt><span class="term"><span class="keycap"><strong>D</strong></span> - mark
+          deleted</span></dt>
 
           <dd>
             <p>Marks all selected messages as deleted. The messages
@@ -208,7 +209,8 @@ information.
             deleted.</p>
           </dd>
 
-          <dt><span class="term"><span><strong class="keycap">U</strong></span> - unmark deleted</span></dt>
+          <dt><span class="term"><span class="keycap"><strong>U</strong></span> - unmark
+          deleted</span></dt>
 
           <dd>
             <p>Removes the &#8220;<span class="quote">deleted</span>&#8221; mark from the selected
@@ -216,7 +218,7 @@ information.
             deleted.</p>
           </dd>
 
-          <dt><span class="term"><span><strong class="keycap">X</strong></span> - delete and
+          <dt><span class="term"><span class="keycap"><strong>X</strong></span> - delete and
           expunge</span></dt>
 
           <dd>
@@ -224,7 +226,7 @@ information.
             folder.</p>
           </dd>
 
-          <dt><span class="term"><span><strong class="keycap">R</strong></span> - mark each message as
+          <dt><span class="term"><span class="keycap"><strong>R</strong></span> - mark each message as
           tagged</span></dt>
 
           <dd>
@@ -236,7 +238,7 @@ information.
             instead of the &#8220;<span class="quote"><code class="literal">*</code></span>&#8221;.</p>
           </dd>
 
-          <dt><span class="term"><span><strong class="keycap">K</strong></span> - unmark, or untag the
+          <dt><span class="term"><span class="keycap"><strong>K</strong></span> - unmark, or untag the
           messages</span></dt>
 
           <dd>
@@ -244,24 +246,27 @@ information.
             messages.</p>
           </dd>
 
-          <dt><span class="term"><span><strong class="keycap">W</strong></span> - watch thread</span></dt>
+          <dt><span class="term"><span class="keycap"><strong>W</strong></span> - watch
+          thread</span></dt>
 
           <dd>
             <p>Watch the selected message's replies/subthreads
             (unless the message is already a part of a watched
-            thread). See <a href="cone02folderindex.html#watch" title="Watching Threads" shape="rect">&#8220;<span class="quote">Watching
+            thread). See <a class="link" href="cone02folderindex.html#watch" title="Watching Threads" shape="rect">&#8220;<span class="quote">Watching
             Threads</span>&#8221;</a> in the &#8220;<span class="quote">Folder Index</span>&#8221; chapter for more
             information on thread watching.</p>
           </dd>
 
-          <dt><span class="term"><span><strong class="keycap">A</strong></span> - unwatch thread</span></dt>
+          <dt><span class="term"><span class="keycap"><strong>A</strong></span> - unwatch
+          thread</span></dt>
 
           <dd>
             <p>Stops watching the message, and its
             replies/subthreads.</p>
           </dd>
 
-          <dt><span class="term"><span><strong class="keycap">M</strong></span> - move messages</span></dt>
+          <dt><span class="term"><span class="keycap"><strong>M</strong></span> - move
+          messages</span></dt>
 
           <dd>
             <p>Move the selected messages to another folder.
@@ -282,7 +287,8 @@ information.
             </div>
           </dd>
 
-          <dt><span class="term"><span><strong class="keycap">C</strong></span> - copy messages</span></dt>
+          <dt><span class="term"><span class="keycap"><strong>C</strong></span> - copy
+          messages</span></dt>
 
           <dd>
             <p>Copies the selected messages to another folder. This
@@ -309,42 +315,43 @@ information.
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id339464" shape="rect" name="id339464"> </a>Search criteria</h5>
+              <h5 class="title"><a id="id355380" shape="rect" name="id355380"> </a>Search criteria</h5>
             </div>
           </div>
         </div>
 
         <div class="variablelist">
           <dl>
-            <dt><span class="term"><span><strong class="keycap">A</strong></span> - select all</span></dt>
+            <dt><span class="term"><span class="keycap"><strong>A</strong></span> - select
+            all</span></dt>
 
             <dd>
-              <p>Press <span><strong class="keycap">A</strong></span> to select all available
-              messages.</p>
+              <p>Press <span class="keycap"><strong>A</strong></span> to select all
+              available messages.</p>
             </dd>
 
-            <dt><span class="term"><span><strong class="keycap">!</strong></span> - not</span></dt>
+            <dt><span class="term"><span class="keycap"><strong>!</strong></span> - not</span></dt>
 
             <dd>
-              <p>Press <span><strong class="keycap">!</strong></span> to logically reverse the
-              following search criteria. Thus, if the entered
-              search criteria was &#8220;<span class="quote">Search
-              the <code class="literal">From</code> header for
-              <code class="literal">troll@example.com</code></span>&#8221; the
+              <p>Press <span class="keycap"><strong>!</strong></span> to logically
+              reverse the following search criteria. Thus, if the
+              entered search criteria was &#8220;<span class="quote">Search the <code class="literal">From</code>
+              header for <code class="literal">troll@example.com</code></span>&#8221; the
               actual search will find messages where the
               <code class="literal">From</code> header does
               <span class="emphasis"><em>NOT</em></span> contain
               this text.</p>
             </dd>
 
-            <dt><span class="term"><span><strong class="keycap">D</strong></span> - search by date</span></dt>
+            <dt><span class="term"><span class="keycap"><strong>D</strong></span> - search by
+            date</span></dt>
 
             <dd>
               <p>A date-related search. Additional prompts follow,
               described below.</p>
             </dd>
 
-            <dt><span class="term"><span><strong class="keycap">S</strong></span> - search by
+            <dt><span class="term"><span class="keycap"><strong>S</strong></span> - search by
             status</span></dt>
 
             <dd>
@@ -359,7 +366,8 @@ information.
               respectively.</p>
             </dd>
 
-            <dt><span class="term"><span><strong class="keycap">T</strong></span> - search by text</span></dt>
+            <dt><span class="term"><span class="keycap"><strong>T</strong></span> - search by
+            text</span></dt>
 
             <dd>
               <p>A text-based search, search for messages that
@@ -368,14 +376,15 @@ information.
               kind of text to search for.</p>
             </dd>
 
-            <dt><span class="term"><span><strong class="keycap">Z</strong></span> - search by size</span></dt>
+            <dt><span class="term"><span class="keycap"><strong>Z</strong></span> - search by
+            size</span></dt>
 
             <dd>
               <p>Search for messages that are bigger or smaller
               than a certain size. Select &#8220;<span class="quote">Larger than</span>&#8221; or
               &#8220;<span class="quote">Smaller than</span>&#8221;
               at the next prompt, then enter the target message
-              size, in bytes, and press <span><strong class="keycap">ENTER</strong></span> to search.</p>
+              size, in bytes, and press <span class="keycap"><strong>ENTER</strong></span> to search.</p>
             </dd>
           </dl>
         </div>
@@ -384,7 +393,7 @@ information.
           <div class="titlepage">
             <div>
               <div>
-                <h6 class="title"><a id="id339520" shape="rect" name="id339520"> </a>Date-based searches</h6>
+                <h6 class="title"><a id="id355436" shape="rect" name="id355436"> </a>Date-based searches</h6>
               </div>
             </div>
           </div>
@@ -439,13 +448,13 @@ information.
           </div>
 
           <p>The actual date is entered interactively. It starts
-          with today's date. Press <span><strong class="keycap">+</strong></span> or <span><strong class="keycap">-</strong></span> to advance the shown date to
-          the next or the following date. Press
-          <span><strong class="keycap">[</strong></span> or
-          <span><strong class="keycap">]</strong></span> to advance
-          the shown date by a month. Press <span><strong class="keycap">&lt;</strong></span> or <span><strong class="keycap">&gt;</strong></span> to advance the shown date
-          by a month. Press the space bar to accept the shown date,
-          and search for messages.</p>
+          with today's date. Press <span class="keycap"><strong>+</strong></span> or <span class="keycap"><strong>-</strong></span> to advance the shown
+          date to the next or the following date. Press
+          <span class="keycap"><strong>[</strong></span> or
+          <span class="keycap"><strong>]</strong></span> to advance
+          the shown date by a month. Press <span class="keycap"><strong>&lt;</strong></span> or <span class="keycap"><strong>&gt;</strong></span> to advance the
+          shown date by a month. Press the space bar to accept the
+          shown date, and search for messages.</p>
 
           <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
             <h3 class="title">Note</h3>
@@ -459,7 +468,7 @@ information.
           <div class="titlepage">
             <div>
               <div>
-                <h6 class="title"><a id="id339649" shape="rect" name="id339649"> </a>Text-based searches</h6>
+                <h6 class="title"><a id="id355565" shape="rect" name="id355565"> </a>Text-based searches</h6>
               </div>
             </div>
           </div>
@@ -469,37 +478,38 @@ information.
 
           <div class="variablelist">
             <dl>
-              <dt><span class="term"><span><strong class="keycap">S</strong></span> - subject</span></dt>
+              <dt><span class="term"><span class="keycap"><strong>S</strong></span> -
+              subject</span></dt>
 
               <dd>
                 <p>Search the contents of the <code class="literal">Subject:</code> header.</p>
               </dd>
 
-              <dt><span class="term"><span><strong class="keycap">F</strong></span> - from</span></dt>
+              <dt><span class="term"><span class="keycap"><strong>F</strong></span> - from</span></dt>
 
               <dd>
                 <p>Search the contents of the <code class="literal">From:</code> header.</p>
               </dd>
 
-              <dt><span class="term"><span><strong class="keycap">T</strong></span> - to</span></dt>
+              <dt><span class="term"><span class="keycap"><strong>T</strong></span> - to</span></dt>
 
               <dd>
                 <p>Search the contents of the <code class="literal">To:</code> header.</p>
               </dd>
 
-              <dt><span class="term"><span><strong class="keycap">C</strong></span> - cc</span></dt>
+              <dt><span class="term"><span class="keycap"><strong>C</strong></span> - cc</span></dt>
 
               <dd>
                 <p>Search the contents of the <code class="literal">Cc:</code> header.</p>
               </dd>
 
-              <dt><span class="term"><span><strong class="keycap">B</strong></span> - bcc</span></dt>
+              <dt><span class="term"><span class="keycap"><strong>B</strong></span> - bcc</span></dt>
 
               <dd>
                 <p>Search the contents of the <code class="literal">Bcc:</code> header.</p>
               </dd>
 
-              <dt><span class="term"><span><strong class="keycap">H</strong></span> - specific
+              <dt><span class="term"><span class="keycap"><strong>H</strong></span> - specific
               header</span></dt>
 
               <dd>
@@ -508,14 +518,16 @@ information.
                 name.</p>
               </dd>
 
-              <dt><span class="term"><span><strong class="keycap">O</strong></span> - contents</span></dt>
+              <dt><span class="term"><span class="keycap"><strong>O</strong></span> -
+              contents</span></dt>
 
               <dd>
                 <p>Search the contents of the message for the given
                 text.</p>
               </dd>
 
-              <dt><span class="term"><span><strong class="keycap">A</strong></span> - anywhere</span></dt>
+              <dt><span class="term"><span class="keycap"><strong>A</strong></span> -
+              anywhere</span></dt>
 
               <dd>
                 <p>Search the given text anywhere - headers or
@@ -525,7 +537,8 @@ information.
           </div>
 
           <p>Enter the text to search for after selecting one of
-          these options, and press <span><strong class="keycap">ENTER</strong></span> to perform the search.</p>
+          these options, and press <span class="keycap"><strong>ENTER</strong></span> to perform the
+          search.</p>
 
           <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
             <h3 class="title">Note</h3>

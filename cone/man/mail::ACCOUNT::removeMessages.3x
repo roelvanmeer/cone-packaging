@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::ACCOUNT::removeMessages
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::ACCOUNT::REMOV" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::ACCOUNT::REMOV" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::ACCOUNT::removeMessages \- Remove messages from the folder
+mail::ACCOUNT::removeMessages - Remove messages from the folder
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,48 +25,48 @@ mail::ACCOUNT::removeMessages \- Remove messages from the folder
 
 
 
-#include <libmail/sync.H>
+#include <libmail/sync\.H>
 
 mail::ACCOUNT *mail;
 .fi
 .RE
 .HP 21
-.BI "mail\->removeMessages(const\ std::vector<size_t>\ " "msgList" ");"
+.BI "mail->removeMessages(const\ std::vector<size_t>\ " "msgList" ");"
 .SH "USAGE"
 .PP
-This function removes messages from the currently open folder.
+This function removes messages from the currently open folder\.
 \fImsgList\fR
-is a list of messages to be removed.
+is a list of messages to be removed\.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-\fBNote\fR
+Note
 .PP
 This request should not be used with accounts on IMAP servers that do not implement the
 \fIUIDPLUS\fR\&[1]
-IMAP extension.
+IMAP extension\.
 \(lqUIDPLUS\(rq
-is required to directly support this functionality. An alternative, much slower, fallback implementation will be used with IMAP servers that do not implement this protocol extension.
+is required to directly support this functionality\. An alternative, much slower, fallback implementation will be used with IMAP servers that do not implement this protocol extension\.
 .SH "RETURN CODES"
 .PP
 This method returns
 true
 if it succeeds, or
 false
-if it fails. If the method fails, use
+if it fails\. If the method fails, use
 mail::ACCOUNT::getErrmsg()
-to read a brief description of the error.
+to read a brief description of the error\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::ACCOUNT::saveFolderIndexInfo\fR(3x),
 \fBmail::ACCOUNT::getFolderIndexInfo\fR(3x),
-\fBmail::ACCOUNT::removeMessages\fR(3x).
-.SH "REFERENCES"
+\fBmail::ACCOUNT::removeMessages\fR(3x)\.
+.SH "NOTES"
 .IP " 1." 4
 UIDPLUS
 .RS 4
-\%http://www.rfc\-editor.org/rfc/rfc2359.txt
+\%http://www.rfc-editor.org/rfc/rfc2359.txt
 .RE

@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.8 2007/02/26 04:13:41 mrsam Exp $
+dnl $Id: configure.in,v 1.10 2007/11/11 18:18:55 mrsam Exp $
 dnl
 dnl Copyright 2001 Double Precision, Inc.  See COPYING for
 dnl distribution information.
@@ -15,8 +15,6 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 
 EXTRA_PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin:/usr/local/bin
-AC_PATH_PROG(OPENSSL, openssl, "", $EXTRA_PATH)
-AC_PATH_PROG(REHASH, c_rehash, "", $EXTRA_PATH)
 AC_PATH_PROGS(PERL, perl5 perl, "", $EXTRA_PATH)
 
 if test "$PERL" = ""
@@ -39,20 +37,21 @@ AC_ARG_WITH(certdb, [  --without-certdb        Do not install default root certi
 			certdb="$withval"
 			;;
 		esac
-], [ certdb="${datadir}/rootcerts"
-	if test "$OPENSSL" = ""
-	then
-		certdb=""
-	fi
-])
+], [ certdb="${datadir}/rootcerts" ])
 rm -f rootcerts.cnf
 echo "dir=\"$certdb\"" >rootcertsdir.cnf
 
 AC_SUBST(certdb)
-AC_SUBST(OPENSSL)
 
-if test "$OPENSSL" != ""
+. ../tcpd/couriertls.config
+
+REHASH=""
+
+if test "$ssllib" = "openssl"
 then
+	AC_PATH_PROG(OPENSSL, openssl, "", $EXTRA_PATH)
+	AC_PATH_PROG(REHASH, c_rehash, "", $EXTRA_PATH)
+
 	if test "$REHASH" = ""
 	then
 		AC_MSG_WARN(Unable to locate OpenSSL's c_rehash script in the current)
@@ -63,8 +62,18 @@ then
 		AC_MSG_ERROR(openssl found but c_rehash was not found.)
 	fi
 fi
-AC_SUBST(c_rehash)
 
-AM_CONDITIONAL(HAVE_OPENSSL, test "$OPENSSL" != "")
+if test "$ssllib" = "gnutls"
+then
+	REHASH=": \#"
+fi
+AC_SUBST(REHASH)
+
+if test "$certdb" = ""
+then
+	REHASH=""
+fi
+
+AM_CONDITIONAL(HAVE_OPENSSL, test "$REHASH" != "")
 
 AC_OUTPUT(Makefile)

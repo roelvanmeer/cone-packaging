@@ -3,21 +3,21 @@
 .\"<!-- distribution information. -->
 .\"     Title: mail::folder::getName
 .\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/03/2007
+.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
+.\"      Date: 11/11/2007
 .\"    Manual: 
 
 
 Cone: COnsole Newsreader And Emailer
 .\"    Source: 
 .\"
-.TH "MAIL::FOLDER::GETNAM" "3x" "07/03/2007" "" "Cone: COnsole Newsreader An"
+.TH "MAIL::FOLDER::GETNAM" "3x" "11/11/2007" "" "Cone: COnsole Newsreader An"
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-mail::folder::getName \- Return the folder's name
+mail::folder::getName - Return the folder's name
 .SH "SYNOPSIS"
 .sp
 .RS 4
@@ -25,22 +25,22 @@ mail::folder::getName \- Return the folder's name
 
 
 
-#include <libmail/mail.H>
+#include <libmail/mail\.H>
 
 mail::folder *folder;
 .fi
 .RE
 .HP 36
-.BI "std::string nameStr=folder\->getName(void);"
+.BI "std::string nameStr=folder->getName(void);"
 .SH "USAGE"
 .PP
 This function returns
-\fIfolder\fR's name, in the application's character set. The folder's name is generally specified by the server; it is automatically converted to the application's character set, where possible.
+\fIfolder\fR\'s name, in the application\'s character set\. The folder\'s name is generally specified by the server; it is automatically converted to the application\'s character set, where possible\.
 .SH "RETURN CODES"
 .PP
-A string that specifies the folder's name.
+A string that specifies the folder\'s name\.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::findFolder\fR(3x),
-\fBmail::folder::getPath\fR(3x).
+\fBmail::folder::getPath\fR(3x)\.
