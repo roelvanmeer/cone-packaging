@@ -1,4 +1,4 @@
-# $Id: cone.spec.in,v 1.12 2006/02/17 01:20:52 mrsam Exp $
+# $Id: cone.spec.in,v 1.14 2007/07/22 01:54:11 mrsam Exp $
 
 # Custom build against libcurses-5.3
 
@@ -22,16 +22,20 @@ BuildRequires: ncurses-devel
 
 %define import_rootcerts %(rpm -q courier >/dev/null 2>&1 && echo 1 || echo 0)
 
+%if 0%{!?dist:1}
 %if %is_not_mandrake
 %define cone_release %(release="`rpm -q --queryformat='.%{VERSION}' redhat-release 2>/dev/null`" ; if test $? != 0 ; then release="`rpm -q --queryformat='.%{VERSION}' fedora-release 2>/dev/null`" ; if test $? != 0 ; then release="" ; fi ; fi ; echo "$release")
 %else
 %define cone_release mdk
 %endif
+%else
+%define cone_release %{nil}
+%endif
 
 Summary: CONE mail reader
 Name: cone
-Version: 0.70
-Release: 1%{cone_release}
+Version: 0.71
+Release: 1%{?dist}%{cone_release}
 URL: http://www.courier-mta.org/cone
 Source0: %{name}-%{version}.tar.bz2
 License: GPL
@@ -79,7 +83,7 @@ export LDFLAGS
 
 %configure -C --with-devel
 %build
-%{__make} %{?_smp_mflags}
+%{__make} -s %{?_smp_mflags}
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__make} install DESTDIR=$RPM_BUILD_ROOT

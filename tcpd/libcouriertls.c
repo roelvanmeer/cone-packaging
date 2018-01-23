@@ -1,5 +1,5 @@
 /*
-** Copyright 2000-2006 Double Precision, Inc.
+** Copyright 2000-2007 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 #include	"config.h"
@@ -418,7 +418,8 @@ SSL_CTX *tls_create(int isserver, const struct tls_info *info)
 
 	ctx=SSL_CTX_new(protocol && strcmp(protocol, "SSL2") == 0
 							? SSLv2_method():
-		protocol && strcmp(protocol, "SSL3") == 0 ? SSLv23_method():
+		protocol && strcmp(protocol, "SSL3") == 0 ? SSLv3_method():
+		protocol && strcmp(protocol, "SSL23") == 0 ? SSLv23_method():
 		TLSv1_method());
 
 	if (!ctx)

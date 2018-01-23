@@ -3,7 +3,7 @@
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: mimegpg.c,v 1.10 2005/11/23 00:47:43 mrsam Exp $";
+static const char rcsid[]="$Id: mimegpg.c,v 1.11 2007/07/04 02:24:38 mrsam Exp $";
 #include "config.h"
 #include "gpglib.h"
 #include <stdio.h>
@@ -13,6 +13,12 @@ static const char rcsid[]="$Id: mimegpg.c,v 1.10 2005/11/23 00:47:43 mrsam Exp $
 #include <signal.h>
 
 extern void libmail_gpg_noexec(int fd);
+
+void rfc2045_error(const char *p)
+{
+	fprintf(stderr, "%s\n", p);
+	exit(1);
+}
 
 static void usage()
 {

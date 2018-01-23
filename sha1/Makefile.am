@@ -2,9 +2,8 @@
 # Copyright 2001-2005 Double Precision, Inc.
 # See COPYING for distribution information.
 #
-# $Id: Makefile.am,v 1.7 2005/06/19 13:15:29 mrsam Exp $
+# $Id: Makefile.am,v 1.8 2007/06/30 15:40:53 mrsam Exp $
 
-AUTOMAKE = srcdir=${srcdir} @SHELL@ ${srcdir}/../automake.fix @AUTOMAKE@
 
 if HMACC
 HMAC=hmac.c

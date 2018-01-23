@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.14 2005/06/19 13:15:28 mrsam Exp $
+# $Id: Makefile.am,v 1.15 2007/07/04 02:24:38 mrsam Exp $
 #
 # Copyright 2002-2004, Double Precision Inc.
 #
@@ -7,7 +7,6 @@
 
 noinst_LTLIBRARIES=libmail.la
 noinst_PROGRAMS=mailtool testsuite
-AUTOMAKE = srcdir=${srcdir} @SHELL@ ${srcdir}/../automake.fix @AUTOMAKE@
 
 libmail_la_SOURCES=misc.H mail.H mail.C \
 			addmessage.C addmessage.H \

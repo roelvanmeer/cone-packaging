@@ -75,13 +75,13 @@
 /* 32bit datatype */
 #undef RFC1035_UINT32
 
-/* The size of a `unsigned', as computed by sizeof. */
+/* The size of `unsigned', as computed by sizeof. */
 #undef SIZEOF_UNSIGNED
 
-/* The size of a `unsigned long', as computed by sizeof. */
+/* The size of `unsigned long', as computed by sizeof. */
 #undef SIZEOF_UNSIGNED_LONG
 
-/* The size of a `unsigned short', as computed by sizeof. */
+/* The size of `unsigned short', as computed by sizeof. */
 #undef SIZEOF_UNSIGNED_SHORT
 
 /* Define to 1 if you have the ANSI C header files. */

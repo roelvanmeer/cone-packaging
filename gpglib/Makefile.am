@@ -1,10 +1,9 @@
 #
-# Copyright 2001-2005 Double Precision, Inc.  See COPYING for
+# Copyright 2001-2007 Double Precision, Inc.  See COPYING for
 # distribution information.
 #
-# $Id: Makefile.am,v 1.11 2005/11/16 02:23:15 mrsam Exp $
+# $Id: Makefile.am,v 1.13 2007/07/04 02:24:38 mrsam Exp $
 
-AUTOMAKE = srcdir=${srcdir} @SHELL@ ${srcdir}/../automake.fix @AUTOMAKE@
 
 CLEANFILES=gpg.h
 
@@ -24,8 +23,10 @@ testgpg_DEPENDENCIES=$(testgpg_LDADD)
 testgpg_LDFLAGS=-static
 
 mimegpg_SOURCES=mimegpg.c
-mimegpg_LDADD=libgpg.la ../rfc822/libencode.la
-mimegpg_DEPENDENCIES=libgpg.la ../rfc822/libencode.la
+mimegpg_LDADD=libgpg.la ../rfc2045/librfc2045.la ../rfc822/librfc822.la \
+		../rfc822/libencode.la ../numlib/libnumlib.la
+mimegpg_DEPENDENCIES=libgpg.la ../rfc2045/librfc2045.la ../rfc822/librfc822.la\
+		../rfc822/libencode.la ../numlib/libnumlib.la
 BUILT_SOURCES=gpg.h mimegpg.html mimegpg.1
 EXTRA_DIST=mimegpg.html mimegpg.1 README.html
 
