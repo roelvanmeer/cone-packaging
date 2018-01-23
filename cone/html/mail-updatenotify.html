@@ -1,0 +1,577 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::account::updateNotify</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::account Native API reference"
+HREF="native.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::account::updateKeywords"
+HREF="mail-updatekeywords.html"><LINK
+REL="NEXT"
+TITLE="Miscellaneous functions"
+HREF="libmail-misc.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mail-updatekeywords.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libmail-misc.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="MAIL-UPDATENOTIFY"
+></A
+>mail::account::updateNotify</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN8648"
+></A
+><H2
+>Name</H2
+>mail::account::updateNotify&nbsp;--&nbsp;Request notification of folder updates</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN8651"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/mail.H&#62;<br>
+<br>
+<br>
+class&nbsp;myCallback&nbsp;:&nbsp;public&nbsp;mail::callback&nbsp;{<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success(std::string&nbsp;msg);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;fail(std::string&nbsp;msg);<br>
+};</P
+><P
+CLASS="LITERALLAYOUT"
+>mail::account&nbsp;*account;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN8654"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>account-&#62;<TT
+CLASS="FUNCTION"
+>updateNotify</TT
+></CODE
+>(bool <TT
+CLASS="PARAMETER"
+><I
+>enableDisable</I
+></TT
+>, myCallback &#38;<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN8662"
+></A
+><H2
+>USAGE</H2
+><P
+>If supported by the mail server, this function requests that the application
+be notified immediately if another application makes any changes to the
+currently open folder.
+This includes:</P
+><P
+></P
+><UL
+><LI
+><P
+>New mail delivered to the folder.</P
+></LI
+><LI
+><P
+>Existing messages removed from the folder.</P
+></LI
+><LI
+><P
+>Changes to the messages' flags.</P
+></LI
+></UL
+><P
+>These events are normally reported by invoking the
+<TT
+CLASS="FUNCTION"
+>newMessages</TT
+>,
+<TT
+CLASS="FUNCTION"
+>messagesRemoved</TT
+>, and
+<TT
+CLASS="FUNCTION"
+>messageChanged</TT
+> method of the
+<CODE
+CLASS="STRUCTNAME"
+>mail::callback::folder</CODE
+> object that was
+passed to
+<A
+HREF="folder-open.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::folder::open</SPAN
+>(3x)</SPAN
+></A
+>.</P
+><P
+>These callback function normally are not generated immediately after
+the corresponding events occur.
+Changes to the folder's contents are usually checked only when the next
+request is processed;
+additionally many mail servers do not even do that, and only check for
+changes when the mail clients explicitly asks the server to check for new
+mail (<A
+HREF="mail-checknewmail.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::checkNewMail</SPAN
+>(3x)</SPAN
+></A
+>) or
+to update the permanent message status
+(
+<A
+HREF="mail-removemessages.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::removeMessages</SPAN
+>(3x)</SPAN
+></A
+> or
+
+<A
+HREF="mail-updatefolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::updateFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>).</P
+><P
+>This method requests the server to notify the application immediately when
+another application changes the folder (the
+<TT
+CLASS="PARAMETER"
+><I
+>enableDisable</I
+></TT
+> parameter is <TT
+CLASS="LITERAL"
+>true</TT
+>),
+or to stop notifying the application
+(<TT
+CLASS="PARAMETER"
+><I
+>enableDisable</I
+></TT
+> is false).</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>This method only works with IMAP mail accounts on IMAP servers that support
+the IMAP IDLE extension, as described by
+<A
+HREF="http://www.rfc-editor.org/rfc/rfc2177.txt"
+TARGET="_top"
+>RFC
+2177</A
+>.
+This method has no effect with IMAP servers that do not implement the IDLE
+extension, or other mail accounts.</P
+><P
+>This method is also implemented for local mail in maildirs, on systems
+running
+the SGI
+<A
+HREF="http://oss.sgi.com/projects/fam/"
+TARGET="_top"
+>File Access Monitor</A
+>.
+This method has no effect on mbox mail folders, or on systems without the
+FAM daemon.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>The immediate update notification mode is enabled until it is explicitly
+disabled.
+When the immediate update notification mode is in effect with an IMAP
+IDLE-capable server, any other request silently terminates the IDLE mode,
+performs the request, and reenters IDLE mode.</P
+><P
+>This method is a no-op if the account does not support the update
+notification mode, and
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> method is quietly invoked, without any
+further processing.
+When <TT
+CLASS="PARAMETER"
+><I
+>enableDisable</I
+></TT
+> is true, the
+<TT
+CLASS="FUNCTION"
+>success</TT
+> method is invoked when the IMAP server
+acknowledges that it entered the IDLE mode, or
+when monitoring begins on the currently open maildir folder.
+When <TT
+CLASS="PARAMETER"
+><I
+>enableDisable</I
+></TT
+> is false, the
+<TT
+CLASS="FUNCTION"
+>success</TT
+> method is invoked when the IMAP server
+acknowledges the completion of the IDLE command, and immediate update
+notification mode stops (or after maildor folder monitoring stops).</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>When <TT
+CLASS="PARAMETER"
+><I
+>enableDisable</I
+></TT
+> is set to false, it is still
+possible that some
+<CODE
+CLASS="STRUCTNAME"
+>mail::callback::folder</CODE
+> callback methods will be
+invoked before <TT
+CLASS="FUNCTION"
+>success</TT
+>.
+This occurs when the server was in the process of reporting folder changes
+just before the client requested the termination of immediate update
+notification.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN8716"
+></A
+><H2
+>Return Codes</H2
+><P
+>The application must wait until
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.
+The <TT
+CLASS="FUNCTION"
+>success</TT
+> method is invoked when this request is
+succesfully processed.
+The <TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked if this request cannot
+be processed.
+The application must not destroy
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+> until either the
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method may be invoked even after other
+callback methods were invoked.
+This indicates that the request was partially completed before the error
+was encountered.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN8731"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="mail-checknewmail.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::checkNewMail</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-removemessages.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::removeMessages</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-updatefolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::updateFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="http://www.rfc-editor.org/rfc/rfc2177.txt"
+TARGET="_top"
+>RFC
+2177</A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mail-updatekeywords.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libmail-misc.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::account::updateKeywords</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="native.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Miscellaneous functions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

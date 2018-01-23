@@ -1,0 +1,197 @@
+/* $Id: init.C,v 1.8 2006/06/04 21:36:01 mrsam Exp $
+**
+** Copyright 2003-2006, Double Precision Inc.
+**
+** See COPYING for distribution information.
+*/
+
+#include "config.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+#include <errno.h>
+#include <pwd.h>
+#include <time.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include "curses/cursesdialog.H"
+#include "curses/curseslabel.H"
+#include "curses/cursesfield.H"
+#include "curses/cursesfilereq.H"
+#include "curses/cursesmoronize.H"
+
+#include "unicode/unicode.h"
+#include "gettext.H"
+#include "messagesize.H"
+#include <string>
+#include <iostream>
+
+#include "init.H"
+#include "buildversion.H"
+#include "libmail/mail.H"
+
+using namespace std;
+
+extern Gettext::Key key_MORE;
+extern Gettext::Key key_YANK;
+extern Gettext::Key key_CLREOL;
+
+/*
+** Common init code between cone and leaf.
+*/
+
+CursesScreen *cursesScreen=NULL;
+CursesMainScreen *mainScreen=NULL;
+CursesStatusBar *statusBar=NULL;
+CursesTitleBar *titleBar=NULL;
+SpellCheckerBase *spellCheckerBase=NULL;
+
+bool usesampm;
+
+//
+// Open/Save dialog indicator of file size or directory.
+
+static string myFmtDirEntrySize(unsigned long size, bool isDir)
+{
+	if (isDir)
+		return _(" (Dir)");
+
+	return Gettext(_(" (%1%)")) << (string)MessageSize(size, false);
+}
+
+void outofmemory()
+{
+	cerr << "Out of memory" << flush;
+	LIBMAIL_THROW(_("Out of memory."));
+}
+
+void init()
+{
+	setlocale(LC_ALL, "");
+	textdomain("cone");
+	signal(SIGCHLD, SIG_DFL);
+
+	// Try to guess whether the local system uses a 24 hour clock, or
+	// AM/PM.
+
+	{
+		time_t t=time(NULL);
+		struct tm tmptr= *localtime(&t);
+
+		tmptr.tm_hour=21;
+		tmptr.tm_min=0;
+		tmptr.tm_sec=0;
+
+		char buf[80];
+
+		usesampm=false;
+
+		if (strftime(buf, sizeof(buf), "%X", &tmptr) > 0 &&
+		    strchr(buf, '9'))
+			usesampm=true;
+	}
+
+#if 0
+	close(2);
+	if (open("debug.log", O_CREAT|O_TRUNC|O_WRONLY|O_APPEND, 0666)
+	    != 2)
+		exit(1);
+#endif
+
+	{
+		string chset=Gettext::defaultCharsetName();
+		const struct unicode_info *myChset;
+
+		//
+		// We can only handle multibyte displays if we're linked
+		// with the wide character version of the curses library.
+		//
+
+		if (chset.size() > 0 &&
+		    ((myChset=unicode_find(chset.c_str())) == NULL
+#if WIDECURSES
+
+#else
+		     || (myChset->flags & (UNICODE_MB | UNICODE_SISO))
+#endif
+		     ))
+		{
+			cerr << (string)
+				(Gettext(_("ERROR: Your display appears to be set to the %1% character set.\n"
+					   "This application cannot display this character set.  If this application did\n"
+					   "not read the display character set name correctly, the name of the display's\n"
+					   "character set name can be manually specified using the CHARSET environment\n"
+					   "variable.  Otherwise reconfigure your display to use a supported character\n"
+					   "set and try again.\n"))
+				 << chset) << flush;
+			exit(1);
+		}
+	}
+
+	{
+		const struct unicode_info *myChset=Gettext::defaultCharset();
+
+		unicode_char ucbuf[2];
+		int dummy;
+
+		size_t i;
+
+		for (i=0; CursesMoronize::moronizationList[i].keycode; i++)
+		{
+			ucbuf[0]=CursesMoronize::moronizationList[i]
+				.unicode_char;
+			ucbuf[1]=0;
+
+			char *p=(*myChset->u2c)(myChset, ucbuf, &dummy);
+			if (p == NULL)
+				CursesMoronize::moronizationList[i]
+					.unicode_char=0;
+			else free(p);
+		}
+	}
+
+	// Initialize global locate-specific text.
+
+	CursesStatusBar::extendedErrorPrompt=
+		_("Press SPACE to continue.");
+	CursesStatusBar::shortcut_next_key= _("^O");
+	CursesStatusBar::shortcut_next_descr= _("mOre");
+
+#define TOKEYCODE(s) ( ((const vector<wchar_t> &)(s)).size() > 0 ? \
+		((const vector<wchar_t> &)(s))[0]:0)
+
+	CursesStatusBar::shortcut_next_keycode=TOKEYCODE(key_MORE);
+	Curses::mbtow(_("yY"),CursesField::yesKeys);
+	Curses::mbtow(_("nN"),CursesField::noKeys);
+	CursesField::yankKey=TOKEYCODE(key_YANK);
+	CursesField::clrEolKey=TOKEYCODE(key_CLREOL);
+
+	CursesFileReq::fmtSizeFunc= &myFmtDirEntrySize;
+
+
+}
+
+void version()
+{
+	cout << "Cone " VERSION "/" BUILDVERSION << endl;
+	exit(0);
+}
+
+string curdir()
+{
+	char b[PATH_MAX+1];
+
+	b[sizeof(b)-1]=0;
+
+	if (getcwd(b, sizeof(b)-1) == NULL)
+	{
+		cerr << "getcwd: " << strerror(errno) << endl;
+		exit(1);
+	}
+
+	return b;
+}
+

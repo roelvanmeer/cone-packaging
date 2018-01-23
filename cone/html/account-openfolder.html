@@ -1,0 +1,344 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::ACCOUNT::openFolder</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::ACCOUNT Synchronous API reference"
+HREF="synchronous.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::ACCOUNT::moveMessagesTo"
+HREF="account-movemessagesto.html"><LINK
+REL="NEXT"
+TITLE="mail::ACCOUNT::readFolderInfo"
+HREF="account-readfolderinfo.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="account-movemessagesto.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="account-readfolderinfo.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="ACCOUNT-OPENFOLDER"
+></A
+>mail::ACCOUNT::openFolder</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN4666"
+></A
+><H2
+>Name</H2
+>mail::ACCOUNT::openFolder&nbsp;--&nbsp;Open a folder</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN4669"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/sync.H&#62;<br>
+<br>
+mail::ACCOUNT&nbsp;*mail;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN4671"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>bool ok=mail-&#62;<TT
+CLASS="FUNCTION"
+>openFolder</TT
+></CODE
+>(const mail::folder *<TT
+CLASS="PARAMETER"
+><I
+>folder</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+><P
+CLASS="LITERALLAYOUT"
+>std::string&nbsp;errmsg=mail-&#62;getErrmsg();</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4678"
+></A
+><H2
+>USAGE</H2
+><P
+>A mail folder must be formally "opened" before the messages in the folder
+may be accessed.
+Each mail account can have only one mail folder at any time
+Opening another folder automatically "closes" the previous folder.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Different <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+>
+or <CODE
+CLASS="STRUCTNAME"
+>mail::ACCOUNT</CODE
+>
+objects may each
+have a folder opened, at the same time.
+It is possible to create multiple <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+>
+or <CODE
+CLASS="STRUCTNAME"
+>mail::ACCOUNT</CODE
+>
+objects that refer to the same actual mail account.
+Whether it is possible to access the same account multiple times,
+using different objects, and whether
+each object may have the same folder opened depends on the account type
+and/or the remote server.</P
+><P
+></P
+><UL
+><LI
+><P
+>Whether it's possible to open the same remote IMAP or POP3 account
+more than once depends on the remote IMAP/POP3 server.</P
+></LI
+><LI
+><P
+>Whether it's possible to open the same folder on a remote IMAP server account
+more than once depends on the remote IMAP/POP3 server.
+Most IMAP servers allow the same account to be opened more than once, as
+long as the different login sessions do not try to open the same folder.
+Some IMAP servers allow the same folder to be opened simultaneously by
+multiple sessions.</P
+></LI
+><LI
+><P
+>It is generally possible to open the same local mail folder simultaneously,
+via multiple <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+> objects, as long as
+only one pending request is issued at a time.
+Concurrent access to local maildirs generally works well, however simultaneous
+access to
+the same mbox folder may be rather slow, due to the overhead of locking
+and rescanning of the folder by each <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+>
+object.</P
+></LI
+></UL
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>Any previously-opened folder is closed before the an attempt to open this
+folder is made.
+If the new folder cannot be opened, the previous folder is still considered
+closed.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4697"
+></A
+><H2
+>RETURN CODES AND CALLBACKS</H2
+><P
+>This method returns <TT
+CLASS="LITERAL"
+>true</TT
+> if it succeeds, or
+<TT
+CLASS="LITERAL"
+>false</TT
+> if it fails.
+If the method fails, use
+<CODE
+CLASS="STRUCTFIELD"
+>mail::ACCOUNT::getErrmsg()</CODE
+> to read a brief
+description of the error.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4703"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="account-gettoplevelfolders.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::getTopLevelFolders</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="account-readfolderinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::readFolderInfo</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="account-movemessagesto.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="account-readfolderinfo.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::ACCOUNT::moveMessagesTo</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="synchronous.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::ACCOUNT::readFolderInfo</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

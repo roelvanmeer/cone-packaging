@@ -1,0 +1,634 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>New Account</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Cone mail client"
+HREF="cone00index.html"><LINK
+REL="PREVIOUS"
+TITLE="Setup Screen"
+HREF="cone05setup.html"><LINK
+REL="NEXT"
+TITLE="Remote Configuration"
+HREF="cone07remoteconfig.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="cone05setup.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="cone07remoteconfig.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="CONE06NEWACCOUNT"
+></A
+>New Account</H1
+><P
+>The <SPAN
+CLASS="QUOTE"
+>"New Account"</SPAN
+> option off the Main Menu adds a new account
+toe the Folder Listing screen.
+Selecting this option results in a prompt to select the mail account
+type:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><B
+CLASS="KEYCAP"
+>I</B
+></DT
+><DD
+><P
+>Adds an IMAP, or an SMAP account.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>P</B
+></DT
+><DD
+><P
+>Adds a POP3 account.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>M</B
+></DT
+><DD
+><P
+>Adds a <SPAN
+CLASS="QUOTE"
+>"POP3 maildrop"</SPAN
+> account.
+With the regular POP3 account, the messages in the POP3 mailbox remain
+on the server, and <TT
+CLASS="APPLICATION"
+>Cone</TT
+> reads the contents of the messages on as-needed
+basis.
+With a POP3 maildrop account, all messages from the POP3 mailbox are
+immediately downloaded, then removed from the POP3 mailbox.
+Each time new mail is found, the new messages
+are downloaded, then removed from the server.</P
+><P
+>Some very old POP3 servers may only work in POP3 maildrop mode with
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+>; they do not implement the <SPAN
+CLASS="QUOTE"
+>"UIDL"</SPAN
+> POP3 protocol command
+which is necessary in order to keep the messages stored on the POP3 server.
+If an attempt to create a regular POP3 account fails because the server
+does not implement the <SPAN
+CLASS="QUOTE"
+>"UIDL"</SPAN
+> command, create a POP3 maildrop
+account instead.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>N</B
+></DT
+><DD
+><P
+>Adds a NetNews (Usenet) newsgroup account.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>S</B
+></DT
+><DD
+><P
+>Creates a local mail account that includes the default system mailbox.
+On system that use maildirs, this option sets up a mail account for
+<TT
+CLASS="FILENAME"
+>$HOME/Maildir</TT
+>, the maildir where incoming mail is
+delivered by default.</P
+><P
+>On systems that do not use maildirs, this option finds the local mailbox
+file in <TT
+CLASS="FILENAME"
+>/var/spool/mail</TT
+>, or the location specified
+by the <CODE
+CLASS="ENVAR"
+>MAIL</CODE
+> environment variable.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> also prompts for the name of a directory where mail folders should
+be created, relative to the home directory.</P
+><P
+>In all cases, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> also asks for the account's name, which goes on the
+Folder Listing screen.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>O</B
+></DT
+><DD
+><P
+>Creates an extra mail account for local mail that's not tied to the
+default system maildirs.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> prompts for the name of a directory where mail folders should be
+stored, then the account's name, which goes on the
+Folder Listing screen.</P
+></DD
+></DL
+></DIV
+><P
+>Selecting the option to create a new IMAP, POP3,
+or NetNews account displays the
+following screen.
+This screen also comes up after choosing to edit an existing IMAP/POP3/News
+account, from the Folder Listing screen:</P
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN1612"
+>New/Edit Account Screen</A
+></H1
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><HR><PRE
+CLASS="PROGRAMLISTING"
+><B> ADD ACCOUNT                          CONE                                  </B>
+
+
+
+
+                                Add IMAP Account
+
+                Account name: ______________________________________
+                      Server: ______________________________________
+                       Login: ______________________________________
+                    Password: ______________________________________
+
+                              [ ] Do not send password in clear text
+
+                              [ ] Use an encrypted connection
+
+                              [ LOGIN ]
+
+                              [ CANCEL ]
+
+
+<B>                                                                            </B>
+&#13;</PRE><HR
+></TD
+></TR
+></TABLE
+><P
+>When editing an existing account, the following fields will be initialized
+to contain the current account setting.
+When adding a new account, the following fields will be blank:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Account name</DT
+><DD
+><P
+>The name of the account, as shown on the Folder Listing screen.</P
+></DD
+><DT
+>Server</DT
+><DD
+><P
+>The name of the mail server.
+Optionally, add a colon, <SPAN
+CLASS="QUOTE"
+>":"</SPAN
+>, and a decimal port number to
+specify a non-default port.</P
+></DD
+><DT
+>Login</DT
+><DD
+><P
+>The account's login ID.
+Leave this field blank for
+NetNews servers that do not require passwords.</P
+></DD
+><DT
+>Password</DT
+><DD
+><P
+>The login password.
+Leave this field blank for
+NetNews servers that do not require passwords.</P
+></DD
+><DT
+>Do not send password in clear text</DT
+><DD
+><P
+>If enabled, this setting prevents the password from being sent in the clear
+over the network.
+The mail server must be able to support secure password authentication,
+where the password is transmitted in an encrypted or scrambled form.</P
+><P
+>This field is not yet implemented for NetNews accounts.</P
+></DD
+><DT
+>Use an encrypted connection</DT
+><DD
+><P
+>Select this option to enable encryption.</P
+></DD
+><DT
+>[ LOGIN ]</DT
+><DD
+><P
+>Highlight this button, and press <B
+CLASS="KEYCAP"
+>ENTER</B
+> to open the mail
+account.</P
+></DD
+><DT
+>[ CANCEL ]</DT
+><DD
+><P
+>Close this screen without adding or changing the account.</P
+></DD
+></DL
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN1652"
+>Options</A
+></H2
+><P
+>The server's name may be followed by one or more options of the
+following options, each one preceded with a slash:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>/imap</TT
+></DT
+><DD
+><P
+>Use IMAP only, do not use SMAP.
+SMAP is an experimental protocol, currently implemented in the
+<A
+HREF="http://www.courier-mta.org"
+TARGET="_top"
+>Courier mail server</A
+> that
+offers some additional bells and whistles over IMAP.
+A mail account on Courier is set up as a normal IMAP account; after connecting
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> would normally select and use SMAP automatically.
+This option disables SMAP, and falls back to the IMAP protocol.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/nossl</TT
+></DT
+><DD
+><P
+>Disable encryption.
+Many mail servers have the ability to upgrade a plain text login to an
+encrypted connection.
+Even if <SPAN
+CLASS="QUOTE"
+>"Use an encrypted connection"</SPAN
+> is not selected,
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> will upgrade an unencrypted connection to an encrypted connection,
+if the mail server supports this capability.
+This option disables the upgrade, and is mostly useful for debugging.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/novalidate-cert</TT
+></DT
+><DD
+><P
+>Do not validate the server's SSL certificate when using an encrypted
+connection.
+Normally the mail server's SSL certificate must be validate when using an
+encrypted connection.
+The certificate's name must match the server's name, and the certificate
+must be signed by a trusted certificate authority.</P
+><P
+>The encrypted connection normally
+fails if the certificate cannot be validate.
+Validation requires that a list of trusted certificate
+authorities must be known and configured.
+It's simply impossible to know
+which certificate authorities are valid without an explicit list of valid,
+known,
+trusted, certificate authorities.  If a trusted authority
+list is not configured, no certificate can be validated.  If the server's
+certificate is a self-signed certificate (this is often used for testing
+purposes), or if it's not signed by a known authority, the encrypted connection
+fails.</P
+><P
+>This <TT
+CLASS="LITERAL"
+>/novalidate-cert</TT
+> option disables certificate
+validation.
+The encrypted connection will be established even if the server's certificate
+would otherwise be rejected.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>This option is applicable even when an encrypted IMAP or POP3 connection
+is not explicitly requested.
+Many mail servers are capable of automatically upgrading unencrypted
+connections to a fully-encrypted connection.
+If a mail server claims to be able to use encryption, then there's no reason
+not to use it.  The result is that all encryption certification requirements
+still apply even when encryption is not explicitly requested.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/debugio</TT
+></DT
+><DD
+><P
+>This debugging option logs network traffic for this account to the standard
+error stream.  Used for debugging only, when standard error is redirected to
+a file.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/timeout=</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+></DT
+><DD
+><P
+>Close the connection if the IMAP/SMAP, POP3, or NNTP server does not respond
+to a command in <TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+> seconds (default: 60).</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/noop=</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+></DT
+><DD
+><P
+>Check for new messages in the currently open IMAP/SMAP folder every
+<TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+> seconds (default: 600).</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Most IMAP servers implement a protocol extension that reports new messages
+(and other changes to the folder's contents) immediately, without waiting
+for an explicit request to check for new mail.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>This option is also used by POP3 folders, where it defaults to 60 seconds.
+POP3 does not provide for new mail notification;
+the option's only purpose is to prevent
+the POP3 server from disconnecting due to inactivity.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/autologout=</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+></DT
+><DD
+><P
+>Automatically close an NNTP connection after
+<TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+> seconds of inactivty (default: 300).
+The connection will be automatically reestablished, when necessary.</P
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="cone05setup.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="cone07remoteconfig.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Setup Screen</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="cone00index.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Remote Configuration</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

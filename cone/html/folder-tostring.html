@@ -1,0 +1,363 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::folder::toString</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::folder Native API reference"
+HREF="libmail-folder.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::folder::setRights"
+HREF="folder-setrights.html"><LINK
+REL="NEXT"
+TITLE="Creating headers"
+HREF="mail-headers.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="folder-setrights.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mail-headers.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="FOLDER-TOSTRING"
+></A
+>mail::folder::toString</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN11358"
+></A
+><H2
+>Name</H2
+>mail::folder::toString&nbsp;--&nbsp;Save a folder object</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN11361"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/mail.H&#62;<br>
+mail::folder&nbsp;*folder;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN11363"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>std::string str=folder-&#62;<TT
+CLASS="FUNCTION"
+>toString</TT
+></CODE
+>(void);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN11368"
+></A
+><H2
+>USAGE</H2
+><P
+>This method returns a <CODE
+CLASS="STRUCTNAME"
+>std::string</CODE
+> that can be
+placed in some quiet, out of the way spot.
+At some later point in time,
+passing the <CODE
+CLASS="STRUCTNAME"
+>std::string</CODE
+> to
+<A
+HREF="mail-folderfromstring.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::folderfromstring</SPAN
+>(3x)</SPAN
+></A
+>
+will
+create a <CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> object that will refer
+to the same folder as the original object.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Folders may only be recreated by <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+>
+objects that reference the same mail account referenced by the
+original <CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> object.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN11382"
+></A
+><H2
+>RETURN CODES AND CALLBACKS</H2
+><P
+>This function returns a <TT
+CLASS="LITERAL"
+>std::string</TT
+> that the application
+should not attempt to interpret in any way (except as a parameter to
+<A
+HREF="mail-folderfromstring.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::folderfromstring</SPAN
+>(3x)</SPAN
+></A
+>.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+>s are linked to their corresponding
+<CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+>s.
+A <CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> created by one
+<CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+> may not be used with a different
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+>.
+All
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+>s created by
+a <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+> are invalidated when
+this <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+> object is destroyed.
+Note that the
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> objects are not automatically destroyed;
+the application is still responsible for destroying any remaining
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+>s, after their
+a <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+> is destroyed.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN11403"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="mail-folderfromstring.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::folderfromstring</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="folder-setrights.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mail-headers.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::folder::setRights</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libmail-folder.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Creating headers</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

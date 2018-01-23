@@ -1,0 +1,720 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::account::readMessageContent</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::account Native API reference"
+HREF="native.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::account::readMessageAttributes"
+HREF="mail-readmsgattr.html"><LINK
+REL="NEXT"
+TITLE="mail::account::readMessageContentDecoded"
+HREF="mail-readmsgcontentdecoded.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mail-readmsgattr.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mail-readmsgcontentdecoded.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="MAIL-READMSGCONTENT"
+></A
+>mail::account::readMessageContent</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN7437"
+></A
+><H2
+>Name</H2
+>mail::account::readMessageContent&nbsp;--&nbsp;Read messages</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN7440"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/mail.H&#62;<br>
+#include&nbsp;&#60;libmail/envelope.H&#62;<br>
+#include&nbsp;&#60;libmail/structure.H&#62;<br>
+<br>
+class&nbsp;myCallbackMessage&nbsp;:&nbsp;public&nbsp;mail::callback::message&nbsp;{<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success(std::string&nbsp;msg);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;fail(std::string&nbsp;msg);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;messageEnvelopeCallback(size_t&nbsp;messageNumber,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;<A
+HREF="envelope.html"
+>mail::envelope</A
+>&nbsp;&#38;envelopeArg);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;messageReferencesCallback(size_t&nbsp;messageNumber,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;std::vector&#60;std::string&#62;&nbsp;&#38;referencesArg);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;messageArrivalDateCallback(size_t&nbsp;messageNumber,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_t&nbsp;datetime);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;messageSizeCallback(size_t&nbsp;messageNumber,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unsigned&nbsp;long&nbsp;size);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;messageStructureCallback(size_t&nbsp;messageNumber,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;<A
+HREF="mimestruct.html"
+>mail::mimestruct</A
+>&nbsp;&#38;messageStructure);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;messageTextCallback(size_t&nbsp;messageNumber,&nbsp;std::string&nbsp;text);<br>
+};<br>
+<br>
+std::cout&nbsp;&#60;&#60;&nbsp;(float)myMessageCallback.messageTextCompleted&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(float)myMessageCallback.messageTextEstimatedSize&nbsp;*&nbsp;100<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#60;&#60;&nbsp;"%&nbsp;completed."&nbsp;&#60;&#60;&nbsp;endl;<br>&#13;</P
+><P
+CLASS="LITERALLAYOUT"
+>mail::account&nbsp;*account;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN7445"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>account-&#62;<TT
+CLASS="FUNCTION"
+>readMessageContent</TT
+></CODE
+>(const std::vector&#60;size_t&#62; &#38;<TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+>, bool <TT
+CLASS="PARAMETER"
+><I
+>peek</I
+></TT
+>, mail::readMode <TT
+CLASS="PARAMETER"
+><I
+>requestType</I
+></TT
+>, myCallbackMessage &#38;<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN7457"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>account-&#62;<TT
+CLASS="FUNCTION"
+>readMessageContent</TT
+></CODE
+>(size_t <TT
+CLASS="PARAMETER"
+><I
+>messageNum</I
+></TT
+>, bool <TT
+CLASS="PARAMETER"
+><I
+>peek</I
+></TT
+>, mail::mimestruct &#38;<TT
+CLASS="PARAMETER"
+><I
+>msginfo</I
+></TT
+>, mail::readMode <TT
+CLASS="PARAMETER"
+><I
+>requestType</I
+></TT
+>, myCallbackMessage &#38;<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN7471"
+></A
+><H2
+>USAGE</H2
+><P
+><TT
+CLASS="FUNCTION"
+>mail::account::readMessagesContent</TT
+>
+reads messages in the currently open folder.
+There are two alternative versions of this method.</P
+><P
+></P
+><UL
+><LI
+><P
+>The first version receives a list of message numbers.
+
+<TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+> specifies a list of messages.
+Messages are numbered starting with message #0 and up to one
+less than
+<A
+HREF="mail-getfolderindexsize.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexSize</SPAN
+>(3x)</SPAN
+></A
+>()
+(when <TT
+CLASS="FUNCTION"
+>mail::account::getFolderIndexSize</TT
+> returns 6,
+the messages are numbered 0 through 5).
+Only the messages that appear in <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+> are
+processed by this request.
+
+This version is capable of returning headers and/or content of multiple
+messages.</P
+></LI
+><LI
+><P
+>The second version receives a single message number, and a
+<A
+HREF="mimestruct.html"
+><CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+></A
+>
+object that refers to a single MIME
+attachment or a section of this message.
+The <TT
+CLASS="PARAMETER"
+><I
+>mail::account::MIMESTRUCTURE</I
+></TT
+> argument to
+<A
+HREF="mail-readmsgattr.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::readMessageAttributes</SPAN
+>(3x)</SPAN
+></A
+> returns
+a recursive tree of
+<CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+> objects which enumerates the
+individual MIME sections in the message.
+<TT
+CLASS="PARAMETER"
+><I
+>msgInfo</I
+></TT
+> must be a reference to one of these objects
+(or to a copy of these objects).</P
+></LI
+></UL
+><P
+>Setting <TT
+CLASS="PARAMETER"
+><I
+>peek</I
+></TT
+> to true does not reset the
+<CODE
+CLASS="STRUCTFIELD"
+>unread</CODE
+> message status flag for this message.
+Otherwise the
+<CODE
+CLASS="STRUCTFIELD"
+>unread</CODE
+> message status flag will be reset.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The application is notified about when a message's status changes by
+by invoking the
+<TT
+CLASS="FUNCTION"
+>messageChanged</TT
+> callback method of the currently
+opened folder's
+<CODE
+CLASS="STRUCTNAME"
+>mail::folderCallback</CODE
+> object.
+Depending on the mail server, the
+<TT
+CLASS="FUNCTION"
+>messageChanged</TT
+> method may be
+invoked as part of processing this request,
+or some time later after this request is completed,
+and <TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s <TT
+CLASS="FUNCTION"
+>success</TT
+>
+method was invoked.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>The <TT
+CLASS="FUNCTION"
+>mail::callback::message::messageTextCallback</TT
+>
+method receives the requested content, which is determined by the remaining
+parameters.</P
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>requestType</I
+></TT
+> identifies the type of information to
+return from the selected MIME section, and must be set to one of the
+following values:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>mail::readHeadersFolded</TT
+></DT
+><DD
+><P
+>Return only the headers of the MIME section.
+Folded headers are unfolded (the newline and the leading space on the next
+line are replaced with a single space character).</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>mail::readHeaders</TT
+></DT
+><DD
+><P
+>Return only the headers of the MIME section.
+The headers are returned as-is, without unfolding them.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>mail::readContents</TT
+></DT
+><DD
+><P
+>Return the content of the MIME section.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The MIME section is not decoded.
+Check the <TT
+CLASS="LITERAL"
+>Content-Transfer-Encoding</TT
+> header to know what
+you're getting.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>mail::readBoth</TT
+></DT
+><DD
+><P
+>Return the entire MIME section, as is: its headers, a blank line,
+then the contents.</P
+></DD
+></DL
+></DIV
+><P
+>The callback method may not
+receive the entire requested content at once.
+Typically the method will be invoked multiple times; each time the
+method receives the next portion of the requested content.
+When requesting headers and/or content of multiple messages, they may be
+returned in any order, and the
+<TT
+CLASS="PARAMETER"
+><I
+>messageNumber</I
+></TT
+>
+parameter
+indicates which message's contents are being returned
+(note, however, that the entire contents of a given message are returned
+in their entirety, even when the callback method gets invoked multiple times
+for that message, before content from the next message are returned).</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN7537"
+></A
+><H2
+>Return Codes</H2
+><P
+>The application must wait until
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.
+The <TT
+CLASS="FUNCTION"
+>success</TT
+> method is invoked when this request is
+succesfully processed.
+The <TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked if this request cannot
+be processed.
+The application must not destroy
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+> until either the
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method may be invoked even after other
+callback methods were invoked.
+This indicates that the request was partially completed before the error
+was encountered.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Multiple applications may have the same account and folder opened at the
+same time.
+It is possible that a message referenced by this request was already
+deleted by another application.
+Depending on the underlying server implementation this will result in
+either a failed request, invoking
+<TT
+CLASS="FUNCTION"
+>callback.fail</TT
+>, or the request completing
+(<TT
+CLASS="FUNCTION"
+>callback.success</TT
+> invoked) but without invoking
+any callback function that refer to the message.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN7556"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="mail-getfolderindexsize.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexSize</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-readmsgattr.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::readMessageAttributes</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-readmsgcontentdecoded.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::readMessageContentDecoded</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mail-readmsgattr.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mail-readmsgcontentdecoded.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::account::readMessageAttributes</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="native.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::account::readMessageContentDecoded</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

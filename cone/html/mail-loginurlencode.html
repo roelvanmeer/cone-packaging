@@ -1,0 +1,425 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::loginUrlEncode</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Miscellaneous functions"
+HREF="libmail-misc.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::hostname"
+HREF="mail-hostname.html"><LINK
+REL="NEXT"
+TITLE="mail::loginUrlDecode"
+HREF="mail-loginurldecode.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mail-hostname.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mail-loginurldecode.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="MAIL-LOGINURLENCODE"
+></A
+>mail::loginUrlEncode</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN8796"
+></A
+><H2
+>Name</H2
+>mail::loginUrlEncode&nbsp;--&nbsp;Create a mail account URL</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN8799"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;&#60;libmail/mail.H&#62;<br>&#13;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN8801"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>std::string url=<TT
+CLASS="FUNCTION"
+>mail::loginUrlEncode</TT
+></CODE
+>(std::string <TT
+CLASS="PARAMETER"
+><I
+>method</I
+></TT
+>, std::string <TT
+CLASS="PARAMETER"
+><I
+>server</I
+></TT
+>, std::string <TT
+CLASS="PARAMETER"
+><I
+>uid</I
+></TT
+>, std::string <TT
+CLASS="PARAMETER"
+><I
+>password</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN8813"
+></A
+><H2
+>USAGE</H2
+><P
+>This utility function creates a URL, suitable for
+<A
+HREF="mail-open.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::open</SPAN
+>(3x)</SPAN
+></A
+>,
+for opening a mail account on a remote server.</P
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>method</I
+></TT
+> is one of the supported
+<TT
+CLASS="APPLICATION"
+>libmail</TT
+> network protocols:
+"<TT
+CLASS="LITERAL"
+>imap</TT
+>",
+"<TT
+CLASS="LITERAL"
+>imaps</TT
+>",
+"<TT
+CLASS="LITERAL"
+>pop3</TT
+>",
+"<TT
+CLASS="LITERAL"
+>pop3s</TT
+>",
+"<TT
+CLASS="LITERAL"
+>nntp</TT
+>",
+"<TT
+CLASS="LITERAL"
+>nntps</TT
+>",
+"<TT
+CLASS="LITERAL"
+>smtp</TT
+>", or
+"<TT
+CLASS="LITERAL"
+>smtps</TT
+>".
+<TT
+CLASS="PARAMETER"
+><I
+>server</I
+></TT
+> is the remote server name.
+The server name is optionally appended by a colon and a port number, to
+specify a non-default port for the protocol.</P
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>uid</I
+></TT
+>
+identifies the mail account's login id.
+With "<TT
+CLASS="LITERAL"
+>smtp</TT
+>", or
+"<TT
+CLASS="LITERAL"
+>smtps</TT
+>",
+<TT
+CLASS="PARAMETER"
+><I
+>uid</I
+></TT
+>
+specifies the userid for authenticated ESMTP.
+The <TT
+CLASS="PARAMETER"
+><I
+>password</I
+></TT
+>
+is optional.
+<A
+HREF="mail-open.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::open</SPAN
+>(3x)</SPAN
+></A
+>
+accepts a separate <TT
+CLASS="PARAMETER"
+><I
+>password</I
+></TT
+> parameter.
+This <TT
+CLASS="PARAMETER"
+><I
+>password</I
+></TT
+> should be an empty string, so that the
+resulting URL does not include the password.
+The real password is then passed as a parameter to
+<A
+HREF="mail-open.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::open</SPAN
+>(3x)</SPAN
+></A
+>.
+As an
+alternative, this <TT
+CLASS="PARAMETER"
+><I
+>password</I
+></TT
+> parameter can be initialized.
+The resulting URL will include the password, and the
+the <TT
+CLASS="PARAMETER"
+><I
+>password</I
+></TT
+> parameter to
+<A
+HREF="mail-open.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::open</SPAN
+>(3x)</SPAN
+></A
+>.
+should be set to an empty string.</P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8854"
+></A
+><H3
+>Options</H3
+><P
+>Additional protocol options are specified by prefixing each option with
+the forward-slash character, "<SPAN
+CLASS="TOKEN"
+>/</SPAN
+>", and appending all options
+to <TT
+CLASS="PARAMETER"
+><I
+>server</I
+></TT
+> (after any optional protocol port
+number).</P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN8859"
+></A
+><H2
+>Return Codes</H2
+><P
+>This function returns the resulting URL.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN8862"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="mail-open.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::open</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-loginurlencode.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::loginUrlEncode</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mail-hostname.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mail-loginurldecode.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::hostname</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libmail-misc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::loginUrlDecode</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

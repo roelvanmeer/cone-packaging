@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::Header::plain</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Creating headers"
+HREF="mail-headers.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::Header::mime"
+HREF="header-mime.html"><LINK
+REL="NEXT"
+TITLE="Extra/Miscellaneous objects/methods"
+HREF="misc.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="header-mime.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="misc.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="HEADER-PLAIN"
+></A
+>mail::Header::plain</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN11673"
+></A
+><H2
+>Name</H2
+>mail::Header::plain&nbsp;--&nbsp;An unstructured, <TT
+CLASS="LITERAL"
+>US-ASCII</TT
+>-only, E-mail header.</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN11677"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/headers.H&#62;<br>
+<br>
+mail::Header::plain&nbsp;plain_header("Content-Type",&nbsp;"text/plain");<br>
+<br>
+std::cout&nbsp;&#60;&#60;&nbsp;plain_header.toString();<br>&#13;</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN11679"
+></A
+><H2
+>USAGE</H2
+><P
+>This class creates an unstructured E-mail header.
+Two arguments are provided to the constructor: the header's name, and its
+contents.
+The header contents must contain only <TT
+CLASS="LITERAL"
+>US-ASCII</TT
+>
+characters. Use the <A
+HREF="header-encoded.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::encoded</SPAN
+>(3x)</SPAN
+></A
+> object
+to create a header containing non-<TT
+CLASS="LITERAL"
+>US-ASCII</TT
+> content.</P
+><P
+>The <TT
+CLASS="FUNCTION"
+>toString()</TT
+> returns the header as a single text
+string: <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>:
+<TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+>"</SPAN
+>.
+Long headers are folded at the nearest whitespace.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN11693"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="header-addresslist.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::addresslist</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="header-encoded.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::encoded</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="header-list.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::list</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="header-mime.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::mime</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="header-mime.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="misc.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::Header::mime</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="mail-headers.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Extra/Miscellaneous objects/methods</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,920 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::Attachment</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Extra/Miscellaneous objects/methods"
+HREF="misc.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::address"
+HREF="address.html"><LINK
+REL="NEXT"
+TITLE="mail::emailAddress"
+HREF="emailaddress.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="address.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="emailaddress.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="MAIL-ATTACHMENTS"
+></A
+>mail::Attachment</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN11796"
+></A
+><H2
+>Name</H2
+>mail::Attachment&nbsp;--&nbsp;Create MIME content.</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN11799"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/attachments.H&#62;</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN11801"
+></A
+><H2
+>USAGE</H2
+><P
+>The <CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+> class formats a wide
+variety of MIME messages from raw content.
+Most of the functionality in this class is provided by the constructors.
+<CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+> provides a variety of constructors
+for creating content MIME entities, and multipart MIME entities.</P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11806"
+></A
+><H3
+>Creating content MIME entities</H3
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN11808"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+><TT
+CLASS="FUNCTION"
+>mail::Attachment</TT
+></CODE
+>(std::string <TT
+CLASS="PARAMETER"
+><I
+>headers</I
+></TT
+>, int <TT
+CLASS="PARAMETER"
+><I
+>content_fd</I
+></TT
+>);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+><TT
+CLASS="FUNCTION"
+>mail::Attachment</TT
+></CODE
+>(std::string <TT
+CLASS="PARAMETER"
+><I
+>headers</I
+></TT
+>, int <TT
+CLASS="PARAMETER"
+><I
+>content_fd</I
+></TT
+>, std::string <TT
+CLASS="PARAMETER"
+><I
+>charset</I
+></TT
+>, std::string <TT
+CLASS="PARAMETER"
+><I
+>transfer_encoding</I
+></TT
+>="");</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+><TT
+CLASS="FUNCTION"
+>mail::Attachment</TT
+></CODE
+>(std::string <TT
+CLASS="PARAMETER"
+><I
+>headers</I
+></TT
+>, std::string <TT
+CLASS="PARAMETER"
+><I
+>content_str</I
+></TT
+>);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+><TT
+CLASS="FUNCTION"
+>mail::Attachment</TT
+></CODE
+>(std::string <TT
+CLASS="PARAMETER"
+><I
+>headers</I
+></TT
+>, std::string <TT
+CLASS="PARAMETER"
+><I
+>content_str</I
+></TT
+>, std::string <TT
+CLASS="PARAMETER"
+><I
+>charset</I
+></TT
+>, std::string <TT
+CLASS="PARAMETER"
+><I
+>transfer_encoding</I
+></TT
+>="");</CODE
+></P
+><P
+></P
+></DIV
+><P
+>A non-multipart entity is created by providing the content in a file descriptor
+(<TT
+CLASS="PARAMETER"
+><I
+>content_fd</I
+></TT
+>) or explicitly
+(<TT
+CLASS="PARAMETER"
+><I
+>content_str</I
+></TT
+>).</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The <CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+>
+object makes an internal copy of the file descriptor.
+The original file descriptor does not need to remain open after the
+<CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+> object is constructed.
+The duplicate file descriptor will be closed automatically when the object
+is destroyed.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>The headers of the MIME entity are provided explicitly.
+The first argument to the constructor (<TT
+CLASS="PARAMETER"
+><I
+>headers</I
+></TT
+>)
+is usually an initialized
+<A
+HREF="header-list.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::list</SPAN
+>(3x)</SPAN
+></A
+> object.
+It's <TT
+CLASS="FUNCTION"
+>std::string</TT
+> operator will conveniently
+generate a well-formed list of mail headers.</P
+><P
+>The
+<TT
+CLASS="PARAMETER"
+><I
+>charset</I
+></TT
+> and
+<TT
+CLASS="PARAMETER"
+><I
+>transfer_encoding</I
+></TT
+> parameters are optional.
+<TT
+CLASS="PARAMETER"
+><I
+>content_fd</I
+></TT
+> or <TT
+CLASS="PARAMETER"
+><I
+>content_str</I
+></TT
+>
+provides the raw, unencoded, data for the MIME object.
+The <CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+> object will heuristically
+select the most appropriate MIME encoding if the
+<TT
+CLASS="PARAMETER"
+><I
+>charset</I
+></TT
+> and <TT
+CLASS="PARAMETER"
+><I
+>transfer_encoding</I
+></TT
+>
+parameters are not provided.</P
+><P
+>The data may be either plain text, or binary data.
+<CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+> will determine it automatically.
+The optional <TT
+CLASS="PARAMETER"
+><I
+>charset</I
+></TT
+> parameter specifies the
+plain text's character set.
+If specified, it will be factored into
+<CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+>'s heuristic selection of the most
+appropriate MIME encoding for this plain text content.
+Finally, specifying <TT
+CLASS="PARAMETER"
+><I
+>transfer_encoding</I
+></TT
+> will override
+<CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+>'s heuristics, and forcibly set
+the MIME encoding accordingly.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>To specify the MIME encoding only, specify an empty string for
+<TT
+CLASS="PARAMETER"
+><I
+>charset</I
+></TT
+> (this would be appropriate for setting the
+MIME encoding - which will obviously be <TT
+CLASS="LITERAL"
+>base64</TT
+> here -
+for binary content that is not associated with any character set.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>headers</I
+></TT
+> must include the <TT
+CLASS="LITERAL"
+>Content-Type</TT
+>
+header, but must not contain the <TT
+CLASS="LITERAL"
+>Content-Transfer-Encoding</TT
+>
+header, which will be provided by the
+<CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+>
+class.</P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11882"
+></A
+><H3
+>Pre-formatted MIME content</H3
+><P
+>It is possible to set <TT
+CLASS="PARAMETER"
+><I
+>content_fd</I
+></TT
+> or
+<TT
+CLASS="PARAMETER"
+><I
+>content_str</I
+></TT
+> to something that's already MIME-formatted.
+<CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+> will conclude that the content
+is already MIME-formatted when <TT
+CLASS="PARAMETER"
+><I
+>headers</I
+></TT
+> already contain
+a <TT
+CLASS="LITERAL"
+>Content-Transfer-Encoding</TT
+> header, or a
+<TT
+CLASS="LITERAL"
+>Content-Type</TT
+> header that sets the MIME type to
+either <SPAN
+CLASS="QUOTE"
+>"message/rfc822"</SPAN
+> or any <SPAN
+CLASS="QUOTE"
+>"multipart"</SPAN
+>
+MIME type.</P
+><P
+>This is often used when the content is an existing, well-formed MIME message.
+Providing a <SPAN
+CLASS="QUOTE"
+>"Content-Type: message/rfc822"</SPAN
+> in
+<TT
+CLASS="PARAMETER"
+><I
+>headers</I
+></TT
+> creates an attached MIME message.
+This is just one of the two ways to create an attached MIME message.
+A better way to create an attached MIME message is described later.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>A <SPAN
+CLASS="QUOTE"
+>"multipart"</SPAN
+>
+<TT
+CLASS="LITERAL"
+>Content-Type</TT
+> header must have a <SPAN
+CLASS="QUOTE"
+>"boundary"</SPAN
+>
+parameter that actually matches the the MIME boundary delimiter in the
+specified content.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11901"
+></A
+><H3
+>Creating multipart MIME content</H3
+><P
+>A multipart MIME content is constructed by creating
+<CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+> for each content MIME section,
+then using the following multipart constructors:</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN11905"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+><TT
+CLASS="FUNCTION"
+>mail::Attachment</TT
+></CODE
+>(std::string <TT
+CLASS="PARAMETER"
+><I
+>headers</I
+></TT
+>, const std::vector&#60;mail::Attachment *&#62; &#38;<TT
+CLASS="PARAMETER"
+><I
+>parts</I
+></TT
+>);</CODE
+></P
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+><TT
+CLASS="FUNCTION"
+>mail::Attachment</TT
+></CODE
+>(std::string <TT
+CLASS="PARAMETER"
+><I
+>headers</I
+></TT
+>, const std::vector&#60;mail::Attachment *&#62; &#38;<TT
+CLASS="PARAMETER"
+><I
+>parts</I
+></TT
+>, std::string <TT
+CLASS="PARAMETER"
+><I
+>multipart_type</I
+></TT
+>, const mail::mimestruct::parameterList &#38;<TT
+CLASS="PARAMETER"
+><I
+>multipart_parameters</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+><P
+>The headers of a multipart MIME section must include a well-formed
+<TT
+CLASS="LITERAL"
+>Content-Type</TT
+> header set to either
+<SPAN
+CLASS="QUOTE"
+>"message/rfc822"</SPAN
+> or <SPAN
+CLASS="QUOTE"
+>"multipart/<TT
+CLASS="REPLACEABLE"
+><I
+>subtype</I
+></TT
+>"</SPAN
+>.
+Alternatively, 
+<CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+> will supply a
+<TT
+CLASS="LITERAL"
+>Content-Type</TT
+> header when provided with
+<TT
+CLASS="PARAMETER"
+><I
+>multipart_type</I
+></TT
+> and
+<TT
+CLASS="PARAMETER"
+><I
+>multipart_parameters</I
+></TT
+>.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>parts</I
+></TT
+> must be a vector of exactly one element
+when <TT
+CLASS="PARAMETER"
+><I
+>multipart_type</I
+></TT
+> (or an existing
+<TT
+CLASS="LITERAL"
+>Content-Type</TT
+> header) is
+<SPAN
+CLASS="QUOTE"
+>"message/rfc822"</SPAN
+>).</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11939"
+></A
+><H3
+>Generating MIME-formatted messages</H3
+><P
+CLASS="LITERALLAYOUT"
+>mail::Attachment&nbsp;top_attachment;<br>
+std::string&nbsp;buffer;<br>
+bool&nbsp;errflag;<br>
+<br>
+&nbsp;&nbsp;&nbsp;top_attachment-&#62;begin();<br>
+&nbsp;&nbsp;&nbsp;while&nbsp;((buffer=top_attachment-&#62;generate(errflag)).size()&nbsp;&#62;&nbsp;0)<br>
+&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&#60;&#60;&nbsp;buffer;<br>
+&nbsp;&nbsp;&nbsp;}</P
+><P
+>Once all <CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+> objects are created,
+the MIME-formatted message is generated by first calling the
+<TT
+CLASS="FUNCTION"
+>begin</TT
+>() method of the topmost
+<CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+> object, then repeatedly calling
+the <TT
+CLASS="FUNCTION"
+>generate</TT
+>() method until it returns an empty string.
+Each call to <TT
+CLASS="FUNCTION"
+>generate</TT
+>() returns the next portion of the
+formatted MIME message, and the empty string is returned after the entire
+MIME message is produced.
+All <CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+> objects must be destroyed
+immediately afterwards.</P
+><P
+>A <TT
+CLASS="LITERAL"
+>false</TT
+> <TT
+CLASS="PARAMETER"
+><I
+>errflag</I
+></TT
+>, when
+<TT
+CLASS="FUNCTION"
+>generate</TT
+>() returns an empty string, indicates that the
+MIME-formatted message was generated succesfully.
+A <TT
+CLASS="LITERAL"
+>true</TT
+> <TT
+CLASS="PARAMETER"
+><I
+>errflag</I
+></TT
+> indicated an
+<TT
+CLASS="LITERAL"
+>errno</TT
+>-related failure to generate the MIME-formatted
+message.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="FUNCTION"
+>generate</TT
+>() will supply the
+<SPAN
+CLASS="QUOTE"
+>"Mime-Version: 1.0"</SPAN
+> header.
+This header does not need to be explicitly included in the
+<TT
+CLASS="PARAMETER"
+><I
+>headers</I
+></TT
+> of the topmost
+<CODE
+CLASS="STRUCTNAME"
+>mail::Attachment</CODE
+> object.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN11962"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="header-addresslist.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::addresslist</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="header-encoded.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::encoded</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="header-mime.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::mime</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="header-plain.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::plain</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="address.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="emailaddress.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::address</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="misc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::emailAddress</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

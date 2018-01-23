@@ -1,0 +1,586 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>Cone mail client</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="PREVIOUS"
+HREF="book.html"><LINK
+REL="NEXT"
+TITLE="Folder Listing"
+HREF="cone01folderlist.html"></HEAD
+><BODY
+CLASS="PART"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="book.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="cone01folderlist.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="PART"
+><A
+NAME="CONE00INDEX"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+>I. <TT
+CLASS="APPLICATION"
+>Cone</TT
+> mail client</H1
+><DIV
+CLASS="PARTINTRO"
+><A
+NAME="AEN5"
+></A
+><H1
+>Introduction</H1
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> is a screen-oriented E-mail/News reader and writer.
+If you are reading this documentation from within <TT
+CLASS="APPLICATION"
+>Cone</TT
+>, you are actually
+reading the simplified HTML version of <TT
+CLASS="APPLICATION"
+>Cone</TT
+>'s documentation that's formatted
+as a folder of E-mail messages.
+Each online tutorial chapter appears as a separate message.
+Use <B
+CLASS="KEYCAP"
+>PgUp</B
+> and
+<B
+CLASS="KEYCAP"
+>PgDn</B
+> to read each chapter.
+Press <B
+CLASS="KEYCAP"
+>N</B
+> and
+<B
+CLASS="KEYCAP"
+>P</B
+> to move to the next/previous chapter.</P
+><P
+>Pressing <B
+CLASS="KEYCAP"
+>Q</B
+> on most screens
+exits <TT
+CLASS="APPLICATION"
+>Cone</TT
+>.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> tries to gracefully log out and shut down all server connections.
+If <TT
+CLASS="APPLICATION"
+>Cone</TT
+> cannot log out of a remote server because the remote server is
+down, press <B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>C</B
+>
+(after <B
+CLASS="KEYCAP"
+>Q</B
+> to terminate <TT
+CLASS="APPLICATION"
+>Cone</TT
+>).</P
+><P
+>Use <B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>Z</B
+> to temporarily suspend <TT
+CLASS="APPLICATION"
+>Cone</TT
+>
+and drop back to the shell prompt.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> remains suspended in the background, and may be restarted by using
+the shell's <B
+CLASS="COMMAND"
+>fg</B
+> command.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Connections to remote mail servers may be disconnected
+for inactivity if <TT
+CLASS="APPLICATION"
+>Cone</TT
+> remains suspended for a prolonged period of time.
+When suspended, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> cannot maintain any active connections to remote
+mail servers.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>It might be more convenient to
+browse the full HTML documentation using your favorite web browser,
+at
+<A
+HREF="http://www.courier-mta.org/cone/cone00index.html"
+TARGET="_top"
+>http://www.courier-mta.org/cone/cone00index.html</A
+>.
+When <TT
+CLASS="APPLICATION"
+>Cone</TT
+> starts for the first time, it automatically creates a fake
+mail account called <SPAN
+CLASS="QUOTE"
+>"Online Tutorial"</SPAN
+>.
+This fake mail account contains a stripped-down HTML version of
+the online documentation, which you are reading now.
+The terminal display must be at least 80 characters wide in order
+to be able to read <SPAN
+CLASS="QUOTE"
+>"Online Tutorial"</SPAN
+>.</P
+><P
+>The <SPAN
+CLASS="QUOTE"
+>"Online Tutorial"</SPAN
+> mail account can always be removed, but
+it might be convenient to keep it around for a quick consultation, from time
+to time, even though the full HTML version is a bit easier on the eyes.</P
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN41"
+>Overview</A
+></H1
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> is a powerful, yet simple, text-based mail reader.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> seamlessly handles multiple mail accounts simultaneously.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> is capable of using the following kinds of mail accounts:</P
+><P
+></P
+><UL
+><LI
+><P
+>Local mail folders, or maildirs.</P
+></LI
+><LI
+><P
+>Remote POP3 and IMAP mail server accounts.</P
+></LI
+><LI
+><P
+>A simple newsgroup reader.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> doesn't have sophisticated features found in dedicated newsreaders,
+and may be a bit slow and memory hungry when reading large Usenet newsgroups.
+However, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> will prove to be an excellent, fast, reader of internal
+local newsgroups, accessible via a remote login.</P
+></LI
+><LI
+><P
+>Experimental SMAP mail server accounts.</P
+></LI
+></UL
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> contains an experimental implementation of a new remote mail access
+protocol, <SPAN
+CLASS="QUOTE"
+>"SMAP"</SPAN
+>.
+At this time, SMAP is implemented by the
+<A
+HREF="http://www.courier-mta.org"
+TARGET="_top"
+>Courier-IMAP</A
+> server.
+SMAP offers several improvements over traditional IMAP-based mail accounts,
+namely:</P
+><P
+></P
+><UL
+><LI
+><P
+>Names of SMAP folders may use the full UTF-8 character set.
+Most IMAP servers restrict certain characters from appearing in names of
+folders, due to their special meaning in the IMAP folder hierarchy.</P
+></LI
+><LI
+><P
+>Faster downloading of binary attachments.
+SMAP requires approximately 25% less bandwidth to download binary
+attachments.</P
+></LI
+><LI
+><P
+>Consolidated mail transmission.
+IMAP clients usually need to transmit a message twice, when mailing it.
+An IMAP client must first save the message in the IMAP server's
+<SPAN
+CLASS="QUOTE"
+>"Sent Mail"</SPAN
+> folder.
+Afterwards, the IMAP client needs to send a second copy of the message,
+using SMTP, in order to deliver it to the listed recipients.
+When using SMAP, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> transmits the message only one time; the server
+saves it to the <SPAN
+CLASS="QUOTE"
+>"Sent Mail"</SPAN
+> folder, then mails it to its
+designated recipients.</P
+><P
+>Of course, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> is fully capable of using traditional SMTP, or running the
+local <B
+CLASS="COMMAND"
+>sendmail</B
+> command.</P
+></LI
+></UL
+><P
+>Other features of <TT
+CLASS="APPLICATION"
+>Cone</TT
+>:</P
+><P
+></P
+><UL
+><LI
+><P
+>Full SSL/TLS support with IMAP, POP3, NNTP, SMTP, and SMAP.
+SASL CRAM-MD5/CRAM-SHA1 authentication (except for NNTP).</P
+></LI
+><LI
+><P
+>Built-in editor for creating messages.</P
+></LI
+><LI
+><P
+>Full UTF-8 support (requires the wide-character version of the
+<TT
+CLASS="APPLICATION"
+>Curses</TT
+> library).</P
+></LI
+><LI
+><P
+>Spell checker.</P
+></LI
+><LI
+><P
+>Local and remote (IMAP or SMAP-based) addressbooks.</P
+></LI
+><LI
+><P
+>Remote configuration (share a common configuration between different
+instances of <TT
+CLASS="APPLICATION"
+>Cone</TT
+>).</P
+></LI
+><LI
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> tries to automatically customize itself to user's preferences, without
+requiring explicit configuration.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> remembers the sorting order of each opened folder's index.
+When a folder is reopened, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> sorts the folder using the same sort order
+used when the folder was opened last.
+Similarly, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> memorizes user-configured mail headers.
+<TT
+CLASS="LITERAL"
+>From:</TT
+>, and several other, mail headers are freely editable,
+and default to their contents the last time a new message was sent by
+replying to a message in the folder, or which was created while that folder
+was opened.
+A <SPAN
+CLASS="QUOTE"
+>"power user"</SPAN
+> can easily use multiple mail accounts with
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+>, and <TT
+CLASS="APPLICATION"
+>Cone</TT
+> will select the appropriate mail headers when replying
+to messages from each mail account.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="cone01folderlist.html"
+>Folder Listing</A
+></DT
+><DT
+><A
+HREF="cone02folderindex.html"
+>Folder Index</A
+></DT
+><DT
+><A
+HREF="cone03messageview.html"
+>Message View Screen</A
+></DT
+><DT
+><A
+HREF="cone04writemessage.html"
+>Write Message Screen</A
+></DT
+><DT
+><A
+HREF="cone05setup.html"
+>Setup Screen</A
+></DT
+><DT
+><A
+HREF="cone06newaccount.html"
+>New Account</A
+></DT
+><DT
+><A
+HREF="cone07remoteconfig.html"
+>Remote Configuration</A
+></DT
+><DT
+><A
+HREF="cone08gpg.html"
+>Encryption And Signatures</A
+></DT
+><DT
+><A
+HREF="cone09masterpassword.html"
+>Master Passwords</A
+></DT
+><DT
+><A
+HREF="cone10encryption.html"
+>Encryption Menu</A
+></DT
+><DT
+><A
+HREF="cone11filters.html"
+>Mail Filters</A
+></DT
+><DT
+><A
+HREF="cone12addressbook.html"
+>Address Book</A
+></DT
+><DT
+><A
+HREF="cone13ldapaddressbook.html"
+>LDAP Address Books</A
+></DT
+><DT
+><A
+HREF="cone.html"
+>cone</A
+>&nbsp;--&nbsp;Read and send E-mail messages</DT
+><DT
+><A
+HREF="leaf.html"
+>leaf</A
+>&nbsp;--&nbsp;Lightweight Editor of Ascii(and more) Files</DT
+><DT
+><A
+HREF="mailtool.html"
+>mailtool</A
+>&nbsp;--&nbsp;Process mailboxes</DT
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="cone01folderlist.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Folder Listing</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

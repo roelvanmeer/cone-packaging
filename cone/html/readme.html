@@ -1,0 +1,486 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>Building Cone</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Cone: COnsole Newsreader And Emailer"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Installing Cone"
+HREF="install.html"><LINK
+REL="NEXT"
+TITLE="Mailing list"
+HREF="x14176.html"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="install.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+>: COnsole Newsreader And Emailer</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x14176.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="README"
+>Building <TT
+CLASS="APPLICATION"
+>Cone</TT
+></A
+></H1
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> is distributed in source code form, licensed under GPL.
+See COPYING for more information.
+The following prerequisites must be installed to build and run <TT
+CLASS="APPLICATION"
+>Cone</TT
+>:</P
+><P
+></P
+><UL
+><LI
+><P
+>A wide-character version of the curses library.
+<A
+HREF="http://dickey.his.com/ncurses/ncurses.html"
+TARGET="_top"
+>ncurses</A
+>
+supports wide characters starting with version 5.3, if enabled at compile
+time.</P
+></LI
+><LI
+><P
+><A
+HREF="http://www.xmlsoft.org"
+TARGET="_top"
+>Libxml2</A
+></P
+></LI
+><LI
+><P
+><A
+HREF="http://www.openssl.org"
+TARGET="_top"
+>OpenSSL</A
+> 0.9.7 or higher.</P
+></LI
+><LI
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> optionally supports LDAP address books.
+LDAP support requires
+<A
+HREF="http://www.openldap.org"
+TARGET="_top"
+>OpenLDAP</A
+>.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>It is not sufficient to have only the OpenLDAP runtime libraries installed.
+The OpenLDAP development kit must be installed as well.
+On most systems it's usually called the "devel" component, that must be
+installed in addition to the base OpenLDAP component.
+Verify that the <TT
+CLASS="FILENAME"
+>/usr/include/ldap.h</TT
+> file exist,
+before trying to build <TT
+CLASS="APPLICATION"
+>Cone</TT
+>.
+If not, the required OpenLDAP development libraries are missing, and must
+be installed.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>LDAP-based address books are highly recommended for corporate and
+organizational environments.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+>'s basic address books (local address books and IMAP/SMAP folder-based
+address books) have somewhat limited search functionality -- addresses are
+looked up by exact nicknames only.
+LDAP-based address books are more powerful, they may be searched not just
+by exact nicknames, but also by last name or full names.
+Partial searches are also possible.</P
+></TD
+></TR
+></TABLE
+></DIV
+></LI
+><LI
+><P
+><A
+HREF="http://aspell.sourceforge.net/"
+TARGET="_top"
+>aspell</A
+> or
+<A
+HREF="http://pspell.sourceforge.net/"
+TARGET="_top"
+>pspell</A
+></P
+></LI
+><LI
+><P
+>Where available, <A
+HREF="http://oss.sgi.com/projects/fam/"
+TARGET="_top"
+>FAM,
+the File Alteration Monitor</A
+></P
+></LI
+><LI
+><P
+>gcc 3.2, or higher</P
+></LI
+><LI
+><P
+>gmake (if not already installed)</P
+></LI
+><LI
+><P
+>The Courier Socks 5 proxy client API toolkit is required for Socks 5
+support.
+Other Socks 5 proxy client libraries may or may not work.
+Download the Courier Socks 5 proxy client library from <A
+HREF="http://www.courier-mta.org/download.php#sox"
+TARGET="_top"
+>http://www.courier-mta.org/download.php#sox</A
+>
+and follow its installation instructions.</P
+></LI
+></UL
+><P
+>Right now the primary development focus is on the Linux platform,
+gcc 3.2.  
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> should build on other POSIX platforms; and any problems are likely
+to be minor, and trivial to resolve.
+A large portion of
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+>'s code base comes from
+<A
+HREF="http://www.courier-mta.org"
+TARGET="_top"
+>Courier</A
+>, which builds on
+many platforms.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> requires a wide-character-capable version of Curses.
+At this time not all Linux distribution provide a widechar-enabled
+Curses library.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> will compile against a non-widechar Curses, but will not be able to
+display UTF-8, or other
+variable-length character sets.</P
+><P
+>Download Red Hat
+RPMs (Red Hat 9, and earlier)
+for the wide-character version of the
+<TT
+CLASS="APPLICATION"
+>ncurses</TT
+> library from
+<A
+HREF="http://www.courier-mta.org/beta/ncurses/"
+TARGET="_top"
+>http://www.courier-mta.org/beta/ncurses/</A
+>.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN14155"
+>Reading local mail with <TT
+CLASS="APPLICATION"
+>Cone</TT
+></A
+></H2
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> reads local mail from either maildirs (the preferred format) or
+mailbox files (or "mboxes").
+When mboxes are used,
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> does not read the system mailbox file directly (usually
+<TT
+CLASS="FILENAME"
+>/var/spool/<TT
+CLASS="REPLACEABLE"
+><I
+>something</I
+></TT
+></TT
+>).
+All messages in the system mailbox are automatically moved to
+<TT
+CLASS="FILENAME"
+>$HOME/Inbox</TT
+>, which is then accessed as if it was the
+system mailbox.
+Starting <TT
+CLASS="APPLICATION"
+>Cone</TT
+> for the first time on an mbox-based system automatically
+copies all existing mail from the system mailbox file
+to <TT
+CLASS="FILENAME"
+>$HOME/Inbox</TT
+>.</P
+><P
+>This is an intentional design choice.  Normal user application cannot
+create new files in <TT
+CLASS="FILENAME"
+>/var/spool</TT
+>; all they can do is
+read the mailbox file from <TT
+CLASS="FILENAME"
+>/var/spool</TT
+>.
+Therefore, the only way to update the mailbox file is by
+rewriting it from scratch (more or less).
+While the mailbox file is in the process of being rewritten, if the <TT
+CLASS="APPLICATION"
+>Cone</TT
+>
+process is interrupted, or killed, the resulted in a corrupted
+system mailbox.
+There are way to minimize this vulnerability, but it cannot be eliminated
+completely.
+Some Linux kernels use an <SPAN
+CLASS="QUOTE"
+>"OOM killer"</SPAN
+>
+that may terminate any process when
+the system memory is low.
+There is no way to completely prevent corrupted system
+mailbox files on those
+kernels.</P
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> uses an alternative way of updating mboxes.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> updates mboxes by creating a new mbox file separately,
+then replacing the original mbox file with the new version.
+Unfortunately this cannot be done with the system mailbox file, because of
+the restricted access rights on the system spool directory.
+To solve this problem <TT
+CLASS="APPLICATION"
+>Cone</TT
+> automatically copies the system mailbox file
+to <TT
+CLASS="FILENAME"
+>$HOME/Inbox</TT
+>, each time the system mailbox file is
+opened and whenever new mail is available.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="install.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x14176.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Installing <TT
+CLASS="APPLICATION"
+>Cone</TT
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Mailing list</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

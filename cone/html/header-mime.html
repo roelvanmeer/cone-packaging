@@ -1,0 +1,380 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::Header::mime</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Creating headers"
+HREF="mail-headers.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::Header::list"
+HREF="header-list.html"><LINK
+REL="NEXT"
+TITLE="mail::Header::plain"
+HREF="header-plain.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="header-list.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="header-plain.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="HEADER-MIME"
+></A
+>mail::Header::mime</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN11597"
+></A
+><H2
+>Name</H2
+>mail::Header::mime&nbsp;--&nbsp;A structured MIME header.</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN11600"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/headers.H&#62;<br>
+<br>
+mail::Header::mime&nbsp;content_type("Content-Type",&nbsp;"text/plain");<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;content_type.parameters.set_simple("charset",&nbsp;"iso-8859-1");<br>
+<br>
+mail::Header::mime&nbsp;content_disposition("Content-Disposition",&nbsp;"attachment")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;("filename",&nbsp;"document.doc")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;("name",&nbsp;"Monthly&nbsp;Sales",&nbsp;"iso-8859-1",&nbsp;"EN");<br>
+<br>
+std::cout&nbsp;&#60;&#60;&nbsp;content_type.toString();<br>&#13;</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN11602"
+></A
+><H2
+>USAGE</H2
+><P
+>This class creates a structured MIME header.
+A structured MIME header, like
+<TT
+CLASS="LITERAL"
+>Content-Type</TT
+> or <TT
+CLASS="LITERAL"
+>Content-Disposition</TT
+>
+contains a literal value, and zero or more <SPAN
+CLASS="QUOTE"
+>"name=setting"</SPAN
+>
+parameters, separated by semicolons.</P
+><P
+>Two arguments are provided to the constructor, the header's name, and its
+literal value.
+After constructing, use the <CODE
+CLASS="STRUCTFIELD"
+>parameters</CODE
+> member
+to set the parameters.  This member has the following methods:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>set_simple(std::string name, std::string value)</DT
+><DD
+><P
+>Set parameter <TT
+CLASS="LITERAL"
+>name</TT
+> to <TT
+CLASS="LITERAL"
+>value</TT
+>.
+<TT
+CLASS="LITERAL"
+>value</TT
+> must contain <TT
+CLASS="LITERAL"
+>US-ASCII</TT
+> text only.</P
+></DD
+><DT
+>set(std::string name, std::string value, std::string charset, std::string language)</DT
+><DD
+><P
+>Set parameter <TT
+CLASS="LITERAL"
+>name</TT
+> to <TT
+CLASS="LITERAL"
+>value</TT
+>.
+<TT
+CLASS="LITERAL"
+>charset</TT
+> specifies <TT
+CLASS="LITERAL"
+>value</TT
+>'s character
+set.
+<TT
+CLASS="LITERAL"
+>language</TT
+> is optional, and
+specifies <TT
+CLASS="LITERAL"
+>value</TT
+>'s language.
+<TT
+CLASS="LITERAL"
+>value</TT
+> is converted to <TT
+CLASS="LITERAL"
+>US-ASCII</TT
+>
+text according to
+<A
+HREF="http://www.rfc-editor.org/rfc/rfc2231.txt"
+TARGET="_top"
+>RFC 2231</A
+>.</P
+></DD
+><DT
+>erase(std::string name)</DT
+><DD
+><P
+>Remove parameter <TT
+CLASS="LITERAL"
+>name</TT
+>.</P
+></DD
+></DL
+></DIV
+><P
+>The <TT
+CLASS="FUNCTION"
+>toString()</TT
+> returns the header as a single text
+string: <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>:
+<TT
+CLASS="REPLACEABLE"
+><I
+>value</I
+></TT
+>"</SPAN
+>.
+Long headers are folded accordingly.</P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11642"
+></A
+><H3
+>Dynamic parameter generation</H3
+><P
+>Parameters can also be dynamically populated
+by repeatedly calling the <SPAN
+CLASS="QUOTE"
+>"()"</SPAN
+>.</P
+><P
+>One version of the <SPAN
+CLASS="QUOTE"
+>"()"</SPAN
+> operator receives the parameter
+name and value, and corresponds to the <TT
+CLASS="FUNCTION"
+>set_simple</TT
+>
+method.
+The second version also receives the character set and language information,
+and corresponds to the <TT
+CLASS="FUNCTION"
+>set</TT
+> function.</P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN11650"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="header-addresslist.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::addresslist</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="header-encoded.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::encoded</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="header-list.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::list</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="header-plain.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::plain</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="header-list.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="header-plain.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::Header::list</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="mail-headers.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::Header::plain</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,725 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::mimestruct</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Extra/Miscellaneous objects/methods"
+HREF="misc.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::envelope"
+HREF="envelope.html"><LINK
+REL="NEXT"
+TITLE="Simple Mail Access Protocol, Version 1"
+HREF="smap1.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="envelope.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="smap1.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="MIMESTRUCT"
+></A
+>mail::mimestruct</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN12137"
+></A
+><H2
+>Name</H2
+>mail::mimestruct&nbsp;--&nbsp;Message MIME structure</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN12140"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/structure.H&#62;<br>
+<br>
+mail::mimestruct&nbsp;myMimeStructure;</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN12142"
+></A
+><H2
+>USAGE</H2
+><P
+><CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+> describes the contents of a
+MIME-formatted message.
+A multipart MIME message has a single
+<CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+> object that represents the
+entire message, and series of
+<CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+> objects, one object
+for each
+part of the multipart MIME section.
+The additional
+<CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+> objects are maintained by their
+parent
+<CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+> object, and are automatically
+destroyed when the parent object is destroyed.</P
+><P
+>A
+<CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+> contains the following
+fields:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>std::string mime_id</DT
+><DD
+><P
+>An opaque identifier of this MIME section.
+Applications should handle this field as an opaque text string, which
+is interpreted by 
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+.
+A same message, for example,
+may have different <CODE
+CLASS="STRUCTFIELD"
+>mime_id</CODE
+> fields if it comes from
+an IMAP account, or a POP3 account.</P
+><P
+>The only exception to this rule is that the
+<CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+> object that represents the entire
+message will have an empty string in <CODE
+CLASS="STRUCTFIELD"
+>mime_id</CODE
+>.</P
+></DD
+><DT
+>std::string type</DT
+><DD
+><P
+>The major MIME type, in uppercase.</P
+></DD
+><DT
+>std::string subtype</DT
+><DD
+><P
+>The minor MIME subtype, in uppercase.</P
+></DD
+><DT
+>mail::mimestruct::parameterList type_parameters</DT
+><DD
+><P
+>Additional attributes parsed from the
+<TT
+CLASS="LITERAL"
+>Content-Type:</TT
+> MIME header.
+See below for more information.</P
+></DD
+><DT
+>std::string content_id</DT
+><DD
+><P
+>The contents of the MIME <TT
+CLASS="LITERAL"
+>Content-ID:</TT
+> header.</P
+></DD
+><DT
+>std::string content_description</DT
+><DD
+><P
+>The contents of the MIME <TT
+CLASS="LITERAL"
+>Content-Description:</TT
+> header.</P
+></DD
+><DT
+>std::string content_transfer_encoding</DT
+><DD
+><P
+>The MIME encoding method.</P
+></DD
+><DT
+>std::string content_md5</DT
+><DD
+><P
+>The contents of the MIME <TT
+CLASS="LITERAL"
+>Content-MD5:</TT
+> header.</P
+></DD
+><DT
+>std::string content_language</DT
+><DD
+><P
+>The contents of the MIME <TT
+CLASS="LITERAL"
+>Content-Language:</TT
+> header.</P
+></DD
+><DT
+>std::string content_disposition</DT
+><DD
+><P
+>The MIME <TT
+CLASS="LITERAL"
+>Content-Disposition:</TT
+> header, either
+"<TT
+CLASS="LITERAL"
+>INLINE</TT
+>", or "<TT
+CLASS="LITERAL"
+>ATTACHMENT</TT
+>"
+(or blank, if the header is not present).</P
+></DD
+><DT
+>size_t content_size</DT
+><DD
+><P
+>The approximate size of the MIME section, in bytes (for non-multipart
+MIME sections only).</P
+></DD
+><DT
+>size_t content_lines</DT
+><DD
+><P
+>Approximate number of lines in a <TT
+CLASS="LITERAL"
+>TEXT</TT
+> MIME section.</P
+></DD
+><DT
+>mail::mimestruct::parameterList content_disposition_parameters</DT
+><DD
+><P
+>Additional attributes parsed from the
+<TT
+CLASS="LITERAL"
+>Content-Disposition:</TT
+> MIME header.
+See below for more information.</P
+></DD
+></DL
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN12220"
+></A
+><H3
+><CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+> methods</H3
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>bool flag=messagerfc822();</DT
+><DD
+><P
+>Returns <TT
+CLASS="LITERAL"
+>true</TT
+> if <CODE
+CLASS="STRUCTNAME"
+>type</CODE
+> is
+"<TT
+CLASS="LITERAL"
+>MESSAGE</TT
+>" and <CODE
+CLASS="STRUCTNAME"
+>subtype</CODE
+> is
+"<TT
+CLASS="LITERAL"
+>RFC822</TT
+>".</P
+></DD
+><DT
+>bool flag=messagerfc822()</DT
+><DD
+><P
+>Returns <TT
+CLASS="LITERAL"
+>true</TT
+> if <CODE
+CLASS="STRUCTNAME"
+>type</CODE
+> is
+"<TT
+CLASS="LITERAL"
+>MESSAGE</TT
+>" and <CODE
+CLASS="STRUCTNAME"
+>subtype</CODE
+> is
+"<TT
+CLASS="LITERAL"
+>RFC822</TT
+>".</P
+></DD
+><DT
+>mail::envelope &#38;myEnvelope=getEnvelope()</DT
+><DD
+><P
+>Returns a
+<A
+HREF="envelope.html"
+><CODE
+CLASS="STRUCTNAME"
+>mail::envelope</CODE
+></A
+>
+object, if <TT
+CLASS="FUNCTION"
+>messagerfc822</TT
+> returns true.</P
+></DD
+><DT
+>size_t numChildren=getNumChildren()</DT
+><DD
+><P
+>Returns the number of MIME sections in a multipart MIME message.</P
+></DD
+><DT
+>mail::mimestruct *child=getChild(size_t childNum)</DT
+><DD
+><P
+>Returns a pointer to a <CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+> object that
+represents a single part of a multipart MIME message.
+<TT
+CLASS="PARAMETER"
+><I
+>childNum</I
+></TT
+> must be between zero and one less than
+the number of parts returned by <TT
+CLASS="FUNCTION"
+>getNumChildren</TT
+>.</P
+></DD
+><DT
+>mail::mimestruct *parent=getParent()</DT
+><DD
+><P
+>Returns a pointer to a <CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+> object that
+represents the parent of this MIME part, if this
+<CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+>
+object represents a single part of a multipart MIME message.
+Returns NULL if this
+<CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+>
+object represents the entire MIME message.</P
+></DD
+></DL
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+> objects that represent
+<TT
+CLASS="LITERAL"
+>MESSAGE/RFC822</TT
+>
+content should have
+<TT
+CLASS="FUNCTION"
+>getNumChildren</TT
+> return <TT
+CLASS="LITERAL"
+>1</TT
+>,
+and
+<TT
+CLASS="FUNCTION"
+>getChild</TT
+> with <TT
+CLASS="PARAMETER"
+><I
+>childNum</I
+></TT
+> set to
+<TT
+CLASS="LITERAL"
+>0</TT
+> should return a pointer to a
+<CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct</CODE
+> object that represents the
+<TT
+CLASS="LITERAL"
+>MESSAGE/RFC822</TT
+>
+message.
+However, <TT
+CLASS="FUNCTION"
+>getNumChildren</TT
+> may return 0
+if the MIME message is corrupted.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN12279"
+></A
+><H2
+><CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct::parameterList</CODE
+></H2
+><P
+>A <CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct::parameterList</CODE
+> object holds
+parsed MIME attributes in the
+<TT
+CLASS="LITERAL"
+>Content-Type:</TT
+> and
+<TT
+CLASS="LITERAL"
+>Content-Disposition:</TT
+> headers.
+A <CODE
+CLASS="STRUCTNAME"
+>mail::mimestruct::parameterList</CODE
+> object has the
+following methods:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>bool flag=exists(std::string name);</DT
+><DD
+><P
+>This method returns true if the attribute <TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>
+exists.</P
+></DD
+><DT
+>std::string str=get(std::string name, const struct unicode_info *info=NULL);</DT
+><DD
+><P
+>Returns the value of attribute <TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+> (uppercase).
+If <TT
+CLASS="PARAMETER"
+><I
+>info</I
+></TT
+> is not NULL, the attribute's value is
+converted to the specified character set (if the attribute uses
+<A
+HREF="http://www.rfc-editor.org/rfc/rfc2231.txt"
+TARGET="_top"
+>RFC 2231</A
+>
+to specify its character set and language).</P
+></DD
+><DT
+>void set(std::string name, std::string value,
+std::string charset, std::string language);</DT
+><DD
+><P
+>Set the attribute <TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+> to <TT
+CLASS="PARAMETER"
+><I
+>value</I
+></TT
+>.
+If <TT
+CLASS="PARAMETER"
+><I
+>charset</I
+></TT
+> and/or <TT
+CLASS="PARAMETER"
+><I
+>language</I
+></TT
+> are
+not empty strings, <TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>'s character set and language
+are indicated accordingly, as per
+<A
+HREF="http://www.rfc-editor.org/rfc/rfc2231.txt"
+TARGET="_top"
+>RFC 2231</A
+>.</P
+></DD
+><DT
+>mail::mimestruct::parameterList::iterator begin(), end();
+mail::mimestruct::parameterList::const_iterator begin() const, end() const;</DT
+><DD
+><P
+>The <TT
+CLASS="FUNCTION"
+>begin</TT
+> and <TT
+CLASS="FUNCTION"
+>end</TT
+> functions return
+the equivalent iterators over the individual name/value MIME attributes.
+The iterators point to a <CODE
+CLASS="STRUCTNAME"
+>std::pair&#60;std::string,
+std::string&#62;</CODE
+>;
+<CODE
+CLASS="STRUCTFIELD"
+>first</CODE
+> is the attribute name (uppercased),
+and
+<CODE
+CLASS="STRUCTFIELD"
+>second</CODE
+> is its value.
+(The underlying structure being iterated is a
+<CODE
+CLASS="STRUCTNAME"
+>std::map&#60;std::string,
+std::string&#62;</CODE
+>.)</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN12320"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="envelope.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::envelope</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-readmsgattr.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::readMessageAttributes</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="envelope.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="smap1.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::envelope</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="misc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Simple Mail Access Protocol, Version 1</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,535 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>Adding messages to folders</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Simple Mail Access Protocol, Version 1"
+HREF="smap1.html"><LINK
+REL="PREVIOUS"
+TITLE="More comments on concurrency"
+HREF="x13443.html"><LINK
+REL="NEXT"
+TITLE="Copying and moving messages"
+HREF="x13547.html"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x13443.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Simple Mail Access Protocol, Version 1</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x13547.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="ADD"
+>Adding messages to folders</A
+></H1
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;ADD&nbsp;FOLDER&nbsp;Folders&nbsp;"Sent&nbsp;Mail"&nbsp;""<br>
+S:&nbsp;+OK&nbsp;Ok<br>
+C:&nbsp;ADD&nbsp;RCPTTO=tom@example.com&nbsp;RCPTTO=alice@example.com<br>
+S:&nbsp;+OK&nbsp;Ok<br>
+C:&nbsp;ADD&nbsp;MAILFROM=john@example.com&nbsp;FLAGS=SEEN,DRAFT<br>
+S:&nbsp;+OK&nbsp;Ok<br>
+C:&nbsp;ADD&nbsp;{.7618}<br>
+S:&nbsp;&#62;&nbsp;Proceed,&nbsp;please.<br>
+C:&nbsp;From:&nbsp;&#60;john@example.com&#62;<br>
+C:&nbsp;To:&nbsp;distribution-list:&nbsp;;<br>
+C:&nbsp;Subject:&nbsp;Meeting<br>
+C:<br>
+C:&nbsp;<I
+CLASS="EMPHASIS"
+>[ ... ]</I
+><br>
+C:&nbsp;.<br>
+S:&nbsp;*&nbsp;ADD&nbsp;UID=1043320248/3479<br>
+S:&nbsp;+OK&nbsp;Message&nbsp;added</P
+></P
+><P
+>The <TT
+CLASS="LITERAL"
+>ADD</TT
+> command uploads a message from the client to the
+server to a folder, and/or sends the message to its designated
+recipients.
+In most cases the client sends several <TT
+CLASS="LITERAL"
+>ADD</TT
+> commands
+that specify the attributes, and/or the properties of a given message.
+The client may send everything in a single <TT
+CLASS="LITERAL"
+>ADD</TT
+> command
+provided that it is not large enough to exceed the maximum line length
+limitation, but most clients will find it easier just to use multiple
+commands.
+Other SMAP commands cannot be intermixed with a batch
+of <TT
+CLASS="LITERAL"
+>ADD</TT
+> commands.
+Upon receiving another command, the server quietly aborts the upload process
+before handling the command, and the client will have to start over at
+some later point in time.
+A single rejected <TT
+CLASS="LITERAL"
+>ADD</TT
+> does not abort the upload, the
+client can retry or explicitly issue some other command (such as
+the <A
+HREF="add.html#RSET"
+><TT
+CLASS="LITERAL"
+>RSET</TT
+></A
+> command)
+to abort it.</P
+><P
+>The following attributes and/or keywords follow the <TT
+CLASS="LITERAL"
+>ADD</TT
+>
+command:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>FOLDER <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+> ""</DT
+><DD
+><P
+>This keyword specifies the folder where the message is added to.
+A maximum of one <TT
+CLASS="LITERAL"
+>FOLDER</TT
+> may be specified.
+Whitespace-delimited words that name an existing folder follow the
+<TT
+CLASS="LITERAL"
+>FOLDER</TT
+> keyword, followed by a single empty word.
+At least one <TT
+CLASS="LITERAL"
+>RCPTTO</TT
+> keyword is required if
+<TT
+CLASS="LITERAL"
+>FOLDER</TT
+> is not specified, in which case the message
+is only mailed to the designated recipients without saving a copy in
+any folder.
+Both <TT
+CLASS="LITERAL"
+>FOLDER</TT
+> and <TT
+CLASS="LITERAL"
+>RCPTTO</TT
+> keywords
+may be specified; the message is both saved in the folder, and sent to
+its designated recipients.</P
+></DD
+><DT
+>RCPTTO=<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></DT
+><DD
+><P
+>Specifies the message's recipient.
+If this keyword is present, the message will be mailed to the specified
+address.
+Multiple occurences of
+<TT
+CLASS="LITERAL"
+>RCPTTO</TT
+> specify multiple recipients.</P
+></DD
+><DT
+>MAILFROM=<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>host</I
+></TT
+></DT
+><DD
+><P
+>Specifies the message's return address.
+This is optional, if not specified, the server uses whatever it thinks
+the return address is.
+Clients should not rely on this, because the mechanism by which the server
+makes this determination is not specified, and will vary from server to
+server.</P
+></DD
+><DT
+>NOTIFY=<TT
+CLASS="REPLACEABLE"
+><I
+>list</I
+></TT
+></DT
+><DD
+><P
+>Sets delivery status notification options for the sent message, as
+described by
+<A
+HREF="http://www.rfc-editor.org/rfc/rfc1891.txt"
+TARGET="_top"
+>RFC 1891</A
+>.
+This is an optional keyword that may not be implemented by all servers.
+Servers that do not implement delivery status notifications should reject
+this keyword.</P
+><P
+><TT
+CLASS="REPLACEABLE"
+><I
+>list</I
+></TT
+> is a comma-separated list of the usual
+delivery confirmation requests, such as
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>SUCCESS,FAIL</TT
+>"</SPAN
+>.
+The default set of delivery status notifications (when this keyword is
+not specified) is implementation-defined.</P
+></DD
+><DT
+>FLAGS, KEYWORDS, INTERNALDATE</DT
+><DD
+><P
+>The <TT
+CLASS="LITERAL"
+>FLAGS</TT
+>,
+<TT
+CLASS="LITERAL"
+>KEYWORDS</TT
+>, and <TT
+CLASS="LITERAL"
+>INTERNALDATE</TT
+> set
+their corresponding attributes, when the message is to be saved in a folder.
+See <SPAN
+CLASS="QUOTE"
+>"<A
+HREF="attributes.html"
+>Reading message attributes</A
+>"</SPAN
+>
+for more information.
+These keywords are optional, and the server will use implementation-defined
+defaults if they are not specified.</P
+></DD
+><DT
+>{.<TT
+CLASS="REPLACEABLE"
+><I
+>nnnn</I
+></TT
+>} or {<TT
+CLASS="REPLACEABLE"
+><I
+>xxxx</I
+></TT
+>/<TT
+CLASS="REPLACEABLE"
+><I
+>yyyy</I
+></TT
+>}</DT
+><DD
+><P
+>This keyword must appear in the last <TT
+CLASS="LITERAL"
+>ADD</TT
+> command
+(when the client uses multiple <TT
+CLASS="LITERAL"
+>ADD</TT
+> commands to list all
+attributes and properties).
+It indicates that the client is ready to upload the contents of the message
+to the server.
+The client uses the same multi-line or binary format that's used for
+downloading message contents from the server, with one difference.
+The client does not proceed with sending the actual message immediately.
+The client must wait for the server's reply.
+The server replies with a single line of text whose first whitespace-delimited
+word is a single <TT
+CLASS="LITERAL"
+>&#62;</TT
+> character.
+Note that the server may reject the command
+(and the client will receive an <TT
+CLASS="LITERAL"
+>-ERR</TT
+>),
+otherwise, upon receiving the <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>&#62;</TT
+>"</SPAN
+>
+the client
+should then proceed to send the contents of the message, in accordance with
+the selected transmission format, then wait for the server's final
+reply.</P
+><P
+>The server's final response may include an optional <TT
+CLASS="LITERAL"
+>* ADD</TT
+>
+single line reply.  A list of whitespace-delimited keywords follow.
+At this time, only the following keyword is defined by this
+specification:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>UID=<TT
+CLASS="REPLACEABLE"
+><I
+>uid</I
+></TT
+></DT
+><DD
+><P
+>Specifies the message's unique identifier, if the message is succesfully
+saved in a folder.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>This keyword is not sent when the message is only mailed, without saving
+a copy in a folder.
+Furthermore,
+the <TT
+CLASS="LITERAL"
+>ADD</TT
+> command is not limited to saving the message
+in the currenly open folder.
+The message may be saved in any folder.
+But if it is, the message will not be immediately accessible.
+The clients needs to issue a <TT
+CLASS="LITERAL"
+>NOOP</TT
+>.
+Presumably the server will indicate that new messages were added to the
+folder, and additional <TT
+CLASS="LITERAL"
+>FETCH</TT
+> commands will reveal that
+one of the messages has the same unique identifier that was specified
+in this reply.</P
+><P
+>Of course, it is always possible that someone else deleted the new message
+before this client had a chance to issue a <TT
+CLASS="LITERAL"
+>NOOP</TT
+>, so
+the new message is still not guaranteed to be there.
+Such is life in a multiprocessing environment, I suppose...</P
+></TD
+></TR
+></TABLE
+></DIV
+></DD
+></DL
+></DIV
+></DD
+></DL
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="RSET"
+>The <TT
+CLASS="LITERAL"
+>RSET</TT
+> command</A
+></H2
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;RSET<br>
+S:&nbsp;+OK&nbsp;RSET&nbsp;completed</P
+></P
+><P
+>This command does absolutely nothing.
+Its main purpose is the side effect of aborting the current upload of a
+new message via the <A
+HREF="add.html"
+><TT
+CLASS="LITERAL"
+>ADD</TT
+></A
+>
+command.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x13443.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x13547.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>More comments on concurrency</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="smap1.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Copying and moving messages</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

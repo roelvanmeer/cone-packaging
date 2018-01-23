@@ -1,0 +1,452 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>Cone: COnsole Newsreader And Emailer</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="PREVIOUS"
+TITLE="Logging off"
+HREF="x13789.html"><LINK
+REL="NEXT"
+TITLE="Installing Cone"
+HREF="install.html"></HEAD
+><BODY
+CLASS="APPENDIX"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x13789.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="install.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="APPENDIX"
+><H1
+><A
+NAME="INDEX"
+></A
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+>: COnsole Newsreader And Emailer</H1
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><A
+NAME="AEN13801"
+></A
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#E0E0E0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+><P
+><A
+HREF="http://sourceforge.net/projects/courier/"
+TARGET="_top"
+><SPAN
+CLASS="INLINEMEDIAOBJECT"
+><IMG SRC="http://sourceforge.net/sflogo.php?group_id=5404&#38;amp;type=1&#38;amp;dummy=.png"
+WIDTH="88"
+HEIGHT="31"></SPAN
+></A
+></P
+>
+  </TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN13813"
+>Introduction</A
+></H1
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> is a text-based mail client.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> seamlessly handles multiple POP3, IMAP accounts, and local mail
+folders.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> is also a simple newsreader.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+>'s interface is foolproof enough to be used by inexperienced users,
+but it also offers advanced features for power users.</P
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN13820"
+>Overview</A
+></H2
+><P
+></P
+><UL
+><LI
+><P
+>An online tutorial provides a quick overview of <TT
+CLASS="APPLICATION"
+>Cone</TT
+>'s main features.</P
+></LI
+><LI
+><P
+>A built-in <A
+HREF="leaf.html"
+>text editor</A
+>
+for editing new messages, with search/replace and
+spell checking (requires <B
+CLASS="COMMAND"
+>aspell</B
+> or
+<B
+CLASS="COMMAND"
+>pspell</B
+>).</P
+><P
+>Shortcuts - assign frequently used text to a function key, or to an
+abbreviation.  Insert the text by pressing the function key or typing
+its abbreviation.</P
+></LI
+><LI
+><P
+>Supports UTF-8 consoles (requires the wide-character
+version of the curses library).</P
+></LI
+><LI
+><P
+>Displays HTML mail, with automatic de-moronization
+(<SPAN
+CLASS="QUOTE"
+>"smart quotes"</SPAN
+>, and similar clutter, is replaced
+by plain garden-variety punctuation).</P
+></LI
+><LI
+><P
+>Displays attached images, if invoked from an X terminal,
+by running Gnome's <B
+CLASS="COMMAND"
+>eog</B
+>,
+or KDE's <B
+CLASS="COMMAND"
+>kview</B
+> image viewer.
+Displays <TT
+CLASS="LITERAL"
+>PDF</TT
+> attachments by running
+<B
+CLASS="COMMAND"
+>xpdf</B
+>.
+Other, or alternative, helper applications will be added as time
+permits.</P
+></LI
+><LI
+><P
+>After attachments are downloaded, they can be optionally removed from
+the message.</P
+></LI
+><LI
+><P
+>Handles local mail folders, maildirs, IMAP and POP3 accounts, and
+Usenet newsgroups.
+All folders are shown in a hierarchical tree-like display.</P
+></LI
+><LI
+><P
+>Supports access to servers through a Socks 5 proxy, using the Courier Socks 5
+API toolkit.</P
+></LI
+><LI
+><P
+>Sends mail using an external SMTP server (with/without authentication),
+or the local
+<B
+CLASS="COMMAND"
+>sendmail</B
+> command.</P
+></LI
+><LI
+><P
+>All network protocols support SSL/TLS and SASL (CRAM-MD5, CRAM-SHA1, and
+LOGIN).</P
+></LI
+><LI
+><P
+>Address books (which can be stored in an IMAP folder).</P
+></LI
+><LI
+><P
+>Optional support for LDAP address books.</P
+></LI
+><LI
+><P
+>Remote configuration (share a common configuration between different
+instances of <TT
+CLASS="APPLICATION"
+>Cone</TT
+>).</P
+></LI
+><LI
+><P
+>An optional <SPAN
+CLASS="QUOTE"
+>"single sign-on"</SPAN
+>.
+Use a single master password for multiple remote mail server
+accounts.</P
+></LI
+><LI
+><P
+>PGP/GPG based encryption, and digital signatures.
+Sent messages are automatically signed.
+Different signing
+keys may be selected for different mail accounts, and the appropriate
+key is automatically selected when replying to a message from
+an account.
+Selecting a message for an encryption automatically looks up keys
+that match the recipients' E-mail addresses.</P
+><P
+>Import, export, forward and receive PGP/GPG keys as MIME attachments.</P
+><P
+>When a single sign-on master password is installed, the master password
+also handles access to passphrase-protected keys.</P
+></LI
+><LI
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> shares a lot of its code base with the
+<A
+HREF="http://www.courier-mta.org"
+TARGET="_top"
+>Courier mail server</A
+>,
+which is why they share the same web site together.</P
+></LI
+><LI
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> also serves as a platform for development of a new experimental
+network mail access protocol,
+<A
+HREF="smap1.html"
+>SMAP</A
+>, that offers additional
+functionality not available with IMAP or POP3.
+When <TT
+CLASS="APPLICATION"
+>Cone</TT
+> logs on to a SMAP-capable server,
+such as the current development version of Courier, additional features become
+available:</P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>Folder names may utilize the full UTF-8 character set, without any
+reserved folder hierarchy separator characters.
+The user does not need to be aware of the underlying mail folder
+implementation.</P
+></LI
+><LI
+><P
+>Faster downloading of attachments.</P
+></LI
+><LI
+><P
+>Faster mail sending.
+SMAP does not require the client to open a second SMTP connection,
+and send a second copy of the message via SMTP.</P
+></LI
+><LI
+><P
+>Fast opening of large folders.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> does not need to download the complete folder index every time
+the folder is opened, only what's changed to the folder
+since the last time it was open.</P
+></LI
+><LI
+><P
+>Many other useful features that are waiting to be implemented.</P
+></LI
+></OL
+></LI
+><LI
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> owes its versatility in handling a large variety of mail protocols
+to the fact that it's based on <A
+HREF="libmail.html"
+>&#13;<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+></A
+>,
+a generic C++ library that provides a high-level mail-handling API.
+Using the <TT
+CLASS="LITERAL"
+>--with-devel</TT
+> configuration setting
+installs the 
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+ toolkit, which allows for development of independent
+E-mail software.</P
+></LI
+></UL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x13789.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="install.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Logging off</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Installing <TT
+CLASS="APPLICATION"
+>Cone</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

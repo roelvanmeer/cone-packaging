@@ -1,0 +1,309 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>Encryption Menu</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Cone mail client"
+HREF="cone00index.html"><LINK
+REL="PREVIOUS"
+TITLE="Master Passwords"
+HREF="cone09masterpassword.html"><LINK
+REL="NEXT"
+TITLE="Mail Filters"
+HREF="cone11filters.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="cone09masterpassword.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="cone11filters.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="CONE10ENCRYPTION"
+></A
+>Encryption Menu</H1
+><P
+>Choosing <SPAN
+CLASS="QUOTE"
+>"Encryption Menu"</SPAN
+> from <TT
+CLASS="APPLICATION"
+>Cone</TT
+>'s main menu
+(which is available if <TT
+CLASS="APPLICATION"
+>GnuPG</TT
+> is installed)
+opens a menu with the following selections:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>New encryption key</DT
+><DD
+><P
+>This selection creates a pair of public and private keys,
+which may be used for signing and encryption.
+Fill in the fields on the next screen with the appropriate information:
+the name, the E-mail address, and the comment associated with the keypair;
+how big the encryption keys should be (a different length may be chosen
+for creating signed content, and for creating encrypted content); whether
+the keys have an expiration date; and the passphrase, or a password, for the
+private key.  The passphrase must be entered twice, in both fields, and both
+fields must match.  Leave both passphrase fields empty to create a private key
+without a passphrase.</P
+></DD
+><DT
+>Delete key</DT
+><DD
+><P
+>This selection deletes an existing key.
+Public and private keys are deleted separately.
+All installed keys are displayed in a vertical list.
+Highlight a key with the cursor, and press <B
+CLASS="KEYCAP"
+>ENTER</B
+> to delete
+it.</P
+><P
+>The top half of the screen shows detailed information about the current key
+that's highlighted by the cursor.  Due to limited amount of available space,
+keys with more than one signatures may not have all signatures shown.</P
+></DD
+><DT
+>Sign key</DT
+><DD
+><P
+>This selection signs an existing public key with one of the private keys.
+The public key, and the private key are selected one at a time.
+All installed keys are displayed in a vertical list.
+Highlight a key with the cursor, and press <B
+CLASS="KEYCAP"
+>ENTER</B
+> to select
+it.</P
+><P
+>The top half of the screen shows detailed information about the current key
+that's highlighted by the cursor.  Due to limited amount of available space,
+keys with more than one signatures may not have all signatures shown.</P
+><P
+>After selecting the public key, and then the private key, the last prompt
+asks for the signature's trust level, which is used by
+<TT
+CLASS="APPLICATION"
+>GnuPG</TT
+> to calculate the key's trustworthiness.</P
+></DD
+><DT
+>Edit key</DT
+><DD
+><P
+>This last selection provides a convenient means for accessing advanced
+key management features through the <TT
+CLASS="APPLICATION"
+>GnuPG</TT
+>
+application which are not directly implemented in <TT
+CLASS="APPLICATION"
+>Cone</TT
+>.
+Selecting <SPAN
+CLASS="QUOTE"
+>"Edit key"</SPAN
+> shows a list of all available keys.
+Highlight an available key with the cursor, and press <B
+CLASS="KEYCAP"
+>ENTER</B
+>.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> then runs <TT
+CLASS="APPLICATION"
+>GnuPG</TT
+> and opens
+<TT
+CLASS="APPLICATION"
+>GnuPG</TT
+> key management menu that provides access
+to additional key management features, such as advanced signature and
+passphrase management.
+After <TT
+CLASS="APPLICATION"
+>GnuPG</TT
+> exits <TT
+CLASS="APPLICATION"
+>Cone</TT
+> resumes running
+automatically.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> does not run while <TT
+CLASS="APPLICATION"
+>GnuPG</TT
+> is running, and
+it waits for <TT
+CLASS="APPLICATION"
+>GnuPG</TT
+> to finish before resuming.
+If <TT
+CLASS="APPLICATION"
+>GnuPG</TT
+> runs for an extended period of time,
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+>';s connections to remote mail server may be terminated due to
+inactivity.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="cone09masterpassword.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="cone11filters.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Master Passwords</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="cone00index.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Mail Filters</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

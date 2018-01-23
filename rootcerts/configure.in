@@ -1,0 +1,66 @@
+dnl $Id: configure.in,v 1.7 2003/05/18 21:49:31 mrsam Exp $
+dnl
+dnl Copyright 2001 Double Precision, Inc.  See COPYING for
+dnl distribution information.
+
+AC_INIT(certs.sh)
+LPATH="$PATH:/usr/local/bin"
+
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AM_INIT_AUTOMAKE(rootcerts, 0.50)
+
+EXTRA_PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin:/usr/local/bin
+AC_PATH_PROG(OPENSSL, openssl, "", $EXTRA_PATH)
+AC_PATH_PROG(REHASH, c_rehash, "", $EXTRA_PATH)
+AC_PATH_PROGS(PERL, perl5 perl, "", $EXTRA_PATH)
+
+if test "$PERL" = ""
+then
+	AC_MSG_ERROR(Perl not found)
+fi
+
+test "x$prefix" = xNONE && prefix=$ac_default_prefix
+test "x$exec_prefix" = xNONE && exec_prefix='${prefix}'
+eval "datadir=$datadir"
+
+AC_ARG_WITH(certdb, [  --without-certdb        Do not install default root certificates
+  --with-certdb=/pathname     Use external root certificate database in pathname], [
+		case $withval in
+		no)
+			certdb=""
+			OPENSSL=""
+			;;
+		/*)
+			certdb="$withval"
+			;;
+		esac
+], [ certdb="${datadir}/rootcerts"
+	if test "$OPENSSL" = ""
+	then
+		certdb=""
+	fi
+])
+rm -f rootcerts.cnf
+echo "dir=\"$certdb\"" >rootcertsdir.cnf
+
+AC_SUBST(certdb)
+AC_SUBST(OPENSSL)
+
+if test "$OPENSSL" != ""
+then
+	if test "$REHASH" = ""
+	then
+		AC_MSG_WARN(Unable to locate OpenSSL's c_rehash script in the current)
+		AC_MSG_WARN(PATH.  The c_rehash script is included in the OpenSSL)
+		AC_MSG_WARN(package but may not be installed on your system.  Please)
+		AC_MSG_WARN(install the c_rehash script from OpenSSL and rerun this)
+		AC_MSG_WARN(configure script.)
+		AC_MSG_ERROR(openssl found but c_rehash was not found.)
+	fi
+fi
+AC_SUBST(c_rehash)
+
+AM_CONDITIONAL(HAVE_OPENSSL, test "$OPENSSL" != "")
+
+AC_OUTPUT(Makefile)

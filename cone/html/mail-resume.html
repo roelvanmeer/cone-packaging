@@ -1,0 +1,253 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::account::resume</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::account Native API reference"
+HREF="native.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::account::removeMessages"
+HREF="mail-removemessages.html"><LINK
+REL="NEXT"
+TITLE="mail::account::saveFolderIndexInfo"
+HREF="mail-savefolderindexinfo.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mail-removemessages.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mail-savefolderindexinfo.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="MAIL-RESUME"
+></A
+>mail::account::resume</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN7842"
+></A
+><H2
+>Name</H2
+>mail::account::resume&nbsp;--&nbsp;Resume after a suspend</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN7845"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;&#60;libmail/mail.H&#62;<br>&#13;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN7847"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>void <TT
+CLASS="FUNCTION"
+>mail::account::resume</TT
+></CODE
+>(void);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN7852"
+></A
+><H2
+>USAGE</H2
+><P
+>This function should be invoked when the application resumes after it was
+suspended, or after any other lengthy delay in calling
+<TT
+CLASS="FUNCTION"
+>mail::account::process</TT
+>.
+The application could've been suspended while 
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+ was in a middle
+of processing a background event.
+After resuming, the jump in the system clock may result in 
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+
+concluding that the remote mail server timed out without responding, when
+the actual response did come in while the application was suspended, and
+
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+ just hasn't read it yet.</P
+><P
+><TT
+CLASS="FUNCTION"
+>mail::account::process</TT
+> resets 
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+'s internal
+timeouts.
+Note that not much can be done
+if the application remained suspended long enough for the remote mail server
+to shut down the connection itself.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN7862"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="mail-process.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::process</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mail-removemessages.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mail-savefolderindexinfo.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::account::removeMessages</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="native.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::account::saveFolderIndexInfo</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

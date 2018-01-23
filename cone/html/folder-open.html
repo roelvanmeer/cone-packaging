@@ -1,0 +1,1142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::folder::open</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::folder Native API reference"
+HREF="libmail-folder.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::folder::isparentof"
+HREF="folder-isparentof.html"><LINK
+REL="NEXT"
+TITLE="mail::folder::readFolderInfo"
+HREF="folder-readfolderinfo.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="folder-isparentof.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="folder-readfolderinfo.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="FOLDER-OPEN"
+></A
+>mail::folder::open</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN10536"
+></A
+><H2
+>Name</H2
+>mail::folder::open&nbsp;--&nbsp;Open a folder</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN10539"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/mail.H&#62;<br>
+<br>
+<br>
+class&nbsp;myCallback&nbsp;:&nbsp;public&nbsp;mail::callback&nbsp;{<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success(std::string&nbsp;msg);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;fail(std::string&nbsp;msg);<br>
+};</P
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/snapshot.H&#62;<br>
+<br>
+class&nbsp;myFolderCallback&nbsp;:&nbsp;public&nbsp;mail::callback::folder&nbsp;{<br>
+<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;newMessages();<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;messagesRemoved(vector&#60;&nbsp;pair&#60;size_t,&nbsp;size_t&#62;&nbsp;&#62;&nbsp;&#38;removedList);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;messageChanged(size_t&nbsp;messageNumber);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;saveSnapshot(std::string&nbsp;snapshotId);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+};<br>
+<br>
+class&nbsp;myRestoreSnapshot&nbsp;:&nbsp;public&nbsp;mail::snapshot&nbsp;{<br>
+<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;getSnapshotInfo(std::string&nbsp;&#38;snapshotId,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;&#38;nMessages);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;restoreSnapshot(mail::snapshot::restore&nbsp;&#38;restoreCB);<br>
+};<br>&#13;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN10542"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>folder-&#62;<TT
+CLASS="FUNCTION"
+>open</TT
+></CODE
+>(myCallback &#38;<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>, myRestoreSnapshot &#38;<TT
+CLASS="PARAMETER"
+><I
+>restoreSnapshot</I
+></TT
+>, myFolderCallback &#38;<TT
+CLASS="PARAMETER"
+><I
+>folderCallback</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN10552"
+></A
+><H2
+>USAGE</H2
+><P
+>A mail folder must be formally "opened" before the messages in the folder
+may be accessed.
+Each mail account can have only one mail folder at any time
+Opening another folder automatically "closes" the previous folder.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Different <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+>
+or <CODE
+CLASS="STRUCTNAME"
+>mail::ACCOUNT</CODE
+>
+objects may each
+have a folder opened, at the same time.
+It is possible to create multiple <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+>
+or <CODE
+CLASS="STRUCTNAME"
+>mail::ACCOUNT</CODE
+>
+objects that refer to the same actual mail account.
+Whether it is possible to access the same account multiple times,
+using different objects, and whether
+each object may have the same folder opened depends on the account type
+and/or the remote server.</P
+><P
+></P
+><UL
+><LI
+><P
+>Whether it's possible to open the same remote IMAP or POP3 account
+more than once depends on the remote IMAP/POP3 server.</P
+></LI
+><LI
+><P
+>Whether it's possible to open the same folder on a remote IMAP server account
+more than once depends on the remote IMAP/POP3 server.
+Most IMAP servers allow the same account to be opened more than once, as
+long as the different login sessions do not try to open the same folder.
+Some IMAP servers allow the same folder to be opened simultaneously by
+multiple sessions.</P
+></LI
+><LI
+><P
+>It is generally possible to open the same local mail folder simultaneously,
+via multiple <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+> objects, as long as
+only one pending request is issued at a time.
+Concurrent access to local maildirs generally works well, however simultaneous
+access to
+the same mbox folder may be rather slow, due to the overhead of locking
+and rescanning of the folder by each <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+>
+object.</P
+></LI
+></UL
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>Any previously-opened folder is closed before the an attempt to open this
+folder is made.
+If the new folder cannot be opened, the previous folder is still considered
+closed.</P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN10571"
+></A
+><H3
+>Folder Updates</H3
+><P
+>The <TT
+CLASS="PARAMETER"
+><I
+>folderCallback</I
+></TT
+> object is used to notify the
+application of changes to the folder's contents.
+The application must not destroy
+<TT
+CLASS="PARAMETER"
+><I
+>folderCallback</I
+></TT
+> until either the
+<CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+> is destroyed, or another folder
+is opened.
+Changes to the folder's contents are reflected by invoking
+<TT
+CLASS="PARAMETER"
+><I
+>folderCallback</I
+></TT
+>'s methods.</P
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>folderCallback</I
+></TT
+>'s methods are usually invoked by
+
+<A
+HREF="mail-removemessages.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::removeMessages</SPAN
+>(3x)</SPAN
+></A
+>,
+
+<A
+HREF="mail-updatefolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::updateFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+
+<A
+HREF="mail-savefolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::saveFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+
+<A
+HREF="mail-updatefolderindexflags.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::updateFolderIndexFlags</SPAN
+>(3x)</SPAN
+></A
+>, and
+
+<A
+HREF="mail-checknewmail.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::checkNewMail</SPAN
+>(3x)</SPAN
+></A
+>,
+however the application must be prepared to handle any
+<TT
+CLASS="PARAMETER"
+><I
+>folderCallback</I
+></TT
+>'s method to be invoked at any time.
+Most mail servers reserve the right to notify the client of changes to the
+folder's contents at any time.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>As always, messages are numbered starting with 0.  That is, a folder with
+ten messages contains messages #0 through #9.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>void newMessages()</DT
+><DD
+><P
+>This method is invoked whenever new messages are added to the currently
+open folder.
+The application should use
+<A
+HREF="mail-getfolderindexsize.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexSize</SPAN
+>(3x)</SPAN
+></A
+>
+to determine how many messages now exist in the current folder, and use
+the number of messages the application already knows about to determine
+how many new messages have been added.</P
+><P
+>Example:
+The application already knows that the folder has
+three messages.
+After <TT
+CLASS="FUNCTION"
+>mail::callback::folder::newMessages</TT
+> is invoked
+<A
+HREF="mail-getfolderindexsize.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexSize</SPAN
+>(3x)</SPAN
+></A
+>
+now claims there are five messages in the folder.
+This means that the last two messages in the folder are new messages.</P
+></DD
+><DT
+>void messagesRemoved(vector&#60; pair&#60;size_t, size_t&#62; &#62; &#38;removedList);</DT
+><DD
+><P
+>Messages were removed from the folder, and the remaining messages have been
+renumbered to fill in the gaps.
+<TT
+CLASS="PARAMETER"
+><I
+>removedList</I
+></TT
+> is an array that lists which messages
+were removed.
+Each array element contains a starting range and an ending range.
+The range <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>7-9</TT
+>"</SPAN
+> specifies that messages
+#7 through #9, three messages overall, were removed.
+The range <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>5-5</TT
+>"</SPAN
+> specifies that message
+#5 was removed.</P
+><P
+>The remaining messages have been renumbered.
+For example, if the application knows that the folder has ten messages,
+then if <TT
+CLASS="PARAMETER"
+><I
+>removedList</I
+></TT
+> contains two ranges:
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>3-3</TT
+>"</SPAN
+>, and
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>5-7</TT
+>"</SPAN
+>, this indicates that messages #3,
+#5, #6, and #7 were removed.
+The old message #4 is now message #3,
+the old mesasge #8 is now message #4, and the old message #9 is now
+message #5, and there are now six messages left in the folder.</P
+></DD
+><DT
+>void messageChanged(size_t messageNumber)</DT
+><DD
+><P
+>The flags of the indicated message have changed.
+The application should use
+<A
+HREF="mail-getfolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>
+to read the current message flags.</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN10641"
+></A
+><H3
+>Snapshots</H3
+><P
+>Folder index snapshots are implemented by some mail account types.
+Folder index snapshots allow large folders to be opened quickly.
+If a folder contains many messages,
+
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+
+may take a long time to open a folder.
+Folder index snapshots speed up the process of opening a folder which
+was recently opened.
+At this time, folder index snapshots are implemented
+with <TT
+CLASS="LITERAL"
+>NNTP</TT
+>, <TT
+CLASS="LITERAL"
+>pop3</TT
+>,
+and <A
+HREF="smap1.html"
+><TT
+CLASS="LITERAL"
+>SMAP</TT
+></A
+>-based accounts.
+Attempts to use folder index snapshots with other account types will be
+quietly ignored.</P
+><P
+>Implementing folder index snapshots is optional.
+<TT
+CLASS="PARAMETER"
+><I
+>restoreSnapshot</I
+></TT
+> may be <TT
+CLASS="LITERAL"
+>NULL</TT
+>,
+and <TT
+CLASS="APPLICATION"
+>Cone</TT
+> will open folder the old-fashional way, by
+patiently downloading the entire folder index when opening the folder.
+To implement snapshots the application must implemented the
+<TT
+CLASS="FUNCTION"
+>saveSnapshot</TT
+> method of its
+<CODE
+CLASS="STRUCTNAME"
+>mail::callback::folder</CODE
+> subclass, then
+pass a pointer to a <CODE
+CLASS="STRUCTNAME"
+>mail::snapshot</CODE
+> subclass to
+<TT
+CLASS="FUNCTION"
+>mail::folder::open</TT
+></P
+><P
+>Applications can pass a <TT
+CLASS="LITERAL"
+>NULL</TT
+> pointer, and not define
+<TT
+CLASS="FUNCTION"
+>saveSnapshot</TT
+> if folder index snapshots are not
+needed.
+If <TT
+CLASS="FUNCTION"
+>mail::folder::open</TT
+> receives a
+non-<TT
+CLASS="LITERAL"
+>NULL</TT
+> pointer, the object must not be destroyed until
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s <TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.</P
+><P
+>When snapshots are enabled, 
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+ invokes
+<TT
+CLASS="FUNCTION"
+>mail::callback::folder::saveSnapshot</TT
+> whenever a snapshot
+of the opened folder's index should be saved.
+<TT
+CLASS="FUNCTION"
+>mail::callback::folder::saveSnapshot</TT
+> gets invoked
+periodically as long as the folder remains open.
+<TT
+CLASS="FUNCTION"
+>mail::callback::folder::saveSnapshot</TT
+> receives
+an opaque identifier, <TT
+CLASS="PARAMETER"
+><I
+>snapshotId</I
+></TT
+>.
+<TT
+CLASS="FUNCTION"
+>mail::callback::folder::saveSnapshot</TT
+> should use
+<A
+HREF="account-getfolderindexsize.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexSize</SPAN
+>(3x)</SPAN
+></A
+>
+to obtain the number of messages in the folder, then use
+<A
+HREF="account-getfolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>
+to save each message's folder index entry, alongside with the
+<TT
+CLASS="PARAMETER"
+><I
+>snapshotId</I
+></TT
+>, and the total number of messages.</P
+><P
+><CODE
+CLASS="STRUCTNAME"
+>mail::messageInfo</CODE
+> has a convenient
+<TT
+CLASS="FUNCTION"
+>operator string()</TT
+> that converts the entire object
+into a string, and a corresponding constructor that initializes the entire
+<CODE
+CLASS="STRUCTNAME"
+>mail::messageInfo</CODE
+> object from a string.</P
+><P
+>The application needs only to save the most recent snapshot.
+<TT
+CLASS="FUNCTION"
+>mail::callback::folder::saveSnapshot</TT
+> should discard
+any previously-saved snapshot, and replace it with the current one.
+<TT
+CLASS="FUNCTION"
+>mail::callback::folder::saveSnapshot</TT
+> should not
+invoke any other 
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+ methods, except
+<SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexSize</SPAN
+>(3x)</SPAN
+>
+and
+<SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexInfo</SPAN
+>(3x)</SPAN
+>.</P
+><P
+>The <CODE
+CLASS="STRUCTNAME"
+>mail::snapshot</CODE
+>-subclassed object passed to
+<TT
+CLASS="FUNCTION"
+>mail::folder::open</TT
+> implements two methods:
+<TT
+CLASS="FUNCTION"
+>getSnapShotInfo</TT
+> and
+<TT
+CLASS="FUNCTION"
+>restoreSnapshot</TT
+>.
+<TT
+CLASS="FUNCTION"
+>getSnapShotInfo</TT
+> should initialize
+<TT
+CLASS="PARAMETER"
+><I
+>snapshotId</I
+></TT
+> to the opaque snapshot identifier of the
+most-recently saved snapshot, and
+<TT
+CLASS="PARAMETER"
+><I
+>nMessages</I
+></TT
+> to the number of messages in the
+snapshot.</P
+><P
+>An application that does not have a snapshot, but wishes to use snapshots
+(perhaps this is the very first time this folder was opened) should
+initialize
+<TT
+CLASS="PARAMETER"
+><I
+>snapshotId</I
+></TT
+> to an empty string, and set
+<TT
+CLASS="PARAMETER"
+><I
+>nMessages</I
+></TT
+> to zero.
+The application should not pass a <TT
+CLASS="LITERAL"
+>NULL</TT
+>
+<TT
+CLASS="PARAMETER"
+><I
+>restoreSnapshot</I
+></TT
+> parameter, since that disables
+
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+'s usage of snapshots.</P
+><P
+>After invoking
+<TT
+CLASS="FUNCTION"
+>getSnapShotInfo</TT
+>,
+
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+ will invoke
+<TT
+CLASS="FUNCTION"
+>restoreSnapshot</TT
+>,
+at which time the application needs to restore the folder index as it was
+saved by the snapshot.
+<TT
+CLASS="FUNCTION"
+>restoreSnapshot</TT
+>
+receives a reference to a
+<CODE
+CLASS="STRUCTNAME"
+>mail::snapshot::restore</CODE
+> object, which contains
+two methods:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>void restoreIndex(size_t msgNum, const mail::messageInfo &#38;msgInfo);</DT
+><DD
+><P
+>Repeatedly invoke this function to specify the previously saved
+<CODE
+CLASS="STRUCTNAME"
+>mail::messageInfo</CODE
+> of each message.</P
+></DD
+><DT
+>void abortRestore()</DT
+><DD
+><P
+>After restoring the entire folder index,
+<TT
+CLASS="FUNCTION"
+>restoreSnapshot</TT
+>
+should simply terminate.
+If the application cannot restore the entire folder index, for some reason,
+<TT
+CLASS="FUNCTION"
+>abortRestore</TT
+> should be invoke to invalidate any
+partially-restored index data.</P
+></DD
+></DL
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>With
+<TT
+CLASS="LITERAL"
+>POP3</TT
+>
+accounts, message status flags are going to be preserved only when
+snapshots are used.
+The <TT
+CLASS="LITERAL"
+>POP3</TT
+> does not provide any facility for saving
+message status flags; and without snapshots each time a <TT
+CLASS="LITERAL"
+>POP3</TT
+>
+folder is opened all messages will be seen as new messages.
+Using snapshots saves each message's status, and restores it when the
+<TT
+CLASS="LITERAL"
+>POP3</TT
+> folder is reopened.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN10733"
+></A
+><H2
+>RETURN CODES AND CALLBACKS</H2
+><P
+>The application must wait until
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.
+The <TT
+CLASS="FUNCTION"
+>success</TT
+> method is invoked when this request is
+succesfully processed.
+The <TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked if this request cannot
+be processed.
+The application must not destroy
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+> until either the
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method may be invoked even after other
+callback methods were invoked.
+This indicates that the request was partially completed before the error
+was encountered.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN10748"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="folder-readfolderinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::folder::readFolderInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+
+<A
+HREF="mail-checknewmail.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::checkNewMail</SPAN
+>(3x)</SPAN
+></A
+>,
+
+<A
+HREF="mail-getfolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+
+<A
+HREF="mail-getfolderindexsize.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexSize</SPAN
+>(3x)</SPAN
+></A
+>,
+
+<A
+HREF="mail-removemessages.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::removeMessages</SPAN
+>(3x)</SPAN
+></A
+>,
+
+<A
+HREF="mail-savefolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::saveFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+
+<A
+HREF="mail-updatefolderindexflags.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::updateFolderIndexFlags</SPAN
+>(3x)</SPAN
+></A
+>,
+
+<A
+HREF="mail-updatefolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::updateFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="folder-isparentof.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="folder-readfolderinfo.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::folder::isparentof</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libmail-folder.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::folder::readFolderInfo</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

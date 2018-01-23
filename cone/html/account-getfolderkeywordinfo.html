@@ -1,0 +1,299 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::ACCOUNT::getFolderKeywordInfo</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::ACCOUNT Synchronous API reference"
+HREF="synchronous.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::ACCOUNT::getFolderFromString"
+HREF="account-getfolderfromstring.html"><LINK
+REL="NEXT"
+TITLE="mail::ACCOUNT::getMessageContent"
+HREF="account-getmessagecontent.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="account-getfolderfromstring.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="account-getmessagecontent.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="ACCOUNT-GETFOLDERKEYWORDINFO"
+></A
+>mail::ACCOUNT::getFolderKeywordInfo</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN3605"
+></A
+><H2
+>Name</H2
+>mail::ACCOUNT::getFolderKeywordInfo&nbsp;--&nbsp;Return message keywords</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN3608"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/sync.H&#62;<br>
+<br>
+<br>
+mail::ACCOUNT&nbsp;*mail;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN3610"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>bool ok=mail-&#62;<TT
+CLASS="FUNCTION"
+>getFolderKeywordInfo</TT
+></CODE
+>(size_t <TT
+CLASS="PARAMETER"
+><I
+>messageNum</I
+></TT
+>, std::set&#60;std::string&#62; &#38;<TT
+CLASS="PARAMETER"
+><I
+>keywords</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3618"
+></A
+><H2
+>USAGE</H2
+><P
+><TT
+CLASS="FUNCTION"
+>mail::ACCOUNT::getFolderKeywordInfo</TT
+>
+retrieves the current keywords for message
+#<TT
+CLASS="PARAMETER"
+><I
+>messagenum</I
+></TT
+> and
+places them into <TT
+CLASS="PARAMETER"
+><I
+>keywords</I
+></TT
+> (removing any existing
+contents).
+If the message does not have any keywords set, <TT
+CLASS="PARAMETER"
+><I
+>keywords</I
+></TT
+>
+will be an empty set.
+
+<TT
+CLASS="PARAMETER"
+><I
+>messageNum</I
+></TT
+> must be between zero and one less than
+the return code from
+<A
+HREF="account-getfolderindexsize.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::getFolderIndexSize</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3630"
+></A
+><H2
+>Return Codes</H2
+><P
+>This function returns immediately.
+    </P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3633"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="account-getfolderindexsize.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::getFolderIndexSize</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="account-getfolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::getFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="account-updatekeywords.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::updateKeywords</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="account-getfolderfromstring.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="account-getmessagecontent.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::ACCOUNT::getFolderFromString</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="synchronous.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::ACCOUNT::getMessageContent</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

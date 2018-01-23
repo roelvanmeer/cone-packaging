@@ -1,0 +1,562 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::account::updateFolderIndexFlags</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::account Native API reference"
+HREF="native.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::account::translatePath"
+HREF="mail-translatepath.html"><LINK
+REL="NEXT"
+TITLE="mail::account::updateFolderIndexInfo"
+HREF="mail-updatefolderindexinfo.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mail-translatepath.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mail-updatefolderindexinfo.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="MAIL-UPDATEFOLDERINDEXFLAGS"
+></A
+>mail::account::updateFolderIndexFlags</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN8335"
+></A
+><H2
+>Name</H2
+>mail::account::updateFolderIndexFlags&nbsp;--&nbsp;Update status of multiple messages</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN8338"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/mail.H&#62;<br>
+<br>
+<br>
+class&nbsp;myCallback&nbsp;:&nbsp;public&nbsp;mail::callback&nbsp;{<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success(std::string&nbsp;msg);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;fail(std::string&nbsp;msg);<br>
+};</P
+><P
+CLASS="LITERALLAYOUT"
+>mail::account&nbsp;*account;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN8341"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>account-&#62;<TT
+CLASS="FUNCTION"
+>updateFolderIndexFlags</TT
+></CODE
+>(const std::vector&#60;size_t&#62; <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+>, bool <TT
+CLASS="PARAMETER"
+><I
+>doFlip</I
+></TT
+>, bool <TT
+CLASS="PARAMETER"
+><I
+>enableDisable</I
+></TT
+>, const messageInfo &#38;<TT
+CLASS="PARAMETER"
+><I
+>msgInfo</I
+></TT
+>, myCallback &#38;<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN8355"
+></A
+><H2
+>USAGE</H2
+><P
+>This is a version of
+<A
+HREF="mail-savefolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::saveFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>
+that updates the status of multiple messages with one request.</P
+><P
+>&#13;<TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+> specifies a list of messages.
+Messages are numbered starting with message #0 and up to one
+less than
+<A
+HREF="mail-getfolderindexsize.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexSize</SPAN
+>(3x)</SPAN
+></A
+>()
+(when <TT
+CLASS="FUNCTION"
+>mail::account::getFolderIndexSize</TT
+> returns 6,
+the messages are numbered 0 through 5).
+Only the messages that appear in <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+> are
+processed by this request.</P
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>msgInfo</I
+></TT
+> selects which message status flags
+should be updated in every message.
+See
+<A
+HREF="mail-getfolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>.</P
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>msgInfo</I
+></TT
+> does NOT specify the new value of the status
+flags, only which status flags should be updated.
+For example, setting
+<TT
+CLASS="PARAMETER"
+><I
+>msgInfo</I
+></TT
+>.<CODE
+CLASS="STRUCTFIELD"
+>marked</CODE
+>
+to true indicates that the messages' <CODE
+CLASS="STRUCTFIELD"
+>marked</CODE
+> status
+flag will be set to the value specified by
+<TT
+CLASS="PARAMETER"
+><I
+>doFlip</I
+></TT
+> and
+<TT
+CLASS="PARAMETER"
+><I
+>enableDisable</I
+></TT
+>.</P
+><P
+>Setting <TT
+CLASS="PARAMETER"
+><I
+>doFlip</I
+></TT
+> to <TT
+CLASS="LITERAL"
+>true</TT
+> "flips"
+the selected status flags (each message's flag will be set to false if
+the status flag was originally
+true, and set to true if the status flag was originalfalse).
+If <TT
+CLASS="PARAMETER"
+><I
+>doFlip</I
+></TT
+> is false, then the selected
+status flags are set to the value of <TT
+CLASS="PARAMETER"
+><I
+>enableDisable</I
+></TT
+>
+<TT
+CLASS="PARAMETER"
+><I
+>enableDisable</I
+></TT
+> is ignored when
+Setting <TT
+CLASS="PARAMETER"
+><I
+>doFlip</I
+></TT
+> is true.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN8390"
+></A
+><H2
+>Return Codes</H2
+><P
+>The application must wait until
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.
+The <TT
+CLASS="FUNCTION"
+>success</TT
+> method is invoked when this request is
+succesfully processed.
+The <TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked if this request cannot
+be processed.
+The application must not destroy
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+> until either the
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method may be invoked even after other
+callback methods were invoked.
+This indicates that the request was partially completed before the error
+was encountered.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The application is notified about when a message's status changes by
+by invoking the
+<TT
+CLASS="FUNCTION"
+>messageChanged</TT
+> callback method of the currently
+opened folder's
+<CODE
+CLASS="STRUCTNAME"
+>mail::folderCallback</CODE
+> object.
+Depending on the mail server, the
+<TT
+CLASS="FUNCTION"
+>messageChanged</TT
+> method may be
+invoked as part of processing this request,
+or some time later after this request is completed,
+and <TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s <TT
+CLASS="FUNCTION"
+>success</TT
+>
+method was invoked.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Multiple applications may have the same account and folder opened at the
+same time.
+It is possible that a message referenced by this request was already
+deleted by another application.
+Depending on the underlying server implementation this will result in
+either a failed request, invoking
+<TT
+CLASS="FUNCTION"
+>callback.fail</TT
+>, or the request completing
+(<TT
+CLASS="FUNCTION"
+>callback.success</TT
+> invoked) but without invoking
+any callback function that refer to the message.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN8416"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="mail-savefolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::saveFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-getfolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mail-translatepath.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mail-updatefolderindexinfo.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::account::translatePath</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="native.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::account::updateFolderIndexInfo</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,469 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::ACCOUNT::getMessageEnvelope</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::ACCOUNT Synchronous API reference"
+HREF="synchronous.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::ACCOUNT::getMessageContentDecoded"
+HREF="account-getmessagecontentdecoded.html"><LINK
+REL="NEXT"
+TITLE="mail::ACCOUNT::getMessageStructure"
+HREF="account-getmessagestructure.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="account-getmessagecontentdecoded.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="account-getmessagestructure.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="ACCOUNT-GETMESSAGEENVELOPE"
+></A
+>mail::ACCOUNT::getMessageEnvelope</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN3838"
+></A
+><H2
+>Name</H2
+>mail::ACCOUNT::getMessageEnvelope&nbsp;--&nbsp;Return message header envelope</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN3841"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/sync.H&#62;<br>
+<br>
+#include&nbsp;&#60;libmail/envelope.H&#62;<br>
+<br>
+mail::ACCOUNT&nbsp;*mail;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN3843"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>bool ok=mail-&#62;<TT
+CLASS="FUNCTION"
+>getMessageEnvelope</TT
+></CODE
+>(const std::vector&#60;size_t&#62; &#38;<TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+>, std::vector&#60;mail::xenvelope&#62; &#38;<TT
+CLASS="PARAMETER"
+><I
+>envelopes</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+><P
+CLASS="LITERALLAYOUT"
+>std::string&nbsp;errmsg=mail-&#62;getErrmsg();</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN3852"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>mail::xenvelope myEnvelope=mail-&#62;<TT
+CLASS="FUNCTION"
+>getMessageEnvelope</TT
+></CODE
+>(size_t <TT
+CLASS="PARAMETER"
+><I
+>messageNum</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3858"
+></A
+><H2
+>USAGE</H2
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+> specifies a list of messages.
+Messages are numbered starting with message #0 and up to one
+less than
+<A
+HREF="account-getfolderindexsize.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::getFolderIndexSize</SPAN
+>(3x)</SPAN
+></A
+>
+(when <TT
+CLASS="FUNCTION"
+>mail::account::getFolderIndexSize</TT
+> returns 6,
+the messages are numbered 0 through 5).
+Only the messages that appear in <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+> are
+processed by this request.
+When a message is removed from the folder, by
+<A
+HREF="account-updatefolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::updateFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+the following messages are renumbered accordingly.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Most mail servers allow multiple applications to open the same folder.
+Therefore, changes to the folder's contents can occur at any time.
+Before making this request, the application should use
+<A
+HREF="account-checknewmail.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::checkNewMail</SPAN
+>(3x)</SPAN
+></A
+> to verify that
+no unexpected changes have been made to the folder's contents.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>This function reads the message envelope header information of each message
+specified by <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+>.
+This function initializes the
+<TT
+CLASS="PARAMETER"
+><I
+>envelopes</I
+></TT
+>
+array to the same size as <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+>, with each
+array member containing the envelope header information for the corresponding
+message in <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+>.</P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3883"
+></A
+><H3
+><CODE
+CLASS="STRUCTNAME"
+>mail::xenvelope</CODE
+></H3
+><P
+>The <CODE
+CLASS="STRUCTNAME"
+>mail::xenvelope</CODE
+> structure is a subclass of
+<A
+HREF="envelope.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::envelope</SPAN
+>(3x)</SPAN
+></A
+>, with two
+additional fields:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>time_t arrivalDate</DT
+><DD
+><P
+>When this message was received by the mail server (or <TT
+CLASS="LITERAL"
+>0</TT
+>
+if the time cannot be determined).</P
+></DD
+><DT
+>unsigned long messageSize</DT
+><DD
+><P
+>The approximate size of the message, in bytes.
+This size should be considered as an estimated only, and the actual size
+may be slightly higher or lower.</P
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3902"
+></A
+><H2
+>Return Codes</H2
+><P
+>This method returns <TT
+CLASS="LITERAL"
+>true</TT
+> if it succeeds, or
+<TT
+CLASS="LITERAL"
+>false</TT
+> if it fails.
+If the method fails, use
+<CODE
+CLASS="STRUCTFIELD"
+>mail::ACCOUNT::getErrmsg()</CODE
+> to read a brief
+description of the error.</P
+><P
+>The second version of <TT
+CLASS="FUNCTION"
+>mail::ACCOUNT::getMessageEnvelope</TT
+>
+returns the envelope information of a single message, ignoring any error
+condition (a failure results in the returned
+<CODE
+CLASS="STRUCTNAME"
+>mail::xenvelope</CODE
+> object being completely
+empty).</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3911"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="envelope.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::envelope</SPAN
+>(3x)</SPAN
+></A
+>,
+
+<A
+HREF="account-getfolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::getFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+
+<A
+HREF="account-getfolderindexsize.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::getFolderIndexSize</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="account-getmessagecontentdecoded.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="account-getmessagestructure.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::ACCOUNT::getMessageContentDecoded</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="synchronous.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::ACCOUNT::getMessageStructure</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

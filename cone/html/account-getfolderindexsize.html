@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::ACCOUNT::getFolderIndexSize</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::ACCOUNT Synchronous API reference"
+HREF="synchronous.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::ACCOUNT::getFolderIndexInfo"
+HREF="account-getfolderindexinfo.html"><LINK
+REL="NEXT"
+TITLE="mail::ACCOUNT::getFolderFromPath"
+HREF="account-getfolderfrompath.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="account-getfolderindexinfo.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="account-getfolderfrompath.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="ACCOUNT-GETFOLDERINDEXSIZE"
+></A
+>mail::ACCOUNT::getFolderIndexSize</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN3490"
+></A
+><H2
+>Name</H2
+>mail::ACCOUNT::getFolderIndexSize&nbsp;--&nbsp;Return number of messages in the current folder</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN3493"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/sync.H&#62;<br>
+<br>
+mail::ACCOUNT&nbsp;*mail;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN3495"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>size_t messageCount=mail-&#62;<TT
+CLASS="FUNCTION"
+>getFolderIndexSize</TT
+></CODE
+>(void);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3500"
+></A
+><H2
+>USAGE</H2
+><P
+><TT
+CLASS="FUNCTION"
+>mail::ACCOUNT::getFolderIndexSize</TT
+>
+returns the number of messages in the currently open folder.
+Messages in the folder are numbered starting with zero, and ending with
+one less than the number returned by this function.</P
+><P
+>For example, if <TT
+CLASS="FUNCTION"
+>mail::ACCOUNT::getFolderIndexSize</TT
+>
+returns 5 it means that there are five messages in the folder, numbered
+0 through 4.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3506"
+></A
+><H2
+>RETURN CODES AND CALLBACKS</H2
+><P
+>This function always succeeds, and returns the number of messages in the
+currently-open folder.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3509"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="account-getfolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::getFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="account-openfolder.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::openFolder</SPAN
+>(3x)</SPAN
+></A
+></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="account-getfolderindexinfo.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="account-getfolderfrompath.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::ACCOUNT::getFolderIndexInfo</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="synchronous.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::ACCOUNT::getFolderFromPath</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

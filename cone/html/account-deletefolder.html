@@ -1,0 +1,310 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::ACCOUNT::deleteFolder</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::ACCOUNT Synchronous API reference"
+HREF="synchronous.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::ACCOUNT::createFolder"
+HREF="account-createfolder.html"><LINK
+REL="NEXT"
+TITLE="mail::ACCOUNT::delRights"
+HREF="account-delrights.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="account-createfolder.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="account-delrights.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="ACCOUNT-DELETEFOLDER"
+></A
+>mail::ACCOUNT::deleteFolder</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN3142"
+></A
+><H2
+>Name</H2
+>mail::ACCOUNT::deleteFolder&nbsp;--&nbsp;Delete a folder</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN3145"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/sync.H&#62;<br>
+<br>
+mail::ACCOUNT&nbsp;*mail;<br>
+mail::folder&nbsp;*folder;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN3147"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>bool ok=mail-&#62;<TT
+CLASS="FUNCTION"
+>deleteFolder</TT
+></CODE
+>(const mail::folder *<TT
+CLASS="PARAMETER"
+><I
+>folder</I
+></TT
+>, bool <TT
+CLASS="PARAMETER"
+><I
+>deleteDirectory</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+><P
+CLASS="LITERALLAYOUT"
+>std::string&nbsp;errmsg=mail-&#62;getErrmsg();</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3156"
+></A
+><H2
+>USAGE</H2
+><P
+>This function deletes an existing folder.
+<TT
+CLASS="PARAMETER"
+><I
+>deleteDirectory</I
+></TT
+> specifies whether the existing
+folder is regular folder, or a folder directory.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>This function only removes the actual folder in the mail account.
+The <TT
+CLASS="PARAMETER"
+><I
+>folder</I
+></TT
+> object is not affected,
+the application is still responsible for destroying the object, when it
+is no longer needed.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3163"
+></A
+><H2
+>RETURN CODES AND CALLBACKS</H2
+><P
+>This method returns <TT
+CLASS="LITERAL"
+>true</TT
+> if it succeeds, or
+<TT
+CLASS="LITERAL"
+>false</TT
+> if it fails.
+If the method fails, use
+<CODE
+CLASS="STRUCTFIELD"
+>mail::ACCOUNT::getErrmsg()</CODE
+> to read a brief
+description of the error.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3169"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="account-getfolderfrompath.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::getFolderFromPath</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="account-getfolderfromstring.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::getFolderFromString</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="folder-createsubfolder.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::folder::createSubFolder</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="account-createfolder.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="account-delrights.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::ACCOUNT::createFolder</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="synchronous.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::ACCOUNT::delRights</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

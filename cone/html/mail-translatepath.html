@@ -1,0 +1,436 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::account::translatePath</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::account Native API reference"
+HREF="native.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::account::searchMessages"
+HREF="mail-searchmessages.html"><LINK
+REL="NEXT"
+TITLE="mail::account::updateFolderIndexFlags"
+HREF="mail-updatefolderindexflags.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mail-searchmessages.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mail-updatefolderindexflags.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="MAIL-TRANSLATEPATH"
+></A
+>mail::account::translatePath</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN8248"
+></A
+><H2
+>Name</H2
+>mail::account::translatePath&nbsp;--&nbsp;Convert readable folder path to internal folder path</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN8251"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>std::string&nbsp;folderPath=folder-&#62;getPath();</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN8253"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>std::string path=account-&#62;<TT
+CLASS="FUNCTION"
+>translatePath</TT
+></CODE
+>(std::string <TT
+CLASS="PARAMETER"
+><I
+>folderPath</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN8259"
+></A
+><H2
+>USAGE</H2
+><P
+>This function converts a human-readable representation of a folder's path
+to the internal folder path in the mail account.
+For example, IMAP server mailboxes use names encoded in a modified
+version of the
+<TT
+CLASS="LITERAL"
+>UTF-7</TT
+> character set, and this method converts a folder
+path from the application's character set to the modified
+<TT
+CLASS="LITERAL"
+>UTF-7</TT
+> character set.
+Specifically:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><A
+HREF="http://www.rfc-editor.org/rfc/rfc2060.txt"
+TARGET="_top"
+>IMAP</A
+></DT
+><DD
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>folderPath</I
+></TT
+> is converted from application's
+character set to the modified <TT
+CLASS="LITERAL"
+>UTF-7</TT
+> character
+set.</P
+></DD
+><DT
+><A
+HREF="smap1.html"
+>SMAP</A
+></DT
+><DD
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>folderPath</I
+></TT
+> is converted from application's
+character set to <TT
+CLASS="LITERAL"
+>UTF-8</TT
+>.
+The forward slash character, <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>/</TT
+>"</SPAN
+> separates
+names of individual folders in the <TT
+CLASS="LITERAL"
+>SMAP</TT
+> hierarchy.
+Unicode/ISO-10646 characters that cannot be represented in the application's
+character set may be specified as
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>%</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+><TT
+CLASS="LITERAL"
+>;</TT
+>"</SPAN
+>,
+where <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> is a decimal Unicode value.
+Use <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>\/</TT
+>"</SPAN
+> to specify a forward slash character
+in the folder name, <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>\\</TT
+>"</SPAN
+> to specify
+a backslash character, and <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>\%</TT
+>"</SPAN
+> to specify
+the <SPAN
+CLASS="QUOTE"
+>"%"</SPAN
+> character.</P
+></DD
+><DT
+>mbox mail folders, and maildirs</DT
+><DD
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>folderPath</I
+></TT
+> is converted from application's
+character set to modified <TT
+CLASS="LITERAL"
+>UTF-7</TT
+> encoding.
+The forward slash character, <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>/</TT
+>"</SPAN
+> separates
+names of individual folders in the local mail folder hierarchy.
+Unicode/ISO-10646 characters that cannot be represented in the application's
+character set may be specified as
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>%</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+><TT
+CLASS="LITERAL"
+>;</TT
+>"</SPAN
+>,
+where <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> is a decimal Unicode value.
+Use <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>\\</TT
+>"</SPAN
+> to specify
+a backslash character, and <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>\%</TT
+>"</SPAN
+> to specify
+the <SPAN
+CLASS="QUOTE"
+>"%"</SPAN
+> character.</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN8312"
+></A
+><H2
+>RETURN CODES AND CALLBACKS</H2
+><P
+>This function returns the converted path string.
+An empty string is returned if <TT
+CLASS="PARAMETER"
+><I
+>folderPath</I
+></TT
+> is not
+a valid folder path.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN8316"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="mail-findfolder.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::findfolder</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-folderfromstring.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::folderFromString</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-setappcharset.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::setAppCharset</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mail-searchmessages.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mail-updatefolderindexflags.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::account::searchMessages</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="native.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::account::updateFolderIndexFlags</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

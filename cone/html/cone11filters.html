@@ -1,0 +1,972 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>Mail Filters</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Cone mail client"
+HREF="cone00index.html"><LINK
+REL="PREVIOUS"
+TITLE="Encryption Menu"
+HREF="cone10encryption.html"><LINK
+REL="NEXT"
+TITLE="Address Book"
+HREF="cone12addressbook.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="cone10encryption.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="cone12addressbook.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="CONE11FILTERS"
+></A
+>Mail Filters</H1
+><P
+>This is a simple, automatic mail processing function.
+In this context, <SPAN
+CLASS="QUOTE"
+>"mail filtering"</SPAN
+> means the ability to move,
+automatically delete, or automatically flag all messages that match
+a specific search criteria.</P
+><P
+>Where possible, it is always more efficient to have the mail server filter
+messages, instead of a mail client like <TT
+CLASS="APPLICATION"
+>Cone</TT
+>.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> mail filters may prove to be sufficient
+if the mail server does not mail filtering abilities.
+In situations where the mail server is capable of filtering, the mail server's
+filters will usually be faster and more efficient.</P
+><P
+>Mail filters may be used with any IMAP, <A
+HREF="smap1.html"
+>SMAP</A
+>,
+or a local mail account.
+Mail filters may also be used with POP3 accounts, but they'll be slow,
+and they'll have certain limitations.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> will have to download a copy of every message in the POP3 mailbox, in
+order to check it against the searching criteria, for every mail filter
+search.  This is not needed with IMAP/SMAP accounts, where the search
+request is processed by the mail server.</P
+><P
+>Mail filters may also be used in limited ways with Usenet newsgroups.
+Only limited forms of searching are available: only Usenet message headers
+may be searched, and the searching criteria may only include English
+characters.  All other search requests can only be met by downloading a copy
+of every message from the newsgroup, which is not going to work very well,
+for obvious reasons.</P
+><P
+>The best use for mail filters with a Usenet newsgroup is as a simple
+killfile:
+<SPAN
+CLASS="QUOTE"
+>"Search From: contains troll@example.com"</SPAN
+>,
+followed by <SPAN
+CLASS="QUOTE"
+>"Delete and Expunge"</SPAN
+>.</P
+><P
+>A mail filter may be installed for any folder.
+Each folder has its own mail filters.
+The folder's mail filter is automatically processed by <TT
+CLASS="APPLICATION"
+>Cone</TT
+> whenever:</P
+><P
+></P
+><UL
+><LI
+><P
+>The folder is opened for the first time, or reopened after another folder
+was opened.</P
+></LI
+><LI
+><P
+>New messages are added to the folder.</P
+></LI
+></UL
+><P
+>All messages in the folder are processed by the mail filters when the
+folder is opened.
+When new messages are added to the folder, only the new messages will be
+processed by the mail filters.
+Existing messages will be ignored.</P
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN1909"
+>Mail Filter Entry Screen</A
+></H1
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><HR><PRE
+CLASS="PROGRAMLISTING"
+><B>INBOX - FILTERS                      CONE                                   </B>
+
+  Current Filters:
+
+    Search Subject: contains RFC
+    Move to internet-drafts
+    Search From: contains boss@domain.com
+    Mark
+    [ Add new filter ]
+
+    [ Save Filters ]
+
+
+
+
+
+
+
+
+
+<B>                                                                            </B>
+ ^C Cancel     DEL Delete
+ ^D Move down   ^U Move up</PRE><HR
+></TD
+></TR
+></TABLE
+><P
+>This screen is accessed by highlighting a folder on the Folder Listing
+screen, then pressing <B
+CLASS="KEYCAP"
+>F</B
+>.
+Each mail filter consists of one or more <SPAN
+CLASS="QUOTE"
+>"steps"</SPAN
+>.
+There are two kinds of steps:
+a <SPAN
+CLASS="QUOTE"
+>"select"</SPAN
+>
+step compiles a list of messages that match a certain search
+criteria; the selection step is followed by one or more steps that
+apply a particular <SPAN
+CLASS="QUOTE"
+>"action"</SPAN
+> against all messages that were
+selected.
+More than one action step may follow a selection step; messages are processed
+by each action step in sequence, until another selection step, which searches
+the remaining messages again, and compiles a different list of selected
+messages.</P
+><P
+>Some actions cannot be naturally followed by any other action, and can only
+be followed by another selection step.
+Consider, for example,
+<SPAN
+CLASS="QUOTE"
+>"Delete And Expunge"</SPAN
+> or <SPAN
+CLASS="QUOTE"
+>"Move to
+another folder"</SPAN
+> filtering step:
+at the conclusion the selected messages are obviously removed,
+and nothing else can be done with them, any more.</P
+><P
+>This screen initially shows any existing filtering steps defined for the
+folder.
+All filtering steps are processed in the order shown.
+Highlighting an existing filtering step and pressing
+<B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>U</B
+>, or
+<B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>D</B
+>, moves the filtering step higher
+or lower, thus changing its relative order in the mail filter.
+<B
+CLASS="KEYCAP"
+>DEL</B
+> removes the existing filtering step.
+The folder's mail filter is removed by highlighting each step and pressing
+<B
+CLASS="KEYCAP"
+>DEL</B
+>, then highlighting <SPAN
+CLASS="QUOTE"
+>"Save Filters"</SPAN
+> and
+pressing <B
+CLASS="KEYCAP"
+>ENTER</B
+>.</P
+><P
+>All changes made on this screen are temporary.
+<SPAN
+CLASS="QUOTE"
+>"Save Filters"</SPAN
+>
+must be selected in order for any changes made on this screen to take
+effect.
+<B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>C</B
+> closes this screen without changing
+the folder's existing filter, throwing out all the temporary changes.</P
+><P
+>Highlighting
+<SPAN
+CLASS="QUOTE"
+>"Add new filter"</SPAN
+> and pressing <B
+CLASS="KEYCAP"
+>ENTER</B
+> adds a new
+filtering step to the end of the mail filter.
+A sub-menu is shown to define the new filtering step:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><B
+CLASS="KEYCAP"
+>S</B
+> - select</DT
+><DD
+><P
+>Enters a new searching criteria which will be used to select messages for
+the following action steps.
+See <SPAN
+CLASS="QUOTE"
+>"Search criteria"</SPAN
+>, below, for more
+information.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>D</B
+> - mark deleted</DT
+><DD
+><P
+>Marks all selected messages as deleted.
+The messages are not removed from the folder, but only marked as
+deleted.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>U</B
+> - unmark deleted</DT
+><DD
+><P
+>Removes the <SPAN
+CLASS="QUOTE"
+>"deleted"</SPAN
+> mark from the selected messages.
+The selected messages are no longer marked as deleted.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>X</B
+> - delete and expunge</DT
+><DD
+><P
+>The selected messages are removed from the folder.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>R</B
+> - mark each message as tagged</DT
+><DD
+><P
+>Marks, or highlights the
+selected messages on the folder index screen.
+Tagged messages are shown as highlighted on the folder index screen,
+preceded by
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>*</TT
+>"</SPAN
+>.
+On some displays, tagged messages are flagged by a checkmark symbol
+instead of the
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>*</TT
+>"</SPAN
+>.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>K</B
+> - unmark, or untag the messages</DT
+><DD
+><P
+>Removes the highlighting mark from the selected messages.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>W</B
+> - watch thread</DT
+><DD
+><P
+>Watch the selected message's replies/subthreads (unless the message is
+already a part of a watched thread).
+See <A
+HREF="cone02folderindex.html#WATCH"
+><SPAN
+CLASS="QUOTE"
+>"Watching Threads"</SPAN
+></A
+>
+in the <SPAN
+CLASS="QUOTE"
+>"Folder Index"</SPAN
+> chapter for more information
+on thread watching.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>A</B
+> - unwatch thread</DT
+><DD
+><P
+>Stops watching the message, and its replies/subthreads.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>M</B
+> - move messages</DT
+><DD
+><P
+>Move the selected messages to another folder.
+Selecting this option reopens the folder index screen.
+Highlight the folder where the messages can be moved to,
+and press ENTER.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Messages can be moved only to folders in the same mail account.
+Messages cannot be moved to a folder in another mail account.</P
+><P
+>This means that this option is not available with POP3 accounts, which
+naturally have only one folder.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>C</B
+> - copy messages</DT
+><DD
+><P
+>Copies the selected messages to another folder.
+This is very similar to the move command, except copies of the selected
+messages remain in the original folder.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>This mail filter will be processed every time a folder is opened.
+Therefore,
+the selected messages will be copied to another folder every time this
+folder is opened.
+This Copy filtering step should be followed by another filtering step,
+such as Move, or Delete/Expunge, that removes all selected messages.
+Otherwise the results could be quite amusing</P
+></TD
+></TR
+></TABLE
+></DIV
+></DD
+></DL
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN2001"
+>Search criteria</A
+></H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><B
+CLASS="KEYCAP"
+>A</B
+> - select all</DT
+><DD
+><P
+>Press <B
+CLASS="KEYCAP"
+>A</B
+> to select all available messages.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>!</B
+> - not</DT
+><DD
+><P
+>Press <B
+CLASS="KEYCAP"
+>!</B
+> to logically reverse the following search
+criteria.
+Thus, if the entered search criteria was <SPAN
+CLASS="QUOTE"
+>"Search the
+<TT
+CLASS="LITERAL"
+>From</TT
+> header for <TT
+CLASS="LITERAL"
+>troll@example.com</TT
+>"</SPAN
+>
+the actual search will find messages where the <TT
+CLASS="LITERAL"
+>From</TT
+>
+header does <I
+CLASS="EMPHASIS"
+>NOT</I
+> contain this text.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>D</B
+> - search by date</DT
+><DD
+><P
+>A date-related search.
+Additional prompts follow, described below.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>S</B
+> - search by status</DT
+><DD
+><P
+>A status-related search.
+Each message has several status flags that define whether the message is a
+new message, a deleted message, a replied message, and so on.
+Selecting a status search shows three options: <SPAN
+CLASS="QUOTE"
+>"Deleted"</SPAN
+>,
+<SPAN
+CLASS="QUOTE"
+>"Unread"</SPAN
+>, and <SPAN
+CLASS="QUOTE"
+>"Replied"</SPAN
+>, to search for all
+deleted, unread, or replied messages, respectively.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>T</B
+> - search by text</DT
+><DD
+><P
+>A text-based search, search for messages that contain (or don't contain)
+a given text string.
+Additional prompts follow, that further refine what kind of text to
+search for.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>Z</B
+> - search by size</DT
+><DD
+><P
+>Search for messages that are bigger or smaller than a certain size.
+Select <SPAN
+CLASS="QUOTE"
+>"Larger than"</SPAN
+> or <SPAN
+CLASS="QUOTE"
+>"Smaller than"</SPAN
+>
+at the next prompt, then enter the target message size, in bytes, and
+press <B
+CLASS="KEYCAP"
+>ENTER</B
+> to search.</P
+></DD
+></DL
+></DIV
+><DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="AEN2047"
+>Date-based searches</A
+></H3
+><P
+>A date-based search brings up additional prompts that specify the nature
+of the search.  There are two dates that are associated with every message:
+the <SPAN
+CLASS="QUOTE"
+>"sent"</SPAN
+> date, when the message was sent; and the
+<SPAN
+CLASS="QUOTE"
+>"received"</SPAN
+> date, when the message was received.</P
+><P
+>The sent date is obtained from the message's <TT
+CLASS="LITERAL"
+>Date:</TT
+> header.
+The received date is obtained from the mail server (or from the timestamp on
+the local mailbox).</P
+><P
+>The first prompt enters which date is searched for:</P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>Messages that were sent before the given date.</P
+></LI
+><LI
+><P
+>Messages that were the sent on the given date.</P
+></LI
+><LI
+><P
+>Messages that were the sent since (on, or after)
+the given date.</P
+></LI
+><LI
+><P
+>Messages that were received before the given date.</P
+></LI
+><LI
+><P
+>Messages that were the received on the given date.</P
+></LI
+><LI
+><P
+>Messages that were the received since (on, or after)
+the given date.</P
+></LI
+></OL
+><P
+>The actual date is entered interactively.
+It starts with today's date.
+Press
+<B
+CLASS="KEYCAP"
+>+</B
+> or <B
+CLASS="KEYCAP"
+>-</B
+> to advance the shown date to the
+next or the following date.
+Press
+<B
+CLASS="KEYCAP"
+>[</B
+> or <B
+CLASS="KEYCAP"
+>]</B
+> to advance the shown date by a
+month.
+Press
+<B
+CLASS="KEYCAP"
+>&#60;</B
+> or <B
+CLASS="KEYCAP"
+>&#62;</B
+> to advance the shown date by a
+month.
+Press the space bar to accept the shown date, and search for messages.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Date-based searches are not currently implemented for NetNews
+newsgroups.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="AEN2077"
+>Text-based searches</A
+></H3
+><P
+>Selecting a text-based search shows a wealth of options:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><B
+CLASS="KEYCAP"
+>S</B
+> - subject</DT
+><DD
+><P
+>Search the contents of the <TT
+CLASS="LITERAL"
+>Subject:</TT
+> header.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>F</B
+> - from</DT
+><DD
+><P
+>Search the contents of the <TT
+CLASS="LITERAL"
+>From:</TT
+> header.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>T</B
+> - to</DT
+><DD
+><P
+>Search the contents of the <TT
+CLASS="LITERAL"
+>To:</TT
+> header.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>C</B
+> - cc</DT
+><DD
+><P
+>Search the contents of the <TT
+CLASS="LITERAL"
+>Cc:</TT
+> header.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>B</B
+> - bcc</DT
+><DD
+><P
+>Search the contents of the <TT
+CLASS="LITERAL"
+>Bcc:</TT
+> header.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>H</B
+> - specific header</DT
+><DD
+><P
+>Searches for the given text in some other header.
+The next prompt asks for the header's name.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>O</B
+> - contents</DT
+><DD
+><P
+>Search the contents of the message for the given text.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>A</B
+> - anywhere</DT
+><DD
+><P
+>Search the given text anywhere - headers or contents.</P
+></DD
+></DL
+></DIV
+><P
+>Enter the text to search for after selecting one of these options, and
+press <B
+CLASS="KEYCAP"
+>ENTER</B
+> to perform the search.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Efficient searching is implemented for local mail, and IMAP/SMAP
+mailboxes only.
+NetNews servers' searching capabilities are very limited, and POP3 servers
+have no search facilities whatsoever.
+In all cases, searching for message status flags is supported, since
+message status flags are always cached locally.</P
+><P
+>Only message headers of NetNews folders may be searched, and only English
+characters can be used as a search string.
+Some older NetNews servers may not have any searching ability whatsoever.
+Searching of message contents is not supported.
+Searching by message size, or message's date is not supported either.</P
+><P
+>Searching of POP3 folders is also not very efficient, although the search
+text is not limited to English characters only.
+POP3 folder search is accomplished by downloading the complete headers of
+each message, and searching it manually.
+Downloaded headers are not cached.
+The headers are also downloaded when searching by message's date.
+Searching by message size, or message's date is not supported for POP3
+folders.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="cone10encryption.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="cone12addressbook.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Encryption Menu</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="cone00index.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Address Book</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

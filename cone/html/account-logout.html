@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::ACCOUNT::logout</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::ACCOUNT Synchronous API reference"
+HREF="synchronous.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::ACCOUNT::login"
+HREF="account-login.html"><LINK
+REL="NEXT"
+TITLE="mail::ACCOUNT::moveMessagesTo"
+HREF="account-movemessagesto.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="account-login.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="account-movemessagesto.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="ACCOUNT-LOGOUT"
+></A
+>mail::ACCOUNT::logout</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN4561"
+></A
+><H2
+>Name</H2
+>mail::ACCOUNT::logout&nbsp;--&nbsp;Close a mail account</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN4564"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/sync.H&#62;<br>
+<br>
+mail::ACCOUNT&nbsp;*mail;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN4566"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>mail-&#62;<TT
+CLASS="FUNCTION"
+>logout</TT
+></CODE
+>(void);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4571"
+></A
+><H2
+>USAGE</H2
+><P
+><TT
+CLASS="FUNCTION"
+>mail::ACCOUNT::logout</TT
+> closes a mail account.
+This method should be called before destroying the
+<TT
+CLASS="FUNCTION"
+>mail::ACCOUNT</TT
+> object.
+Some types of mail accounts require certain processing before they are
+closed.
+Destroying the object without
+<TT
+CLASS="FUNCTION"
+>mail::ACCOUNT::logout</TT
+> may result in some changes to
+the mail account's contents not being permanently saved.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4577"
+></A
+><H2
+>RETURN CODES AND CALLBACKS</H2
+><P
+>The
+<TT
+CLASS="FUNCTION"
+>mail::ACCOUNT</TT
+> object should be destroyed after this
+function returns.
+The object should not be recycled, and connected to another mail
+ account.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4581"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="account-login.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::login</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="account-login.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="account-movemessagesto.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::ACCOUNT::login</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="synchronous.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::ACCOUNT::moveMessagesTo</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

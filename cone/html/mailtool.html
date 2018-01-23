@@ -1,0 +1,1298 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mailtool</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Cone mail client"
+HREF="cone00index.html"><LINK
+REL="PREVIOUS"
+TITLE="leaf"
+HREF="leaf.html"><LINK
+REL="NEXT"
+TITLE="
+LibMAIL
+ reference "
+HREF="libmail.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="leaf.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libmail.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="MAILTOOL"
+></A
+>mailtool</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN2433"
+></A
+><H2
+>Name</H2
+>mailtool&nbsp;--&nbsp;Process mailboxes</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN2436"
+></A
+><H2
+>Synopsis</H2
+><P
+><B
+CLASS="COMMAND"
+>mailtool</B
+> [options...]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN2440"
+></A
+><H2
+>USAGE</H2
+><P
+><B
+CLASS="COMMAND"
+>mailtool</B
+>
+is a diagnostic utility for handling various operations on mailboxes.
+<B
+CLASS="COMMAND"
+>mailtool</B
+>'s
+main uses include: display the list of folders in a mailbox;
+displaying list of messages in a mailbox; and
+copying mailboxes.</P
+><P
+>The following mailboxes can be accessed by
+<B
+CLASS="COMMAND"
+>mailtool</B
+>:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>imap://<TT
+CLASS="REPLACEABLE"
+><I
+>userid</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>server</I
+></TT
+>[/options]</DT
+><DD
+><P
+>An IMAP account.
+<B
+CLASS="COMMAND"
+>mailtool</B
+> will prompt for the login password.</P
+></DD
+><DT
+>imaps://<TT
+CLASS="REPLACEABLE"
+><I
+>userid</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>server</I
+></TT
+>[/options]</DT
+><DD
+><P
+>An IMAP account accessed via an encrypted SSL connection.</P
+></DD
+><DT
+>pop3://<TT
+CLASS="REPLACEABLE"
+><I
+>userid</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>server</I
+></TT
+>[/options]</DT
+><DD
+><P
+>A POP3 account.
+<B
+CLASS="COMMAND"
+>mailtool</B
+> will prompt for the login password.</P
+></DD
+><DT
+>pop3s://<TT
+CLASS="REPLACEABLE"
+><I
+>userid</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>server</I
+></TT
+>[/options]</DT
+><DD
+><P
+>A POP3 account accessed via an encrypted SSL connection.</P
+></DD
+><DT
+>maildir:<TT
+CLASS="REPLACEABLE"
+><I
+>path</I
+></TT
+></DT
+><DD
+><P
+>A local maildir mailbox.
+<TT
+CLASS="FILENAME"
+>path</TT
+> specifies the maildir's location relative to the
+home directory (NOT the current directory).</P
+></DD
+><DT
+>mbox:<TT
+CLASS="REPLACEABLE"
+><I
+>path</I
+></TT
+></DT
+><DD
+><P
+>Local mbox mail folders.
+<TT
+CLASS="FILENAME"
+>path</TT
+> specifies the path to an mbox folder file,
+or a directory containing mbox folders, relative to the
+home directory (NOT the current directory).</P
+></DD
+><DT
+>inbox:<TT
+CLASS="REPLACEABLE"
+><I
+>path</I
+></TT
+></DT
+><DD
+><P
+>Local mbox mail folders, like
+<SPAN
+CLASS="QUOTE"
+>"mbox:<TT
+CLASS="REPLACEABLE"
+><I
+>path</I
+></TT
+>"</SPAN
+>;
+additionally, the system spool mailbox is automatically copied to
+<TT
+CLASS="FILENAME"
+>$HOME/Inbox</TT
+>, which is accessible as folder
+<TT
+CLASS="LITERAL"
+>INBOX</TT
+>.</P
+></DD
+></DL
+></DIV
+><P
+>The name of a remote IMAP or POP3 server may be followed by one or more
+options that control various settings of the IMAP or POP3 connection:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>/cram</TT
+></DT
+><DD
+><P
+>Do not open the account unless the server supports secure password
+authentication.
+Secure password authentication verifies the account's password using
+a challenge/response authentication
+mechanism (where the label "<TT
+CLASS="LITERAL"
+>cram</TT
+>" comes from).
+The actual password is never actually transmitted to the server,
+and therefore cannot be intercepted
+while in transit over an untrusted network.</P
+><P
+>Secure password authentication is not supported by all servers.  This
+option may not work with some servers.
+This option does not enable secure password authentication, it only mandates
+its use.
+If the server supports secure password authentication, it will be used
+even without the <TT
+CLASS="LITERAL"
+>/cram</TT
+> option.
+Traditional userid/password authentication will be used only if the
+server does not implement secure password authentication.
+The <TT
+CLASS="LITERAL"
+>/cram</TT
+> option makes secure password authentication
+mandatory.</P
+><P
+>The <TT
+CLASS="LITERAL"
+>/cram</TT
+> option is marginally
+useful even with encrypted server
+connections.
+The secure password authentication never sends the explicit
+password to the server.
+Encryption makes it theoretically impossible to recover the password from
+an encrypted data connection; but with secure authentication the password
+is never sent over the connection in the first place (the password's validity
+is certified by exchanging certain mathematical calculations between the
+server and the client).
+If the server is compromised, the compromised server will not receive the
+account password (unless the password is recovered from the server in other
+ways).</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/imap</TT
+></DT
+><DD
+><P
+>Do not use the <A
+HREF="smap1.html"
+>SMAP</A
+> if the server claims the
+availability of this experimental mail access protocol, and fall back to
+IMAP compatibility mode (this option is meaningful only with
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>imap://</TT
+>"</SPAN
+> and
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>imaps://</TT
+>"</SPAN
+> URLs).</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/nossl</TT
+></DT
+><DD
+><P
+>Do not upgrade a plain connection to an encrypted one.
+This option is primarily used for testing and debugging purposes.
+Sometimes this option might be useful with servers that claim to offer
+encryption, but are unable to do so when taken up on their offer.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/novalidate-cert</TT
+></DT
+><DD
+><P
+>Do not validate the server's SSL certificate when using an encrypted
+connection.
+Normally the mail server's SSL certificate must be validate when using an
+encrypted connection.
+The certificate's name must match the server's name, and the certificate
+must be signed by a trusted certificate authority.</P
+><P
+>The encrypted connection normally
+fails if the certificate cannot be validate.
+Validation requires that a list of trusted certificate
+authorities must be known and configured.
+It's simply impossible to know
+which certificate authorities are valid without an explicit list of valid,
+known,
+trusted, certificate authorities.  If a trusted authority
+list is not configured, no certificate can be validated.  If the server's
+certificate is a self-signed certificate (this is often used for testing
+purposes), or if it's not signed by a known authority, the encrypted connection
+fails.</P
+><P
+>This <TT
+CLASS="LITERAL"
+>/novalidate-cert</TT
+> option disables certificate
+validation.
+The encrypted connection will be established even if the server's certificate
+would otherwise be rejected.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>This option is applicable even when an encrypted IMAP or POP3 connection
+is not explicitly requested.
+Many mail servers are capable of automatically upgrading unencrypted
+connections to a fully-encrypted connection.
+If a mail server claims to be able to use encryption, then there's no reason
+not to use it.  The result is that all encryption certification requirements
+still apply even when encryption is not explicitly requested.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DD
+></DL
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2533"
+></A
+><H3
+>Displaying mailbox contents</H3
+><P
+><B
+CLASS="COMMAND"
+>mailtool</B
+> {-tree | -list} {<TT
+CLASS="REPLACEABLE"
+><I
+>account</I
+></TT
+>}</P
+><P
+><TT
+CLASS="LITERAL"
+>-tree</TT
+> shows a hierarchical representation of mail folders
+in <TT
+CLASS="REPLACEABLE"
+><I
+>account</I
+></TT
+>.
+<TT
+CLASS="LITERAL"
+>-list</TT
+> generates a simple folder listing, one folder name
+per line.
+<TT
+CLASS="LITERAL"
+>-tree</TT
+> shows folder names,
+while <TT
+CLASS="LITERAL"
+>-list</TT
+> shows the actual mail folder path in
+<TT
+CLASS="REPLACEABLE"
+><I
+>account</I
+></TT
+>.</P
+><DIV
+CLASS="INFORMALEXAMPLE"
+><P
+></P
+><A
+NAME="AEN2549"
+></A
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>mailtool -tree imap://jsmith@mail.example.com/novalidate-cert/cram</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2551"
+></A
+><H3
+>Creating folders</H3
+><P
+><B
+CLASS="COMMAND"
+>mailtool</B
+> {-create | -createdir} {<TT
+CLASS="REPLACEABLE"
+><I
+>folder</I
+></TT
+>} {<TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>} {<TT
+CLASS="REPLACEABLE"
+><I
+>account</I
+></TT
+>}</P
+><P
+><TT
+CLASS="LITERAL"
+>-create</TT
+> creates a new subfolder of
+<TT
+CLASS="REPLACEABLE"
+><I
+>folder</I
+></TT
+> in <TT
+CLASS="REPLACEABLE"
+><I
+>account</I
+></TT
+>.
+The new subfolder's name is <TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>.
+<TT
+CLASS="LITERAL"
+>-createdir</TT
+> creates a new folder directory (a folder that
+contains other folders).</P
+><DIV
+CLASS="INFORMALEXAMPLE"
+><P
+></P
+><A
+NAME="AEN2570"
+></A
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>mailtool -create INBOX.lists announcements maildir:Maildir</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><P
+>This command creates a new folder <SPAN
+CLASS="QUOTE"
+>"announcements"</SPAN
+> as a
+subfolders of <SPAN
+CLASS="QUOTE"
+>"INBOX.lists"</SPAN
+> in the local maildir.</P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2575"
+></A
+><H3
+>Deleting folders</H3
+><P
+><B
+CLASS="COMMAND"
+>mailtool</B
+> {-delete | -deletedir} {<TT
+CLASS="REPLACEABLE"
+><I
+>folder</I
+></TT
+>} {<TT
+CLASS="REPLACEABLE"
+><I
+>account</I
+></TT
+>}</P
+><P
+><TT
+CLASS="LITERAL"
+>-delete</TT
+> deletes an existing
+<TT
+CLASS="REPLACEABLE"
+><I
+>folder</I
+></TT
+> in <TT
+CLASS="REPLACEABLE"
+><I
+>account</I
+></TT
+>.</P
+><P
+><TT
+CLASS="LITERAL"
+>-deletedir</TT
+> deletes a folder directory.</P
+><DIV
+CLASS="INFORMALEXAMPLE"
+><P
+></P
+><A
+NAME="AEN2592"
+></A
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>mailtool -delete INBOX.lists.announcements maildir:Maildir</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2594"
+></A
+><H3
+>Renaming folders</H3
+><P
+><B
+CLASS="COMMAND"
+>mailtool</B
+> {-rename} {<TT
+CLASS="REPLACEABLE"
+><I
+>oldfolder</I
+></TT
+>} {<TT
+CLASS="REPLACEABLE"
+><I
+>folder</I
+></TT
+>} {<TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>} {<TT
+CLASS="REPLACEABLE"
+><I
+>account</I
+></TT
+>}</P
+><P
+><TT
+CLASS="LITERAL"
+>-renames</TT
+> renames an existing
+<TT
+CLASS="REPLACEABLE"
+><I
+>oldfolder</I
+></TT
+>.
+The folder is renamed as 
+<TT
+CLASS="REPLACEABLE"
+><I
+>name</I
+></TT
+>, as a subfolder of
+<TT
+CLASS="REPLACEABLE"
+><I
+>folder</I
+></TT
+>.
+<TT
+CLASS="REPLACEABLE"
+><I
+>folder</I
+></TT
+> may be an empty string if the folder should
+be moved to the top level of <TT
+CLASS="REPLACEABLE"
+><I
+>account</I
+></TT
+>'s folder
+hierarchy.</P
+><DIV
+CLASS="INFORMALEXAMPLE"
+><P
+></P
+><A
+NAME="AEN2614"
+></A
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>mailtool -rename INBOX.lists.announcements INBOX.lists Announcements maildir:Maildir</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><P
+>The folder <SPAN
+CLASS="QUOTE"
+>"INBOX.lists.announcements"</SPAN
+> is renamed to
+<SPAN
+CLASS="QUOTE"
+>"INBOX.lists.Announcements"</SPAN
+>.
+This slightly unusual way to rename folder allows folders to be relocated
+in the mail <TT
+CLASS="REPLACEABLE"
+><I
+>account</I
+></TT
+>'s folder hierarchy.</P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2620"
+></A
+><H3
+>Reading folder's index</H3
+><P
+><B
+CLASS="COMMAND"
+>mailtool</B
+> {-index} {<TT
+CLASS="REPLACEABLE"
+><I
+>folder</I
+></TT
+>} {<TT
+CLASS="REPLACEABLE"
+><I
+>account</I
+></TT
+>}</P
+><P
+><TT
+CLASS="LITERAL"
+>-index</TT
+> downloads and prints a summary of all messages in
+<TT
+CLASS="REPLACEABLE"
+><I
+>folder</I
+></TT
+>, in
+<TT
+CLASS="REPLACEABLE"
+><I
+>account</I
+></TT
+>.
+The summary shows the sender's and recipients' address, the message's subject,
+and size.</P
+><DIV
+CLASS="INFORMALEXAMPLE"
+><P
+></P
+><A
+NAME="AEN2633"
+></A
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>mailtool -index INBOX imap://john@mail.example.com/novalidate-cert</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2635"
+></A
+><H3
+>Removing a message from a folder</H3
+><P
+><B
+CLASS="COMMAND"
+>mailtool</B
+> {-remove} {<TT
+CLASS="REPLACEABLE"
+><I
+>folder</I
+></TT
+>} {<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>} {<TT
+CLASS="REPLACEABLE"
+><I
+>account</I
+></TT
+>}</P
+><P
+><TT
+CLASS="LITERAL"
+>-remove</TT
+> removes message #<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>
+(ranging from 1 to the number of messages in the folder) in
+<TT
+CLASS="REPLACEABLE"
+><I
+>folder</I
+></TT
+>, in
+<TT
+CLASS="REPLACEABLE"
+><I
+>account</I
+></TT
+>.
+The message numbers may be obtained by using
+<TT
+CLASS="LITERAL"
+>-index</TT
+>.</P
+><P
+><TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+> may be a comma-separated list of message numbers,
+in strictly numerically increasing order. <TT
+CLASS="LITERAL"
+>-remove</TT
+> confirms
+the list of messages to remove and issues a <SPAN
+CLASS="QUOTE"
+>"Ready:"</SPAN
+> prompt.
+Press <B
+CLASS="KEYCAP"
+>ENTER</B
+> to remove the messages.</P
+><DIV
+CLASS="INFORMALEXAMPLE"
+><P
+></P
+><A
+NAME="AEN2657"
+></A
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>mailtool -remove INBOX 28,31 imap://john@mail.example.com/novalidate-cert</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2659"
+></A
+><H3
+>Filtering messages</H3
+><P
+><B
+CLASS="COMMAND"
+>mailtool</B
+> {-filter} {<TT
+CLASS="REPLACEABLE"
+><I
+>folder</I
+></TT
+>} {<TT
+CLASS="REPLACEABLE"
+><I
+>account</I
+></TT
+>}</P
+><P
+><TT
+CLASS="LITERAL"
+>-filter</TT
+>
+is a combination of
+<TT
+CLASS="LITERAL"
+>-index</TT
+> and <TT
+CLASS="LITERAL"
+>-remove</TT
+>.
+<TT
+CLASS="REPLACEABLE"
+><I
+>folder</I
+></TT
+>'s index is downloaded, and the summary
+of each message is shown, one message at a time.
+Each message's summary is followed by a prompt:
+<SPAN
+CLASS="QUOTE"
+>"Delete, Skip, or Exit"</SPAN
+>.
+Pressing <B
+CLASS="KEYCAP"
+>D</B
+> removes the message,
+<B
+CLASS="KEYCAP"
+>S</B
+> leaves the message unchanged, and
+<B
+CLASS="KEYCAP"
+>E</B
+> leaves the remaining messages unchanged.</P
+><DIV
+CLASS="INFORMALEXAMPLE"
+><P
+></P
+><A
+NAME="AEN2677"
+></A
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>mailtool -filter INBOX pop3://john@mail.example.com/novalidate-cert</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="LITERAL"
+>-filter</TT
+> is not meant to be used with large folders.
+Unless messages are removed quickly, the connection to the server may be
+disconnected for inactivity.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2682"
+></A
+><H3
+>Copying folders</H3
+><P
+><B
+CLASS="COMMAND"
+>mailtool</B
+> [-recurse] {-tofolder} {<TT
+CLASS="REPLACEABLE"
+><I
+>tofolder</I
+></TT
+>} {-copyto} {<TT
+CLASS="REPLACEABLE"
+><I
+>toaccount</I
+></TT
+>} {-fromfolder} {<TT
+CLASS="REPLACEABLE"
+><I
+>fromfolder</I
+></TT
+>} {<TT
+CLASS="REPLACEABLE"
+><I
+>fromaccount</I
+></TT
+>}</P
+><P
+>This command copies an entire folder,
+<TT
+CLASS="LITERAL"
+>fromfolder</TT
+> in
+<TT
+CLASS="LITERAL"
+>fromaccount</TT
+> to a new folder,
+<TT
+CLASS="LITERAL"
+>tofolder</TT
+> (which will be created, if necessary)
+in <TT
+CLASS="LITERAL"
+>toaccount</TT
+>.
+Optionally, <TT
+CLASS="LITERAL"
+>-recurse</TT
+> specifies that all subfolders
+of <TT
+CLASS="LITERAL"
+>fromfolder</TT
+> should also be copied.</P
+><DIV
+CLASS="INFORMALEXAMPLE"
+><P
+></P
+><A
+NAME="AEN2705"
+></A
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#13;mailtool -tofolder INBOX -copyto maildir:Maildir \
+    -fromfolder "INBOX" imap://mbox100@mail.example.com/novalidate-cert
+
+mailtool -recurse -tofolder INBOX.converted_mail \
+    -copyto maildir:Maildir -fromfolder "mail" \
+        imap://mbox100@mail.example.com/novalidate-cert</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><P
+>This example first copies the INBOX on the IMAP server to
+<TT
+CLASS="FILENAME"
+>$HOME/Maildir</TT
+>,
+then copies subfolders of <SPAN
+CLASS="QUOTE"
+>"mail"</SPAN
+> on the IMAP server to the
+<SPAN
+CLASS="QUOTE"
+>"converted_mail"</SPAN
+> subfolder in the maildir.</P
+><DIV
+CLASS="INFORMALEXAMPLE"
+><P
+></P
+><A
+NAME="AEN2711"
+></A
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>mailtool -tofolder INBOX -copyto maildir:Maildir \
+   -fromfolder "INBOX" inbox:mail
+
+mailtool -recurse -tofolder INBOX.converted_mail \
+    -copyto maildir:Maildir -fromfolder "" mbox:mail&#13;</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><P
+>This example first copies <TT
+CLASS="FILENAME"
+>$HOME/Inbox</TT
+>
+(accessed as the INBOX folder in inbox:mail) to
+<TT
+CLASS="FILENAME"
+>$HOME/Maildir</TT
+>,
+then
+copies mbox folders from <TT
+CLASS="FILENAME"
+>$HOME/mail</TT
+> to the
+<SPAN
+CLASS="QUOTE"
+>"converted_mail"</SPAN
+> subfolder in the maildir.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Mail accounts that contain hybrid folders (folders that
+contain both messages and subfolders) can only be copied to account types
+that also support hybrid folders: either local maildirs, or to remote servers
+that support hybrid folders.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN2720"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="cone.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>cone</SPAN
+>(1)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="leaf.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libmail.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>leaf</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="cone00index.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+ reference</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

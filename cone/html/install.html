@@ -1,0 +1,941 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>Installing Cone</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Cone: COnsole Newsreader And Emailer"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Cone: COnsole Newsreader And Emailer"
+HREF="index.html"><LINK
+REL="NEXT"
+TITLE="Building Cone"
+HREF="readme.html"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="index.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+>: COnsole Newsreader And Emailer</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="readme.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="INSTALL"
+>Installing <TT
+CLASS="APPLICATION"
+>Cone</TT
+></A
+></H1
+><P
+>First, make sure that all the necessary requirements
+(<A
+HREF="readme.html"
+>README</A
+>) are satisfied.
+See RPM instructions below if building for Red Hat Linux.
+See additional notes below for upgrade instructions.
+Otherwise:</P
+><P
+></P
+><UL
+><LI
+><P
+>Download the Courier Socks 5 proxy client library from <A
+HREF="http://www.courier-mta.org/download.php#sox"
+TARGET="_top"
+>http://www.courier-mta.org/download.php#sox</A
+>
+and follow its installation instructions. Binary RPMs can be built from the
+source code tarball by following the procedure outlined in <A
+HREF="http://www.courier-mta.org/FAQ.html#rpm"
+TARGET="_top"
+>http://www.courier-mta.org/FAQ.html#rpm</A
+>
+using the <SPAN
+CLASS="QUOTE"
+>"courier-sox-<TT
+CLASS="REPLACEABLE"
+><I
+>version</I
+></TT
+>"</SPAN
+>
+tarball, and installing the
+<SPAN
+CLASS="QUOTE"
+>"courier-sox"</SPAN
+> and 
+<SPAN
+CLASS="QUOTE"
+>"courier-sox-devel"</SPAN
+> binary RPMs afterwards.</P
+><P
+>This step can be omitted if Socks 5 support is not required.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> will compile without the Socks 5 proxy toolkit.</P
+></LI
+><LI
+><P
+>Download the source code tarball from
+<A
+HREF="http://www.courier-mta.org/download.php#cone"
+TARGET="_top"
+>http://www.courier-mta.org/download.php#cone</A
+> and unpack it.</P
+></LI
+><LI
+><P
+>Set the appropriate environment variables if the compiler or linker
+needs any custom command line flags.
+Run <SPAN
+CLASS="QUOTE"
+>"<B
+CLASS="COMMAND"
+>./configure --help</B
+>"</SPAN
+> to list the
+available environment variables that specify additional arbitrary parameters
+for the C/C++ compiler.</P
+></LI
+><LI
+><P
+>Run <SPAN
+CLASS="QUOTE"
+>"<B
+CLASS="COMMAND"
+>./configure
+<TT
+CLASS="REPLACEABLE"
+><I
+>[options]</I
+></TT
+></B
+>"</SPAN
+>.
+See below for a list of available options.</P
+></LI
+><LI
+><P
+>Run <B
+CLASS="COMMAND"
+>make</B
+>.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The GNU version of the <TT
+CLASS="LITERAL"
+>command</TT
+> is required.
+On BSD systems it's the <B
+CLASS="COMMAND"
+>gmake</B
+>.
+Use <B
+CLASS="COMMAND"
+>gmake</B
+> in this, and the following steps.</P
+></TD
+></TR
+></TABLE
+></DIV
+></LI
+><LI
+><P
+>Run <B
+CLASS="COMMAND"
+>make check</B
+>.</P
+></LI
+><LI
+><P
+>Run <B
+CLASS="COMMAND"
+>make install</B
+>.</P
+></LI
+><LI
+><P
+>Run <B
+CLASS="COMMAND"
+>make install-configure</B
+>.</P
+></LI
+></UL
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Do not forget <SPAN
+CLASS="QUOTE"
+>"<B
+CLASS="COMMAND"
+>make install-configure</B
+>"</SPAN
+>.
+It is required.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>Unless other options are used, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> installs in
+<TT
+CLASS="FILENAME"
+>/usr/local</TT
+>:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="FILENAME"
+>/usr/local/etc</TT
+></DT
+><DD
+><P
+>The configuration file.</P
+></DD
+><DT
+><TT
+CLASS="FILENAME"
+>/usr/local/bin</TT
+></DT
+><DD
+><P
+>The shell script that runs <TT
+CLASS="APPLICATION"
+>Cone</TT
+>.</P
+></DD
+><DT
+><TT
+CLASS="FILENAME"
+>/usr/local/libexec</TT
+></DT
+><DD
+><P
+>The <TT
+CLASS="APPLICATION"
+>Cone</TT
+> program itself.</P
+></DD
+><DT
+><TT
+CLASS="FILENAME"
+>/usr/local/share</TT
+></DT
+><DD
+><P
+>Documentation, online help, other files.</P
+></DD
+><DT
+><TT
+CLASS="FILENAME"
+>/usr/local/lib</TT
+>
+and <TT
+CLASS="FILENAME"
+>/usr/local/include</TT
+></DT
+><DD
+><P
+>The development libraries and include files
+(only if <TT
+CLASS="PARAMETER"
+><I
+>--with-devel</I
+></TT
+> was specified to the
+<B
+CLASS="COMMAND"
+>configure</B
+> script).</P
+></DD
+></DL
+></DIV
+><P
+>These installation directories, and other options, may be controlled by
+additional options to the <B
+CLASS="COMMAND"
+>configure</B
+> script:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>--prefix</I
+></TT
+>, <TT
+CLASS="PARAMETER"
+><I
+>--bindir</I
+></TT
+>,
+and others...</DT
+><DD
+><P
+><B
+CLASS="COMMAND"
+>./configure --help</B
+> lists about a dozen parameters to the
+<B
+CLASS="COMMAND"
+>./configure</B
+> that specify the directories where various
+files should be installed.</P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>--with-certdb</I
+></TT
+>,
+<TT
+CLASS="PARAMETER"
+><I
+>--without-certdb</I
+></TT
+>,
+<TT
+CLASS="PARAMETER"
+><I
+>--with-certdb=<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+></I
+></TT
+></DT
+><DD
+><P
+>Install or do not install a default set of trusted SSL certificate authorities.
+When using SSL <TT
+CLASS="APPLICATION"
+>Cone</TT
+> normally checks the server's SSL certificate, which
+must be signed by a trusted certificate authority.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+>'s source distribution includes the same list of trusted certificate
+authorities as the
+<A
+HREF="http://www.mozilla.org"
+TARGET="_top"
+><TT
+CLASS="APPLICATION"
+>Mozilla</TT
+></A
+>
+browser.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+>'s certificate list is installed by default, unless
+<A
+HREF="http://www.courier-mta.org"
+TARGET="_top"
+><TT
+CLASS="APPLICATION"
+>Courier</TT
+></A
+>
+is also installed, in which case <TT
+CLASS="APPLICATION"
+>Cone</TT
+>';s default configuration
+points to <TT
+CLASS="APPLICATION"
+>Courier</TT
+>'s <TT
+CLASS="FILENAME"
+>rootcerts</TT
+>
+directory (which contains the same certificate as <TT
+CLASS="APPLICATION"
+>Cone</TT
+>'s).</P
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>--with-certdb</I
+></TT
+> installs <TT
+CLASS="APPLICATION"
+>Cone</TT
+>'s trusted SSL certificate
+authority list, even if <TT
+CLASS="APPLICATION"
+>Courier</TT
+> is also installed,
+in <TT
+CLASS="FILENAME"
+>/usr/local/share/cone/rootcerts</TT
+> (which is derived
+from the <TT
+CLASS="PARAMETER"
+><I
+>--datadir</I
+></TT
+> default option, as
+explained by
+<B
+CLASS="COMMAND"
+>./configure --help</B
+>).
+<TT
+CLASS="PARAMETER"
+><I
+>--with-certdb=<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+></I
+></TT
+>
+installs the
+trusted SSL certificate authority list in the directory
+<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>.
+<TT
+CLASS="PARAMETER"
+><I
+>--without-certdb</I
+></TT
+> does not install <TT
+CLASS="APPLICATION"
+>Cone</TT
+>'s
+trusted SSL certificate authority list.</P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>--with-devel</I
+></TT
+></DT
+><DD
+><P
+>Install <A
+HREF="libmail.html"
+>&#13;<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+></A
+>,
+the mail library used by
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> to access and handle E-mail messages.</P
+></DD
+><DT
+><TT
+CLASS="PARAMETER"
+><I
+>--with-spellcheck=pspell</I
+></TT
+></DT
+><DD
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+>
+can use either <B
+CLASS="COMMAND"
+>aspell</B
+> or <B
+CLASS="COMMAND"
+>pspell</B
+>
+for spell checking.
+<B
+CLASS="COMMAND"
+>aspell</B
+> is used if both are installed.
+This option selects
+<B
+CLASS="COMMAND"
+>pspell</B
+> instead.</P
+></DD
+></DL
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN14039"
+>Upgrading from an earlier version of <TT
+CLASS="APPLICATION"
+>Cone</TT
+></A
+></H2
+><P
+>Upgrading <TT
+CLASS="APPLICATION"
+>Cone</TT
+> consists simply of building the new version, and installing it.
+The new version will overwrite the previous version.
+Special upgrade instructions are given below.</P
+><DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="AEN14044"
+>Upgrading from version 0.59 and earlier</A
+></H3
+><P
+>The address book format has changed in version 0.60.
+The old address book format will be automatically converted to the new format,
+when necessary, so no manual intervention is necessary.
+If <TT
+CLASS="APPLICATION"
+>Cone</TT
+> is later downgraded to an earlier version, addresses in an address
+book that contain non-English characters will not be shown correctly.</P
+></DIV
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN14048"
+>RPM builds</A
+></H2
+><P
+>Red Hat 9, and earlier does not have a wide-character enabled curses library.
+Use the following procedure to build <TT
+CLASS="APPLICATION"
+>Cone</TT
+> with full UTF-8 support.</P
+><P
+>The first step is to create a work area for building RPMs.
+Skip this step
+if an RPM build directory is already configured.</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>echo "%_topdir    $HOME/rpm" &#62; $HOME/.rpmmacros
+mkdir $HOME/rpm
+cd $HOME/rpm
+mkdir SOURCES SPECS BUILD SRPMS RPMS</PRE
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TH
+ALIGN="LEFT"
+VALIGN="MIDDLE"
+><B
+>For Red Hat 9, and earlier:</B
+></TH
+></TR
+><TR
+><TD
+>&nbsp;</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Download the source RPM for <TT
+CLASS="APPLICATION"
+>ncurses</TT
+> 5.3 from
+<A
+HREF="http://www.courier-mta.org/beta/ncurses/"
+TARGET="_top"
+>http://www.courier-mta.org/beta/ncurses/</A
+>.
+This custom RPM does not replace the existing version of curses shipped
+by Red Hat, and will not affect any existing software.
+It does not replace the Red Hat-shipped package, only installs an alternative
+version of curses.</P
+><P
+>Run <SPAN
+CLASS="QUOTE"
+>"<B
+CLASS="COMMAND"
+>rpm -i
+<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+></B
+>"</SPAN
+>
+to install the source RPM in the RPM build directory.
+Go to the <TT
+CLASS="FILENAME"
+>SPECS</TT
+> directory, where the file
+<TT
+CLASS="FILENAME"
+>ncurses-compat.spec</TT
+> is now installed,
+and run <SPAN
+CLASS="QUOTE"
+>"<B
+CLASS="COMMAND"
+>rpmbuild -ba
+ncurses-compat.spec</B
+>"</SPAN
+>.</P
+><P
+>The build script creates two binary RPMS:
+<TT
+CLASS="FILENAME"
+>ncurses53</TT
+> and
+<TT
+CLASS="FILENAME"
+>ncurses53-devel</TT
+>.
+Use <SPAN
+CLASS="QUOTE"
+>"<B
+CLASS="COMMAND"
+>rpm -i</B
+>"</SPAN
+> to install both packages,
+as root.</P
+><P
+>Fedora Core 1 includes a wide-character version of
+<TT
+CLASS="APPLICATION"
+>ncurses</TT
+>; and does not need the custom
+<TT
+CLASS="APPLICATION"
+>ncurses</TT
+> build.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>Finally, download the source code to <TT
+CLASS="APPLICATION"
+>Cone</TT
+> from
+<A
+HREF="http://www.courier-mta.org/download.php#cone"
+TARGET="_top"
+>http://www.courier-mta.org/download.php#cone</A
+>.
+Do not unpack the tarball.
+Execute <SPAN
+CLASS="QUOTE"
+>"<B
+CLASS="COMMAND"
+>rpmbuild -ta
+cone-<TT
+CLASS="REPLACEABLE"
+><I
+>version</I
+></TT
+>.tar.bz2</B
+>"</SPAN
+>.
+Two binary RPMs will be created: the main binary package contains <TT
+CLASS="APPLICATION"
+>Cone</TT
+>.
+The <SPAN
+CLASS="QUOTE"
+>"devel"</SPAN
+> package contains
+the 
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+ library
+and development files.
+It is only necessary to install the main package to run <TT
+CLASS="APPLICATION"
+>Cone</TT
+> the
+<SPAN
+CLASS="QUOTE"
+>"devel"</SPAN
+> subpackage is only needed for additional development
+with
+
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN14087"
+>CVS Source checkouts</A
+></H2
+><P
+>It is also possible to check out the source from CVS, however additional
+requirements apply.
+Besides the usual prerequisites for building <TT
+CLASS="APPLICATION"
+>Cone</TT
+>, additional development
+software must be installed.
+See the <SPAN
+CLASS="QUOTE"
+>"Download via CVS"</SPAN
+> instructions at
+<A
+HREF="http://www.courier-mta.org/status.html"
+TARGET="_top"
+>http://www.courier-mta.org/status.html</A
+>.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> has the same requirements as <TT
+CLASS="APPLICATION"
+>Courier</TT
+>
+for CVS builds (technically, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> does not need libtool, but that may
+change in the future).
+Make sure that the prerequisite software is installed, then check out the
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="APPLICATION"
+>Cone</TT
+>"</SPAN
+> module from CVS, tagged at revision
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="APPLICATION"
+>Cone</TT
+>-latest"</SPAN
+>.
+The <TT
+CLASS="LITERAL"
+>HEAD</TT
+> may be checked out, but carries more of the usual
+risks.</P
+><P
+>After the module is checked out, run the <TT
+CLASS="FILENAME"
+>autobloat</TT
+>
+shell script to rebuild the autoconf/automake scripts.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="readme.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+>: COnsole Newsreader And Emailer</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Building <TT
+CLASS="APPLICATION"
+>Cone</TT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

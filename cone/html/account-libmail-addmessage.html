@@ -1,0 +1,432 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::ACCOUNT::addMessage</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::ACCOUNT Synchronous API reference"
+HREF="synchronous.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::ACCOUNT Synchronous API reference"
+HREF="synchronous.html"><LINK
+REL="NEXT"
+TITLE="mail::ACCOUNT::checkNewMail"
+HREF="account-checknewmail.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="synchronous.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="account-checknewmail.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="ACCOUNT-LIBMAIL-ADDMESSAGE"
+></A
+>mail::ACCOUNT::addMessage</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN2854"
+></A
+><H2
+>Name</H2
+>mail::ACCOUNT::addMessage&nbsp;--&nbsp;Add a message to a folder</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN2857"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/sync.H&#62;<br>
+<br>
+#include&nbsp;&#60;libmail/addmessage.H&#62;<br>
+<br>
+mail::ACCOUNT&nbsp;*mail;<br>
+<br>
+class&nbsp;myAddMessagePull&nbsp;:&nbsp;public&nbsp;mail::addMessagePull&nbsp;{<br>
+<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;std::string&nbsp;getMessageContents();<br>
+};<br>
+<br>
+time_t&nbsp;messageDate;<br>
+mail::messageInfo&nbsp;newMessageInfo;<br>
+myAddMessagePull&nbsp;message;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;message.messageDate=messageDate;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;message.newMessageInfo=newMessageInfo;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN2859"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>bool ok=mail-&#62;<TT
+CLASS="FUNCTION"
+>addMessage</TT
+></CODE
+>(const mail::folder *<TT
+CLASS="PARAMETER"
+><I
+>folder</I
+></TT
+>, <TT
+CLASS="PARAMETER"
+><I
+>message</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+><P
+CLASS="LITERALLAYOUT"
+>std::string&nbsp;errmsg=mail-&#62;getErrmsg();</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN2868"
+></A
+><H2
+>USAGE</H2
+><P
+>This method inserts a message into a folder.
+<TT
+CLASS="PARAMETER"
+><I
+>folder</I
+></TT
+> specifies the folder where the message
+is added to, which may or may not be the currently open folder.</P
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>message</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>getMessageContents</TT
+>
+specifies the contents of the message, which should be a valid, MIME-formatted
+message.
+<TT
+CLASS="FUNCTION"
+>getMessageContents</TT
+>
+does not have to return the entire contents of the message at once.
+<TT
+CLASS="FUNCTION"
+>addMessage</TT
+> calls
+<TT
+CLASS="FUNCTION"
+>getMessageContents</TT
+>
+repeatedly.
+<TT
+CLASS="FUNCTION"
+>getMessageContents</TT
+>
+should return the next portion of the message with each call.
+<TT
+CLASS="FUNCTION"
+>getMessageContents</TT
+>
+should return
+an empty string, after providing the entire message contents are provided.
+<TT
+CLASS="FUNCTION"
+>getMessageContents</TT
+>
+will be called repeatedly until it returns an empty string.</P
+><P
+>The application may set the following
+<CODE
+CLASS="STRUCTNAME"
+>mail::addMessagePull</CODE
+> fields before invoking this
+method.
+If not initialized, the following fields will be set to their default
+values.</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>messageDate</DT
+><DD
+><P
+>The message's arrival timestamp, which is retrieved
+by
+<A
+HREF="account-getmessageenvelope.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::getMessageEnvelope</SPAN
+>(3x)</SPAN
+></A
+>,
+which places it in the <CODE
+CLASS="STRUCTFIELD"
+>arrivalDate</CODE
+> field.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>This timestamp does not necessarily have to be the same as the
+timestamp in the message's <TT
+CLASS="LITERAL"
+>Date:</TT
+> header.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DD
+><DT
+>messageInfo</DT
+><DD
+><P
+>The message flags, as returned by
+<A
+HREF="account-getfolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::getFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The contents of <CODE
+CLASS="STRUCTFIELD"
+>uid</CODE
+>, the message's unique ID,
+are ignored, only the message flags in <CODE
+CLASS="STRUCTFIELD"
+>messageInfo</CODE
+>
+are read.
+The message gets automatically assigned a new unique ID when it gets added
+to the folder.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN2908"
+></A
+><H2
+>Return Codes</H2
+><P
+>This method returns <TT
+CLASS="LITERAL"
+>true</TT
+> if it succeeds, or
+<TT
+CLASS="LITERAL"
+>false</TT
+> if it fails.
+If the method fails, use
+<CODE
+CLASS="STRUCTFIELD"
+>mail::ACCOUNT::getErrmsg()</CODE
+> to read a brief
+description of the error.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN2914"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="account-checknewmail.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::checkNewMail</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="synchronous.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="account-checknewmail.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><CODE
+CLASS="STRUCTNAME"
+>mail::ACCOUNT</CODE
+> Synchronous API reference</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="synchronous.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::ACCOUNT::checkNewMail</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

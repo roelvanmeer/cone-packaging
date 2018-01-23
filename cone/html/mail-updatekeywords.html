@@ -1,0 +1,771 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::account::updateKeywords</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::account Native API reference"
+HREF="native.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::account::updateFolderIndexInfo"
+HREF="mail-updatefolderindexinfo.html"><LINK
+REL="NEXT"
+TITLE="mail::account::updateNotify"
+HREF="mail-updatenotify.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mail-updatefolderindexinfo.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mail-updatenotify.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="MAIL-UPDATEKEYWORDS"
+></A
+>mail::account::updateKeywords</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN8496"
+></A
+><H2
+>Name</H2
+>mail::account::updateKeywords&nbsp;--&nbsp;Update message keywords</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN8499"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/mail.H&#62;<br>
+<br>
+<br>
+class&nbsp;myCallback&nbsp;:&nbsp;public&nbsp;mail::callback&nbsp;{<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success(std::string&nbsp;msg);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;fail(std::string&nbsp;msg);<br>
+};</P
+><P
+CLASS="LITERALLAYOUT"
+>mail::account&nbsp;*account;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN8502"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>account-&#62;<TT
+CLASS="FUNCTION"
+>updateKeywords</TT
+></CODE
+>(const std::vector&#60;size_t&#62; <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+>, const std::set&#60;std::string&#62; &#38;<TT
+CLASS="PARAMETER"
+><I
+>keywords</I
+></TT
+>, bool <TT
+CLASS="PARAMETER"
+><I
+>setOrChange</I
+></TT
+>, bool <TT
+CLASS="PARAMETER"
+><I
+>changeTo</I
+></TT
+>, myCallback &#38;<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN8516"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>account-&#62;<TT
+CLASS="FUNCTION"
+>updateKeywords</TT
+></CODE
+>(const std::vector&#60;size_t&#62; <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+>, const std::list&#60;std::string&#62; &#38;<TT
+CLASS="PARAMETER"
+><I
+>keywords</I
+></TT
+>, bool <TT
+CLASS="PARAMETER"
+><I
+>setOrChange</I
+></TT
+>, bool <TT
+CLASS="PARAMETER"
+><I
+>changeTo</I
+></TT
+>, myCallback &#38;<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN8530"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>account-&#62;<TT
+CLASS="FUNCTION"
+>updateKeywords</TT
+></CODE
+>(const std::vector&#60;size_t&#62; <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+>, const std::vector&#60;std::string&#62; &#38;<TT
+CLASS="PARAMETER"
+><I
+>keywords</I
+></TT
+>, bool <TT
+CLASS="PARAMETER"
+><I
+>setOrChange</I
+></TT
+>, bool <TT
+CLASS="PARAMETER"
+><I
+>changeTo</I
+></TT
+>, myCallback &#38;<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN8544"
+></A
+><H2
+>USAGE</H2
+><P
+>This function updates the set of keywords of one or more messages.
+<TT
+CLASS="PARAMETER"
+><I
+>keywords</I
+></TT
+> may also be specified as a list, or a vector
+(and duplicate occurences of a keyword are automatically removed).
+
+<TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+> specifies a list of messages.
+Messages are numbered starting with message #0 and up to one
+less than
+<A
+HREF="mail-getfolderindexsize.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexSize</SPAN
+>(3x)</SPAN
+></A
+>()
+(when <TT
+CLASS="FUNCTION"
+>mail::account::getFolderIndexSize</TT
+> returns 6,
+the messages are numbered 0 through 5).
+Only the messages that appear in <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+> are
+processed by this request.</P
+><P
+>When <TT
+CLASS="PARAMETER"
+><I
+>setOrChange</I
+></TT
+> is <TT
+CLASS="LITERAL"
+>false</TT
+>,
+<TT
+CLASS="PARAMETER"
+><I
+>changeTo</I
+></TT
+> is ignored, and any existing keywords set
+for each message in <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+> are completely replaced by
+<TT
+CLASS="PARAMETER"
+><I
+>keywords</I
+></TT
+>.
+When <TT
+CLASS="PARAMETER"
+><I
+>setOrChange</I
+></TT
+> is <TT
+CLASS="LITERAL"
+>true</TT
+>
+<TT
+CLASS="PARAMETER"
+><I
+>changeTo</I
+></TT
+> selects whether
+<TT
+CLASS="PARAMETER"
+><I
+>keywords</I
+></TT
+> are added to the existing set of keywords
+that are already set for each message (<TT
+CLASS="PARAMETER"
+><I
+>changeTo</I
+></TT
+>
+is <TT
+CLASS="LITERAL"
+>true</TT
+>), or removed from the existing set of keywords
+(<TT
+CLASS="PARAMETER"
+><I
+>changeTo</I
+></TT
+> is <TT
+CLASS="LITERAL"
+>false</TT
+>).</P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8569"
+></A
+><H3
+>Keywords</H3
+><P
+>Keywords are application-defined flags, or markers, that are associated
+which each message in a folder.
+Keywords names are arbitrary, and are subject to certain restrictions.
+
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+ does not place any special meaning on any particular keyword
+name.
+
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+'s sole involvement is to store the save the list of keywords set
+for a given message, and then retrieve it upon demand.</P
+><P
+>Which characters may be included in a keyword name depends on the underlying
+account type.
+Applications that expect to use any supported account type should limit
+themselves to the lowest common denominator: case insensitive
+<TT
+CLASS="LITERAL"
+>us-ascii</TT
+> character set; no whitespace or any of the
+following characters: commas; apostrophes; quotes; backslashes;
+forward slashes; opening/closing braces, brackets, and parenthesis;
+question marks; asterisks; percent signs.
+In all cases, keyword names may not include any control characters.
+Unless keywords are permanently saved, and remain available after the
+folder is closed, and subsequently reopened.
+When the folder is reopened at some point later, all keywords will remain
+set for their corresponding messages (unless they were modified by another
+process).</P
+><P
+></P
+><UL
+><LI
+><P
+>Temporary folders do not implement keywords.</P
+></LI
+><LI
+><P
+>IMAP accounts have case-insensitive keywords in the
+<TT
+CLASS="LITERAL"
+>us-ascii</TT
+> character set.
+Keyword names may not contain: apostrophes; quotes; backslashes;
+forward slashes; opening/closing braces, brackets, and parenthesis;
+question marks; asterisks; and percent signs.</P
+></LI
+><LI
+><P
+><A
+HREF="smap1.html"
+>SMAP</A
+>
+accounts have case-sensitive keywords that use the
+<TT
+CLASS="LITERAL"
+>UTF-8</TT
+> character set.
+Keyword names may not contain commas.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>IMAP restrictions also apply if the same account is accessible via IMAP.</P
+></TD
+></TR
+></TABLE
+></DIV
+></LI
+><LI
+><P
+>Maildir accounts have case-sensitive keywords that use the
+<TT
+CLASS="LITERAL"
+>UTF-8</TT
+> character set.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>IMAP and/or SMAP restrictions also apply if the maildir is
+also accessible via IMAP or SMAP.</P
+></TD
+></TR
+></TABLE
+></DIV
+></LI
+><LI
+><P
+>Mbox accounts have case-sensitive keywords that use the
+<TT
+CLASS="LITERAL"
+>UTF-8</TT
+> character set.</P
+></LI
+><LI
+><P
+>NNTP and POP3 accounts have case-sensitive keywords that use the
+<TT
+CLASS="LITERAL"
+>UTF-8</TT
+> character set.
+Keywords are not saved.
+When the folder is closed, all set keywords are lost.
+Snapshots may be used to obtain permanent keyword storage for NNTP
+and POP3 accounts.
+See
+<A
+HREF="folder-open.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::folder::open</SPAN
+>(3x)</SPAN
+></A
+>
+for more information.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN8603"
+></A
+><H2
+>Return Codes</H2
+><P
+>The application must wait until
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.
+The <TT
+CLASS="FUNCTION"
+>success</TT
+> method is invoked when this request is
+succesfully processed.
+The <TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked if this request cannot
+be processed.
+The application must not destroy
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+> until either the
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method may be invoked even after other
+callback methods were invoked.
+This indicates that the request was partially completed before the error
+was encountered.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The application is notified about when a message's status changes by
+by invoking the
+<TT
+CLASS="FUNCTION"
+>messageChanged</TT
+> callback method of the currently
+opened folder's
+<CODE
+CLASS="STRUCTNAME"
+>mail::folderCallback</CODE
+> object.
+Depending on the mail server, the
+<TT
+CLASS="FUNCTION"
+>messageChanged</TT
+> method may be
+invoked as part of processing this request,
+or some time later after this request is completed,
+and <TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s <TT
+CLASS="FUNCTION"
+>success</TT
+>
+method was invoked.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN8625"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="mail-savefolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::saveFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-getfolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-getfolderkeywordinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderKeywordInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="folder-open.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::folder::open</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mail-updatefolderindexinfo.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mail-updatenotify.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::account::updateFolderIndexInfo</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="native.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::account::updateNotify</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

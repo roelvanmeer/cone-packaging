@@ -1,0 +1,381 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>Simple Mail Access Protocol, Version 1</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::mimestruct"
+HREF="mimestruct.html"><LINK
+REL="NEXT"
+TITLE="SMAP syntax overview"
+HREF="x12387.html"></HEAD
+><BODY
+CLASS="APPENDIX"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mimestruct.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x12387.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="APPENDIX"
+><H1
+><A
+NAME="SMAP1"
+></A
+>Simple Mail Access Protocol, Version 1</H1
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>This document is a work-in-progress.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN12335"
+>Introduction</A
+></H1
+><P
+>Simple Mail Access Protocol (SMAP, or SMAP1 if referring specifically
+to this version)
+enables programs (referred in this
+document as "clients") to use a network connection to a server process
+for reading and manage MIME E-mail messages in a mailbox.</P
+><P
+>SMAP is an experimental protocol for testing new mail client/server
+functionality that's not possible with existing mail access protocols.
+SMAP is sufficient for
+implementing traditional mail access functionality: a hierarchical
+arrangement of folders; random access to messages in a folder;
+access individual MIME sections of messages; per-message metadata such
+as various flags, and a datestamp.
+Beyond that, SMAP's primary focus is to serve as an experimental
+implementation of advanced mail client/server functionality.</P
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN12339"
+>Summary</A
+></H2
+><P
+></P
+><UL
+><LI
+><P
+>SMAP tries to provide powerful mail access service using
+a structurally-simple, line oriented syntax.  Client commands and
+server replies are newline-delimited lines of text
+consisting of whitespace-delimited tokens.
+SMAP syntax's complexity is closer to POP3's and SMTP's,
+rather than to IMAP's.</P
+></LI
+><LI
+><P
+>SMAP's design allows it to coexist with IMAP.
+Both IMAP and SMAP can be implemented
+by the same server.
+An SMAP client has the ability to fall back to IMAP if the server does not
+have SMAP capabilities.</P
+></LI
+><LI
+><P
+>SMAP decodes MIME-encoded attachments, and sends the raw data to the
+SMAP client.
+<TT
+CLASS="LITERAL"
+>base64</TT
+>-encoded MIME attachments enjoy a 25% reduction
+in bandwidth needed to download the attachment...</P
+></LI
+><LI
+><P
+>A single SMAP transaction saves a new message to a folder, and sends the
+message to its designated recipients.
+This essentially halfes the bandwidth required to send a new message.
+Without SMAP, a mail client has to transmit the message twice: once to save
+a file-copy of the sent message in a folder, and a second time to send
+the message using <TT
+CLASS="LITERAL"
+>SMTP</TT
+>.
+With SMAP, the mail client only needs to send the message once.
+The server saves the message in the folder, the sends the message to its
+listed recipients.</P
+></LI
+><LI
+><P
+>An SMAP client does not need to download the entire index of folder's contents
+when reopening a previously seen folder.
+When reopening a folder, the client receives a much shorter list of changes
+to the folder's contents since the last time the client had the folder
+opened.</P
+><P
+>This is done by the client and server saving an index of folder's contents.
+After reopening the folder the server only needs to send
+the delta of changes between the saved folder index, and the current folder
+index.</P
+></LI
+><LI
+><P
+>SMAP provides a hierarchical collection of mail folders.
+Folder names use the UTF-8 character set.
+A <B
+CLASS="COMMAND"
+>telnet</B
+> connection from an UTF-8 terminal will be able
+to fully navigate and manage the folders.
+Names of SMAP folders may contain any UTF-8 character (excluding the control
+character range U+0000 through U+001F).
+SMAP does not reserve a folder hierarchy delimiter character.</P
+></LI
+><LI
+><P
+>SMAP specifies
+a clearly defined process for synchronizing multiple SMAP clients
+that have the same folder opened concurrently.</P
+></LI
+><LI
+><P
+>SMAP uses simple unique identifiers that are similar to the POP3's
+model.</P
+></LI
+><LI
+><P
+>SMAP provides two ways for removing messages from a folder.
+Messages may be removed directly, or using a
+<SPAN
+CLASS="QUOTE"
+>"mark as deleted, then expunge"</SPAN
+> paradigm.</P
+><P
+>Similarly, messages are moved between folders using a single
+<SPAN
+CLASS="QUOTE"
+>"move"</SPAN
+> process, instead of
+<SPAN
+CLASS="QUOTE"
+>"copy, delete, expunge"</SPAN
+> (which is also available).
+This allows for greater efficiency with quota-limited mail accounts,
+since moving messages between folders will not require reserving quota-limited
+space equivalent to the sum total of the messages that are moved.</P
+></LI
+><LI
+><P
+>Additional facilities, that are useful in internationalized environments,
+include specifying native languages for error messages, and internationalized
+folder names.</P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN12370"
+>Roadmap</A
+></H2
+><P
+>SMAP is a work-in-progress.
+Additional advanced mail handling protocols are expected to be defined
+in the future.
+At this time, the following additions are planned:</P
+><P
+></P
+><UL
+><LI
+><P
+>Advanced mechanism for uploading new messages to the server.
+Individual attachments are uploaded as binary data.
+The server selects and applies the appropriate encoding.
+The server creates the appropriate MIME headers.</P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN12376"
+>Conventions used in this document</A
+></H2
+><P
+>	This document uses <SPAN
+CLASS="QUOTE"
+>"U+<TT
+CLASS="REPLACEABLE"
+><I
+>hhhh</I
+></TT
+>"</SPAN
+>,
+where <TT
+CLASS="REPLACEABLE"
+><I
+>hhhh</I
+></TT
+> is a hexadecimal number, to refer
+to a specific Unicode/ISO-10646 character.
+In examples,
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>C:</TT
+>"</SPAN
+> indicates a command
+sent by the SMAP client to the server, and
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>S:</TT
+>"</SPAN
+> indicates the server's response.</P
+><P
+>Some examples have long commands or replies line-wrapped for
+readability purposes.
+The actual commands and replies are generally a single line of text,
+terminated by the LF character (U+000A).</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mimestruct.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x12387.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::mimestruct</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SMAP syntax overview</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

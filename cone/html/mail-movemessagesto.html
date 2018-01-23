@@ -1,0 +1,498 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::account::moveMessagesTo</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::account Native API reference"
+HREF="native.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::account::logout"
+HREF="mail-logout.html"><LINK
+REL="NEXT"
+TITLE="mail::account::open"
+HREF="mail-open.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mail-logout.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mail-open.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="MAIL-MOVEMESSAGESTO"
+></A
+>mail::account::moveMessagesTo</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN6650"
+></A
+><H2
+>Name</H2
+>mail::account::copyMessagesTo&nbsp;--&nbsp;Move messages to another folder</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN6653"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/mail.H&#62;<br>
+<br>
+<br>
+class&nbsp;myCallback&nbsp;:&nbsp;public&nbsp;mail::callback&nbsp;{<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success(std::string&nbsp;msg);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;fail(std::string&nbsp;msg);<br>
+};</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN6655"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>account-&#62;<TT
+CLASS="FUNCTION"
+>moveMessagesTo</TT
+></CODE
+>(const std::vector&#60;size_t&#62; &#38;<TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+>, mail::folder *<TT
+CLASS="PARAMETER"
+><I
+>copyTo</I
+></TT
+>, myCallback &#38;<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN6665"
+></A
+><H2
+>USAGE</H2
+><P
+><TT
+CLASS="FUNCTION"
+>mail::account::moveMessagesTo</TT
+> moves messages from the
+currently-open folder to another folder. 
+<TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+> specifies a list of messages.
+Messages are numbered starting with message #0 and up to one
+less than
+<A
+HREF="mail-getfolderindexsize.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexSize</SPAN
+>(3x)</SPAN
+></A
+>()
+(when <TT
+CLASS="FUNCTION"
+>mail::account::getFolderIndexSize</TT
+> returns 6,
+the messages are numbered 0 through 5).
+Only the messages that appear in <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+> are
+processed by this request.</P
+><P
+>This is similar to
+<A
+HREF="mail-copymessagesto.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::copyMessagesTo</SPAN
+>(3x)</SPAN
+></A
+>, except that
+the messages are removed from the original folder.
+The application can expect that the
+<TT
+CLASS="FUNCTION"
+>mail::account::messagesRemoved</TT
+> function in the
+currently opened folder's <CODE
+CLASS="STRUCTNAME"
+>mail::callback::folder</CODE
+>
+object will be invoked one or more times, as necessary, to reflect the
+removal of the listed messages from the currently open folder.
+
+      </P
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>copyTo</I
+></TT
+> is a pointer to a
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> object, representing the folder where
+messages are moved to.
+<TT
+CLASS="PARAMETER"
+><I
+>copyTo</I
+></TT
+> may be a folder in another mail account,
+in which case this function transparently copies the indicated messages
+using
+<A
+HREF="mail-removemessages.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::removeMessages</SPAN
+>(3x)</SPAN
+></A
+>.
+Only <A
+HREF="smap1.html"
+>SMAP</A
+> and maildir-based mail accounts can
+move messages directly between folders; for all other
+accounts the copy/delete implementation will be used automatically.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN6692"
+></A
+><H2
+>Return Codes</H2
+><P
+>The application must wait until
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.
+The <TT
+CLASS="FUNCTION"
+>success</TT
+> method is invoked when this request is
+succesfully processed.
+The <TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked if this request cannot
+be processed.
+The application must not destroy
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+> until either the
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method may be invoked even after other
+callback methods were invoked.
+This indicates that the request was partially completed before the error
+was encountered.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Multiple applications may have the same account and folder opened at the
+same time.
+It is possible that a message referenced by this request was already
+deleted by another application.
+Depending on the underlying server implementation this will result in
+either a failed request, invoking
+<TT
+CLASS="FUNCTION"
+>callback.fail</TT
+>, or the request completing
+(<TT
+CLASS="FUNCTION"
+>callback.success</TT
+> invoked) but without invoking
+any callback function that refer to the message.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>If this request is interrupted, for some reason, it is possible that some
+or all messages have already been
+copied to the destination folder, but not yet
+removed from the original folder.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN6713"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="mail-copymessagesto.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::copyMessagesTo</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-open.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::open</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-removemessages.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::removeMessages</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mail-logout.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mail-open.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::account::logout</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="native.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::account::open</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

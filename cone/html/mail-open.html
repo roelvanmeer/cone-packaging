@@ -1,0 +1,1845 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::account::open</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::account Native API reference"
+HREF="native.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::account::moveMessagesTo"
+HREF="mail-movemessagesto.html"><LINK
+REL="NEXT"
+TITLE="mail::account::poll"
+HREF="mail-poll.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mail-movemessagesto.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mail-poll.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="MAIL-OPEN"
+></A
+>mail::account::open</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN6732"
+></A
+><H2
+>Name</H2
+>mail::account::open&nbsp;--&nbsp;Open a new mail account</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN6735"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/mail.H&#62;<br>
+<br>
+<br>
+class&nbsp;myCallback&nbsp;:&nbsp;public&nbsp;mail::callback&nbsp;{<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success(std::string&nbsp;msg);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;fail(std::string&nbsp;msg);<br>
+};</P
+><P
+CLASS="LITERALLAYOUT"
+><br>
+class&nbsp;myDisconnectCallback&nbsp;:&nbsp;public&nbsp;mail::callback::disconnect&nbsp;{<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;disconnected(const&nbsp;char&nbsp;*msg);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;servererror(const&nbsp;char&nbsp;*msg);<br>
+};<br>
+<br>
+#include&nbsp;&#60;libmail/logininfo.H&#62;<br>
+<br>
+class&nbsp;myPromptCallback&nbsp;:&nbsp;public&nbsp;mail::loginCallback&nbsp;{<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;loginPrompt(mail::loginCallback::callbackType,&nbsp;std::string);<br>
+};<br>
+<br>
+void&nbsp;myPromptCallback::loginPrompt(mail::loginCallback::callbackType&nbsp;cbType,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;prompt)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;struct&nbsp;termios&nbsp;ti,&nbsp;ti2;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&#60;&#60;&nbsp;prompt&nbsp;&#60;&#60;&nbsp;flush;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;tcgetattr(0,&nbsp;&#38;ti);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ti2=ti;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(cbType&nbsp;==&nbsp;PASSWORD)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ti2.c_lflag&nbsp;&#38;=&nbsp;~ECHO;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcsetattr(0,&nbsp;TCSAFLUSH,&nbsp;&#38;ti2);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;std::string&nbsp;reply;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(getline(cin,&nbsp;reply).fail())<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callbackCancel();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(cbType&nbsp;!=&nbsp;USERID)&nbsp;&nbsp;//&nbsp;It's&nbsp;PASSWORD<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcsetattr(0,&nbsp;TCSAFLUSH,&nbsp;&#38;ti);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;callback(reply);<br>
+}<br>
+<br>
+mail::account::openInfo&nbsp;accountOpenInfo;<br>
+myPromptCallback&nbsp;passwdCallback;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;accountOpenInfo.url="imap://john@imap.example.com/novalidate-cert";<br>
+&nbsp;&nbsp;&nbsp;&nbsp;accountOpenInfo.pwd="secret";<br>
+&nbsp;&nbsp;&nbsp;&nbsp;accountOpenInfo.extraString="";&nbsp;//&nbsp;Used&nbsp;by&nbsp;nntp:,&nbsp;nntps:,&nbsp;pop3maildrop:&nbsp;and&nbsp;pop3maildrops:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;accountOpenInfo.loginCallbackObj=&nbsp;&#38;passwdCallback;<br>
+<br>&#13;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN6738"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>mail::account *account=<TT
+CLASS="FUNCTION"
+>mail::account::open</TT
+></CODE
+>(<TT
+CLASS="PARAMETER"
+><I
+>accountOpenInfo</I
+></TT
+>, myCallback &#38;<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>, myDisconnectCallback &#38;<TT
+CLASS="PARAMETER"
+><I
+>disconnectCallback</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN6748"
+></A
+><H2
+>USAGE</H2
+><P
+><TT
+CLASS="FUNCTION"
+>mail::account::open</TT
+> opens a mail account on a server.
+<TT
+CLASS="PARAMETER"
+><I
+>url</I
+></TT
+> identifies the account.
+<TT
+CLASS="PARAMETER"
+><I
+>url</I
+></TT
+> should contain a text string
+that identifies one of the following types of accounts:
+
+<P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>imap://<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>server[<SPAN
+CLASS="OPTIONAL"
+>:port</SPAN
+>]</I
+></TT
+>[<SPAN
+CLASS="OPTIONAL"
+>/options</SPAN
+>]</DT
+><DD
+><P
+>An <A
+HREF="http://www.rfc-editor.org/rfc/rfc2060.txt"
+TARGET="_top"
+>IMAP</A
+>
+or an <A
+HREF="smap1.html"
+>SMAP</A
+>
+account on <TT
+CLASS="REPLACEABLE"
+><I
+>server</I
+></TT
+>.
+The colon and <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+> are optional; defaulting
+to the standard IMAP port 143.
+A slash, followed by a slash-separated list of
+<A
+HREF="mail-open.html#MAIL-OPEN-OPTIONS"
+>additional options</A
+> may
+follow.</P
+><P
+><TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+> identifies the account login id.
+<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+> may contain any characters except
+<TT
+CLASS="LITERAL"
+>/</TT
+>,
+<TT
+CLASS="LITERAL"
+>@</TT
+>,
+<TT
+CLASS="LITERAL"
+>%</TT
+>, and
+<TT
+CLASS="LITERAL"
+>:</TT
+>.
+These characters may be specified by using <TT
+CLASS="LITERAL"
+>%</TT
+>, followed
+by a two-digit uppercase hexadecimal ASCII code for the character.</P
+></DD
+><DT
+>pop3://<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>server[<SPAN
+CLASS="OPTIONAL"
+>:port</SPAN
+>]</I
+></TT
+>[<SPAN
+CLASS="OPTIONAL"
+>/options</SPAN
+>]</DT
+><DD
+><P
+>A POP3 account on <TT
+CLASS="REPLACEABLE"
+><I
+>server</I
+></TT
+>.
+The colon and <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+> are optional; defaulting
+to the standard POP3 port 110.
+A slash, followed by a slash-separated list of
+<A
+HREF="mail-open.html#MAIL-OPEN-OPTIONS"
+>additional options</A
+>
+may
+follow.</P
+><P
+><TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+> identifies the account login id.
+<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+> may contain any characters except
+<TT
+CLASS="LITERAL"
+>/</TT
+>,
+<TT
+CLASS="LITERAL"
+>@</TT
+>,
+<TT
+CLASS="LITERAL"
+>%</TT
+>, and
+<TT
+CLASS="LITERAL"
+>:</TT
+>.
+These characters may be specified by using <TT
+CLASS="LITERAL"
+>%</TT
+> followed
+by a two-digit uppercase hexadecimal ASCII code for the character.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The POP3 server must support the <TT
+CLASS="LITERAL"
+>UIDL</TT
+> command, which
+is implemented by all modern POP3 servers.
+Some very old POP3 servers may not support this command, in which case
+use a <TT
+CLASS="LITERAL"
+>pop3maildrop</TT
+> URL instead.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DD
+><DT
+>pop3maildrop://<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>server[<SPAN
+CLASS="OPTIONAL"
+>:port</SPAN
+>]</I
+></TT
+>[<SPAN
+CLASS="OPTIONAL"
+>/options</SPAN
+>]</DT
+><DD
+><P
+>Like <SPAN
+CLASS="QUOTE"
+>"pop3"</SPAN
+>, except that messages are downloaded,
+then deleted, from the POP3
+server.
+Use <SPAN
+CLASS="QUOTE"
+>"pop3maildrop"</SPAN
+> maildrop when the remote server does not
+implement the <TT
+CLASS="LITERAL"
+>UIDL</TT
+> command.</P
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>extraString</I
+></TT
+> must be initialized to the name of a
+maildir where messages from the POP3 server will be downloaded to.
+If the maildir does not exist, it will be automatically created.</P
+></DD
+><DT
+>nntp://<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>server[<SPAN
+CLASS="OPTIONAL"
+>:port</SPAN
+>]</I
+></TT
+>[<SPAN
+CLASS="OPTIONAL"
+>/options</SPAN
+>]</DT
+><DD
+><P
+>Access Usenet newsgroups via nntp on <TT
+CLASS="REPLACEABLE"
+><I
+>server</I
+></TT
+>.
+The colon and <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+> are optional; defaulting
+to the standard NNTP port 119.
+A slash, followed by a slash-separated list of
+<A
+HREF="mail-open.html#MAIL-OPEN-OPTIONS"
+>additional options</A
+>
+may
+follow.</P
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>extraString</I
+></TT
+> must be initialized to the name of a
+file where the list of subscribed newsgroups, and read articles, will be
+saved.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>&#13;<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+ uses a slightly expanded version of the traditional
+<TT
+CLASS="FILENAME"
+>.newsrc</TT
+> format, containing some extra header
+information.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+><TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>
+and <TT
+CLASS="REPLACEABLE"
+><I
+>pwd</I
+></TT
+>
+should be specified if the NNTP server requires authentication.
+Otherwise these parameters may be omitted.</P
+></DD
+><DT
+>imaps://<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>server[<SPAN
+CLASS="OPTIONAL"
+>:port</SPAN
+>]</I
+></TT
+>[<SPAN
+CLASS="OPTIONAL"
+>/options</SPAN
+>]</DT
+><DD
+><P
+>Like "imap", but use encryption to connect to the IMAP/SMAP server, and use
+the default <TT
+CLASS="LITERAL"
+>imaps</TT
+> port (usually 993).</P
+></DD
+><DT
+>pop3s://<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>server[<SPAN
+CLASS="OPTIONAL"
+>:port</SPAN
+>]</I
+></TT
+>[<SPAN
+CLASS="OPTIONAL"
+>/options</SPAN
+>]</DT
+><DD
+><P
+>Like <SPAN
+CLASS="QUOTE"
+>"pop3"</SPAN
+>,
+but use encryption to connect to the POP3 server, and use
+the default <TT
+CLASS="LITERAL"
+>pop3s</TT
+> port (usually 995).</P
+></DD
+><DT
+>pop3maildrops://<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>server[<SPAN
+CLASS="OPTIONAL"
+>:port</SPAN
+>]</I
+></TT
+>[<SPAN
+CLASS="OPTIONAL"
+>/options</SPAN
+>]</DT
+><DD
+><P
+>Like <SPAN
+CLASS="QUOTE"
+>"pop3maildrop"</SPAN
+>,
+but use encryption to connect to the POP3 server, and use
+the default <TT
+CLASS="LITERAL"
+>pop3s</TT
+> port (usually 995).</P
+></DD
+><DT
+>nntps://<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>server[<SPAN
+CLASS="OPTIONAL"
+>:port</SPAN
+>]</I
+></TT
+>[<SPAN
+CLASS="OPTIONAL"
+>/options</SPAN
+>]</DT
+><DD
+><P
+>Like "nntp", but use encryption to connect to the NNTP server, and use
+the default <TT
+CLASS="LITERAL"
+>nntps</TT
+> port (usually 563).</P
+></DD
+><DT
+>maildir:[<SPAN
+CLASS="OPTIONAL"
+>path</SPAN
+>]</DT
+><DD
+><P
+>Mail in a local maildir.
+[<SPAN
+CLASS="OPTIONAL"
+>path</SPAN
+>] specifies the path to the maildir-type mailbox.
+[<SPAN
+CLASS="OPTIONAL"
+>path</SPAN
+>] may be a relative path, anchored at the home
+directory (NOT the process's current directory).
+<TT
+CLASS="LITERAL"
+>"maildir:Maildir"</TT
+> is the usual way to open
+<TT
+CLASS="FILENAME"
+>$HOME/Maildir</TT
+>.</P
+></DD
+><DT
+>mail:[<SPAN
+CLASS="OPTIONAL"
+>path</SPAN
+>]</DT
+><DD
+><P
+>Open mail in a local mailbox.
+[<SPAN
+CLASS="OPTIONAL"
+>path</SPAN
+>] specifies the path to a file or a directory
+containing mbox-type mailboxes.
+[<SPAN
+CLASS="OPTIONAL"
+>path</SPAN
+>] may be a relative path, anchored at the home
+directory (NOT the process's current directory).
+[<SPAN
+CLASS="OPTIONAL"
+>path</SPAN
+>] may refer to a directory, in which case the
+directory's contents are read as mbox-type folders.
+<TT
+CLASS="LITERAL"
+>"maildir:Mail"</TT
+> is the usual way to open mail in
+<TT
+CLASS="FILENAME"
+>$HOME/Mail</TT
+>.</P
+></DD
+><DT
+>inbox:[<SPAN
+CLASS="OPTIONAL"
+>path</SPAN
+>]</DT
+><DD
+><P
+>Open mail in a local mailbox.
+This is the same as <TT
+CLASS="LITERAL"
+>"mail:[<SPAN
+CLASS="OPTIONAL"
+>path</SPAN
+>]"</TT
+>,
+with the additional inclusion of the default system mailbox
+(usually in <TT
+CLASS="FILENAME"
+>/var/spool/mail</TT
+>), represented by the
+special folder named
+<TT
+CLASS="LITERAL"
+>INBOX</TT
+>.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The default system mailbox is implemented by creating
+<TT
+CLASS="FILENAME"
+>$HOME/Inbox</TT
+>, and automatically copying all mail from
+the default system mailbox to <TT
+CLASS="FILENAME"
+>$HOME/Inbox</TT
+> (which is
+represented as the <TT
+CLASS="LITERAL"
+>INBOX</TT
+>).
+This is done in order to avoid having to rewrite the default system mailbox
+file "in place", due to restricted permissions on the spool directory.
+Updating the default system mailbox in place may result in corruption if
+the process is interrupted while the update is in progress.
+Copying mail from the default system mailbox to
+<TT
+CLASS="FILENAME"
+>$HOME/Inbox</TT
+>
+allows safe access to new messages.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DD
+><DT
+>smtp://[<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>@</SPAN
+>]<TT
+CLASS="REPLACEABLE"
+><I
+>server[<SPAN
+CLASS="OPTIONAL"
+>:port</SPAN
+>]</I
+></TT
+>[<SPAN
+CLASS="OPTIONAL"
+>/options</SPAN
+>]</DT
+><DD
+><P
+>Create an account object for sending mail.
+The created <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+>'s
+<A
+HREF="mail-getsendfolder.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getSendFolder</SPAN
+>(3x)</SPAN
+></A
+>
+method will create a special
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> object.
+Adding a message to this "folder" will E-mail this message
+via SMTP.</P
+><P
+>The colon and <TT
+CLASS="REPLACEABLE"
+><I
+>port</I
+></TT
+> are optional; defaulting
+to the standard SMTP port 25.
+Sometimes it is useful to specify port 587, where the message submission
+protocol is available (the message submission protocol is almost identical
+to SMTP, with the most notable difference is that authentication is required).
+A slash, followed by a slash-separated list of
+<A
+HREF="mail-open.html#MAIL-OPEN-OPTIONS"
+>additional options</A
+>
+may follow.</P
+><P
+>[<SPAN
+CLASS="OPTIONAL"
+>user</SPAN
+>]@ is optional, and enables authenticated
+SMTP.
+[<SPAN
+CLASS="OPTIONAL"
+>user</SPAN
+>] identifies the authentication id.
+[<SPAN
+CLASS="OPTIONAL"
+>user</SPAN
+>] may contain any characters except
+<TT
+CLASS="LITERAL"
+>/</TT
+>,
+<TT
+CLASS="LITERAL"
+>@</TT
+>,
+<TT
+CLASS="LITERAL"
+>%</TT
+>, and
+<TT
+CLASS="LITERAL"
+>:</TT
+>.
+These characters may be specified by using <TT
+CLASS="LITERAL"
+>%</TT
+> followed
+by a two-digit uppercase hexadecimal ASCII code for the character.</P
+></DD
+><DT
+>smtps://[<SPAN
+CLASS="OPTIONAL"
+><TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>@</SPAN
+>]<TT
+CLASS="REPLACEABLE"
+><I
+>server[<SPAN
+CLASS="OPTIONAL"
+>:port</SPAN
+>]</I
+></TT
+>[<SPAN
+CLASS="OPTIONAL"
+>/options</SPAN
+>]</DT
+><DD
+><P
+>Like "smtp", but use encryption to connect to the SMTP server, and use
+the default <TT
+CLASS="LITERAL"
+>smtps</TT
+> port (usually 465).</P
+></DD
+><DT
+>sendmail://localhost</DT
+><DD
+><P
+>Like "smtp", but use the local <B
+CLASS="COMMAND"
+>sendmail</B
+> command to send
+mail.</P
+></DD
+></DL
+></DIV
+></P
+><P
+>There are several alternative ways to provide a login passwords for
+<TT
+CLASS="PARAMETER"
+><I
+>url</I
+></TT
+>s that require login information.
+<TT
+CLASS="PARAMETER"
+><I
+>pwd</I
+></TT
+> should be set if the
+login password is known in advance.
+If the login password is not known,
+<TT
+CLASS="PARAMETER"
+><I
+>loginCallbackObj</I
+></TT
+> needs to be initialized
+to a non-NULL pointer.
+<TT
+CLASS="PARAMETER"
+><I
+>loginCallbackObj</I
+></TT
+> may be set to NULL
+if
+<TT
+CLASS="PARAMETER"
+><I
+>pwd</I
+></TT
+> specifies a password.</P
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>loginCallbackObj</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>loginPrompt</TT
+> method will be invoked to obtain the
+login password, if one is needed.
+If
+<TT
+CLASS="PARAMETER"
+><I
+>url</I
+></TT
+> does not specify the login ID
+either, <TT
+CLASS="FUNCTION"
+>loginPrompt</TT
+> will be invoked twice: once to
+obtain the login ID, the second time to obtain the login password.</P
+><P
+>If <TT
+CLASS="PARAMETER"
+><I
+>loginCallbackObj</I
+></TT
+> is not NULL, the object must not
+be destroyed until the login request ultimately succeeds, or fails.</P
+><P
+>The application's implementation of the
+<TT
+CLASS="PARAMETER"
+><I
+>loginCallbackObj</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>loginPrompt</TT
+> method
+obtains the account's login id or password, and
+invokes the <TT
+CLASS="FUNCTION"
+>mail::loginCallback::callback</TT
+> method.
+<TT
+CLASS="FUNCTION"
+>loginPrompt</TT
+> receives two parameters:
+<TT
+CLASS="PARAMETER"
+><I
+>callbackType</I
+></TT
+> is either <TT
+CLASS="LITERAL"
+>USERID</TT
+>
+or <TT
+CLASS="LITERAL"
+>PASSWORD</TT
+>,
+and it indicates whether the application needs to
+return the login id, or the password; and a suggested prompt.</P
+><P
+><TT
+CLASS="FUNCTION"
+>loginPrompt</TT
+> can call
+<TT
+CLASS="FUNCTION"
+>mail::loginCallback::callbackCancel</TT
+> to indicate that
+the login process should be aborted.
+Note that the act of invoking
+<TT
+CLASS="FUNCTION"
+>callbackCancel</TT
+> does not officially fail the login
+request; the application is subsequently notified, in the usual manner,
+that the login request failed.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="FUNCTION"
+>loginPrompt</TT
+> is invoked from within
+
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+; as such no
+
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+ calls can be made
+(except for
+<TT
+CLASS="FUNCTION"
+>mail::loginCallback::callback</TT
+> or
+<TT
+CLASS="FUNCTION"
+>mail::loginCallback::callbackCancel</TT
+>).
+Note that all
+
+<TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+ processing is halted
+until 
+<TT
+CLASS="FUNCTION"
+>loginPrompt</TT
+> terminates.
+If the password is already known,
+<TT
+CLASS="FUNCTION"
+>loginPrompt</TT
+> may invoke
+<TT
+CLASS="FUNCTION"
+>mail::loginCallback::callback</TT
+> immediately.
+This is also the only option with the <A
+HREF="synchronous.html"
+>Synchronous
+API</A
+>, since
+<A
+HREF="account-login.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::login</SPAN
+>(3x)</SPAN
+></A
+>
+does not return control to the application until the login process
+completes.</P
+><P
+>Applications that use the asynchronous
+<A
+HREF="native.html"
+>Native API</A
+> have another option.
+<TT
+CLASS="FUNCTION"
+>loginPrompt</TT
+> gets invoked by
+<A
+HREF="mail-process.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::process</SPAN
+>(3x)</SPAN
+></A
+>.
+<TT
+CLASS="FUNCTION"
+>loginPrompt</TT
+> may terminate without invoking
+<TT
+CLASS="FUNCTION"
+>mail::loginCallback::callback</TT
+>.
+The application may then prompt for the requested information after
+<A
+HREF="mail-process.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::process</SPAN
+>(3x)</SPAN
+></A
+> returns,
+and invoke either 
+<TT
+CLASS="FUNCTION"
+>mail::loginCallback::callback</TT
+> or
+<TT
+CLASS="FUNCTION"
+>mail::loginCallback::callbackCancel</TT
+>, at some point
+later down the road, which will result in the eventual completion of the
+login request.
+Note that the login request may fail before the application calls
+<TT
+CLASS="FUNCTION"
+>mail::loginCallback::callback</TT
+> or
+<TT
+CLASS="FUNCTION"
+>mail::loginCallback::callbackCancel</TT
+>.
+This can occur if the server closed the login connection before the
+application supplied the login id or password.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="MAIL-OPEN-OPTIONS"
+></A
+><H3
+>Account Options</H3
+><P
+>The following options may be appended to
+<TT
+CLASS="PARAMETER"
+><I
+>url</I
+></TT
+> for some account types.
+Multiple options may be listed in any order:
+
+<P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>/cram</TT
+></DT
+><DD
+><P
+>Do not open the account unless the server supports secure password
+authentication.
+Secure password authentication verifies the account's password using
+a challenge/response authentication
+mechanism (where the label "<TT
+CLASS="LITERAL"
+>cram</TT
+>" comes from).
+The actual password is never actually transmitted to the server,
+and therefore cannot be intercepted
+while in transit over an untrusted network.</P
+><P
+>Secure password authentication is not supported by all servers.  This
+option may not work with some servers.
+This option does not enable secure password authentication, it only mandates
+its use.
+If the server supports secure password authentication, it will be used
+even without the <TT
+CLASS="LITERAL"
+>/cram</TT
+> option.
+Traditional userid/password authentication will be used only if the
+server does not implement secure password authentication.
+The <TT
+CLASS="LITERAL"
+>/cram</TT
+> option makes secure password authentication
+mandatory.</P
+><P
+>The <TT
+CLASS="LITERAL"
+>/cram</TT
+> option is marginally
+useful even with encrypted server
+connections.
+The secure password authentication never sends the explicit
+password to the server.
+Encryption makes it theoretically impossible to recover the password from
+an encrypted data connection; but with secure authentication the password
+is never sent over the connection in the first place (the password's validity
+is certified by exchanging certain mathematical calculations between the
+server and the client).
+If the server is compromised, the compromised server will not receive the
+account password (unless the password is recovered from the server in other
+ways).</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/debugio</TT
+></DT
+><DD
+><P
+>Enable a debugging option that logs all network traffic for this account
+to standard error.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/imap</TT
+></DT
+><DD
+><P
+>Do not use the <A
+HREF="smap1.html"
+>SMAP</A
+> if the server claims the
+availability of this experimental mail access protocol, and fall back to
+IMAP compatibility mode (this option is meaningful only with
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>imap://</TT
+>"</SPAN
+> and
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>imaps://</TT
+>"</SPAN
+> URLs).</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/nossl</TT
+></DT
+><DD
+><P
+>Do not upgrade a plain connection to an encrypted one.
+This option is primarily used for testing and debugging purposes.
+Sometimes this option might be useful with servers that claim to offer
+encryption, but are unable to do so when taken up on their offer.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/novalidate-cert</TT
+></DT
+><DD
+><P
+>Do not validate the server's SSL certificate when using an encrypted
+connection.
+Normally the mail server's SSL certificate must be validate when using an
+encrypted connection.
+The certificate's name must match the server's name, and the certificate
+must be signed by a trusted certificate authority.</P
+><P
+>The encrypted connection normally
+fails if the certificate cannot be validate.
+Validation requires that a list of trusted certificate
+authorities must be known and configured.
+It's simply impossible to know
+which certificate authorities are valid without an explicit list of valid,
+known,
+trusted, certificate authorities.  If a trusted authority
+list is not configured, no certificate can be validated.  If the server's
+certificate is a self-signed certificate (this is often used for testing
+purposes), or if it's not signed by a known authority, the encrypted connection
+fails.</P
+><P
+>This <TT
+CLASS="LITERAL"
+>/novalidate-cert</TT
+> option disables certificate
+validation.
+The encrypted connection will be established even if the server's certificate
+would otherwise be rejected.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>This option is applicable even when an encrypted IMAP or POP3 connection
+is not explicitly requested.
+Many mail servers are capable of automatically upgrading unencrypted
+connections to a fully-encrypted connection.
+If a mail server claims to be able to use encryption, then there's no reason
+not to use it.  The result is that all encryption certification requirements
+still apply even when encryption is not explicitly requested.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/timeout=</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+></DT
+><DD
+><P
+>Close the connection if the IMAP/SMAP, POP3, or NNTP server does not respond
+to a command in <TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+> seconds (default: 60).</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/noop=</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+></DT
+><DD
+><P
+>Check for new messages in the currently open IMAP/SMAP folder every
+<TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+> seconds (default: 600).</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Most IMAP servers implement a protocol extension that reports new messages
+(and other changes to the folder's contents) immediately, without waiting
+for an explicit request to check for new mail.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>This option is also used by POP3 folders, where it defaults to 60 seconds.
+POP3 does not provide for new mail notification;
+the option's only purpose is to prevent
+the POP3 server from disconnecting due to inactivity.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>/autologout=</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+></DT
+><DD
+><P
+>Automatically close an NNTP connection after
+<TT
+CLASS="REPLACEABLE"
+><I
+>N</I
+></TT
+> seconds of inactivty (default: 300).
+The connection will be automatically reestablished, when necessary.</P
+></DD
+></DL
+></DIV
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN7074"
+></A
+><H2
+>RETURN CODES AND CALLBACKS</H2
+><P
+><TT
+CLASS="FUNCTION"
+>mail::account::open</TT
+> allocates and returns a
+<CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+> object.
+However, the mail account
+may not be fully open, and ready for business.
+Like most other functions the application must wait until the
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.</P
+><P
+>The application must wait until
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.
+The <TT
+CLASS="FUNCTION"
+>success</TT
+> method is invoked when this request is
+succesfully processed.
+The <TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked if this request cannot
+be processed.
+The application must not destroy
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+> until either the
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method may be invoked even after other
+callback methods were invoked.
+This indicates that the request was partially completed before the error
+was encountered.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+><TT
+CLASS="FUNCTION"
+>mail::account::open</TT
+> returns
+a <TT
+CLASS="LITERAL"
+>NULL</TT
+> pointer
+in the event of an immediate failure, in addition to invoking the
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method.
+<TT
+CLASS="FUNCTION"
+>mail::account::open</TT
+> may also invoke the
+<TT
+CLASS="FUNCTION"
+>success</TT
+> method before it returns, however in most cases
+the
+<TT
+CLASS="FUNCTION"
+>success</TT
+> method will be invoked by
+<A
+HREF="mail-process.html"
+><TT
+CLASS="FUNCTION"
+>mail::account::process</TT
+></A
+>()
+at a later time.</P
+><P
+>The application may not destroy the
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+> object until
+either method is invoked.</P
+><P
+>The <TT
+CLASS="PARAMETER"
+><I
+>disconnectCallback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>disconnected</TT
+> method will be invoked whenever the
+connection to the mail server terminates.
+The
+<TT
+CLASS="FUNCTION"
+>disconnected</TT
+> method
+may or may not be invoked if
+the initial connection to the server fails (applications should not
+rely on either behavior).
+The
+<TT
+CLASS="FUNCTION"
+>disconnected</TT
+> method will be invoked when the account
+is closed even for account types that do not normally use a network
+connection (such as a local mail account).</P
+><P
+>The <TT
+CLASS="PARAMETER"
+><I
+>disconnectCallback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>servererror</TT
+> method may be invoked at any time,
+whenever
+an error is reported by the server that's not directly caused by the
+currently requested mail operation, and the error is not severe enough to
+result in a disconnection from the server.
+<TT
+CLASS="FUNCTION"
+>servererror</TT
+> should display the error message in a
+highly visible manner.</P
+><P
+>Applications are responsible for destroying
+<CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+>
+objects after they are no longer needed.</P
+><P
+>The <TT
+CLASS="PARAMETER"
+><I
+>disconnectCallback</I
+></TT
+> object may not
+be destroyed until after the <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+> object is
+destroyed.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN7120"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="mail-getsendfolder.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getSendFolder</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-isremoteurl.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::isRemoteUrl</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-loginurlencode.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::loginUrlEncode</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-process.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::process</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-readtoplevel.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::readTopLevelFolders</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-setappcharset.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::setAppCharset</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mail-movemessagesto.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mail-poll.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::account::moveMessagesTo</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="native.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::account::poll</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

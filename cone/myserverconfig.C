@@ -1,0 +1,2743 @@
+/* $Id: myserverconfig.C,v 1.22 2006/02/04 04:57:45 mrsam Exp $
+**
+** Copyright 2003-2006, Double Precision Inc.
+**
+** See COPYING for distribution information.
+*/
+
+#include "config.h"
+#include "curses/cursesstatusbar.H"
+#include "curses/cursesmoronize.H"
+#include "curseseditmessage.H"
+#include "myserver.H"
+#include "myserverremoteconfig.H"
+#include "myservercallback.H"
+#include "myserverpromptinfo.H"
+#include "myfolder.H"
+#include "myreferences.H"
+#include "specialfolder.H"
+#include "addressbook.H"
+#include "gettext.H"
+#include "nntpcommand.H"
+#include "init.H"
+#include "macros.H"
+#include "htmlentity.h"
+#include "libmail/rfc2047encode.H"
+#include "libmail/rfc2047decode.H"
+#include "libmail/mail.H"
+#include "libmail/maildir.H"
+#include "libmail/misc.H"
+#include "passwordlist.H"
+#include "globalkeys.H"
+#include "gpg.H"
+#include "tags.H"
+#include "colors.H"
+#include "tcpd/tlspasswordcache.h"
+#include <errno.h>
+#include <unistd.h>
+#include <pwd.h>
+#include <sstream>
+#include <rfc822/rfc822.h>
+#include <libxml/parser.h>
+#include <libxml/tree.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#include <set>
+#include <map>
+#include <iomanip>
+
+using namespace std;
+
+#if HAVE_DIRENT_H
+# include <dirent.h>
+# define NAMLEN(dirent) strlen((dirent)->d_name)
+#else
+# define dirent direct
+# define NAMLEN(dirent) (dirent)->d_namlen
+# if HAVE_SYS_NDIR_H
+#  include <sys/ndir.h>
+# endif
+# if HAVE_SYS_DIR_H
+#  include <sys/dir.h>
+# endif
+# if HAVE_NDIR_H
+#  include <ndir.h>
+# endif
+#endif
+
+// Save/load server configuration
+
+extern CursesStatusBar *statusBar;
+
+#define INDEXFORMAT "2"
+
+unicodeEntityAltList *currentEntityAltList=NULL;
+
+vector<string> myServer::myAddresses, myServer::myListAddresses;
+string myServer::smtpServerURL;   // Config - SMTP server URL
+string myServer::smtpServerPassword;	// Config (not saved) - SMTP password
+bool myServer::useIMAPforSending; // Config
+
+
+string myServer::remoteConfigURL;
+string myServer::remoteConfigPassword;
+string myServer::remoteConfigFolder;
+myServer::remoteConfig *myServer::remoteConfigAccount=NULL;
+
+myServer::DemoronizationType myServer::demoronizationType
+=myServer::DEMORON_MIN;
+
+myServer::postAndMailType myServer::postAndMail=myServer::POSTANDMAIL_ASK;
+
+string myServer::getConfigFilename()
+{
+	return myServer::getConfigDir() + "/conerc";
+}
+
+static string getCacheIndexFilename()
+{
+	return myServer::getConfigDir() + "/cacherc";
+}
+
+static string getMacroFilename()
+{
+	return myServer::getConfigDir() + "/macros";
+}
+
+string PasswordList::masterPasswordFile()
+{
+	return myServer::getConfigDir() + "/passwords";
+}
+
+char *myServer::configDir=NULL;
+extern string curdir();
+
+string myServer::getConfigDir()
+{
+	if (configDir)
+	{
+		string c=configDir;
+
+		if (*configDir != '/')
+			c= curdir() + "/" + c;
+
+		return c;
+	}
+
+	return getHomeDir() + "/.cone";
+}
+
+static void saveError(string filename)
+{
+	statusBar->status(Gettext(_("%1%: %2%"))
+			  .arg(filename).arg(strerror(errno)));
+	statusBar->beepError();
+}
+
+bool myServer::isMyAddress(const mail::address &cmpAddr)
+{
+	size_t j;
+
+	for (j=0; j<myAddresses.size(); j++)
+		if (cmpAddr == mail::address("", myAddresses[j]))
+			return true;
+	return false;
+}
+
+void myServer::setDemoronizationType(DemoronizationType t)
+{
+	demoronizationType=t;
+	
+	if (currentEntityAltList)
+	{
+		unicode_destroyAltList(currentEntityAltList);
+		currentEntityAltList=NULL;
+	}
+
+	switch (t) {
+	case myServer::DEMORON_OFF:
+		return;
+	case myServer::DEMORON_MIN:
+		currentEntityAltList=
+			unicode_createAltList(Gettext::defaultCharset());
+		break;
+	case myServer::DEMORON_MAX:
+		currentEntityAltList=unicode_createAltList(NULL);
+		break;
+	default:
+		return;
+	}
+
+	if (!currentEntityAltList)
+		LIBMAIL_THROW((strerror(errno)));
+}
+
+/////////////////////////////////////////////////////////////////////////
+//
+// Server configuration can be saved in a file, or into a remote folder.
+//
+// Firstly, create a configuration XML file, then see where it should go.
+//
+// If remoteDocPtr is not NULL, it gets all the remote config stuff
+// (and doc gets just the local stuff).
+//
+// cachedoc gets the index of locally saved cache files.
+
+class myServer::config {
+
+public:
+
+	xmlDocPtr doc; // Main config file
+	xmlDocPtr cachedoc; // Index of cache files
+
+	xmlDocPtr remoteDocPtr; // Remotely-saved configuration
+
+	xmlDocPtr macros; // Macros
+
+	set<string> urls; // URLs we've saved.
+
+	config();
+	~config();
+
+	void save();
+
+	// Conveniently encapsulate load function too
+
+	static bool loadconfig(xmlDocPtr doc,
+			       set<string> &cache_filenames,
+			       set<string> &aux_filenames,
+			       map<string, xmlNodePtr> &cacheMap,
+			       map<string, xmlNodePtr> &remoteMap,
+			       bool skipServerConfig,
+			       set<string> &accountNamesLoaded);
+
+	static void loadserver(xmlNodePtr root,
+			       set<string> &cache_filenames,
+			       set<string> &aux_filenames,
+			       map<string, xmlNodePtr> &cacheMap,
+			       set<string> &accountNamesLoaded);
+
+	static void loadmacros(Macros *, xmlDocPtr);
+};
+
+myServer::config::config() : doc(NULL), cachedoc(NULL),
+			     remoteDocPtr(NULL),
+			     macros(NULL)
+{
+}
+
+myServer::config::~config()
+{
+	if (doc)
+		xmlFreeDoc(doc);
+	if (cachedoc)
+		xmlFreeDoc(cachedoc);
+	if (remoteDocPtr)
+		xmlFreeDoc(remoteDocPtr);
+	if (macros)
+		xmlFreeDoc(macros);
+}
+
+/////////////////////////////////////////////////////////////////////////
+//
+// When an error occured saving/loading remote configuration, show an error
+// message, then wait for a keypress to clear the error message.
+
+class ClearKeyHandler : public CursesKeyHandler {
+public:
+	ClearKeyHandler();
+	~ClearKeyHandler();
+	bool processKey(const Curses::Key &key);
+};
+
+ClearKeyHandler::ClearKeyHandler()
+	: CursesKeyHandler(PRI_STATUSOVERRIDEHANDLER)
+{
+}
+
+ClearKeyHandler::~ClearKeyHandler()
+{
+}
+
+bool ClearKeyHandler::processKey(const Curses::Key &key)
+{
+	Curses::keepgoing=false;
+	statusBar->clearstatus();
+	return true;
+}
+
+//
+// Read a list of available backup files.
+//
+
+void myServer::getBackupConfigFiles(vector<string> &f)
+{
+	string backupConfigFilename=getConfigFilename() + ".backup";
+
+	int i;
+
+	for (i=0; i<4; i++)
+	{
+		ostringstream o;
+
+		o << backupConfigFilename;
+
+		if (i > 0)
+			o << "." << i;
+
+		f.push_back(o.str());
+	}
+}
+
+static int save_password_func(const char *p, size_t n, void *vp)
+{
+	ofstream *o=(ofstream *)vp;
+
+	o->write(p, n);
+
+	return 0;
+}
+
+void myServer::savepasswords(string password)
+{
+	config saveConfig;
+
+	saveConfig.save();
+
+	vector<string> url_strings;
+	vector<string> password_strings;
+
+	set<string>::iterator b=saveConfig.urls.begin(),
+		e=saveConfig.urls.end();
+
+	while (b != e)
+	{
+		string pwd;
+
+		if (PasswordList::passwordList.get( *b, pwd))
+		{
+			url_strings.push_back( *b );
+			password_strings.push_back( pwd );
+		}
+		++b;
+	}
+
+		
+	vector<const char *> urlp, passp;
+
+	vector<string>::iterator sb=url_strings.begin(), se=url_strings.end();
+
+	urlp.reserve(url_strings.size());
+	passp.reserve(password_strings.size());
+
+	while (sb != se)
+	{
+		urlp.push_back(sb->c_str());
+		++sb;
+	}
+
+	sb=password_strings.begin();
+	se=password_strings.end();
+	while (sb != se)
+	{
+		passp.push_back(sb->c_str());
+		++sb;
+	}
+
+	urlp.push_back(NULL);
+	passp.push_back(NULL);
+
+	string passFilename=PasswordList::masterPasswordFile();
+	string tmpPassFilename=passFilename + ".tmp";
+
+
+	ofstream o(tmpPassFilename.c_str());
+
+	if (tlspassword_save(&urlp[0], &passp[0], password.c_str(),
+			     save_password_func, &o)
+	    || (o << flush).bad() || o.fail())
+	{
+		o.close();
+		statusBar->clearstatus();
+		statusBar->status(strerror(errno));
+		statusBar->beepError();
+		return;
+	}
+	o.close();
+	rename(tmpPassFilename.c_str(), passFilename.c_str());
+}
+
+static int load_func(char *buf, size_t n, void *vp)
+{
+	ifstream *i=(ifstream *)vp;
+
+	i->read(buf, n);
+
+	if (i->bad())
+		return -1;
+
+	return i->gcount();
+}
+
+static void install_passwords(const char * const *uids,
+			      const char * const *pws,
+			      void *dummy)
+{
+	PasswordList::passwordList.loadPasswords(uids, pws);
+}
+
+bool myServer::loadpasswords(string password)
+{
+	string f=PasswordList::masterPasswordFile();
+
+	ifstream i(f.c_str());
+
+	return tlspassword_load(load_func, &i, password.c_str(),
+				install_passwords, NULL) == 0;
+}
+
+void myServer::saveconfig(bool saveRemote, // true: both local and remote save
+			  bool installRemote
+			  // installRemote: true when importing a remote
+			  // config.  saveconfig() saved the entire current
+			  // configuration, but also saves remote config
+			  // info.  After saveconfig() is done we restart
+			  // and pick up the remote config info
+			  )
+{
+	string configFilename=getConfigFilename();
+	string tmpConfigFilename=configFilename + ".tmp";
+
+	string cacheFilename=getCacheIndexFilename();
+	string tmpCacheFilename=cacheFilename + ".tmp";
+
+	string backupConfigFilename=getConfigFilename() + ".backup";
+	struct stat stat_buf;
+
+	string macroFilename=getMacroFilename();
+	string tmpMacroFilename=macroFilename + ".tmp";
+
+	// Once a day make a backup copy of the configuration file.
+
+	if (stat(backupConfigFilename.c_str(), &stat_buf) < 0 ||
+	    stat_buf.st_mtime + 60 * 24 * 24 < time(NULL))
+	{
+
+		config saveConfig;
+
+		saveConfig.save();
+
+		unlink(tmpConfigFilename.c_str());
+
+		if (!xmlSaveFile(tmpConfigFilename.c_str(), saveConfig.doc))
+		{
+			saveError(tmpConfigFilename);
+			return;
+		}
+
+		string lastBackup=backupConfigFilename + ".3";
+
+		int i;
+
+		for (i=2; i >= 0; --i)
+		{
+			ostringstream o;
+
+			o << backupConfigFilename;
+
+			if (i > 0)
+				o << "." << i;
+
+			string s=o.str();
+
+			rename(s.c_str(), lastBackup.c_str());
+			lastBackup=s;
+		}
+		rename (tmpConfigFilename.c_str(),
+			backupConfigFilename.c_str());
+	}
+
+	unlink(tmpConfigFilename.c_str());
+	unlink(tmpCacheFilename.c_str());
+
+	//
+	// This is really an if (), but a while gives a convenient
+	// mechanism to retry upon an error.
+	//
+
+	while (remoteConfigAccount && !installRemote)
+	{
+		config savedConfig;
+
+		savedConfig.remoteDocPtr=xmlNewDoc((xmlChar *)"1.0");
+
+		if (!savedConfig.remoteDocPtr)
+			outofmemory();
+
+		xmlNodePtr n=xmlNewDocNode(savedConfig.remoteDocPtr, NULL,
+					   (xmlChar *)"CONE", NULL);
+
+		if (!n)
+			outofmemory();
+
+		savedConfig.remoteDocPtr->children=n;
+
+		savedConfig.save();
+
+		string remoteMacroName="";
+
+		if (savedConfig.macros)
+		{
+			remoteMacroName=tmpMacroFilename;
+
+			if (!xmlSaveFile(tmpMacroFilename.c_str(),
+					 savedConfig.macros))
+			{
+				saveError(macroFilename);
+				return;
+			}
+		}
+
+		string errmsg="";
+
+		if (saveRemote) // Wanna save all the remote accts.
+		{
+			unlink(tmpConfigFilename.c_str());
+
+			if (!xmlSaveFile(tmpConfigFilename.c_str(),
+					 savedConfig.remoteDocPtr))
+			{
+				if (remoteMacroName.size() > 0)
+					unlink(remoteMacroName.c_str());
+				saveError(tmpConfigFilename);
+				return;
+			}
+			
+			errmsg=remoteConfigAccount
+				->saveconfig(tmpConfigFilename,
+					     remoteMacroName);
+		}
+
+		if (remoteMacroName.size() > 0)
+			unlink(remoteMacroName.c_str());
+
+		if (errmsg.size() == 0)
+		{
+			unlink(tmpConfigFilename.c_str());
+
+			if (!xmlSaveFile(tmpConfigFilename.c_str(),
+					 savedConfig.doc)
+			    || !xmlSaveFile(tmpCacheFilename.c_str(),
+					    savedConfig.cachedoc))
+			{
+				saveError(tmpConfigFilename);
+				return;
+			}
+			unlink(macroFilename.c_str()); // Saved in remote acct
+			break; // Save the local accts.
+		}
+
+
+		{
+			ClearKeyHandler kh;
+
+			statusBar->clearstatus();
+			statusBar->status(Gettext(_("The following error occured "
+						    "when trying to save the "
+						    "configuration on a remote "
+						    "folder:\n\n%1%\n\n"
+						    "You may choose to try again, "
+						    "or turn off remote configuration altogether."))
+					  << errmsg);
+
+			bool wasKeepGoing=Curses::keepgoing;
+
+			myServer::eventloop();
+			Curses::keepgoing=wasKeepGoing;
+		}
+
+		myServer::promptInfo promptInfo=
+			myServer::prompt(myServer::promptInfo(_("Try again (otherwise cancel)? (Y/N) "))
+					 .yesno());
+
+		if (promptInfo.abortflag ||
+		    (string)promptInfo == "Y")
+			continue;
+
+		remoteConfigAccount->logout();
+		delete remoteConfigAccount;
+		remoteConfigAccount=NULL;
+
+		myServer::remoteConfigURL="";
+		myServer::remoteConfigPassword="";
+		myServer::remoteConfigFolder="";
+	}
+
+	// The other shoe: no remote configuration.
+
+	if (!remoteConfigAccount || installRemote)
+	{
+		config savedConfig;
+
+		savedConfig.save();
+
+		if (!xmlSaveFile(tmpConfigFilename.c_str(), savedConfig.doc)
+		    || !xmlSaveFile(tmpCacheFilename.c_str(),
+				    savedConfig.cachedoc))
+		{
+			saveError(tmpConfigFilename);
+			return;
+		}
+
+		if (!installRemote)
+		{
+		// Save macros only if we're completely local
+
+			if (savedConfig.macros)
+			{
+				if (!xmlSaveFile(tmpMacroFilename.c_str(),
+						 savedConfig.macros) ||
+				    rename(tmpMacroFilename.c_str(),
+					   macroFilename.c_str()) < 0)
+				{
+					saveError(macroFilename);
+					return;
+				}
+			}
+			else
+				unlink(macroFilename.c_str());
+		}
+	}
+
+	if (rename(tmpConfigFilename.c_str(),
+		   configFilename.c_str()) < 0
+	    || rename(tmpCacheFilename.c_str(),
+		      cacheFilename.c_str()) < 0)
+		saveError(tmpConfigFilename);
+}
+
+void myServer::config::save()
+{
+	urls.clear();
+
+	// Make sure that all GPG passphrases are saved:
+	{
+		GPG::Key_iterator b=GPG::gpg.secret_keys.begin(),
+			e=GPG::gpg.secret_keys.end();
+
+		while (b != e)
+			urls.insert("gpg:" + (*b++).fingerprint);
+		urls.insert("decrypt:");
+	}
+
+	if (myServer::smtpServerURL.size() > 0)
+		urls.insert(myServer::smtpServerURL);
+
+	vector<myServer *>::iterator
+		serverListB=server_list.begin(),
+		serverListE=server_list.end();
+
+	doc=xmlNewDoc((xmlChar *)"1.0");
+	cachedoc=xmlNewDoc((xmlChar *)"1.0");
+
+	string myCharset=Gettext::defaultCharset()->chset;
+
+#define REMOTE (remoteDocPtr ? remoteDocPtr:doc)
+
+	if (!doc || !cachedoc)
+		LIBMAIL_THROW((strerror(errno)));
+
+	xmlNodePtr d=xmlNewDocNode(doc, NULL,
+				   (xmlChar *)"CONE", NULL);
+	if (!d)
+		outofmemory();
+
+	doc->children=d;
+
+	xmlNodePtr cd=xmlNewDocNode(cachedoc, NULL,
+				    (xmlChar *)"CONECACHE", NULL);
+
+	if (!cd)
+		outofmemory();
+
+	cachedoc->children=cd;
+
+	xmlNodePtr f;
+
+	if (remoteConfigAccount)
+	{
+		urls.insert(myServer::remoteConfigURL);
+		string sUrl=mail::rfc2047::encode(myServer::remoteConfigURL,
+						  myCharset);
+
+		string sFolder=mail::rfc2047::encode(myServer::
+						     remoteConfigFolder,
+						     myCharset);
+		if (!xmlSetProp(d, (xmlChar *)"REMOTECONFIG",
+				(xmlChar *)sUrl.c_str()) ||
+		    !xmlSetProp(d, (xmlChar *)"REMOTEFOLDER",
+				(xmlChar *)sFolder.c_str()))
+			outofmemory();
+
+	}
+
+	while (serverListB != serverListE)
+	{
+		myServer *p= *serverListB++;
+
+		urls.insert(p->url);
+
+		string sName=mail::rfc2047::encode(p->serverName,
+						   myCharset);
+		string sUrl=mail::rfc2047::encode(p->url, myCharset);
+
+		string sNewsrc=mail::rfc2047::encode(p->newsrc,
+						     myCharset);
+
+		xmlNodePtr serverNode=xmlNewNode (NULL,
+						  (xmlChar *)
+						  "SERVER");
+
+		xmlNodePtr serverCacheNode=xmlNewNode(NULL,
+						      (xmlChar *)
+						      "SERVER");
+
+
+		// Until we change our mind, save this acct's info in
+		// the main config file.
+		xmlDocPtr saveServerDoc=doc;
+
+
+		if (remoteDocPtr && mail::account::isRemoteUrl(p->url))
+		{
+			// Insert a stub in its place
+
+			xmlNodePtr remoteServerNode=xmlNewNode(NULL,
+							       (xmlChar *)
+							       "REMOTESERVER");
+
+			if (!remoteServerNode ||
+			    !xmlSetProp(remoteServerNode,
+					(xmlChar *)"NAME",
+					(xmlChar *)sName.c_str()) ||
+			    !xmlAddChild(doc->children, remoteServerNode))
+			{
+				if (remoteServerNode)
+					xmlFreeNode(remoteServerNode);
+				outofmemory();
+			}
+
+			// Nope, save it in the remote file.
+
+			saveServerDoc=remoteDocPtr;
+		}
+
+		if (!serverNode || !serverCacheNode ||
+		    !xmlSetProp(serverNode,
+				(xmlChar *)"NAME",
+				(xmlChar *)sName.c_str()) ||
+		    !xmlSetProp(serverNode,
+				(xmlChar *)"URL",
+				(xmlChar *)sUrl.c_str()) ||
+		    !xmlSetProp(serverCacheNode,
+				(xmlChar *)"NAME",
+				(xmlChar *)sName.c_str()) ||
+		    (sNewsrc.size() > 0 &&
+		     !xmlSetProp(serverNode,
+				 (xmlChar *)
+				 (*sUrl.c_str() == 'p' ?
+				  "MAILDIR":"NEWSRC"),
+				 (xmlChar *)sNewsrc.c_str())) ||
+		    !xmlAddChild(saveServerDoc->children, serverNode) ||
+		    !xmlAddChild(cd, serverCacheNode))
+		{
+			if (serverNode)
+				xmlFreeNode(serverNode);
+			if (serverCacheNode)
+				xmlFreeNode(serverCacheNode);
+
+			outofmemory();
+		}
+
+		myReadFolders::iterator fb=p->topLevelFolders.begin(),
+			fe=p->topLevelFolders.end();
+
+		while (fb != fe)
+		{
+			string path=mail::rfc2047::encode(*fb++,
+							  myCharset);
+
+			xmlNodePtr f=xmlNewNode(NULL,
+						(xmlChar *)"NAMESPACE"
+						);
+			if (!f ||
+			    !xmlSetProp(f, (xmlChar *)"PATH",
+					(xmlChar *)path.c_str()) ||
+			    !xmlAddChild(serverNode, f))
+			{
+				if (f)
+					xmlFreeNode(f);
+				outofmemory();
+			}
+		}
+
+		map<string, string>::iterator
+			scb=p->server_configuration.begin(),
+			sce=p->server_configuration.end();
+
+		while (scb != sce)
+		{
+			string name=mail::rfc2047::encode(scb->first,
+							  myCharset);
+			string value=mail::rfc2047::encode(scb->second,
+							   myCharset);
+
+			xmlNodePtr f=xmlNewNode(NULL,
+						(xmlChar *)"SETTING");
+
+			if (!f || !xmlSetProp(f, (xmlChar *)"NAME",
+					      (xmlChar *)name.c_str())
+			    || !xmlSetProp(f, (xmlChar *)"VALUE",
+					   (xmlChar *)value.c_str())
+			    || !xmlAddChild(serverNode, f))
+			{
+				if (f)
+					xmlFreeNode(f);
+				outofmemory();
+			}
+
+			scb++;
+		}
+
+		map<string, map<string, string> >::iterator
+			ffb=p->folder_configuration.begin(),
+			ffe=p->folder_configuration.end();
+
+		while (ffb != ffe)
+		{
+			string path=mail::rfc2047::encode(ffb->first,
+							  myCharset);
+
+			map<string, string>
+				::iterator cb=ffb->second.begin(),
+				ce=ffb->second.end();
+
+			ffb++;
+
+			xmlNodePtr f=xmlNewNode(NULL,
+						(xmlChar *)"FOLDER");
+
+			if (!f || !xmlSetProp(f, (xmlChar *)"PATH",
+					      (xmlChar *)path.c_str())
+			    || !xmlAddChild(serverNode, f))
+			{
+				if (f)
+					xmlFreeNode(f);
+				outofmemory();
+			}
+
+			xmlNodePtr cachePtr=NULL;
+
+			while (cb != ce)
+			{
+				string name=
+					mail::rfc2047::encode(cb->first,
+							      myCharset);
+
+				string val=
+					mail::rfc2047::encode(cb->second,
+							      myCharset);
+
+				if (name == "INDEX" ||
+				    name == "SNAPSHOT")
+				{
+					// Save cache filenames in the local
+					// cache index file.
+
+					if (!cachePtr)
+					{
+						cachePtr=
+							xmlNewNode(NULL,
+								   (xmlChar *)"FOLDER");
+						if (!cachePtr ||
+						    !xmlSetProp(cachePtr,
+								(xmlChar *)"PATH",
+								(xmlChar *)path.c_str())
+						    || !xmlAddChild(serverCacheNode, cachePtr))
+						{
+							if (cachePtr)
+								xmlFreeNode(cachePtr);
+							outofmemory();
+						}
+					}
+
+					if (!xmlSetProp(cachePtr,
+							(xmlChar *)
+							name.c_str(),
+							(xmlChar *)
+							val.c_str()))
+						outofmemory();
+
+				}
+				else if (name == "FILTER" && val.size() > 0)
+				{
+					if (!xmlNewTextChild(f, NULL,
+							     (xmlChar *)
+							     "FILTER",
+							     (xmlChar *)
+							     val.c_str()))
+						outofmemory();
+				}
+				else if (!xmlSetProp(f,
+						     (xmlChar *)
+						     name.c_str(),
+						     (xmlChar *)
+						     val.c_str()
+						     ))
+					outofmemory();
+				cb++;
+			}
+		}
+	}
+
+
+	vector<string>::iterator sb, se;
+
+	sb=myAddresses.begin();
+	se=myAddresses.end();
+
+	while (sb != se)
+	{
+		string address= mail::rfc2047::encode(*sb++, myCharset);
+
+		if (!xmlNewTextChild(REMOTE->children, NULL,
+				     (xmlChar *)"ADDRESS",
+				     (xmlChar *)address.c_str()))
+			outofmemory();
+	}
+
+	sb=myListAddresses.begin();
+	se=myListAddresses.end();
+
+	while (sb != se)
+	{
+		string address= mail::rfc2047::encode(*sb++, myCharset);
+
+		if (!xmlNewTextChild(REMOTE->children, NULL,
+				     (xmlChar *)"LISTADDRESS",
+				     (xmlChar *)address.c_str()))
+			outofmemory();
+	}
+
+	map<string, SpecialFolder>::iterator b, e;
+	b=SpecialFolder::folders.begin();
+	e=SpecialFolder::folders.end();
+
+	while (b != e)
+	{
+		string id=b->first;
+		SpecialFolder &sf=b->second;
+
+		vector<SpecialFolder::Info>::iterator sb, se;
+
+		sb=sf.folderList.begin();
+		se=sf.folderList.end();
+
+		while (sb != se)
+		{
+			urls.insert(sb->serverUrl);
+
+			xmlNodePtr f=xmlNewNode(NULL,(xmlChar *)
+						"SPECIALFOLDER");
+
+			string idString=
+				mail::rfc2047::encode(id, myCharset);
+
+			string serverString=
+				mail::rfc2047::encode(sb->serverUrl,
+						      myCharset);
+
+			string pathString=
+				mail::rfc2047::encode(sb->serverPath,
+						      myCharset);
+
+			string nameString=
+				mail::rfc2047::encode(sb->nameUTF8,
+						      unicode_UTF8
+						      .chset);
+			if (!f || !xmlSetProp(f, (xmlChar *)"ID",
+					      (xmlChar *)
+					      idString.c_str())
+			    || !xmlSetProp(f, (xmlChar *)"SERVER",
+					   (xmlChar *)serverString
+					   .c_str())
+			    || !xmlSetProp(f, (xmlChar *)"PATH",
+					   (xmlChar *)pathString
+					   .c_str())
+			    || !xmlSetProp(f, (xmlChar *)"NAME",
+					   (xmlChar *)nameString
+					   .c_str())
+			    || !xmlSetProp(f, (xmlChar *)"ARCHIVED",
+					   (xmlChar *)
+					   sb->lastArchivedMonth
+					   .c_str())
+			    || !xmlAddChild((mail::account
+					     ::isRemoteUrl(sb->serverUrl)
+					     ? REMOTE:doc)->children, f))
+			{
+				if (f)
+					xmlFreeNode(f);
+				outofmemory();
+			}
+
+			sb++;
+		}
+		b++;
+	}
+
+	urls.insert(myServer::smtpServerURL);
+
+	string smtpUrl=mail::rfc2047::encode(myServer::smtpServerURL,
+					     myCharset);
+
+	f=xmlNewNode(NULL, (xmlChar *)"SMTP");
+
+	if (!f || !xmlSetProp(f, (xmlChar *)"URL",
+			      (xmlChar *)smtpUrl.c_str())
+	    || (myServer::useIMAPforSending &&
+		!xmlSetProp(f, (xmlChar *)"USEIMAP",
+			    (xmlChar *)"TRUE"))
+	    || !xmlAddChild(REMOTE->children, f))
+	{
+		if (f)
+			xmlFreeNode(f);
+		outofmemory();
+	}
+
+	{
+		string c=mail::rfc2047
+			::encode(nntpCommandFolder::nntpCommand,
+				 myCharset);
+
+		f=xmlNewNode(NULL, (xmlChar *)"NNTP");
+
+		if (!f || !xmlSetProp(f, (xmlChar *)"COMMAND",
+				      (xmlChar *)c.c_str())
+		    || !xmlAddChild(REMOTE->children, f))
+		{
+			if (f)
+				xmlFreeNode(f);
+			outofmemory();
+		}
+	}
+
+
+	f=xmlNewNode(NULL, (xmlChar *)"DICTIONARY");
+		
+	if (!f || !xmlSetProp(f, (xmlChar *)"NAME",
+			      (xmlChar *)
+			      spellCheckerBase->dictionaryName.c_str())
+	    || !xmlAddChild(REMOTE->children, f))
+	{
+		if (f)
+			xmlFreeNode(f);
+		outofmemory();
+	}
+
+	{
+		ostringstream o;
+
+		o << CursesEditMessage::autosaveInterval;
+
+		string s=o.str();
+
+		ostringstream o1, o2;
+
+		o1 << Watch::defaultWatchDays;
+		o2 << Watch::defaultWatchDepth;
+
+
+		string o1s=o1.str();
+		string o2s=o2.str();
+
+		string gpgopt1=mail::rfc2047
+			::encode(GPG::gpg.extraEncryptSignOptions, myCharset);
+		string gpgopt2=mail::rfc2047
+			::encode(GPG::gpg.extraDecryptVerifyOptions,
+				 myCharset);
+
+		f=xmlNewNode(NULL, (xmlChar *)"OPTIONS");
+		if (!f || !xmlSetProp(f, (xmlChar *)"DEMORONIZATION",
+				      (xmlChar *)(myServer::demoronizationType
+						  == myServer::DEMORON_MIN
+						  ? "MIN":
+						  myServer::demoronizationType
+						  == myServer::DEMORON_MAX
+						  ? "MAX":"OFF"))
+		    || !xmlSetProp(f, (xmlChar *)"POSTANDMAIL",
+				   (xmlChar *)
+				   (myServer::postAndMail ==
+				    myServer::POSTANDMAIL_YES ? "Y":
+				    myServer::postAndMail ==
+				    myServer::POSTANDMAIL_NO ? "N":"ASK"))
+		    || !xmlSetProp(f, (xmlChar *)"SUSPEND",
+				   (xmlChar *)Curses::suspendCommand.c_str())
+		    || !xmlSetProp(f, (xmlChar *)"EDITOR",
+				   (xmlChar *)CursesEditMessage::
+				   externalEditor.c_str())
+		    || (GlobalKeys::quitNoPrompt &&
+			!xmlSetProp(f, (xmlChar *)"QUITNOPROMPT",
+				    (xmlChar *)"YES"))
+		    || (CursesMoronize::enabled &&
+			!xmlSetProp(f, (xmlChar *)"SMARTSHORTCUTS",
+				    (xmlChar *)"YES"))
+		    || !xmlSetProp(f, (xmlChar *)"CUSTOMHEADERS",
+				   (xmlChar *)myServer::customHeaders.c_str())
+		    || !xmlSetProp(f, (xmlChar *)"AUTOSAVE",
+				   (xmlChar *)s.c_str())
+		    || !xmlSetProp(f, (xmlChar *)"GPGENCRYPTSIGNOPTIONS",
+				   (xmlChar *)gpgopt1.c_str())
+		    || !xmlSetProp(f, (xmlChar *)"GPGDECRYPTVERIFYOPTIONS",
+				   (xmlChar *)gpgopt2.c_str())
+		    || !xmlSetProp(f, (xmlChar *)"WATCHDAYS",
+				   (xmlChar *)o1s.c_str())
+		    || !xmlSetProp(f, (xmlChar *)"WATCHDEPTH",
+				   (xmlChar *)o2s.c_str())
+		    || !xmlAddChild(REMOTE->children, f))
+
+		{
+			if (f)
+				xmlFreeNode(f);
+			outofmemory();
+		}
+
+		f=xmlNewNode(NULL, (xmlChar *)"COLORS");
+
+		if (!f || !xmlAddChild(REMOTE->children, f))
+		{
+			if (f)
+				xmlFreeNode(f);
+			outofmemory();
+		}
+
+		{
+			struct CustomColorGroup *g;
+			struct CustomColor **c;
+
+			for (g=getColorGroups(); g->colors; ++g)
+				for (c=g->colors; *c; ++c)
+				{
+					ostringstream o;
+
+					o << (*c)->fcolor;
+
+					string s=o.str();
+
+					if (!xmlSetProp(f,(xmlChar *)(*c)
+							->shortname,
+							(xmlChar *)s.c_str()))
+						outofmemory();
+				}
+		}
+
+		{
+			size_t i;
+
+			for (i=1; i<Tags::tags.names.size(); i++)
+			{
+				f=xmlNewNode(NULL, (xmlChar *)"TAG");
+
+				string n=mail::rfc2047::encode(Tags::tags.names
+							       [i], myCharset);
+
+				if (!f || !xmlSetProp(f, (xmlChar *)"NAME",
+						      (xmlChar *)n.c_str())
+				    || !xmlAddChild(REMOTE->children, f))
+				{
+					if (f)
+						xmlFreeNode(f);
+					outofmemory();
+				}
+			}
+		}
+	}
+
+	list<AddressBook *>::iterator
+		ab=AddressBook::addressBookList.begin(),
+		ae=AddressBook::addressBookList.end();
+
+	while (ab != ae)
+	{
+		AddressBook *p= *ab++;
+
+		urls.insert(p->getURL());
+
+		xmlNodePtr f=xmlNewNode(NULL,
+					(xmlChar *)"ADDRESSBOOK");
+
+		string nameString=mail::rfc2047::encode(p->getName(),
+							myCharset);
+		string urlString=mail::rfc2047::encode(p->getURL(),
+						       myCharset);
+		string folderString=mail::rfc2047::encode(p->getFolder(),
+							  myCharset);
+
+		if (!f || !xmlSetProp(f, (xmlChar *)"NAME",
+				      (xmlChar *)nameString.c_str())
+		    || !xmlSetProp(f, (xmlChar *)"URL",
+				   (xmlChar *)urlString.c_str())
+		    || !xmlSetProp(f, (xmlChar *)"FOLDER",
+				   (xmlChar *)folderString.c_str())
+		    || !xmlAddChild(REMOTE->children, f))
+		{
+			if (f)
+				xmlFreeNode(f);
+			outofmemory();
+		}
+	}
+
+	Macros *mp=Macros::getRuntimeMacros();
+
+	if (mp)
+	{
+		map<Macros::name, string>::iterator mb=mp->macroList.begin(),
+			me=mp->macroList.end();
+
+		xmlNodePtr rootNode=NULL;
+
+		while (mb != me)
+		{
+			if (!macros)
+			{
+				macros=xmlNewDoc((xmlChar *)"1.0");
+				rootNode=xmlNewDocNode(macros, NULL,
+						       (xmlChar *)"CONE",
+						       NULL);
+				if (!rootNode)
+					outofmemory();
+				macros->children=rootNode;
+			}
+
+			xmlNodePtr n=xmlNewNode(NULL, (xmlChar *)"MACRO");
+			if (!n)
+				outofmemory();
+
+			if (!xmlAddChild(rootNode, n))
+			{
+				xmlFreeNode(n);
+				outofmemory();
+			}
+
+			if (mb->first.f)
+			{
+				ostringstream o;
+
+				o << (mb->first.f-1);
+
+				string s=o.str();
+
+				if (!xmlSetProp(n,
+						(xmlChar *)"FK",
+						(xmlChar *)s.c_str()))
+					outofmemory();
+			}
+			else
+			{
+				vector<unicode_char> nc=mb->first.n;
+
+				nc.push_back(0);
+
+				char *p=(*unicode_UTF8.u2c)(&unicode_UTF8,
+							    &nc[0], NULL);
+
+				if (p)
+					try
+					{
+						if (!xmlSetProp(n,
+								(xmlChar *)"NAME",
+								(xmlChar *)p))
+							outofmemory();
+						free(p);
+					}
+					catch (...)
+					{
+						free(p);
+						LIBMAIL_THROW();
+					}
+
+			}
+			if (!xmlNewTextChild(n, NULL,
+					     (xmlChar *)"TEXT",
+					     (xmlChar *)mb->second.c_str()))
+				outofmemory();
+			++mb;
+		}
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Get property, convert it to app's charset.
+
+static string getProp(xmlNodePtr node, const char *prop)
+{
+	string s="";
+
+	char *val=(char *)xmlGetProp(node, (const xmlChar *)prop);
+
+	if (val)
+		try {
+			s=val;
+			free(val);
+		} catch (...) {
+			free(val);
+			LIBMAIL_THROW();
+		}
+
+	return mail::rfc2047::decoder::decodeEnhanced(s,
+						   *Gettext::defaultCharset());
+}
+
+// 8-bit octet-based properties are also 2047-encoded, but the character set
+// info is irrelevant.  Get the raw encoded content.
+
+static string getPropNC(xmlNodePtr node, const char *prop)
+{
+	string s="";
+
+	char *val=(char *)xmlGetProp(node, (const xmlChar *)prop);
+
+	if (val)
+		try {
+			s=val;
+			free(val);
+		} catch (...) {
+			free(val);
+			LIBMAIL_THROW();
+		}
+
+	return mail::rfc2047::decoder::decodeSimple(s);
+}
+
+static string getTextNode(xmlNodePtr node)
+{
+	string s="";
+
+	char *val=(char *)xmlNodeGetContent(node);
+
+	if (val)
+		try {
+			s=val;
+			free(val);
+		} catch (...) {
+			free(val);
+			LIBMAIL_THROW();
+		}
+
+	return mail::rfc2047::decoder::decodeEnhanced(s,
+						   *Gettext::defaultCharset());
+}
+		
+bool myServer::loadconfig()
+{
+	string configFile=getConfigFilename();
+
+	xmlDocPtr doc;
+
+	myServer::smtpServerURL="";
+	myServer::useIMAPforSending=false;
+	nntpCommandFolder::nntpCommand="";
+
+	myServer::remoteConfigURL="";
+	myServer::remoteConfigPassword="";
+	myServer::remoteConfigFolder="";
+	Curses::suspendCommand="";
+	myServer::customHeaders="";
+	CursesEditMessage::externalEditor="";
+	GlobalKeys::quitNoPrompt=false;
+	CursesMoronize::enabled=false;
+
+	initColorGroups();
+	if (myServer::remoteConfigAccount)
+	{
+		myServer::remoteConfigAccount->logout();
+		delete myServer::remoteConfigAccount;
+		myServer::remoteConfigAccount=NULL;
+	}
+
+	if (access(configFile.c_str(), R_OK))
+		doc=NULL; // Suppress warning in xmlParseFile
+	else
+		doc=xmlParseFile(configFile.c_str());
+
+	if (!doc) // No config file, first time start cone.
+	{
+		struct passwd *pw=getpwuid(getuid());
+
+		myAddresses.push_back(string(pw ? pw->pw_name:"nobody") + "@"
+				      + mail::hostname());
+		return false;
+	}
+
+	string cacheFilename=getCacheIndexFilename();
+	string macroFilename=getMacroFilename();
+
+	xmlDocPtr cachedoc;
+	xmlDocPtr remoteDoc=NULL;
+
+	if (access(cacheFilename.c_str(), R_OK))
+		cachedoc=NULL;
+	else
+		cachedoc=xmlParseFile(cacheFilename.c_str());
+
+	Macros *mp=Macros::getRuntimeMacros();
+
+	set<string> cache_filenames;
+	set<string> aux_filenames;
+	map<string, xmlNodePtr> cacheMap;
+
+	map<string, xmlNodePtr> remoteMap;
+
+	set<string> accountNamesLoaded;
+
+	xmlNodePtr root=xmlDocGetRootElement(doc);
+
+	if (root && strcasecmp( (const char *)root->name, "CONE") == 0)
+	{
+		myServer::remoteConfigURL=getPropNC(root, "REMOTECONFIG");
+		myServer::remoteConfigFolder=getPropNC(root, "REMOTEFOLDER");
+
+		// The following is really an if() stmt.  It's a while()
+		// because it's a convenient mechanism to retry upon an
+		// error.
+
+		while (myServer::remoteConfigURL.size() > 0)
+		{
+			if (myServer::remoteConfigAccount) // Retry after err
+			{
+				myServer::remoteConfigAccount->logout();
+				delete myServer::remoteConfigAccount;
+				myServer::remoteConfigAccount=NULL;
+			}
+
+			myServer::remoteConfigAccount =
+				new myServer::remoteConfig();
+
+			if (!myServer::remoteConfigAccount)
+				outofmemory();
+
+			string tmpConfigFile=configFile + ".tmp";
+			string tmpMacroFile=macroFilename + ".tmp";
+
+			unlink(tmpConfigFile.c_str());
+			unlink(tmpMacroFile.c_str());
+
+			string errmsg=remoteConfigAccount
+				->loadconfig(tmpConfigFile, tmpMacroFile);
+
+			if (errmsg.size() > 0)
+			{
+				ClearKeyHandler kh;
+
+				statusBar->clearstatus();
+				statusBar->status(Gettext(_("The following error occured "
+							    "when trying to read the "
+							    "configuration from a remote "
+							    "folder:\n\n%1%\n\n"
+							    "You may choose to try again, "
+							    "or turn off remote configuration "
+							    "altogether (and lose all remotely-saved configuration)."))
+						  << errmsg);
+
+				bool wasKeepGoing=Curses::keepgoing;
+
+				myServer::eventloop();
+				Curses::keepgoing=wasKeepGoing;
+			}
+
+			if (errmsg.size() > 0)
+			{
+				myServer::promptInfo promptInfo=
+					myServer::prompt(myServer::promptInfo(_("Try again (otherwise cancel)? (Y/N) "))
+							 .yesno());
+
+				if (promptInfo.abortflag ||
+				    (string)promptInfo == "Y")
+					continue;
+
+				myServer::remoteConfigAccount->logout();
+				delete myServer::remoteConfigAccount;
+				myServer::remoteConfigAccount=NULL;
+				myServer::remoteConfigURL="";
+				myServer::remoteConfigPassword="";
+				myServer::remoteConfigFolder="";
+				continue;
+			}
+
+			remoteDoc=xmlParseFile(tmpConfigFile.c_str());
+
+			if (remoteDoc)
+			{
+				// Create a map of all remotely-saved
+				// server configurations.
+
+				// As we parse the main configuration file,
+				// when we get to a remote config stub,
+				// use the map to look it the remotely-saved
+				// server config.
+
+				xmlNodePtr root=
+					xmlDocGetRootElement(remoteDoc);
+
+				if (root && strcasecmp( (const char *)
+							root->name,
+							"CONE") == 0)
+				{
+					for (root=root->children;
+					     root; root=root->next)
+					{
+						if (strcasecmp( (const char *)
+								root->name,
+								"SERVER"))
+							continue;
+
+						string name=getProp(root,
+								    "NAME");
+						remoteMap
+							.insert(make_pair(name,
+									  root)
+								);
+					}
+				}
+				else
+				{
+					xmlFreeDoc(remoteDoc); // Vat?
+					remoteDoc=NULL;
+				}
+			}
+
+			if (access(tmpMacroFile.c_str(), R_OK) == 0)
+			{
+				xmlDocPtr macroDoc=
+					xmlParseFile(tmpMacroFile.c_str());
+				if (macroDoc)
+				{
+					config::loadmacros(mp, macroDoc);
+					xmlFreeDoc(macroDoc);
+				}
+			}
+			break;
+		}
+
+		if (cachedoc)
+		{
+			xmlNodePtr cacheroot=xmlDocGetRootElement(cachedoc);
+
+			if (cacheroot &&
+			    strcasecmp( (const char *)cacheroot->name,
+					"CONECACHE") == 0)
+			{
+				for (cacheroot=cacheroot->children;
+				     cacheroot;
+				     cacheroot=cacheroot->next)
+				{
+					if (strcasecmp( (const char *)
+							cacheroot->name,
+							"SERVER"))
+						continue;
+
+					string name=getProp(cacheroot, "NAME");
+
+					if (name.size() == 0)
+						continue;
+
+					cacheMap.insert(make_pair(name,
+								  cacheroot)
+							);
+				}
+			}
+		}
+	}
+
+	if (mp && myServer::remoteConfigURL.size() == 0)
+	{
+		if (access(macroFilename.c_str(), R_OK))
+			mp->macroList.clear();
+		else
+		{
+			xmlDocPtr macroDoc=xmlParseFile(macroFilename.c_str());
+
+			if (macroDoc)
+			{
+				config::loadmacros(mp, macroDoc);
+				xmlFreeDoc(macroDoc);
+			}
+		}
+	}
+
+
+	bool flag=config::loadconfig(doc, cache_filenames,
+				     aux_filenames, cacheMap,
+				     remoteMap, false,
+				     accountNamesLoaded);
+
+	if (flag && remoteDoc)
+	{
+		// Any unprocessed configs are manually inserted
+
+		map<string, xmlNodePtr>::iterator p;
+
+		if (remoteMap.size() > 0)
+		{
+			ClearKeyHandler kh;
+
+			statusBar->clearstatus();
+			statusBar->status(Gettext(_("Found remotely-saved configuration for %1% additional mail accounts.\n\n"
+						    "Will try to restore these account(s) configuration."))
+					  << remoteMap.size());
+
+			bool wasKeepGoing=Curses::keepgoing;
+
+			myServer::eventloop();
+			Curses::keepgoing=wasKeepGoing;
+		}
+
+		for (p=remoteMap.begin(); p != remoteMap.end(); ++p)
+			config::loadserver(p->second, cache_filenames,
+					   aux_filenames, cacheMap,
+					   accountNamesLoaded);
+
+		remoteMap.clear();
+
+		// Read other remotely-saved configuration (addresses, etc...)
+
+		flag=config::loadconfig(remoteDoc, cache_filenames,
+					aux_filenames, cacheMap,
+					remoteMap, true,
+					accountNamesLoaded);
+
+		PasswordList::passwordList.save(myServer::remoteConfigURL,
+						myServer::remoteConfigPassword);
+	}
+
+	if (doc)
+		xmlFreeDoc(doc);
+	if (cachedoc)
+		xmlFreeDoc(cachedoc);
+	if (remoteDoc)
+		xmlFreeDoc(remoteDoc);
+
+	// Garbage cleanup
+
+	string d=getConfigDir();
+
+	DIR *dirp=opendir(d.c_str());
+	struct dirent *de;
+
+	while (dirp && (de=readdir(dirp)) != NULL)
+	{
+		const char *suffix=strrchr(de->d_name, '.');
+
+		if (!suffix)
+			continue;
+
+		if (strcmp(suffix, ".tmp") == 0
+		    // We've locked the application, we're the only
+		    // user, and we just started up, so blow away any
+		    // leftover crap.
+		    || (strcmp(suffix, ".cache") == 0 &&
+			cache_filenames.count(string(de->d_name)) == 0)
+		    || (strcmp(suffix, ".newsrc") == 0 &&
+			aux_filenames.count(string(de->d_name))==0))
+		{
+			string f=d + "/" + de->d_name;
+			unlink(f.c_str());
+		}
+
+		if (strcmp(suffix, ".maildir") == 0 &&
+		    aux_filenames.count(string(de->d_name)) == 0)
+		{
+			string f=d + "/" + de->d_name;
+
+			mail::maildir::maildirdestroy(f);
+		}
+	}
+
+	if (dirp)
+		closedir(dirp);
+
+	return flag;
+}
+
+// Process a config file.  Maybe its local, mebbe its remote, don't matter.
+
+bool myServer::config::loadconfig(xmlDocPtr doc,
+				  set<string> &cache_filenames,
+				  set<string> &aux_filenames,
+				  map<string, xmlNodePtr> &cacheMap,
+				  map<string, xmlNodePtr> &remoteMap,
+				  bool skipServerConfig,
+				  set<string> &accountNamesLoaded)
+{
+	xmlNodePtr root=xmlDocGetRootElement(doc);
+	size_t tagNum=1;
+
+	if (root && strcasecmp( (const char *)root->name, "CONE") == 0)
+	{
+		for (root=root->children; root; root=root->next)
+		{
+			if (strcasecmp( (const char *)root->name, "ADDRESS")
+			    == 0)
+			{
+				myAddresses.push_back(getTextNode(root));
+				continue;
+			}
+
+			if (strcasecmp( (const char *)root->name,
+					"LISTADDRESS") == 0)
+			{
+				myListAddresses.push_back(getTextNode(root));
+				continue;
+			}
+
+			if (strcasecmp( (const char *)root->name,
+					"ADDRESSBOOK") == 0)
+			{
+				string name=getProp(root, "NAME");
+				string url=getPropNC(root, "URL");
+				string path=getPropNC(root, "FOLDER");
+
+				AddressBook *abook=new AddressBook();
+
+				if (!abook)
+					outofmemory();
+
+				try {
+					abook->init(name, url, path);
+
+					AddressBook::addressBookList
+						.insert(AddressBook::
+							addressBookList.end(),
+							abook);
+				} catch (...) {
+					delete abook;
+					LIBMAIL_THROW();
+				}
+				continue;
+			}
+
+			if (strcasecmp( (const char *)root->name,
+					"SPECIALFOLDER") == 0)
+			{
+				string id=getProp(root, "ID");
+				string server=getPropNC(root, "SERVER");
+				string path=getPropNC(root, "PATH");
+				string name=getPropNC(root, "NAME");
+				string archivedMonth=getPropNC(root,
+							       "ARCHIVED");
+
+				if (SpecialFolder::folders.count(id) > 0)
+				{
+					SpecialFolder &sf=
+						SpecialFolder::folders
+						.find(id)->second;
+
+					SpecialFolder::Info newInfo;
+
+					newInfo.serverUrl=server;
+					newInfo.serverPath=path;
+					newInfo.lastArchivedMonth=
+						archivedMonth;
+					if (name.size() == 0)
+						name=sf.defaultNameUTF8;
+
+					newInfo.nameUTF8=name;
+
+					sf.folderList.push_back(newInfo);
+				}
+				continue;
+			}
+
+			if (strcasecmp( (const char *)root->name, "NNTP") == 0)
+			{
+				nntpCommandFolder::nntpCommand=
+					getPropNC(root, "COMMAND");
+				continue;
+			}
+
+			if (strcasecmp( (const char *)root->name, "SMTP") == 0)
+			{
+				myServer::smtpServerURL=getProp(root, "URL");
+
+				string useImap=getProp(root, "USEIMAP");
+
+				myServer::useIMAPforSending=
+					strcasecmp(useImap.c_str(), "TRUE")
+					== 0;
+				continue;
+			}
+
+			if (strcasecmp( (const char *)root->name,
+					"DICTIONARY") == 0)
+			{
+				string setting=getProp(root, "NAME");
+
+				if (setting.size() > 0)
+					spellCheckerBase->
+						setDictionary(setting);
+				continue;
+			}
+
+			if (strcasecmp( (const char *)root->name,
+					"COLORS") == 0)
+			{
+				struct CustomColorGroup *g;
+				struct CustomColor **c;
+
+				for (g=getColorGroups(); g->colors; ++g)
+					for (c=g->colors; *c; ++c)
+					{
+						string s=getProp(root,
+								 (*c)->
+								 shortname);
+
+						if (s.size() == 0)
+							continue;
+
+						istringstream i(s);
+
+						i >> (*c)->fcolor;
+					}
+			}
+
+			if (strcasecmp( (const char *)root->name,
+					"OPTIONS") == 0)
+			{
+				string demoron=getProp(root,
+						       "DEMORONIZATION");
+
+				myServer::setDemoronizationType(demoron
+								== "MIN"
+								? myServer
+								::DEMORON_MIN:
+								demoron
+								== "MAX"
+								? myServer
+								::DEMORON_MAX
+
+								: myServer
+								::DEMORON_OFF);
+
+				string postandmail=getProp(root,
+							   "POSTANDMAIL");
+
+				myServer::postAndMail=
+					postandmail == "Y" ?
+					myServer::POSTANDMAIL_YES:
+					postandmail == "N" ?
+					myServer::POSTANDMAIL_NO:
+					myServer::POSTANDMAIL_ASK;
+
+				Curses::suspendCommand=
+					getProp(root, "SUSPEND");
+				CursesEditMessage::externalEditor=
+					getProp(root, "EDITOR");
+
+				if (getProp(root, "QUITNOPROMPT").size() > 0)
+					GlobalKeys::quitNoPrompt=true;
+				if (getProp(root, "SMARTSHORTCUTS").size()>0)
+					CursesMoronize::enabled=true;
+
+				myServer::customHeaders=
+					getProp(root, "CUSTOMHEADERS");
+
+				GPG::gpg.extraEncryptSignOptions=
+					getProp(root, "GPGENCRYPTSIGNOPTIONS");
+
+				GPG::gpg.extraDecryptVerifyOptions=
+					getProp(root, "GPGDECRYPTVERIFYOPTIONS"
+						);
+
+				string t=getProp(root, "AUTOSAVE");
+
+				istringstream i(t);
+
+				i >> CursesEditMessage::autosaveInterval;
+
+				if (CursesEditMessage::autosaveInterval < 60)
+					CursesEditMessage::autosaveInterval=60;
+
+				if (CursesEditMessage::autosaveInterval >60*60)
+					CursesEditMessage::autosaveInterval
+						=60 * 60;
+
+
+				t=getProp(root, "WATCHDAYS");
+
+				if (t.size() > 0)
+				{
+					istringstream ii(t);
+
+					ii >> Watch::defaultWatchDays;
+					if (Watch::defaultWatchDays <= 0)
+						Watch::defaultWatchDays=1;
+					if (Watch::defaultWatchDays > 99)
+						Watch::defaultWatchDays=99;
+				}
+
+				t=getProp(root, "WATCHDEPTH");
+
+				if (t.size() > 0)
+				{
+					istringstream ii(t);
+
+					ii >> Watch::defaultWatchDepth;
+					if (Watch::defaultWatchDepth <= 0)
+						Watch::defaultWatchDepth=1;
+					if (Watch::defaultWatchDepth > 99)
+						Watch::defaultWatchDepth=99;
+				}
+
+				continue;
+			}
+
+			if (strcasecmp( (const char *)root->name,
+					"TAG") == 0)
+			{
+				string n=getProp(root, "NAME");
+
+				if (tagNum < Tags::tags.names.size())
+					Tags::tags.names[tagNum++]=n;
+			}
+
+			if (strcasecmp( (const char *)root->name,
+					"REMOTESERVER") == 0)
+			{
+				// Remotely-saved server config, see if we
+				// have it.
+
+				string name=getProp(root, "NAME");
+
+				map<string, xmlNodePtr>::iterator
+					p=remoteMap.find(name);
+
+				if (p != remoteMap.end())
+				{
+					loadserver(p->second,
+						   cache_filenames,
+						   aux_filenames,
+						   cacheMap,
+						   accountNamesLoaded);
+
+					remoteMap.erase(p);
+				}
+				else
+				{
+					ClearKeyHandler kh;
+
+					statusBar->clearstatus();
+					statusBar->status(Gettext(_("Unable to find remotely-saved configuration for %1%.\n\n"
+								    "All configuration for this account has been lost."))
+							  << name);
+
+					bool wasKeepGoing=Curses::keepgoing;
+
+					myServer::eventloop();
+					Curses::keepgoing=wasKeepGoing;
+				}
+				continue;
+			}
+
+			if (strcasecmp( (const char *)root->name, "SERVER"))
+				continue;
+
+
+			if (skipServerConfig)
+				continue;
+			// Re-parsing the remote config file, only picking up
+			// non-server configs.
+
+			loadserver(root, cache_filenames, aux_filenames,
+				   cacheMap, accountNamesLoaded);
+
+		}
+		return true;
+	}
+	return false;
+}
+
+//
+// Process server configuration.
+
+void myServer::config::loadserver(xmlNodePtr root,
+				  set<string> &cache_filenames,
+				  set<string> &aux_filenames,
+				  map<string, xmlNodePtr> &cacheMap,
+				  set<string> &accountNamesLoaded)
+{
+	string name=getProp(root, "NAME");
+	string url=getPropNC(root, "URL");
+
+	if (name.length() == 0 || url.length() == 0)
+		return;
+
+	if (accountNamesLoaded.count(name) > 0)
+	{
+		size_t cnt=0;
+
+		string newName;
+
+		do
+		{
+			ostringstream o;
+
+			o << name << setw(3) << setfill('0') << ++cnt;
+
+			newName=o.str();
+		} while (accountNamesLoaded.count(newName) > 0);
+
+
+		ClearKeyHandler kh;
+
+		statusBar->clearstatus();
+		statusBar->status(Gettext(_("There are duplicate configuration for account named %1%.\n\n"
+					    "The duplicate account will be renamed, "
+					    "all cached information for the duplicate configuration will be discarded."))
+				  << name);
+
+		bool wasKeepGoing=Curses::keepgoing;
+
+		myServer::eventloop();
+		Curses::keepgoing=wasKeepGoing;
+
+		name=newName;
+		cacheMap.erase(name);
+	}
+
+	accountNamesLoaded.insert(name);
+
+
+	myServer *s=new myServer(name, url);
+
+	map<string, xmlNodePtr>::iterator cacheP=cacheMap.find(name);
+
+	map<string, xmlNodePtr> folderCacheMap;
+
+	if (cacheP != cacheMap.end())
+	{
+		xmlNodePtr folderCache= cacheP->second;
+
+		for (folderCache=folderCache->children;
+		     folderCache; folderCache=folderCache->next)
+		{
+			if (strcasecmp( (const char *)folderCache->name,
+					"FOLDER"))
+				continue;
+
+			string name=getPropNC(folderCache, "PATH");
+
+			if (name.size() == 0)
+				continue;
+
+			folderCacheMap.insert(make_pair(name, folderCache));
+		}
+	}
+
+	string newsrc=getPropNC(root, "NEWSRC");
+	string auxdescr=_("NetNews configuration file");
+
+	if (newsrc.size() == 0)
+	{
+		newsrc=getPropNC(root, "MAILDIR");
+		auxdescr=_("mail folder directory");
+	}
+
+	if (newsrc.size() > 0)
+	{
+		if (aux_filenames.count(newsrc) > 0)
+		{
+			size_t cnt=0;
+
+			string newName;
+
+			do
+			{
+				ostringstream o;
+
+				o << setw(3) << setfill('0') << ++cnt;
+
+				newName=o.str() + newsrc;
+			} while (accountNamesLoaded.count(newName) > 0);
+
+			newsrc=newName;
+
+			ClearKeyHandler kh;
+
+			statusBar->clearstatus();
+			statusBar->status(Gettext(_("The specified %2% for %1% is a duplicate.\n\n"
+						    "The duplicate %2% will be removed.  All saved "
+						    "information will be lost."))
+					  << name << auxdescr);
+
+			bool wasKeepGoing=Curses::keepgoing;
+
+			myServer::eventloop();
+			Curses::keepgoing=wasKeepGoing;
+
+		}
+
+		s->newsrc=newsrc;
+		aux_filenames.insert(newsrc);
+	}
+
+	xmlNodePtr n;
+
+	for (n=root->children; n; n=n->next)
+	{
+		if (strcasecmp( (const char *)n->name, "NAMESPACE") == 0)
+		{
+			string path=getPropNC(n, "PATH");
+			s->topLevelFolders.add(path);
+		}
+
+		if (strcasecmp( (const char *)n->name, "SETTING") == 0)
+		{
+			string name=getPropNC(n, "NAME");
+			string value=getPropNC(n, "VALUE");
+
+			s->server_configuration.insert(make_pair(name, value));
+			continue;
+		}
+		if (strcasecmp( (const char *)n->name, "FOLDER"))
+			continue;
+
+		xmlAttrPtr attr=n->properties;
+
+		map<string, string> folderprops;
+
+		while (attr)
+		{
+			const char *a=(const char *)attr->name;
+
+			string aDecode=
+				mail::rfc2047::decoder::
+				decodeEnhanced(a, *Gettext::defaultCharset());
+
+			string val;
+
+			if (strcmp(a, "PATH") == 0 ||
+			    strcmp(a, "INDEX") == 0 ||
+			    strcmp(a, "SNAPSHOT") == 0)
+				val=getPropNC(n, a);
+			else
+				val=getProp(n, a);
+
+			folderprops.insert(make_pair(aDecode, val));
+
+			attr=attr->next;
+		}
+
+		xmlNodePtr tn;
+
+		for (tn=n->children; tn; tn=tn->next)
+			if (strcasecmp((const char *)tn->name, "FILTER") == 0)
+			{
+				string s=getTextNode(tn);
+
+				if (s.size() == 0)
+					continue;
+
+				folderprops.insert(make_pair(string( (const
+								      char *)
+								     tn->name),
+							     s));
+			}
+
+		map<string, string>
+			::iterator p=folderprops.find("PATH");
+
+		if (p == folderprops.end())
+			continue;
+
+		string path=p->second;
+
+		folderprops.erase(p);
+
+		map<string, xmlNodePtr>::iterator cp=folderCacheMap.find(path);
+
+
+		if (cp != folderCacheMap.end())
+		{
+			string n="INDEX";
+
+			string s=getPropNC(cp->second, n.c_str());
+
+			if (s.size() > 0)
+				folderprops.insert(make_pair(n, s));
+
+			n="SNAPSHOT";
+			s=getPropNC(cp->second, n.c_str());
+			if (s.size() > 0)
+				folderprops.insert(make_pair(n, s));
+		}
+
+		p=folderprops.find("INDEX");
+		if (p != folderprops.end())
+		{
+			struct stat stat_buf;
+
+			if (cache_filenames.count(p->second) > 0
+			    // DUPE - erase
+			    || stat((getConfigDir() + "/" + p->second).c_str(),
+				    &stat_buf) < 0) // Not found
+			{
+				folderprops.erase(p);
+			}
+			else
+				cache_filenames.insert(p->second);
+		}
+
+		p=folderprops.find("SNAPSHOT");
+		if (p != folderprops.end())
+		{
+			struct stat stat_buf;
+
+			if (cache_filenames.count(p->second) > 0
+			    // DUPE - erase
+			    || stat((getConfigDir() + "/" + p->second).c_str(),
+				    &stat_buf) < 0) // Not found
+				folderprops.erase(p);
+			else
+				cache_filenames.insert(p->second);
+		}
+
+		s->folder_configuration
+			.insert(make_pair(path, folderprops));
+
+	}
+}
+
+void myServer::config::loadmacros(Macros *mp, xmlDocPtr docPtr)
+{
+	xmlNodePtr root=xmlDocGetRootElement(docPtr);
+
+	if (!root || strcasecmp((const char *)root->name, "CONE"))
+		return;
+
+	for (root=root->children; root; root=root->next)
+	{
+		if (strcasecmp( (const char *)root->name, "MACRO"))
+			continue;
+
+		string macroName=getProp(root, "NAME");
+		string fkeyNum=getProp(root, "FK");
+
+		Macros::name mn(0);
+
+		if (fkeyNum.size() > 0)
+		{
+			int fkn=0;
+
+			istringstream i(fkeyNum);
+
+			i >> fkn;
+
+			mn=Macros::name(fkn);
+		}
+		else
+		{
+			if (macroName.size() == 0)
+				continue;
+
+			unicode_char *uc=(*unicode_UTF8.c2u)(&unicode_UTF8,
+							     macroName.c_str(),
+							     NULL);
+
+			if (!uc)
+				continue;
+
+			try
+			{
+				size_t i;
+
+				for (i=0; uc[i]; i++)
+					;
+
+				vector<unicode_char> v(uc, uc+i);
+
+				mn=Macros::name(v);
+			} catch (...)
+			{
+				free(uc);
+				LIBMAIL_THROW();
+			}
+			free(uc);
+		}
+
+		xmlNodePtr c;
+
+		for (c=root->children; c; c=c->next)
+		{
+			if (strcasecmp((const char *)c->name, "TEXT") == 0)
+			{
+				mp->macroList.insert(make_pair(mn,
+							       getTextNode(c))
+						     );
+				break;
+			}
+		}
+	}
+}
+//
+// Return this folder's INDEX or a SNAPSHOT filename
+//
+
+string myServer::getCachedFilename(myFolder *mf, const char *name)
+{
+	struct stat stat_buf;
+
+	string filename=getFolderConfiguration(mf->getFolder(), name);
+	string n="";
+
+	if (filename.size() > 0)
+	{
+		n=getConfigDir() + "/" + filename;
+
+		if (stat(n.c_str(), &stat_buf) < 0)
+			filename="";
+	}
+
+	if (filename.size() == 0)
+	{
+		unsigned counter;
+		pid_t p=getpid();
+		time_t t;
+
+		counter=0;
+		time(&t);
+
+		do
+		{
+			{
+				ostringstream o;
+
+				o << t << "." << p << "_" << counter++
+				  << "." << mail::hostname()
+				  << ".cache";
+				filename=o.str();
+			}
+
+			n=getConfigDir() + "/" + filename;
+
+		} while (stat(n.c_str(), &stat_buf) == 0);
+
+		updateFolderConfiguration(mf->getFolder(), name, filename);
+		saveconfig(false, false);
+	}
+
+	return n;
+}
+
+//
+// Save folder's index
+//
+
+void myServer::saveFolderIndex(myFolder *mf)
+{
+	string n=getCachedFilename(mf, "INDEX");
+	string t=n + ".tmp";
+
+	xmlDocPtr doc=xmlNewDoc((xmlChar *)"1.0");
+
+	string myCharset=Gettext::defaultCharset()->chset;
+
+	try {
+		xmlNodePtr d=xmlNewDocNode(doc, NULL,
+					   (xmlChar *)"INDEX", NULL);
+		if (!d)
+			outofmemory();
+
+		doc->children=d;
+
+		if (!xmlSetProp(d, (xmlChar *)"FORMAT",
+				(xmlChar *)INDEXFORMAT))
+			outofmemory();
+
+		myFolder::iterator b=mf->begin(),
+			e=mf->begin() + mf->sorted_index.size();
+
+		while (b != e)
+		{
+			myFolder::Index &i = *b++;
+
+			xmlNodePtr messageNode=xmlNewNode (NULL,
+							   (xmlChar *)
+							   "MESSAGE");
+
+			if (!messageNode || !xmlAddChild(d, messageNode))
+			{
+				if (messageNode)
+					xmlFreeNode(messageNode);
+				outofmemory();
+			}
+
+			char arrivalDateStr[200];
+			char messageDateStr[200];
+
+			rfc822_mkdate_buf(i.arrivalDate, arrivalDateStr);
+			rfc822_mkdate_buf(i.messageDate, messageDateStr);
+
+			string sizebuf;
+
+			{
+				ostringstream n;
+
+				n << i.messageSize;
+				sizebuf=n.str();
+			}
+
+			string uid=mail::rfc2047::encode(i.uid, myCharset);
+
+#if 0
+			fprintf(stderr, "SUBJECT: %s, NAME: %s\n",
+				i.subject_utf8.c_str(),
+				i.name_utf8.c_str());
+			fflush(stderr);
+#endif
+			string subject=mail::rfc2047::encode(i.subject_utf8,
+							     myCharset);
+			string name=mail::rfc2047::encode(i.name_utf8,
+							     myCharset);
+
+			string messageid=mail::rfc2047::encode((string)
+							       i.messageid,
+							       myCharset);
+
+			string references;
+
+
+			{
+				vector<mail::address> vec;
+				vector<messageId>::iterator
+					rb=i.references.begin(),
+					re=i.references.end();
+
+				vec.reserve(i.references.size());
+				while (rb != re)
+				{
+					vec.push_back(mail::address("",
+								    (string)
+								    *rb));
+					++rb;
+				}
+
+				references=mail::rfc2047
+					::encode(mail::address
+						 ::toString("", vec),
+						 myCharset);
+			}
+			if (!xmlSetProp(messageNode,
+					(xmlChar *)"UID",
+					(xmlChar *)uid.c_str()) ||
+			    (i.arrivalDate &&
+			     !xmlSetProp(messageNode,
+					 (xmlChar *)"ARRIVAL",
+					 (xmlChar *)arrivalDateStr)) ||
+			    (i.messageDate &&
+			     !xmlSetProp(messageNode,
+					 (xmlChar *)"SENT",
+					 (xmlChar *)messageDateStr)) ||
+
+			    !xmlSetProp(messageNode,
+					(xmlChar *)"SIZE",
+					(xmlChar *)sizebuf.c_str()) ||
+
+			    !xmlSetProp(messageNode,
+					(xmlChar *)"MESSAGEID",
+					(xmlChar *)messageid.c_str()) ||
+
+			    !xmlSetProp(messageNode,
+					(xmlChar *)"REFERENCES",
+					(xmlChar *)references.c_str()) ||
+
+			    !xmlNewTextChild(messageNode, NULL,
+					     (xmlChar *)"SUBJECT",
+					     (xmlChar *)subject.c_str()
+					     ) ||
+
+			    !xmlNewTextChild(messageNode, NULL,
+					     (xmlChar *)"NAME",
+					     (xmlChar *)name.c_str()
+					     ))
+				outofmemory();
+
+#if 0
+			fprintf(stderr, "done\n"); fflush(stderr);
+#endif
+		}
+
+		map<messageId, WatchInfo>::iterator
+			wb=mf->watchList.watchList.begin(),
+			we=mf->watchList.watchList.end();
+
+		while (wb != we)
+		{
+			string messageid=wb->first;
+			time_t expires=wb->second.expires;
+			size_t depth=wb->second.depth;
+
+			messageid=mail::rfc2047::encode(messageid, myCharset);
+
+			ostringstream o1;
+
+			o1 << expires;
+
+			ostringstream o2;
+
+			o2 << depth;
+
+			xmlNodePtr watchNode=xmlNewNode(NULL,
+							(xmlChar *)
+							"WATCH");
+
+			if (!watchNode || !xmlAddChild(d, watchNode))
+			{
+				if (watchNode)
+					xmlFreeNode(watchNode);
+				outofmemory();
+			}
+
+
+			if (!xmlSetProp(watchNode,
+					(xmlChar *)"MESSAGEID",
+					(xmlChar *)messageid.c_str()) ||
+
+			    !xmlSetProp(watchNode,
+					(xmlChar *)"EXPIRES",
+					(xmlChar *)o1.str().c_str()) ||
+			    !xmlSetProp(watchNode,
+					(xmlChar *)"DEPTH",
+					(xmlChar *)o2.str().c_str()))
+				outofmemory();
+
+			++wb;
+		}
+
+		if (!xmlSaveFile(t.c_str(), doc) ||
+		    rename(t.c_str(), n.c_str()))
+			saveError(t);
+
+		xmlFreeDoc(doc);
+	} catch (...) {
+		xmlFreeDoc(doc);
+		LIBMAIL_THROW();
+	}
+}
+
+// Load folder's index.
+
+bool myServer::loadFolderIndex(string filename,
+			       map<string, size_t> &uid_list,
+			       myFolder *folder)
+{
+	xmlDocPtr doc;
+
+	if (access(filename.c_str(), R_OK) < 0 ||
+	    (doc=xmlParseFile(filename.c_str())) == NULL)
+		return true;
+
+	bool flag=false;
+
+	time_t now=time(NULL);
+
+	try {
+		xmlNodePtr rootNode=xmlDocGetRootElement(doc);
+
+		if (rootNode && strcasecmp( (const char *)rootNode->name,
+					    "INDEX") == 0 &&
+		    getPropNC(rootNode, "FORMAT") == INDEXFORMAT)
+		{
+			// Load all the WATCH info first.
+
+			xmlNodePtr root;
+
+			for (root=rootNode->children; root; root=root->next)
+			{
+				if (strcasecmp( (const char *)root->name,
+						"WATCH"))
+					continue;
+
+				string messageid=
+					getPropNC(root, "MESSAGEID");
+
+				string expires_s=
+					getPropNC(root, "EXPIRES");
+
+				string depth_s=
+					getPropNC(root, "DEPTH");
+
+
+				time_t expires=now;
+
+				{
+					istringstream i(expires_s);
+
+					i >> expires;
+				}
+
+				size_t depth=1;
+				{
+					istringstream i(depth_s);
+
+					i >> depth;
+				}
+
+				if (expires <= now)
+					continue;
+
+
+				folder->watchList(messageId(folder->
+							    msgIds,
+							    messageid),
+						  expires, depth);
+			}
+
+			// Now the index info.
+
+			for (root=rootNode->children; root; root=root->next)
+			{
+				if (strcasecmp( (const char *)root->name,
+						"MESSAGE"))
+					continue;
+
+				string uid=getPropNC(root, "UID");
+
+				if (uid_list.count(uid) == 0)
+				{
+					flag=true;
+					continue;
+				}
+
+				string arrival=getProp(root, "ARRIVAL");
+
+				string sent=getProp(root, "SENT");
+
+				string size=getProp(root, "SIZE");
+
+				string messageid=getPropNC(root, "MESSAGEID");
+
+				string references=getPropNC(root,
+							    "REFERENCES");
+
+				string subject="";
+				string name="";
+
+				map<string, size_t>
+					::iterator ptr=uid_list.find(uid);
+
+				myFolder::Index &i=folder->
+					serverIndex[ptr->second];
+
+				uid_list.erase(ptr);
+
+
+				xmlNodePtr child;
+
+				for (child=root->children; child;
+				     child=child->next)
+				{
+					if (strcasecmp((const char *)
+						       child->name,
+						       "SUBJECT") == 0)
+					{
+						xmlChar *cp=
+							xmlNodeGetContent
+							(child);
+
+						if (!cp)
+							continue;
+
+						try {
+							subject=(const char *)
+								cp;
+
+							free(cp);
+						} catch (...) {
+							free(cp);
+							LIBMAIL_THROW();
+						}
+					}
+
+					if (strcasecmp((const char *)
+						       child->name,
+						       "NAME") == 0)
+					{
+						xmlChar *cp=
+							xmlNodeGetContent
+							(child);
+
+						if (!cp)
+							continue;
+
+						try {
+							name=(const char *)cp;
+							free(cp);
+						} catch (...) {
+							free(cp);
+							LIBMAIL_THROW();
+						}
+					}
+				}
+
+				i.arrivalDate=rfc822_parsedt(arrival.c_str());
+				i.messageDate=rfc822_parsedt(sent.c_str());
+				i.messageid=messageId(folder->msgIds,
+						      messageid);
+
+				vector<mail::address> refs;
+				size_t dummy;
+
+				mail::address::fromString(references, refs,
+							  dummy);
+
+				i.references.clear();
+				i.references.reserve(refs.size());
+				vector<mail::address>::iterator
+					rb=refs.begin(),
+					re=refs.end();
+
+				while (rb != re)
+				{
+					i.references
+						.push_back(messageId(folder->
+								     msgIds,
+								     rb->
+								     getAddr())
+							   );
+					++rb;
+				}
+
+				i.messageSize=0;
+				{
+					istringstream s(size.c_str());
+
+					s >> i.messageSize;
+				}
+				i.subject_utf8=mail::rfc2047::decoder
+					::decodeSimple(subject);
+				i.name_utf8=mail::rfc2047::decoder
+					::decodeSimple(name);
+
+				i.toupper();
+				i.checkwatch(*folder);
+			}
+		}
+		xmlFreeDoc(doc);
+	} catch (...) {
+		xmlFreeDoc(doc);
+		LIBMAIL_THROW();
+	}
+
+	return flag;
+}

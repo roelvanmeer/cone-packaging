@@ -1,0 +1,825 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::folder::getRights</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::folder Native API reference"
+HREF="libmail-folder.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::folder::getPath"
+HREF="folder-getpath.html"><LINK
+REL="NEXT"
+TITLE="mail::folder::hasMessages"
+HREF="folder-hasmessages.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="folder-getpath.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="folder-hasmessages.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="FOLDER-GETRIGHTS"
+></A
+>mail::folder::getRights</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN10193"
+></A
+><H2
+>Name</H2
+>mail::folder::getRights&nbsp;--&nbsp;Read access control list</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN10196"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/mail.H&#62;<br>
+<br>
+<br>
+class&nbsp;myCallback&nbsp;:&nbsp;public&nbsp;mail::callback&nbsp;{<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success(std::string&nbsp;msg);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;fail(std::string&nbsp;msg);<br>
+};</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN10198"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>folder-&#62;<TT
+CLASS="FUNCTION"
+>getRights</TT
+></CODE
+>(myCallback &#38;<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>, std::list&#60;std::pair&#60;std::string, std::string&#62; &#62;
+&#38;<TT
+CLASS="PARAMETER"
+><I
+>rights</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN10206"
+></A
+><H2
+>USAGE</H2
+><P
+>This function implements folder access control lists (ACLs).
+Access control lists define who is allowed to do certain operations on
+a folder, or on messages in the folder.
+Folder ACLs are implement only for IMAP accounts on IMAP servers that
+implement access control lists.
+This function will fail if
+<TT
+CLASS="REPLACEABLE"
+><I
+>folder</I
+></TT
+>
+is not a folder on an IMAP server that
+supports access control lists.</P
+><P
+>This function
+obtains <TT
+CLASS="PARAMETER"
+><I
+>folder</I
+></TT
+>'s entire access control list.
+If this function succeeds (this function may fail if the requesting
+client does not have the required access to the folder),
+<TT
+CLASS="PARAMETER"
+><I
+>rights</I
+></TT
+> will be initialized to an array of
+<TT
+CLASS="REPLACEABLE"
+><I
+>identifier</I
+></TT
+>/<TT
+CLASS="REPLACEABLE"
+><I
+>accessrights</I
+></TT
+>
+tuples.</P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN10215"
+></A
+><H3
+>Identifier</H3
+><P
+>Not all servers support every one of the following
+access control list identifiers.
+See the server's documentation to check which access control list
+identifiers are implemented by the server:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>anonymous</TT
+>"</SPAN
+>,
+or <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>anyone</TT
+>"</SPAN
+></DT
+><DD
+><P
+>This identifier refers to universal access rights given to everyone,
+including anonymous users (if supported by server).</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>authuser</TT
+>"</SPAN
+></DT
+><DD
+><P
+>Same as <SPAN
+CLASS="QUOTE"
+>"anyone"</SPAN
+>, except for anonymous users.
+If the server does not implement anonymous access, then
+<SPAN
+CLASS="QUOTE"
+>"anonymous"</SPAN
+>,
+<SPAN
+CLASS="QUOTE"
+>"anyone"</SPAN
+>, and
+<SPAN
+CLASS="QUOTE"
+>"authuser"</SPAN
+> are equivalent.</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>owner</TT
+>"</SPAN
+></DT
+><DD
+><P
+>The owner of the mailbox that contains the folder.</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>administrators</TT
+>"</SPAN
+></DT
+><DD
+><P
+>Any member of a group that's defined as an administrator group, in an
+implementation-defined way.</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>user=</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+>"</SPAN
+></DT
+><DD
+><P
+>A single system user, identified by <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+>.</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>group=</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+>"</SPAN
+></DT
+><DD
+><P
+>Any system user that's part of a group identified by
+<TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+>.
+Groups are created and managed by IMAP server-specific tools.
+See the server's documentation for information on creating and managing
+groups (if the groups are even implemented by the server in the first place).</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"-<TT
+CLASS="REPLACEABLE"
+><I
+>identifier</I
+></TT
+>"</SPAN
+></DT
+><DD
+><P
+>An access control list identifier may be prefixed by a <SPAN
+CLASS="QUOTE"
+>"-"</SPAN
+>,
+which refers to a <SPAN
+CLASS="QUOTE"
+>"negative right"</SPAN
+>.
+Negative rights explicitly revoke the associated access rights from the
+<TT
+CLASS="REPLACEABLE"
+><I
+>identifier</I
+></TT
+> instead of granting the right.</P
+><P
+>Negative rights are not implemented by all servers.
+See the server's documentation to check if the server implements negative
+access rights.</P
+></DD
+></DL
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+>
+and
+<TT
+CLASS="REPLACEABLE"
+><I
+>groupname</I
+></TT
+> must specified using the
+<TT
+CLASS="LITERAL"
+>UTF-8</TT
+> character set.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN10280"
+></A
+><H3
+>Access rights</H3
+><P
+>At this time, the following access rights are supported:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>a</TT
+>"</SPAN
+></DT
+><DD
+><P
+>Administrator access: view and change folder access control lists.</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>c</TT
+>"</SPAN
+></DT
+><DD
+><P
+>Create subfolders.</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>e</TT
+>"</SPAN
+></DT
+><DD
+><P
+>Expunge deleted messages from the folder.</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>i</TT
+>"</SPAN
+></DT
+><DD
+><P
+>Insert, or add messages to the folder.</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>l</TT
+>"</SPAN
+></DT
+><DD
+><P
+>List, or view the folder's existence.
+If a folder does not have the <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>l</TT
+>"</SPAN
+>
+access right, the server will not include this folder when it's asked to list
+all folders in the folder directory.
+However, if the <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>r</TT
+>"</SPAN
+>
+access right is present, the folder may be opened if the folder's name
+is known.</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>r</TT
+>"</SPAN
+></DT
+><DD
+><P
+>Read, or open the folder.
+An attempt to open the folder will fail without the
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>r</TT
+>"</SPAN
+> access right, even if the folder's name
+is known.</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>p</TT
+>"</SPAN
+></DT
+><DD
+><P
+><SPAN
+CLASS="QUOTE"
+>"Post messages"</SPAN
+> to the folder.
+This access right is currently listed in the ACL specification; however its
+intention is not clear, and
+most servers do not do anything useful with this access right.
+It is listed here for information purposes only.</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>s</TT
+>"</SPAN
+></DT
+><DD
+><P
+>Allow changing the read/unread status of messages in the folder.
+The server will not automatically clear
+the <CODE
+CLASS="STRUCTFIELD"
+>unread</CODE
+> message status flag on messages after
+they are read, or let this status flag be explicitly changed,
+without the <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>s</TT
+>"</SPAN
+>
+access right.</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>t</TT
+>"</SPAN
+></DT
+><DD
+><P
+>Allow tagging of messages as deleted or undeleted.
+The server will prohibit changing the messages'
+<CODE
+CLASS="STRUCTFIELD"
+>deleted</CODE
+> message status flag
+without the <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>t</TT
+>"</SPAN
+> access right.</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>w</TT
+>"</SPAN
+></DT
+><DD
+><P
+>Allow changing the
+<CODE
+CLASS="STRUCTFIELD"
+>draft</CODE
+>,
+<CODE
+CLASS="STRUCTFIELD"
+>replied</CODE
+>, and
+<CODE
+CLASS="STRUCTFIELD"
+>marked</CODE
+> message status flags.
+The server will not allow changes to these flags
+without the <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>w</TT
+>"</SPAN
+> access right.</P
+></DD
+><DT
+><SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>x</TT
+>"</SPAN
+></DT
+><DD
+><P
+>Allow this folder to be removed.
+The server will not this folder to be deleted
+without the <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>x</TT
+>"</SPAN
+> access right.</P
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN10370"
+></A
+><H2
+>RETURN CODES AND CALLBACKS</H2
+><P
+>The application must wait until
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.
+The <TT
+CLASS="FUNCTION"
+>success</TT
+> method is invoked when this request is
+succesfully processed.
+The <TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked if this request cannot
+be processed.
+The application must not destroy
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+> until either the
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method may be invoked even after other
+callback methods were invoked.
+This indicates that the request was partially completed before the error
+was encountered.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN10385"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="folder-delrights.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::delRights</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="folder-getmyrights.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getMyRights</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="folder-setrights.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::setRights</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="folder-getpath.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="folder-hasmessages.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::folder::getPath</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libmail-folder.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::folder::hasMessages</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

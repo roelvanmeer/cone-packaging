@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::folder::isparentof</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::folder Native API reference"
+HREF="libmail-folder.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::folder::hasSubFolders"
+HREF="folder-hassubfolders.html"><LINK
+REL="NEXT"
+TITLE="mail::folder::open"
+HREF="folder-open.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="folder-hassubfolders.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="folder-open.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="FOLDER-ISPARENTOF"
+></A
+>mail::folder::isparentof</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN10499"
+></A
+><H2
+>Name</H2
+>mail::folder::isParentOf&nbsp;--&nbsp;Check if another folder is this folder's subfolder</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN10502"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/mail.H&#62;<br>
+<br>
+mail::folder&nbsp;*folder;<br>
+mail::folder&nbsp;*otherFolder;<br>&#13;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN10504"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>bool flag=folder-&#62;<TT
+CLASS="FUNCTION"
+>isParentOf</TT
+></CODE
+>(<TT
+CLASS="PARAMETER"
+><I
+>otherFolder-&#62;getPath()</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN10510"
+></A
+><H2
+>USAGE</H2
+><P
+>This function returns an indication whether a folder's path
+(returned by
+<A
+HREF="folder-getpath.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::folder::getPath</SPAN
+>(3x)</SPAN
+></A
+>)
+refers to a subfolder of this folder.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN10517"
+></A
+><H2
+>Return Codes</H2
+><P
+>The function returns <TT
+CLASS="LITERAL"
+>true</TT
+>
+if the specified path refers to a subfolder of this folder.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="LITERAL"
+>true</TT
+>
+is returned even if the path does not refer to a direct subfolder
+(a path referring to a subfolder of a subfolder will still result in
+a <TT
+CLASS="LITERAL"
+>true</TT
+> return).</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN10525"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="folder-getpath.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::folder::getPath</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="folder-hassubfolders.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="folder-open.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::folder::hasSubFolders</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libmail-folder.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::folder::open</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

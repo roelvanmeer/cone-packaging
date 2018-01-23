@@ -1,0 +1,798 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>Write Message Screen</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Cone mail client"
+HREF="cone00index.html"><LINK
+REL="PREVIOUS"
+TITLE="Message View Screen"
+HREF="cone03messageview.html"><LINK
+REL="NEXT"
+TITLE="Setup Screen"
+HREF="cone05setup.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="cone03messageview.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="cone05setup.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="CONE04WRITEMESSAGE"
+></A
+>Write Message Screen</H1
+><P
+>Pressing <B
+CLASS="KEYCAP"
+>W</B
+> opens the <SPAN
+CLASS="QUOTE"
+>"Write
+Message"</SPAN
+> screen.
+This is the screen where a new message can be typed, and sent.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> checks for any unfinished messages in the Draft
+folder, before opening this screen.
+If the Draft folder contains any messages, <TT
+CLASS="APPLICATION"
+>Cone</TT
+>
+offers an option to resume writing an unfinished message, instead of
+starting a new message.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> automatically saves a backup copy of the current message being edited, at
+regular intervals, so that a backup copy can be recovered in the event that
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> is interrupted, or terminated, in a middle of editing a new message.
+If a backup copy exists, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> announces the existence of an interrupted
+message, and prompts to resume writing the interrupted message.
+An interrupted message must be opened and either: sent, explicitly cancelled, or
+saved in the Draft folder; before another message can be written.</P
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN1226"
+>Write Message Screen</A
+></H1
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><HR><PRE
+CLASS="PROGRAMLISTING"
+><B> EDIT MESSAGE                         CONE                                  </B>
+             To: John Smith &#60;jsmith@domain.com&#62;
+             Cc:
+        Subject: Re: Patch for filtering module
+    Attachments:
+----------------------------------------------------------------------------
+Jeff Williams writes:
+
+&#62; This patch puts the user lookups into their own functions. Means that
+&#62; the config files are only read if the user is not found be an earlier
+&#62; lookup. It would also make it easier to add support to control the
+&#62; type/order of lookups at runtime, rather than always looking for the
+&#62; search modules in their built-in order.
+&#62;
+&#62; --
+&#62; Regards,
+&#62;
+&#62; John Smith
+
+
+
+<B>                                                                            </B>
+^  Mark         ^F Full Hdrs    ^J Justify      ^P Postpone     ^S Search
+^D Dict Spell   ^G Insert File  ^K Line Clear   ^R Srch/Rplce   ^O mOre</PRE><HR
+></TD
+></TR
+></TABLE
+><P
+>The following keys are available from this screen:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>SPACE</B
+>,
+<B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>W</B
+>,
+<B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>Y</B
+></DT
+><DD
+><P
+><B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>SPACE</B
+>
+marks the starting position of a range of text.
+To delete a block of text: move the cursor
+to the beginning of the block of text,
+press <B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>SPACE</B
+>,
+move the cursor to the end of text, press
+<B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>W</B
+>.
+To re-insert this text someplace else, move the cursor to the insertion point
+and press
+<B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>Y</B
+> (yank).</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>C</B
+></DT
+><DD
+><P
+>Cancel composition of the current message.
+Everything is thrown away, and this screen is closed.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>D</B
+></DT
+><DD
+><P
+>Starts the spell checker (dictionary lookup).
+Text starting with the cursor position, and until the end of the message,
+is spell-checked.
+Words that are not found in the dictionary are highlighted, and the status
+line lists up to ten suggested replacement words.
+To replace the highlighted word with one of the suggestions, press the number
+corresponding to the suggested replacement, or:
+press <B
+CLASS="KEYCAP"
+>I</B
+> to ignore this occurence of the misspelled word;
+press <B
+CLASS="KEYCAP"
+>A</B
+> to ignore all occurencer of the misspelled word,
+press <B
+CLASS="KEYCAP"
+>R</B
+> to replace the misspelled word with a manually-entered
+replacement.</P
+><P
+>Note: quoted text
+in replies (lines that begin with the <SPAN
+CLASS="QUOTE"
+>"&#62;"</SPAN
+> character),
+are not spell-checked.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>F</B
+></DT
+><DD
+><P
+>Turn display of full headers on/off.
+Initially, only the <SPAN
+CLASS="QUOTE"
+>"To:"</SPAN
+>, <SPAN
+CLASS="QUOTE"
+>"Cc:"</SPAN
+>, and
+<SPAN
+CLASS="QUOTE"
+>"Subject:"</SPAN
+> headers are shown.
+<B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>F</B
+> shows additional headers:
+<SPAN
+CLASS="QUOTE"
+>"From:"</SPAN
+>, <SPAN
+CLASS="QUOTE"
+>"Reply-To:"</SPAN
+>, <SPAN
+CLASS="QUOTE"
+>"Bcc:"</SPAN
+>,
+and <SPAN
+CLASS="QUOTE"
+>"Fcc:"</SPAN
+>.</P
+><P
+>The <SPAN
+CLASS="QUOTE"
+>"Fcc:"</SPAN
+> header specifies the folder where a copy of the
+message is saved, after it's sent.
+One of the defined <SPAN
+CLASS="QUOTE"
+>"Sent Mail"</SPAN
+> special folders is listed in
+this header.  Highlight this header with the cursor, and press
+<B
+CLASS="KEYCAP"
+>ENTER</B
+> to cycle through the list of available
+<SPAN
+CLASS="QUOTE"
+>"Sent Mail"</SPAN
+> special folders.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>G</B
+></DT
+><DD
+><P
+>This key (<SPAN
+CLASS="QUOTE"
+>"get"</SPAN
+>) inserts a file into the current text document,
+at the current cursor position.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>J</B
+></DT
+><DD
+><P
+>Re-justifies the current paragraph.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> uses <SPAN
+CLASS="QUOTE"
+>"lazy"</SPAN
+> word-wrapping.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> word-wraps long lines when new text is being added; however when
+deleting text short lines are not re-wrapped.
+Pressing this key re-formats the current paragraph to the optimal line length,
+taking into account all previous editing.</P
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> will not re-justify quoted text in replies.
+Remove the leading quote characters, <SPAN
+CLASS="QUOTE"
+>"&#62;"</SPAN
+>, justify, then
+re-insert the quote characters, if necessary.</P
+><P
+>Technical note: messages composed in <TT
+CLASS="APPLICATION"
+>Cone</TT
+> are marked as
+<SPAN
+CLASS="QUOTE"
+>"flowed-text"</SPAN
+>
+MIME plain text.
+This format uses invisible trailing whitespace to tag paragraph breaks.
+Mail readers that support <SPAN
+CLASS="QUOTE"
+>"flowed-text"</SPAN
+> format (of which
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> is one), are capable of automatically reformatting flowed text into
+a variable-width display.
+When composing new text, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> automatically inserts the appropriate
+invisible whitespace characters, as needed.
+Extensive editing may inadvertently delete the flowed-text
+<SPAN
+CLASS="QUOTE"
+>"watermarks"</SPAN
+>, resulting in a line, or two, not wrapping properly
+on the expected margin break.
+<B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>J</B
+> reformats the current paragraph,
+and makes sure that everything is in proper order, automatically restoring
+any deleted flowed-text trailing whitespace.</P
+><P
+>Liberal use of <B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>J</B
+> during editing is
+highly encouraged.
+Not only does this make written text look good, it makes new text look
+extra-good, in modern mail clients that know how to read flowed-text formatted
+messages.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>K</B
+></DT
+><DD
+><P
+>Delete text between the current cursor position, and the end of the
+line.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>S</B
+>,
+<B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>R</B
+></DT
+><DD
+><P
+>Search for a text string starting at the current cursor position,
+or search and replace text.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>N</B
+></DT
+><DD
+><P
+>Define a new macro.
+First, define a text range using
+<B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>SPACE</B
+> and cursor keys.
+With the text range highlighted, press
+<B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>N</B
+>, type in a short abbreviation,
+then press <B
+CLASS="KEYCAP"
+>ENTER</B
+>.</P
+><P
+>The text range will be memorized, and from this point on, typing the
+abbreviation will automatically insert the memorized range.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The abbreviation cannot contain spaces or tabs (the text range itself
+may contain anything, only the abbreviation cannot have spaces).</P
+><P
+>The memorized text range is inserted verbatim, without reformatting.
+If memorized text is inserted in a middle of a
+line, it may be necessary to use <B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>J</B
+>
+to re-justify the text.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>If the keyboard has function keys, it is possible to press a
+function key instead of entering an abbreviation; and use the
+same function key
+to insert the memorized text.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Not all function keys may be available in every situation.
+<TT
+CLASS="APPLICATION"
+>gnome-terminal</TT
+>, for example, appropriates
+<B
+CLASS="KEYCAP"
+>F1</B
+> for its own online help pages; so
+<B
+CLASS="KEYCAP"
+>F1</B
+> is not available to applications running in a
+<TT
+CLASS="APPLICATION"
+>gnome-terminal</TT
+> window.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>To re-define a macro, highlight another text range, press
+<B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>N</B
+>, then enter the same abbreviation,
+or press the same function key.</P
+><P
+>Macros can be deleted from the main setup screen in <TT
+CLASS="APPLICATION"
+>Cone</TT
+>.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>T</B
+></DT
+><DD
+><P
+>Highlight the <SPAN
+CLASS="QUOTE"
+>"Attachments:"</SPAN
+> header and press
+<B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>T</B
+> to create an attachment by picking
+a file from an interactive dialog that shows all files in the current
+directory.
+Move the cursor to highlight a subdirectory, or the parent directory, and
+press <B
+CLASS="KEYCAP"
+>ENTER</B
+> to switch to a different directory.
+Highlight a file to read the file and attach it to the current message.</P
+><P
+>The attachment filename may also be typed directly into the file selection
+dialog.
+The attachment filename, relative to the home directory,
+may also be typed directly into the <SPAN
+CLASS="QUOTE"
+>"Attachments:"</SPAN
+> header,
+instead of pressing <B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>T</B
+>.</P
+><P
+>On most systems it is possible to attach multiple files at the same time
+by entering a filename pattern, such as <SPAN
+CLASS="QUOTE"
+>"*.txt"</SPAN
+> - which selects
+all files that end in <SPAN
+CLASS="QUOTE"
+>".txt"</SPAN
+>.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>U</B
+></DT
+><DD
+><P
+>Runs an external editor application, to edit the contents of this message.
+An external editor must be previously configured by choosing the
+<SPAN
+CLASS="QUOTE"
+>"Setup"</SPAN
+> selection from <TT
+CLASS="APPLICATION"
+>Cone</TT
+>'s main menu.</P
+></DD
+><DT
+><B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>X</B
+></DT
+><DD
+><P
+>When all is said and done, <B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>X</B
+> sends
+the message.
+One, final chance, is offered to cancel, and change one's mind.
+If the mail server supports
+<A
+HREF="http://www.rfc-editor.org/rfc/rfc1891.txt"
+TARGET="_top"
+>Delivery
+Status Notifications</A
+>, press <B
+CLASS="KEYCAP"
+>D</B
+> to select
+delivery notifications options.
+Where available, press <B
+CLASS="KEYCAP"
+>E</B
+> to encrypt the message, and/or
+press <B
+CLASS="KEYCAP"
+>S</B
+> to sign the message, using
+<TT
+CLASS="APPLICATION"
+>GnuPG</TT
+>.</P
+><P
+>Encryption/signing options, if available, must be selected before setting
+any delivery status notification options.</P
+></DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="cone03messageview.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="cone05setup.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Message View Screen</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="cone00index.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Setup Screen</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

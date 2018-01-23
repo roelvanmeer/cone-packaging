@@ -1,0 +1,294 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>leaf</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Cone mail client"
+HREF="cone00index.html"><LINK
+REL="PREVIOUS"
+TITLE="cone"
+HREF="cone.html"><LINK
+REL="NEXT"
+TITLE="mailtool"
+HREF="mailtool.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="cone.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mailtool.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="LEAF"
+></A
+>leaf</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN2388"
+></A
+><H2
+>Name</H2
+>leaf&nbsp;--&nbsp;Lightweight Editor of Ascii(and more) Files</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN2391"
+></A
+><H2
+>Synopsis</H2
+><P
+><B
+CLASS="COMMAND"
+>leaf</B
+> [-d <TT
+CLASS="REPLACEABLE"
+><I
+>dictionary</I
+></TT
+>] [+<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>] [<TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN2400"
+></A
+><H2
+>USAGE</H2
+><P
+><B
+CLASS="COMMAND"
+>leaf</B
+> is a simple console text file editor, with
+paragraph word-wrapping and spell checking.
+<B
+CLASS="COMMAND"
+>leaf</B
+> is based on the text editor in the <TT
+CLASS="APPLICATION"
+>Cone</TT
+>
+mail reader and composer.
+<B
+CLASS="COMMAND"
+>leaf</B
+> opens <TT
+CLASS="REPLACEABLE"
+><I
+>filename</I
+></TT
+>, position
+the cursor on the first line, or line #<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>,
+if specified.</P
+><P
+>This is not really the best editor for program sources.
+<B
+CLASS="COMMAND"
+>leaf</B
+> is meant to be used as a quick editor for writing
+short notes and memos.
+As text is typed, words will automatically flow to wrap within a typical
+80-character terminal display, even on larger display (due to
+<B
+CLASS="COMMAND"
+>leaf</B
+>'s heritage as an editor for E-mail messages, which
+are traditionally formatted to fit an 80-character display).
+Word wrapping is "lazy": only long text lines are wrapped.
+Short text lines are not folded together.
+Individual paragraphs are separated by blank lines of text.
+Press <B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>J</B
+> to optimally
+rewrap the paragraph under the cursor.
+The bottom two lines on the screen list which keys to press for other
+functions.</P
+><P
+>The <CODE
+CLASS="OPTION"
+>-d</CODE
+> sets the name of the dictionary used for spell
+checking (overriding the default spell checking dictionary set by the
+<CODE
+CLASS="ENVAR"
+>DICTIONARY</CODE
+> environment variable).
+<CODE
+CLASS="OPTION"
+>+<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+></CODE
+> sets the initial cursor
+position to line #<TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN2420"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>emacs</SPAN
+>(1)</SPAN
+>,
+<SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>vi</SPAN
+>(1)</SPAN
+></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="cone.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mailtool.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>cone</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="cone00index.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mailtool</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

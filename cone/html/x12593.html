@@ -1,0 +1,1403 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>Folders</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Simple Mail Access Protocol, Version 1"
+HREF="smap1.html"><LINK
+REL="PREVIOUS"
+TITLE="SMAP connection negotiation"
+HREF="conn.html"><LINK
+REL="NEXT"
+TITLE="Using Folders"
+HREF="x12929.html"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="conn.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Simple Mail Access Protocol, Version 1</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x12929.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN12593"
+>Folders</A
+></H1
+><P
+>Access to the mail account becomes available after a succesful
+"<TT
+CLASS="LITERAL"
+>\SMAP1 LOGIN</TT
+>" or
+"<TT
+CLASS="LITERAL"
+>\SMAP1 AUTHENTICATE</TT
+>" command.
+A mail account contains a list of folders.
+A folder contains a list of individual messages.
+A folder may also contain other folders (so-called "subfolders") instead.
+A folder that contains subfolders is called a "folder directory".
+Subfolders may also contain other subfolders, and so on.</P
+><P
+>Some SMAP servers are capable of creating hybrid folders that contain both
+messages and other subfolders, but SMAP clients should not depend on the
+server's ability to create such folders.</P
+><P
+>SMAP folders are referenced by listing the folder's name, the name of its
+parent
+folder (if any), then the name of the parent folder's parent folder, and so on.
+The name of the top level folder is listed first, and the name of
+the folder itself is listed last, and each folder's name is specified as
+a separate, whitespace-delimited word.
+Some <TT
+CLASS="LITERAL"
+>SMAP1</TT
+> commands mark the end
+of the sequence of words that identifies a folder by an extra, empty word
+(folder names cannot be empty themselves).
+For example, the command to create a folder called "December" as a subfolder
+of another folder called "2002", which itself is a subfolder of a folder
+called "Important Mail" is:</P
+><P
+><P
+CLASS="LITERALLAYOUT"
+>CREATE&nbsp;"Important&nbsp;Mail"&nbsp;2002&nbsp;December</P
+></P
+><P
+>Folder names are written using the UTF-8 character set; they may contain
+any UTF-8 character except for U+0000 through U+001F.</P
+><P
+>SMAP servers may allow clients to create top-level
+folder or folder directories.
+SMAP servers may also prohibit clients from creating top-level folder
+or folder directories;
+instead, they provide a predefined list of top-level
+folder directories, such as "Private Folders" and "Public Folders", and
+SMAP clients are directed to to create subfolders under either top level folder
+directory.
+Servers that have this restriction should reject attempts to create
+top-level folders with an informative error message.</P
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN12605"
+>Creating folders and folder directories</A
+></H2
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;CREATE&nbsp;"Private&nbsp;Folders"&nbsp;Todo-List<br>
+S:&nbsp;+OK&nbsp;Folder&nbsp;created<br>
+C:&nbsp;MKDIR&nbsp;Customers<br>
+S:&nbsp;-ERR&nbsp;Folders&nbsp;may&nbsp;not&nbsp;be&nbsp;created&nbsp;here.&nbsp;&nbsp;Please&nbsp;create&nbsp;a&nbsp;folder&nbsp;in<br>
+&nbsp;&nbsp;&nbsp;"Private&nbsp;Folders"&nbsp;or&nbsp;"Public&nbsp;Folders".</P
+></P
+><P
+>The <TT
+CLASS="LITERAL"
+>CREATE</TT
+> command creates a new folder.
+The <TT
+CLASS="LITERAL"
+>MKDIR</TT
+> command creates a new folder directory
+(a folder that contains other folders).
+The remaining words specify the name of the new folder
+or folder directory.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>An SMAP client should not create a new folder directory until it is
+ready to create its first subfolder.
+The <TT
+CLASS="LITERAL"
+>MKDIR</TT
+>
+command should be immediately followed by a <TT
+CLASS="LITERAL"
+>CREATE</TT
+>
+command that creates the first subfolder in the new folder directory.
+Empty folder directories serve no particular purpose; SMAP servers
+are permitted (but not required) to omit empty folder directories when
+responding to a <TT
+CLASS="LITERAL"
+>LIST</TT
+> command.
+An SMAP client that wishes to create a new folder directory now, and
+a subfolder some time later should be implicitly aware of the fact that
+it created a new folder directory even if a subsequent
+<TT
+CLASS="LITERAL"
+>LIST</TT
+> command does
+not reveal its presence.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>Some SMAP servers can implement hybrid folders that contain both folders
+and subfolders.  Clients must explicitly use both
+<TT
+CLASS="LITERAL"
+>CREATE</TT
+> and <TT
+CLASS="LITERAL"
+>MKDIR</TT
+> commands, which
+may be used in either order.
+It is possible that hybrid-capable servers do not differentiate between
+the <TT
+CLASS="LITERAL"
+>MKDIR</TT
+> and <TT
+CLASS="LITERAL"
+>CREATE</TT
+> commands.
+Either one creates a folder that's ready to hold messages or subfolders.
+These servers must ignore a duplicate request to create an existing
+folder or
+folder directory (normally a server SHOULD reject such a request).
+This is because SMAP clients will send both command because they
+cannot rely on this behavior.</P
+><DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="AEN12623"
+>Executive Summary</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>Use <TT
+CLASS="LITERAL"
+>CREATE</TT
+> to create a folder, <TT
+CLASS="LITERAL"
+>MKDIR</TT
+>
+to create a folder directory.</P
+></LI
+><LI
+><P
+>Clients should create new folder directories just prior creating their
+first subfolder.
+Clients should not create new folder directories until they are ready to
+create the first subfolder.</P
+></LI
+><LI
+><P
+>SMAP
+servers may ignore <TT
+CLASS="LITERAL"
+>MKDIR</TT
+>, and treat it as a no-op, and
+automatically create logical folder directories on as-needed basis.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN12635"
+>Deleting folders and folder directories</A
+></H2
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;DELETE&nbsp;"Private&nbsp;Folders"&nbsp;Todo-List<br>
+S:&nbsp;+OK&nbsp;Folder&nbsp;deleted<br>
+C:&nbsp;RMDIR&nbsp;Customers<br>
+S:&nbsp;+OK&nbsp;Folder&nbsp;directory&nbsp;deleted</P
+></P
+><P
+>The
+<TT
+CLASS="LITERAL"
+>DELETE</TT
+>
+and
+<TT
+CLASS="LITERAL"
+>RMDIR</TT
+>
+commands are the opposite of
+<TT
+CLASS="LITERAL"
+>CREATE</TT
+>
+and
+<TT
+CLASS="LITERAL"
+>MKDIR</TT
+>
+commands.
+They delete the indicated folder or folder directory.
+Some SMAP servers may automatically remove a folder directory after its
+last subfolder is deleted.
+Normally a server
+should reject a request to remove a non-existent folder or folder directory.
+Servers that automatically remove empty directories
+should not reject requests to remove a non-existent directory,
+they should ignore and accept the request, but do nothing.
+The request to remove a non-existent directory is probably initiated
+by a client that just removed the last subfolder; the client cannot assume
+that the server will delete the empty directory, so it explicitly asks the
+server to do that.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN12644"
+>Renaming folders and folder directories</A
+></H2
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;RENAME&nbsp;"Dr.&nbsp;Jekyll"&nbsp;""&nbsp;"Mr.&nbsp;Hyde"<br>
+S:&nbsp;+OK&nbsp;Folder&nbsp;renamed.<br>
+C:&nbsp;RENAME&nbsp;"Saved&nbsp;Mail"&nbsp;"Tomorrow's&nbsp;To-Do&nbsp;List"&nbsp;""&nbsp;"Saved&nbsp;Mail"&nbsp;"To-Do&nbsp;Today"<br>
+S:&nbsp;+OK&nbsp;Folder&nbsp;renamed.</P
+></P
+><P
+>The <TT
+CLASS="LITERAL"
+>RENAME</TT
+> command changes the name of an existing
+folder or folder directory.
+The command is followed by a whitespace-delimited word list
+that specifies an existing folder;
+then an empty word;
+then another whitespace-delimited word
+list which specifies a new name for the folder or folder directory.
+Both the old name, and the new name, must be complete folder name paths.</P
+><P
+>The first example above renames a folder named "Dr. Jekyll" to
+"Mr. Hyde".
+The second example renames a subfolder of "Saved Mail" named
+"Tomorrow's To-Do List" as "To-Do Today".
+Most SMAP servers can move a folder/subfolder to a different parent folder.
+This is done by specifying a different path for the new name.</P
+><P
+>Both folder and folder directories may be renamed.
+A renamed folder directory's subfolders "follow along" with their
+parent folder directory.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN12652"
+>Listing folders</A
+></H2
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;LIST<br>
+S:&nbsp;*&nbsp;LIST&nbsp;INBOX&nbsp;"New&nbsp;Mail"&nbsp;FOLDER<br>
+S:&nbsp;*&nbsp;LIST&nbsp;Drafts&nbsp;Drafts&nbsp;FOLDER<br>
+S:&nbsp;*&nbsp;LIST&nbsp;"Saved&nbsp;Mail"&nbsp;"Saved&nbsp;Mail"&nbsp;DIRECTORY<br>
+S:&nbsp;+OK&nbsp;Here&nbsp;are&nbsp;your&nbsp;folders<br>
+C:&nbsp;LIST&nbsp;"Saved&nbsp;Mail"<br>
+S:&nbsp;*&nbsp;LIST&nbsp;2001&nbsp;2001&nbsp;DIRECTORY<br>
+S:&nbsp;*&nbsp;LIST&nbsp;2002&nbsp;2002&nbsp;DIRECTORY<br>
+S:&nbsp;+OK&nbsp;Here&nbsp;are&nbsp;your&nbsp;folders<br>
+C:&nbsp;LIST&nbsp;"Saved&nbsp;Mail"&nbsp;2002<br>
+S:&nbsp;*&nbsp;LIST&nbsp;February&nbsp;February&nbsp;FOLDER<br>
+S:&nbsp;*&nbsp;LIST&nbsp;January&nbsp;January&nbsp;FOLDER<br>
+S:&nbsp;+OK&nbsp;Here&nbsp;are&nbsp;your&nbsp;folders</P
+></P
+><P
+>The <TT
+CLASS="LITERAL"
+>LIST</TT
+> command, without any arguments, returns
+a list of top level folders.
+A list of subfolders of an existing folder directories is returned by
+appending the folder name path to the LIST command.</P
+><P
+>The server responds with zero or more <SPAN
+CLASS="QUOTE"
+>"* LIST"</SPAN
+>
+<A
+HREF="x12387.html#SINGLELINE"
+>single line</A
+>
+replies, one reply for each folder or folder directory.
+The next word after <SPAN
+CLASS="QUOTE"
+>"* LIST"</SPAN
+>
+is the name of the folder or folder directory.
+The following word (called "description") is usually the same as the
+name of the folder.
+Certain reserved folders may have a different description (see below).
+
+The remaining words contain keywords that describe the folder's attributes.
+The following attributes are defined at this time:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>FOLDER</TT
+></DT
+><DD
+><P
+>This is a regular folder that contains messages.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>READONLY</TT
+></DT
+><DD
+><P
+>This is a read-only folder.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>DIRECTORY</TT
+></DT
+><DD
+><P
+>This is a folder directory that contains other folders.</P
+></DD
+></DL
+></DIV
+><P
+>Every <SPAN
+CLASS="QUOTE"
+>"* LIST"</SPAN
+> reply includes
+either <TT
+CLASS="LITERAL"
+>FOLDER</TT
+> or <TT
+CLASS="LITERAL"
+>DIRECTORY</TT
+>.
+Both attributes indicate a hybrid folder -
+a folder that contains both messages and subfolders.</P
+><DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="AEN12682"
+>Reserved folders and descriptions</A
+></H3
+><P
+>Some SMAP servers may not allow clients to create new top-level folders.
+Instead, they provide a fixed set of top-level folders and folder
+directories, such as
+"INBOX",
+"private",
+and "public".
+Clients can only create new subfolders of the reserved
+folder directories.
+Other servers may do both: provide a fixed set of reserved, top-level folders,
+and allow clients to create new top-level folders.</P
+><P
+>A reserved folder
+is generally a symbolic representation for a special folder, or a folder
+directory, with a pre-defined purpose.
+The most common example would be the mail folder where new mail arrives;
+it is typically called <SPAN
+CLASS="QUOTE"
+>"INBOX"</SPAN
+>.
+Reserved folders usually have brief, curt names, such as <SPAN
+CLASS="QUOTE"
+>"INBOX"</SPAN
+>,
+<SPAN
+CLASS="QUOTE"
+>"public"</SPAN
+>, or <SPAN
+CLASS="QUOTE"
+>"private"</SPAN
+>.
+An SMAP server can offer a more meaningful description
+using the description word in the
+<SPAN
+CLASS="QUOTE"
+>"* LIST"</SPAN
+> reply; for example: <SPAN
+CLASS="QUOTE"
+>"New Mail"</SPAN
+>,
+<SPAN
+CLASS="QUOTE"
+>"Public Folders"</SPAN
+>, or <SPAN
+CLASS="QUOTE"
+>"My Folders"</SPAN
+>.
+If the client selects a different natural language, at login time,
+the server can provide a description in the selected language, but
+still use the same actual folder name.</P
+><P
+>SMAP clients should always use the official folder name, when referencing
+the folder in any SMAP command, and display the folder's description
+to the user (recall that for regular folders they are one and the same).</P
+></DIV
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN12695"
+>Getting folder status</A
+></H2
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;STATUS&nbsp;FULL&nbsp;"Saved&nbsp;Mail"<br>
+S:&nbsp;*&nbsp;STATUS&nbsp;EXISTS=17&nbsp;UNSEEN=5<br>
+S:&nbsp;+OK&nbsp;Status&nbsp;retrieved</P
+></P
+><P
+>The <TT
+CLASS="LITERAL"
+>STATUS</TT
+> command returns the status of a folder.
+The next word after <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>STATUS</TT
+>"</SPAN
+> is a
+comma-delimited list of the following keywords.
+The remaining whitespace-delimited words specify a folder whose requested
+status should be returned.</P
+><P
+>The first word following <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>STATUS</TT
+>"</SPAN
+> contains
+a comma-delimited keyword list.
+The following keywords are defined at this time.
+Additional keywords may be added in the future.
+SMAP server should ignore keywords they do not recognize.</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>FULL</DT
+><DD
+><P
+>Request the number of messages in the folder (sent as the
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>EXISTS</TT
+>"</SPAN
+> response), and the number of
+messages that do not have the <TT
+CLASS="LITERAL"
+>SEEN</TT
+> flag set
+(the <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>UNSEEN</TT
+>"</SPAN
+> response).</P
+></DD
+><DT
+>CHEAP</DT
+><DD
+><P
+>Same as <TT
+CLASS="LITERAL"
+>FULL</TT
+> but return the message counts only if
+the server is capable of calculating the message counts cheaply and without
+delay.
+This keyword is mutually-exclusive with <TT
+CLASS="LITERAL"
+>FULL</TT
+>.
+If the message counts cannot be calculated cheaply, the
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>* STATUS</TT
+>"</SPAN
+> response is not sent, but the
+server still responds with an <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>+OK</TT
+>"</SPAN
+>.</P
+></DD
+></DL
+></DIV
+><P
+>The server's <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>* STATUS</TT
+>"</SPAN
+> reply gives the
+requested message counts.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN12729"
+>Access Control Lists</A
+></H2
+><P
+>Access Control Lists (or <SPAN
+CLASS="QUOTE"
+>"ACL"</SPAN
+>s) may be optionally implemented
+by an SMAP server.
+ACLs are usually implemented by servers that support shared folder access,
+where accounts may mutually share access to their folders, and ACLs
+specify which accounts may access which folders.
+ACLs define certain level of granularity; for example an ACL may specify
+that a given account may read messages in the folder, but not delete them,
+or add messages to the folder.</P
+><P
+>An SMAP server which implements ACLs will include
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>ACL2=</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>method</I
+></TT
+>"</SPAN
+>
+in its capability list. <SPAN
+CLASS="QUOTE"
+>"Method"</SPAN
+> is the server's
+method for computing ACLs (see below).</P
+><DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="AEN12738"
+>Identifiers and rights</A
+></H3
+><P
+>Each folder maintains a separate access control list, which applies to
+that folder only.
+An access control list consists of zero or more records.
+Each record contains two data items: an identifier, and rights.
+<SPAN
+CLASS="QUOTE"
+>"Rights"</SPAN
+> is a list of zero more characters, that enumerate
+which kinds of access rights are given to the entity specified by the
+<SPAN
+CLASS="QUOTE"
+>"identifier"</SPAN
+>.
+An identifier may take the following values:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>anyone</TT
+></DT
+><DD
+><P
+>The access rights apply to all server accounts.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>anonymous</TT
+></DT
+><DD
+><P
+>This is an alias for <SPAN
+CLASS="QUOTE"
+>"anonymous."</SPAN
+></P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>user=</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>id</I
+></TT
+></DT
+><DD
+><P
+>The access rights apply to account named <SPAN
+CLASS="QUOTE"
+>"id"</SPAN
+>.
+The account name is specified using the <TT
+CLASS="LITERAL"
+>UTF-8</TT
+>
+character set.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>group=</TT
+><TT
+CLASS="REPLACEABLE"
+><I
+>id</I
+></TT
+></DT
+><DD
+><P
+>The access rights apply to a group of accounts named <SPAN
+CLASS="QUOTE"
+>"id"</SPAN
+>.
+The group name is specified using the <TT
+CLASS="LITERAL"
+>UTF-8</TT
+>
+character set.
+Account groups are site-specific lists, maintained in a site-defined
+manner.
+Each SMAP server implementation needs to specify separately the nature
+and the names of the available account groups (if they exist at all).</P
+></DD
+></DL
+></DIV
+><P
+>Access rights are specified using a list of zero or more characters,
+as follows:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>a</TT
+></DT
+><DD
+><P
+>Administer this folder.
+Maintain this folder's ACLs.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>c</TT
+></DT
+><DD
+><P
+>Create subfolders.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>e</TT
+></DT
+><DD
+><P
+>Remove messages from this folder (the <TT
+CLASS="LITERAL"
+>EXPUNGE</TT
+>
+and the <TT
+CLASS="LITERAL"
+>MOVE</TT
+> commands).</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>i</TT
+></DT
+><DD
+><P
+>Insert messages into this folder (<TT
+CLASS="LITERAL"
+>COPY</TT
+>
+or <TT
+CLASS="LITERAL"
+>MOVE</TT
+> messages to this folder, and the
+<TT
+CLASS="LITERAL"
+>ADD</TT
+> command).</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>l</TT
+></DT
+><DD
+><P
+>List this folder.
+This folder is visible, and is shown by the <TT
+CLASS="LITERAL"
+>LIST</TT
+>
+command.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>r</TT
+></DT
+><DD
+><P
+>Read, or open this folder (the <TT
+CLASS="LITERAL"
+>OPEN</TT
+> or the
+<TT
+CLASS="LITERAL"
+>SOPEN</TT
+> command).</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>s</TT
+></DT
+><DD
+><P
+>Add or remove the <TT
+CLASS="LITERAL"
+>SEEN</TT
+> flag on messages.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>t</TT
+></DT
+><DD
+><P
+>Add or remove the <TT
+CLASS="LITERAL"
+>DELETED</TT
+> flag on messages.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>w</TT
+></DT
+><DD
+><P
+>Add or remove any message flag, except for <TT
+CLASS="LITERAL"
+>SEEN</TT
+> and
+<TT
+CLASS="LITERAL"
+>DELETED</TT
+>; add and remove keywords.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>x</TT
+></DT
+><DD
+><P
+>Delete this folder.</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="ACLNEGRIGHTS"
+>Negative rights</A
+></H3
+><P
+>An access control list entry may have
+an identifier that begins with a dash.
+This access control list entry
+specifies a <SPAN
+CLASS="QUOTE"
+>"negative right"</SPAN
+>, which revokes, rather than adds,
+the corresponding rights from the identifier.
+For example, consider the the following access control list:</P
+><DIV
+CLASS="INFORMALEXAMPLE"
+><P
+></P
+><A
+NAME="AEN12839"
+></A
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>anyone      alr
+user=fred   -r</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><P
+>This ACL gives access, list, and read privileges to everyone, and revokes
+read privileges from the <TT
+CLASS="LITERAL"
+>fred</TT
+> user.
+Presumably, everyone except fred can administer, list, and read the folder;
+while fred can only administer and read it.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="AEN12843"
+>Computing access rights</A
+></H3
+><P
+>As hinted in the previous example, there may be more than one access
+control list entry that's applicable to a given user.
+The SMAP server needs to compute the actual access rights for a folder
+based on all applicable access control list entries.
+There are several approaches to do that.
+The SMAP server declares its chosen method of access rights computation
+using the <SPAN
+CLASS="QUOTE"
+>"ACL2"</SPAN
+> capability.
+At this time, two access computation methods are defined:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>ACL2=UNION</DT
+><DD
+><P
+>Access rights from all
+applicable ACL entries are combined together,
+then, all negative rights from all applicable ACL entries are removed,
+giving the final result.
+This is the computation method used in the previous example.</P
+></DD
+><DT
+>ACL2=MOST-SPECIFIC</DT
+><DD
+><P
+>Only access rights from the <SPAN
+CLASS="QUOTE"
+>"most specific"</SPAN
+> ACL entries
+are factored in.
+That is, ACL entries referring specifically to the user
+(the <SPAN
+CLASS="QUOTE"
+>"user="</SPAN
+> ACL entries, and/or <SPAN
+CLASS="QUOTE"
+>"owner"</SPAN
+>
+entries) are used, if present.
+Otherwise, any applicable <SPAN
+CLASS="QUOTE"
+>"group="</SPAN
+> entries are used, if present.
+Otherwise, <SPAN
+CLASS="QUOTE"
+>"anyone"</SPAN
+> and <SPAN
+CLASS="QUOTE"
+>"anonymous"</SPAN
+> entries are
+used by default.</P
+><P
+>Multiple applicable most-specific entries are combined in the same way
+as the <SPAN
+CLASS="QUOTE"
+>"union"</SPAN
+> method.</P
+><P
+>Here's
+the equivalent <SPAN
+CLASS="QUOTE"
+>"most-specific"</SPAN
+> version of the earlier
+example:</P
+><DIV
+CLASS="INFORMALEXAMPLE"
+><P
+></P
+><A
+NAME="AEN12866"
+></A
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>anyone      alr
+user=fred   al</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="AEN12868"
+>Obtaining access rights</A
+></H3
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;ACL&nbsp;INBOX<br>
+S:&nbsp;*&nbsp;ACL&nbsp;"aceilrstwx"<br>
+S:&nbsp;+OK&nbsp;ACL&nbsp;retrieved</P
+></P
+><P
+>The <TT
+CLASS="LITERAL"
+>ACL</TT
+> command computes the requesting client's access
+rights on the indicated folder.
+
+The whitespace-delimited words after <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>ACL</TT
+>"</SPAN
+>
+specify the folder whose access rights are computed and returned.</P
+><P
+>The server responds with a <SPAN
+CLASS="QUOTE"
+>"* ACL"</SPAN
+> message, which contains a
+single word that lists the access rights on the given folder.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="AEN12878"
+>Retrieving access control lists</A
+></H3
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;GETACL&nbsp;INBOX<br>
+S:&nbsp;*&nbsp;GETACL&nbsp;"owner"&nbsp;"aceilrstwx"&nbsp;"user=fred"&nbsp;"ace"<br>
+S:&nbsp;+OK&nbsp;ACLs&nbsp;retrieved</P
+></P
+><P
+>The <TT
+CLASS="LITERAL"
+>GETACL</TT
+> command returns the access control list for
+the indicated folder.
+The whitespace-delimited words after <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>GETACL</TT
+>"</SPAN
+>
+specify the folder whose access control list is requested.</P
+><P
+>The server responds with a <SPAN
+CLASS="QUOTE"
+>"* GETACL"</SPAN
+> message.
+The remaining whitespace-delimited words after
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>* GETACL</TT
+>"</SPAN
+> consist of a zero or more
+<TT
+CLASS="REPLACEABLE"
+><I
+>identifier</I
+></TT
+>/<TT
+CLASS="REPLACEABLE"
+><I
+>rights</I
+></TT
+>
+pairs.
+In each pair,
+<TT
+CLASS="REPLACEABLE"
+><I
+>identifier</I
+></TT
+> names the identity to which
+<TT
+CLASS="REPLACEABLE"
+><I
+>rights</I
+></TT
+> apply.</P
+><P
+>The server may respond with two or more <SPAN
+CLASS="QUOTE"
+>"* GETACL"</SPAN
+> messages
+when the access control list is very large.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="AEN12896"
+>Modifying access rights</A
+></H3
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;SETACL&nbsp;INBOX&nbsp;""&nbsp;user=fred&nbsp;ace<br>
+S:&nbsp;*&nbsp;GETACL&nbsp;"owner"&nbsp;"aceilrstwx"&nbsp;"user=fred"&nbsp;"ace"<br>
+S:&nbsp;+OK&nbsp;Updated&nbsp;ACLs<br>
+C:&nbsp;SETACL&nbsp;INBOX&nbsp;""&nbsp;user=fred&nbsp;+rwx<br>
+S:&nbsp;*&nbsp;GETACL&nbsp;"owner"&nbsp;"aceilrstwx"&nbsp;"user=fred"&nbsp;"acerwx"<br>
+S:&nbsp;+OK&nbsp;Updated&nbsp;ACLs<br>&#13;</P
+></P
+><P
+>The <TT
+CLASS="LITERAL"
+>SETACL</TT
+> command modifies rights for a single access
+control list identifier.
+The whitespace-delimited words after <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>SETACL</TT
+>"</SPAN
+>
+specify the folder whose access control list will be modified.
+The folder's name is followed by a single empty word, the identifier, then
+the requested access rights.</P
+><P
+>The existing access rights assigned to the identifier are replaced by the
+new rights specified in the command.
+If the identifier does not exist in the access control list, it is added
+with the specified rights.</P
+><P
+>If the access rights are prefixed by <SPAN
+CLASS="QUOTE"
+>"+"</SPAN
+>, the specified rights
+are added to the existing rights, for this identifier.
+If the access rights are prefixed by <SPAN
+CLASS="QUOTE"
+>"-"</SPAN
+>, the specified rights
+are removed from the existing rights, for this identifier.
+It is not an error to add an access right that already exists, or remove an
+access right that did not exist; in both cases the request is ignored
+(for that specific access right).</P
+><P
+><TT
+CLASS="REPLACEABLE"
+><I
+>identifier</I
+></TT
+>
+may specify a <A
+HREF="x12593.html#ACLNEGRIGHTS"
+>negative right</A
+>.
+When the server uses <SPAN
+CLASS="QUOTE"
+>"ACL2=UNION"</SPAN
+> computation method, setting
+an empty access right list for an identifier will remove the identifier from
+the access control list.</P
+><P
+>The server responds with zero or more
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>* GETACL</TT
+>"</SPAN
+> messages, that return the updated
+access control list for this folder.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H3
+CLASS="SECTION"
+><A
+NAME="AEN12915"
+>Deleting access rights</A
+></H3
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;DELETEACL&nbsp;INBOX&nbsp;""&nbsp;user=fred<br>
+S:&nbsp;*&nbsp;GETACL&nbsp;"owner"&nbsp;"aceilrstwx"<br>
+S:&nbsp;+OK&nbsp;Updated&nbsp;ACLs<br>&#13;</P
+></P
+><P
+>The <TT
+CLASS="LITERAL"
+>DELETEACL</TT
+> command removes an identifier from the
+access control list.
+The identifier
+may be a <A
+HREF="x12593.html#ACLNEGRIGHTS"
+>negative right</A
+>.
+The whitespace-delimited words after
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>DELETEACL</TT
+>"</SPAN
+>
+specify the folder whose access control list will be modified.
+The folder's name is followed by a single empty word, than
+the identifier to be removed.
+It is not an error to name an identifier that does not exist,
+the request is effectively ignored (but the server still responds
+with <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>* GETACL</TT
+>"</SPAN
+> messages).</P
+><P
+>The server responds with zero or more
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>* GETACL</TT
+>"</SPAN
+> messages, that return the updated
+access control list for this folder.</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="conn.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x12929.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SMAP connection negotiation</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="smap1.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Using Folders</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,510 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::address</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Extra/Miscellaneous objects/methods"
+HREF="misc.html"><LINK
+REL="PREVIOUS"
+TITLE="Extra/Miscellaneous objects/methods"
+HREF="misc.html"><LINK
+REL="NEXT"
+TITLE="mail::Attachment"
+HREF="mail-attachments.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="misc.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mail-attachments.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="ADDRESS"
+></A
+>mail::address</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN11718"
+></A
+><H2
+>Name</H2
+>mail::address&nbsp;--&nbsp;An E-mail address</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN11721"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/rfcaddr.H&#62;<br>
+<br>
+mail::address&nbsp;address("John&nbsp;Smith",&nbsp;"johnsmith@example.com");<br>
+<br>
+std::string&nbsp;addr=address.getAddr();<br>
+std::string&nbsp;name=address.getName();<br>
+<br>
+address.setAddr(addr);<br>
+address.setName(name);<br>
+<br>
+std::string&nbsp;str=address.toString();<br>
+<br>
+std::vector&#60;mail::address&#62;&nbsp;addressList;<br>
+<br>
+std::string&nbsp;header=&nbsp;mail::address::toString("From:&nbsp;",&nbsp;addressList,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;width=76);<br>
+<br>
+size_t&nbsp;errorIndex;<br>
+<br>
+bool&nbsp;error=mail::address::fromString(std::string&nbsp;addresses,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addressList,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errorIndex);<br>
+<br>
+std::string&nbsp;stdAddr=address.getCanonAddress();<br>
+<br>
+mail::address&nbsp;addr1,&nbsp;addr2;<br>
+<br>
+bool&nbsp;same=&nbsp;addr1&nbsp;==&nbsp;addr2;<br>
+bool&nbsp;notsame=&nbsp;addr1&nbsp;!=&nbsp;addr2;</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN11723"
+></A
+><H2
+>USAGE</H2
+><P
+><CODE
+CLASS="STRUCTNAME"
+>mail::address</CODE
+> represents a single E-mail address.
+An E-mail address consists of the recipient's name, and the actual address
+in the format of
+<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>domain</I
+></TT
+>.
+The name and the address components may be accessed or changed by
+<TT
+CLASS="FUNCTION"
+>getName()</TT
+>,
+<TT
+CLASS="FUNCTION"
+>getAddr()</TT
+>,
+<TT
+CLASS="FUNCTION"
+>setName()</TT
+> and
+<TT
+CLASS="FUNCTION"
+>setAddr()</TT
+> methods.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><CODE
+CLASS="STRUCTNAME"
+>mail::emailAddress</CODE
+> would be a more appropriate
+class for most situations.
+The name component used by
+<TT
+CLASS="FUNCTION"
+>getName()</TT
+> and
+<TT
+CLASS="FUNCTION"
+>setName()</TT
+> methods is the Internet-format, MIME-encoded
+name.
+<CODE
+CLASS="STRUCTNAME"
+>mail::emailAddress</CODE
+> is a subclass of
+<CODE
+CLASS="STRUCTNAME"
+>mail::address</CODE
+>, and provides more convenient methods
+for working with the name component of an E-mail address.</P
+><P
+>The <TT
+CLASS="FUNCTION"
+>toString</TT
+> and
+<TT
+CLASS="FUNCTION"
+>fromString</TT
+> methods, defined below, will take a vector
+of either
+<CODE
+CLASS="STRUCTNAME"
+>mail::emailAddress</CODE
+> or
+<CODE
+CLASS="STRUCTNAME"
+>mail::address</CODE
+> objects, and in all other ways
+both classes are freely interchangable, and may be converted to one
+another.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>The <TT
+CLASS="FUNCTION"
+>toString</TT
+> method converts an address to a text string
+formatted as "<TT
+CLASS="LITERAL"
+>name &#60;user@domain&#62;</TT
+>".
+A second <TT
+CLASS="FUNCTION"
+>toString</TT
+> function creates an E-mail header
+that contains a comma-separated list of E-mail addresses.
+The first parameter must be the header's name (with a trailing space
+character); the second parameter is a reference to a vector of
+<CODE
+CLASS="STRUCTNAME"
+>mail::address</CODE
+> objects.
+An optional third parameter sets the maximum line width; the text string
+returned by <TT
+CLASS="FUNCTION"
+>toString</TT
+> will have newline characters,
+if necessary to make sure that each line is shorter than the specified
+maximum.</P
+><P
+><TT
+CLASS="FUNCTION"
+>fromString</TT
+> does the opposite: it converts the contents
+of an E-mail
+header to an array of <CODE
+CLASS="STRUCTNAME"
+>mail::address</CODE
+> objects.
+The first parameter is the E-mail header's contents
+(<I
+CLASS="EMPHASIS"
+>without</I
+> <TT
+CLASS="LITERAL"
+>Header-Name:</TT
+>).
+The second parameter is a reference to a vector of
+<CODE
+CLASS="STRUCTNAME"
+>mail::address</CODE
+> objects.
+<TT
+CLASS="FUNCTION"
+>fromString</TT
+> returns false if a fatal error has occured
+(out of memory, or something else).
+<TT
+CLASS="PARAMETER"
+><I
+>errorIndex</I
+></TT
+> is normally set to
+<TT
+CLASS="LITERAL"
+>string::npos</TT
+>.
+If the header cannot be parsed;
+<TT
+CLASS="PARAMETER"
+><I
+>errorIndex</I
+></TT
+> is set to the index of the character
+in <TT
+CLASS="PARAMETER"
+><I
+>addresses</I
+></TT
+> where a syntax error was
+found (the header is still parsed, and any recognizable addresses are
+still saved in
+<TT
+CLASS="PARAMETER"
+><I
+>addressList</I
+></TT
+>).</P
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>addressList</I
+></TT
+> should be empty.
+Otherwise the addresses are appended to
+<TT
+CLASS="PARAMETER"
+><I
+>addressList</I
+></TT
+>'s existing contents.</P
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN11766"
+></A
+><H3
+>Comparing addresses</H3
+><P
+>The <TT
+CLASS="REPLACEABLE"
+><I
+>domain</I
+></TT
+> part of an E-mail address is
+case insensitive, however the
+<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+> part of an E-mail address is not case
+insensitive.
+It is up to each individual <TT
+CLASS="REPLACEABLE"
+><I
+>domain</I
+></TT
+> whether or
+not the
+<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+> part is case sensitive, or not.
+Since it is not possible to determine whether
+<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+> is case sensitive; the
+<TT
+CLASS="FUNCTION"
+>getCanonAddress</TT
+> method returns the E-mail address as
+<TT
+CLASS="REPLACEABLE"
+><I
+>user</I
+></TT
+>@<TT
+CLASS="REPLACEABLE"
+><I
+>domain</I
+></TT
+>, with
+only the
+<TT
+CLASS="REPLACEABLE"
+><I
+>domain</I
+></TT
+> part converted to lowercase.</P
+><P
+>The object also defines the equality and non-equality operators, which
+compare the address portion of two
+<CODE
+CLASS="STRUCTNAME"
+>mail::address</CODE
+> objects (the name portions are
+ignored), with the
+<TT
+CLASS="REPLACEABLE"
+><I
+>domain</I
+></TT
+> part of each domain being case
+insensitive</P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN11781"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="emailaddress.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::emailAddress</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="envelope.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::envelope</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="misc.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mail-attachments.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Extra/Miscellaneous objects/methods</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="misc.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::Attachment</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,611 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::folder::getParentFolder</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::folder Native API reference"
+HREF="libmail-folder.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::folder::getName"
+HREF="folder-getname.html"><LINK
+REL="NEXT"
+TITLE="mail::folder::getPath"
+HREF="folder-getpath.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="folder-getname.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="folder-getpath.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="FOLDER-GETPARENTFOLDER"
+></A
+>mail::folder::getParentFolder</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN10041"
+></A
+><H2
+>Name</H2
+>mail::folder::getParentFolder&nbsp;--&nbsp;Find parent folder</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN10044"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/mail.H&#62;<br>
+<br>
+<br>
+class&nbsp;myCallback&nbsp;:&nbsp;public&nbsp;mail::callback&nbsp;{<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success(std::string&nbsp;msg);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;fail(std::string&nbsp;msg);<br>
+};</P
+><P
+CLASS="LITERALLAYOUT"
+>class&nbsp;myFolderCallback&nbsp;:&nbsp;public&nbsp;mail::callback::folderlist&nbsp;{<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success(const&nbsp;std::vector&#60;const&nbsp;mail::folder&nbsp;*&#62;&nbsp;&#38;folders);<br>
+};</P
+><P
+CLASS="LITERALLAYOUT"
+>mail::folder&nbsp;*folder;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN10048"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>folder-&#62;<TT
+CLASS="FUNCTION"
+>getParentFolder</TT
+></CODE
+>(myFolderCallback &#38;<TT
+CLASS="PARAMETER"
+><I
+>folderCallback</I
+></TT
+>, myCallback &#38;<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN10056"
+></A
+><H2
+>USAGE</H2
+><P
+>A mail account contains folders that are arranged in a tree-like
+hierarchy.
+<TT
+CLASS="FUNCTION"
+>mail::folder::getParentFolder</TT
+> creates a new
+folder object that refers to
+<TT
+CLASS="PARAMETER"
+><I
+>folder</I
+></TT
+>'s
+parent folder.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN10061"
+></A
+><H2
+>RETURN CODES AND CALLBACKS</H2
+><P
+>The application must wait until
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.
+The <TT
+CLASS="FUNCTION"
+>success</TT
+> method is invoked when this request is
+succesfully processed.
+The <TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked if this request cannot
+be processed.
+The application must not destroy
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+> until either the
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method may be invoked even after other
+callback methods were invoked.
+This indicates that the request was partially completed before the error
+was encountered.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The application must not destroy
+<TT
+CLASS="PARAMETER"
+><I
+>folderCallback</I
+></TT
+> until this request
+fails or succeeds.
+<TT
+CLASS="PARAMETER"
+><I
+>folderCallback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> method is invoked just before
+the
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> method.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>The
+<TT
+CLASS="FUNCTION"
+>folderCallback.success</TT
+> method
+receives a vector that contains exactly one pointer to a single
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> object, that
+refers to
+<TT
+CLASS="PARAMETER"
+><I
+>folder</I
+></TT
+>'s parent folder
+The vector will be empty if
+<TT
+CLASS="PARAMETER"
+><I
+>folder</I
+></TT
+>'s parent folder could not be determined.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+>s are linked to their corresponding
+<CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+>s.
+A <CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> created by one
+<CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+> may not be used with a different
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+>.
+All
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+>s created by
+a <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+> are invalidated when
+this <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+> object is destroyed.
+Note that the
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> objects are not automatically destroyed;
+the application is still responsible for destroying any remaining
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+>s, after their
+a <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+> is destroyed.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The
+<TT
+CLASS="FUNCTION"
+>folderCallback.success</TT
+> method
+receives a (possibly empty) vector of pointers to
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> objects.
+These objects will be destroyed when
+<TT
+CLASS="FUNCTION"
+>folderCallback.success</TT
+> terminates.
+The application must use
+<A
+HREF="folder-clone.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::folder::clone</SPAN
+>(3x)</SPAN
+></A
+>
+to create copies of
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> objects it wants to
+use later.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Both
+<TT
+CLASS="FUNCTION"
+>folderCallback.success</TT
+> and
+<TT
+CLASS="FUNCTION"
+>myCallback.success</TT
+> method will be invoked if this
+request succeeds.
+<TT
+CLASS="FUNCTION"
+>folderCallback.success</TT
+> will be invoked before
+<TT
+CLASS="FUNCTION"
+>myCallback.success</TT
+> (since by definition this indicates
+that the request has been completed).</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s <TT
+CLASS="FUNCTION"
+>success</TT
+> method
+is then invoked, after all <CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> objects
+are destroyed.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN10121"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="mail-readtoplevel.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::readTopLevelFolders</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="folder-clone.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::folder::clone</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="folder-readsubfolders.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::folder::readSubFolders</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="folder-getname.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="folder-getpath.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::folder::getName</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libmail-folder.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::folder::getPath</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

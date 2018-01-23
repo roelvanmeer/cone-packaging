@@ -1,0 +1,275 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>Creating headers</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="
+LibMAIL
+ reference "
+HREF="libmail.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::folder::toString"
+HREF="folder-tostring.html"><LINK
+REL="NEXT"
+TITLE="mail::Header::addresslist"
+HREF="header-addresslist.html"></HEAD
+><BODY
+CLASS="REFERENCE"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="folder-tostring.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="header-addresslist.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="REFERENCE"
+><A
+NAME="MAIL-HEADERS"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+>E. Creating headers</H1
+><DIV
+CLASS="PARTINTRO"
+><A
+NAME="AEN11412"
+></A
+><P
+>The <CODE
+CLASS="STRUCTNAME"
+>mail::Header</CODE
+> family of classes provide a
+convenient way for creating E-mail headers.
+The usual approach is to instantiate a
+<A
+HREF="header-list.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::list</SPAN
+>(3x)</SPAN
+></A
+> object, then
+use the <SPAN
+CLASS="QUOTE"
+>"&#60;&#60;"</SPAN
+> operator repeatedly with any combination of
+<A
+HREF="header-addresslist.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::addresslist</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="header-encoded.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::encoded</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="header-mime.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::mime</SPAN
+>(3x)</SPAN
+></A
+> and
+<A
+HREF="header-plain.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::plain</SPAN
+>(3x)</SPAN
+></A
+> objects, which
+format different kinds of E-mail headers.
+Finally,
+<A
+HREF="header-list.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::Header::list</SPAN
+>(3x)</SPAN
+></A
+>
+<TT
+CLASS="LITERAL"
+>std::string</TT
+> converts the headers to text, and returns
+a single string containing nicely-formatted headers.</P
+></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="header-addresslist.html"
+>mail::Header::addresslist</A
+>&nbsp;--&nbsp;An E-mail header that contains addresses.</DT
+><DT
+><A
+HREF="header-encoded.html"
+>mail::Header::encoded</A
+>&nbsp;--&nbsp;An unstructured E-mail header.</DT
+><DT
+><A
+HREF="header-list.html"
+>mail::Header::list</A
+>&nbsp;--&nbsp;Create a list of headers.</DT
+><DT
+><A
+HREF="header-mime.html"
+>mail::Header::mime</A
+>&nbsp;--&nbsp;A structured MIME header.</DT
+><DT
+><A
+HREF="header-plain.html"
+>mail::Header::plain</A
+>&nbsp;--&nbsp;An unstructured, <TT
+CLASS="LITERAL"
+>US-ASCII</TT
+>-only, E-mail header.</DT
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="folder-tostring.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="header-addresslist.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::folder::toString</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libmail.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::Header::addresslist</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

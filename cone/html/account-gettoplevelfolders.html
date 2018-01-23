@@ -1,0 +1,334 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::ACCOUNT::getTopLevelFolders</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::ACCOUNT Synchronous API reference"
+HREF="synchronous.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::ACCOUNT::getSubFolders"
+HREF="account-getsubfolders.html"><LINK
+REL="NEXT"
+TITLE="mail::ACCOUNT::login"
+HREF="account-login.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="account-getsubfolders.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="account-login.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="ACCOUNT-GETTOPLEVELFOLDERS"
+></A
+>mail::ACCOUNT::getTopLevelFolders</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN4459"
+></A
+><H2
+>Name</H2
+>mail::ACCOUNT::getTopLevelFolders&nbsp;--&nbsp;Enumerate top-level folders</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN4462"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/sync.H&#62;<br>
+<br>
+mail::ACCOUNT&nbsp;*mail;<br>
+mail::ACCOUNT::FolderList&nbsp;folderList;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN4464"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>bool ok=mail-&#62;<TT
+CLASS="FUNCTION"
+>getTopLevelFolders</TT
+></CODE
+>(<TT
+CLASS="PARAMETER"
+><I
+>folderList</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+><P
+CLASS="LITERALLAYOUT"
+>std::string&nbsp;errmsg=mail-&#62;getErrmsg();</P
+><P
+CLASS="LITERALLAYOUT"
+>size_t&nbsp;nFolders=folderList::size();<br>
+const&nbsp;mail::folder&nbsp;*folder=folderList[n];</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4472"
+></A
+><H2
+>USAGE</H2
+><P
+>A mail account contains a collection of folders, arranged in a top-to-bottom
+hierarchy.
+This function returns the list of the folders at the top-level of the
+folder hierarchy.</P
+><P
+><TT
+CLASS="FUNCTION"
+>mail::ACCOUNT::getTopLevelFolders</TT
+>, if succesful,
+initializes a list of
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> objects, which are maintained by the
+<CODE
+CLASS="STRUCTNAME"
+>mail::ACCOUNT::FolderList</CODE
+> class.
+Each
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> object represents a mail account's
+folder.
+The number of folders, and a pointer to each folder object, is obtained
+according to the example above.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Pointers to <CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> objects are no longer
+valid after the <CODE
+CLASS="STRUCTNAME"
+>mail::ACCOUNT::FolderList</CODE
+> object
+is destroyed.
+The application should use
+<A
+HREF="folder-clone.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::folder::clone</SPAN
+>(3x)</SPAN
+></A
+> to create
+a duplicate copy of the
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> object (which the application is now
+responsible for destroying).</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4489"
+></A
+><H2
+>RETURN CODES AND CALLBACKS</H2
+><P
+>This method returns <TT
+CLASS="LITERAL"
+>true</TT
+> if it succeeds, or
+<TT
+CLASS="LITERAL"
+>false</TT
+> if it fails.
+If the method fails, use
+<CODE
+CLASS="STRUCTFIELD"
+>mail::ACCOUNT::getErrmsg()</CODE
+> to read a brief
+description of the error.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4495"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="account-login.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::login</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="account-getsubfolders.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::getSubFolders</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="account-getsubfolders.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="account-login.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::ACCOUNT::getSubFolders</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="synchronous.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::ACCOUNT::login</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

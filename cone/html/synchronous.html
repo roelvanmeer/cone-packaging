@@ -1,0 +1,376 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::ACCOUNT Synchronous API reference</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="
+LibMAIL
+ reference "
+HREF="libmail.html"><LINK
+REL="PREVIOUS"
+TITLE="
+LibMAIL
+ APIs"
+HREF="c2790.html"><LINK
+REL="NEXT"
+TITLE="mail::ACCOUNT::addMessage"
+HREF="account-libmail-addmessage.html"></HEAD
+><BODY
+CLASS="REFERENCE"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c2790.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="account-libmail-addmessage.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="REFERENCE"
+><A
+NAME="SYNCHRONOUS"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+>A. <CODE
+CLASS="STRUCTNAME"
+>mail::ACCOUNT</CODE
+> Synchronous API reference</H1
+><DIV
+CLASS="PARTINTRO"
+><A
+NAME="AEN2844"
+></A
+><P
+>A <CODE
+CLASS="STRUCTNAME"
+>mail::ACCOUNT</CODE
+> object represents a "mail account".
+An account is
+a collection of folders (<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> objects).
+The folders are arranged in a hierarchy, top to bottom.
+A folder must be "opened", before messages in the folder can be read.
+One folder, per account, can be opened at a time.
+Opening another folder closes the previous folder.
+<CODE
+CLASS="STRUCTNAME"
+>mail::ACCOUNT</CODE
+> objects contain methods for
+enumerating and navigating the <CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> objects,
+and for accessing messages in the currently-open folder.</P
+></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="account-libmail-addmessage.html"
+>mail::ACCOUNT::addMessage</A
+>&nbsp;--&nbsp;Add a message to a folder</DT
+><DT
+><A
+HREF="account-checknewmail.html"
+>mail::ACCOUNT::checkNewMail</A
+>&nbsp;--&nbsp;Check for new mail in the current folder</DT
+><DT
+><A
+HREF="account-copymessagesto.html"
+>mail::ACCOUNT::copyMessagesTo</A
+>&nbsp;--&nbsp;Copy messages to another folder</DT
+><DT
+><A
+HREF="account-createfolder.html"
+>mail::ACCOUNT::createFolder</A
+>&nbsp;--&nbsp;Create a new folder</DT
+><DT
+><A
+HREF="account-deletefolder.html"
+>mail::ACCOUNT::deleteFolder</A
+>&nbsp;--&nbsp;Delete a folder</DT
+><DT
+><A
+HREF="account-delrights.html"
+>mail::ACCOUNT::delRights</A
+>&nbsp;--&nbsp;Delete an access control list identifier</DT
+><DT
+><A
+HREF="account-getfolderindexinfo.html"
+>mail::ACCOUNT::getFolderIndexInfo</A
+>&nbsp;--&nbsp;Return message status</DT
+><DT
+><A
+HREF="account-getfolderindexsize.html"
+>mail::ACCOUNT::getFolderIndexSize</A
+>&nbsp;--&nbsp;Return number of messages in the current folder</DT
+><DT
+><A
+HREF="account-getfolderfrompath.html"
+>mail::ACCOUNT::getFolderFromPath</A
+>&nbsp;--&nbsp;A direct short-cut to a folder</DT
+><DT
+><A
+HREF="account-getfolderfromstring.html"
+>mail::ACCOUNT::getFolderFromString</A
+>&nbsp;--&nbsp;Restore a folder object</DT
+><DT
+><A
+HREF="account-getfolderkeywordinfo.html"
+>mail::ACCOUNT::getFolderKeywordInfo</A
+>&nbsp;--&nbsp;Return message keywords</DT
+><DT
+><A
+HREF="account-getmessagecontent.html"
+>mail::ACCOUNT::getMessageContent</A
+>&nbsp;--&nbsp;Read message content</DT
+><DT
+><A
+HREF="account-getmessagecontentdecoded.html"
+>mail::ACCOUNT::getMessageContentDecoded</A
+>&nbsp;--&nbsp;Read message content</DT
+><DT
+><A
+HREF="account-getmessageenvelope.html"
+>mail::ACCOUNT::getMessageEnvelope</A
+>&nbsp;--&nbsp;Return message header envelope</DT
+><DT
+><A
+HREF="account-getmessagestructure.html"
+>mail::ACCOUNT::getMessageStructure</A
+>&nbsp;--&nbsp;Return message MIME structure</DT
+><DT
+><A
+HREF="account-getmyrights.html"
+>mail::ACCOUNT::getMyRights</A
+>&nbsp;--&nbsp;Compute my access rights on a folder</DT
+><DT
+><A
+HREF="account-getparentfolder.html"
+>mail::ACCOUNT::getParentFolder</A
+>&nbsp;--&nbsp;Find parent folder</DT
+><DT
+><A
+HREF="account-getrights.html"
+>mail::ACCOUNT::getRights</A
+>&nbsp;--&nbsp;Read access control list</DT
+><DT
+><A
+HREF="account-getsubfolders.html"
+>mail::ACCOUNT::getSubFolders</A
+>&nbsp;--&nbsp;Enumerate subfolders</DT
+><DT
+><A
+HREF="account-gettoplevelfolders.html"
+>mail::ACCOUNT::getTopLevelFolders</A
+>&nbsp;--&nbsp;Enumerate top-level folders</DT
+><DT
+><A
+HREF="account-login.html"
+>mail::ACCOUNT::login</A
+>&nbsp;--&nbsp;Open a new mail account</DT
+><DT
+><A
+HREF="account-logout.html"
+>mail::ACCOUNT::logout</A
+>&nbsp;--&nbsp;Close a mail account</DT
+><DT
+><A
+HREF="account-movemessagesto.html"
+>mail::ACCOUNT::moveMessagesTo</A
+>&nbsp;--&nbsp;Move messages to another folder</DT
+><DT
+><A
+HREF="account-openfolder.html"
+>mail::ACCOUNT::openFolder</A
+>&nbsp;--&nbsp;Open a folder</DT
+><DT
+><A
+HREF="account-readfolderinfo.html"
+>mail::ACCOUNT::readFolderInfo</A
+>&nbsp;--&nbsp;Get folder status</DT
+><DT
+><A
+HREF="account-removemessages.html"
+>mail::ACCOUNT::removeMessages</A
+>&nbsp;--&nbsp;Remove messages from the folder</DT
+><DT
+><A
+HREF="account-renamefolder.html"
+>mail::ACCOUNT::renameFolder</A
+>&nbsp;--&nbsp;Rename a folder</DT
+><DT
+><A
+HREF="account-savefolderindexinfo.html"
+>mail::ACCOUNT::saveFolderIndexInfo</A
+>&nbsp;--&nbsp;Update message status</DT
+><DT
+><A
+HREF="account-searchmessages.html"
+>mail::ACCOUNT::searchMessages</A
+>&nbsp;--&nbsp;Search messages in the current folder</DT
+><DT
+><A
+HREF="account-send.html"
+>mail::ACCOUNT::send</A
+>&nbsp;--&nbsp;Send a message</DT
+><DT
+><A
+HREF="account-setrights.html"
+>mail::ACCOUNT::setRights</A
+>&nbsp;--&nbsp;Change access control lists</DT
+><DT
+><A
+HREF="account-translatepath.html"
+>mail::ACCOUNT::translatePath</A
+>&nbsp;--&nbsp;Convert readable folder path to internal folder path</DT
+><DT
+><A
+HREF="account-updatefolderindexflags.html"
+>mail::ACCOUNT::updateFolderIndexFlags</A
+>&nbsp;--&nbsp;Update status of multiple messages</DT
+><DT
+><A
+HREF="account-updatefolderindexinfo.html"
+>mail::ACCOUNT::updateFolderIndexInfo</A
+>&nbsp;--&nbsp;Update status of the currently open folder</DT
+><DT
+><A
+HREF="account-updatekeywords.html"
+>mail::ACCOUNT::updateKeywords</A
+>&nbsp;--&nbsp;Update message keywords</DT
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c2790.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="account-libmail-addmessage.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><TT
+CLASS="APPLICATION"
+>LibMAIL</TT
+>
+ APIs</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libmail.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::ACCOUNT::addMessage</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

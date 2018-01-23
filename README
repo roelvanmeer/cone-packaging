@@ -1,0 +1,130 @@
+   Link: start
+   Link: Cone: COnsole Newsreader And Emailer (parent)
+   Link: Installing Cone (previous)
+   Link: Mailing list (next)
+
+   <<< Previous         Cone: COnsole Newsreader And Emailer         Next >>>
+
+   --------------------------------------------------------------------------
+
+                                 Building Cone
+
+   Cone is distributed in source code form, licensed under GPL. See COPYING
+   for more information. The following prerequisites must be installed to
+   build and run Cone:
+
+     * A wide-character version of the curses library. ncurses supports wide
+       characters starting with version 5.3, if enabled at compile time.
+
+     * Libxml2
+
+     * OpenSSL 0.9.7 or higher.
+
+     * Cone optionally supports LDAP address books. LDAP support requires
+       OpenLDAP.
+
+       NOTE: It is not sufficient to have only the OpenLDAP runtime
+             libraries installed. The OpenLDAP development kit must be
+             installed as well. On most systems it's usually called
+             the "devel" component, that must be installed in addition
+             to the base OpenLDAP component. Verify that the
+             /usr/include/ldap.h file exist, before trying to build
+             Cone. If not, the required OpenLDAP development libraries
+             are missing, and must be installed.
+
+       NOTE: LDAP-based address books are highly recommended for
+             corporate and organizational environments. Cone's basic
+             address books (local address books and IMAP/SMAP
+             folder-based address books) have somewhat limited search
+             functionality -- addresses are looked up by exact
+             nicknames only. LDAP-based address books are more
+             powerful, they may be searched not just by exact
+             nicknames, but also by last name or full names. Partial
+             searches are also possible.
+
+     * aspell or pspell
+
+     * Where available, FAM, the File Alteration Monitor
+
+     * gcc 3.2, or higher
+
+     * gmake (if not already installed)
+
+     * The Courier Socks 5 proxy client API toolkit is required for Socks 5
+       support. Other Socks 5 proxy client libraries may or may not work.
+       Download the Courier Socks 5 proxy client library from
+       http://www.courier-mta.org/download.php#sox and follow its
+       installation instructions.
+
+   Right now the primary development focus is on the Linux platform, gcc 3.2.
+   Cone should build on other POSIX platforms; and any problems are likely to
+   be minor, and trivial to resolve. A large portion of Cone's code base
+   comes from Courier, which builds on many platforms.
+
+   NOTE: Cone requires a wide-character-capable version of Curses. At this
+         time not all Linux distribution provide a widechar-enabled Curses
+         library. Cone will compile against a non-widechar Curses, but will
+         not be able to display UTF-8, or other variable-length character
+         sets.
+
+         Download Red Hat RPMs (Red Hat 9, and earlier) for the
+         wide-character version of the ncurses library from
+         http://www.courier-mta.org/beta/ncurses/.
+
+Reading local mail with Cone
+
+   Cone reads local mail from either maildirs (the preferred format) or
+   mailbox files (or "mboxes"). When mboxes are used, Cone does not read the
+   system mailbox file directly (usually /var/spool/something). All messages
+   in the system mailbox are automatically moved to $HOME/Inbox, which is
+   then accessed as if it was the system mailbox. Starting Cone for the first
+   time on an mbox-based system automatically copies all existing mail from
+   the system mailbox file to $HOME/Inbox.
+
+   This is an intentional design choice. Normal user application cannot
+   create new files in /var/spool; all they can do is read the mailbox file
+   from /var/spool. Therefore, the only way to update the mailbox file is by
+   rewriting it from scratch (more or less). While the mailbox file is in the
+   process of being rewritten, if the Cone process is interrupted, or killed,
+   the resulted in a corrupted system mailbox. There are way to minimize this
+   vulnerability, but it cannot be eliminated completely. Some Linux kernels
+   use an "OOM killer" that may terminate any process when the system memory
+   is low. There is no way to completely prevent corrupted system mailbox
+   files on those kernels.
+
+   Cone uses an alternative way of updating mboxes. Cone updates mboxes by
+   creating a new mbox file separately, then replacing the original mbox file
+   with the new version. Unfortunately this cannot be done with the system
+   mailbox file, because of the restricted access rights on the system spool
+   directory. To solve this problem Cone automatically copies the system
+   mailbox file to $HOME/Inbox, each time the system mailbox file is opened
+   and whenever new mail is available.
+
+   --------------------------------------------------------------------------
+
+   <<< Previous                       Home                           Next >>>
+   Installing Cone                     Up                        Mailing list
+
+References
+
+   Visible links
+   . file:///home/mrsam/src/cone/cone/html/book.html
+   . file:///home/mrsam/src/cone/cone/html/index.html
+   . file:///home/mrsam/src/cone/cone/html/install.html
+   . file:///home/mrsam/src/cone/cone/html/x14176.html
+   . file:///home/mrsam/src/cone/cone/html/install.html
+   . file:///home/mrsam/src/cone/cone/html/x14176.html
+   . http://dickey.his.com/ncurses/ncurses.html
+   . http://www.xmlsoft.org/
+   . http://www.openssl.org/
+   . http://www.openldap.org/
+   . http://aspell.sourceforge.net/
+   . http://pspell.sourceforge.net/
+   . http://oss.sgi.com/projects/fam/
+   . http://www.courier-mta.org/download.php#sox
+   . http://www.courier-mta.org/
+   . http://www.courier-mta.org/beta/ncurses/
+   . file:///home/mrsam/src/cone/cone/html/install.html
+   . file:///home/mrsam/src/cone/cone/html/book.html
+   . file:///home/mrsam/src/cone/cone/html/x14176.html
+   . file:///home/mrsam/src/cone/cone/html/index.html

@@ -1,0 +1,663 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>SMAP syntax overview</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Simple Mail Access Protocol, Version 1"
+HREF="smap1.html"><LINK
+REL="PREVIOUS"
+TITLE="Simple Mail Access Protocol, Version 1"
+HREF="smap1.html"><LINK
+REL="NEXT"
+TITLE="SMAP connection negotiation"
+HREF="conn.html"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="smap1.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Simple Mail Access Protocol, Version 1</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="conn.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN12387"
+>SMAP syntax overview</A
+></H1
+><P
+>The rest of this document defines the actual SMAP commands, but all
+commands from the client, and replies from the server, follow the same basic
+syntax.
+All SMAP commands, and replies, use the UTF-8 character set (no matter what
+the natural language is used for error messages, or prompts).
+An SMAP command is generally one or more words.
+The words are separated by at least one whitespace
+character (U+0020, U+0009, or U+000D).
+An SMAP command is terminated by the newline character, (U+000A).</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The server does not translate actual message contents to UTF-8.
+The server provides the contents of a message as is, to the client.
+The UTF-8 character set is used for:</P
+><P
+></P
+><UL
+><LI
+><P
+>Names of folders</P
+></LI
+><LI
+><P
+>Error and status messages</P
+></LI
+><LI
+><P
+>Search strings</P
+></LI
+></UL
+><P
+>Other text-based entities already use an implicit character set
+(such as US-ASCII for names of E-mail headers) or are specified as
+opaque text strings (such as message unique identifiers, loginid and
+password) and have no explicitly defined character set.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN12400"
+>Maximum limitations and timeouts</A
+></H2
+><P
+><A
+HREF="http://www.rfc-editor.org/rfc/rfc2822.txt"
+TARGET="_top"
+>RFC 2822</A
+>
+sets the maximum length of a line in an E-mail message as 998 characters.
+This limitation is applicable to SMAP, since SMAP deals with E-mail.
+Additionally, SMAP commands may not exceed 8000 characters.
+SMAP servers should accept commands up to 8000 characters long.
+SMAP clients should not send commands that exceed 8000 characters in
+length.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>This, of course, does not apply to binary-formatted multiline replies,
+that transfer binary MIME attachments.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>SMAP servers should terminate inactive SMAP clients.
+SMAP servers must have a timeout of at least 30 minutes.
+SMAP clients must not wait more than 29 minutes before sending the next
+command to the server.
+SMAP clients that must remain idle for a prolonged period of time should
+periodically send the <TT
+CLASS="LITERAL"
+>NOOP</TT
+> command to prevent themselves
+from being disconnected for inactivity.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN12408"
+>Words</A
+></H2
+><P
+>A word can contain any character except for a control character (U+0000
+through U+001F).
+If a word contains spaces or quotes (U+0020 or U+0022),
+a quote must be added before the first character
+of the word, and a second quote character
+must follow the last character of the word.
+Quotes that are part of the word are doubled.
+For example:
+<TT
+CLASS="LITERAL"
+>"Learning the ""ABC""'s"</TT
+>
+is a single SMAP word.
+The word contains
+a single quote character before the letter "A" and a second quote character
+after the letter "C".
+Everything else is as it appears.
+A word that contains a single quote character is represented
+as <TT
+CLASS="LITERAL"
+>""""</TT
+>.
+A word that's meant to be completely empty is represented by two quotes:
+<TT
+CLASS="LITERAL"
+>""</TT
+>.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN12414"
+>SMAP server replies</A
+></H2
+><P
+>SMAP server replies also (except where noted) are lines of text terminated
+by U+000A.
+There are three general classes of server replies.
+All three of them generally contain either
+whitespace-delimited words (formatted similarly), or they begin with one or
+more whitespace-delimited words, with the rest being an informative,
+free-form message.</P
+><P
+>SMAP servers are allowed to reply with lines of text terminated by the
+CR+LF sequence, U+000D U+000A.  The ASCII CR character
+is interpreted by SMAP clients
+as whitespace filler, and is generally ignored.
+SMAP servers must be prepared to receive client commands that use
+either the CR+LF or the bare LF newline sequence.
+The only exception to this rule is the initial connection negotiation,
+which must use CR+LF in order to remain compatible with IMAP.</P
+><P
+>An SMAP client receives the server's response by reading
+an entire U+000A-terminated
+line, then parsing the first word, or character, to determine the reply's
+format.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="STATUSREPLY"
+>Status replies</A
+></H2
+><P
+>A line whose first word is either <SPAN
+CLASS="QUOTE"
+>"+OK"</SPAN
+> or
+<SPAN
+CLASS="QUOTE"
+>"-ERR"</SPAN
+> is a
+<SPAN
+CLASS="QUOTE"
+>"status reply"</SPAN
+>.
+<SPAN
+CLASS="QUOTE"
+>"+OK"</SPAN
+> indicates that the client's request succeeded,
+<SPAN
+CLASS="QUOTE"
+>"-ERR"</SPAN
+> indicates that it failed.
+The rest of the line is a free-form message,
+suitable to be displayed as the original command's acknowledgement.
+The status reply does not include any actual information requested
+by the original command (if any).
+The status reply indicates whether the command succeeded
+or failed.
+Information requested by the original command will be sent before the status
+reply, using either a "single line", or a "multiple line" format
+(see below).
+A command can result in more than one single or multi-line reply.
+The client, after sending an SMAP command,
+keeps reading single and multi-line
+replies, until a final status reply is read.
+After receiving the status reply, the client may proceed to send the
+next server command.</P
+><P
+>The SMAP client must wait until the status reply is received before sending
+the next command.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>In order to allow interoperability with IMAP, server replies prior to
+logging in are an exception to this reply format.
+They follow the general IMAP syntax.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="SINGLELINE"
+>Single line replies</A
+></H2
+><P
+>A server reply where the first whitespace-delimited word is the
+<SPAN
+CLASS="QUOTE"
+>"*"</SPAN
+> character is called a
+<SPAN
+CLASS="QUOTE"
+>"single line reply"</SPAN
+>.
+Single line replies send information, requested by the original command,
+formatted as whitespace-delimited words.
+The information carried by the words depends on the reply.
+The actual format of a single line reply depends on the original command,
+but can usually be determined by the word that follows <SPAN
+CLASS="QUOTE"
+>"*"</SPAN
+>.
+This single-line reply does not indicate if the client's command succeeded,
+the client must still wait to receive the final status reply.
+The only exception to this rule is the initial connection greeting,
+or the unexpected connection termination situation, which is described
+later.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The client must be prepared to receive multiple
+single line and multiple line replies,
+followed by an <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>-ERR</TT
+>"</SPAN
+> status reply.
+This happens when the server encounters an error in a middle of processing
+the client's request.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="MULTILINE"
+>Multiple line replies</A
+></H2
+><P
+>Certain information returned by an SMAP server cannot be conveniently
+represented as a single line of text.
+An example would be the contents of a message.
+Obviously, messages contains many lines of text.
+A server reply whose first word starts with the '{' character is called a
+<SPAN
+CLASS="QUOTE"
+>"multiple line reply"</SPAN
+>.
+This name is actually slightly misleading;
+this format may carry binary data
+that bears no resemblance to lines of text.</P
+><P
+>There are two separate multi-line reply formats.
+The first format is suitable for line-oriented textual content.
+It's called the <SPAN
+CLASS="QUOTE"
+>"dot-stuffed format"</SPAN
+>.
+The first word of the server reply is
+<SPAN
+CLASS="QUOTE"
+>"{.<TT
+CLASS="REPLACEABLE"
+><I
+>nnnn</I
+></TT
+>}"</SPAN
+>,
+where <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="REPLACEABLE"
+><I
+>nnnn</I
+></TT
+>"</SPAN
+>
+is a decimal number.
+This number is the server's estimate of the total size
+of the multi-line reply, in bytes.
+It is not an exact byte count, just a reasonable estimate.
+The server is not required to compute the exact byte count before sending
+the data, just provide a ballpark estimate.</P
+><P
+>The remaining words of the server's multi-line reply line
+contain other information, depending on the nature of the data.
+For example, a single SMAP command can request the server to return the
+contents of two or more messages.
+The server may process those messages in any order.
+The remainder of the server's multi-line reply line indicates which
+message this multi-line reply refers to.
+The actual data follows the server's multi-line reply line.
+The data is transmitted as lines of text, each line terminated by
+the U+000A character.
+Servers are also allowed to use the U+000D/U+000A end-of-line sequence.
+The end of the data is marked by a line that contains only a single period,
+U+002E, followed by optional whitespace.
+Lines of data that begin with U+002E have a second U+002E character
+prepended.</P
+><P
+>An SMAP client, upon receiving a multi-line reply in this
+format, begins reading U+000A-terminated lines of text, until
+it reads a line containing
+a single U+002E, and optional whitespace.
+Other lines with a leading U+002E
+character have it removed, and the
+rest of the line gets saved as the returned data.</P
+><P
+>The second multi-line server reply format carries binary data.
+It begins with the word
+<SPAN
+CLASS="QUOTE"
+>"{<TT
+CLASS="REPLACEABLE"
+><I
+>xxxx</I
+></TT
+>/<TT
+CLASS="REPLACEABLE"
+><I
+>yyyy</I
+></TT
+>}"</SPAN
+>,
+where
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="REPLACEABLE"
+><I
+>xxxx</I
+></TT
+>"</SPAN
+> and
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="REPLACEABLE"
+><I
+>yyyy</I
+></TT
+>"</SPAN
+> are decimal numbers.
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="REPLACEABLE"
+><I
+>yyyy</I
+></TT
+>"</SPAN
+> gives the server's estimate of
+the total size
+of the binary data, and <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="REPLACEABLE"
+><I
+>xxxx</I
+></TT
+>"</SPAN
+>
+gives the
+byte count of the first part that the server is about to send.
+The server does not have to send everything as one binary goop.
+The server is allowed to break down the binary data in smaller, managable,
+chunks, which are sent one at a time.</P
+><P
+>The remaining words of the multi-line reply line format are the
+same as as the dot-stuffed format's.
+Immediately
+following the multi-line reply's trailing U+000A, the server sends exactly
+the number of bytes given by <TT
+CLASS="REPLACEABLE"
+><I
+>xxxx</I
+></TT
+>.
+This is called a "binary chunk".</P
+><P
+>Each binary chunk is
+followed by another line of text terminated by the U+000A
+character.
+A trailing line that's empty, or contains only whitespace, indicates the end
+of the multi-line binary data.
+Otherwise the line contains a single word, <TT
+CLASS="REPLACEABLE"
+><I
+>xxxx</I
+></TT
+>
+(which can have leading or trailing whitespace filler),
+that gives the byte count of the next binary chunk, which immediately follows
+the U+000A character.</P
+><P
+>The SMAP client reads the initial multi-line reply line, and
+obtains
+the first chunk's byte count, and the estimated total byte count.
+The SMAP client then reads the exact number of bytes indicated by the byte
+count.  Afterwords, the SMAP client enters a loop where it first reads a
+newline-terminated line of text.  If the line is empty or contains only
+whitespace filler, then this is the end of the binary data, and
+the client proceeds
+to read the next server reply.  Otherwise the client extracts the next chunk's
+byte count, reads the indicated number of bytes, then repeats the
+process.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN12469"
+>An empty multi-line reply</A
+></H2
+><P
+>An expected multi-line reply may be empty.
+An example: the client requests specific E-mail headers, but the message
+does not have them.
+This is indicated by an empty multi-line reply.
+An empty multi-line reply is indicated by the word "{.0}" (followed by the
+remaining words that specify the context of this multi-line reply).
+The next line sent by the server contains a single "." character.
+This sequence is parsed by an SMAP client as a completely empty
+multi-line reply.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="smap1.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="conn.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Simple Mail Access Protocol, Version 1</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="smap1.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SMAP connection negotiation</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

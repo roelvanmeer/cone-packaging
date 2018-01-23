@@ -1,0 +1,526 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>Encryption And Signatures</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Cone mail client"
+HREF="cone00index.html"><LINK
+REL="PREVIOUS"
+TITLE="Remote Configuration"
+HREF="cone07remoteconfig.html"><LINK
+REL="NEXT"
+TITLE="Master Passwords"
+HREF="cone09masterpassword.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="cone07remoteconfig.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="cone09masterpassword.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="CONE08GPG"
+></A
+>Encryption And Signatures</H1
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> includes supports for encryption and digital signatures.
+<TT
+CLASS="APPLICATION"
+>GnuPG</TT
+> (http://www.gnupg.org) must be installed
+in order to use encryption
+and digital signatures.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> uses a newer MIME-based format for encrypted and signed messages.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> does not recognize or use the older
+<SPAN
+CLASS="QUOTE"
+>"inline-formatted"</SPAN
+> messages
+(this is where the text messages contain keywords like
+<SPAN
+CLASS="QUOTE"
+>"BEGIN PGP SIGNED MESSAGE"</SPAN
+>).</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN1762"
+>MIME encryption and digital signatures</A
+></H1
+><P
+>At this time <TT
+CLASS="APPLICATION"
+>Cone</TT
+> provides basic encryption, decryption, signature creation,
+and signature verification functionality.
+Key management (like creating and signing keys) must still be done with
+<TT
+CLASS="APPLICATION"
+>GnuPG</TT
+>.</P
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN1767"
+>Signing and encrypting messages</A
+></H2
+><P
+>When <TT
+CLASS="APPLICATION"
+>GnuPG</TT
+> is installed,
+two additional options become available after
+pressing <B
+CLASS="KEYCAP"
+>CTRL</B
+>-<B
+CLASS="KEYCAP"
+>X</B
+> to send a message:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>Sign</DT
+><DD
+><P
+>Pressing <B
+CLASS="KEYCAP"
+>S</B
+> displays a list of all available secret keys.
+Highlight the key and press <B
+CLASS="KEYCAP"
+>Enter</B
+> to select a key for
+signing the message.
+The list of keys is shown at the bottom of the screen.
+The top of the screen shows additional information about the currently
+highlighted key.</P
+></DD
+><DT
+>Encrypt</DT
+><DD
+><P
+>Pressing <B
+CLASS="KEYCAP"
+>E</B
+> displays a list of all known public keys.
+More than one public key may be selected.
+All public keys whose addresses match any recipient address,
+or the sender's address, are selected by default.
+The message is encrypted by all chosen public keys.
+Highlight each key and press <B
+CLASS="KEYCAP"
+>SPACE</B
+> to select a public key
+encryption.  Press <B
+CLASS="KEYCAP"
+>Enter</B
+> after selecting all public
+keys.
+A checkmark (or an asterisk, depending on the console display) is placed
+next to each selected key.
+Press <B
+CLASS="KEYCAP"
+>SPACE</B
+> again in order to un-select a selected key.</P
+></DD
+></DL
+></DIV
+><P
+>The original prompt is updated accordingly, after selecting either of these
+two options (the original <SPAN
+CLASS="QUOTE"
+>"Send message?"</SPAN
+> prompt changes to a
+<SPAN
+CLASS="QUOTE"
+>"Sign, then send message?"</SPAN
+>, or some other appropriate
+variant).
+The key used for signing a message is memorized like any other custom
+message header, and is automatically selected by default when sending the
+next message.
+Choose <SPAN
+CLASS="QUOTE"
+>"<B
+CLASS="KEYCAP"
+>S</B
+>ign"</SPAN
+> again to un-select the key.
+A separate default signing key exists for every account <TT
+CLASS="APPLICATION"
+>Cone</TT
+> is logged on to,
+and a default signing key is memorized for every open folder.
+It is possible to memorize a different key for signing
+replies to messages in different folders.
+However that may prove to be a bit cumbersome.
+Each time a message in a different folder is replied to, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> will prompt
+whether to set that folder's key (or any other custom header) as the default
+for the entire mail account.
+This feature is probably convenient when most replies are to messages from
+the same folder, and messages from other folders are accessed
+infrequently.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The <SPAN
+CLASS="QUOTE"
+>"Sign"</SPAN
+> and/or the <SPAN
+CLASS="QUOTE"
+>"Encrypt"</SPAN
+> option must be
+used before selecting <SPAN
+CLASS="QUOTE"
+>"Delivery notifications"</SPAN
+>.
+After selecting <SPAN
+CLASS="QUOTE"
+>"Delivery notifications"</SPAN
+>, the only remaining
+options shown are the various delivery notifications options, and
+<B
+CLASS="KEYCAP"
+>Y</B
+>, which sends the message.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Copies of encrypted sent messages are saved in their encrypted form.
+Unless the sender's public key is also selected for encryption, the sender
+will not be able to read a copy of the sender's own message!</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN1804"
+>Passphrases</A
+></H2
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> supports passphrase-protected keys.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> prompts for a passphrase before it signs a message.
+Press <B
+CLASS="KEYCAP"
+>Enter</B
+> without entering anything if the key does not
+have a passphrase.</P
+><P
+><TT
+CLASS="APPLICATION"
+>Cone</TT
+> remembers the passphrase, and will not ask for it again.
+When a master single-signon password is installed
+(see <SPAN
+CLASS="QUOTE"
+>"Master Passwords"</SPAN
+>), passphrase passwords are also
+saved together with all other account passwords.
+<TT
+CLASS="APPLICATION"
+>Cone</TT
+> does not automatically know when, and if,
+the key's passphrase is changed.
+When message signing fails, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> automatically removes the saved passphrase.
+Simply try again to sign the same message, and <TT
+CLASS="APPLICATION"
+>Cone</TT
+> will prompt for the
+new passphrase.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN1816"
+>Decrypting messages, and verifying signatures</A
+></H2
+><P
+>Pressing <B
+CLASS="KEYCAP"
+>Y</B
+> (as in <SPAN
+CLASS="QUOTE"
+>"decr<B
+CLASS="KEYCAP"
+>Y</B
+>t"</SPAN
+>)
+attempts to decrypt or verify the signature of a currently opened message.
+The message must be opened before it can be decrypted.
+A signed message must also be opened, before its signature can be
+verified.</P
+><P
+>An encrypted message will initially be empty, naturally, except for a single
+attachment that contains the encrypted content.
+The contents of a signed message are displayed normally.
+The presence of an additional attachment, that contains the message's
+signature, indicates that the message is signed.
+After a message is succesfully decrypted, or its signature is verified,
+the message's contents are shown together with the diagnostic messages from
+<TT
+CLASS="APPLICATION"
+>GnuPG</TT
+> which contain additional information on
+the message's encryption status.</P
+><P
+>Forwarding or replying to a message always ends up forwarding or replying
+whatever's currently shown on the screen.
+If the message is decrypted, the decrypted contents are forwarded.
+If the message is not decrypted, its original encrypted version is
+forwarded.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN1825"
+>Decrypting messages with a passphrase-protected key</A
+></H2
+><P
+>Before decrypting a message, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> prompts for a passphrase.
+The passphrase is memorized just like passphrases are memorized after
+a message is signed, and <TT
+CLASS="APPLICATION"
+>Cone</TT
+> will not ask for a passphrase again.
+Just like when signing, when a master single-signon password is installed,
+the passphrase is saved together with all other account passwords.</P
+><P
+>At this time, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> is not smart enough to known which private key was
+used for encrypting a message.  Therefore if multiple private keys are present,
+they all should have the same passphrase.
+Otherwise, each time an attempt is made to decrypt a message that's encrypted
+by different key, the attempt will fail because the wrong passphrase was
+memorized.
+Each time an attempt to decrypt a message fails, <TT
+CLASS="APPLICATION"
+>Cone</TT
+> automatically forgets
+the saved passphrase, so that the attempt to decrypt the message can be
+tried again, this time entering the correct passphrase (which will now be
+memorized and used as a default decrypting passphrase from now on).</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="cone07remoteconfig.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="cone09masterpassword.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Remote Configuration</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="cone00index.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Master Passwords</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

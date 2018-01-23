@@ -1,0 +1,543 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>Reading message attributes</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Simple Mail Access Protocol, Version 1"
+HREF="smap1.html"><LINK
+REL="PREVIOUS"
+TITLE="Using Folders"
+HREF="x12929.html"><LINK
+REL="NEXT"
+TITLE="Reading message contents"
+HREF="x13200.html"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x12929.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Simple Mail Access Protocol, Version 1</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x13200.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="ATTRIBUTES"
+>Reading message attributes</A
+></H1
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;FETCH&nbsp;4&nbsp;6-7&nbsp;FLAGS&nbsp;SIZE<br>
+S:&nbsp;*&nbsp;FETCH&nbsp;4&nbsp;FLAGS=SEEN,REPLIED&nbsp;SIZE=8341<br>
+S:&nbsp;*&nbsp;FETCH&nbsp;6&nbsp;FLAGS=&nbsp;SIZE=13862<br>
+S:&nbsp;*&nbsp;FETCH&nbsp;7&nbsp;FLAGS=SEEN&nbsp;SIZE=11802<br>
+S:&nbsp;+OK&nbsp;Ok</P
+></P
+><P
+><TT
+CLASS="LITERAL"
+>FETCH</TT
+> is a versatile command that retrieves message contents
+or attributes.
+<TT
+CLASS="LITERAL"
+>FETCH</TT
+> is followed by whitespace-delimited words that
+enumerate message numbers whose attributes or contents the server
+should retrieve.
+The list of message numbers if followed by the list of
+attributes (or specific message content) to retrieve.
+When requesting more than one attribute, and/or attributes from more than
+one message, the server's response may list the messages and attributes
+in any order.
+The server may also list all requested attributes for each message in one
+<TT
+CLASS="LITERAL"
+>* FETCH</TT
+> reply, or use a separate
+<TT
+CLASS="LITERAL"
+>* FETCH</TT
+> reply for each attribute.
+The following response is also a valid reply in the previous example:</P
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;FETCH&nbsp;4&nbsp;6-7&nbsp;FLAGS&nbsp;SIZE<br>
+S:&nbsp;*&nbsp;FETCH&nbsp;7&nbsp;SIZE=11802<br>
+S:&nbsp;*&nbsp;FETCH&nbsp;6&nbsp;SIZE=13862<br>
+S:&nbsp;*&nbsp;FETCH&nbsp;4&nbsp;SIZE=8341<br>
+S:&nbsp;*&nbsp;FETCH&nbsp;4&nbsp;FLAGS=SEEN,REPLIED<br>
+S:&nbsp;*&nbsp;FETCH&nbsp;6&nbsp;FLAGS=<br>
+S:&nbsp;*&nbsp;FETCH&nbsp;7&nbsp;FLAGS=SEEN<br>
+S:&nbsp;+OK&nbsp;Ok</P
+></P
+><P
+>The first word in each <TT
+CLASS="LITERAL"
+>* FETCH</TT
+>
+<A
+HREF="x12387.html#SINGLELINE"
+>single line reply</A
+>
+is the message number, the remaining whitespace-delimited words specify
+the requested attributes.
+Each requested attribute is returned as a single, whitespace-delimited
+word in the <TT
+CLASS="LITERAL"
+>* FETCH</TT
+> reply.
+For future expansion, both servers and clients should ignore attributes
+they do not recognize.</P
+><P
+>The following attributes are defined at this time:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>UID</TT
+></DT
+><DD
+><P
+>Request the message's unique identifier.
+The server assigns a unique identifier word to each message in a folder.
+The client should not attempt to interpret the unique identifier in any way,
+and treat it as an opaque text string.
+The only known property of the unique identifier is that no two messages
+in the same folder will ever have the same unique identifier.
+Example:</P
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;FETCH&nbsp;9-10&nbsp;UID<br>
+S:&nbsp;*&nbsp;FETCH&nbsp;9&nbsp;UID=1043320248/3456<br>
+S:&nbsp;*&nbsp;FETCH&nbsp;10&nbsp;UID=1043320248/3461<br>
+S:&nbsp;+OK&nbsp;FETCH&nbsp;completed</P
+></P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>FLAGS</TT
+></DT
+><DD
+><P
+>Each message has one or more message state flags.
+The following flags are currently defined:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><TT
+CLASS="LITERAL"
+>DELETED</TT
+></DT
+><DD
+><P
+>This message is marked for deletion.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>REPLIED</TT
+></DT
+><DD
+><P
+>This message has been replied to.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>SEEN</TT
+></DT
+><DD
+><P
+>The message's contents were previous read by <TT
+CLASS="LITERAL"
+>FETCH CONTENTS</TT
+>
+at least once.
+The server automatically sets this flag after processing a
+<TT
+CLASS="LITERAL"
+>FETCH CONTENTS</TT
+>
+command, but it can also be set or cleared manually
+by the <A
+HREF="store.html"
+><TT
+CLASS="LITERAL"
+>STORE</TT
+> command</A
+>.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>DRAFT</TT
+></DT
+><DD
+><P
+>This is a draft message.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>MARKED</TT
+></DT
+><DD
+><P
+>This messge is <SPAN
+CLASS="QUOTE"
+>"marked"</SPAN
+>.
+<SPAN
+CLASS="QUOTE"
+>"MARKED"</SPAN
+> is a generic flag that applications may use for
+their own purposes.
+The <A
+HREF="search.html"
+><TT
+CLASS="LITERAL"
+>SEARCH</TT
+> command</A
+>
+also uses this flag.</P
+></DD
+></DL
+></DIV
+><P
+>The server responds to a <TT
+CLASS="LITERAL"
+>* FETCH</TT
+> by returning
+<SPAN
+CLASS="QUOTE"
+>"FLAGS=<TT
+CLASS="REPLACEABLE"
+><I
+>list</I
+></TT
+>"</SPAN
+>, where
+<TT
+CLASS="REPLACEABLE"
+><I
+>list</I
+></TT
+> is a comma-separated list of flags that are
+set for this message.
+A message without any flags set results in an empty
+<TT
+CLASS="REPLACEABLE"
+><I
+>list</I
+></TT
+>, or the absence of the 
+<SPAN
+CLASS="QUOTE"
+>"FLAGS=<TT
+CLASS="REPLACEABLE"
+><I
+>list</I
+></TT
+>"</SPAN
+> response
+altogether.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>KEYWORDS</TT
+></DT
+><DD
+><P
+>The <TT
+CLASS="LITERAL"
+>KEYWORDS</TT
+> attribute is available when
+<TT
+CLASS="LITERAL"
+>KEYWORDS</TT
+> is listed as an SMAP1 capability
+(see <SPAN
+CLASS="QUOTE"
+>"<A
+HREF="conn.html"
+>SMAP connection negotiation</A
+>"</SPAN
+>).
+Each message may have one or more arbitrary tags associated with it.
+The SMAP1 server associates no special meaning to any keyword, except to note
+that it's there.
+The SMAP1 client is free to name keywords in any useful manner.
+The name of each keyword may contain any UTF-8 character except for a comma,
+or a control character.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Certain punctuation characters should be avoided if interoperability with
+IMAP is desired.
+IMAP prohibits certain characters from appearing in keywords, namely:
+spaces, parenthesis, quotes, and the following characters:
+<B
+CLASS="KEYCAP"
+>{</B
+>,
+<B
+CLASS="KEYCAP"
+>%</B
+>,
+<B
+CLASS="KEYCAP"
+>*</B
+>,
+<B
+CLASS="KEYCAP"
+>\</B
+>,
+<B
+CLASS="KEYCAP"
+>]</B
+>.
+Do not use these characters if IMAP interoperability is desired.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>SIZE</TT
+></DT
+><DD
+><P
+>The server's <TT
+CLASS="LITERAL"
+>* FETCH</TT
+> reply contains
+<SPAN
+CLASS="QUOTE"
+>"SIZE=<TT
+CLASS="REPLACEABLE"
+><I
+>bytecount</I
+></TT
+>"</SPAN
+>, where
+<TT
+CLASS="REPLACEABLE"
+><I
+>bytecount</I
+></TT
+> gives the estimated size of the
+message.
+This may not necessarily be an exact byte count.
+SMAP servers are permitted to provide a ballpark estimate of the message's
+size, if an exact byte count is unavailable.</P
+></DD
+><DT
+><TT
+CLASS="LITERAL"
+>INTERNALDATE</TT
+></DT
+><DD
+><P
+>The server's <TT
+CLASS="LITERAL"
+>* FETCH</TT
+> reply contains
+<SPAN
+CLASS="QUOTE"
+>"INTERNALDATE=<TT
+CLASS="REPLACEABLE"
+><I
+>rfcdate</I
+></TT
+>"</SPAN
+>, where
+<TT
+CLASS="REPLACEABLE"
+><I
+>rfcdate</I
+></TT
+> gives the date and time the message
+was added to the folder.
+Note that this is not necessarily the contents of the message's
+<TT
+CLASS="LITERAL"
+>Date:</TT
+> header.
+<TT
+CLASS="REPLACEABLE"
+><I
+>rfcdate</I
+></TT
+> uses the same
+<A
+HREF="http://www.rfc-editor.org/rfc/rfc2822.txt"
+TARGET="_top"
+>RFC 2822</A
+>
+date/time format as the <TT
+CLASS="LITERAL"
+>Date:</TT
+> header.
+Example:</P
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;FETCH&nbsp;4&nbsp;INTERNALDATE<br>
+S:&nbsp;*&nbsp;FETCH&nbsp;4&nbsp;"INTERNALDATE=Tue,&nbsp;21&nbsp;Jan&nbsp;2003&nbsp;20:57:48&nbsp;-0500"<br>
+S:&nbsp;+OK&nbsp;Ok</P
+></P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x12929.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x13200.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Using Folders</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="smap1.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Reading message contents</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

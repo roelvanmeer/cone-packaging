@@ -1,0 +1,323 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::ACCOUNT::readFolderInfo</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::ACCOUNT Synchronous API reference"
+HREF="synchronous.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::ACCOUNT::openFolder"
+HREF="account-openfolder.html"><LINK
+REL="NEXT"
+TITLE="mail::ACCOUNT::removeMessages"
+HREF="account-removemessages.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="account-openfolder.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="account-removemessages.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="ACCOUNT-READFOLDERINFO"
+></A
+>mail::ACCOUNT::readFolderInfo</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN4718"
+></A
+><H2
+>Name</H2
+>mail::ACCOUNT::readFolderInfo&nbsp;--&nbsp;Get folder status</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN4721"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/sync.H&#62;<br>
+<br>
+mail::ACCOUNT&nbsp;*mail;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN4723"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>bool ok=mail-&#62;<TT
+CLASS="FUNCTION"
+>openFolder</TT
+></CODE
+>(const mail::folder *<TT
+CLASS="PARAMETER"
+><I
+>folder</I
+></TT
+>, mail::ACCOUNT::FolderInfo &#38;<TT
+CLASS="PARAMETER"
+><I
+>info</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+><P
+CLASS="LITERALLAYOUT"
+>std::string&nbsp;errmsg=mail-&#62;getErrmsg();</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4732"
+></A
+><H2
+>USAGE</H2
+><P
+>This function reads the current status of <TT
+CLASS="PARAMETER"
+><I
+>folder</I
+></TT
+>, which
+may refer to any folder in the mail account (not necessarily the currently
+open folder).</P
+><P
+>The following fields in <TT
+CLASS="PARAMETER"
+><I
+>info</I
+></TT
+> will be initialized by
+this function:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>messageCount</DT
+><DD
+><P
+>Total number of messages in the folder.</P
+></DD
+><DT
+>unreadCount</DT
+><DD
+><P
+>Total number of unread messages in the folder.</P
+></DD
+><DT
+>fastInfo</DT
+><DD
+><P
+>This field should be initialized before calling this function.
+If set to <TT
+CLASS="LITERAL"
+>true</TT
+> the message counts are returned only
+if they can be computed quickly.
+Otherwise
+<TT
+CLASS="PARAMETER"
+><I
+>folderInfoCallback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> method will not be invoked at all, but
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> method will still be invoked.</P
+><P
+>If this field is set to <TT
+CLASS="LITERAL"
+>false</TT
+> (the default), the message
+counts are returned in all cases.</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4758"
+></A
+><H2
+>RETURN CODES AND CALLBACKS</H2
+><P
+>This method returns <TT
+CLASS="LITERAL"
+>true</TT
+> if it succeeds, or
+<TT
+CLASS="LITERAL"
+>false</TT
+> if it fails.
+If the method fails, use
+<CODE
+CLASS="STRUCTFIELD"
+>mail::ACCOUNT::getErrmsg()</CODE
+> to read a brief
+description of the error.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN4764"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="account-openfolder.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::ACCOUNT::openFolder</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="account-openfolder.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="account-removemessages.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::ACCOUNT::openFolder</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="synchronous.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::ACCOUNT::removeMessages</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

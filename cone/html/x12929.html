@@ -1,0 +1,911 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>Using Folders</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="Simple Mail Access Protocol, Version 1"
+HREF="smap1.html"><LINK
+REL="PREVIOUS"
+TITLE="Folders"
+HREF="x12593.html"><LINK
+REL="NEXT"
+TITLE="Reading message attributes"
+HREF="attributes.html"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x12593.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Simple Mail Access Protocol, Version 1</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="attributes.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN12929"
+>Using Folders</A
+></H1
+><P
+>A folder must be opened before accessing its messages.
+Only one folder can be opened at a time.
+Opening a second folder automatically closes the first folder.
+When opening a folder,
+the SMAP server's response indicates how many messages there are in the
+folder.
+The messages are numbered consecutively, from 1 to the message count
+returned by the <TT
+CLASS="LITERAL"
+>OPEN</TT
+> command.</P
+><P
+>New messages can be added to the folder while it is open.
+Other application can also remove or modify existing messages, while
+the folder is opened.
+There are two mechanisms by which the SMAP client is notified about these
+changes.</P
+><P
+>The SMAP client explicitly requests to be notified about any other changes
+by issuing either the <TT
+CLASS="LITERAL"
+>NOOP</TT
+> or the
+<TT
+CLASS="LITERAL"
+>EXPUNGE</TT
+> command.
+The server's response to the client includes notification of any messages
+that were added, modified, or removed from the server.</P
+><P
+>The <TT
+CLASS="LITERAL"
+>NOOP</TT
+> and <TT
+CLASS="LITERAL"
+>EXPUNGE</TT
+> commands work
+like all other commands: the server does the requested action, and
+replies accordingly.
+The second mechanism uses the <TT
+CLASS="LITERAL"
+>IDLE</TT
+> command, which works
+a little differently.
+The server's initial reply includes any changes to the folder's contents,
+as with <TT
+CLASS="LITERAL"
+>NOOP</TT
+> and <TT
+CLASS="LITERAL"
+>EXPUNGE</TT
+>, but the
+story doesn't end there.
+The client's next command, after <TT
+CLASS="LITERAL"
+>IDLE</TT
+>, must be the
+<TT
+CLASS="LITERAL"
+>RESUME</TT
+> command.
+Until the server receives the <TT
+CLASS="LITERAL"
+>RESUME</TT
+>,
+the server may immediately notify the client any time the folder's contents
+change.
+SMAP servers that are not capable of immediate notification of this type should
+periodically poll the folder for changes, until they get a
+<TT
+CLASS="LITERAL"
+>RESUME</TT
+>.</P
+><P
+>When the client is waiting for user input it should issue the
+<TT
+CLASS="LITERAL"
+>IDLE</TT
+> command, so that it knows about any
+changes to the folder made by other applications, and react immediately.
+The client issues a <TT
+CLASS="LITERAL"
+>RESUME</TT
+> when it finally has something
+to do.  This can be a result of user input, or caused by a change to the
+folder's contents (when new mail arrives, for example, the client may want to
+automatically download its headers).</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Messages in the folder are always consecutively numbered, starting with
+message #1.
+The messages are renumbered after removing a message; and new messages
+are added at the end.
+For example: a folder has five messages, numbered 1 through 5.
+The third message is removed, and messages #4 and #5 become messages #3 and
+#4, respectively.
+When two more messages are added to the folder, they become messages #5 and
+message #6.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The client may send the <SPAN
+CLASS="QUOTE"
+>"RESUME"</SPAN
+> command at the same time the
+server is sending a message to the client concerning some changes to the
+folder that just occured.
+The SMAP client should always wait and process any
+remaining folder content notification
+changes, until it receives that status reply for <SPAN
+CLASS="QUOTE"
+>"RESUME"</SPAN
+>.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN12956"
+>Opening a folder</A
+></H2
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;OPEN&nbsp;"Saved&nbsp;Mail"&nbsp;2002<br>
+S:&nbsp;*&nbsp;EXISTS&nbsp;17<br>
+S:&nbsp;+OK&nbsp;Folder&nbsp;opened</P
+></P
+><P
+>The <TT
+CLASS="LITERAL"
+>OPEN</TT
+> command opens a folder.
+If another folder is already opened, the other folder is closed.
+The other folder is closed automatically, whether or not the
+<TT
+CLASS="LITERAL"
+>OPEN</TT
+> command ultimately succeeds.</P
+><P
+>The whitespace-delimited words after <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>OPEN</TT
+>"</SPAN
+>
+specify the folder to open.
+If it's a valid folder, the server response includes a "* EXISTS"
+<A
+HREF="x12387.html#SINGLELINE"
+>single line reply</A
+>.</P
+><P
+>SMAP servers are encouraged to offer concurrent access to the same folder
+to multiple application.
+SMAP servers that are unable to do so should reject the <TT
+CLASS="LITERAL"
+>OPEN</TT
+>
+command if the folder is already opened by someone else.</P
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;SOPEN&nbsp;"28378jhaskdjk9@localhost"&nbsp;"Saved&nbsp;Mail"&nbsp;2002<br>
+S:&nbsp;*&nbsp;SNAPSHOTEXISTS&nbsp;"28378jhaskdjk9@localhost"<br>
+S:&nbsp;*&nbsp;EXPUNGE&nbsp;10-13<br>
+S:&nbsp;*&nbsp;EXISTS&nbsp;25<br>
+S:&nbsp;+OK&nbsp;Folder&nbsp;opened</P
+></P
+><P
+>The <TT
+CLASS="LITERAL"
+>SOPEN</TT
+> command enables folder snapshots, and opens a
+previously folder snapshot.
+A folder snapshot is a saved, or cached, copy of the folder's contents.
+Both the SMAP client and the SMAP server maintain synchronizes cached copies,
+or snapshots, of the folder's contents.
+This includes the list of messages in the folder, and the message state flags.
+Normally, after opening a folder the SMAP client needs to download the
+entire list of messages, and their states, from the server.
+Restoring a previously snapshot eliminates that step.</P
+><P
+>The first whitespace-delimited word after <TT
+CLASS="LITERAL"
+>SOPEN</TT
+> is a
+snapshot identifier, as returned by a <SPAN
+CLASS="QUOTE"
+>"* SNAPSHOT"</SPAN
+> message
+(see <A
+HREF="x12929.html#NOOP"
+><TT
+CLASS="LITERAL"
+>NOOP</TT
+></A
+>).
+The remaining words specify the name of the folder, as in
+<TT
+CLASS="LITERAL"
+>OPEN</TT
+>.</P
+><P
+>The server responds with a <SPAN
+CLASS="QUOTE"
+>"* SNAPSHOTEXISTS"</SPAN
+> message, with a
+copy of the snapshot identifier, followed by zero or more
+<SPAN
+CLASS="QUOTE"
+>"* EXPUNGE"</SPAN
+>, <SPAN
+CLASS="QUOTE"
+>"* FETCH <TT
+CLASS="REPLACEABLE"
+><I
+>msgnum</I
+></TT
+>
+FLAGS"</SPAN
+>, and <SPAN
+CLASS="QUOTE"
+>"* EXISTS"</SPAN
+> message that reflect any changes
+to the folder's contents that occured since the snapshot was made.
+When the final <TT
+CLASS="LITERAL"
+>+OK</TT
+> is received, the folder's contents
+are brough up to date, and the SMAP client should issue a
+<TT
+CLASS="LITERAL"
+>NOOP</TT
+> command to make an updated snapshot.</P
+><P
+>If the server is unable to find the requested snapshot, it should respond
+just like to the <TT
+CLASS="LITERAL"
+>OPEN</TT
+> command, with a single
+<SPAN
+CLASS="QUOTE"
+>"* EXISTS"</SPAN
+> message.
+If the client does not receive a <SPAN
+CLASS="QUOTE"
+>"* SNAPSHOTEXISTS"</SPAN
+> message,
+the client will conclude that the requested snapshot is not available.
+This is not an error condition.
+The requested snapshot might be too old, and the server decided that it
+should be removed by now.</P
+><P
+>A client that wants to use snapshots, but does not have a saved snapshot,
+should use the <TT
+CLASS="LITERAL"
+>SOPEN</TT
+> command with an empty string for a
+snapshot identifier.
+This is because the server would not normally make snapshots if the client
+used the <TT
+CLASS="LITERAL"
+>OPEN</TT
+> command to open a folder.
+The server responds to an <TT
+CLASS="LITERAL"
+>SOPEN</TT
+> with an empty identifier
+in the same way as to an <TT
+CLASS="LITERAL"
+>OPEN</TT
+> command, but enable and make
+snapshots.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN12996"
+>Closing a folder</A
+></H2
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;CLOSE<br>
+S:&nbsp;+OK&nbsp;Folder&nbsp;closed</P
+></P
+><P
+>The <TT
+CLASS="LITERAL"
+>CLOSE</TT
+> command closes the currently-opened folder.
+This command should always succeed, and should ideally do nothing if no
+folder is currently open.</P
+><P
+>SMAP servers that do not support concurrent access to the same folder,
+by multiple applications, should release the folder so that other applications
+can open it.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="NOOP"
+>The <TT
+CLASS="LITERAL"
+>NOOP</TT
+> command</A
+></H2
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;NOOP<br>
+S:&nbsp;*&nbsp;EXPUNGE&nbsp;10-13&nbsp;17<br>
+S:&nbsp;*&nbsp;FETCH&nbsp;12&nbsp;FLAGS=SEEN<br>
+S:&nbsp;*&nbsp;EXISTS&nbsp;32<br>
+S:&nbsp;+OK&nbsp;Ok.<br>
+C:&nbsp;NOOP<br>
+S:&nbsp;*&nbsp;SNAPSHOT&nbsp;"89238yu90doi923@localhost"<br>
+C:&nbsp;+OK&nbsp;Ok.</P
+></P
+><P
+><TT
+CLASS="LITERAL"
+>NOOP</TT
+> polls the server for any changes made to the folder's
+contents by other applications.
+The server's response includes 0 or more
+<A
+HREF="x12387.html#SINGLELINE"
+>single line replies</A
+>
+before <TT
+CLASS="LITERAL"
+>NOOP</TT
+>'s
+<A
+HREF="x12387.html#STATUSREPLY"
+>status reply</A
+>.</P
+><P
+>The single line replies may be sent in any order, and
+the SMAP client should process each single line reply individually, based
+on its current understanding of the folder's contents, which is taken into
+account when processing the next single line reply.</P
+><P
+>The <SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="LITERAL"
+>* EXPUNGE</TT
+>"</SPAN
+>
+single line reply lists messages that have been removed from the folder.
+The remaining words enumerate the removed message numbers.
+<SPAN
+CLASS="QUOTE"
+>"<TT
+CLASS="REPLACEABLE"
+><I
+>a</I
+></TT
+>-<TT
+CLASS="REPLACEABLE"
+><I
+>b</I
+></TT
+>"</SPAN
+>
+indicates messages #a through #b, inclusive, and the entire list must
+be sorted in strict numerically increasing order, with no overlaps.
+This message indicates that the specified messages have been removed, and
+the remaining messages were renumbered by shifting over to fill in the
+gaps.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Some time may elapse before a server receives a <TT
+CLASS="LITERAL"
+>NOOP</TT
+>,
+after a message is removed by some other application.
+Since the client will not be aware of the removed message, the server must
+handle client commands as if the message was not yet removed.
+For example, after message #13 is removed, message #14 now becomes message #13.
+Until the server receives a <TT
+CLASS="LITERAL"
+>NOOP</TT
+>, it should be aware that
+client's
+<TT
+CLASS="LITERAL"
+>FETCH</TT
+>
+and
+<TT
+CLASS="LITERAL"
+>STORE</TT
+>
+commands that reference message #14 really
+reference
+message #13.
+The server must process these
+commands accordingly, until
+the server receives a <TT
+CLASS="LITERAL"
+>NOOP</TT
+>, and notifies
+the client.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Excessively long lists of expunged messages may result in multiple
+<TT
+CLASS="LITERAL"
+>* EXPUNGE</TT
+> messages, instead of a single, huge
+<TT
+CLASS="LITERAL"
+>* EXPUNGE</TT
+>.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>The <TT
+CLASS="LITERAL"
+>* EXISTS</TT
+> message indicates that new messages were
+added to the folder, and specifies the new number of messages now in the
+folder.</P
+><P
+>The <TT
+CLASS="LITERAL"
+>* FETCH</TT
+> message indicates that an existing message
+attribute was changed.
+The next word specifies the number of the changed message, and the remaining
+word provide the new message attributes.
+See the <A
+HREF="attributes.html"
+>description of the
+<TT
+CLASS="LITERAL"
+>FETCH</TT
+> command</A
+> for
+more information.</P
+><P
+>The server creates snapshots of the folder's index
+when the folder was opened with the <TT
+CLASS="LITERAL"
+>SOPEN</TT
+> command.
+If the <TT
+CLASS="LITERAL"
+>NOOP</TT
+> command did not report any changes to the
+folder's contents, the server sends a <SPAN
+CLASS="QUOTE"
+>"* SNAPSHOT"</SPAN
+>, followed
+by a single word that specifies the saved snapshot's identifier.
+The format of the snapshot's identifier is defined by the server, and the
+client should treat it as an opaque text string.</P
+><P
+>A client issues the <TT
+CLASS="LITERAL"
+>NOOP</TT
+> command when it wants the server
+to save the folder's snapshot.
+If the server comes back with other messages that report changes to the folder,
+the client should issue another <TT
+CLASS="LITERAL"
+>NOOP</TT
+>, and try again.</P
+><P
+>When the server finds no changes to the folder, and no changes at all since
+the previous <TT
+CLASS="LITERAL"
+>NOOP</TT
+> that returned a snapshot, the server does
+not need to make a second, identical snapshot.
+A client may not receive any response to a <TT
+CLASS="LITERAL"
+>NOOP</TT
+>; neither
+a list of folder's changes, nor a <SPAN
+CLASS="QUOTE"
+>"* SNAPSHOT"</SPAN
+> message.
+This indicates that the folder's contents have not changed since the last
+snapshot.  The client should already know this; but if not, that's how the
+server will remind it.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The server is not required to keep saved snapshots indefinitely.
+A server does not need to save more than two snapshots per session.
+After making snapshots A and B, after processing a request to make a third
+snapshot, C, the server may delete snapshot A.</P
+><P
+>The server cannot delete snapshot B, because the client may crash or be
+disconnected before it receives the server's acknowledgement of creating
+snapshot C, and the next time the client reopens the same folder it will
+specify snapshot B to the <TT
+CLASS="LITERAL"
+>SOPEN</TT
+> command.
+If a client opens a folder using <TT
+CLASS="LITERAL"
+>SOPEN</TT
+>, but does not
+name either A or B, (or C), the server may conclude that another client
+is opening the same folder, and should not remove any of the saved snapshots,
+unless they are very old.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN13053"
+>The <TT
+CLASS="LITERAL"
+>EXPUNGE</TT
+> command</A
+></H2
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;EXPUNGE&nbsp;7<br>
+S:&nbsp;*&nbsp;EXPUNGE&nbsp;7&nbsp;9&nbsp;11<br>
+S:&nbsp;+OK&nbsp;Ok.</P
+></P
+><P
+>The <TT
+CLASS="LITERAL"
+>EXPUNGE</TT
+> command is similar <TT
+CLASS="LITERAL"
+>NOOP</TT
+>,
+except that <TT
+CLASS="LITERAL"
+>EXPUNGE</TT
+> also
+removes messages from the folder, and
+the server's response to <TT
+CLASS="LITERAL"
+>EXPUNGE</TT
+> includes the removed
+messages.
+The response also includes any additional messages removed by other
+applications, and any other changes to the folder's contents.</P
+><P
+>Message numbers to remove should follow the <TT
+CLASS="LITERAL"
+>EXPUNGE</TT
+>
+command, as whitespace-delimited words.
+An <TT
+CLASS="LITERAL"
+>EXPUNGE</TT
+> without an explicit message list is the same
+as an <TT
+CLASS="LITERAL"
+>EXPUNGE</TT
+> that lists all messages that have the
+<TT
+CLASS="LITERAL"
+>DELETED</TT
+> flag set.</P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="AEN13068"
+>The <TT
+CLASS="LITERAL"
+>IDLE</TT
+>/<TT
+CLASS="LITERAL"
+>RESUME</TT
+> command</A
+></H2
+><P
+><P
+CLASS="LITERALLAYOUT"
+>C:&nbsp;IDLE<br>
+S:&nbsp;+OK&nbsp;Idling...<br>
+<br>
+<I
+CLASS="EMPHASIS"
+>[ ... some time passes ... ]</I
+><br>
+<br>
+S:&nbsp;*&nbsp;FETCH&nbsp;15&nbsp;FLAGS=SEEN,DELETED<br>
+S:&nbsp;*&nbsp;EXPUNGE&nbsp;4<br>
+C:&nbsp;RESUME<br>
+S:&nbsp;+OK&nbsp;Resumed...</P
+></P
+><P
+>The SMAP client sends the <TT
+CLASS="LITERAL"
+>IDLE</TT
+> command to inform
+the server that client wants to know about any changes to the folder's
+contents immediately, without waiting for a <TT
+CLASS="LITERAL"
+>NOOP</TT
+> or
+<TT
+CLASS="LITERAL"
+>EXPUNGE</TT
+>.
+If the folder already had some changed made by another process,
+the server will notify the client immediately after the status reply.</P
+><P
+>The next command sent by the client (at some later time)
+must be the <TT
+CLASS="LITERAL"
+>RESUME</TT
+>
+command.
+<TT
+CLASS="LITERAL"
+>RESUME</TT
+> indicates that the client is no longer interested
+in receiving folder updates, and the server should wait until
+another
+<TT
+CLASS="LITERAL"
+>NOOP</TT
+>,
+<TT
+CLASS="LITERAL"
+>EXPUNGE</TT
+>, or
+<TT
+CLASS="LITERAL"
+>IDLE</TT
+> before notifying the client about any changes
+to the folder's contents.</P
+><P
+>The client must be aware that the folder's contents might be changed
+after it sends a <TT
+CLASS="LITERAL"
+>RESUME</TT
+> and before the server receives it.
+In this case
+the client might receive additional single line replies before the server
+responds to the <TT
+CLASS="LITERAL"
+>RESUME</TT
+>.
+The client must still properly process single line replies, until
+it receives the server's status reply to the <TT
+CLASS="LITERAL"
+>RESUME</TT
+>.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x12593.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="attributes.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Folders</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="smap1.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Reading message attributes</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

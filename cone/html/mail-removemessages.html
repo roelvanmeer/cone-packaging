@@ -1,0 +1,544 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::account::removeMessages</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="mail::account Native API reference"
+HREF="native.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::account::readTopLevelFolders"
+HREF="mail-readtoplevel.html"><LINK
+REL="NEXT"
+TITLE="mail::account::resume"
+HREF="mail-resume.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mail-readtoplevel.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="mail-resume.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><H1
+><A
+NAME="MAIL-REMOVEMESSAGES"
+></A
+>mail::account::removeMessages</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN7750"
+></A
+><H2
+>Name</H2
+>mail::account::removeMessages&nbsp;--&nbsp;Remove messages from the folder</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN7753"
+></A
+><H2
+>Synopsis</H2
+><P
+CLASS="LITERALLAYOUT"
+>#include&nbsp;&#60;libmail/mail.H&#62;<br>
+<br>
+<br>
+class&nbsp;myCallback&nbsp;:&nbsp;public&nbsp;mail::callback&nbsp;{<br>
+public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;success(std::string&nbsp;msg);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;fail(std::string&nbsp;msg);<br>
+};</P
+><P
+CLASS="LITERALLAYOUT"
+>mail::account&nbsp;*account;</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><A
+NAME="AEN7756"
+></A
+><P
+><CODE
+><CODE
+CLASS="FUNCDEF"
+>account-&#62;<TT
+CLASS="FUNCTION"
+>removeMessages</TT
+></CODE
+>(const std::vector&#60;size_t&#62; <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+>, myCallback &#38;<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>);</CODE
+></P
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN7764"
+></A
+><H2
+>USAGE</H2
+><P
+>This function removes messages from the currently open folder.
+<TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+>
+is a list of messages to be removed.</P
+><P
+>This request invokes methods in the currently opened folder's
+<CODE
+CLASS="STRUCTNAME"
+>mail::callback::folder</CODE
+> object, as follows:</P
+><P
+></P
+><UL
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>mail::account::messagesRemoved</TT
+> is invoked for all
+messages removed from the folder.
+Obviously, this method will be invoked, one at a time, for each
+message identified in <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+>.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="90%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Messages are removed one at a time.
+Each call to
+<TT
+CLASS="FUNCTION"
+>mail::account::messagesRemoved</TT
+> renumbers the remaining
+messages in the folder, and depending on the account type,
+<TT
+CLASS="FUNCTION"
+>mail::account::messagesRemoved</TT
+> may not
+necessarily receive an exact copy of <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+>.
+For example, with an IMAP account
+if <TT
+CLASS="PARAMETER"
+><I
+>msgList</I
+></TT
+> contains
+<TT
+CLASS="LITERAL"
+>1</TT
+>,
+<TT
+CLASS="LITERAL"
+>2</TT
+>, and
+<TT
+CLASS="LITERAL"
+>3</TT
+>, the
+<TT
+CLASS="FUNCTION"
+>mail::account::messagesRemoved</TT
+> function will probably
+be called three times.
+Each time it will receive a single range of removed messages,
+set to messages <TT
+CLASS="LITERAL"
+>1-1</TT
+>, all three times.
+This is because IMAP servers remove messages one message at a time.
+The first invocation of
+<TT
+CLASS="FUNCTION"
+>mail::account::messagesRemoved</TT
+> indicates that message
+#1 was removed, with the remaining messages renumbered; and old messages
+#2 and #3 becoming messages #1 and #2.
+The second invocation of
+<TT
+CLASS="FUNCTION"
+>mail::account::messagesRemoved</TT
+>'s
+<TT
+CLASS="PARAMETER"
+><I
+>messageNumber</I
+></TT
+> parameter of <TT
+CLASS="LITERAL"
+>1</TT
+>
+refers to the old message #2, which is now message #1.
+Ditto for the third invocation of
+<TT
+CLASS="FUNCTION"
+>mail::account::messagesRemoved</TT
+>.</P
+><P
+>On the other hand, with an IMAP account the
+<TT
+CLASS="FUNCTION"
+>mail::account::messagesRemoved</TT
+> method will be invoked
+once, giving a single range of removed messages, <TT
+CLASS="LITERAL"
+>1-3</TT
+>.
+Application must be prepared to handle either situation.</P
+></TD
+></TR
+></TABLE
+></DIV
+></LI
+><LI
+><P
+>The <TT
+CLASS="FUNCTION"
+>mail::account::messagesChanged</TT
+> method may
+be invoked for
+any other messages in the folder with changed status flags.</P
+></LI
+><LI
+><P
+><TT
+CLASS="FUNCTION"
+>mail::account::newMessages</TT
+>
+may also be invoked if any messages
+were added to this folder.
+The application should use
+<A
+HREF="mail-getfolderindexsize.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexSize</SPAN
+>(3x)</SPAN
+></A
+>,
+and compare it to the previously-known folder size, in order to determine
+how many messages were added to the folder (new messages are always added to
+the end of the message list).</P
+></LI
+></UL
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>This request should not be used with accounts on IMAP servers that do
+not implement the
+<A
+HREF="http://www.rfc-editor.org/rfc/rfc2359.txt"
+TARGET="_top"
+>UIDPLUS</A
+>
+IMAP extension.
+<SPAN
+CLASS="QUOTE"
+>"UIDPLUS"</SPAN
+> is required to directly support this functionality.
+An alternative, much slower, fallback implementation will be used with
+IMAP servers that do not implement this protocol extension.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN7808"
+></A
+><H2
+>Return Codes</H2
+><P
+>The application must wait until
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.
+The <TT
+CLASS="FUNCTION"
+>success</TT
+> method is invoked when this request is
+succesfully processed.
+The <TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked if this request cannot
+be processed.
+The application must not destroy
+<TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+> until either the
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method is invoked.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+><TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+>'s
+<TT
+CLASS="FUNCTION"
+>fail</TT
+> method may be invoked even after other
+callback methods were invoked.
+This indicates that the request was partially completed before the error
+was encountered.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN7823"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="mail-savefolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::saveFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-getfolderindexinfo.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::getFolderIndexInfo</SPAN
+>(3x)</SPAN
+></A
+>,
+<A
+HREF="mail-updatenotify.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::updateNotify</SPAN
+>(3x)</SPAN
+></A
+>.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mail-readtoplevel.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="mail-resume.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::account::readTopLevelFolders</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="native.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::account::resume</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

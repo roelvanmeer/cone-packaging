@@ -1,0 +1,357 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+<!-- $Id: book.sgml,v 1.3 2004/05/30 02:43:00 mrsam Exp $ -->
+<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mail::folder Native API reference</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+HREF="book.html"><LINK
+REL="UP"
+TITLE="
+LibMAIL
+ reference "
+HREF="libmail.html"><LINK
+REL="PREVIOUS"
+TITLE="mail::upper"
+HREF="mail-upper.html"><LINK
+REL="NEXT"
+TITLE="mail::folder::addMessage"
+HREF="folder-addmessage.html"></HEAD
+><BODY
+CLASS="REFERENCE"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="mail-upper.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="folder-addmessage.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="REFERENCE"
+><A
+NAME="LIBMAIL-FOLDER"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+>D. <CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> Native API reference</H1
+><DIV
+CLASS="PARTINTRO"
+><A
+NAME="AEN9007"
+></A
+><P
+>A <CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> object represents
+a folder that contains messages and/or other folders.
+The folders are arranged in a top-to-bottom hierarchy.
+<A
+HREF="mail-readtoplevel.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::readTopLevelFolders</SPAN
+>(3x)</SPAN
+></A
+>
+enumerates <CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> objects at the top of the
+folder hierarchy.
+<A
+HREF="folder-readsubfolders.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::folder::readSubFolders</SPAN
+>(3x)</SPAN
+></A
+>
+enumerates each <CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> object's
+subfolders.</P
+><P
+>Like <CODE
+CLASS="STRUCTNAME"
+>mail::account</CODE
+>'s methods,
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+>'s methods receive a
+<CODE
+CLASS="STRUCTNAME"
+>mail::callback</CODE
+> object, and invoke its
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or <TT
+CLASS="FUNCTION"
+>fail</TT
+> method when the
+request is processed.
+<CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+>'s methods return immediately, even
+if the request cannot be processed right away, and the
+<A
+HREF="mail-process.html"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>mail::account::process</SPAN
+>(3x)</SPAN
+></A
+> method will
+invoke
+<TT
+CLASS="FUNCTION"
+>success</TT
+> or <TT
+CLASS="FUNCTION"
+>fail</TT
+> method at some
+later point in time.</P
+></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="folder-addmessage.html"
+>mail::folder::addMessage</A
+>&nbsp;--&nbsp;Add a message to a folder</DT
+><DT
+><A
+HREF="folder-clone.html"
+>mail::folder::clone</A
+>&nbsp;--&nbsp;Clone a <CODE
+CLASS="STRUCTNAME"
+>mail::folder</CODE
+> object</DT
+><DT
+><A
+HREF="folder-create.html"
+>mail::folder::create</A
+>&nbsp;--&nbsp;Create a new folder</DT
+><DT
+><A
+HREF="folder-createsubfolder.html"
+>mail::folder::createSubFolder</A
+>&nbsp;--&nbsp;Create a new folder</DT
+><DT
+><A
+HREF="folder-delrights.html"
+>mail::folder::delRights</A
+>&nbsp;--&nbsp;Delete an access control list identifier</DT
+><DT
+><A
+HREF="folder-destroy.html"
+>mail::folder::destroy</A
+>&nbsp;--&nbsp;Destroy an existing folder</DT
+><DT
+><A
+HREF="folder-getmyrights.html"
+>mail::folder::getMyRights</A
+>&nbsp;--&nbsp;Compute my access rights on a folder</DT
+><DT
+><A
+HREF="folder-getname.html"
+>mail::folder::getName</A
+>&nbsp;--&nbsp;Return the folder's name</DT
+><DT
+><A
+HREF="folder-getparentfolder.html"
+>mail::folder::getParentFolder</A
+>&nbsp;--&nbsp;Find parent folder</DT
+><DT
+><A
+HREF="folder-getpath.html"
+>mail::folder::getPath</A
+>&nbsp;--&nbsp;Return the folder's server address</DT
+><DT
+><A
+HREF="folder-getrights.html"
+>mail::folder::getRights</A
+>&nbsp;--&nbsp;Read access control list</DT
+><DT
+><A
+HREF="folder-hasmessages.html"
+>mail::folder::hasMessages</A
+>&nbsp;--&nbsp;Determine if the folder is capable of storing messages</DT
+><DT
+><A
+HREF="folder-hassubfolders.html"
+>mail::folder::hasSubFolders</A
+>&nbsp;--&nbsp;Determine if the folder is capable of storing other folders</DT
+><DT
+><A
+HREF="folder-isparentof.html"
+>mail::folder::isparentof</A
+>&nbsp;--&nbsp;Check if another folder is this folder's subfolder</DT
+><DT
+><A
+HREF="folder-open.html"
+>mail::folder::open</A
+>&nbsp;--&nbsp;Open a folder</DT
+><DT
+><A
+HREF="folder-readfolderinfo.html"
+>mail::folder::readFolderInfo</A
+>&nbsp;--&nbsp;Get folder status</DT
+><DT
+><A
+HREF="folder-readsubfolders.html"
+>mail::folder::readSubFolders</A
+>&nbsp;--&nbsp;Enumerate subfolders</DT
+><DT
+><A
+HREF="folder-renamefolder.html"
+>mail::folder::renameFolder</A
+>&nbsp;--&nbsp;Rename a folder</DT
+><DT
+><A
+HREF="folder-setrights.html"
+>mail::folder::setRights</A
+>&nbsp;--&nbsp;Change access control lists</DT
+><DT
+><A
+HREF="folder-tostring.html"
+>mail::folder::toString</A
+>&nbsp;--&nbsp;Save a folder object</DT
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="mail-upper.html"
+ACCESSKEY="P"
+>&#60;&#60;&#60; Previous</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="folder-addmessage.html"
+ACCESSKEY="N"
+>Next &#62;&#62;&#62;</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>mail::upper</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libmail.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>mail::folder::addMessage</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
