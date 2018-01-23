@@ -1,4 +1,4 @@
-/* $Id: imapfolder.C,v 1.15 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: imapfolder.C,v 1.16 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2003-2004, Double Precision Inc.
 **
@@ -629,7 +629,7 @@ int mail::imapSELECT_OK::process(mail::imap &imapAccount, string &buffer)
 {
 	size_t p=buffer.find('\n');
 
-	if (p == buffer.npos)
+	if (p == std::string::npos)
 	{
 		if (p + 16000 < buffer.size())
 			return buffer.size() - 16000;
@@ -1859,7 +1859,7 @@ void mail::imapFOLDER_COUNT::get_body(mail::imap &imapAccount, Token t)
 
 		size_t cr;
 
-		while ((cr=buf.find('\r')) != buf.npos)
+		while ((cr=buf.find('\r')) != std::string::npos)
 			buf.erase(cr, 1);
 
 		if (imapAccount.currentFetch)
@@ -1889,7 +1889,7 @@ void mail::imapFOLDER_COUNT::get_body(mail::imap &imapAccount, Token t)
 				{
 					size_t n=references_buf.find('>');
 
-					if (n != references_buf.npos)
+					if (n != std::string::npos)
 						++n;
 					else n=references_buf.size()-10000;
 

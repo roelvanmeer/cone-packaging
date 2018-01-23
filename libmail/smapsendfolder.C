@@ -1,4 +1,4 @@
-/* $Id: smapsendfolder.C,v 1.3 2008/05/24 17:57:42 mrsam Exp $
+/* $Id: smapsendfolder.C,v 1.4 2010/04/29 00:34:50 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -95,8 +95,8 @@ mail::addMessage *mail::smapSendFolder::addMessage(callback &callback) const
 	}
 
 	try {
-		if (sentPath.find('\n') != sentPath.npos ||
-		    sendInfo.sender.find('\n') != sendInfo.sender.npos)
+		if (sentPath.find('\n') != std::string::npos ||
+		    sendInfo.sender.find('\n') != std::string::npos)
 		{
 			mail::smapAddMessage *p=add;
 
@@ -118,7 +118,7 @@ mail::addMessage *mail::smapSendFolder::addMessage(callback &callback) const
 
 		while (b != e)
 		{
-			if ( (*b).find('\n') != (*b).npos)
+			if ( (*b).find('\n') != std::string::npos)
 			{
 				mail::smapAddMessage *p=add;
 
@@ -142,7 +142,7 @@ mail::addMessage *mail::smapSendFolder::addMessage(callback &callback) const
 		{
 
 			if (optPtr->second.find('\n') !=
-			    optPtr->second.npos)
+			    std::string::npos)
 			{
 				mail::smapAddMessage *p=add;
 

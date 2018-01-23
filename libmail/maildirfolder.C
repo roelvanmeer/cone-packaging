@@ -1,4 +1,4 @@
-/* $Id: maildirfolder.C,v 1.7 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: maildirfolder.C,v 1.8 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -53,7 +53,7 @@ mail::maildir::folder::folder(mail::maildir *maildirArg,
 
 	size_t p=name.rfind('.');
 
-	if (p != name.npos)
+	if (p != std::string::npos)
 		name=name.substr(p+1);
 
 	// Convert the name of the folder from modified UTF-7
@@ -211,7 +211,7 @@ void mail::maildir::scan(string folderStr, vector<maildirMessageInfo> &index,
 
 				size_t p=newInfo.uid.find(MDIRSEP[0]);
 
-				if (p != newInfo.uid.npos)
+				if (p != std::string::npos)
 					newInfo.uid=newInfo.uid.substr(0, p);
 
 				mail::maildir::updateFlags(de->d_name,
@@ -242,7 +242,7 @@ void mail::maildir::folder::getParentFolder(callback::folderList &callback1,
 
 	n=path.rfind('.');
 
-	if (n == path.npos)
+	if (n == std::string::npos)
 		n=0;
 
 	maildirAccount->findFolder(path.substr(0, n),
@@ -993,8 +993,8 @@ mail::folder *mail::maildir::folderFromString(string folderName)
 	if (!f)
 		return NULL;
 
-	f->hasMessagesFlag= folderName.find('M') != folderName.npos;
-	f->hasSubfoldersFlag= folderName.find('S') != folderName.npos;
+	f->hasMessagesFlag= folderName.find('M') != std::string::npos;
+	f->hasSubfoldersFlag= folderName.find('S') != std::string::npos;
 
 	return f;
 }

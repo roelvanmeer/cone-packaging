@@ -42,7 +42,7 @@ information.
     <hr/>
   </div>
 
-  <div class="section" lang="en" xml:lang="en">
+  <div class="section" title="Folders">
     <div class="titlepage">
       <div>
         <div>
@@ -97,11 +97,11 @@ information.
     attempts to create top-level folders with an informative error
     message.</p>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Creating folders and folder directories">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id674714" shape="rect" name="id674714"> </a>Creating folders and folder
+            <h4 class="title"><a id="id654856" shape="rect" name="id654856"> </a>Creating folders and folder
             directories</h4>
           </div>
         </div>
@@ -125,7 +125,7 @@ information.
       folders). The remaining words specify the name of the new
       folder or folder directory.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>An SMAP client should not create a new folder directory
@@ -156,31 +156,31 @@ information.
       send both command because they cannot rely on this
       behavior.</p>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Executive Summary">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id674816" shape="rect" name="id674816"> </a>Executive Summary</h5>
+              <h5 class="title"><a id="id654958" shape="rect" name="id654958"> </a>Executive Summary</h5>
             </div>
           </div>
         </div>
 
         <div class="itemizedlist">
-          <ul type="disc">
-            <li>
+          <ul class="itemizedlist" type="disc">
+            <li class="listitem">
               <p>Use <code class="literal">CREATE</code> to create
               a folder, <code class="literal">MKDIR</code> to
               create a folder directory.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Clients should create new folder directories just
               prior creating their first subfolder. Clients should
               not create new folder directories until they are
               ready to create the first subfolder.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>SMAP servers may ignore <code class="literal">MKDIR</code>, and treat it as a no-op, and
               automatically create logical folder directories on
               as-needed basis.</p>
@@ -190,11 +190,11 @@ information.
       </div>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Deleting folders and folder directories">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id674867" shape="rect" name="id674867"> </a>Deleting folders and folder
+            <h4 class="title"><a id="id655009" shape="rect" name="id655009"> </a>Deleting folders and folder
             directories</h4>
           </div>
         </div>
@@ -226,11 +226,11 @@ information.
       that.</p>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Renaming folders and folder directories">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id674919" shape="rect" name="id674919"> </a>Renaming folders and folder
+            <h4 class="title"><a id="id655061" shape="rect" name="id655061"> </a>Renaming folders and folder
             directories</h4>
           </div>
         </div>
@@ -266,11 +266,11 @@ information.
       their parent folder directory.</p>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Listing folders">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id674961" shape="rect" name="id674961"> </a>Listing folders</h4>
+            <h4 class="title"><a id="id655103" shape="rect" name="id655103"> </a>Listing folders</h4>
           </div>
         </div>
       </div>
@@ -307,15 +307,16 @@ information.
       subfolders of an existing folder directories is returned by
       appending the folder name path to the LIST command.</p>
 
-      <p>The server responds with zero or more &#8220;<span class="quote">* LIST</span>&#8221; <a class="link" href="smapsyntax.html#singleline" title="Single line replies" shape="rect">single line</a> replies, one reply for each
-      folder or folder directory. The next word after
-      &#8220;<span class="quote">* LIST</span>&#8221; is the name
-      of the folder or folder directory. The following word (called
-      "description") is usually the same as the name of the folder.
-      Certain reserved folders may have a different description
-      (see below). The remaining words contain keywords that
-      describe the folder's attributes. The following attributes
-      are defined at this time:</p>
+      <p>The server responds with zero or more <span class="quote">&#8220;<span class="quote">*
+      LIST</span>&#8221;</span> <a class="link" href="smapsyntax.html#singleline" title="Single line replies" shape="rect">single line</a> replies, one reply for each
+      folder or folder directory. The next word after <span class="quote">&#8220;<span class="quote">*
+      LIST</span>&#8221;</span> is the name of the folder or folder
+      directory. The following word (called "description") is
+      usually the same as the name of the folder. Certain reserved
+      folders may have a different description (see below). The
+      remaining words contain keywords that describe the folder's
+      attributes. The following attributes are defined at this
+      time:</p>
 
       <div class="variablelist">
         <dl>
@@ -340,17 +341,16 @@ information.
         </dl>
       </div>
 
-      <p>Every &#8220;<span class="quote">* LIST</span>&#8221;
-      reply includes either <code class="literal">FOLDER</code> or
-      <code class="literal">DIRECTORY</code>. Both attributes
-      indicate a hybrid folder - a folder that contains both
-      messages and subfolders.</p>
+      <p>Every <span class="quote">&#8220;<span class="quote">*
+      LIST</span>&#8221;</span> reply includes either <code class="literal">FOLDER</code> or <code class="literal">DIRECTORY</code>. Both attributes indicate a hybrid
+      folder - a folder that contains both messages and
+      subfolders.</p>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Reserved folders and descriptions">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id675087" shape="rect" name="id675087"> </a>Reserved folders and descriptions</h5>
+              <h5 class="title"><a id="id655229" shape="rect" name="id655229"> </a>Reserved folders and descriptions</h5>
             </div>
           </div>
         </div>
@@ -368,18 +368,17 @@ information.
         for a special folder, or a folder directory, with a
         pre-defined purpose. The most common example would be the
         mail folder where new mail arrives; it is typically called
-        &#8220;<span class="quote">INBOX</span>&#8221;. Reserved
-        folders usually have brief, curt names, such as
-        &#8220;<span class="quote">INBOX</span>&#8221;,
-        &#8220;<span class="quote">public</span>&#8221;, or
-        &#8220;<span class="quote">private</span>&#8221;. An SMAP
-        server can offer a more meaningful description using the
-        description word in the &#8220;<span class="quote">*
-        LIST</span>&#8221; reply; for example: &#8220;<span class="quote">New Mail</span>&#8221;, &#8220;<span class="quote">Public Folders</span>&#8221;, or
-        &#8220;<span class="quote">My Folders</span>&#8221;. If the
-        client selects a different natural language, at login time,
-        the server can provide a description in the selected
-        language, but still use the same actual folder name.</p>
+        <span class="quote">&#8220;<span class="quote">INBOX</span>&#8221;</span>. Reserved folders
+        usually have brief, curt names, such as <span class="quote">&#8220;<span class="quote">INBOX</span>&#8221;</span>, <span class="quote">&#8220;<span class="quote">public</span>&#8221;</span>, or <span class="quote">&#8220;<span class="quote">private</span>&#8221;</span>. An SMAP server can
+        offer a more meaningful description using the description
+        word in the <span class="quote">&#8220;<span class="quote">* LIST</span>&#8221;</span> reply; for example:
+        <span class="quote">&#8220;<span class="quote">New
+        Mail</span>&#8221;</span>, <span class="quote">&#8220;<span class="quote">Public
+        Folders</span>&#8221;</span>, or <span class="quote">&#8220;<span class="quote">My
+        Folders</span>&#8221;</span>. If the client selects a
+        different natural language, at login time, the server can
+        provide a description in the selected language, but still
+        use the same actual folder name.</p>
 
         <p>SMAP clients should always use the official folder name,
         when referencing the folder in any SMAP command, and
@@ -388,11 +387,11 @@ information.
       </div>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Getting folder status">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id675144" shape="rect" name="id675144"> </a>Getting folder status</h4>
+            <h4 class="title"><a id="id655285" shape="rect" name="id655285"> </a>Getting folder status</h4>
           </div>
         </div>
       </div>
@@ -406,17 +405,16 @@ information.
       </div>
 
       <p>The <code class="literal">STATUS</code> command returns
-      the status of a folder. The next word after
-      &#8220;<span class="quote"><code class="literal">STATUS</code></span>&#8221; is a comma-delimited
-      list of the following keywords. The remaining
+      the status of a folder. The next word after <span class="quote">&#8220;<span class="quote"><code class="literal">STATUS</code></span>&#8221;</span> is a
+      comma-delimited list of the following keywords. The remaining
       whitespace-delimited words specify a folder whose requested
       status should be returned.</p>
 
-      <p>The first word following &#8220;<span class="quote"><code class="literal">STATUS</code></span>&#8221;
-      contains a comma-delimited keyword list. The following
-      keywords are defined at this time. Additional keywords may be
-      added in the future. SMAP server should ignore keywords they
-      do not recognize.</p>
+      <p>The first word following <span class="quote">&#8220;<span class="quote"><code class="literal">STATUS</code></span>&#8221;</span> contains a
+      comma-delimited keyword list. The following keywords are
+      defined at this time. Additional keywords may be added in the
+      future. SMAP server should ignore keywords they do not
+      recognize.</p>
 
       <div class="variablelist">
         <dl>
@@ -424,10 +422,11 @@ information.
 
           <dd>
             <p>Request the number of messages in the folder (sent
-            as the &#8220;<span class="quote"><code class="literal">EXISTS</code></span>&#8221; response), and
-            the number of messages that do not have the
+            as the <span class="quote">&#8220;<span class="quote"><code class="literal">EXISTS</code></span>&#8221;</span> response),
+            and the number of messages that do not have the
             <code class="literal">SEEN</code> flag set (the
-            &#8220;<span class="quote"><code class="literal">UNSEEN</code></span>&#8221; response).</p>
+            <span class="quote">&#8220;<span class="quote"><code class="literal">UNSEEN</code></span>&#8221;</span>
+            response).</p>
           </dd>
 
           <dt><span class="term">CHEAP</span></dt>
@@ -438,46 +437,47 @@ information.
             calculating the message counts cheaply and without
             delay. This keyword is mutually-exclusive with
             <code class="literal">FULL</code>. If the message
-            counts cannot be calculated cheaply, the
-            &#8220;<span class="quote"><code class="literal">*
-            STATUS</code></span>&#8221; response is not sent, but
-            the server still responds with an &#8220;<span class="quote"><code class="literal">+OK</code></span>&#8221;.</p>
+            counts cannot be calculated cheaply, the <span class="quote">&#8220;<span class="quote"><code class="literal">* STATUS</code></span>&#8221;</span> response
+            is not sent, but the server still responds with an
+            <span class="quote">&#8220;<span class="quote"><code class="literal">+OK</code></span>&#8221;</span>.</p>
           </dd>
         </dl>
       </div>
 
-      <p>The server's &#8220;<span class="quote"><code class="literal">* STATUS</code></span>&#8221; reply gives the
-      requested message counts.</p>
+      <p>The server's <span class="quote">&#8220;<span class="quote"><code class="literal">*
+      STATUS</code></span>&#8221;</span> reply gives the requested
+      message counts.</p>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Access Control Lists">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id675282" shape="rect" name="id675282"> </a>Access Control Lists</h4>
+            <h4 class="title"><a id="id655424" shape="rect" name="id655424"> </a>Access Control Lists</h4>
           </div>
         </div>
       </div>
 
-      <p>Access Control Lists (or &#8220;<span class="quote">ACL</span>&#8221;s) may be optionally implemented by
-      an SMAP server. ACLs are usually implemented by servers that
-      support shared folder access, where accounts may mutually
-      share access to their folders, and ACLs specify which
-      accounts may access which folders. ACLs define certain level
-      of granularity; for example an ACL may specify that a given
-      account may read messages in the folder, but not delete them,
-      or add messages to the folder.</p>
+      <p>Access Control Lists (or <span class="quote">&#8220;<span class="quote">ACL</span>&#8221;</span>s)
+      may be optionally implemented by an SMAP server. ACLs are
+      usually implemented by servers that support shared folder
+      access, where accounts may mutually share access to their
+      folders, and ACLs specify which accounts may access which
+      folders. ACLs define certain level of granularity; for
+      example an ACL may specify that a given account may read
+      messages in the folder, but not delete them, or add messages
+      to the folder.</p>
 
       <p>An SMAP server which implements ACLs will include
-      &#8220;<span class="quote"><code class="literal">ACL2=</code><em class="replaceable"><code>method</code></em></span>&#8221; in its
-      capability list. &#8220;<span class="quote">Method</span>&#8221; is the server's method for
-      computing ACLs (see below).</p>
+      <span class="quote">&#8220;<span class="quote"><code class="literal">ACL2=</code><em class="replaceable"><code>method</code></em></span>&#8221;</span>
+      in its capability list. <span class="quote">&#8220;<span class="quote">Method</span>&#8221;</span> is the server's method
+      for computing ACLs (see below).</p>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Identifiers and rights">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id675315" shape="rect" name="id675315"> </a>Identifiers and rights</h5>
+              <h5 class="title"><a id="id655457" shape="rect" name="id655457"> </a>Identifiers and rights</h5>
             </div>
           </div>
         </div>
@@ -485,10 +485,10 @@ information.
         <p>Each folder maintains a separate access control list,
         which applies to that folder only. An access control list
         consists of zero or more records. Each record contains two
-        data items: an identifier, and rights. &#8220;<span class="quote">Rights</span>&#8221; is a list of zero more
+        data items: an identifier, and rights. <span class="quote">&#8220;<span class="quote">Rights</span>&#8221;</span> is a list of zero more
         characters, that enumerate which kinds of access rights are
-        given to the entity specified by the &#8220;<span class="quote">identifier</span>&#8221;. An identifier may take
-        the following values:</p>
+        given to the entity specified by the <span class="quote">&#8220;<span class="quote">identifier</span>&#8221;</span>. An identifier may
+        take the following values:</p>
 
         <div class="variablelist">
           <dl>
@@ -502,23 +502,23 @@ information.
             <dt><span class="term"><code class="literal">anonymous</code></span></dt>
 
             <dd>
-              <p>This is an alias for &#8220;<span class="quote">anonymous</span>&#8221;.</p>
+              <p>This is an alias for <span class="quote">&#8220;<span class="quote">anonymous</span>&#8221;</span>.</p>
             </dd>
 
             <dt><span class="term"><code class="literal">user=</code><em class="replaceable"><code>id</code></em></span></dt>
 
             <dd>
               <p>The access rights apply to account named
-              &#8220;<span class="quote">id</span>&#8221;. The
-              account name is specified using the <code class="literal">UTF-8</code> character set.</p>
+              <span class="quote">&#8220;<span class="quote">id</span>&#8221;</span>. The account name is
+              specified using the <code class="literal">UTF-8</code> character set.</p>
             </dd>
 
             <dt><span class="term"><code class="literal">group=</code><em class="replaceable"><code>id</code></em></span></dt>
 
             <dd>
               <p>The access rights apply to a group of accounts
-              named &#8220;<span class="quote">id</span>&#8221;.
-              The group name is specified using the <code class="literal">UTF-8</code> character set. Account groups
+              named <span class="quote">&#8220;<span class="quote">id</span>&#8221;</span>. The group name is
+              specified using the <code class="literal">UTF-8</code> character set. Account groups
               are site-specific lists, maintained in a site-defined
               manner. Each SMAP server implementation needs to
               specify separately the nature and the names of the
@@ -601,7 +601,7 @@ information.
         </div>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Negative rights">
         <div class="titlepage">
           <div>
             <div>
@@ -612,10 +612,10 @@ information.
 
         <p>An access control list entry may have an identifier that
         begins with a dash. This access control list entry
-        specifies a &#8220;<span class="quote">negative
-        right</span>&#8221;, which revokes, rather than adds, the
-        corresponding rights from the identifier. For example,
-        consider the the following access control list:</p>
+        specifies a <span class="quote">&#8220;<span class="quote">negative right</span>&#8221;</span>, which revokes,
+        rather than adds, the corresponding rights from the
+        identifier. For example, consider the the following access
+        control list:</p>
 
         <div class="informalexample">
           <pre class="programlisting" xml:space="preserve">
@@ -630,11 +630,11 @@ user=fred   -r
         can only administer and read it.</p>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Computing access rights">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id675720" shape="rect" name="id675720"> </a>Computing access rights</h5>
+              <h5 class="title"><a id="id655862" shape="rect" name="id655862"> </a>Computing access rights</h5>
             </div>
           </div>
         </div>
@@ -645,8 +645,8 @@ user=fred   -r
         access rights for a folder based on all applicable access
         control list entries. There are several approaches to do
         that. The SMAP server declares its chosen method of access
-        rights computation using the &#8220;<span class="quote">ACL2</span>&#8221; capability. At this time, two
-        access computation methods are defined:</p>
+        rights computation using the <span class="quote">&#8220;<span class="quote">ACL2</span>&#8221;</span> capability. At this time,
+        two access computation methods are defined:</p>
 
         <div class="variablelist">
           <dl>
@@ -663,20 +663,20 @@ user=fred   -r
             <dt><span class="term">ACL2=MOST-SPECIFIC</span></dt>
 
             <dd>
-              <p>Only access rights from the &#8220;<span class="quote">most specific</span>&#8221; ACL entries are
+              <p>Only access rights from the <span class="quote">&#8220;<span class="quote">most
+              specific</span>&#8221;</span> ACL entries are
               factored in. That is, ACL entries referring
-              specifically to the user (the &#8220;<span class="quote">user=</span>&#8221; ACL entries, and/or
-              &#8220;<span class="quote">owner</span>&#8221;
-              entries) are used, if present. Otherwise, any
-              applicable &#8220;<span class="quote">group=</span>&#8221; entries are used, if
-              present. Otherwise, &#8220;<span class="quote">anyone</span>&#8221; and &#8220;<span class="quote">anonymous</span>&#8221; entries are used by
-              default.</p>
+              specifically to the user (the <span class="quote">&#8220;<span class="quote">user=</span>&#8221;</span> ACL entries,
+              and/or <span class="quote">&#8220;<span class="quote">owner</span>&#8221;</span> entries) are used,
+              if present. Otherwise, any applicable <span class="quote">&#8220;<span class="quote">group=</span>&#8221;</span> entries are used,
+              if present. Otherwise, <span class="quote">&#8220;<span class="quote">anyone</span>&#8221;</span> and <span class="quote">&#8220;<span class="quote">anonymous</span>&#8221;</span> entries are
+              used by default.</p>
 
               <p>Multiple applicable most-specific entries are
-              combined in the same way as the &#8220;<span class="quote">union</span>&#8221; method.</p>
+              combined in the same way as the <span class="quote">&#8220;<span class="quote">union</span>&#8221;</span> method.</p>
 
-              <p>Here's the equivalent &#8220;<span class="quote">most-specific</span>&#8221; version of the
-              earlier example:</p>
+              <p>Here's the equivalent <span class="quote">&#8220;<span class="quote">most-specific</span>&#8221;</span> version of
+              the earlier example:</p>
 
               <div class="informalexample">
                 <pre class="programlisting" xml:space="preserve">
@@ -689,11 +689,11 @@ user=fred   al
         </div>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Obtaining access rights">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id675817" shape="rect" name="id675817"> </a>Obtaining access rights</h5>
+              <h5 class="title"><a id="id655959" shape="rect" name="id655959"> </a>Obtaining access rights</h5>
             </div>
           </div>
         </div>
@@ -707,20 +707,19 @@ user=fred   al
 
         <p>The <code class="literal">ACL</code> command computes
         the requesting client's access rights on the indicated
-        folder. The whitespace-delimited words after
-        &#8220;<span class="quote"><code class="literal">ACL</code></span>&#8221; specify the folder whose
-        access rights are computed and returned.</p>
+        folder. The whitespace-delimited words after <span class="quote">&#8220;<span class="quote"><code class="literal">ACL</code></span>&#8221;</span> specify the
+        folder whose access rights are computed and returned.</p>
 
-        <p>The server responds with a &#8220;<span class="quote">*
-        ACL</span>&#8221; message, which contains a single word
-        that lists the access rights on the given folder.</p>
+        <p>The server responds with a <span class="quote">&#8220;<span class="quote">*
+        ACL</span>&#8221;</span> message, which contains a single
+        word that lists the access rights on the given folder.</p>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Retrieving access control lists">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id675861" shape="rect" name="id675861"> </a>Retrieving access control lists</h5>
+              <h5 class="title"><a id="id656002" shape="rect" name="id656002"> </a>Retrieving access control lists</h5>
             </div>
           </div>
         </div>
@@ -735,27 +734,27 @@ user=fred   al
 
         <p>The <code class="literal">GETACL</code> command returns
         the access control list for the indicated folder. The
-        whitespace-delimited words after &#8220;<span class="quote"><code class="literal">GETACL</code></span>&#8221;
-        specify the folder whose access control list is
-        requested.</p>
+        whitespace-delimited words after <span class="quote">&#8220;<span class="quote"><code class="literal">GETACL</code></span>&#8221;</span> specify the
+        folder whose access control list is requested.</p>
 
-        <p>The server responds with a &#8220;<span class="quote">*
-        GETACL</span>&#8221; message. The remaining
-        whitespace-delimited words after &#8220;<span class="quote"><code class="literal">* GETACL</code></span>&#8221;
-        consist of a zero or more <em class="replaceable"><code>identifier</code></em>/<em class="replaceable"><code>rights</code></em> pairs. In each pair,
+        <p>The server responds with a <span class="quote">&#8220;<span class="quote">*
+        GETACL</span>&#8221;</span> message. The remaining
+        whitespace-delimited words after <span class="quote">&#8220;<span class="quote"><code class="literal">*
+        GETACL</code></span>&#8221;</span> consist of a zero or
+        more <em class="replaceable"><code>identifier</code></em>/<em class="replaceable"><code>rights</code></em> pairs. In each pair,
         <em class="replaceable"><code>identifier</code></em> names
         the identity to which <em class="replaceable"><code>rights</code></em> apply.</p>
 
-        <p>The server may respond with two or more
-        &#8220;<span class="quote">* GETACL</span>&#8221; messages
-        when the access control list is very large.</p>
+        <p>The server may respond with two or more <span class="quote">&#8220;<span class="quote">*
+        GETACL</span>&#8221;</span> messages when the access
+        control list is very large.</p>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Modifying access rights">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id675935" shape="rect" name="id675935"> </a>Modifying access rights</h5>
+              <h5 class="title"><a id="id656076" shape="rect" name="id656076"> </a>Modifying access rights</h5>
             </div>
           </div>
         </div>
@@ -777,42 +776,42 @@ user=fred   al
 
         <p>The <code class="literal">SETACL</code> command modifies
         rights for a single access control list identifier. The
-        whitespace-delimited words after &#8220;<span class="quote"><code class="literal">SETACL</code></span>&#8221;
-        specify the folder whose access control list will be
-        modified. The folder's name is followed by a single empty
-        word, the identifier, then the requested access rights.</p>
+        whitespace-delimited words after <span class="quote">&#8220;<span class="quote"><code class="literal">SETACL</code></span>&#8221;</span> specify the
+        folder whose access control list will be modified. The
+        folder's name is followed by a single empty word, the
+        identifier, then the requested access rights.</p>
 
         <p>The existing access rights assigned to the identifier
         are replaced by the new rights specified in the command. If
         the identifier does not exist in the access control list,
         it is added with the specified rights.</p>
 
-        <p>If the access rights are prefixed by &#8220;<span class="quote">+</span>&#8221;, the specified rights are added to
-        the existing rights, for this identifier. If the access
-        rights are prefixed by &#8220;<span class="quote">-</span>&#8221;, the specified rights are removed
-        from the existing rights, for this identifier. It is not an
-        error to add an access right that already exists, or remove
-        an access right that did not exist; in both cases the
-        request is ignored (for that specific access right).</p>
+        <p>If the access rights are prefixed by <span class="quote">&#8220;<span class="quote">+</span>&#8221;</span>,
+        the specified rights are added to the existing rights, for
+        this identifier. If the access rights are prefixed by
+        <span class="quote">&#8220;<span class="quote">-</span>&#8221;</span>, the specified rights are
+        removed from the existing rights, for this identifier. It
+        is not an error to add an access right that already exists,
+        or remove an access right that did not exist; in both cases
+        the request is ignored (for that specific access
+        right).</p>
 
         <p><em class="replaceable"><code>identifier</code></em> may
         specify a <a class="link" href="smapfolders.html#aclnegrights" title="Negative rights" shape="rect">negative right</a>. When the server uses
-        &#8220;<span class="quote">ACL2=UNION</span>&#8221;
-        computation method, setting an empty access right list for
-        an identifier will remove the identifier from the access
-        control list.</p>
+        <span class="quote">&#8220;<span class="quote">ACL2=UNION</span>&#8221;</span> computation method,
+        setting an empty access right list for an identifier will
+        remove the identifier from the access control list.</p>
 
-        <p>The server responds with zero or more
-        &#8220;<span class="quote"><code class="literal">*
-        GETACL</code></span>&#8221; messages, that return the
-        updated access control list for this folder.</p>
+        <p>The server responds with zero or more <span class="quote">&#8220;<span class="quote"><code class="literal">*
+        GETACL</code></span>&#8221;</span> messages, that return
+        the updated access control list for this folder.</p>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Deleting access rights">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id676022" shape="rect" name="id676022"> </a>Deleting access rights</h5>
+              <h5 class="title"><a id="id656163" shape="rect" name="id656163"> </a>Deleting access rights</h5>
             </div>
           </div>
         </div>
@@ -830,19 +829,17 @@ user=fred   al
         <p>The <code class="literal">DELETEACL</code> command
         removes an identifier from the access control list. The
         identifier may be a <a class="link" href="smapfolders.html#aclnegrights" title="Negative rights" shape="rect">negative right</a>. The whitespace-delimited
-        words after &#8220;<span class="quote"><code class="literal">DELETEACL</code></span>&#8221; specify the folder
-        whose access control list will be modified. The folder's
-        name is followed by a single empty word, than the
+        words after <span class="quote">&#8220;<span class="quote"><code class="literal">DELETEACL</code></span>&#8221;</span> specify the
+        folder whose access control list will be modified. The
+        folder's name is followed by a single empty word, than the
         identifier to be removed. It is not an error to name an
         identifier that does not exist, the request is effectively
-        ignored (but the server still responds with
-        &#8220;<span class="quote"><code class="literal">*
-        GETACL</code></span>&#8221; messages).</p>
+        ignored (but the server still responds with <span class="quote">&#8220;<span class="quote"><code class="literal">*
+        GETACL</code></span>&#8221;</span> messages).</p>
 
-        <p>The server responds with zero or more
-        &#8220;<span class="quote"><code class="literal">*
-        GETACL</code></span>&#8221; messages, that return the
-        updated access control list for this folder.</p>
+        <p>The server responds with zero or more <span class="quote">&#8220;<span class="quote"><code class="literal">*
+        GETACL</code></span>&#8221;</span> messages, that return
+        the updated access control list for this folder.</p>
       </div>
     </div>
   </div>

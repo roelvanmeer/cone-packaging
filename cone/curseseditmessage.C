@@ -1,4 +1,4 @@
-/* $Id: curseseditmessage.C,v 1.11 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: curseseditmessage.C,v 1.13 2010/04/30 01:06:36 mrsam Exp $
 **
 ** Copyright 2003-2005, Double Precision Inc.
 **
@@ -501,7 +501,7 @@ bool CursesEditMessage::processKeyInFocus(const Key &key)
 			// with utf-8.
 
 			while ((r=CursesField::cutBuffer.find('\n')) !=
-			       CursesField::cutBuffer.npos)
+			       std::string::npos)
 			{
 				string s=CursesField::cutBuffer.substr(0, r);
 
@@ -2054,7 +2054,7 @@ void CursesEditMessage::yank(wchar_t k, bool doUpdate,
 
 			oneMoreLine=false;
 
-			if (p == insertBuffer.npos)
+			if (p == std::string::npos)
 			{
 				l=insertBuffer;
 				insertBuffer="";
@@ -2364,8 +2364,18 @@ bool CursesEditMessage::getMarkedRegion(size_t &row1, size_t &row2,
 
 	if (row2 < row1 || (row2 == row1 && pos2 < pos1))
 	{
-		row1 ^= row2 ^= row1 ^= row2;
-		pos1 ^= pos2 ^= pos1 ^= pos2;
+		size_t swap;
+
+		swap=row1;
+		row1=row2;
+		row2=swap;
+
+		swap=pos1;
+		pos1=pos2;
+		pos2=swap;
+
+		//row1 ^= row2 ^= row1 ^= row2;
+		//pos1 ^= pos2 ^= pos1 ^= pos2;
 		swapped=true;
 	}
 

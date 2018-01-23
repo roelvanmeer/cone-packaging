@@ -1,4 +1,4 @@
-/* $Id: cursesstatusbar.C,v 1.6 2008/05/24 17:57:41 mrsam Exp $
+/* $Id: cursesstatusbar.C,v 1.7 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -482,7 +482,7 @@ void CursesStatusBar::status(string text, statusLevel level)
 
 	size_t w=getWidth();
 
-	if (text.find('\n') == text.npos &&
+	if (text.find('\n') == std::string::npos &&
 	    (size_t)(getTextLength(text.c_str()) + 2) < w)
 	{
 		if (extendedErrorMsg.size() > 0)

@@ -1,4 +1,4 @@
-/* $Id: mimetypes.C,v 1.2 2008/05/24 17:57:42 mrsam Exp $
+/* $Id: mimetypes.C,v 1.3 2010/04/29 00:34:50 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -37,7 +37,7 @@ mail::mimetypes::mimetypes(string searchKey)
 
 			p=line.find('#');
 
-			if (p != line.npos)
+			if (p != std::string::npos)
 				line=line.substr(0, p);
 
 			string::iterator b, e, c;

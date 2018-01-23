@@ -1,4 +1,4 @@
-/* $Id: nntpfolder.C,v 1.3 2008/05/24 17:57:42 mrsam Exp $
+/* $Id: nntpfolder.C,v 1.4 2010/04/29 00:34:50 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -27,7 +27,7 @@ mail::nntp::folder::folder(nntp *myserverArg, string pathArg,
 {
 	size_t p=pathArg.rfind('.');
 
-	if (p == pathArg.npos)
+	if (p == std::string::npos)
 		p=0;
 	else
 		++p;
@@ -121,13 +121,14 @@ string mail::nntp::folder::newsgroupName() const
 	{
 		size_t n=s.find('.');
 
-		if (n == s.npos)
+		if (n == std::string::npos)
 			s="";
 		else
 			s=s.substr(n+1);
 	}
 
-	if (s.size() > 0 && s.find('\r') == s.npos && s.find('\n') == s.npos)
+	if (s.size() > 0 && s.find('\r') == std::string::npos
+	    && s.find('\n') == std::string::npos)
 		return s;
 	return "";
 }
@@ -166,7 +167,7 @@ void mail::nntp::folder::getParentFolder(callback::folderList &callback1,
 
 	size_t n=path.rfind('.');
 
-	if (n != path.npos)
+	if (n != std::string::npos)
 		ppath=path.substr(0, n);
 
 	myserver->findFolder(ppath, callback1, callback2);
@@ -273,7 +274,7 @@ void mail::nntp::folder::readSubFolders( callback::folderList &callback1,
 	else if (path.substr(0, sizeof(FOLDER_NEWSRC)-1) == FOLDER_NEWSRC)
 	{
 		size_t p=path.find('.');
-		string s=p == path.npos ? "":path.substr(p+1);
+		string s=p == std::string::npos ? "":path.substr(p+1);
 		string sdot=s + ".";
 
 		// All newsrc folders, hierarchically
@@ -319,7 +320,7 @@ void mail::nntp::folder::readSubFolders( callback::folderList &callback1,
 
 				p=n.find('.');
 
-				if (p != n.npos)
+				if (p != std::string::npos)
 				{
 					n=n.substr(0, p);
 					isSubFolder=true;

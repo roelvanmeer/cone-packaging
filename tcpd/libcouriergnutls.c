@@ -1721,8 +1721,8 @@ RT |
 	    (ctx->info_cpy.peer_verify_domain &&
 	     gnutls_server_name_set(ssl->session, GNUTLS_NAME_DNS,
 				    ctx->info_cpy.peer_verify_domain,
-				    strlen(ctx->info_cpy.peer_verify_domain)
-	     < 0))
+				    strlen(ctx->info_cpy.peer_verify_domain))
+	     < 0)
 	    )
 	{
 		tls_free_session(ssl);

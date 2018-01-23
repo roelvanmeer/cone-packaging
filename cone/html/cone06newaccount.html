@@ -31,8 +31,8 @@ information.
         <td width="20%" align="left" rowspan="1" colspan="1">
         <a accesskey="p" href="cone05setup.html" shape="rect">Prev</a>&#160;</td>
 
-        <th width="60%" align="center" rowspan="1" colspan="1">Cone
-        mail client</th>
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="application">Cone</span> mail client</th>
 
         <td width="20%" align="right" rowspan="1" colspan="1">
         &#160;<a accesskey="n" href="cone07remoteconfig.html" shape="rect">Next</a></td>
@@ -41,7 +41,7 @@ information.
     <hr/>
   </div>
 
-  <div class="chapter" lang="en" xml:lang="en">
+  <div class="chapter" title="New Account">
     <div class="titlepage">
       <div>
         <div>
@@ -50,10 +50,10 @@ information.
       </div>
     </div>
 
-    <p>The &#8220;<span class="quote">New Account</span>&#8221;
-    option off the Main Menu adds a new account to the Folder
-    Listing screen. Selecting this option results in a prompt to
-    select the mail account type:</p>
+    <p>The <span class="quote">&#8220;<span class="quote">New
+    Account</span>&#8221;</span> option off the Main Menu adds a
+    new account to the Folder Listing screen. Selecting this option
+    results in a prompt to select the mail account type:</p>
 
     <div class="variablelist">
       <dl>
@@ -72,24 +72,23 @@ information.
         <dt><span class="term"><span class="keycap"><strong>M</strong></span></span></dt>
 
         <dd>
-          <p>Adds a &#8220;<span class="quote">POP3
-          maildrop</span>&#8221; account. With the regular POP3
-          account, the messages in the POP3 mailbox remain on the
-          server, and <span class="application">Cone</span> reads
-          the contents of the messages on as-needed basis. With a
-          POP3 maildrop account, all messages from the POP3 mailbox
-          are immediately downloaded, then removed from the POP3
+          <p>Adds a <span class="quote">&#8220;<span class="quote">POP3 maildrop</span>&#8221;</span> account. With
+          the regular POP3 account, the messages in the POP3
+          mailbox remain on the server, and <span class="application">Cone</span> reads the contents of the
+          messages on as-needed basis. With a POP3 maildrop
+          account, all messages from the POP3 mailbox are
+          immediately downloaded, then removed from the POP3
           mailbox. Each time new mail is found, the new messages
           are downloaded, then removed from the server.</p>
 
           <p>Some very old POP3 servers may only work in POP3
           maildrop mode with <span class="application">Cone</span>;
-          they do not implement the &#8220;<span class="quote">UIDL</span>&#8221; POP3 protocol command which is
-          necessary in order to keep the messages stored on the
-          POP3 server. If an attempt to create a regular POP3
-          account fails because the server does not implement the
-          &#8220;<span class="quote">UIDL</span>&#8221; command,
-          create a POP3 maildrop account instead.</p>
+          they do not implement the <span class="quote">&#8220;<span class="quote">UIDL</span>&#8221;</span> POP3 protocol command
+          which is necessary in order to keep the messages stored
+          on the POP3 server. If an attempt to create a regular
+          POP3 account fails because the server does not implement
+          the <span class="quote">&#8220;<span class="quote">UIDL</span>&#8221;</span> command, create a POP3
+          maildrop account instead.</p>
         </dd>
 
         <dt><span class="term"><span class="keycap"><strong>N</strong></span></span></dt>
@@ -135,11 +134,11 @@ information.
     up after choosing to edit an existing IMAP/POP3/News account,
     from the Folder Listing screen:</p>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="New/Edit Account Screen">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id510349" shape="rect" name="id510349"> </a>New/Edit Account Screen</h4>
+            <h4 class="title"><a id="id490450" shape="rect" name="id490450"> </a>New/Edit Account Screen</h4>
           </div>
         </div>
       </div>
@@ -190,9 +189,8 @@ information.
 
           <dd>
             <p>The name of the mail server. Optionally, add a
-            colon, &#8220;<span class="quote">:</span>&#8221;, and
-            a decimal port number to specify a non-default
-            port.</p>
+            colon, <span class="quote">&#8220;<span class="quote">:</span>&#8221;</span>, and a decimal port
+            number to specify a non-default port.</p>
           </dd>
 
           <dt><span class="term">Login</span></dt>
@@ -240,16 +238,15 @@ information.
             already imported (see <a class="xref" href="cone10certificates.html" title="Certificates" shape="rect"><i>Certificates</i></a>). Choosing this button
             pops up a dialog with a list of available certificates.
             Selecting a certificate from the list changes this
-            button to read &#8220;<span class="quote">Remove
-            certificate</span>&#8221;, and selecting it again
-            removes the certificate selection. When using
-            certificates, the login and the password fields may be
-            left blank. If provided, and the server does not
-            support authentication using <acronym class="acronym">SSL</acronym> certificates, the traditional
+            button to read <span class="quote">&#8220;<span class="quote">Remove certificate</span>&#8221;</span>, and
+            selecting it again removes the certificate selection.
+            When using certificates, the login and the password
+            fields may be left blank. If provided, and the server
+            does not support authentication using <acronym class="acronym">SSL</acronym> certificates, the traditional
             userid/password authentication is an automatic
             fallback.</p>
 
-            <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
               <h3 class="title">Note</h3>
 
               <p><acronym class="acronym">SSL</acronym> certificate
@@ -275,11 +272,11 @@ information.
         </dl>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Options">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id510544" shape="rect" name="id510544"> </a>Options</h5>
+              <h5 class="title"><a id="id490645" shape="rect" name="id490645"> </a>Options</h5>
             </div>
           </div>
         </div>
@@ -308,8 +305,8 @@ information.
             <dd>
               <p>Disable encryption. Many mail servers have the
               ability to upgrade a plain text login to an encrypted
-              connection. Even if &#8220;<span class="quote">Use an
-              encrypted connection</span>&#8221; is not selected,
+              connection. Even if <span class="quote">&#8220;<span class="quote">Use an encrypted
+              connection</span>&#8221;</span> is not selected,
               <span class="application">Cone</span> will upgrade an
               unencrypted connection to an encrypted connection, if
               the mail server supports this capability. This option
@@ -345,7 +342,7 @@ information.
               connection will be established even if the server's
               certificate would otherwise be rejected.</p>
 
-              <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+              <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
                 <h3 class="title">Note</h3>
 
                 <p>This option is applicable even when an encrypted
@@ -386,7 +383,7 @@ information.
               IMAP/SMAP folder every <em class="replaceable"><code>N</code></em> seconds (default:
               600).</p>
 
-              <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+              <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
                 <h3 class="title">Note</h3>
 
                 <p>Most IMAP servers implement a protocol extension

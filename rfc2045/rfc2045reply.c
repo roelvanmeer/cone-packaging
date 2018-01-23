@@ -16,7 +16,7 @@
 #include	<string.h>
 #include	<ctype.h>
 
-static const char rcsid[]="$Id: rfc2045reply.c,v 1.18 2009/11/22 17:33:03 mrsam Exp $";
+static const char rcsid[]="$Id: rfc2045reply.c,v 1.21 2010/05/30 20:28:33 mrsam Exp $";
 
 extern void rfc2045_enomem();
 
@@ -299,8 +299,11 @@ static int flowreply(const char *c, size_t l, void *voidptr)
 	(*ri->write_func)(c, l, ri->voidarg);
 	return (0);
 }
-
+#if 0
+static void quotereply_stripcr(const char *p, size_t l, void *voidptr)
+#else
 static int quotereply(const char *p, size_t l, void *voidptr)
+#endif
 {
 	struct rfc2045_mkreplyinfo *ri=(struct rfc2045_mkreplyinfo *)voidptr;
 	size_t	i, j;
@@ -326,9 +329,30 @@ static int quotereply(const char *p, size_t l, void *voidptr)
 		ri->start_line=0;
 		(*ri->write_func)(p+j, i-j, ri->voidarg);
 	}
+	return 0;
+}
+#if 0
+static int quotereply(const char *p, size_t l, void *voidptr)
+{
+	size_t s, n;
+
+	for (s=0; s<l; )
+	{
+		for (n=s; n<l; n++)
+		{
+			if (p[n] == '\r')
+			{
+				quotereply_stripcr(p+s, n-s, voidptr);
+				++n;
+				break;
+			}
+		}
+		s=n;
+	}
 	return (0);
 }
-
+#endif
+	
 static void forwardbody(struct rfc2045_mkreplyinfo *ri, long nbytes)
 {
 	char	buf[BUFSIZ];
@@ -1022,7 +1046,7 @@ static int mkreply(struct rfc2045_mkreplyinfo *ri)
 				      newsgroups ? newsgroups:"",
 
 				      sender_addr ? sender_addr:"(no address given)",
-				      sender_name ? sender_name:"(no name given)",
+				      sender_name ? sender_name:sender_addr,
 				      date,
 				      subject,
 				      ri->charset);

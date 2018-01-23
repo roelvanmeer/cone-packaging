@@ -1,4 +1,4 @@
-/* $Id: cursesedit.C,v 1.33 2009/11/08 23:52:31 mrsam Exp $
+/* $Id: cursesedit.C,v 1.35 2010/05/02 12:03:22 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -460,7 +460,7 @@ void CursesEdit::init()
 
 		size_t n=h.find(',');
 
-		if (n == h.npos)
+		if (n == std::string::npos)
 		{
 			hh=h;
 			h="";
@@ -544,7 +544,7 @@ void CursesEdit::init()
 
 			string hdrname="";
 
-			if (p != hdr.npos)
+			if (p != std::string::npos)
 			{
 				hdrname=hdr.substr(0, p++);
 
@@ -678,7 +678,7 @@ void CursesEdit::init()
 					       hdrname.c_str()) == 0)
 				{
 					string str=
-						mail::rfc2047::decoder::
+						mail::rfc2047::
 						decoder()
 						.decode(hdr,
 							*Gettext::
@@ -817,7 +817,7 @@ void CursesEdit::init()
 
 			size_t sn=s.type.find('/');
 
-			if (sn != s.type.npos)
+			if (sn != std::string::npos)
 			{
 				s.subtype=s.type.substr(sn+1);
 
@@ -1294,7 +1294,7 @@ string CursesEdit::attach(string filename, string description,
 				size_t n=pps.type.find('/');
 
 
-				if (n != pps.type.npos)
+				if (n != std::string::npos)
 				{
 					pps.subtype=pps.type.substr(n+1);
 					pps.type=pps.type.substr(0, n);
@@ -3407,7 +3407,7 @@ bool CursesEdit::save(SaveSink &sink,
 				// until we change our mind.
 
 
-				if (p != line.npos)
+				if (p != std::string::npos)
 				{
 					string h=line.substr(0, p);
 

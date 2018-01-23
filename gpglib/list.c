@@ -1,9 +1,9 @@
 /*
-** Copyright 2001-2003 Double Precision, Inc.  See COPYING for
+** Copyright 2001-2010 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: list.c,v 1.4 2004/04/25 03:37:15 mrsam Exp $";
+static const char rcsid[]="$Id: list.c,v 1.5 2010/05/30 20:27:43 mrsam Exp $";
 
 #include	"config.h"
 #include	<stdio.h>
@@ -12,6 +12,7 @@ static const char rcsid[]="$Id: list.c,v 1.4 2004/04/25 03:37:15 mrsam Exp $";
 #include	<unistd.h>
 #include	<signal.h>
 #include	<ctype.h>
+#include	<time.h>
 #include	<errno.h>
 #include	<sys/types.h>
 #include	<sys/stat.h>
@@ -247,6 +248,7 @@ static int nyb(int c)
 }
 
 static int append_key(struct gpg_callbacklistinfo *, const char *);
+static int append_date(struct gpg_callbacklistinfo *, const char *);
 
 static int dolist_callback(char *line, void *vp1,
 			   struct gpg_list_info *vp)
@@ -393,7 +395,8 @@ static int dolist_callback(char *line, void *vp1,
 		return (-1);
 
 	if (strcmp(rectype, "pub") == 0 ||
-	    strcmp(rectype, "sec") == 0)
+	    strcmp(rectype, "sec") == 0 ||
+	    (strcmp(rectype, "uid") == 0 && gci->shortname[0] == 0))
 	{
 		gci->shortname[0]=0;
 		strncat(gci->shortname, userid,
@@ -402,9 +405,9 @@ static int dolist_callback(char *line, void *vp1,
 	}
 
 	if (append_key(gci, " ")
-	    || append_key(gci, atoi(crdate) ?  crdate :"          ")
+	    || append_date(gci, crdate)
 	    || append_key(gci, " ")
-	    || append_key(gci, atoi(expdate) ? expdate:"          ")
+	    || append_date(gci, expdate)
 	    || append_key(gci, " ")
 	    || append_key(gci, userid)
 	    || append_key(gci, "\n"))
@@ -432,6 +435,41 @@ static char *nextword(char *p)
 	if (*p)
 		*p++=0;
 	return (p);
+}
+
+static int append_date(struct gpg_callbacklistinfo *gci, const char *dtval)
+{
+	char buf[20];
+
+	const char *t;
+	struct tm tmbuf;
+	time_t secs;
+
+	if (strlen(dtval) == 10 && strchr(dtval, '-'))
+		return append_key(gci, dtval); /* YYYY-MM-DD */
+
+	t=strchr(dtval, 'T');
+
+	if (t && (t-dtval) == 8) /* YYYYMMDDThhmmss */
+	{
+		sprintf(buf, "%.4s-%.2s-%.2s", dtval, dtval+4, dtval+6);
+		return append_key(gci, buf);
+	}
+
+	secs=0;
+	while (dtval)
+	{
+		if (*dtval < '0' || *dtval > '9')
+			break;
+		secs = secs * 10 + (*dtval++ - '0');
+	}
+
+	if (secs == 0 || *dtval || localtime_r(&secs,  &tmbuf) == NULL)
+		return append_key(gci, "          ");
+
+	buf[strftime(buf, sizeof(buf)-1, "%Y-%m-%d", &tmbuf)]=0;
+
+	return append_key(gci, buf);
 }
 
 static int append_key(struct gpg_callbacklistinfo *gci, const char *l)

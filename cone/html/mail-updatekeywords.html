@@ -33,7 +33,8 @@ information.
         <a accesskey="p" href="mail-updatefolderindexinfo.html" shape="rect">Prev</a>&#160;</td>
 
         <th width="60%" align="center" rowspan="1" colspan="1">
-        mail::account Native API reference</th>
+        <span class="structname">mail::account</span> Native API
+        reference</th>
 
         <td width="20%" align="right" rowspan="1" colspan="1">
         &#160;<a accesskey="n" href="mail-updatenotify.html" shape="rect">Next</a></td>
@@ -42,7 +43,7 @@ information.
     <hr/>
   </div>
 
-  <div class="refentry" lang="en" xml:lang="en">
+  <div class="refentry" title="mail::account::updateKeywords">
     <a id="mail-updatekeywords" shape="rect" name="mail-updatekeywords"> </a>
 
     <div class="titlepage"/>
@@ -54,7 +55,7 @@ information.
       keywords</p>
     </div>
 
-    <div class="refsynopsisdiv">
+    <div class="refsynopsisdiv" title="Synopsis">
       <h2>Synopsis</h2>
 
       <div class="literallayout">
@@ -201,8 +202,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id593087" shape="rect" name="id593087"> </a>
+    <div class="refsect1" title="USAGE">
+      <a id="id573229" shape="rect" name="id573229"> </a>
 
       <h2>USAGE</h2>
 
@@ -230,8 +231,8 @@ information.
       <code class="literal">true</code>), or removed from the
       existing set of keywords (<em class="parameter"><code>changeTo</code></em> is <code class="literal">false</code>).</p>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id566285" shape="rect" name="id566285"> </a>
+      <div class="refsect2" title="Keywords">
+        <a id="id546428" shape="rect" name="id546428"> </a>
 
         <h3>Keywords</h3>
 
@@ -261,12 +262,12 @@ information.
         were modified by another process).</p>
 
         <div class="itemizedlist">
-          <ul type="disc">
-            <li>
+          <ul class="itemizedlist" type="disc">
+            <li class="listitem">
               <p>Temporary folders do not implement keywords.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>IMAP accounts have case-insensitive keywords in
               the <code class="literal">us-ascii</code> character
               set. Keyword names may not contain: apostrophes;
@@ -275,12 +276,12 @@ information.
               asterisks; and percent signs.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p><a class="link" href="smap1.html" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1" shape="rect">SMAP</a> accounts have case-sensitive
               keywords that use the <code class="literal">UTF-8</code> character set. Keyword names
               may not contain commas.</p>
 
-              <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+              <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
                 <h3 class="title">Note</h3>
 
                 <p>IMAP restrictions also apply if the same account
@@ -288,12 +289,12 @@ information.
               </div>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Maildir accounts have case-sensitive keywords that
               use the <code class="literal">UTF-8</code> character
               set.</p>
 
-              <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+              <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
                 <h3 class="title">Note</h3>
 
                 <p>IMAP and/or SMAP restrictions also apply if the
@@ -301,13 +302,13 @@ information.
               </div>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Mbox accounts have case-sensitive keywords that
               use the <code class="literal">UTF-8</code> character
               set.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>NNTP and POP3 accounts have case-sensitive
               keywords that use the <code class="literal">UTF-8</code> character set. Keywords are
               not saved. When the folder is closed, all set
@@ -321,8 +322,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id593417" shape="rect" name="id593417"> </a>
+    <div class="refsect1" title="Return Codes">
+      <a id="id573559" shape="rect" name="id573559"> </a>
 
       <h2>Return Codes</h2>
 
@@ -332,7 +333,7 @@ information.
       <em class="parameter"><code>callback</code></em> until either
       the <code class="function">success</code> or <code class="function">fail</code> method is invoked.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p><em class="parameter"><code>callback</code></em>'s
@@ -342,7 +343,7 @@ information.
         the error was encountered.</p>
       </div>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>The application is notified about when a message's
@@ -354,8 +355,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id593555" shape="rect" name="id593555"> </a>
+    <div class="refsect1" title="SEE ALSO">
+      <a id="id573697" shape="rect" name="id573697"> </a>
 
       <h2>SEE ALSO</h2>
 

@@ -43,7 +43,7 @@ information.
     <hr/>
   </div>
 
-  <div class="section" lang="en" xml:lang="en">
+  <div class="section" title="Adding messages to folders">
     <div class="titlepage">
       <div>
         <div>
@@ -146,9 +146,9 @@ information.
 
           <p><em class="replaceable"><code>list</code></em> is a
           comma-separated list of the usual delivery confirmation
-          requests, such as &#8220;<span class="quote"><code class="literal">SUCCESS,FAIL</code></span>&#8221;. The default
-          set of delivery status notifications (when this keyword
-          is not specified) is implementation-defined.</p>
+          requests, such as <span class="quote">&#8220;<span class="quote"><code class="literal">SUCCESS,FAIL</code></span>&#8221;</span>. The
+          default set of delivery status notifications (when this
+          keyword is not specified) is implementation-defined.</p>
         </dd>
 
         <dt><span class="term">FLAGS, KEYWORDS,
@@ -157,10 +157,11 @@ information.
         <dd>
           <p>The <code class="literal">FLAGS</code>, <code class="literal">KEYWORDS</code>, and <code class="literal">INTERNALDATE</code> set their corresponding
           attributes, when the message is to be saved in a folder.
-          See &#8220;<span class="quote"><a class="link" href="attributes.html" title="Reading message attributes" shape="rect">Reading message attributes</a></span>&#8221;
-          for more information. These keywords are optional, and
-          the server will use implementation-defined defaults if
-          they are not specified.</p>
+          See <span class="quote">&#8220;<span class="quote"><a class="link" href="attributes.html" title="Reading message attributes" shape="rect">Reading message
+          attributes</a></span>&#8221;</span> for more information.
+          These keywords are optional, and the server will use
+          implementation-defined defaults if they are not
+          specified.</p>
         </dd>
 
         <dt><span class="term">{.<em class="replaceable"><code>nnnn</code></em>} or {<em class="replaceable"><code>xxxx</code></em>/<em class="replaceable"><code>yyyy</code></em>}</span></dt>
@@ -179,9 +180,9 @@ information.
           whitespace-delimited word is a single <code class="literal">&gt;</code> character. Note that the server may
           reject the command (and the client will receive an
           <code class="literal">-ERR</code>), otherwise, upon
-          receiving the &#8220;<span class="quote"><code class="literal">&gt;</code></span>&#8221; the client should
-          then proceed to send the contents of the message, in
-          accordance with the selected transmission format, then
+          receiving the <span class="quote">&#8220;<span class="quote"><code class="literal">&gt;</code></span>&#8221;</span> the client
+          should then proceed to send the contents of the message,
+          in accordance with the selected transmission format, then
           wait for the server's final reply.</p>
 
           <p>The server's final response may include an optional
@@ -198,7 +199,7 @@ information.
                 <p>Specifies the message's unique identifier, if
                 the message is succesfully saved in a folder.</p>
 
-                <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+                <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
                   <h3 class="title">Note</h3>
 
                   <p>This keyword is not sent when the message is
@@ -227,7 +228,7 @@ information.
       </dl>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="The RSET command">
       <div class="titlepage">
         <div>
           <div>

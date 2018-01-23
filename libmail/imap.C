@@ -1,4 +1,4 @@
-/* $Id: imap.C,v 1.14 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: imap.C,v 1.15 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -550,7 +550,7 @@ int mail::imap::socketRead(const string &readbuffer)
 
 	size_t pos=buffer_cpy.find('\n');
 
-	if (pos == buffer_cpy.npos)
+	if (pos == std::string::npos)
 	{
 		if (buffer_cpy.size() > 16000)
 			return buffer_cpy.size() - 16000;
@@ -566,7 +566,7 @@ int mail::imap::socketRead(const string &readbuffer)
 	size_t processedCnt=pos+1;
 
 
-	while ((pos=buffer_cpy.find('\r')) != buffer_cpy.npos)
+	while ((pos=buffer_cpy.find('\r')) != std::string::npos)
 		buffer_cpy.erase(buffer_cpy.begin() + pos,
 				 buffer_cpy.begin() + pos + 1);
 
@@ -599,7 +599,7 @@ int mail::imap::socketRead(const string &readbuffer)
 			string brk, brkw;
 			string::iterator bb, be;
 
-			if (p != buffer_cpy.npos && q != buffer_cpy.npos &&
+			if (p != std::string::npos && q != std::string::npos &&
 			    q > p && ((brk=string(buffer_cpy.begin()+p,
 						  buffer_cpy.begin()+q)),
 				      bb=brk.begin(),
@@ -1602,7 +1602,7 @@ int mail::imapCommandHandler::process(mail::imap &imapAccount, string &buffer)
 
 	size_t p=buffer.find('\n');
 
-	if (p == buffer.npos)
+	if (p == std::string::npos)
 		return (0);
 
 	string buffer_cpy=buffer;
@@ -1611,7 +1611,7 @@ int mail::imapCommandHandler::process(mail::imap &imapAccount, string &buffer)
 
 	size_t stripcr;
 
-	while ((stripcr=buffer_cpy.find('\r')) != buffer_cpy.npos)
+	while ((stripcr=buffer_cpy.find('\r')) != std::string::npos)
 		buffer_cpy.erase(buffer_cpy.begin() + stripcr,
 				 buffer_cpy.begin() + stripcr + 1);
 

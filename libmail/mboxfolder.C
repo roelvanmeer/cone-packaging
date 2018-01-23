@@ -1,4 +1,4 @@
-/* $Id: mboxfolder.C,v 1.5 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: mboxfolder.C,v 1.6 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -310,7 +310,7 @@ void mail::mbox::folder::getParentFolder(callback::folderList &callback1,
 	size_t n;
 
 	if (path == "INBOX" || path == mboxAccount.rootPath ||
-	    (n=path.rfind('/')) == path.npos)
+	    (n=path.rfind('/')) == std::string::npos)
 	{
 		mail::mbox::folder dummy("", mboxAccount);
 

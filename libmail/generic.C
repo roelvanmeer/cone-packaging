@@ -1,4 +1,4 @@
-/* $Id: generic.C,v 1.16 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: generic.C,v 1.17 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -307,7 +307,7 @@ void mail::generic::Attributes::messageTextCallback(size_t dummy,
 
 	size_t n;
 
-	while ((n=headerBuffer.find('\n')) != headerBuffer.npos)
+	while ((n=headerBuffer.find('\n')) != std::string::npos)
 	{
 		string header=headerBuffer.substr(0, n);
 
@@ -317,7 +317,7 @@ void mail::generic::Attributes::messageTextCallback(size_t dummy,
 
 		string value="";
 
-		if (n != header.npos)
+		if (n != std::string::npos)
 		{
 			size_t nsave=n++;
 
@@ -1515,7 +1515,7 @@ void mail::generic::genericMakeMimeStructure(mail::mimestruct &s,
 
 	size_t n=s.type.find('/');
 
-	if (n != s.type.npos)
+	if (n != std::string::npos)
 	{
 		s.subtype=s.type.substr(n+1);
 		s.type=s.type.substr(0, n);

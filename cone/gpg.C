@@ -1,4 +1,4 @@
-/* $Id: gpg.C,v 1.11 2008/08/26 00:08:54 mrsam Exp $
+/* $Id: gpg.C,v 1.12 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2003-2004, Double Precision Inc.
 **
@@ -62,7 +62,7 @@ void GPG::Key::getDescription(std::vector<std::string> &descrArray,
 
 		size_t p=keyDescr.find('\n');
 
-		if (p == keyDescr.npos)
+		if (p == std::string::npos)
 		{
 			Curses::mbtow(keyDescr.c_str(), l);
 			keyDescr="";

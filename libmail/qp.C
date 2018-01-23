@@ -1,4 +1,4 @@
-/* $Id: qp.C,v 1.2 2009/04/24 01:44:18 mrsam Exp $
+/* $Id: qp.C,v 1.3 2010/04/29 00:34:50 mrsam Exp $
 **
 ** Copyright 2002-2009, Double Precision Inc.
 **
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
 
 		size_t p;
 
-		while ((p=s.find('~')) != s.npos)
+		while ((p=s.find('~')) != std::string::npos)
 			s[p]='\n';
 
 		qp.decode(s);

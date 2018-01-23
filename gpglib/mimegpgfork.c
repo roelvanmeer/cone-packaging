@@ -1,9 +1,9 @@
 /*
-** Copyright 2001-2008 Double Precision, Inc.  See COPYING for
+** Copyright 2001-2010 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: mimegpgfork.c,v 1.7 2008/07/07 03:25:41 mrsam Exp $";
+static const char rcsid[]="$Id: mimegpgfork.c,v 1.8 2010/05/30 20:27:43 mrsam Exp $";
 
 #include "config.h"
 #include <stdio.h>
@@ -97,7 +97,7 @@ static int libmail_gpgmime_fork(const char *gpgdir,
 			close(pipes[n][1]);
 		}
 
-		newargv=malloc( (xargc + argc + 4) * sizeof(char *));
+		newargv=malloc( (xargc + argc + 5) * sizeof(char *));
 		if (!newargv)
 		{
 			perror("malloc");
@@ -116,6 +116,7 @@ static int libmail_gpgmime_fork(const char *gpgdir,
 				_exit(1);
 			}
 
+			newargv[i++]="--batch";
 			newargv[i++]="--passphrase-fd";
 			newargv[i++]=(char *)passphrase_fd;
 		}

@@ -1,4 +1,4 @@
-/* $Id: smapaddmessage.C,v 1.4 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: smapaddmessage.C,v 1.5 2010/04/29 00:34:50 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -34,7 +34,7 @@ void mail::smapAddMessage::saveMessageContents(std::string contents)
 {
 	size_t n;
 
-	while ((n=contents.find('\r')) != contents.npos)
+	while ((n=contents.find('\r')) != std::string::npos)
 		contents.erase(contents.begin()+n,
 			       contents.begin()+n+1);
 

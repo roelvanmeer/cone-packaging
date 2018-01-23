@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-dnl $Id: configure.in,v 1.37 2008/09/20 12:48:29 mrsam Exp $
+dnl $Id: configure.in,v 1.38 2010/05/30 20:27:43 mrsam Exp $
 dnl
 dnl Copyright 1998 - 2008 Double Precision, Inc.  See COPYING for
 dnl distribution information.
@@ -430,6 +430,8 @@ then
 	STARTTLS=couriertls$EXEEXT
 	BUILDLIBCOURIERTLS=libcouriertls.la
 
+	CRYPTLIBS=""
+
 	AC_MSG_CHECKING([for libgcrypt])
 
 	save_LIBS="$LIBS"
@@ -443,10 +445,25 @@ then
 	AC_MSG_RESULT(yes)
 	AC_DEFINE_UNQUOTED(HAVE_GCRYPT, 1,
 				[ Whether libgcrypt is installed ])
-	CRYPTLIBS="-lgcrypt"
+	CRYPTLIBS="$CRYPTLIBS -lgcrypt"
 ], [
 AC_MSG_RESULT(no)
 ])
+
+	AC_MSG_CHECKING([for libgpg-error])
+	LIBS="$LIBS -lgpg-error"
+	AC_TRY_LINK( [
+#include <gcrypt.h>
+
+], [
+	gpg_err_code_from_errno(0);
+], [
+	AC_MSG_RESULT(yes)
+	CRYPTLIBS="$CRYPTLIBS -lgpg-error"
+], [
+AC_MSG_RESULT(no)
+])
+
 	LIBS="$save_LIBS"
 
 	echo "ssllib=gnutls" >>couriertls.config
@@ -491,7 +508,7 @@ RAND_pseudo_bytes(dummy, 1);
 	fi
 fi
 echo "couriertls=$STARTTLS" >>couriertls.config
-echo "cryptlibs=$CRYPTLIBS" >>couriertls.config
+echo "cryptlibs=\"`echo $CRYPTLIBS`\"" >>couriertls.config
 
 # Do not built the other SSL library.  ... Except if I'm the maintainer
 

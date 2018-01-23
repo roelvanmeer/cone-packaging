@@ -1,4 +1,4 @@
-/* $Id: imaplogin.C,v 1.4 2008/07/07 03:25:41 mrsam Exp $
+/* $Id: imaplogin.C,v 1.5 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -195,7 +195,7 @@ int mail::imapGreetingHandler::process(mail::imap &imapAccount, string &buffer)
 {
 	size_t p=buffer.find('\n');
 
-	if (p == buffer.npos)
+	if (p == std::string::npos)
 	{
 		if (buffer.size() > 16000)
 			return buffer.size() - 16000;

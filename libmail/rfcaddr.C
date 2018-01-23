@@ -1,4 +1,4 @@
-/* $Id: rfcaddr.C,v 1.10 2009/11/22 14:54:41 mrsam Exp $
+/* $Id: rfcaddr.C,v 1.12 2010/05/02 12:03:22 mrsam Exp $
 **
 ** Copyright 2002-2009, Double Precision Inc.
 **
@@ -195,7 +195,7 @@ template<class T> bool mail::address::fromString(string addresses,
 						 vector<T> &h,
 						 size_t &errIndex)
 {
-	errIndex=addresses.npos;
+	errIndex=std::string::npos;
 
 	struct rfc822t *t=rfc822t_alloc_new(addresses.c_str(),
 					    &parseCallback, &errIndex);
@@ -327,7 +327,7 @@ std::string mail::emailAddress::setDisplayAddr(string s)
 
 	size_t at=s.find('@');
 
-	if (at != s.npos)
+	if (at != std::string::npos)
 	{
 		int err=idna_to_ascii_lz(s.c_str()+at+1, &ascii_ptr, 0);
 
@@ -370,14 +370,14 @@ void mail::emailAddress::decode()
 {
 	if (appcharset == NULL)
 		appcharset=unicode_find(unicode_default_chset());
-	decodedName=mail::rfc2047::decoder::decoder().decode(name, *appcharset);
+	decodedName=mail::rfc2047::decoder().decode(name, *appcharset);
 
 #if LIBIDN
 	char *encoded_str;
 
 	size_t at=addr.find('@');
 
-	if (at != addr.npos)
+	if (at != std::string::npos)
 	{
 		int rc=idna_to_unicode_lzlz(addr.c_str()+at+1, &encoded_str, 0);
 

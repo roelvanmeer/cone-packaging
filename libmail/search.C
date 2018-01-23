@@ -1,4 +1,4 @@
-/* $Id: search.C,v 1.7 2009/11/08 23:52:31 mrsam Exp $
+/* $Id: search.C,v 1.8 2010/04/29 00:34:50 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -444,7 +444,7 @@ void mail::searchOneMessage::go()
 
 			n=searchInfo.param2.find(' ');
 
-			if (n != searchInfo.param2.npos)
+			if (n != std::string::npos)
 				searchInfo.param2=
 					searchInfo.param2.substr(0,n);
 
@@ -962,7 +962,7 @@ void mail::searchOneMessage::search(string text)
 
 		size_t n;
 
-		while (!searchFlag && (n=text.find('\n')) != text.npos)
+		while (!searchFlag && (n=text.find('\n')) != std::string::npos)
 		{
 			searchEngine.reset();
 			beginSearch();

@@ -33,7 +33,8 @@ information.
         <a accesskey="p" href="libmail-folder.html" shape="rect">Prev</a>&#160;</td>
 
         <th width="60%" align="center" rowspan="1" colspan="1">
-        mail::folder Native API reference</th>
+        <span class="structname">mail::folder</span> Native API
+        reference</th>
 
         <td width="20%" align="right" rowspan="1" colspan="1">
         &#160;<a accesskey="n" href="folder-clone.html" shape="rect">Next</a></td>
@@ -42,7 +43,7 @@ information.
     <hr/>
   </div>
 
-  <div class="refentry" lang="en" xml:lang="en">
+  <div class="refentry" title="mail::folder::addMessage">
     <a id="folder-addmessage" shape="rect" name="folder-addmessage"> </a>
 
     <div class="titlepage"/>
@@ -54,7 +55,7 @@ information.
       folder</p>
     </div>
 
-    <div class="refsynopsisdiv">
+    <div class="refsynopsisdiv" title="Synopsis">
       <h2>Synopsis</h2>
 
       <div class="literallayout">
@@ -113,8 +114,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id597990" shape="rect" name="id597990"> </a>
+    <div class="refsect1" title="USAGE">
+      <a id="id578132" shape="rect" name="id578132"> </a>
 
       <h2>USAGE</h2>
 
@@ -154,7 +155,7 @@ information.
             <code class="literal">mail::account::ARRIVALDATE</code>
             parameter to <a class="link" href="mail-readmsgattr.html" title="mail::account::readMessageAttributes" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readMessageAttributes</span>(3x)</span></a>().</p>
 
-            <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
               <h3 class="title">Note</h3>
 
               <p>This timestamp does not necessarily have to be the
@@ -167,7 +168,7 @@ information.
           <dd>
             <p>The message flags, as returned by <a class="link" href="mail-getfolderindexinfo.html" title="mail::account::getFolderIndexInfo" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::getFolderIndexInfo</span>(3x)</span></a>().</p>
 
-            <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
               <h3 class="title">Note</h3>
 
               <p>The contents of <em class="structfield"><code>uid</code></em>, the message's
@@ -181,8 +182,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id598172" shape="rect" name="id598172"> </a>
+    <div class="refsect1" title="MIME-BASED MESSAGE COMPOSITION">
+      <a id="id578314" shape="rect" name="id578314"> </a>
 
       <h2>MIME-BASED MESSAGE COMPOSITION</h2>
 
@@ -334,9 +335,9 @@ mail::addMessage *msg;
       <code class="function">assembleContent</code> invokes
       <em class="parameter"><code>cb</code></em>'s <code class="function">success</code> method it will initialize
       <em class="parameter"><code>handleRet</code></em> with a
-      &#8220;<span class="quote">handle</span>&#8221; that refers
-      to this MIME section. Use these MIME section handles to
-      assemble the individual MIME sections into <code class="literal">multipart</code> and <code class="literal">message/rfc822</code> MIME sections. The
+      <span class="quote">&#8220;<span class="quote">handle</span>&#8221;</span> that refers to this MIME
+      section. Use these MIME section handles to assemble the
+      individual MIME sections into <code class="literal">multipart</code> and <code class="literal">message/rfc822</code> MIME sections. The
       <code class="function">assembleMessageRfc822</code> and
       <code class="function">assembleMultipart</code> methods also
       create a new MIME section handle, which refers to the
@@ -360,10 +361,10 @@ mail::addMessage *msg;
       attachment. The MIME headers must be terminated by a single
       newline character, and include the <code class="literal">Content-Type</code> header. In nearly all
       situations, this parameter should be set to the fixed string
-      &#8220;<span class="quote">Content-Type:
-      message/rfc822\n</span>&#8221; (note the trailing newline).
-      The third parameter is the handle of the attachment's
-      top-level MIME section.</p>
+      <span class="quote">&#8220;<span class="quote">Content-Type:
+      message/rfc822\n</span>&#8221;</span> (note the trailing
+      newline). The third parameter is the handle of the
+      attachment's top-level MIME section.</p>
 
       <p>The second parameter to <code class="function">assembleMultipart</code> is a string containing
       MIME headers for the multipart MIME section. These headers
@@ -373,19 +374,17 @@ mail::addMessage *msg;
       multipart section will be generated internally. If there are
       any extra headers, they must have a single trailing newline
       character. Most situations do not need extra headers, so this
-      parameter should be an empty string, &#8220;&#8221;.</p>
+      parameter should be an empty string, <span class="quote">&#8220;&#8221;</span>.</p>
 
       <p>The third parameter to <code class="function">assembleMultipart</code> is the vector of
       previously-defined handles of each MIME section that's to be
       assembled into a multipart MIME section. The fourth parameter
-      is the actual MIME type of this section, usually
-      &#8220;<span class="quote">multipart/mixed</span>&#8221; or
-      &#8220;<span class="quote">multipart/alternative</span>&#8221; (any
-      &#8220;<span class="quote">multipart</span>&#8221; type is
-      allowed). The fifth parameter is optional, and specifies the
-      MIME content type parameter list (the parameter list should
-      not include the &#8220;<span class="quote">boundary</span>&#8221; parameter, because it's taken
-      care of automatically by this function).</p>
+      is the actual MIME type of this section, usually <span class="quote">&#8220;<span class="quote">multipart/mixed</span>&#8221;</span> or <span class="quote">&#8220;<span class="quote">multipart/alternative</span>&#8221;</span> (any
+      <span class="quote">&#8220;<span class="quote">multipart</span>&#8221;</span> type is allowed). The
+      fifth parameter is optional, and specifies the MIME content
+      type parameter list (the parameter list should not include
+      the <span class="quote">&#8220;<span class="quote">boundary</span>&#8221;</span> parameter, because it's
+      taken care of automatically by this function).</p>
 
       <p>The last parameter to <code class="function">assembleContent</code>, <code class="function">assembleMessageRfc822</code>, or <code class="function">assembleMultipart</code> is the callback object.
       The callback object's <code class="function">success</code>
@@ -397,8 +396,8 @@ mail::addMessage *msg;
       terminates) or the function will terminate immediately, and
       the callback function will be called at a later time.</p>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id598676" shape="rect" name="id598676"> </a>
+      <div class="refsect2" title="COPYING ATTACHMENTS FROM OTHER MESSAGES">
+        <a id="id578817" shape="rect" name="id578817"> </a>
 
         <h3>COPYING ATTACHMENTS FROM OTHER MESSAGES</h3>
 
@@ -505,7 +504,7 @@ mail::addMessage *msg;
         obtained using <code class="literal">mail::account::MIMESTRUCTURE</code> with
         <a class="link" href="mail-readmsgattr.html" title="mail::account::readMessageAttributes" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::account::readMessageAttributes</span>(3x)</span></a>.</p>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
           <p><em class="parameter"><code>acct</code></em> can refer
@@ -529,8 +528,8 @@ mail::addMessage *msg;
         field.</p>
 
         <p><code class="function">assembleRemoveAttachmentsFrom</code> implements
-        the &#8220;<span class="quote">Remove
-        Attachments</span>&#8221; function in a typical mail
+        the <span class="quote">&#8220;<span class="quote">Remove
+        Attachments</span>&#8221;</span> function in a typical mail
         client, which removes individual attachments from a
         message. To do that, set <em class="parameter"><code>attachment</code></em> to the top-level
         MIME section that refers to the entire message (literally
@@ -543,8 +542,8 @@ mail::addMessage *msg;
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id599007" shape="rect" name="id599007"> </a>
+    <div class="refsect1" title="RETURN CODES AND CALLBACKS">
+      <a id="id579148" shape="rect" name="id579148"> </a>
 
       <h2>RETURN CODES AND CALLBACKS</h2>
 
@@ -556,7 +555,7 @@ mail::addMessage *msg;
       invoke <code class="function">fail</code> if the message
       cannot be added to the folder, for some reason.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>The <code class="function">mail::folder::addMessage</code> function returns
@@ -578,7 +577,7 @@ mail::addMessage *msg;
       <em class="parameter"><code>callback</code></em> until either
       the <code class="function">success</code> or <code class="function">fail</code> method is invoked.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p><em class="parameter"><code>callback</code></em>'s
@@ -588,7 +587,7 @@ mail::addMessage *msg;
         the error was encountered.</p>
       </div>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p><em class="parameter"><code>folder</code></em> does not
@@ -599,8 +598,8 @@ mail::addMessage *msg;
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id599192" shape="rect" name="id599192"> </a>
+    <div class="refsect1" title="SEE ALSO">
+      <a id="id579334" shape="rect" name="id579334"> </a>
 
       <h2>SEE ALSO</h2>
 
@@ -625,7 +624,8 @@ mail::addMessage *msg;
       </tr>
 
       <tr>
-        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">mail::folder Native API reference&#160;</td>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1"><span class="structname">mail::folder</span>
+        Native API reference&#160;</td>
 
         <td width="20%" align="center" rowspan="1" colspan="1">
         <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>

@@ -1,4 +1,4 @@
-/* $Id: imaplogout.C,v 1.2 2004/04/25 03:37:15 mrsam Exp $
+/* $Id: imaplogout.C,v 1.3 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -71,7 +71,7 @@ int mail::imapLogoutHandler::process(mail::imap &imapAccount, string &buffer)
 
 	size_t p=buffer.find('\n');
 
-	if (p == buffer.npos)
+	if (p == std::string::npos)
 	{
 		if (buffer.size() > 16000)
 			return buffer.size() - 16000;

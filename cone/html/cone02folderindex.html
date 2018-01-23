@@ -32,8 +32,8 @@ information.
         <td width="20%" align="left" rowspan="1" colspan="1">
         <a accesskey="p" href="cone01folderlist.html" shape="rect">Prev</a>&#160;</td>
 
-        <th width="60%" align="center" rowspan="1" colspan="1">Cone
-        mail client</th>
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="application">Cone</span> mail client</th>
 
         <td width="20%" align="right" rowspan="1" colspan="1">
         &#160;<a accesskey="n" href="cone03messageview.html" shape="rect">Next</a></td>
@@ -42,7 +42,7 @@ information.
     <hr/>
   </div>
 
-  <div class="chapter" lang="en" xml:lang="en">
+  <div class="chapter" title="Folder Index">
     <div class="titlepage">
       <div>
         <div>
@@ -57,75 +57,72 @@ information.
     each message:</p>
 
     <div class="itemizedlist">
-      <ul type="disc">
-        <li>
+      <ul class="itemizedlist" type="disc">
+        <li class="listitem">
           <p>The message number, starting from 1 and counting
           upwards. New messages (unread messages), are prefixed
-          with by &#8220;<span class="quote"><code class="literal">N</code></span>&#8221;. Messages marked for
-          deletion are prefixed by &#8220;<span class="quote"><code class="literal">D</code></span>&#8221;. On
-          some terminals, new messages are prefixed by a little
-          diamond symbol, and messages are marked for deletion by a
+          with by <span class="quote">&#8220;<span class="quote"><code class="literal">N</code></span>&#8221;</span>. Messages marked
+          for deletion are prefixed by <span class="quote">&#8220;<span class="quote"><code class="literal">D</code></span>&#8221;</span>. On some
+          terminals, new messages are prefixed by a little diamond
+          symbol, and messages are marked for deletion by a
           crosscheck symbol. Messages that have been replied to are
-          prefixed by &#8220;<span class="quote"><code class="literal">R</code></span>&#8221;.</p>
+          prefixed by <span class="quote">&#8220;<span class="quote"><code class="literal">R</code></span>&#8221;</span>.</p>
 
           <p><span class="application">Cone</span> can process
           groups of messages at once (for example: deleting or
           moving a group of messages to another folder). This is
-          done by &#8220;<span class="quote">flagging</span>&#8221;
-          each message, individually, then executing the command.
-          Each flagged message is marked with an asterisk,
-          &#8220;<span class="quote"><code class="literal">*</code></span>&#8221;. On some displays,
-          flagged messages are identified by a checkmark symbol,
-          instead of the asterisk.</p>
+          done by <span class="quote">&#8220;<span class="quote">flagging</span>&#8221;</span> each message,
+          individually, then executing the command. Each flagged
+          message is marked with an asterisk, <span class="quote">&#8220;<span class="quote"><code class="literal">*</code></span>&#8221;</span>. On some
+          displays, flagged messages are identified by a checkmark
+          symbol, instead of the asterisk.</p>
         </li>
 
-        <li>
+        <li class="listitem">
           <p>The date or time when the message was sent or
           received. Only the date is shown for messages sent or
           received over a week ago. More recent messages have their
           day and time shown.</p>
         </li>
 
-        <li>
+        <li class="listitem">
           <p>The sender's or recipient's name. Messages sent to
           multiple people have only the first recipient shown.</p>
         </li>
 
-        <li>
+        <li class="listitem">
           <p>The approximate size of the message.</p>
         </li>
 
-        <li>
+        <li class="listitem">
           <p>The message's subject. There's not a lot of room to
           show the message's subject; <span class="application">Cone</span> shows as much of a subject as
           possible.</p>
 
           <p>Messages that belong to a watched thread, or a
-          subthread, have the &#8220;<span class="quote"><code class="literal">&#8801;</code></span>&#8221;
-          &#8220;<span class="quote"><code class="literal">&#8226;</code></span>&#8221; character shown,
-          in reverse colors, in front of the message's subject.
-          Terminals that cannot display these symbols will use the
-          &#8220;<span class="quote">o</span>&#8221; and
-          &#8220;<span class="quote">*</span>&#8221; characters
-          instead. See <a class="link" href="cone02folderindex.html#watch" title="Watching Threads" shape="rect">&#8220;<span class="quote">Watching
-          Threads</span>&#8221;</a>, below, for more
-          information.</p>
+          subthread, have the <span class="quote">&#8220;<span class="quote"><code class="literal">&#8801;</code></span>&#8221;</span>
+          <span class="quote">&#8220;<span class="quote"><code class="literal">&#8226;</code></span>&#8221;</span> character
+          shown, in reverse colors, in front of the message's
+          subject. Terminals that cannot display these symbols will
+          use the <span class="quote">&#8220;<span class="quote">o</span>&#8221;</span> and <span class="quote">&#8220;<span class="quote">*</span>&#8221;</span>
+          characters instead. See <a class="link" href="cone02folderindex.html#watch" title="Watching Threads" shape="rect"><span class="quote">&#8220;<span class="quote">Watching Threads</span>&#8221;</span></a>, below,
+          for more information.</p>
         </li>
       </ul>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Folder Index Screen">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id500403" shape="rect" name="id500403"> </a>Folder Index Screen</h4>
+            <h4 class="title"><a id="id480438" shape="rect" name="id480438"> </a>Folder Index Screen</h4>
           </div>
         </div>
       </div>
       <hr /><pre class="programlisting" xml:space="preserve">
 <B> New Mail: 7 messages                 CONE                                  </B>
   1  29-Jul-2002 Jack Jones              (2 Kb) IMAP server bug
-  2  08-Aug-2002 easyDNS Support         (3 Kb) [easyDNS] New security featu
+  2  08-Aug-2002 Support                 (3 Kb) New security features
   3  25-Feb-2003 Sam Smith               (3 Kb) news.pl
   4  05-Mar-2003 Bill Black              (4 Kb) Re: IMAP server bug
   5  27-Mar-2003 Bill@example.com        (3 Kb) Suggested changes to README
@@ -204,22 +201,21 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
 
           <dd>
             <p>Watch replies to this message, or stop watching
-            replies to this message. See <a class="link" href="cone02folderindex.html#watch" title="Watching Threads" shape="rect">&#8220;<span class="quote">Watching
-            Threads</span>&#8221;</a>, below, for more
-            information.</p>
+            replies to this message. See <a class="link" href="cone02folderindex.html#watch" title="Watching Threads" shape="rect"><span class="quote">&#8220;<span class="quote">Watching Threads</span>&#8221;</span></a>,
+            below, for more information.</p>
           </dd>
 
           <dt><span class="term"><span class="keycap"><strong>B</strong></span></span></dt>
 
           <dd>
-            <p>&#8220;<span class="quote">Blindly</span>&#8221;
-            forward the current message. The message is resent
-            without adding any additional comments, or changing the
-            sender's name. <span class="application">Cone</span>
-            prompt for the recipient's name, or names, and send the
-            messages without changing the message's headers in any
-            way (additional headers may be added by the mail
-            server, of course).</p>
+            <p><span class="quote">&#8220;<span class="quote">Blindly</span>&#8221;</span> forward the
+            current message. The message is resent without adding
+            any additional comments, or changing the sender's name.
+            <span class="application">Cone</span> prompt for the
+            recipient's name, or names, and send the messages
+            without changing the message's headers in any way
+            (additional headers may be added by the mail server, of
+            course).</p>
           </dd>
 
           <dt><span class="term"><span class="keycap"><strong>C</strong></span></span></dt>
@@ -237,8 +233,7 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
           <dd>
             <p>Mark the current message for deletion. The message
             is not actually deleted. It is marked for deletion by
-            the &#8220;<span class="quote">expunge</span>&#8221;
-            command.</p>
+            the <span class="quote">&#8220;<span class="quote">expunge</span>&#8221;</span> command.</p>
           </dd>
 
           <dt><span class="term"><span class="keycap"><strong>F</strong></span></span></dt>
@@ -271,17 +266,16 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
 
           <dd>
             <p>Pressing <span class="keycap"><strong>M</strong></span> closes this screen,
-            and opens the &#8220;<span class="quote">Main
-            Menu</span>&#8221; screen.</p>
+            and opens the <span class="quote">&#8220;<span class="quote">Main Menu</span>&#8221;</span> screen.</p>
           </dd>
 
           <dt><span class="term"><span class="keycap"><strong>O</strong></span></span></dt>
 
           <dd>
             <p>Move the current message to another folder. This is
-            similar to the &#8220;<span class="quote">Copy</span>&#8221; command, except that the
-            message is removed from the current folder after it's
-            succesfully copied to the destination folder.</p>
+            similar to the <span class="quote">&#8220;<span class="quote">Copy</span>&#8221;</span> command, except that
+            the message is removed from the current folder after
+            it's succesfully copied to the destination folder.</p>
           </dd>
 
           <dt><span class="term"><span class="keycap"><strong>R</strong></span></span></dt>
@@ -337,14 +331,14 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
           <dt><span class="term"><span class="keycap"><strong>S</strong></span></span></dt>
 
           <dd>
-            <p>Many mailing lists have &#8220;<span class="quote">[subject]</span>&#8221; automatically inserted
-            into the subject line of all mailing list messages.
-            Press &#8220;<span class="quote">S</span>&#8221; to
-            hide/show the so-called &#8220;<span class="quote">blobs</span>&#8221; from the subject line of
-            messages shown on the folder index screen. The subject
-            line has limited display real estate, and removing the
-            [blob] allows more of the meaningful subject to be
-            viewed on this screen.</p>
+            <p>Many mailing lists have <span class="quote">&#8220;<span class="quote">[subject]</span>&#8221;</span> automatically
+            inserted into the subject line of all mailing list
+            messages. Press <span class="quote">&#8220;<span class="quote">S</span>&#8221;</span> to hide/show the
+            so-called <span class="quote">&#8220;<span class="quote">blobs</span>&#8221;</span> from the subject
+            line of messages shown on the folder index screen. The
+            subject line has limited display real estate, and
+            removing the [blob] allows more of the meaningful
+            subject to be viewed on this screen.</p>
           </dd>
 
           <dt><span class="term"><span class="keycap"><strong>SPACE</strong></span></span></dt>
@@ -362,11 +356,11 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
 
           <dd>
             <p><span class="keycap"><strong>T</strong></span> opens
-            a submenu where a message may be &#8220;<span class="quote">tagged</span>&#8221;. Tagged messages are shown
-            with a different background color. This is merely a
-            visual aid for highlighting selected messages, and
-            nothing more. A color-capable display is necessary for
-            showing tagged messages.</p>
+            a submenu where a message may be <span class="quote">&#8220;<span class="quote">tagged</span>&#8221;</span>. Tagged messages
+            are shown with a different background color. This is
+            merely a visual aid for highlighting selected messages,
+            and nothing more. A color-capable display is necessary
+            for showing tagged messages.</p>
 
             <p>The submenu lists nine available tags, selected by
             pressing a digit <span class="keycap"><strong>1</strong></span> through <span class="keycap"><strong>9</strong></span>. <span class="keycap"><strong>0</strong></span> removes the existing
@@ -377,12 +371,13 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
             addition to the default text color.</p>
 
             <p>The names of each tag may be set by choosing the
-            &#8220;<span class="quote">Setup</span>&#8221;
-            selection from <span class="application">Cone</span>'s
-            main menu. The default names of the first five tags are
-            the same as message labels used by the Mozilla mail
-            client. With most IMAP servers <span class="application">Cone</span> and Mozilla will see each
-            other's tagged/labeled messages (however <span class="application">Cone</span>'s colors are determined by
+            <span class="quote">&#8220;<span class="quote">Setup</span>&#8221;</span> selection from
+            <span class="application">Cone</span>'s main menu. The
+            default names of the first five tags are the same as
+            message labels used by the Mozilla mail client. With
+            most IMAP servers <span class="application">Cone</span>
+            and Mozilla will see each other's tagged/labeled
+            messages (however <span class="application">Cone</span>'s colors are determined by
             the console's color palette, and may not necessary
             match the ones Mozilla uses for the same label). This
             requires additional IMAP server functionality that may
@@ -401,11 +396,12 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
           <dd>
             <p>This command opens the screen with a list of
             attachments to the current message. This is the
-            &#8220;<span class="quote">View
-            Attachment</span>&#8221; screen. It is a very simple
-            screen: each attachment is listed, giving its MIME type
-            (the type of the attachment), its approximate size, and
-            the attachments's description, if provided.</p>
+            <span class="quote">&#8220;<span class="quote">View
+            Attachment</span>&#8221;</span> screen. It is a very
+            simple screen: each attachment is listed, giving its
+            MIME type (the type of the attachment), its approximate
+            size, and the attachments's description, if
+            provided.</p>
 
             <p>Plain text attachments may be viewed individually,
             by pressing <span class="keycap"><strong>ENTER</strong></span>. Press
@@ -431,7 +427,7 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
             deleted attachments are gone for good, and cannot be
             undeleted.</p>
 
-            <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
               <h3 class="title">Note</h3>
 
               <p>Only messages in local mail folders, IMAP folders,
@@ -469,20 +465,20 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
 
           <dd>
             <p>Pressing <span class="keycap"><strong>W</strong></span> opens the
-            &#8220;<span class="quote">Write Message</span>&#8221;
-            screen. This is the screen where a new message can be
-            typed, and sent. <span class="application">Cone</span>
-            checks for any unfinished messages in the Draft folder,
-            before opening this screen. If the Draft folder
-            contains any messages, <span class="application">Cone</span> offers an option to resume
-            writing an unfinished message, instead of starting a
-            new message. <span class="application">Cone</span>
-            automatically saves a backup copy of the current
-            message being edited, at regular intervals, so that a
-            backup copy can be recovered in the event that
-            <span class="application">Cone</span> is interrupted,
-            or terminated, in a middle of editing a new message. If
-            a backup copy exists, <span class="application">Cone</span> announces the existence of an
+            <span class="quote">&#8220;<span class="quote">Write
+            Message</span>&#8221;</span> screen. This is the screen
+            where a new message can be typed, and sent.
+            <span class="application">Cone</span> checks for any
+            unfinished messages in the Draft folder, before opening
+            this screen. If the Draft folder contains any messages,
+            <span class="application">Cone</span> offers an option
+            to resume writing an unfinished message, instead of
+            starting a new message. <span class="application">Cone</span> automatically saves a backup
+            copy of the current message being edited, at regular
+            intervals, so that a backup copy can be recovered in
+            the event that <span class="application">Cone</span> is
+            interrupted, or terminated, in a middle of editing a
+            new message. If a backup copy exists, <span class="application">Cone</span> announces the existence of an
             interrupted message, and prompts to resume writing the
             interrupted message. An interrupted message must be
             opened and either: sent, explicitly cancelled, or saved
@@ -493,18 +489,18 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
           <dt><span class="term"><span class="keycap"><strong>X</strong></span></span></dt>
 
           <dd>
-            <p>This is the &#8220;<span class="quote">Expunge</span>&#8221; command. All messages
-            marked for deletion are permanently removed from the
-            folder.</p>
+            <p>This is the <span class="quote">&#8220;<span class="quote">Expunge</span>&#8221;</span> command. All
+            messages marked for deletion are permanently removed
+            from the folder.</p>
           </dd>
         </dl>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Searching messages">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id501530" shape="rect" name="id501530"> </a>Searching messages</h5>
+              <h5 class="title"><a id="id481567" shape="rect" name="id481567"> </a>Searching messages</h5>
             </div>
           </div>
         </div>
@@ -514,11 +510,10 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
         of options to enter a criteria that's used to search
         messages. After the search criteria is specified, messages
         that meet the search criteria are shown as flagged
-        (highlighted, and preceded by a &#8220;<span class="quote"><code class="literal">*</code></span>&#8221; or a
-        checkmark). Messages that meet the search criteria can be
-        quickly located by pressing the cursor left/right keys,
-        which move the cursor to the previous or the next flagged
-        message.</p>
+        (highlighted, and preceded by a <span class="quote">&#8220;<span class="quote"><code class="literal">*</code></span>&#8221;</span> or a checkmark).
+        Messages that meet the search criteria can be quickly
+        located by pressing the cursor left/right keys, which move
+        the cursor to the previous or the next flagged message.</p>
 
         <p>Requesting a search when some messages are already
         flagged shows an additional prompt:</p>
@@ -572,10 +567,10 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
 
             <dd>
               <p>Moves flagged messages to another folder. This is
-              similar to the &#8220;<span class="quote">Copy</span>&#8221; command, except that the
-              messages are removed from the current folder after
-              they're succesfully copied to the destination
-              folder.</p>
+              similar to the <span class="quote">&#8220;<span class="quote">Copy</span>&#8221;</span>
+              command, except that the messages are removed from
+              the current folder after they're succesfully copied
+              to the destination folder.</p>
             </dd>
 
             <dt><span class="term"><span class="keycap"><strong>R</strong></span> - Reset
@@ -597,11 +592,11 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
           </dl>
         </div>
 
-        <div class="section" lang="en" xml:lang="en">
+        <div class="section" title="Search criteria">
           <div class="titlepage">
             <div>
               <div>
-                <h6 class="title"><a id="id502186" shape="rect" name="id502186"> </a>Search criteria</h6>
+                <h6 class="title"><a id="id482223" shape="rect" name="id482223"> </a>Search criteria</h6>
               </div>
             </div>
           </div>
@@ -621,7 +616,9 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
               <dd>
                 <p>Press <span class="keycap"><strong>!</strong></span> to logically
                 reverse the following search criteria. Thus, if the
-                entered search criteria was &#8220;<span class="quote">Search the <code class="literal">From</code> header for <code class="literal">troll@example.com</code></span>&#8221;
+                entered search criteria was <span class="quote">&#8220;<span class="quote">Search the
+                <code class="literal">From</code> header for
+                <code class="literal">troll@example.com</code></span>&#8221;</span>
                 the actual search will find messages where the
                 <code class="literal">From</code> header does
                 <span class="emphasis"><em>NOT</em></span> contain
@@ -644,10 +641,10 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
                 several status flags that define whether the
                 message is a new message, a deleted message, a
                 replied message, and so on. Selecting a status
-                search shows three options: &#8220;<span class="quote">Deleted</span>&#8221;, &#8220;<span class="quote">Unread</span>&#8221;, and
-                &#8220;<span class="quote">Replied</span>&#8221;,
-                to search for all deleted, unread, or replied
-                messages, respectively.</p>
+                search shows three options: <span class="quote">&#8220;<span class="quote">Deleted</span>&#8221;</span>, <span class="quote">&#8220;<span class="quote">Unread</span>&#8221;</span>, and
+                <span class="quote">&#8220;<span class="quote">Replied</span>&#8221;</span>, to search for
+                all deleted, unread, or replied messages,
+                respectively.</p>
               </dd>
 
               <dt><span class="term"><span class="keycap"><strong>T</strong></span> - search by
@@ -665,21 +662,21 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
 
               <dd>
                 <p>Search for messages that are bigger or smaller
-                than a certain size. Select &#8220;<span class="quote">Larger than</span>&#8221; or
-                &#8220;<span class="quote">Smaller
-                than</span>&#8221; at the next prompt, then enter
-                the target message size, in bytes, and press
+                than a certain size. Select <span class="quote">&#8220;<span class="quote">Larger
+                than</span>&#8221;</span> or <span class="quote">&#8220;<span class="quote">Smaller
+                than</span>&#8221;</span> at the next prompt, then
+                enter the target message size, in bytes, and press
                 <span class="keycap"><strong>ENTER</strong></span>
                 to search.</p>
               </dd>
             </dl>
           </div>
 
-          <div class="section" lang="en" xml:lang="en">
+          <div class="section" title="Date-based searches">
             <div class="titlepage">
               <div>
                 <div>
-                  <h6 class="title"><a id="id502329" shape="rect" name="id502329"> </a>Date-based searches</h6>
+                  <h6 class="title"><a id="id482367" shape="rect" name="id482367"> </a>Date-based searches</h6>
                 </div>
               </div>
             </div>
@@ -687,9 +684,9 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
             <p>A date-based search brings up additional prompts
             that specify the nature of the search. There are two
             dates that are associated with every message: the
-            &#8220;<span class="quote">sent</span>&#8221; date,
-            when the message was sent; and the &#8220;<span class="quote">received</span>&#8221; date, when the message
-            was received.</p>
+            <span class="quote">&#8220;<span class="quote">sent</span>&#8221;</span> date, when the
+            message was sent; and the <span class="quote">&#8220;<span class="quote">received</span>&#8221;</span> date, when the
+            message was received.</p>
 
             <p>The sent date is obtained from the message's
             <code class="literal">Date:</code> header. The received
@@ -700,33 +697,33 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
             for:</p>
 
             <div class="orderedlist">
-              <ol type="1">
-                <li>
+              <ol class="orderedlist" type="1">
+                <li class="listitem">
                   <p>Messages that were sent before the given
                   date.</p>
                 </li>
 
-                <li>
+                <li class="listitem">
                   <p>Messages that were the sent on the given
                   date.</p>
                 </li>
 
-                <li>
+                <li class="listitem">
                   <p>Messages that were the sent since (on, or
                   after) the given date.</p>
                 </li>
 
-                <li>
+                <li class="listitem">
                   <p>Messages that were received before the given
                   date.</p>
                 </li>
 
-                <li>
+                <li class="listitem">
                   <p>Messages that were the received on the given
                   date.</p>
                 </li>
 
-                <li>
+                <li class="listitem">
                   <p>Messages that were the received since (on, or
                   after) the given date.</p>
                 </li>
@@ -742,7 +739,7 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
             shown date by a month. Press the space bar to accept
             the shown date, and search for messages.</p>
 
-            <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
               <h3 class="title">Note</h3>
 
               <p>Date-based searches are not currently implemented
@@ -750,11 +747,11 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
             </div>
           </div>
 
-          <div class="section" lang="en" xml:lang="en">
+          <div class="section" title="Text-based searches">
             <div class="titlepage">
               <div>
                 <div>
-                  <h6 class="title"><a id="id502444" shape="rect" name="id502444"> </a>Text-based searches</h6>
+                  <h6 class="title"><a id="id482481" shape="rect" name="id482481"> </a>Text-based searches</h6>
                 </div>
               </div>
             </div>
@@ -828,7 +825,7 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
             these options, and press <span class="keycap"><strong>ENTER</strong></span> to perform the
             search.</p>
 
-            <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+            <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
               <h3 class="title">Note</h3>
 
               <p>Efficient searching is implemented for local mail,
@@ -861,7 +858,7 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
         </div>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Watching Threads">
         <div class="titlepage">
           <div>
             <div>
@@ -871,20 +868,23 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
         </div>
 
         <p>Pressing <span class="keycap"><strong>A</strong></span>
-        displays the following prompt: &#8220;<span class="quote">Watch thread up to <em class="replaceable"><code>A</code></em> days, <em class="replaceable"><code>B</code></em>-deep replies?
-        (Y/N).</span>&#8221; The initial values for <em class="replaceable"><code>A</code></em> and <em class="replaceable"><code>B</code></em> are taken from the setup
+        displays the following prompt: <span class="quote">&#8220;<span class="quote">Watch thread up to
+        <em class="replaceable"><code>A</code></em> days,
+        <em class="replaceable"><code>B</code></em>-deep replies?
+        (Y/N).</span>&#8221;</span> The initial values for
+        <em class="replaceable"><code>A</code></em> and <em class="replaceable"><code>B</code></em> are taken from the setup
         screen. Press <span class="keycap"><strong>D</strong></span> or <span class="keycap"><strong>R</strong></span> to adjust the defaults,
         if desired.</p>
 
-        <p>Answering the prompt with <span class="keycap"><strong>Y</strong></span> will &#8220;<span class="quote">watch</span>&#8221; the currently highlighted
-        message, and any new replies to it. The highlighted
-        message's subject will be shown with a highly-visible
-        &#8220;<span class="quote"><code class="literal">&#8801;</code></span>&#8221; character (or the
-        &#8220;<span class="quote">o</span>&#8221; character on
-        some terminals). New replies to the watched message will
-        also be automatically marked in the same fashion.</p>
+        <p>Answering the prompt with <span class="keycap"><strong>Y</strong></span> will <span class="quote">&#8220;<span class="quote">watch</span>&#8221;</span> the currently
+        highlighted message, and any new replies to it. The
+        highlighted message's subject will be shown with a
+        highly-visible <span class="quote">&#8220;<span class="quote"><code class="literal">&#8801;</code></span>&#8221;</span> character (or
+        the <span class="quote">&#8220;<span class="quote">o</span>&#8221;</span> character on some
+        terminals). New replies to the watched message will also be
+        automatically marked in the same fashion.</p>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
           <p>Any existing replies to the watched message are not
@@ -916,7 +916,7 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
         five subsequent levels of follow-ups, as long as they
         arrive within the time-enforced limit.</p>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
           <p>After coming back from a 15-day vacation, and opening
@@ -928,23 +928,23 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
         </div>
 
         <p>The last level of watched followups will be marked with
-        a different character, a &#8220;<span class="quote"><code class="literal">&#8226;</code></span>&#8221;
-        (or &#8220;<span class="quote"><code class="literal">*</code></span>&#8221; as shown by some
-        terminals), instead of the &#8220;<span class="quote"><code class="literal">&#8801;</code></span>&#8221;
-        character. This is a visual cue to evaluate whether this
-        subthread is still worth following. If so, the message can
-        be manually re-watched. Highlighting the message and
-        choosing this option will &#8220;<span class="quote">renew</span>&#8221; the interest in this thread for
-        another round of followups (however other branches of the
-        original thread will still expire as usual, unless they are
-        also renewed).</p>
+        a different character, a <span class="quote">&#8220;<span class="quote"><code class="literal">&#8226;</code></span>&#8221;</span> (or
+        <span class="quote">&#8220;<span class="quote"><code class="literal">*</code></span>&#8221;</span> as shown by some
+        terminals), instead of the <span class="quote">&#8220;<span class="quote"><code class="literal">&#8801;</code></span>&#8221;</span> character.
+        This is a visual cue to evaluate whether this subthread is
+        still worth following. If so, the message can be manually
+        re-watched. Highlighting the message and choosing this
+        option will <span class="quote">&#8220;<span class="quote">renew</span>&#8221;</span> the interest in this
+        thread for another round of followups (however other
+        branches of the original thread will still expire as usual,
+        unless they are also renewed).</p>
 
         <p>Selecting this option again on a message that's already
         being watched will prompt to turn off watching for more
         replies. The message will no longer appear watched, and any
         future replies to the message will not be watched.</p>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
           <p>Any existing replies that are watched will continue to
@@ -952,11 +952,11 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
           being watched.</p>
         </div>
 
-        <div class="section" lang="en" xml:lang="en">
+        <div class="section" title="Watching E-mail threads">
           <div class="titlepage">
             <div>
               <div>
-                <h6 class="title"><a id="id503101" shape="rect" name="id503101"> </a>Watching E-mail threads</h6>
+                <h6 class="title"><a id="id483138" shape="rect" name="id483138"> </a>Watching E-mail threads</h6>
               </div>
             </div>
           </div>
@@ -994,11 +994,11 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
         </div>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Checking for new mail">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id503136" shape="rect" name="id503136"> </a>Checking for new mail</h5>
+              <h5 class="title"><a id="id483173" shape="rect" name="id483173"> </a>Checking for new mail</h5>
             </div>
           </div>
         </div>
@@ -1035,23 +1035,40 @@ N 7 Wed 10:55 AM Dr. Gary Green          (2 Kb) Spec file for release 1.7.1,
         explicit new mail check (<span class="application">Cone</span> does not check for new mail in
         POP3 folders by itself).</p>
 
+        <div class="blockquote">
+          <blockquote class="blockquote">
+            <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
+              <h3 class="title">Note</h3>
+
+              <p>There's a bug in <span class="application">INN
+              2.5</span>, which should be fixed in 2.5.3. The
+              affected versions of <span class="application">INN</span> are 2.5.0 through 2.5.2. Any
+              new messages in NetNews newsgroups will come up with
+              a blank sender and subject.</p>
+
+              <p>Do not use the cursor down key to check for new
+              messages in NetNews newsgroups, if the server is
+              running the affected version of <span class="application">INN</span></p>
+            </div>
+          </blockquote>
+        </div>
+
         <p>In all cases, new mail will not be immediately shown
         after the folder index screen is closed. When the folder
         index screen is closed, the mail folder still remains
-        &#8220;<span class="quote">opened</span>&#8221; until
-        <span class="application">Cone</span> opens another folder
-        in the same mail account. <span class="application">Cone</span> still regularly checks for new
-        mail when the folder index screen is not being shown
-        (except for POP3 accounts). New mail will be reported only
-        when <span class="application">Cone</span> checks for new
-        mail, or when the folder index screen is reopened.</p>
+        <span class="quote">&#8220;<span class="quote">opened</span>&#8221;</span> until <span class="application">Cone</span> opens another folder in the same
+        mail account. <span class="application">Cone</span> still
+        regularly checks for new mail when the folder index screen
+        is not being shown (except for POP3 accounts). New mail
+        will be reported only when <span class="application">Cone</span> checks for new mail, or when the
+        folder index screen is reopened.</p>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Concurrent changes to the current folder's contents">
         <div class="titlepage">
           <div>
             <div>
-              <h5 class="title"><a id="id503216" shape="rect" name="id503216"> </a>Concurrent changes to the current
+              <h5 class="title"><a id="id483285" shape="rect" name="id483285"> </a>Concurrent changes to the current
               folder's contents</h5>
             </div>
           </div>

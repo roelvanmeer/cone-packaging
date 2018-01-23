@@ -1,4 +1,4 @@
-/* $Id: addressbook.C,v 1.7 2009/11/08 23:52:31 mrsam Exp $
+/* $Id: addressbook.C,v 1.8 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -132,13 +132,13 @@ void mail::addressbook::setIndex(size_t messageNumber,
 
 		size_t i=subject.find('[');
 
-		if (i != subject.npos)
+		if (i != std::string::npos)
 		{
 			subject=subject.substr(i+1);
 
 			i=subject.find(']');
 
-			if (i != subject.npos)
+			if (i != std::string::npos)
 			{
 				newEntry.nickname=subject.substr(0, i);
 				if (newEntry.nickname.size() == 0)

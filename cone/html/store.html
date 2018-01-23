@@ -43,7 +43,7 @@ information.
     <hr/>
   </div>
 
-  <div class="section" lang="en" xml:lang="en">
+  <div class="section" title="Modifying message attributes">
     <div class="titlepage">
       <div>
         <div>
@@ -68,8 +68,8 @@ information.
 
     <p>The <code class="literal">STORE</code> command updates
     attributes of existing messages. A list of message numbers, as
-    whitespace-delimited words, follows the <code class="literal">STORE</code>. &#8220;<span class="quote"><em class="replaceable"><code>m</code></em>-<em class="replaceable"><code>n</code></em></span>&#8221; designates
-    messages #m through #n, inclusively.</p>
+    whitespace-delimited words, follows the <code class="literal">STORE</code>. <span class="quote">&#8220;<span class="quote"><em class="replaceable"><code>m</code></em>-<em class="replaceable"><code>n</code></em></span>&#8221;</span>
+    designates messages #m through #n, inclusively.</p>
 
     <p>One or more words follow the message number list; they
     specify which attributes to set. Attribute settings are
@@ -84,9 +84,9 @@ information.
 
         <dd>
           <p>Sets the messages flags precisely to <em class="replaceable"><code>list</code></em>, which is a
-          comma-separated list of message flags. See
-          &#8220;<span class="quote"><a class="link" href="attributes.html" title="Reading message attributes" shape="rect">Reading message attributes</a></span>&#8221;
-          for a list of defined message flags.</p>
+          comma-separated list of message flags. See <span class="quote">&#8220;<span class="quote"><a class="link" href="attributes.html" title="Reading message attributes" shape="rect">Reading message
+          attributes</a></span>&#8221;</span> for a list of defined
+          message flags.</p>
         </dd>
 
         <dt><span class="term">+FLAGS=<em class="replaceable"><code>list</code></em></span></dt>
@@ -108,11 +108,10 @@ information.
         <dt><span class="term">KEYWORDS=<em class="replaceable"><code>list</code></em></span></dt>
 
         <dd>
-          <p>If the server's capability list includes
-          &#8220;<span class="quote"><code class="literal">KEYWORD</code></span>&#8221;, then set the
-          keywords associated with the message to <em class="replaceable"><code>list</code></em>, which is a
-          comma-separated list of keywords. See &#8220;<span class="quote"><a class="link" href="conn.html" title="SMAP connection negotiation" shape="rect">SMAP
-          connection negotiation</a></span>&#8221; for more
+          <p>If the server's capability list includes <span class="quote">&#8220;<span class="quote"><code class="literal">KEYWORD</code></span>&#8221;</span>, then set
+          the keywords associated with the message to <em class="replaceable"><code>list</code></em>, which is a
+          comma-separated list of keywords. See <span class="quote">&#8220;<span class="quote"><a class="link" href="conn.html" title="SMAP connection negotiation" shape="rect">SMAP connection
+          negotiation</a></span>&#8221;</span> for more
           information.</p>
         </dd>
 
@@ -138,17 +137,19 @@ information.
         <dd>
           <p>Set the <code class="literal">INTERNALDATE</code>
           timestamp on a message to <em class="replaceable"><code>date</code></em>, which is an
-          RFC-2822 formatted date/time value. See
-          &#8220;<span class="quote"><a class="link" href="attributes.html" title="Reading message attributes" shape="rect">Reading message attributes</a></span>&#8221;
-          for more information on the <code class="literal">INTERNALDATE</code> attribute.</p>
+          RFC-2822 formatted date/time value. See <span class="quote">&#8220;<span class="quote"><a class="link" href="attributes.html" title="Reading message attributes" shape="rect">Reading message
+          attributes</a></span>&#8221;</span> for more information
+          on the <code class="literal">INTERNALDATE</code>
+          attribute.</p>
         </dd>
       </dl>
     </div>
 
-    <p>The server's response includes &#8220;<span class="quote"><code class="literal">* FETCH</code></span>&#8221;
-    single line replies that give the updated attributes of all
-    affected messages. This is specifically needed when updating
-    message flags, and is optional when updating <code class="literal">INTERNALDATE</code>s (there's not much point in
+    <p>The server's response includes <span class="quote">&#8220;<span class="quote"><code class="literal">*
+    FETCH</code></span>&#8221;</span> single line replies that give
+    the updated attributes of all affected messages. This is
+    specifically needed when updating message flags, and is
+    optional when updating <code class="literal">INTERNALDATE</code>s (there's not much point in
     echoing back the same timestamp).</p>
   </div>
 

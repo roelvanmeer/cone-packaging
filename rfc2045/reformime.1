@@ -1,16 +1,16 @@
-.\"  <!-- $Id: reformime.sgml,v 1.9 2009/11/08 18:14:47 mrsam Exp $ -->
-.\"  <!-- Copyright 1998 - 2009 Double Precision, Inc.  See COPYING for -->
+.\"  <!-- $Id: reformime.sgml,v 1.10 2010/04/10 12:13:14 mrsam Exp $ -->
+.\"  <!-- Copyright 1998 - 2010 Double Precision, Inc.  See COPYING for -->
 .\"  <!-- distribution information. -->
 '\" t
 .\"     Title: reformime
 .\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
-.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
-.\"      Date: 11/08/2009
+.\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
+.\"      Date: 04/28/2010
 .\"    Manual: Double Precision, Inc.
 .\"    Source: Double Precision, Inc.
 .\"  Language: English
 .\"
-.TH "REFORMIME" "1" "11/08/2009" "Double Precision, Inc." "Double Precision, Inc."
+.TH "REFORMIME" "1" "04/28/2010" "Double Precision, Inc." "Double Precision, Inc."
 .\" -----------------------------------------------------------------
 .\" * set default formatting
 .\" -----------------------------------------------------------------
@@ -385,9 +385,7 @@ or
 .PP
 \-o "\fItext\fR"
 .RS 4
-MIME\-encode "\fItext\fR", and print the results on standard output\&. Use the
-\fB\-c\fR
-option to explicitly specify the character set being encoded, overriding the default locale character set\&.
+MIME\-encode "\fItext\fR", and print the results on standard output\&.
 .RE
 .PP
 \-O "\fItext\fR"
@@ -396,6 +394,19 @@ Like the
 \fB\-o option\fR, except that
 \fItext\fR
 is a structured header with RFC 2822 addresses\&.
+.RE
+.PP
+\-c "\fIcharset\fR"
+.RS 4
+Use
+\fIcharset\fR
+as the character set setting, by the
+\fB\-h\fR,
+\fB\-H\fR,
+\fB\-o\fR
+and
+\fB\-O\fR
+options\&.
 .RE
 .SH "SEE ALSO"
 .PP

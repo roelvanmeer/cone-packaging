@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: cone 0.80\n"
+"Project-Id-Version: cone 0.84\n"
 "Report-Msgid-Bugs-To: courier-cone@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-12-29 21:33-0500\n"
+"POT-Creation-Date: 2010-05-30 18:25-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -756,19 +756,19 @@ msgstr ""
 msgid " (encrypt)"
 msgstr ""
 
-#: cursesedit.C:2110 cursesmessage.C:3015
+#: cursesedit.C:2110 cursesmessage.C:3032
 msgid "SIGN_K:S"
 msgstr ""
 
-#: cursesedit.C:2111 cursesmessage.C:3016
+#: cursesedit.C:2111 cursesmessage.C:3033
 msgid "Sign"
 msgstr ""
 
-#: cursesedit.C:2113 cursesmessage.C:3018
+#: cursesedit.C:2113 cursesmessage.C:3035
 msgid "ENCRYPT_K:E"
 msgstr ""
 
-#: cursesedit.C:2114 cursesmessage.C:3019
+#: cursesedit.C:2114 cursesmessage.C:3036
 msgid "Encrypt"
 msgstr ""
 
@@ -1081,100 +1081,100 @@ msgstr ""
 msgid "Wrapped around from the beginning"
 msgstr ""
 
-#: curseseditmessage.C:3001
+#: curseseditmessage.C:3011
 msgid "MARK_K:^ "
 msgstr ""
 
-#: curseseditmessage.C:3002 filter.C:242
+#: curseseditmessage.C:3012 filter.C:242
 msgid "Mark"
 msgstr ""
 
-#: curseseditmessage.C:3003
+#: curseseditmessage.C:3013
 msgid "JUSTIFY_K:^J"
 msgstr ""
 
-#: curseseditmessage.C:3004
+#: curseseditmessage.C:3014
 msgid "Justify"
 msgstr ""
 
-#: curseseditmessage.C:3005
+#: curseseditmessage.C:3015
 msgid "CLREOL_K:^K"
 msgstr ""
 
-#: curseseditmessage.C:3006
+#: curseseditmessage.C:3016
 msgid "Line Clear"
 msgstr ""
 
-#: curseseditmessage.C:3007
+#: curseseditmessage.C:3017
 msgid "SEARCH_K:^S"
 msgstr ""
 
-#: curseseditmessage.C:3008 cursesindexdisplay.C:1566
+#: curseseditmessage.C:3018 cursesindexdisplay.C:1566
 #: cursesmessagedisplay.C:1136
 msgid "Search"
 msgstr ""
 
-#: curseseditmessage.C:3009
+#: curseseditmessage.C:3019
 msgid "REPLACE_K:^R"
 msgstr ""
 
-#: curseseditmessage.C:3010
+#: curseseditmessage.C:3020
 msgid "Srch/Rplce"
 msgstr ""
 
-#: curseseditmessage.C:3011
+#: curseseditmessage.C:3021
 msgid "CUT_K:^W"
 msgstr ""
 
-#: curseseditmessage.C:3012
+#: curseseditmessage.C:3022
 msgid "Cut"
 msgstr ""
 
-#: curseseditmessage.C:3013
+#: curseseditmessage.C:3023
 msgid "YANK_K:^Y"
 msgstr ""
 
-#: curseseditmessage.C:3014
+#: curseseditmessage.C:3024
 msgid "Paste"
 msgstr ""
 
-#: curseseditmessage.C:3015
+#: curseseditmessage.C:3025
 msgid "INSERT_K:^G"
 msgstr ""
 
-#: curseseditmessage.C:3016
+#: curseseditmessage.C:3026
 msgid "Insert File"
 msgstr ""
 
-#: curseseditmessage.C:3017
+#: curseseditmessage.C:3027
 msgid "DICTSPELL_K:^D"
 msgstr ""
 
-#: curseseditmessage.C:3018
+#: curseseditmessage.C:3028
 msgid "Dict Spell"
 msgstr ""
 
-#: curseseditmessage.C:3019
+#: curseseditmessage.C:3029
 msgid "CANCEL_K:^C"
 msgstr ""
 
-#: curseseditmessage.C:3020
+#: curseseditmessage.C:3030
 msgid "Cancel/Exit"
 msgstr ""
 
-#: curseseditmessage.C:3021
+#: curseseditmessage.C:3031
 msgid "MACRO_K:^N"
 msgstr ""
 
-#: curseseditmessage.C:3022
+#: curseseditmessage.C:3032
 msgid "New Macro"
 msgstr ""
 
-#: curseseditmessage.C:3024
+#: curseseditmessage.C:3034
 msgid "EDITOR_K:^U"
 msgstr ""
 
-#: curseseditmessage.C:3025
+#: curseseditmessage.C:3035
 msgid "Ext Editor"
 msgstr ""
 
@@ -1828,243 +1828,243 @@ msgid ""
 "center><br>\n"
 msgstr ""
 
-#: cursesmessage.C:816
+#: cursesmessage.C:818
 msgid "End of signed/encrypted content"
 msgstr ""
 
-#: cursesmessage.C:839
+#: cursesmessage.C:841
 msgid "Attachment: "
 msgstr ""
 
-#: cursesmessage.C:874
+#: cursesmessage.C:876
 msgid ""
 "The following text uses an unknown character set called \"%1%\".  Some "
 "characters may not be shown correctly."
 msgstr ""
 
-#: cursesmessage.C:880
+#: cursesmessage.C:882
 msgid ""
 "The following text is written in the %1% character set.  Your display is set "
 "to the %2% character set, so some characters may not be shown correctly."
 msgstr ""
 
-#: cursesmessage.C:952
+#: cursesmessage.C:954
 msgid "Signed/encrypted (%1%) content follows"
 msgstr ""
 
-#: cursesmessage.C:956
+#: cursesmessage.C:958
 msgid "succesfully verified"
 msgstr ""
 
-#: cursesmessage.C:958
+#: cursesmessage.C:960
 msgid "<i>VERIFICATION FAILED</i>"
 msgstr ""
 
-#: cursesmessage.C:1035
+#: cursesmessage.C:1037
 msgid "       Date: "
 msgstr ""
 
-#: cursesmessage.C:1037
+#: cursesmessage.C:1039
 msgid "       From: "
 msgstr ""
 
-#: cursesmessage.C:1041
+#: cursesmessage.C:1043
 msgid "     Sender: "
 msgstr ""
 
-#: cursesmessage.C:1045
+#: cursesmessage.C:1047
 msgid "   Reply-To: "
 msgstr ""
 
-#: cursesmessage.C:1050
+#: cursesmessage.C:1052
 msgid "In-Reply-To: "
 msgstr ""
 
-#: cursesmessage.C:1054
+#: cursesmessage.C:1056
 msgid "         To: "
 msgstr ""
 
-#: cursesmessage.C:1058
+#: cursesmessage.C:1060
 msgid "         Cc: "
 msgstr ""
 
-#: cursesmessage.C:1062
+#: cursesmessage.C:1064
 msgid "        Bcc: "
 msgstr ""
 
-#: cursesmessage.C:1065
+#: cursesmessage.C:1067
 msgid "    Subject: "
 msgstr ""
 
-#: cursesmessage.C:1069
+#: cursesmessage.C:1071
 msgid " Message-ID: "
 msgstr ""
 
-#: cursesmessage.C:1216 cursesmessage.C:1227
+#: cursesmessage.C:1218 cursesmessage.C:1229
 msgid "%1%; %2%"
 msgstr ""
 
-#: cursesmessage.C:1968
+#: cursesmessage.C:1970
 msgid "Follow up to: %1%? (Y/N) "
 msgstr ""
 
-#: cursesmessage.C:2186
+#: cursesmessage.C:2188
 msgid "Cc original author? (Y/N) "
 msgstr ""
 
-#: cursesmessage.C:2213
+#: cursesmessage.C:2215
 msgid "Reply to mailing list? (Y/N) "
 msgstr ""
 
-#: cursesmessage.C:2231
+#: cursesmessage.C:2233
 msgid "Reply to all? (Y/N) "
 msgstr ""
 
-#: cursesmessage.C:2302
+#: cursesmessage.C:2304
 msgid "%1% writes:"
 msgstr ""
 
-#: cursesmessage.C:2432
+#: cursesmessage.C:2439
 msgid "Fwd entire message as an attachment? (Y/N) "
 msgstr ""
 
-#: cursesmessage.C:2468
+#: cursesmessage.C:2475
 msgid "Downloading message..."
 msgstr ""
 
-#: cursesmessage.C:2549
+#: cursesmessage.C:2556
 msgid "---------- Forwarded message ----------"
 msgstr ""
 
-#: cursesmessage.C:2685
+#: cursesmessage.C:2702
 msgid "Blind forward to: "
 msgstr ""
 
-#: cursesmessage.C:2701
+#: cursesmessage.C:2718
 msgid "Error - invalid mail list format"
 msgstr ""
 
-#: cursesmessage.C:2841
+#: cursesmessage.C:2858
 msgid "mail server on %1%"
 msgstr ""
 
-#: cursesmessage.C:2847 myserver.C:443
+#: cursesmessage.C:2864 myserver.C:443
 msgid "Connecting to %1%..."
 msgstr ""
 
-#: cursesmessage.C:2937 cursesmessagedisplay.C:816
+#: cursesmessage.C:2954 cursesmessagedisplay.C:816
 msgid "Passphrase (if required): "
 msgstr ""
 
-#: cursesmessage.C:2997
+#: cursesmessage.C:3014
 msgid "Sign, encrypt, then %1%"
 msgstr ""
 
-#: cursesmessage.C:2998
+#: cursesmessage.C:3015
 msgid "Sign, then %1%"
 msgstr ""
 
-#: cursesmessage.C:2999
+#: cursesmessage.C:3016
 msgid "Encrypt, then %1%"
 msgstr ""
 
-#: cursesmessage.C:3009
+#: cursesmessage.C:3026
 msgid "SELECTDSN_K:D"
 msgstr ""
 
-#: cursesmessage.C:3010
+#: cursesmessage.C:3027
 msgid "Delivery notifications"
 msgstr ""
 
-#: cursesmessage.C:3113
+#: cursesmessage.C:3130
 msgid "success"
 msgstr ""
 
-#: cursesmessage.C:3119
+#: cursesmessage.C:3136
 msgid "delay"
 msgstr ""
 
-#: cursesmessage.C:3125
+#: cursesmessage.C:3142
 msgid "fail"
 msgstr ""
 
-#: cursesmessage.C:3131
+#: cursesmessage.C:3148
 msgid "never"
 msgstr ""
 
-#: cursesmessage.C:3135
+#: cursesmessage.C:3152
 msgid "Send message (NOTIFY=%1%)? (Y) "
 msgstr ""
 
-#: cursesmessage.C:3139
+#: cursesmessage.C:3156
 msgid "DSNNEVER_K:N"
 msgstr ""
 
-#: cursesmessage.C:3140
+#: cursesmessage.C:3157
 msgid "Never"
 msgstr ""
 
-#: cursesmessage.C:3143
+#: cursesmessage.C:3160
 msgid "DSNSUCCESS_K:S"
 msgstr ""
 
-#: cursesmessage.C:3144
+#: cursesmessage.C:3161
 msgid "Success"
 msgstr ""
 
-#: cursesmessage.C:3147
+#: cursesmessage.C:3164
 msgid "DSNDELAY_K:D"
 msgstr ""
 
-#: cursesmessage.C:3148
+#: cursesmessage.C:3165
 msgid "Delay"
 msgstr ""
 
-#: cursesmessage.C:3151
+#: cursesmessage.C:3168
 msgid "DSNFAIL_K:F"
 msgstr ""
 
-#: cursesmessage.C:3152
+#: cursesmessage.C:3169
 msgid "Fail"
 msgstr ""
 
-#: cursesmessage.C:3223 encryptionmenu.C:250
+#: cursesmessage.C:3240 encryptionmenu.C:250
 msgid "SELECT PRIVATE KEY"
 msgstr ""
 
-#: cursesmessage.C:3224
+#: cursesmessage.C:3241
 msgid "Select key to sign this message with, and press ENTER"
 msgstr ""
 
-#: cursesmessage.C:3225
+#: cursesmessage.C:3242
 msgid "Sign with this key"
 msgstr ""
 
-#: cursesmessage.C:3226
+#: cursesmessage.C:3243
 msgid "Cancel, do not sign message"
 msgstr ""
 
-#: cursesmessage.C:3236
+#: cursesmessage.C:3253
 msgid "SELECT PUBLIC KEYS"
 msgstr ""
 
-#: cursesmessage.C:3237
+#: cursesmessage.C:3254
 msgid "Select recipients' encryption keys, then press ENTER"
 msgstr ""
 
-#: cursesmessage.C:3238
+#: cursesmessage.C:3255
 msgid "Encrypt to selected keys"
 msgstr ""
 
-#: cursesmessage.C:3239
+#: cursesmessage.C:3256
 msgid "Cancel, do not encrypt"
 msgstr ""
 
-#: cursesmessage.C:3418 myfolder.C:1833
+#: cursesmessage.C:3435 myfolder.C:1833
 msgid "Reading message..."
 msgstr ""
 
-#: cursesmessage.C:3442
+#: cursesmessage.C:3459
 msgid "Decrypting/verifying message..."
 msgstr ""
 

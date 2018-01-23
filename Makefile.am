@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.34 2009/12/31 02:41:33 mrsam Exp $
+# $Id: Makefile.am,v 1.35 2009/12/31 03:09:39 mrsam Exp $
 #
 # Copyright 2003-2009, Double Precision Inc.
 #
@@ -66,7 +66,7 @@ dist-hook:
 	$(HTML2TXT) $(srcdir)/cone/html/INSTALL.html >$(distdir)/INSTALL
 
 
-# Added by sysconftoolize: $Id: Makefile.am,v 1.34 2009/12/31 02:41:33 mrsam Exp $
+# Added by sysconftoolize: $Id: Makefile.am,v 1.35 2009/12/31 03:09:39 mrsam Exp $
 
 # Copyright 2000 Double Precision, Inc.  See COPYING for
 # distribution information.
@@ -169,6 +169,7 @@ upload-dist:
 	socksify cvs tag -F -r cone-latest \
                `echo cone-@VERSION@ | tr '.' '-'`
 	socksify ../sftools/release.pl mrsam $(SFPASSWD) courier cone @VERSION@ @PACKAGE@-@VERSION@.tar.bz2 @PACKAGE@-@VERSION@.tar.bz2.sig
+	socksify ssh grace.speakeasy.net rm -f courier-mta.org/@PACKAGE@.beta
 
 .PHONY: rpm
 

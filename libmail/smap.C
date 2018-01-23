@@ -1,4 +1,4 @@
-/* $Id: smap.C,v 1.8 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: smap.C,v 1.9 2010/04/29 00:34:50 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -44,7 +44,7 @@ int mail::smapHandler::singleLineProcess(imap &imapAccount,
 {
 	size_t p=buffer.find('\n');
 
-	if (p == buffer.npos)
+	if (p == std::string::npos)
 		return (0); // Wait until the whole line is read
 
 	setTimeout();
@@ -155,7 +155,7 @@ int mail::smapHandler::multiLineProcessDotStuffed(imap &imapAccount,
 {
 	size_t p=buffer.find('\n');
 
-	if (p == buffer.npos)
+	if (p == std::string::npos)
 		return (0); // Also wait until an entire line is read
 
 	setTimeout();
@@ -195,7 +195,7 @@ int mail::smapHandler::multiLineProcessBinary(imap &imapAccount,
 	{
 		size_t p=buffer.find('\n');
 
-		if (p == buffer.npos)
+		if (p == std::string::npos)
 			return (0); // Read one line
 
 		setTimeout();
@@ -246,7 +246,7 @@ void mail::smapHandler::commaSplit(string s, vector<string> &a)
 	{
 		size_t n=s.find(',');
 
-		if (n == s.npos)
+		if (n == std::string::npos)
 		{
 			a.push_back(s);
 			break;
@@ -500,7 +500,7 @@ bool mail::smapHandler::processLine(imap &imapAccount,
 
 			size_t p=n.find('-');
 
-			if (p != n.npos)
+			if (p != std::string::npos)
 			{
 				i >> first >> dummy >> last;
 			}

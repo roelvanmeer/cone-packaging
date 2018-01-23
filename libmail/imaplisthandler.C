@@ -1,4 +1,4 @@
-/* $Id: imaplisthandler.C,v 1.5 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: imaplisthandler.C,v 1.6 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -125,7 +125,7 @@ string mail::imap::translatePath(string path)
 
 		size_t n=path.find('/');
 
-		if (n == path.npos)
+		if (n == std::string::npos)
 		{
 			component=path;
 			path="";
@@ -424,7 +424,7 @@ void mail::imapLIST::get_name(mail::imap &imapAccount, Token t)
 			{
 				size_t p=nameVal.rfind(hiersep[0]);
 
-				if (p != nameVal.npos)
+				if (p != std::string::npos)
 					nameVal=nameVal.substr(p);
 			}
 		}

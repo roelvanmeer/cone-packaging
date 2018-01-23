@@ -1,4 +1,4 @@
-/* $Id: cone.C,v 1.23 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: cone.C,v 1.24 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -216,12 +216,12 @@ myServer *tryCreateAccount(string account, string url, string password,
 
 			size_t n=s.find('.');
 
-			if (n != s.npos)
+			if (n != std::string::npos)
 				s=s.substr(n+1);
 
 			n=s.find('.');
 
-			if (n != s.npos)
+			if (n != std::string::npos)
 				s=s.substr(0, n);
 
 			size_t ss;

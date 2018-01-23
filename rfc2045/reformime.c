@@ -1,5 +1,5 @@
 /*
-** Copyright 1998 - 2009 Double Precision, Inc.  See COPYING for
+** Copyright 1998 - 2010 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
@@ -50,7 +50,7 @@ extern int rfc2045_in_reformime;
 
 static const struct unicode_info *uniinfo;
 
-static const char rcsid[]="$Id: reformime.c,v 1.50 2009/11/14 21:15:43 mrsam Exp $";
+static const char rcsid[]="$Id: reformime.c,v 1.52 2010/02/15 14:27:34 mrsam Exp $";
 
 void rfc2045_error(const char *errmsg)
 {
@@ -963,7 +963,12 @@ int rc=0;
 			if (optarg && *optarg)
 			{
 				mimecharset=optarg;
-				rfc2045_setdefaultcharset(optarg);
+				if (unicode_find(mimecharset) == NULL)
+				{
+					fprintf(stderr, "Unknown charset: %s\n",
+						mimecharset);
+					exit(1);
+				}
 			}
 			break;
 
@@ -1053,10 +1058,9 @@ int rc=0;
 	uniinfo=unicode_find(mimecharset);
 
 	if (!uniinfo)
-	{
-		fprintf(stderr, "Unknown character set: %s\n", mimecharset);
-		exit(1);
-	}
+		uniinfo=&unicode_ISO8859_1;
+
+	rfc2045_setdefaultcharset(uniinfo->chset);
 
 	if (domimedigest)
 	{

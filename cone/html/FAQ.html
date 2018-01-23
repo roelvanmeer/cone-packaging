@@ -41,7 +41,7 @@ information.
     <hr/>
   </div>
 
-  <div class="section" lang="en" xml:lang="en">
+  <div class="section" title="FAQ">
     <div class="titlepage">
       <div>
         <div>
@@ -53,11 +53,10 @@ information.
     <div class="variablelist">
       <dl>
         <dt><span class="term">Logging into the UW-IMAP server
-        shows the following message: &#8220;<span class="quote"><code class="literal">ALERT: NO $HOME/.mh_profile
-        not found, mh format names disabled</code></span>&#8221;;
-        and <span class="application">Cone</span> lists several
-        funny-named folders, like &#8220;<span class="quote"><code class="literal">#ftp</code></span>&#8221; and
-        &#8220;<span class="quote"><code class="literal">#news</code></span>&#8221;</span></dt>
+        shows the following message: <span class="quote">&#8220;<span class="quote"><code class="literal">ALERT: NO $HOME/.mh_profile not found, mh format
+        names disabled</code></span>&#8221;</span>; and
+        <span class="application">Cone</span> lists several
+        funny-named folders, like <span class="quote">&#8220;<span class="quote"><code class="literal">#ftp</code></span>&#8221;</span> and <span class="quote">&#8220;<span class="quote"><code class="literal">#news</code></span>&#8221;</span></span></dt>
 
         <dd>
           <p>When connecting to an IMAP server for the first time,
@@ -67,44 +66,41 @@ information.
           supporting, even if those folders are not actually
           configured and enabled, which includes MH folders. When
           <span class="application">Cone</span> asks for the number
-          of messages in the &#8220;<span class="quote">#mhinbox</span>&#8221; folder, the UW-IMAP server
-          reports an error unless the account already has an
-          MH-format mailbox (which is usually not the case).</p>
+          of messages in the <span class="quote">&#8220;<span class="quote">#mhinbox</span>&#8221;</span>
+          folder, the UW-IMAP server reports an error unless the
+          account already has an MH-format mailbox (which is
+          usually not the case).</p>
 
           <p>Therefore, manual adjustments are needed after opening
           an UW-IMAP account for the first time. Highlight each
           unwanted mail folder, and press <span class="keycap"><strong>D</strong></span> to delete it. Leave
-          only &#8220;<span class="quote">INBOX</span>&#8221; and
-          &#8220;<span class="quote">Folders</span>&#8221;. The
-          &#8220;<span class="quote">Folders</span>&#8221;
-          directory will usually open the server account's home
-          directory. The default UW-IMAP server configuration
-          provides IMAP access to the entire server account's home
-          directory. In most cases mail folders will not exist in
-          the home directory, but in a subdirectory, such as
-          &#8220;<span class="quote">Mail</span>&#8221;. Display
-          the contents of the account's home directory by opening
-          &#8220;<span class="quote">Folders</span>&#8221;,
-          highlight the &#8220;<span class="quote">Mail</span>&#8221; subdirectory, then press
-          <span class="keycap"><strong>U</strong></span>, then
-          <span class="keycap"><strong>T</strong></span>. This
+          only <span class="quote">&#8220;<span class="quote">INBOX</span>&#8221;</span> and <span class="quote">&#8220;<span class="quote">Folders</span>&#8221;</span>. The <span class="quote">&#8220;<span class="quote">Folders</span>&#8221;</span> directory will
+          usually open the server account's home directory. The
+          default UW-IMAP server configuration provides IMAP access
+          to the entire server account's home directory. In most
+          cases mail folders will not exist in the home directory,
+          but in a subdirectory, such as <span class="quote">&#8220;<span class="quote">Mail</span>&#8221;</span>. Display the contents
+          of the account's home directory by opening <span class="quote">&#8220;<span class="quote">Folders</span>&#8221;</span>, highlight the
+          <span class="quote">&#8220;<span class="quote">Mail</span>&#8221;</span> subdirectory, then
+          press <span class="keycap"><strong>U</strong></span>,
+          then <span class="keycap"><strong>T</strong></span>. This
           action creates a top-level shortcut to <code class="filename">$HOME/Mail</code>, after which the top-level
-          &#8220;<span class="quote">Folders</span>&#8221; entry
-          may be deleted, leaving the UW-IMAP server account
-          showing only &#8220;<span class="quote">INBOX</span>&#8221; and &#8220;<span class="quote">Mail</span>&#8221; as the initial list of
+          <span class="quote">&#8220;<span class="quote">Folders</span>&#8221;</span> entry may be
+          deleted, leaving the UW-IMAP server account showing only
+          <span class="quote">&#8220;<span class="quote">INBOX</span>&#8221;</span> and <span class="quote">&#8220;<span class="quote">Mail</span>&#8221;</span> as the initial list of
           folders. This is usually the preferred UW-IMAP server
           configuration.</p>
         </dd>
 
         <dt><span class="term"><span class="application">Cone</span> refuses to start on a UTF-8
-        terminal, reporting &#8220;<span class="quote"><code class="literal">ERROR: Your display appears to be set to the
-        UTF-8 character set. This application cannot display this
-        character set. If this application did not read the display
-        character set name correctly, the name of the display's
-        character set name can be manually specified using the
-        CHARSET environment variable. Otherwise reconfigure your
-        display to use a supported character set and try
-        again.</code></span>&#8221;</span></dt>
+        terminal, reporting <span class="quote">&#8220;<span class="quote"><code class="literal">ERROR: Your display appears
+        to be set to the UTF-8 character set. This application
+        cannot display this character set. If this application did
+        not read the display character set name correctly, the name
+        of the display's character set name can be manually
+        specified using the CHARSET environment variable. Otherwise
+        reconfigure your display to use a supported character set
+        and try again.</code></span>&#8221;</span></span></dt>
 
         <dd>
           <p>Cone requires the wide-character version of the Curses
@@ -115,14 +111,15 @@ information.
         </dd>
 
         <dt><span class="term"><span class="application">Cone</span> refuses to start on a UTF-8
-        terminal, reporting &#8220;<span class="quote"><code class="literal">ERROR: Your display appears to be set to the
-        ANSI_X3.4-1968 character set. This application cannot
-        display this character set. If this application did not
-        read the display character set name correctly, the name of
-        the display's character set name can be manually specified
-        using the CHARSET environment variable. Otherwise
-        reconfigure your display to use a supported character set
-        and try again.</code></span>&#8221;</span></dt>
+        terminal, reporting <span class="quote">&#8220;<span class="quote"><code class="literal">ERROR: Your display appears
+        to be set to the ANSI_X3.4-1968 character set. This
+        application cannot display this character set. If this
+        application did not read the display character set name
+        correctly, the name of the display's character set name can
+        be manually specified using the CHARSET environment
+        variable. Otherwise reconfigure your display to use a
+        supported character set and try
+        again.</code></span>&#8221;</span></span></dt>
 
         <dd>
           <p>This error is reported if <code class="envar">LC_ALL</code>, <code class="envar">LANG</code>,
@@ -135,8 +132,9 @@ information.
         </dd>
 
         <dt><span class="term"><span class="application">Cone</span> reports the following error when
-        trying to connect to a POP3 server: &#8220;<span class="quote">This POP3 server does not appear to implement the
-        POP3 UIDL command.</span>&#8221;</span></dt>
+        trying to connect to a POP3 server: <span class="quote">&#8220;<span class="quote">This POP3 server does
+        not appear to implement the POP3 UIDL
+        command.</span>&#8221;</span></span></dt>
 
         <dd>
           <p>The server is running old POP3 code that does not
@@ -171,7 +169,8 @@ information.
         <td width="20%" align="center" rowspan="1" colspan="1">
         <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
 
-        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;Cone mail client</td>
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;<span class="application">Cone</span>
+        mail client</td>
       </tr>
     </table>
   </div>

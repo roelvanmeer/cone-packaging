@@ -31,8 +31,8 @@ information.
         <td width="20%" align="left" rowspan="1" colspan="1">
         <a accesskey="p" href="cone14ldapaddressbook.html" shape="rect">Prev</a>&#160;</td>
 
-        <th width="60%" align="center" rowspan="1" colspan="1">Cone
-        mail client</th>
+        <th width="60%" align="center" rowspan="1" colspan="1">
+        <span class="application">Cone</span> mail client</th>
 
         <td width="20%" align="right" rowspan="1" colspan="1">
         &#160;<a accesskey="n" href="leaf.html" shape="rect">Next</a></td>
@@ -41,7 +41,7 @@ information.
     <hr/>
   </div>
 
-  <div class="refentry" lang="en" xml:lang="en">
+  <div class="refentry" title="cone">
     <a id="cone" shape="rect" name="cone"> </a>
 
     <div class="titlepage"/>
@@ -52,7 +52,7 @@ information.
       <p>cone &#8212; Read and send E-mail messages</p>
     </div>
 
-    <div class="refsynopsisdiv">
+    <div class="refsynopsisdiv" title="Synopsis">
       <h2>Synopsis</h2>
 
       <div class="cmdsynopsis">
@@ -60,8 +60,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id516275" shape="rect" name="id516275"> </a>
+    <div class="refsect1" title="USAGE">
+      <a id="id496382" shape="rect" name="id496382"> </a>
 
       <h2>USAGE</h2>
 
@@ -88,7 +88,7 @@ information.
       the shell's <span class="command"><strong>fg</strong></span>
       command.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>Connections to remote mail servers may be disconnected
@@ -114,8 +114,8 @@ information.
       option searches for local configuration file backups, and
       offers an option to restore the backup copy.</p>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id516908" shape="rect" name="id516908"> </a>
+      <div class="refsect2" title="Reading local mail with Cone">
+        <a id="id497016" shape="rect" name="id497016"> </a>
 
         <h3>Reading local mail with <span class="application">Cone</span></h3>
 
@@ -140,10 +140,11 @@ information.
         interrupted, or killed, the resulted in a corrupted system
         mailbox. There are way to minimize this vulnerability, but
         it cannot be eliminated completely. Some Linux kernels use
-        an &#8220;<span class="quote">OOM killer</span>&#8221; that
-        may terminate any process when the system memory is low.
-        There is no way to completely prevent corrupted system
-        mailbox files on those kernels.</p>
+        an <span class="quote">&#8220;<span class="quote">OOM
+        killer</span>&#8221;</span> that may terminate any process
+        when the system memory is low. There is no way to
+        completely prevent corrupted system mailbox files on those
+        kernels.</p>
 
         <p><span class="application">Cone</span> uses an
         alternative way of updating mboxes. <span class="application">Cone</span> updates mboxes by creating a new
@@ -156,30 +157,26 @@ information.
         file is opened and whenever new mail is available.</p>
       </div>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id517036" shape="rect" name="id517036"> </a>
+      <div class="refsect2" title="Viewing MIME attachments">
+        <a id="id497143" shape="rect" name="id497143"> </a>
 
         <h3>Viewing MIME attachments</h3>
 
         <p><span class="application">Cone</span> displays text and
         simple HTML content by itself. Other kinds of attachments
         may be viewed by using a helper script. <span class="application">Cone</span> invokes a helper script to open a
-        MIME attachment. The helper script's name is
-        &#8220;<span class="quote"><em class="replaceable"><code>TYPE</code></em>.<em class="replaceable"><code>SUBTYPE</code></em>.filter</span>&#8221;,
-        where &#8220;<span class="quote">TYPE</span>&#8221; and
-        &#8220;<span class="quote">SUBTYPE</span>&#8221;
-        corresponds to the MIME type and subtype, accordingly.
-        <span class="application">Cone</span> looks for helper
-        scripts in <code class="filename">$HOME/.cone</code> (or
-        the directory specified by <code class="option">-c</code>)
-        and in <code class="filename">@datadir@/cone</code>.</p>
+        MIME attachment. The helper script's name is <span class="quote">&#8220;<span class="quote"><em class="replaceable"><code>TYPE</code></em>.<em class="replaceable"><code>SUBTYPE</code></em>.filter</span>&#8221;</span>,
+        where <span class="quote">&#8220;<span class="quote">TYPE</span>&#8221;</span> and <span class="quote">&#8220;<span class="quote">SUBTYPE</span>&#8221;</span> corresponds to the
+        MIME type and subtype, accordingly. <span class="application">Cone</span> looks for helper scripts in
+        <code class="filename">$HOME/.cone</code> (or the directory
+        specified by <code class="option">-c</code>) and in
+        <code class="filename">@datadir@/cone</code>.</p>
 
-        <p>For example, a helper script named &#8220;<span class="quote">IMAGE.GIF.filter</span>&#8221;, if installed, is
-        invoked to process <code class="literal">image/gif</code>
-        MIME attachments.</p>
+        <p>For example, a helper script named <span class="quote">&#8220;<span class="quote">IMAGE.GIF.filter</span>&#8221;</span>, if
+        installed, is invoked to process <code class="literal">image/gif</code> MIME attachments.</p>
 
-        <div class="refsect3" lang="en" xml:lang="en">
-          <a id="id517110" shape="rect" name="id517110"> </a>
+        <div class="refsect3" title="Helper scripts">
+          <a id="id497218" shape="rect" name="id497218"> </a>
 
           <h4>Helper scripts</h4>
 
@@ -192,13 +189,13 @@ TYPE.SUBTYPE.filter check <em class="replaceable"><code>type/subtype</code></em>
 </pre><hr />
           </div>
 
-          <p>When the first argument is &#8220;<span class="quote">check</span>&#8221;, the helper script should
-          terminate with a zero exit code if it is willing to
-          process an attachment whose MIME type is specified by the
-          second argument. A script or a program that's has
-          multiple &#8220;<span class="quote">TYPE.SUBTYPE.filter</span>&#8221; links may use
-          the second argument to identify the attachment's mime
-          type. If the helper script is unable to process the
+          <p>When the first argument is <span class="quote">&#8220;<span class="quote">check</span>&#8221;</span>, the helper script
+          should terminate with a zero exit code if it is willing
+          to process an attachment whose MIME type is specified by
+          the second argument. A script or a program that's has
+          multiple <span class="quote">&#8220;<span class="quote">TYPE.SUBTYPE.filter</span>&#8221;</span> links
+          may use the second argument to identify the attachment's
+          mime type. If the helper script is unable to process the
           attachment, at this time, it should terminate with a
           non-zero exit code.</p>
 
@@ -218,11 +215,10 @@ TYPE.SUBTYPE.filter filter <em class="replaceable"><code>type/subtype</code></em
           <p>If the helper script initially terminates with a zero
           exit code, it will be invoked again after the MIME
           attachment is downloaded and decoded. The first argument
-          will be &#8220;<span class="quote">filter</span>&#8221;,
-          and the attachment's filename is specified by the third
-          argument.</p>
+          will be <span class="quote">&#8220;<span class="quote">filter</span>&#8221;</span>, and the attachment's
+          filename is specified by the third argument.</p>
 
-          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
             <h3 class="title">Note</h3>
 
             <p>This is a temporary file, whose extension will not
@@ -234,7 +230,7 @@ TYPE.SUBTYPE.filter filter <em class="replaceable"><code>type/subtype</code></em
           specified by the third argument. <span class="application">Cone</span> interprets anything the helper
           script writes to standard output as HTML.</p>
 
-          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
             <h3 class="title">Note</h3>
 
             <p><span class="application">Cone</span> waits until
@@ -249,18 +245,16 @@ TYPE.SUBTYPE.filter filter <em class="replaceable"><code>type/subtype</code></em
         </div>
       </div>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id517228" shape="rect" name="id517228"> </a>
+      <div class="refsect2" title="Activating URLs">
+        <a id="id497336" shape="rect" name="id497336"> </a>
 
         <h3>Activating <acronym class="acronym">URL</acronym>s</h3>
 
         <p><span class="application">Cone</span> has limited
         ability to activate <acronym class="acronym">URL</acronym>s
         in <acronym class="acronym">HTML</acronym> messages.
-        <span class="application">Cone</span> handles
-        &#8220;<span class="quote">mailto:</span>&#8221;
-        <acronym class="acronym">URL</acronym>s by itself. For
-        other <acronym class="acronym">URL</acronym>s <span class="application">Cone</span> runs <code class="filename">@datadir@/cone/<em class="replaceable"><code>method</code></em>.handler</code> with
+        <span class="application">Cone</span> handles <span class="quote">&#8220;<span class="quote">mailto:</span>&#8221;</span> <acronym class="acronym">URL</acronym>s by itself. For other
+        <acronym class="acronym">URL</acronym>s <span class="application">Cone</span> runs <code class="filename">@datadir@/cone/<em class="replaceable"><code>method</code></em>.handler</code> with
         the <acronym class="acronym">URL</acronym> passed as an
         argument.</p>
 
@@ -272,7 +266,7 @@ TYPE.SUBTYPE.filter filter <em class="replaceable"><code>type/subtype</code></em
         the current <code class="envar">PATH</code>, and runs
         them.</p>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
           <p><span class="application">Cone</span> also looks
@@ -284,8 +278,8 @@ TYPE.SUBTYPE.filter filter <em class="replaceable"><code>type/subtype</code></em
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id517366" shape="rect" name="id517366"> </a>
+    <div class="refsect1" title="FILES">
+      <a id="id497473" shape="rect" name="id497473"> </a>
 
       <h2>FILES</h2>
 
@@ -311,8 +305,8 @@ TYPE.SUBTYPE.filter filter <em class="replaceable"><code>type/subtype</code></em
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id517438" shape="rect" name="id517438"> </a>
+    <div class="refsect1" title="SEE ALSO">
+      <a id="id497545" shape="rect" name="id497545"> </a>
 
       <h2>SEE ALSO</h2>
 

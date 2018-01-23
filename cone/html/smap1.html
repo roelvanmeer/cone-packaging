@@ -44,7 +44,7 @@ information.
     <hr/>
   </div>
 
-  <div class="appendix" lang="en" xml:lang="en">
+  <div class="appendix" title="Appendix&#160;A.&#160;Simple Mail Access Protocol, Version 1">
     <div class="titlepage">
       <div>
         <div>
@@ -54,17 +54,17 @@ information.
       </div>
     </div>
 
-    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
       <h3 class="title">Note</h3>
 
       <p>This document is a work-in-progress.</p>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Introduction">
       <div class="titlepage">
         <div>
           <div>
-            <h3 class="title"><a id="id673108" shape="rect" name="id673108"> </a>Introduction</h3>
+            <h3 class="title"><a id="id653250" shape="rect" name="id653250"> </a>Introduction</h3>
           </div>
         </div>
       </div>
@@ -86,18 +86,18 @@ information.
       experimental implementation of advanced mail client/server
       functionality.</p>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Summary">
         <div class="titlepage">
           <div>
             <div>
-              <h4 class="title"><a id="id673122" shape="rect" name="id673122"> </a>Summary</h4>
+              <h4 class="title"><a id="id653264" shape="rect" name="id653264"> </a>Summary</h4>
             </div>
           </div>
         </div>
 
         <div class="itemizedlist">
-          <ul type="disc">
-            <li>
+          <ul class="itemizedlist" type="disc">
+            <li class="listitem">
               <p>SMAP tries to provide powerful mail access service
               using a structurally-simple, line oriented syntax.
               Client commands and server replies are
@@ -107,21 +107,21 @@ information.
               IMAP's.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>SMAP's design allows it to coexist with IMAP. Both
               IMAP and SMAP can be implemented by the same server.
               An SMAP client has the ability to fall back to IMAP
               if the server does not have SMAP capabilities.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>SMAP decodes MIME-encoded attachments, and sends
               the raw data to the SMAP client. <code class="literal">base64</code>-encoded MIME attachments
               enjoy a 25% reduction in bandwidth needed to download
               the attachment...</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>A single SMAP transaction saves a new message to a
               folder, and sends the message to its designated
               recipients. This essentially halfes the bandwidth
@@ -134,7 +134,7 @@ information.
               its listed recipients.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>An SMAP client does not need to download the
               entire index of folder's contents when reopening a
               previously seen folder. When reopening a folder, the
@@ -149,7 +149,7 @@ information.
               current folder index.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>SMAP provides a hierarchical collection of mail
               folders. Folder names use the UTF-8 character set. A
               <span class="command"><strong>telnet</strong></span>
@@ -161,34 +161,36 @@ information.
               character.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>SMAP specifies a clearly defined process for
               synchronizing multiple SMAP clients that have the
               same folder opened concurrently.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>SMAP uses simple unique identifiers that are
               similar to the POP3's model.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>SMAP provides two ways for removing messages from
               a folder. Messages may be removed directly, or using
-              a &#8220;<span class="quote">mark as deleted, then
-              expunge</span>&#8221; paradigm.</p>
+              a <span class="quote">&#8220;<span class="quote">mark
+              as deleted, then expunge</span>&#8221;</span>
+              paradigm.</p>
 
               <p>Similarly, messages are moved between folders
-              using a single &#8220;<span class="quote">move</span>&#8221; process, instead of
-              &#8220;<span class="quote">copy, delete,
-              expunge</span>&#8221; (which is also available). This
-              allows for greater efficiency with quota-limited mail
-              accounts, since moving messages between folders will
-              not require reserving quota-limited space equivalent
-              to the sum total of the messages that are moved.</p>
+              using a single <span class="quote">&#8220;<span class="quote">move</span>&#8221;</span>
+              process, instead of <span class="quote">&#8220;<span class="quote">copy, delete,
+              expunge</span>&#8221;</span> (which is also
+              available). This allows for greater efficiency with
+              quota-limited mail accounts, since moving messages
+              between folders will not require reserving
+              quota-limited space equivalent to the sum total of
+              the messages that are moved.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>Additional facilities, that are useful in
               internationalized environments, include specifying
               native languages for error messages, and
@@ -198,11 +200,11 @@ information.
         </div>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Roadmap">
         <div class="titlepage">
           <div>
             <div>
-              <h4 class="title"><a id="id673573" shape="rect" name="id673573"> </a>Roadmap</h4>
+              <h4 class="title"><a id="id653715" shape="rect" name="id653715"> </a>Roadmap</h4>
             </div>
           </div>
         </div>
@@ -213,8 +215,8 @@ information.
         planned:</p>
 
         <div class="itemizedlist">
-          <ul type="disc">
-            <li>
+          <ul class="itemizedlist" type="disc">
+            <li class="listitem">
               <p>Advanced mechanism for uploading new messages to
               the server. Individual attachments are uploaded as
               binary data. The server selects and applies the
@@ -225,22 +227,22 @@ information.
         </div>
       </div>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Conventions used in this document">
         <div class="titlepage">
           <div>
             <div>
-              <h4 class="title"><a id="id673596" shape="rect" name="id673596"> </a>Conventions used in this document</h4>
+              <h4 class="title"><a id="id653738" shape="rect" name="id653738"> </a>Conventions used in this document</h4>
             </div>
           </div>
         </div>
 
-        <p>This document uses &#8220;<span class="quote">U+<em class="replaceable"><code>hhhh</code></em></span>&#8221;, where
-        <em class="replaceable"><code>hhhh</code></em> is a
+        <p>This document uses <span class="quote">&#8220;<span class="quote">U+<em class="replaceable"><code>hhhh</code></em></span>&#8221;</span>,
+        where <em class="replaceable"><code>hhhh</code></em> is a
         hexadecimal number, to refer to a specific
-        Unicode/ISO-10646 character. In examples,
-        &#8220;<span class="quote"><code class="literal">C:</code></span>&#8221; indicates a command sent
-        by the SMAP client to the server, and &#8220;<span class="quote"><code class="literal">S:</code></span>&#8221;
-        indicates the server's response.</p>
+        Unicode/ISO-10646 character. In examples, <span class="quote">&#8220;<span class="quote"><code class="literal">C:</code></span>&#8221;</span> indicates a
+        command sent by the SMAP client to the server, and
+        <span class="quote">&#8220;<span class="quote"><code class="literal">S:</code></span>&#8221;</span> indicates the
+        server's response.</p>
 
         <p>Some examples have long commands or replies line-wrapped
         for readability purposes. The actual commands and replies

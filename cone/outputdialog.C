@@ -1,4 +1,4 @@
-/* $Id: outputdialog.C,v 1.1 2003/06/16 03:18:01 mrsam Exp $
+/* $Id: outputdialog.C,v 1.2 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -72,7 +72,7 @@ void OutputDialog::output(string s)
 
 	size_t n;
 
-	while ((n=s.find('\n')) != s.npos)
+	while ((n=s.find('\n')) != std::string::npos)
 	{
 		string l=s.substr(0, n);
 		s=s.substr(n+1);

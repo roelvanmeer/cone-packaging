@@ -1,4 +1,4 @@
-/* $Id: smapfetchattr.C,v 1.7 2004/06/12 23:48:52 mrsam Exp $
+/* $Id: smapfetchattr.C,v 1.8 2010/04/29 00:34:50 mrsam Exp $
 **
 ** Copyright 2003-2004, Double Precision Inc.
 **
@@ -338,7 +338,7 @@ void mail::smapFETCHATTR::processData(imap &imapAccount,
 
 	size_t n;
 
-	while ((n=fetchingHeader.find('\n')) != fetchingHeader.npos)
+	while ((n=fetchingHeader.find('\n')) != std::string::npos)
 	{
 		string h=fetchingHeader.substr(0, n);
 
@@ -379,7 +379,7 @@ void mail::smapFETCHATTR::processFetchedHeader(string hdr)
 {
 	size_t n=hdr.find(':');
 
-	if (n == hdr.npos)
+	if (n == std::string::npos)
 		return;
 
 	string h=hdr.substr(0, n);
@@ -502,7 +502,7 @@ void mail::smapFETCHATTR::processFetchedHeader(string hdr)
 
 			size_t n=t.find('/');
 
-			if (n == t.npos)
+			if (n == std::string::npos)
 			{
 				doFetchingStructure->type=t;
 				doFetchingStructure->subtype="";
@@ -543,7 +543,7 @@ void mail::smapFETCHATTR::parseMimeHeader(std::string hdr,
 
 	size_t n=hdr.find(';');
 
-	if (n == hdr.npos)
+	if (n == std::string::npos)
 	{
 		name=hdr;
 		mail::upper(name);
@@ -596,7 +596,7 @@ void mail::smapFETCHATTR::parseMimeHeader(std::string hdr,
 
 		string value="1";
 
-		if ((n=param.find('=')) != param.npos)
+		if ((n=param.find('=')) != std::string::npos)
 		{
 			value=param.substr(n+1);
 			param=param.substr(0, n);

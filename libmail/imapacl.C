@@ -1,4 +1,4 @@
-/* $Id: imapacl.C,v 1.3 2004/04/25 03:37:15 mrsam Exp $
+/* $Id: imapacl.C,v 1.4 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2004, Double Precision Inc.
 **
@@ -214,7 +214,7 @@ void mail::imapGetMyRights::parseMyRights::getRights(imap &imapAcct, Token t)
 
 	size_t p=s.find(ACL_DELETE_SPECIAL[0]);
 
-	if (p != s.npos)
+	if (p != std::string::npos)
 		s.replace(s.begin()+p, s.begin()+p+1,
 			  ACL_DELETEMSGS ACL_DELETEFOLDER ACL_EXPUNGE);
 	sort(s.begin(), s.end());
@@ -263,7 +263,7 @@ void mail::imapGetMyRights::listMyRights
 
 		size_t p=rights.find(ACL_DELETE_SPECIAL[0]);
 
-		if (p != rights.npos)
+		if (p != std::string::npos)
 			rights.replace(rights.begin()+p, rights.begin()+p+1,
 				  ACL_DELETEMSGS ACL_DELETEFOLDER ACL_EXPUNGE);
 
@@ -494,7 +494,7 @@ void mail::imapGetRights::parseGetRights::getRights(imap &imapAcct, Token t)
 
 	size_t p=s.find(ACL_DELETE_SPECIAL[0]);
 
-	if (p != s.npos)
+	if (p != std::string::npos)
 		s.replace(s.begin()+p, s.begin()+p+1,
 			  ACL_DELETEMSGS ACL_DELETEFOLDER ACL_EXPUNGE);
 	sort(s.begin(), s.end());
@@ -559,7 +559,7 @@ void mail::imapGetRights::listGetRights
 
 			size_t p=r.find(ACL_DELETE_SPECIAL[0]);
 
-			if (p != r.npos)
+			if (p != std::string::npos)
 				r.replace(r.begin()+p, r.begin()+p+1,
 					  ACL_DELETEMSGS ACL_DELETEFOLDER
 					  ACL_EXPUNGE);
@@ -671,9 +671,9 @@ void mail::imapSetRights::installed(imap &imapAccount)
 		// replaced with a "d".  If we still have one or more of them
 		// it means that not all three were specified.
 
-		if (rights.find(ACL_DELETEMSGS[0]) != rights.npos ||
-		    rights.find(ACL_DELETEFOLDER[0]) != rights.npos ||
-		    rights.find(ACL_EXPUNGE[0]) != rights.npos)
+		if (rights.find(ACL_DELETEMSGS[0]) != std::string::npos ||
+		    rights.find(ACL_DELETEFOLDER[0]) != std::string::npos ||
+		    rights.find(ACL_EXPUNGE[0]) != std::string::npos)
 		{
 			errorIdentifier=identifier;
 			errorRights.push_back("");
@@ -912,13 +912,13 @@ int mail::imapSetRights::parseAclFailed::process(imap &imapAccount,
 
 	size_t p=buffer.find('\n');
 
-	if (p == buffer.npos)
+	if (p == std::string::npos)
 		return 0;
 
 	string msg=buffer.substr(0, p);
 
 	size_t cr=msg.find('\r');
-	if (cr != msg.npos)
+	if (cr != std::string::npos)
 		msg=msg.substr(0, cr);
 	errmsg=msg;
 	done();

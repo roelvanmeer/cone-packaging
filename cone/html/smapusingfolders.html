@@ -43,7 +43,7 @@ information.
     <hr/>
   </div>
 
-  <div class="section" lang="en" xml:lang="en">
+  <div class="section" title="Using Folders">
     <div class="titlepage">
       <div>
         <div>
@@ -91,7 +91,7 @@ information.
     the folder's contents (when new mail arrives, for example, the
     client may want to automatically download its headers).</p>
 
-    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
       <h3 class="title">Note</h3>
 
       <p>Messages in the folder are always consecutively numbered,
@@ -104,22 +104,22 @@ information.
       message #6.</p>
     </div>
 
-    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
       <h3 class="title">Note</h3>
 
-      <p>The client may send the &#8220;<span class="quote">RESUME</span>&#8221; command at the same time the
-      server is sending a message to the client concerning some
+      <p>The client may send the <span class="quote">&#8220;<span class="quote">RESUME</span>&#8221;</span> command at the same time
+      the server is sending a message to the client concerning some
       changes to the folder that just occured. The SMAP client
       should always wait and process any remaining folder content
       notification changes, until it receives that status reply for
-      &#8220;<span class="quote">RESUME</span>&#8221;.</p>
+      <span class="quote">&#8220;<span class="quote">RESUME</span>&#8221;</span>.</p>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Opening a folder">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id676237" shape="rect" name="id676237"> </a>Opening a folder</h4>
+            <h4 class="title"><a id="id656379" shape="rect" name="id656379"> </a>Opening a folder</h4>
           </div>
         </div>
       </div>
@@ -137,9 +137,9 @@ information.
       or not the <code class="literal">OPEN</code> command
       ultimately succeeds.</p>
 
-      <p>The whitespace-delimited words after &#8220;<span class="quote"><code class="literal">OPEN</code></span>&#8221;
-      specify the folder to open. If it's a valid folder, the
-      server response includes a "* EXISTS" <a class="link" href="smapsyntax.html#singleline" title="Single line replies" shape="rect">single line reply</a>.</p>
+      <p>The whitespace-delimited words after <span class="quote">&#8220;<span class="quote"><code class="literal">OPEN</code></span>&#8221;</span> specify the folder
+      to open. If it's a valid folder, the server response includes
+      a "* EXISTS" <a class="link" href="smapsyntax.html#singleline" title="Single line replies" shape="rect">single line reply</a>.</p>
 
       <p>SMAP servers are encouraged to offer concurrent access to
       the same folder to multiple application. SMAP servers that
@@ -169,28 +169,29 @@ information.
       previously snapshot eliminates that step.</p>
 
       <p>The first whitespace-delimited word after <code class="literal">SOPEN</code> is a snapshot identifier, as returned
-      by a &#8220;<span class="quote">* SNAPSHOT</span>&#8221;
-      message (see <a class="link" href="smapusingfolders.html#noop" title="The NOOP command" shape="rect"><code class="literal">NOOP</code></a>). The remaining
-      words specify the name of the folder, as in <code class="literal">OPEN</code>.</p>
+      by a <span class="quote">&#8220;<span class="quote">*
+      SNAPSHOT</span>&#8221;</span> message (see <a class="link" href="smapusingfolders.html#noop" title="The NOOP command" shape="rect"><code class="literal">NOOP</code></a>). The
+      remaining words specify the name of the folder, as in
+      <code class="literal">OPEN</code>.</p>
 
-      <p>The server responds with a &#8220;<span class="quote">*
-      SNAPSHOTEXISTS</span>&#8221; message, with a copy of the
-      snapshot identifier, followed by zero or more
-      &#8220;<span class="quote">* EXPUNGE</span>&#8221;,
-      &#8220;<span class="quote">* FETCH <em class="replaceable"><code>msgnum</code></em> FLAGS</span>&#8221;,
-      and &#8220;<span class="quote">* EXISTS</span>&#8221; message
-      that reflect any changes to the folder's contents that
-      occured since the snapshot was made. When the final
-      <code class="literal">+OK</code> is received, the folder's
-      contents are brough up to date, and the SMAP client should
-      issue a <code class="literal">NOOP</code> command to make an
-      updated snapshot.</p>
+      <p>The server responds with a <span class="quote">&#8220;<span class="quote">*
+      SNAPSHOTEXISTS</span>&#8221;</span> message, with a copy of
+      the snapshot identifier, followed by zero or more
+      <span class="quote">&#8220;<span class="quote">*
+      EXPUNGE</span>&#8221;</span>, <span class="quote">&#8220;<span class="quote">* FETCH <em class="replaceable"><code>msgnum</code></em>
+      FLAGS</span>&#8221;</span>, and <span class="quote">&#8220;<span class="quote">*
+      EXISTS</span>&#8221;</span> message that reflect any changes
+      to the folder's contents that occured since the snapshot was
+      made. When the final <code class="literal">+OK</code> is
+      received, the folder's contents are brough up to date, and
+      the SMAP client should issue a <code class="literal">NOOP</code> command to make an updated
+      snapshot.</p>
 
       <p>If the server is unable to find the requested snapshot, it
-      should respond just like to the <code class="literal">OPEN</code> command, with a single
-      &#8220;<span class="quote">* EXISTS</span>&#8221; message. If
-      the client does not receive a &#8220;<span class="quote">*
-      SNAPSHOTEXISTS</span>&#8221; message, the client will
+      should respond just like to the <code class="literal">OPEN</code> command, with a single <span class="quote">&#8220;<span class="quote">*
+      EXISTS</span>&#8221;</span> message. If the client does not
+      receive a <span class="quote">&#8220;<span class="quote">*
+      SNAPSHOTEXISTS</span>&#8221;</span> message, the client will
       conclude that the requested snapshot is not available. This
       is not an error condition. The requested snapshot might be
       too old, and the server decided that it should be removed by
@@ -205,11 +206,11 @@ information.
       snapshots.</p>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Closing a folder">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id676444" shape="rect" name="id676444"> </a>Closing a folder</h4>
+            <h4 class="title"><a id="id656586" shape="rect" name="id656586"> </a>Closing a folder</h4>
           </div>
         </div>
       </div>
@@ -230,7 +231,7 @@ information.
       folder so that other applications can open it.</p>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="The NOOP command">
       <div class="titlepage">
         <div>
           <div>
@@ -263,17 +264,18 @@ information.
       folder's contents, which is taken into account when
       processing the next single line reply.</p>
 
-      <p>The &#8220;<span class="quote"><code class="literal">*
-      EXPUNGE</code></span>&#8221; single line reply lists messages
-      that have been removed from the folder. The remaining words
-      enumerate the removed message numbers. &#8220;<span class="quote"><em class="replaceable"><code>a</code></em>-<em class="replaceable"><code>b</code></em></span>&#8221;
+      <p>The <span class="quote">&#8220;<span class="quote"><code class="literal">*
+      EXPUNGE</code></span>&#8221;</span> single line reply lists
+      messages that have been removed from the folder. The
+      remaining words enumerate the removed message numbers.
+      <span class="quote">&#8220;<span class="quote"><em class="replaceable"><code>a</code></em>-<em class="replaceable"><code>b</code></em></span>&#8221;</span>
       indicates messages #a through #b, inclusive, and the entire
       list must be sorted in strict numerically increasing order,
       with no overlaps. This message indicates that the specified
       messages have been removed, and the remaining messages were
       renumbered by shifting over to fill in the gaps.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>Some time may elapse before a server receives a
@@ -292,7 +294,7 @@ information.
         the client.</p>
       </div>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>Excessively long lists of expunged messages may result
@@ -315,9 +317,10 @@ information.
 
       <p>The server creates snapshots of the folder's index when
       the folder was opened with the <code class="literal">SOPEN</code> command. If the <code class="literal">NOOP</code> command did not report any changes to
-      the folder's contents, the server sends a &#8220;<span class="quote">* SNAPSHOT</span>&#8221;, followed by a single word
-      that specifies the saved snapshot's identifier. The format of
-      the snapshot's identifier is defined by the server, and the
+      the folder's contents, the server sends a <span class="quote">&#8220;<span class="quote">*
+      SNAPSHOT</span>&#8221;</span>, followed by a single word that
+      specifies the saved snapshot's identifier. The format of the
+      snapshot's identifier is defined by the server, and the
       client should treat it as an opaque text string.</p>
 
       <p>A client issues the <code class="literal">NOOP</code>
@@ -330,13 +333,13 @@ information.
       changes at all since the previous <code class="literal">NOOP</code> that returned a snapshot, the server
       does not need to make a second, identical snapshot. A client
       may not receive any response to a <code class="literal">NOOP</code>; neither a list of folder's changes,
-      nor a &#8220;<span class="quote">* SNAPSHOT</span>&#8221;
-      message. This indicates that the folder's contents have not
-      changed since the last snapshot. The client should already
-      know this; but if not, that's how the server will remind
-      it.</p>
+      nor a <span class="quote">&#8220;<span class="quote">*
+      SNAPSHOT</span>&#8221;</span> message. This indicates that
+      the folder's contents have not changed since the last
+      snapshot. The client should already know this; but if not,
+      that's how the server will remind it.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>The server is not required to keep saved snapshots
@@ -357,11 +360,11 @@ information.
       </div>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="The EXPUNGE command">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id676745" shape="rect" name="id676745"> </a>The <code class="literal">EXPUNGE</code>
+            <h4 class="title"><a id="id656887" shape="rect" name="id656887"> </a>The <code class="literal">EXPUNGE</code>
             command</h4>
           </div>
         </div>
@@ -388,11 +391,11 @@ information.
       the <code class="literal">DELETED</code> flag set.</p>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="The IDLE/RESUME command">
       <div class="titlepage">
         <div>
           <div>
-            <h4 class="title"><a id="id676827" shape="rect" name="id676827"> </a>The <code class="literal">IDLE</code>/<code class="literal">RESUME</code> command</h4>
+            <h4 class="title"><a id="id656968" shape="rect" name="id656968"> </a>The <code class="literal">IDLE</code>/<code class="literal">RESUME</code> command</h4>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-/* $Id: fd.C,v 1.11 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: fd.C,v 1.12 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -153,7 +153,7 @@ string mail::fd::socketConnect(mail::loginInfo &loginInfo,
 	const char *port=loginInfo.use_ssl ? sslservice:plainservice;
 	size_t n=server.find(':');
 
-	if (n != server.npos)
+	if (n != std::string::npos)
 	{
 		port=NULL;
 		portnum=server.substr(n+1);

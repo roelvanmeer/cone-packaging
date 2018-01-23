@@ -1,3 +1,66 @@
+0.84
+
+2010-05-30  Mr. Sam  <mrsam@courier-mta.com>
+
+	* gpglib/list.c: Handle GnuPG 2 --with-colons output format changes.
+
+	* gpglib/mimegpgfork.c: GnuPG 2 wants --batch when specifying
+	passphrase-fd.
+
+	* cone/cursesmessage.C: Strip off trailing CRs from original message
+	that's being replied or forwarded (shown as trailing ?s on every line
+	in the reply).
+
+	* tcpd/configure.in: Check if explicit linking with libgpg-error is
+	required.
+
+0.83
+
+2010-05-08  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* cone/sgml/cone-folderindex.sgml (prompt): Mention the inn 2.5.x bug.
+
+2010-05-05  Mr. Sam  <mrsam@courier-mta.com>
+
+	* cone/myreferences.H (m): Fix NULL ptr deref.
+
+2010-05-02  Mr. Sam  <mrsam@courier-mta.com>
+
+	* cone/cursesmessage.C (nextLink): Fix wild pointer.
+
+	* libmail/copymessage.C (fail): Fix segfault if fetching the contents,
+	of the message being copied, fails.
+
+	* cone/cursesmessage.C (reformatAddLine): Clear the entire struct
+	to suppress warnings from valgrind.
+
+2010-05-02  Andrej Gelenberg <andrej.gelenberg@uni-dortmund.de>
+
+	* gcc 4.5 portability fixes.
+
+2010-05-01  Mr. Sam  <mrsam@courier-mta.com>
+
+	* tcpd/libcouriergnutls.c (tls_connect): Fix bad call to
+	gnutls_server_name_set().
+
+0.82
+
+2010-04-29  Mr. Sam  <mrsam@courier-mta.com>
+
+	* cone/curseseditmessage.C (getMarkedRegion): Portability fix
+	(gcc 4.4.3).
+
+2010-04-28  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* all: Some code cleanup.
+
+0.81
+
+2010-02-28  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* cone/spellcheckerAspell.C: Do not set "lang" and "encoding" to empty
+	values.
+
 0.80
 
 2009-10-30  Sam Varshavchik  <mrsam@courier-mta.com>

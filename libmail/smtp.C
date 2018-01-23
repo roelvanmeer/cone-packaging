@@ -1,4 +1,4 @@
-/* $Id: smtp.C,v 1.11 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: smtp.C,v 1.12 2010/04/29 00:34:50 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -183,14 +183,14 @@ int mail::smtp::socketRead(const string &readbuffer)
 {
 	size_t n=readbuffer.find('\n');
 
-	if (n == readbuffer.npos)
+	if (n == std::string::npos)
 		return 0;
 
 	string l=readbuffer.substr(0, n++);
 
 	size_t cr;
 
-	while ((cr=l.find('\r')) != l.npos)
+	while ((cr=l.find('\r')) != std::string::npos)
 		l=l.substr(0, cr) + l.substr(cr+1);
 
 	// Collect multiline SMTP replies.  Keep only the last 30 lines
@@ -545,7 +545,7 @@ void mail::smtp::ehloResponse(int n, string s)
 
 		size_t p=s.find('\n');
 
-		if (p == s.npos)
+		if (p == std::string::npos)
 		{
 			line=s;
 			s="";
@@ -562,7 +562,7 @@ void mail::smtp::ehloResponse(int n, string s)
 			continue;
 		}
 
-		while ((p=s.find('\r')) != s.npos)
+		while ((p=s.find('\r')) != std::string::npos)
 			s=s.substr(0, p) + s.substr(p+1);
 
 		for (p=0; p<line.size(); p++)

@@ -25,7 +25,7 @@ information.
     <table width="100%" summary="Navigation header">
       <tr>
         <th colspan="3" align="center" rowspan="1">Installing
-        Cone</th>
+        <span class="application">Cone</span></th>
       </tr>
 
       <tr>
@@ -42,7 +42,7 @@ information.
     <hr/>
   </div>
 
-  <div class="section" lang="en" xml:lang="en">
+  <div class="section" title="Installing Cone">
     <div class="titlepage">
       <div>
         <div>
@@ -57,45 +57,46 @@ information.
     for upgrade instructions. Otherwise:</p>
 
     <div class="itemizedlist">
-      <ul type="disc">
-        <li>
+      <ul class="itemizedlist" type="disc">
+        <li class="listitem">
           <p>Download the Courier Socks 5 proxy client library from
           <a class="ulink" href="http://www.courier-mta.org/download.php#sox" target="_top" shape="rect">http://www.courier-mta.org/download.php#sox</a>
           and follow its installation instructions. Binary RPMs can
           be built from the source code tarball by following the
           procedure outlined in <a class="ulink" href="http://www.courier-mta.org/FAQ.html#rpm" target="_top" shape="rect">http://www.courier-mta.org/FAQ.html#rpm</a>
-          using the &#8220;<span class="quote">courier-sox-<em class="replaceable"><code>version</code></em></span>&#8221;
-          tarball, and installing the &#8220;<span class="quote">courier-sox</span>&#8221; and &#8220;<span class="quote">courier-sox-devel</span>&#8221; binary RPMs
-          afterwards.</p>
+          using the <span class="quote">&#8220;<span class="quote">courier-sox-<em class="replaceable"><code>version</code></em></span>&#8221;</span>
+          tarball, and installing the <span class="quote">&#8220;<span class="quote">courier-sox</span>&#8221;</span> and <span class="quote">&#8220;<span class="quote">courier-sox-devel</span>&#8221;</span> binary
+          RPMs afterwards.</p>
 
           <p>This step can be omitted if Socks 5 support is not
           required. <span class="application">Cone</span> will
           compile without the Socks 5 proxy toolkit.</p>
         </li>
 
-        <li>
+        <li class="listitem">
           <p>Download the source code tarball from <a class="ulink" href="http://www.courier-mta.org/download.php#cone" target="_top" shape="rect">http://www.courier-mta.org/download.php#cone</a>
           and unpack it.</p>
         </li>
 
-        <li>
+        <li class="listitem">
           <p>Set the appropriate environment variables if the
           compiler or linker needs any custom command line flags.
-          Run &#8220;<span class="quote"><span class="command"><strong>./configure
-          --help</strong></span></span>&#8221; to list the
+          Run <span class="quote">&#8220;<span class="quote"><span class="command"><strong>./configure
+          --help</strong></span></span>&#8221;</span> to list the
           available environment variables that specify additional
           arbitrary parameters for the C/C++ compiler.</p>
         </li>
 
-        <li>
-          <p>Run &#8220;<span class="quote"><span class="command"><strong>./configure <em class="replaceable"><code>[options]</code></em></strong></span></span>&#8221;.
+        <li class="listitem">
+          <p>Run <span class="quote">&#8220;<span class="quote"><span class="command"><strong>./configure
+          <em class="replaceable"><code>[options]</code></em></strong></span></span>&#8221;</span>.
           See below for a list of available options.</p>
         </li>
 
-        <li>
+        <li class="listitem">
           <p>Run <span class="command"><strong>make</strong></span>.</p>
 
-          <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
             <h3 class="title">Note</h3>
 
             <p>The GNU version of the <code class="literal">command</code> is required. On BSD systems
@@ -105,28 +106,28 @@ information.
           </div>
         </li>
 
-        <li>
+        <li class="listitem">
           <p>Run <span class="command"><strong>make
           check</strong></span>.</p>
         </li>
 
-        <li>
+        <li class="listitem">
           <p>Run <span class="command"><strong>make
           install</strong></span>.</p>
         </li>
 
-        <li>
+        <li class="listitem">
           <p>Run <span class="command"><strong>make
           install-configure</strong></span>.</p>
         </li>
       </ul>
     </div>
 
-    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
       <h3 class="title">Note</h3>
 
-      <p>Do not forget &#8220;<span class="quote"><span class="command"><strong>make
-      install-configure</strong></span></span>&#8221;. It is
+      <p>Do not forget <span class="quote">&#8220;<span class="quote"><span class="command"><strong>make
+      install-configure</strong></span></span>&#8221;</span>. It is
       required.</p>
     </div>
 
@@ -243,11 +244,11 @@ information.
       </dl>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="Upgrading from an earlier version of Cone">
       <div class="titlepage">
         <div>
           <div>
-            <h3 class="title"><a id="id492432" shape="rect" name="id492432"> </a>Upgrading from an earlier version of
+            <h3 class="title"><a id="id472519" shape="rect" name="id472519"> </a>Upgrading from an earlier version of
             <span class="application">Cone</span></h3>
           </div>
         </div>
@@ -258,11 +259,11 @@ information.
       new version will overwrite the previous version. Special
       upgrade instructions are given below.</p>
 
-      <div class="section" lang="en" xml:lang="en">
+      <div class="section" title="Upgrading from version 0.59 and earlier">
         <div class="titlepage">
           <div>
             <div>
-              <h4 class="title"><a id="id492452" shape="rect" name="id492452"> </a>Upgrading from version 0.59 and
+              <h4 class="title"><a id="id472538" shape="rect" name="id472538"> </a>Upgrading from version 0.59 and
               earlier</h4>
             </div>
           </div>
@@ -278,11 +279,11 @@ information.
       </div>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="RPM builds">
       <div class="titlepage">
         <div>
           <div>
-            <h3 class="title"><a id="id492471" shape="rect" name="id492471"> </a>RPM builds</h3>
+            <h3 class="title"><a id="id472557" shape="rect" name="id472557"> </a>RPM builds</h3>
           </div>
         </div>
       </div>
@@ -300,23 +301,22 @@ mkdir SOURCES SPECS BUILD SRPMS RPMS
 </pre>
 
       <p>Finally, download the source code to <span class="application">Cone</span> from <a class="ulink" href="http://www.courier-mta.org/download.php#cone" target="_top" shape="rect">http://www.courier-mta.org/download.php#cone</a>. Do
-      not unpack the tarball. Execute &#8220;<span class="quote"><span class="command"><strong>rpmbuild -ta
-      cone-<em class="replaceable"><code>version</code></em>.tar.bz2</strong></span></span>&#8221;.
+      not unpack the tarball. Execute <span class="quote">&#8220;<span class="quote"><span class="command"><strong>rpmbuild -ta cone-<em class="replaceable"><code>version</code></em>.tar.bz2</strong></span></span>&#8221;</span>.
       Two binary RPMs will be created: the main binary package
       contains <span class="application">Cone</span>. The
-      &#8220;<span class="quote">devel</span>&#8221; package
-      contains the <span class="application">LibMAIL</span> library
-      and development files. It is only necessary to install the
-      main package to run <span class="application">Cone</span> the
-      &#8220;<span class="quote">devel</span>&#8221; subpackage is
-      only needed for additional development with <span class="application">LibMAIL</span> .</p>
+      <span class="quote">&#8220;<span class="quote">devel</span>&#8221;</span> package contains the
+      <span class="application">LibMAIL</span> library and
+      development files. It is only necessary to install the main
+      package to run <span class="application">Cone</span> the
+      <span class="quote">&#8220;<span class="quote">devel</span>&#8221;</span> subpackage is only needed
+      for additional development with <span class="application">LibMAIL</span> .</p>
     </div>
 
-    <div class="section" lang="en" xml:lang="en">
+    <div class="section" title="CVS Source checkouts">
       <div class="titlepage">
         <div>
           <div>
-            <h3 class="title"><a id="id492566" shape="rect" name="id492566"> </a>CVS Source checkouts</h3>
+            <h3 class="title"><a id="id472652" shape="rect" name="id472652"> </a>CVS Source checkouts</h3>
           </div>
         </div>
       </div>
@@ -324,14 +324,14 @@ mkdir SOURCES SPECS BUILD SRPMS RPMS
       <p>It is also possible to check out the source from CVS,
       however additional requirements apply. Besides the usual
       prerequisites for building <span class="application">Cone</span>, additional development software
-      must be installed. See the &#8220;<span class="quote">Download via CVS</span>&#8221; instructions at
-      <a class="ulink" href="http://www.courier-mta.org/status.html" target="_top" shape="rect">http://www.courier-mta.org/status.html</a>.
+      must be installed. See the <span class="quote">&#8220;<span class="quote">Download via
+      CVS</span>&#8221;</span> instructions at <a class="ulink" href="http://www.courier-mta.org/status.html" target="_top" shape="rect">http://www.courier-mta.org/status.html</a>.
       <span class="application">Cone</span> has the same
       requirements as <span class="application">Courier</span> for
       CVS builds (technically, <span class="application">Cone</span> does not need libtool, but that may
       change in the future). Make sure that the prerequisite
-      software is installed, then check out the &#8220;<span class="quote"><span class="application">Cone</span></span>&#8221;
-      module from CVS, tagged at revision &#8220;<span class="quote"><span class="application">Cone</span>-latest</span>&#8221;. The
+      software is installed, then check out the <span class="quote">&#8220;<span class="quote"><span class="application">Cone</span></span>&#8221;</span> module from
+      CVS, tagged at revision <span class="quote">&#8220;<span class="quote"><span class="application">Cone</span>-latest</span>&#8221;</span>. The
       <code class="literal">HEAD</code> may be checked out, but
       carries more of the usual risks.</p>
 
@@ -356,12 +356,13 @@ mkdir SOURCES SPECS BUILD SRPMS RPMS
       </tr>
 
       <tr>
-        <td width="40%" align="left" valign="top" rowspan="1" colspan="1">Cone: COnsole Newsreader And Emailer&#160;</td>
+        <td width="40%" align="left" valign="top" rowspan="1" colspan="1"><span class="application">Cone</span>: COnsole
+        Newsreader And Emailer&#160;</td>
 
         <td width="20%" align="center" rowspan="1" colspan="1">
         <a accesskey="h" href="index.html" shape="rect">Home</a>&#160;|&#160;<a accesskey="t" href="bk01-toc.html" shape="rect">ToC</a></td>
 
-        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;Building Cone</td>
+        <td width="40%" align="right" valign="top" rowspan="1" colspan="1">&#160;Building <span class="application">Cone</span></td>
       </tr>
     </table>
   </div>

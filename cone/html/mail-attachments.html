@@ -42,7 +42,7 @@ information.
     <hr/>
   </div>
 
-  <div class="refentry" lang="en" xml:lang="en">
+  <div class="refentry" title="mail::Attachment">
     <a id="mail-attachments" shape="rect" name="mail-attachments"> </a>
 
     <div class="titlepage"/>
@@ -53,7 +53,7 @@ information.
       <p>mail::Attachment &#8212; Create MIME content.</p>
     </div>
 
-    <div class="refsynopsisdiv">
+    <div class="refsynopsisdiv" title="Synopsis">
       <h2>Synopsis</h2>
 
       <div class="literallayout">
@@ -62,8 +62,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id623226" shape="rect" name="id623226"> </a>
+    <div class="refsect1" title="USAGE">
+      <a id="id603368" shape="rect" name="id603368"> </a>
 
       <h2>USAGE</h2>
 
@@ -74,8 +74,8 @@ information.
       constructors for creating content MIME entities, and
       multipart MIME entities.</p>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id623243" shape="rect" name="id623243"> </a>
+      <div class="refsect2" title="Creating content MIME entities">
+        <a id="id603385" shape="rect" name="id603385"> </a>
 
         <h3>Creating content MIME entities</h3>
 
@@ -181,7 +181,7 @@ information.
         content in a file descriptor (<em class="parameter"><code>content_fd</code></em>) or explicitly
         (<em class="parameter"><code>content_str</code></em>).</p>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
           <p>The <span class="structname">mail::Attachment</span>
@@ -219,7 +219,7 @@ information.
         heuristics, and forcibly set the MIME encoding
         accordingly.</p>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
           <p>To specify the MIME encoding only, specify an empty
@@ -236,8 +236,8 @@ information.
         will be provided by the <span class="structname">mail::Attachment</span> class.</p>
       </div>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id623573" shape="rect" name="id623573"> </a>
+      <div class="refsect2" title="Pre-formatted MIME content">
+        <a id="id603715" shape="rect" name="id603715"> </a>
 
         <h3>Pre-formatted MIME content</h3>
 
@@ -246,31 +246,28 @@ information.
         content is already MIME-formatted when <em class="parameter"><code>headers</code></em> already contain a
         <code class="literal">Content-Transfer-Encoding</code>
         header, or a <code class="literal">Content-Type</code>
-        header that sets the MIME type to either
-        &#8220;<span class="quote">message/rfc822</span>&#8221; or
-        any &#8220;<span class="quote">multipart</span>&#8221; MIME
-        type.</p>
+        header that sets the MIME type to either <span class="quote">&#8220;<span class="quote">message/rfc822</span>&#8221;</span> or any
+        <span class="quote">&#8220;<span class="quote">multipart</span>&#8221;</span> MIME type.</p>
 
         <p>This is often used when the content is an existing,
-        well-formed MIME message. Providing a &#8220;<span class="quote">Content-Type: message/rfc822</span>&#8221; in
-        <em class="parameter"><code>headers</code></em> creates an
-        attached MIME message. This is just one of the two ways to
-        create an attached MIME message. A better way to create an
-        attached MIME message is described later.</p>
+        well-formed MIME message. Providing a <span class="quote">&#8220;<span class="quote">Content-Type:
+        message/rfc822</span>&#8221;</span> in <em class="parameter"><code>headers</code></em> creates an attached
+        MIME message. This is just one of the two ways to create an
+        attached MIME message. A better way to create an attached
+        MIME message is described later.</p>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
-          <p>A &#8220;<span class="quote">multipart</span>&#8221;
-          <code class="literal">Content-Type</code> header must
-          have a &#8220;<span class="quote">boundary</span>&#8221;
-          parameter that actually matches the the MIME boundary
-          delimiter in the specified content.</p>
+          <p>A <span class="quote">&#8220;<span class="quote">multipart</span>&#8221;</span> <code class="literal">Content-Type</code> header must have a
+          <span class="quote">&#8220;<span class="quote">boundary</span>&#8221;</span> parameter that
+          actually matches the the MIME boundary delimiter in the
+          specified content.</p>
         </div>
       </div>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id623661" shape="rect" name="id623661"> </a>
+      <div class="refsect2" title="Creating multipart MIME content">
+        <a id="id603803" shape="rect" name="id603803"> </a>
 
         <h3>Creating multipart MIME content</h3>
 
@@ -336,23 +333,24 @@ information.
 
         <p>The headers of a multipart MIME section must include a
         well-formed <code class="literal">Content-Type</code>
-        header set to either &#8220;<span class="quote">message/rfc822</span>&#8221; or &#8220;<span class="quote">multipart/<em class="replaceable"><code>subtype</code></em></span>&#8221;.
+        header set to either <span class="quote">&#8220;<span class="quote">message/rfc822</span>&#8221;</span>
+        or <span class="quote">&#8220;<span class="quote">multipart/<em class="replaceable"><code>subtype</code></em></span>&#8221;</span>.
         Alternatively, <span class="structname">mail::Attachment</span> will supply a
         <code class="literal">Content-Type</code> header when
         provided with <em class="parameter"><code>multipart_type</code></em> and <em class="parameter"><code>multipart_parameters</code></em>.</p>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
           <p><em class="parameter"><code>parts</code></em> must be
           a vector of exactly one element when <em class="parameter"><code>multipart_type</code></em> (or an
           existing <code class="literal">Content-Type</code>
-          header) is &#8220;<span class="quote">message/rfc822</span>&#8221;).</p>
+          header) is <span class="quote">&#8220;<span class="quote">message/rfc822</span>&#8221;</span>).</p>
         </div>
       </div>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id623819" shape="rect" name="id623819"> </a>
+      <div class="refsect2" title="Generating MIME-formatted messages">
+        <a id="id603961" shape="rect" name="id603961"> </a>
 
         <h3>Generating MIME-formatted messages</h3>
 
@@ -388,21 +386,20 @@ information.
         <code class="literal">errno</code>-related failure to
         generate the MIME-formatted message.</p>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
           <p><code class="function">generate</code>() will supply
-          the &#8220;<span class="quote">Mime-Version:
-          1.0</span>&#8221; header. This header does not need to be
-          explicitly included in the <em class="parameter"><code>headers</code></em> of the topmost
-          <span class="structname">mail::Attachment</span>
-          object.</p>
+          the <span class="quote">&#8220;<span class="quote">Mime-Version: 1.0</span>&#8221;</span> header.
+          This header does not need to be explicitly included in
+          the <em class="parameter"><code>headers</code></em> of
+          the topmost <span class="structname">mail::Attachment</span> object.</p>
         </div>
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id623940" shape="rect" name="id623940"> </a>
+    <div class="refsect1" title="SEE ALSO">
+      <a id="id604082" shape="rect" name="id604082"> </a>
 
       <h2>SEE ALSO</h2>
 

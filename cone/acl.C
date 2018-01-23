@@ -1,4 +1,4 @@
-/* $Id: acl.C,v 1.4 2004/03/27 15:53:30 mrsam Exp $
+/* $Id: acl.C,v 1.5 2010/04/29 00:34:49 mrsam Exp $
 **
 ** Copyright 2004, Double Precision Inc.
 **
@@ -749,7 +749,7 @@ void Acl::RightsScreen::init()
 		CursesButton *b=new CursesButton(this,
 						 Acl(c).getDescription(),
 						 origRights.find(c[0])
-						 != origRights.npos ? -1:1);
+						 != std::string::npos ? -1:1);
 		if (!b)
 			throw strerror(errno);
 
@@ -804,7 +804,7 @@ void Acl::RightsScreen::doSave()
 
 		if (buttons[i]->getSelected())
 		{
-			if (origRights.find(c[0]) != origRights.npos)
+			if (origRights.find(c[0]) != std::string::npos)
 				continue; /* Still there */
 
 			rightsAdded += c;
@@ -814,7 +814,7 @@ void Acl::RightsScreen::doSave()
 		{
 			size_t p=origRights.find(c[0]);
 
-			if (p == origRights.npos)
+			if (p == std::string::npos)
 				continue; /* Still not there */
 
 			rightsRemoved += c;

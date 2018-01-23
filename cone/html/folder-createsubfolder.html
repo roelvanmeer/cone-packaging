@@ -33,7 +33,8 @@ information.
         <a accesskey="p" href="folder-create.html" shape="rect">Prev</a>&#160;</td>
 
         <th width="60%" align="center" rowspan="1" colspan="1">
-        mail::folder Native API reference</th>
+        <span class="structname">mail::folder</span> Native API
+        reference</th>
 
         <td width="20%" align="right" rowspan="1" colspan="1">
         &#160;<a accesskey="n" href="folder-delrights.html" shape="rect">Next</a></td>
@@ -42,7 +43,7 @@ information.
     <hr/>
   </div>
 
-  <div class="refentry" lang="en" xml:lang="en">
+  <div class="refentry" title="mail::folder::createSubFolder">
     <a id="folder-createsubfolder" shape="rect" name="folder-createsubfolder"> </a>
 
     <div class="titlepage"/>
@@ -54,7 +55,7 @@ information.
       folder</p>
     </div>
 
-    <div class="refsynopsisdiv">
+    <div class="refsynopsisdiv" title="Synopsis">
       <h2>Synopsis</h2>
 
       <div class="literallayout">
@@ -124,8 +125,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id601700" shape="rect" name="id601700"> </a>
+    <div class="refsect1" title="USAGE">
+      <a id="id581842" shape="rect" name="id581842"> </a>
 
       <h2>USAGE</h2>
 
@@ -149,7 +150,7 @@ information.
       specifies whether the new folder is a regular folder, or a
       folder directory.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>Local maildir-based accounts, and some IMAP servers, are
@@ -168,7 +169,7 @@ information.
       name of the new folder, in the application's character
       set.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>Some mail servers reserve certain characters which
@@ -185,7 +186,7 @@ information.
         a design flaw in the IMAP protocol.</p>
       </div>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>Maildir folders created by are compatible and can be
@@ -199,7 +200,7 @@ information.
         not be able to read one of these folders via IMAP.</p>
       </div>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>Mbox mail folders created by <span class="application">LibMAIL</span> are mostly compatible and can
@@ -214,8 +215,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id601949" shape="rect" name="id601949"> </a>
+    <div class="refsect1" title="RETURN CODES AND CALLBACKS">
+      <a id="id582091" shape="rect" name="id582091"> </a>
 
       <h2>RETURN CODES AND CALLBACKS</h2>
 
@@ -225,7 +226,7 @@ information.
       <em class="parameter"><code>callback</code></em> until either
       the <code class="function">success</code> or <code class="function">fail</code> method is invoked.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p><em class="parameter"><code>callback</code></em>'s
@@ -235,7 +236,7 @@ information.
         the error was encountered.</p>
       </div>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>The application must not destroy <em class="parameter"><code>folderCallback</code></em> until this
@@ -248,7 +249,7 @@ information.
       vector that contains a single pointer to a <span class="structname">mail::folder</span> object. The <span class="structname">mail::folder</span> object will refer to the
       newly-created folder.</p>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p><span class="structname">mail::folder</span>s are linked
@@ -263,7 +264,7 @@ information.
         destroyed.</p>
       </div>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>The <code class="function">folderCallback.success</code>
@@ -275,7 +276,7 @@ information.
         later.</p>
       </div>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>Both <code class="function">folderCallback.success</code> and <code class="function">myCallback.success</code> method will be invoked
@@ -285,7 +286,7 @@ information.
         been completed).</p>
       </div>
 
-      <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
         <h3 class="title">Note</h3>
 
         <p>For some kinds of accounts, <a class="link" href="folder-readsubfolders.html" title="mail::folder::readSubFolders" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::readSubFolders</span>(3x)</span></a>
@@ -294,20 +295,20 @@ information.
         create a new folder directory is as follows:</p>
 
         <div class="itemizedlist">
-          <ul type="disc">
-            <li>
+          <ul class="itemizedlist" type="disc">
+            <li class="listitem">
               <p>Invoke <code class="function">mail::folder::createSubFolder</code> to
               request the creation of a new folder directory.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>In <code class="function">folderCallback.success</code>, use
               <a class="link" href="folder-clone.html" title="mail::folder::clone" shape="rect"><span class="citerefentry"><span class="refentrytitle">mail::folder::clone</span>(3x)</span></a>
               to save a copy of the <span class="structname">mail::folder</span> object which refers
               to the new folder directory.</p>
             </li>
 
-            <li>
+            <li class="listitem">
               <p>After the <code class="function">myCallback.success</code> method is
               invoked, use the saved <span class="structname">mail::folder</span> object's
               <code class="function">createSubFolder</code> method
@@ -319,8 +320,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id602339" shape="rect" name="id602339"> </a>
+    <div class="refsect1" title="SEE ALSO">
+      <a id="id582480" shape="rect" name="id582480"> </a>
 
       <h2>SEE ALSO</h2>
 

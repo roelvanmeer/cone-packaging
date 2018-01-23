@@ -1,4 +1,4 @@
-/* $Id: pop3.C,v 1.17 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: pop3.C,v 1.18 2010/04/29 00:34:50 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -398,7 +398,7 @@ void mail::pop3::LoginTask::addCapability(const char *message)
 	string c=message, v="";
 	size_t p=c.find(' ');
 
-	if (p != c.npos)
+	if (p != std::string::npos)
 	{
 		v=c.substr(p+1);
 		c=c.substr(0, p);
@@ -408,7 +408,7 @@ void mail::pop3::LoginTask::addCapability(const char *message)
 
 	if (c == "SASL")
 	{
-		while ((p=v.find(' ')) != v.npos)
+		while ((p=v.find(' ')) != std::string::npos)
 		{
 			c="AUTH=" + v.substr(0, p);
 			v=v.substr(p+1);
@@ -2085,7 +2085,7 @@ int mail::pop3::socketRead(const string &readbuffer)
 
 		size_t i;
 
-		while ((i=l.find('\r')) != readbuffer.npos)
+		while ((i=l.find('\r')) != std::string::npos)
 			l=l.substr(0, i) + l.substr(i+1);
 
 		if (!tasks.empty())

@@ -43,7 +43,7 @@ information.
     <hr/>
   </div>
 
-  <div class="section" lang="en" xml:lang="en">
+  <div class="section" title="Copying and moving messages">
     <div class="titlepage">
       <div>
         <div>
@@ -75,7 +75,7 @@ information.
     copied, an empty word, then whitespace-delimited words that
     name the folder the messages are copied to.</p>
 
-    <p>&#8220;<span class="quote"><em class="replaceable"><code>m</code></em>-<em class="replaceable"><code>n</code></em></span>&#8221; can be a
+    <p><span class="quote">&#8220;<span class="quote"><em class="replaceable"><code>m</code></em>-<em class="replaceable"><code>n</code></em></span>&#8221;</span> can be a
     shortcut designation for messages #m through #n, inclusive. The
     message number list must be in a numerically-increasing order,
     with no overlaps.</p>
@@ -83,8 +83,8 @@ information.
     <p>The server responds with one ore more <code class="literal">* COPY</code> single line replies, one reply for each
     copied message. The next word contains the message number of
     the copied message, followed by a list of attributes. At
-    present time only one attribute is defined: &#8220;<span class="quote"><code class="literal">UID=</code><code class="literal">id</code></span>&#8221; gives the assigned unique id
-    of the saved message in the destination folder.</p>
+    present time only one attribute is defined: <span class="quote">&#8220;<span class="quote"><code class="literal">UID=</code><code class="literal">id</code></span>&#8221;</span> gives the assigned
+    unique id of the saved message in the destination folder.</p>
 
     <div class="literallayout">
       <p><br clear="none"/>
@@ -108,29 +108,30 @@ information.
     way, the messages are automatically removed from the current
     folder after they are copied.</p>
 
-    <p>The server also responds with &#8220;<span class="quote"><code class="literal">* COPY</code></span>&#8221; that
-    indicates messages that were copied to the destination folder;
-    the subsequent &#8220;<span class="quote"><code class="literal">* EXPUNGE</code></span>&#8221; messages indicate the
-    messages were removed from the original folder.</p>
+    <p>The server also responds with <span class="quote">&#8220;<span class="quote"><code class="literal">*
+    COPY</code></span>&#8221;</span> that indicates messages that
+    were copied to the destination folder; the subsequent
+    <span class="quote">&#8220;<span class="quote"><code class="literal">* EXPUNGE</code></span>&#8221;</span> messages
+    indicate the messages were removed from the original
+    folder.</p>
 
-    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
       <h3 class="title">Note</h3>
 
       <p>The server's response to <code class="literal">COPY</code>
       or <code class="literal">MOVE</code> may include additional
-      &#8220;<span class="quote"><code class="literal">*
-      EXPUNGE</code></span>&#8221;, &#8220;<span class="quote"><code class="literal">* EXISTS</code></span>&#8221;,
-      and &#8220;<span class="quote"><code class="literal">*
-      FETCH</code></span>&#8221; messages reflecting changes to the
-      folder's contents by other applications that have the same
-      folder opened.</p>
+      <span class="quote">&#8220;<span class="quote"><code class="literal">* EXPUNGE</code></span>&#8221;</span>, <span class="quote">&#8220;<span class="quote"><code class="literal">*
+      EXISTS</code></span>&#8221;</span>, and <span class="quote">&#8220;<span class="quote"><code class="literal">*
+      FETCH</code></span>&#8221;</span> messages reflecting changes
+      to the folder's contents by other applications that have the
+      same folder opened.</p>
 
       <p>Servers may, but are not required to, notify of other
       changes to the folder's contents as part of the response to
       <code class="literal">COPY</code> and <code class="literal">MOVE</code>.</p>
     </div>
 
-    <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
       <h3 class="title">Note</h3>
 
       <p>Servers have several choices for handling requests to copy
@@ -139,18 +140,18 @@ information.
       following:</p>
 
       <div class="itemizedlist">
-        <ul type="disc">
-          <li>
-            <p>Respond with an &#8220;<span class="quote"><code class="literal">-ERR</code></span>&#8221;
-            and do nothing.</p>
+        <ul class="itemizedlist" type="disc">
+          <li class="listitem">
+            <p>Respond with an <span class="quote">&#8220;<span class="quote"><code class="literal">-ERR</code></span>&#8221;</span> and do
+            nothing.</p>
           </li>
 
-          <li>
+          <li class="listitem">
             <p>Copy some or all remaining messages, then report an
-            &#8220;<span class="quote"><code class="literal">-ERR</code></span>&#8221;.</p>
+            <span class="quote">&#8220;<span class="quote"><code class="literal">-ERR</code></span>&#8221;</span>.</p>
           </li>
 
-          <li>
+          <li class="listitem">
             <p>Copy all remaining messages, as if the nonexistent
             messages were not specified at all by the client's
             <code class="literal">MOVE</code> or <code class="literal">COPY</code>.</p>

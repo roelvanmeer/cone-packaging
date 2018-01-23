@@ -33,7 +33,8 @@ information.
         <a accesskey="p" href="account-deletefolder.html" shape="rect">Prev</a>&#160;</td>
 
         <th width="60%" align="center" rowspan="1" colspan="1">
-        mail::ACCOUNT Synchronous API reference</th>
+        <span class="structname">mail::ACCOUNT</span> Synchronous
+        API reference</th>
 
         <td width="20%" align="right" rowspan="1" colspan="1">
         &#160;<a accesskey="n" href="account-getfolderindexinfo.html" shape="rect">Next</a></td>
@@ -42,7 +43,7 @@ information.
     <hr/>
   </div>
 
-  <div class="refentry" lang="en" xml:lang="en">
+  <div class="refentry" title="mail::ACCOUNT::delRights">
     <a id="account-delrights" shape="rect" name="account-delrights"> </a>
 
     <div class="titlepage"/>
@@ -54,7 +55,7 @@ information.
       list identifier</p>
     </div>
 
-    <div class="refsynopsisdiv">
+    <div class="refsynopsisdiv" title="Synopsis">
       <h2>Synopsis</h2>
 
       <div class="literallayout">
@@ -104,8 +105,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id539493" shape="rect" name="id539493"> </a>
+    <div class="refsect1" title="USAGE">
+      <a id="id519636" shape="rect" name="id519636"> </a>
 
       <h2>USAGE</h2>
 
@@ -122,8 +123,8 @@ information.
       removes <em class="replaceable"><code>identifier</code></em>
       from the folder's access control list.</p>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id539535" shape="rect" name="id539535"> </a>
+      <div class="refsect2" title="Identifier">
+        <a id="id519678" shape="rect" name="id519678"> </a>
 
         <h3>Identifier</h3>
 
@@ -134,8 +135,8 @@ information.
 
         <div class="variablelist">
           <dl>
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">anonymous</code></span>&#8221;, or
-            &#8220;<span class="quote"><code class="literal">anyone</code></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">anonymous</code></span>&#8221;</span>, or
+            <span class="quote">&#8220;<span class="quote"><code class="literal">anyone</code></span>&#8221;</span></span></dt>
 
             <dd>
               <p>This identifier refers to universal access rights
@@ -143,22 +144,23 @@ information.
               supported by server).</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">authuser</code></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">authuser</code></span>&#8221;</span></span></dt>
 
             <dd>
-              <p>Same as &#8220;<span class="quote">anyone</span>&#8221;, except for anonymous
-              users. If the server does not implement anonymous
-              access, then &#8220;<span class="quote">anonymous</span>&#8221;, &#8220;<span class="quote">anyone</span>&#8221;, and &#8220;<span class="quote">authuser</span>&#8221; are equivalent.</p>
+              <p>Same as <span class="quote">&#8220;<span class="quote">anyone</span>&#8221;</span>, except for
+              anonymous users. If the server does not implement
+              anonymous access, then <span class="quote">&#8220;<span class="quote">anonymous</span>&#8221;</span>, <span class="quote">&#8220;<span class="quote">anyone</span>&#8221;</span>, and <span class="quote">&#8220;<span class="quote">authuser</span>&#8221;</span> are
+              equivalent.</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">owner</code></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">owner</code></span>&#8221;</span></span></dt>
 
             <dd>
               <p>The owner of the mailbox that contains the
               folder.</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">administrators</code></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">administrators</code></span>&#8221;</span></span></dt>
 
             <dd>
               <p>Any member of a group that's defined as an
@@ -166,13 +168,13 @@ information.
               way.</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">user=</code><em class="replaceable"><code>username</code></em></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">user=</code><em class="replaceable"><code>username</code></em></span>&#8221;</span></span></dt>
 
             <dd>
               <p>A single system user, identified by <em class="replaceable"><code>username</code></em>.</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">group=</code><em class="replaceable"><code>groupname</code></em></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">group=</code><em class="replaceable"><code>groupname</code></em></span>&#8221;</span></span></dt>
 
             <dd>
               <p>Any system user that's part of a group identified
@@ -183,16 +185,15 @@ information.
               implemented by the server in the first place).</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote">-<em class="replaceable"><code>identifier</code></em></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote">-<em class="replaceable"><code>identifier</code></em></span>&#8221;</span></span></dt>
 
             <dd>
               <p>An access control list identifier may be prefixed
-              by a &#8220;<span class="quote">-</span>&#8221;,
-              which refers to a &#8220;<span class="quote">negative
-              right</span>&#8221;. Negative rights explicitly
-              revoke the associated access rights from the
-              <em class="replaceable"><code>identifier</code></em>
-              instead of granting the right.</p>
+              by a <span class="quote">&#8220;<span class="quote">-</span>&#8221;</span>, which refers to a
+              <span class="quote">&#8220;<span class="quote">negative right</span>&#8221;</span>. Negative
+              rights explicitly revoke the associated access rights
+              from the <em class="replaceable"><code>identifier</code></em> instead of
+              granting the right.</p>
 
               <p>Negative rights are not implemented by all
               servers. See the server's documentation to check if
@@ -201,7 +202,7 @@ information.
           </dl>
         </div>
 
-        <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
           <h3 class="title">Note</h3>
 
           <p><em class="replaceable"><code>username</code></em> and
@@ -211,8 +212,8 @@ information.
         </div>
       </div>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id539770" shape="rect" name="id539770"> </a>
+      <div class="refsect2" title="Access rights">
+        <a id="id519913" shape="rect" name="id519913"> </a>
 
         <h3>Access rights</h3>
 
@@ -221,63 +222,63 @@ information.
 
         <div class="variablelist">
           <dl>
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">a</code></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">a</code></span>&#8221;</span></span></dt>
 
             <dd>
               <p>Administrator access: view and change folder
               access control lists.</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">c</code></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">c</code></span>&#8221;</span></span></dt>
 
             <dd>
               <p>Create subfolders.</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">e</code></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">e</code></span>&#8221;</span></span></dt>
 
             <dd>
               <p>Expunge deleted messages from the folder.</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">i</code></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">i</code></span>&#8221;</span></span></dt>
 
             <dd>
               <p>Insert, or add messages to the folder.</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">l</code></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">l</code></span>&#8221;</span></span></dt>
 
             <dd>
               <p>List, or view the folder's existence. If a folder
-              does not have the &#8220;<span class="quote"><code class="literal">l</code></span>&#8221;
-              access right, the server will not include this folder
-              when it's asked to list all folders in the folder
-              directory. However, if the &#8220;<span class="quote"><code class="literal">r</code></span>&#8221;
-              access right is present, the folder may be opened if
-              the folder's name is known.</p>
+              does not have the <span class="quote">&#8220;<span class="quote"><code class="literal">l</code></span>&#8221;</span> access right,
+              the server will not include this folder when it's
+              asked to list all folders in the folder directory.
+              However, if the <span class="quote">&#8220;<span class="quote"><code class="literal">r</code></span>&#8221;</span> access right
+              is present, the folder may be opened if the folder's
+              name is known.</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">r</code></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">r</code></span>&#8221;</span></span></dt>
 
             <dd>
               <p>Read, or open the folder. An attempt to open the
-              folder will fail without the &#8220;<span class="quote"><code class="literal">r</code></span>&#8221;
-              access right, even if the folder's name is known.</p>
+              folder will fail without the <span class="quote">&#8220;<span class="quote"><code class="literal">r</code></span>&#8221;</span> access right,
+              even if the folder's name is known.</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">p</code></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">p</code></span>&#8221;</span></span></dt>
 
             <dd>
-              <p>&#8220;<span class="quote">Post
-              messages</span>&#8221; to the folder. This access
-              right is currently listed in the ACL specification;
-              however its intention is not clear, and most servers
-              do not do anything useful with this access right. It
-              is listed here for information purposes only.</p>
+              <p><span class="quote">&#8220;<span class="quote">Post messages</span>&#8221;</span> to the
+              folder. This access right is currently listed in the
+              ACL specification; however its intention is not
+              clear, and most servers do not do anything useful
+              with this access right. It is listed here for
+              information purposes only.</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">s</code></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">s</code></span>&#8221;</span></span></dt>
 
             <dd>
               <p>Allow changing the read/unread status of messages
@@ -285,42 +286,44 @@ information.
               clear the <em class="structfield"><code>unread</code></em> message status
               flag on messages after they are read, or let this
               status flag be explicitly changed, without the
-              &#8220;<span class="quote"><code class="literal">s</code></span>&#8221; access right.</p>
+              <span class="quote">&#8220;<span class="quote"><code class="literal">s</code></span>&#8221;</span> access
+              right.</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">t</code></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">t</code></span>&#8221;</span></span></dt>
 
             <dd>
               <p>Allow tagging of messages as deleted or undeleted.
               The server will prohibit changing the messages'
               <em class="structfield"><code>deleted</code></em>
-              message status flag without the &#8220;<span class="quote"><code class="literal">t</code></span>&#8221;
-              access right.</p>
+              message status flag without the <span class="quote">&#8220;<span class="quote"><code class="literal">t</code></span>&#8221;</span> access
+              right.</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">w</code></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">w</code></span>&#8221;</span></span></dt>
 
             <dd>
               <p>Allow changing the <em class="structfield"><code>draft</code></em>, <em class="structfield"><code>replied</code></em>, and
               <em class="structfield"><code>marked</code></em>
               message status flags. The server will not allow
-              changes to these flags without the
-              &#8220;<span class="quote"><code class="literal">w</code></span>&#8221; access right.</p>
+              changes to these flags without the <span class="quote">&#8220;<span class="quote"><code class="literal">w</code></span>&#8221;</span> access
+              right.</p>
             </dd>
 
-            <dt><span class="term">&#8220;<span class="quote"><code class="literal">x</code></span>&#8221;</span></dt>
+            <dt><span class="term"><span class="quote">&#8220;<span class="quote"><code class="literal">x</code></span>&#8221;</span></span></dt>
 
             <dd>
               <p>Allow this folder to be removed. The server will
               not this folder to be deleted without the
-              &#8220;<span class="quote"><code class="literal">x</code></span>&#8221; access right.</p>
+              <span class="quote">&#8220;<span class="quote"><code class="literal">x</code></span>&#8221;</span> access
+              right.</p>
             </dd>
           </dl>
         </div>
       </div>
 
-      <div class="refsect2" lang="en" xml:lang="en">
-        <a id="id540433" shape="rect" name="id540433"> </a>
+      <div class="refsect2" title="Extended error reporting">
+        <a id="id520576" shape="rect" name="id520576"> </a>
 
         <h3>Extended error reporting</h3>
 
@@ -328,12 +331,11 @@ information.
         combinations of access rights are valid for which folders.
         See the IMAP server's documentation to check for any access
         rights restrictions. The most common restriction is that
-        the &#8220;<span class="quote">e</span>&#8221;,
-        &#8220;<span class="quote">t</span>&#8221;, and
-        &#8220;<span class="quote">x</span>&#8221; access rights
-        must either be set together, as a group, or not. The server
-        will reject or ignore an attempt to set prohibited
-        combinations of access rights for a given folder.</p>
+        the <span class="quote">&#8220;<span class="quote">e</span>&#8221;</span>, <span class="quote">&#8220;<span class="quote">t</span>&#8221;</span>,
+        and <span class="quote">&#8220;<span class="quote">x</span>&#8221;</span> access rights must either be
+        set together, as a group, or not. The server will reject or
+        ignore an attempt to set prohibited combinations of access
+        rights for a given folder.</p>
 
         <p>Some IMAP servers implement an extended form of the
         access control list protocol which makes it possible to
@@ -358,8 +360,8 @@ information.
       </div>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id540532" shape="rect" name="id540532"> </a>
+    <div class="refsect1" title="RETURN CODES AND CALLBACKS">
+      <a id="id520675" shape="rect" name="id520675"> </a>
 
       <h2>RETURN CODES AND CALLBACKS</h2>
 
@@ -369,8 +371,8 @@ information.
       read a brief description of the error.</p>
     </div>
 
-    <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id540565" shape="rect" name="id540565"> </a>
+    <div class="refsect1" title="SEE ALSO">
+      <a id="id520708" shape="rect" name="id520708"> </a>
 
       <h2>SEE ALSO</h2>
 
