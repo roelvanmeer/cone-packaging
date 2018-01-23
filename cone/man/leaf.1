@@ -1,50 +1,58 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: leaf
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "LEAF" "1" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "LEAF" "1" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-leaf - Lightweight Editor of Ascii(and more) Files
+leaf \- Lightweight Editor of Ascii(and more) Files
 .SH "SYNOPSIS"
-.HP 5
+.HP \w'\fBleaf\fR\ 'u
 \fBleaf\fR [\-d\ \fIdictionary\fR] [+\fIn\fR] [\fIfilename\fR]
 .SH "USAGE"
 .PP
 
 \fBleaf\fR
-is a simple console text file editor, with paragraph word\-wrapping and spell checking\.
+is a simple console text file editor, with paragraph word\-wrapping and spell checking\&.
 \fBleaf\fR
 is based on the text editor in the
 Cone
-mail reader and composer\.
+mail reader and composer\&.
 \fBleaf\fR
 opens
-\fIfilename\fR, position the cursor on the first line, or line #\fIn\fR, if specified\.
+\fIfilename\fR, position the cursor on the first line, or line #\fIn\fR, if specified\&.
 .PP
-This is not really the best editor for program sources\.
+This is not really the best editor for program sources\&.
 \fBleaf\fR
-is meant to be used as a quick editor for writing short notes and memos\. As text is typed, words will automatically flow to wrap within a typical 80\-character terminal display, even on larger display (due to
-\fBleaf\fR\'s heritage as an editor for E\-mail messages, which are traditionally formatted to fit an 80\-character display)\. Word wrapping is "lazy": only long text lines are wrapped\. Short text lines are not folded together\. Individual paragraphs are separated by blank lines of text\. Press
+is meant to be used as a quick editor for writing short notes and memos\&. As text is typed, words will automatically flow to wrap within a typical 80\-character terminal display, even on larger display (due to
+\fBleaf\fR\'s heritage as an editor for E\-mail messages, which are traditionally formatted to fit an 80\-character display)\&. Word wrapping is "lazy": only long text lines are wrapped\&. Short text lines are not folded together\&. Individual paragraphs are separated by blank lines of text\&. Press
 CTRL\-J
-to optimally rewrap the paragraph under the cursor\. The bottom two lines on the screen list which keys to press for other functions\.
+to optimally rewrap the paragraph under the cursor\&. The bottom two lines on the screen list which keys to press for other functions\&.
 .PP
 The
 \fB\-d\fR
 sets the name of the dictionary used for spell checking (overriding the default spell checking dictionary set by the
 \fBDICTIONARY\fR
-environment variable)\.
+environment variable)\&.
 \fB+\fR\fB\fIn\fR\fR
-sets the initial cursor position to line #\fIn\fR\.
+sets the initial cursor position to line #\fIn\fR\&.
 .SH "SEE ALSO"
 .PP
 

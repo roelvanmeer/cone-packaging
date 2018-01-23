@@ -1,88 +1,121 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::ACCOUNT::openFolder
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::OPENF" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::OPENF" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::ACCOUNT::openFolder - Open a folder
+mail::ACCOUNT::openFolder \- Open a folder
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/sync\.H>
+#include <libmail/sync\&.H>
 
 mail::ACCOUNT *mail;
 .fi
-.RE
-.HP 25
+.HP \w'bool\ ok=mail->openFolder('u
 .BI "bool ok=mail->openFolder(const\ mail::folder\ *" "folder" ");"
 .sp
-.RS 4
 .nf
 std::string errmsg=mail\->getErrmsg();
 .fi
-.RE
 .SH "USAGE"
 .PP
-A mail folder must be formally "opened" before the messages in the folder may be accessed\. Each mail account can have only one mail folder at any time Opening another folder automatically "closes" the previous folder\.
+A mail folder must be formally "opened" before the messages in the folder may be accessed\&. Each mail account can have only one mail folder at any time Opening another folder automatically "closes" the previous folder\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 Different
 mail::account
 or
 mail::ACCOUNT
-objects may each have a folder opened, at the same time\. It is possible to create multiple
+objects may each have a folder opened, at the same time\&. It is possible to create multiple
 mail::account
 or
 mail::ACCOUNT
-objects that refer to the same actual mail account\. Whether it is possible to access the same account multiple times, using different objects, and whether each object may have the same folder opened depends on the account type and/or the remote server\.
+objects that refer to the same actual mail account\&. Whether it is possible to access the same account multiple times, using different objects, and whether each object may have the same folder opened depends on the account type and/or the remote server\&.
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'Whether it\'s possible to open the same remote IMAP or POP3 account more than once depends on the remote IMAP/POP3 server\.
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Whether it\'s possible to open the same remote IMAP or POP3 account more than once depends on the remote IMAP/POP3 server\&.
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'Whether it\'s possible to open the same folder on a remote IMAP server account more than once depends on the remote IMAP/POP3 server\. Most IMAP servers allow the same account to be opened more than once, as long as the different login sessions do not try to open the same folder\. Some IMAP servers allow the same folder to be opened simultaneously by multiple sessions\.
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Whether it\'s possible to open the same folder on a remote IMAP server account more than once depends on the remote IMAP/POP3 server\&. Most IMAP servers allow the same account to be opened more than once, as long as the different login sessions do not try to open the same folder\&. Some IMAP servers allow the same folder to be opened simultaneously by multiple sessions\&.
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'It is generally possible to open the same local mail folder simultaneously, via multiple
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+It is generally possible to open the same local mail folder simultaneously, via multiple
 mail::account
-objects, as long as only one pending request is issued at a time\. Concurrent access to local maildirs generally works well, however simultaneous access to the same mbox folder may be rather slow, due to the overhead of locking and rescanning of the folder by each
+objects, as long as only one pending request is issued at a time\&. Concurrent access to local maildirs generally works well, however simultaneous access to the same mbox folder may be rather slow, due to the overhead of locking and rescanning of the folder by each
 mail::account
-object\.
+object\&.
+.RE
+.sp .5v
 .RE
 .PP
-Any previously\-opened folder is closed before the an attempt to open this folder is made\. If the new folder cannot be opened, the previous folder is still considered closed\.
+Any previously\-opened folder is closed before the an attempt to open this folder is made\&. If the new folder cannot be opened, the previous folder is still considered closed\&.
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 This method returns
 true
 if it succeeds, or
 false
-if it fails\. If the method fails, use
-mail::ACCOUNT::getErrmsg()
-to read a brief description of the error\.
+if it fails\&. If the method fails, use
+\fImail::ACCOUNT::getErrmsg()\fR
+to read a brief description of the error\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::ACCOUNT::getTopLevelFolders\fR(3x),
-\fBmail::ACCOUNT::readFolderInfo\fR(3x)\.
+\fBmail::ACCOUNT::readFolderInfo\fR(3x)\&.

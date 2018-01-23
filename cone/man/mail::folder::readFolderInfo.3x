@@ -1,28 +1,35 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::folder::readFolderInfo
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::FOLDER::READFO" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::FOLDER::READFO" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::folder::readFolderInfo - Get folder status
+mail::folder::readFolderInfo \- Get folder status
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 
 class myCallback : public mail::callback {
@@ -31,9 +38,7 @@ public:
     void fail(std::string msg);
 };
 .fi
-.RE
 .sp
-.RS 4
 .nf
 mail::folder *folder;
 
@@ -46,52 +51,57 @@ public:
         }
 };
 .fi
-.RE
-.HP 23
+.HP \w'folder->readFolderInfo('u
 .BI "folder->readFolderInfo(myFolderInfoCallback\ &" "folderInfoCallback" ", myCallback\ &" "callback" ");"
 .SH "USAGE"
 .PP
 This function reads the current status of
-\fIfolder\fR, which may refer to any folder in the mail account (not necessarily the currently open folder)\.
+\fIfolder\fR, which may refer to any folder in the mail account (not necessarily the currently open folder)\&.
 .PP
 
 \fIfolderInfoCallback\fR\'s
 \fBsuccess\fR
-method will be invoked when the folder\'s status is determined\. The following variables will be initialized prior to invoking
+method will be invoked when the folder\'s status is determined\&. The following variables will be initialized prior to invoking
 \fBsuccess\fR:
 .PP
 messageCount
 .RS 4
-Total number of messages in the folder\.
+Total number of messages in the folder\&.
 .RE
 .PP
 unreadCount
 .RS 4
-Total number of unread messages in the folder\.
+Total number of unread messages in the folder\&.
 .RE
 .PP
 fastInfo
 .RS 4
-This field should be initialized before calling this function\. If set to
+This field should be initialized before calling this function\&. If set to
 true
-the message counts are returned only if they can be computed quickly\. Otherwise
+the message counts are returned only if they can be computed quickly\&. Otherwise
 \fIfolderInfoCallback\fR\'s
 \fBsuccess\fR
 method will not be invoked at all, but
 \fIcallback\fR\'s
 \fBsuccess\fR
-method will still be invoked\.
+method will still be invoked\&.
 .sp
 If this field is set to
 false
-(the default), the message counts are returned in all cases\.
+(the default), the message counts are returned in all cases\&.
 .RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 \fIfolderInfoCallback\fR\'s
@@ -100,22 +110,32 @@ method will be invoked just prior to
 \fIcallback\fR\'s
 \fBsuccess\fR
 method (unless
-fastInfo
-is true and message counts cannot be computed cheaply)\. The application must still wait until
+\fIfastInfo\fR
+is true and message counts cannot be computed cheaply)\&. The application must still wait until
 \fIcallback\fR\'s
 \fBsuccess\fR, or
 \fBfail\fR
 is invoked, and must not destroy the
 mail::callback::folderInfo
-object until either method has been invoked\.
+object until either method has been invoked\&.
+.sp .5v
+.RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
-Message count computation is considered cheap with maildir\-based and POP3\-based accounts\. Message count computation is considered expensive with mbox\-based accounts, and with IMAP\-based accounts\.
+Message count computation is considered cheap with maildir\-based and POP3\-based accounts\&. Message count computation is considered expensive with mbox\-based accounts, and with IMAP\-based accounts\&.
+.sp .5v
+.RE
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 The application must wait until
@@ -123,30 +143,38 @@ The application must wait until
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\. The
+method is invoked\&. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed\. The
+method is invoked when this request is succesfully processed\&. The
 \fBfail\fR
-method is invoked if this request cannot be processed\. The application must not destroy
+method is invoked if this request cannot be processed\&. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\.
+method is invoked\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 \fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
+method may be invoked even after other callback methods were invoked\&. This indicates that the request was partially completed before the error was encountered\&.
+.sp .5v
+.RE
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::checkNewMail\fR(3x),
-\fBmail::folder::open\fR(3x)\.
+\fBmail::folder::open\fR(3x)\&.

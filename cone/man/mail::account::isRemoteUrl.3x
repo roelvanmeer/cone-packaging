@@ -1,32 +1,38 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::account::isRemoteUrl
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::ISREM" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::ISREM" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::account::isRemoteUrl - Determine whether the account is a remote account
+mail::account::isRemoteUrl \- Determine whether the account is a remote account
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 .fi
-.RE
-.HP 37
+.HP \w'bool\ flag=mail::account::isRemoteUrl('u
 .BI "bool flag=mail::account::isRemoteUrl(std::string\ " "url" ");"
 .SH "USAGE"
 .PP
@@ -36,7 +42,7 @@ returns
 true
 if
 \fIurl\fR
-identifies a mail account on a remote server (as opposed to a local mail account) that requires a network connection\.
+identifies a mail account on a remote server (as opposed to a local mail account) that requires a network connection\&.
 \fBmail::account::isRemoteUrl\fR
 returns
 true
@@ -50,8 +56,8 @@ nntps,
 pop3,
 pop3s,
 smtp, or
-smtps\.
+smtps\&.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::account::open\fR(3x)\.
+\fBmail::account::open\fR(3x)\&.

@@ -1,4 +1,4 @@
-# $Id: cone.spec.in,v 1.17 2008/07/13 14:27:32 mrsam Exp $
+# $Id: cone.spec.in,v 1.18 2009/10/31 22:38:06 mrsam Exp $
 
 # Custom build against libcurses-5.3
 
@@ -32,7 +32,7 @@ BuildRequires: ncurses-devel
 
 Summary: CONE mail reader
 Name: cone
-Version: 0.79
+Version: 0.80
 Release: 1%{?dist}%{cone_release}
 URL: http://www.courier-mta.org/cone
 Source0: %{name}-%{version}.tar.bz2
@@ -45,6 +45,7 @@ BuildRequires: aspell-devel libxml2-devel
 BuildRequires: zlib-devel /usr/include/fam.h perl
 BuildRequires: libstdc++-devel gcc-c++
 BuildRequires: openldap-devel
+BuildRequires: libidn-devel
 
 %define use_openssl %(rpm -q openssl-devel >/dev/null 2>&1 && echo 1 && exit 0; echo 0)
 

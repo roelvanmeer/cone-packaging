@@ -1,28 +1,35 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::account::moveMessagesTo
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::MOVEM" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::MOVEM" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::account::copyMessagesTo - Move messages to another folder
+mail::account::copyMessagesTo \- Move messages to another folder
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 
 class myCallback : public mail::callback {
@@ -31,42 +38,41 @@ public:
     void fail(std::string msg);
 };
 .fi
-.RE
-.HP 24
+.HP \w'account->moveMessagesTo('u
 .BI "account->moveMessagesTo(const\ std::vector<size_t>\ &" "msgList" ", mail::folder\ *" "copyTo" ", myCallback\ &" "callback" ");"
 .SH "USAGE"
 .PP
 
 \fBmail::account::moveMessagesTo\fR
-moves messages from the currently\-open folder to another folder\.
+moves messages from the currently\-open folder to another folder\&.
 
 
 
 \fImsgList\fR
-specifies a list of messages\. Messages are numbered starting with message #0 and up to one less than
+specifies a list of messages\&. Messages are numbered starting with message #0 and up to one less than
 \fBmail::account::getFolderIndexSize\fR(3x)() (when
 \fBmail::account::getFolderIndexSize\fR
-returns 6, the messages are numbered 0 through 5)\. Only the messages that appear in
+returns 6, the messages are numbered 0 through 5)\&. Only the messages that appear in
 \fImsgList\fR
-are processed by this request\.
+are processed by this request\&.
 .PP
 This is similar to
-\fBmail::account::copyMessagesTo\fR(3x), except that the messages are removed from the original folder\. The application can expect that the
+\fBmail::account::copyMessagesTo\fR(3x), except that the messages are removed from the original folder\&. The application can expect that the
 \fBmail::account::messagesRemoved\fR
 function in the currently opened folder\'s
 mail::callback::folder
-object will be invoked one or more times, as necessary, to reflect the removal of the listed messages from the currently open folder\.
+object will be invoked one or more times, as necessary, to reflect the removal of the listed messages from the currently open folder\&.
 .PP
 
 \fIcopyTo\fR
 is a pointer to a
 mail::folder
-object, representing the folder where messages are moved to\.
+object, representing the folder where messages are moved to\&.
 \fIcopyTo\fR
 may be a folder in another mail account, in which case this function transparently copies the indicated messages using
-\fBmail::account::removeMessages\fR(3x)\. Only
+\fBmail::account::removeMessages\fR(3x)\&. Only
 SMAP
-and maildir\-based mail accounts can move messages directly between folders; for all other accounts the copy/delete implementation will be used automatically\.
+and maildir\-based mail accounts can move messages directly between folders; for all other accounts the copy/delete implementation will be used automatically\&.
 .SH "RETURN CODES"
 .PP
 The application must wait until
@@ -74,49 +80,73 @@ The application must wait until
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\. The
+method is invoked\&. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed\. The
+method is invoked when this request is succesfully processed\&. The
 \fBfail\fR
-method is invoked if this request cannot be processed\. The application must not destroy
+method is invoked if this request cannot be processed\&. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\.
+method is invoked\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 \fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
+method may be invoked even after other callback methods were invoked\&. This indicates that the request was partially completed before the error was encountered\&.
+.sp .5v
+.RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
-Multiple applications may have the same account and folder opened at the same time\. It is possible that a message referenced by this request was already deleted by another application\. Depending on the underlying server implementation this will result in either a failed request, invoking
-\fBcallback\.fail\fR, or the request completing (\fBcallback\.success\fR
-invoked) but without invoking any callback function that refer to the message\.
+Multiple applications may have the same account and folder opened at the same time\&. It is possible that a message referenced by this request was already deleted by another application\&. Depending on the underlying server implementation this will result in either a failed request, invoking
+\fBcallback\&.fail\fR, or the request completing (\fBcallback\&.success\fR
+invoked) but without invoking any callback function that refer to the message\&.
+.sp .5v
+.RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
-If this request is interrupted, for some reason, it is possible that some or all messages have already been copied to the destination folder, but not yet removed from the original folder\.
+If this request is interrupted, for some reason, it is possible that some or all messages have already been copied to the destination folder, but not yet removed from the original folder\&.
+.sp .5v
+.RE
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::copyMessagesTo\fR(3x),
 \fBmail::account::open\fR(3x),
-\fBmail::account::removeMessages\fR(3x)\.
+\fBmail::account::removeMessages\fR(3x)\&.

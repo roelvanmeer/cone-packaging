@@ -1,4 +1,4 @@
-/* $Id: rfc2047decode.C,v 1.4 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: rfc2047decode.C,v 1.5 2009/11/08 23:52:31 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -6,6 +6,7 @@
 */
 #include "libmail_config.h"
 #include "rfc2047decode.H"
+#include "rfc822/rfc822.h"
 #include "rfc822/rfc2047.h"
 #include "mail.H"
 #include <cstring>
@@ -20,105 +21,33 @@ mail::rfc2047::decoder::~decoder()
 {
 }
 
-int mail::rfc2047::decoder::rfc2047_decode_callback(const char *text,
-						    int text_len,
-						    const char *charset,
-						    const char *language,
+void mail::rfc2047::decoder::rfc2047_decode_callback(const char *text,
+						    size_t text_len,
 						    void *voidarg)
 {
-	return ((mail::rfc2047::decoder *)voidarg)
-		->rfc2047_callback(text, text_len, charset, language);
+	((mail::rfc2047::decoder *)voidarg)->rfc2047_callback(text, text_len);
 }
 
-int mail::rfc2047::decoder::rfc2047_callback(const char *text, int text_len,
-					     const char *charset,
-					     const char *language)
+void mail::rfc2047::decoder::rfc2047_callback(const char *text, size_t text_len)
 {
-	if (charset == NULL)
-	{
-		string s;
-
-		s.insert(s.end(), text, text+text_len);
-
-		unicode_char *u= (*unicode_ISO8859_1.c2u)(&unicode_ISO8859_1,
-							  s.c_str(), NULL);
-
-		if (!u)
-			LIBMAIL_THROW("Out of memory.");
-
-		size_t n;
-
-		for (n=0; u[n]; n++)
-			;
-		try {
-			unicodes.insert(unicodes.end(), u, u+n);
-			free(u);
-		} catch (...) {
-			free(u);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-		}
-		return (0);
-	}
-
-	const struct unicode_info *uc=unicode_find(charset);
-
-	if (strcasecmp(charset, nativeCharset->chset) == 0)
-		uc= nativeCharset;
-
-	if (strcasecmp(charset, nativeCharset->chset)
-	    && !(nativeCharset->flags & UNICODE_UTF))
-		// No need to insert [] for UTF charset
-	{
-		string s=string(" [") + charset + "]";
-		rfc2047_callback(&*s.begin(), s.size(), NULL, NULL);
-		// HACK - reuse code above.
-	}
-
-	if (uc == NULL)
-		uc= &unicode_ISO8859_1;
-
-	string s;
-
-	s.insert(s.end(), text, text+text_len);
-
-	unicode_char *u= (*uc->c2u)(uc, s.c_str(), NULL);
-
-	if (!u)
-		LIBMAIL_THROW("Out of memory.");
-
-	size_t n;
-
-	for (n=0; u[n]; n++)
-		;
-	try {
-		unicodes.insert(unicodes.end(), u, u+n);
-		free(u);
-	} catch (...) {
-		free(u);
-		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-	}
-	return (0);
+	decodedbuf.append(text, text+text_len);
 }
 
+#if 0
 const unicode_char *mail::rfc2047::decoder::decode(string text)
 {
-	nativeCharset= &unicode_ISO8859_1;
-	unicodes.clear();
-
-	rfc2047_decode(text.c_str(),
-		       &mail::rfc2047::decoder::rfc2047_decode_callback,
-		       this);
+	decode(text.c_str(), unicode_UTF8);
 	unicodes.push_back(0);
-
 	return &*unicodes.begin();
 }
+#endif
 
 string mail::rfc2047::decoder::decode(string text, string charset)
 {
 	const struct unicode_info *uc=unicode_find(charset.c_str());
 
 	if (!uc)
-		uc=&unicode_ISO8859_1;
+		uc=&unicode_UTF8;
 
 	return decode(text, *uc);
 }
@@ -126,31 +55,18 @@ string mail::rfc2047::decoder::decode(string text, string charset)
 string mail::rfc2047::decoder::decode(string text,
 				      const struct unicode_info &uc)
 {
-	nativeCharset=&uc;
-	unicodes.clear();
+	decodedbuf.clear();
 
-	rfc2047_decode(text.c_str(),
-		       &mail::rfc2047::decoder::rfc2047_decode_callback,
-		       this);
+	if (rfc822_display_hdrvalue("subject",
+				    text.c_str(),
+				    uc.chset,
+				    &mail::rfc2047::decoder::
+				    rfc2047_decode_callback,
+				    NULL,
+				    this) < 0)
+		return text;
 
-	unicodes.push_back(0);
-
-
-	string s;
-
-	char *p= (uc.u2c)(&uc, &*unicodes.begin(), NULL);
-
-	if (!p)
-		LIBMAIL_THROW("Out of memory.");
-
-	try {
-		s=p;
-		free(p);
-	} catch (...) {
-		free(p);
-		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-	}
-	return s;
+	return decodedbuf;
 }
 
 void mail::rfc2047::decoder::decode(vector<mail::address> &addr_cpy,
@@ -167,39 +83,19 @@ void mail::rfc2047::decoder::decode(vector<mail::address> &addr_cpy,
 
 string mail::rfc2047::decoder::decodeSimple(string str)
 {
-	char *p=rfc2047_decode_simple(str.c_str());
+	std::string output;
 
-	string s="";
+	if (rfc2047_decoder(str.c_str(), &decodeSimpleCallback, &output) < 0)
+		return str;
 
-	if (p)
-		try {
-			s=p;
-			free(p);
-		} catch (...) {
-			free(p);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-		}
-
-	return s;
+	return output;
 }
 
-string mail::rfc2047::decoder::decodeEnhanced(string str,
-					      const struct unicode_info
-					      &myCharset)
+void mail::rfc2047::decoder::decodeSimpleCallback(const char *chset,
+						  const char *lang,
+						  const char *content,
+						  size_t cnt,
+						  void *dummy)
 {
-	char *p=rfc2047_decode_unicode(str.c_str(), &myCharset,
-				       RFC2047_DECODE_NOTAG);
-
-	string s="";
-
-	if (p)
-		try {
-			s=p;
-			free(p);
-		} catch (...) {
-			free(p);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-		}
-
-	return s;
+	((std::string *)dummy)->append(content, content+cnt);
 }

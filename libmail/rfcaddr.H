@@ -1,6 +1,6 @@
-/* $Id: rfcaddr.H,v 1.5 2004/05/30 02:43:00 mrsam Exp $
+/* $Id: rfcaddr.H,v 1.7 2009/10/31 22:38:07 mrsam Exp $
 **
-** Copyright 2002, Double Precision Inc.
+** Copyright 2002-2009, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -31,7 +31,7 @@ public:
 	std::string getAddr() const { return addr; }
 
 	virtual void setName(std::string s);
-	void setAddr(std::string a) { addr=a; }
+	virtual void setAddr(std::string a);
 
 	// If addr.size() == 0 this is the obsolete rfc 822
 	// group list notation, and name is either ";" or "name:"
@@ -81,26 +81,35 @@ public:
 
 // INPROGRESS: slowly migrate to automatic MIME encoding of names.
 //
-// Subclass address, override getName() and setName() to use a MIME-encoded
-// name, using mail::appcharset.
+// A subclass of address that MIME-decodes the name portion of the address,
+// and IDN-decodes the hostname portion of the address (if libidn is available).
 //
 // emailAddress transparently casts to mail::address, importing/exporting
-// the name in its encoded form.
+// the name and address in its decoded form.
 
 class emailAddress : public address {
 
-	std::string encodedName;
+	// The name field, decoded to the application's local charset
+	std::string decodedName;
+
+	//! The address field, with the hostname portion decoded
+
+	std::string decodedAddr;
 
 	void decode();
 public:
-	emailAddress(std::string n, std::string a);
+	emailAddress();
 	emailAddress(const address &);
 	virtual ~emailAddress();
 
-	std::string getAddrName() const { return encodedName; }
+	std::string getDisplayName() const { return decodedName; }
+	std::string getDisplayAddr() const { return decodedAddr; }
 
-	void setAddrName(std::string s);
+	std::string setDisplayName(std::string s);
+	std::string setDisplayAddr(std::string a);
+
 	virtual void setName(std::string s);
+	virtual void setAddr(std::string s);
 
 	bool operator==(const address &a) const
 	{

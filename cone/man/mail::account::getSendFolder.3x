@@ -1,28 +1,35 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::account::getSendFolder
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::GETSE" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::GETSE" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::account::getSendFolder - Create a folder object for sending mail
+mail::account::getSendFolder \- Create a folder object for sending mail
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 
 class myCallback : public mail::callback {
@@ -31,28 +38,24 @@ public:
     void fail(std::string msg);
 };
 .fi
-.RE
 .sp
-.RS 4
 .nf
 
-#include <libmail/smtpinfo\.H>
-#include <libmail/addmessage\.H>
+#include <libmail/smtpinfo\&.H>
+#include <libmail/addmessage\&.H>
 
 mail::account *account;
 
 mail::smtpInfo info;
 
-info\.sender="nobody@example\.com";
+info\&.sender="nobody@example\&.com";
 
-info\.recipients\.push_back("recipient@example\.com");
+info\&.recipients\&.push_back("recipient@example\&.com");
 
 .fi
-.RE
-.HP 44
+.HP \w'mail::folder\ *folder=account->getSendFolder('u
 .BI "mail::folder *folder=account->getSendFolder(const\ mail::smtpInfo\ &" "info" ", const\ mail::folder\ *" "saveFolder" ", std::string\ " "errmsg" ");"
 .sp
-.RS 4
 .nf
 myCallback sendCallback;
 
@@ -61,44 +64,53 @@ mail::addMessage *addMessage= folder\->addMessage(sendCallback);
 addMessage\->saveMessageContents(std::string messageText);
 addMessage\->go();
 .fi
-.RE
 .SH "USAGE"
 .PP
-This function creates a special folder object: copying a message to this folder will E\-mail it to the designated recipient list\. The
+This function creates a special folder object: copying a message to this folder will E\-mail it to the designated recipient list\&. The
 mail::account
 object must be an account that\'s capable of creating this kind of a folder (such as
 smtp
 accounts created by
-\fBmail::account::open\fR(3x))\. The message may be manually added to the folder with
+\fBmail::account::open\fR(3x))\&. The message may be manually added to the folder with
 \fBmail::folder::addmessage\fR(3x), or by copying a message from another folder using
-\fBmail::folder::copyMessagesTo\fR(3x)\.
+\fBmail::folder::copyMessagesTo\fR(3x)\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 Multiple messages may be copied to this
-mail::folder\. Each messages is E\-mail separately, to all recipients\. Excersize caution to prevent an accidental request to copy an entire folder, with thousand messages, to a thousand recipients\.
+mail::folder\&. Each messages is E\-mail separately, to all recipients\&. Excersize caution to prevent an accidental request to copy an entire folder, with thousand messages, to a thousand recipients\&.
+.sp .5v
+.RE
 .SS "\fIsaveFolder\fR"
 .PP
 
 \fIsaveFolder\fR, if not
-NULL, specifies that a copy of the message should also be saved in this folder\. If this mail account uses the experimental
+NULL, specifies that a copy of the message should also be saved in this folder\&. If this mail account uses the experimental
 SMAP
 protocol, a single copy of the message will be transmitted to the
 SMAP
-server, which will file the message in the folder, and send it to the designated recipients\. Otherwise the message is manually saved to this folder using
+server, which will file the message in the folder, and send it to the designated recipients\&. Otherwise the message is manually saved to this folder using
 \fBmail::folder::addMessage\fR(3x), or
-\fBmail::ACCOUNT::addMessage\fR(3x)\.
+\fBmail::ACCOUNT::addMessage\fR(3x)\&.
 .SS "The mail::smtpInfo object"
 .PP
 
 \fIinfo\fR
 specifies the following parameters which are used to deliver the message:
 .sp
+.if n \{\
 .RS 4
+.\}
 .nf
 class mail::smtpInfo {
 public:
@@ -109,88 +121,106 @@ public:
 	std::map<std::string, std::string> options;
 } ;
 .fi
+.if n \{\
 .RE
+.\}
 .PP
 
-sender
-specifies the sender\'s E\-mail address, in the form of "\fIuser\fR@\fIdomain\fR"\.
-recipients
-is a list of recipients\' E\-mail addresses\. At least one recipient must be specified\.
+\fIsender\fR
+specifies the sender\'s E\-mail address, in the form of "\fIuser\fR@\fIdomain\fR"\&.
+\fIrecipients\fR
+is a list of recipients\' E\-mail addresses\&. At least one recipient must be specified\&.
 .PP
 
-options
+\fIoptions\fR
 specifies additional parameters for sending E\-mail, initialized as follows:
 .PP
-options\.insert(make_pair("novalidate\-cert", "1"))
+options\&.insert(make_pair("novalidate\-cert", "1"))
 .RS 4
 See
-\fBmail::account::open\fR(3x)) for a description of this option\.
+\fBmail::account::open\fR(3x)) for a description of this option\&.
 .RE
 .PP
-options\.insert(make_pair("cram", "1"))
+options\&.insert(make_pair("cram", "1"))
 .RS 4
 See
-\fBmail::account::open\fR(3x)) for a description of this option\.
+\fBmail::account::open\fR(3x)) for a description of this option\&.
 .RE
 .PP
-options\.insert(make_pair("DSN", "\fIlist\fR"))
+options\&.insert(make_pair("DSN", "\fIlist\fR"))
 .RS 4
-Request a delivery status notification\.
+Request a delivery status notification\&.
 \fIlist\fR
-is a comma\-separated list of the following keywords: "never" \- do not request any receipts, not even non\-delivery notices; "success" \- request a delivery confirmation receipt; "fail" \- request a non\-delivery notice; "delay" \- request a delayed delivery notice\.
+is a comma\-separated list of the following keywords: "never" \- do not request any receipts, not even non\-delivery notices; "success" \- request a delivery confirmation receipt; "fail" \- request a non\-delivery notice; "delay" \- request a delayed delivery notice\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
-An error will be reported if the mail server does not implement delivery status notifications\.
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+An error will be reported if the mail server does not implement delivery status notifications\&.
+.sp .5v
+.RE
 .RE
 .PP
-options\.insert(make_pair("RET", "hdrs"))
+options\&.insert(make_pair("RET", "hdrs"))
 .RS 4
-Request that the delivery status notification should not include the entire original message, only its headers\.
+Request that the delivery status notification should not include the entire original message, only its headers\&.
 .RE
 .PP
-options\.insert(make_pair("RET", "full"))
+options\&.insert(make_pair("RET", "full"))
 .RS 4
-Request that the delivery status notifications should include the entire original message\.
+Request that the delivery status notifications should include the entire original message\&.
 .RE
 .PP
-options\.insert(make_pair("NOPIPELINING", "1"))
+options\&.insert(make_pair("NOPIPELINING", "1"))
 .RS 4
 Do not use the
 PIPELINING
 SMTP
-extension even if the mail server claims to support it (workaround for buggy firewalls)\.
+extension even if the mail server claims to support it (workaround for buggy firewalls)\&.
 .RE
 .PP
-options\.insert(make_pair("VERP", "1"))
+options\&.insert(make_pair("VERP", "1"))
 .RS 4
 Use the
 VERP
-mailing list extension\. If the
-sender
-address is "\fIsender\fR@\fIsenddomain\fR", then a delivery status notification for "\fIrecipient\fR@\fIrecipientdomain\fR" will be sent to "\fIsender\fR\-\fIrecipient\fR=\fIrecipientdomain\fR@\fIsenddomain\fR" (with certain additional details)\. This option is currently implemented only by the
-\fICourier mail server\fR\&[1]\.
+mailing list extension\&. If the
+\fIsender\fR
+address is "\fIsender\fR@\fIsenddomain\fR", then a delivery status notification for "\fIrecipient\fR@\fIrecipientdomain\fR" will be sent to "\fIsender\fR\-\fIrecipient\fR=\fIrecipientdomain\fR@\fIsenddomain\fR" (with certain additional details)\&. This option is currently implemented only by the
+\m[blue]\fBCourier mail server\fR\m[]\&\s-2\u[1]\d\s+2\&.
 .RE
 .PP
-options\.insert(make_pair("SECURITY", "STARTTLS"))
+options\&.insert(make_pair("SECURITY", "STARTTLS"))
 .RS 4
-The message must be sent via TLS, and the recipient\'s server must present a certificate signed by a trusted, private, certificate authority\. This option is currently implemented only by the
-\fICourier mail server\fR\&[1]\.
+The message must be sent via TLS, and the recipient\'s server must present a certificate signed by a trusted, private, certificate authority\&. This option is currently implemented only by the
+\m[blue]\fBCourier mail server\fR\m[]\&\s-2\u[1]\d\s+2\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 This is not the standard
 STARTTLS
 ESMTP
-extension\.
+extension\&.
 STARTTLS
-is always used automatically, if it\'s supported by the mail server\.
+is always used automatically, if it\'s supported by the mail server\&.
+.sp .5v
+.RE
 .RE
 .SH "RETURN CODES AND CALLBACKS"
 .PP
@@ -198,13 +228,13 @@ is always used automatically, if it\'s supported by the mail server\.
 \fBmail::account::getSendFolder\fR
 returns NULL if this
 mail::account
-object is not capable of sending mail\.
+object is not capable of sending mail\&.
 \fIerrmsg\fR
-is initialized with an appropriate error message\.
+is initialized with an appropriate error message\&.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::account::open\fR(3x)\.
+\fBmail::account::open\fR(3x)\&.
 .SH "NOTES"
 .IP " 1." 4
 Courier mail server

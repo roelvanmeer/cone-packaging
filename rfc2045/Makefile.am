@@ -1,6 +1,6 @@
-#$Id: Makefile.am,v 1.34 2007/06/30 15:40:53 mrsam Exp $
+#$Id: Makefile.am,v 1.36 2009/11/22 19:39:52 mrsam Exp $
 #
-# Copyright 1998 - 2004 Double Precision, Inc.  See COPYING for
+# Copyright 1998 - 2009 Double Precision, Inc.  See COPYING for
 # distribution information.
 
 
@@ -24,7 +24,7 @@ librfc2045_la_SOURCES=rfc2045.c rfc2045.h rfc2045acchk.c rfc2045acprep.c \
                      rfc2045tryboundary.c rfc2045xdump.c \
 		     rfc2045searchcontenttype.c rfc2045decodemimesection.c \
 		     rfc2045decodemimesectionu.c rfc2045header.c \
-		     rfc2045replyplain.c rfc2045replyunicode.c rfc2045reply.c \
+		     rfc2045replyunicode.c rfc2045reply.c \
 		     rfc2231.c rfc2231encode.c \
 		     rfc2646.h rfc2646.c rfc2646create.c rfc2646fwd.c \
 		     rfc2646reply.c rfc2646rewrap.c \
@@ -32,17 +32,18 @@ librfc2045_la_SOURCES=rfc2045.c rfc2045.h rfc2045acchk.c rfc2045acprep.c \
 
 reformime_SOURCES=reformime.c
 reformime_LDADD = librfc2045.la ../rfc822/libencode.la ../rfc822/librfc822.la \
-		@UNICODE_LIB@ ../numlib/libnumlib.la
+		../unicode/libunicode.la ../numlib/libnumlib.la
 reformime_DEPENDENCIES = $(reformime_LDADD)
 reformime_LDFLAGS=-static
 
 makemime_SOURCES=makemime.c
-makemime_LDADD = ../rfc822/libencode.la ../rfc822/librfc822.la librfc2045.la @UNICODE_LIB@ ../numlib/libnumlib.la
+makemime_LDADD = ../rfc822/libencode.la ../rfc822/librfc822.la librfc2045.la ../unicode/libunicode.la ../numlib/libnumlib.la ../unicode/libunicode.la
 makemime_DEPENDENCIES=$(makemime_LDADD)
 makemime_LDFLAGS=-static
 
 headercheck_SOURCES=headercheck.c
-headercheck_LDADD=librfc2045.la ../rfc822/librfc822.la ../numlib/libnumlib.la
+headercheck_LDADD=librfc2045.la ../rfc822/librfc822.la ../numlib/libnumlib.la \
+		../unicode/libunicode.la
 headercheck_DEPENDENCIES=$(headercheck_LDADD)
 headercheck_LDFLAGS=-static
 

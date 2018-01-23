@@ -15,9 +15,9 @@
 
 @SET_MAKE@
 
-#$Id: Makefile.am,v 1.34 2007/06/30 15:40:53 mrsam Exp $
+#$Id: Makefile.am,v 1.36 2009/11/22 19:39:52 mrsam Exp $
 #
-# Copyright 1998 - 2004 Double Precision, Inc.  See COPYING for
+# Copyright 1998 - 2009 Double Precision, Inc.  See COPYING for
 # distribution information.
 
 
@@ -68,10 +68,9 @@ am_librfc2045_la_OBJECTS = rfc2045.lo rfc2045acchk.lo rfc2045acprep.lo \
 	rfc2045mkboundary.lo rfc2045rewrite.lo rfc2045tryboundary.lo \
 	rfc2045xdump.lo rfc2045searchcontenttype.lo \
 	rfc2045decodemimesection.lo rfc2045decodemimesectionu.lo \
-	rfc2045header.lo rfc2045replyplain.lo rfc2045replyunicode.lo \
-	rfc2045reply.lo rfc2231.lo rfc2231encode.lo rfc2646.lo \
-	rfc2646create.lo rfc2646fwd.lo rfc2646reply.lo \
-	rfc2646rewrap.lo base64.lo
+	rfc2045header.lo rfc2045replyunicode.lo rfc2045reply.lo \
+	rfc2231.lo rfc2231encode.lo rfc2646.lo rfc2646create.lo \
+	rfc2646fwd.lo rfc2646reply.lo rfc2646rewrap.lo base64.lo
 librfc2045_la_OBJECTS = $(am_librfc2045_la_OBJECTS)
 PROGRAMS = $(noinst_PROGRAMS)
 am_headercheck_OBJECTS = headercheck.$(OBJEXT)
@@ -178,7 +177,6 @@ SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
-UNICODE_LIB = @UNICODE_LIB@
 VERSION = @VERSION@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
@@ -248,7 +246,7 @@ librfc2045_la_SOURCES = rfc2045.c rfc2045.h rfc2045acchk.c rfc2045acprep.c \
                      rfc2045tryboundary.c rfc2045xdump.c \
 		     rfc2045searchcontenttype.c rfc2045decodemimesection.c \
 		     rfc2045decodemimesectionu.c rfc2045header.c \
-		     rfc2045replyplain.c rfc2045replyunicode.c rfc2045reply.c \
+		     rfc2045replyunicode.c rfc2045reply.c \
 		     rfc2231.c rfc2231encode.c \
 		     rfc2646.h rfc2646.c rfc2646create.c rfc2646fwd.c \
 		     rfc2646reply.c rfc2646rewrap.c \
@@ -256,16 +254,18 @@ librfc2045_la_SOURCES = rfc2045.c rfc2045.h rfc2045acchk.c rfc2045acprep.c \
 
 reformime_SOURCES = reformime.c
 reformime_LDADD = librfc2045.la ../rfc822/libencode.la ../rfc822/librfc822.la \
-		@UNICODE_LIB@ ../numlib/libnumlib.la
+		../unicode/libunicode.la ../numlib/libnumlib.la
 
 reformime_DEPENDENCIES = $(reformime_LDADD)
 reformime_LDFLAGS = -static
 makemime_SOURCES = makemime.c
-makemime_LDADD = ../rfc822/libencode.la ../rfc822/librfc822.la librfc2045.la @UNICODE_LIB@ ../numlib/libnumlib.la
+makemime_LDADD = ../rfc822/libencode.la ../rfc822/librfc822.la librfc2045.la ../unicode/libunicode.la ../numlib/libnumlib.la ../unicode/libunicode.la
 makemime_DEPENDENCIES = $(makemime_LDADD)
 makemime_LDFLAGS = -static
 headercheck_SOURCES = headercheck.c
-headercheck_LDADD = librfc2045.la ../rfc822/librfc822.la ../numlib/libnumlib.la
+headercheck_LDADD = librfc2045.la ../rfc822/librfc822.la ../numlib/libnumlib.la \
+		../unicode/libunicode.la
+
 headercheck_DEPENDENCIES = $(headercheck_LDADD)
 headercheck_LDFLAGS = -static
 all: $(BUILT_SOURCES) rfc2045_config.h
@@ -380,7 +380,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045header.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045mkboundary.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045reply.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045replyplain.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045replyunicode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045rewrite.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045searchcontenttype.Plo@am__quote@

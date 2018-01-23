@@ -1,103 +1,125 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::account::getFolderIndexInfo
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::GETFO" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::GETFO" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::account::getFolderIndexInfo - Return message status
+mail::account::getFolderIndexInfo \- Return message status
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 
 mail::account *account;
 .fi
-.RE
-.HP 54
+.HP \w'mail::messageInfo\ msgInfo=account->getFolderIndexInfo('u
 .BI "mail::messageInfo msgInfo=account->getFolderIndexInfo(size_t\ " "messageNum" ");"
 .SH "USAGE"
 .PP
 
 \fBmail::account::getFolderIndexInfo\fR
-returns a structure that contains a message\'s unique identifier, and the message\'s current status flags\.
+returns a structure that contains a message\'s unique identifier, and the message\'s current status flags\&.
 \fImessageNum\fR
 must be between zero and one less than the return code from
-\fBmail::account::getFolderIndexSize\fR(3x)\.
+\fBmail::account::getFolderIndexSize\fR(3x)\&.
 .SH "RETURN CODES"
 .PP
 This function returns an object with the following fields:
 .PP
 std::string uid
 .RS 4
-A unique ID that\'s assigned to each message in a folder\. Applications should consider this unique ID as a completely opaque string, with no particular interpretation\. The only assumption that applications may make is that no two messages will ever have the same uid in the same folder\. A message copied to another folder will receive a different unique ID in the destination folder (the copy in the original folder is not affected)\.
+A unique ID that\'s assigned to each message in a folder\&. Applications should consider this unique ID as a completely opaque string, with no particular interpretation\&. The only assumption that applications may make is that no two messages will ever have the same uid in the same folder\&. A message copied to another folder will receive a different unique ID in the destination folder (the copy in the original folder is not affected)\&.
 .RE
 .PP
 bool draft
 .RS 4
-This is a draft message\.
+This is a draft message\&.
 .RE
 .PP
 bool replied
 .RS 4
-A reply was previously sent to this message\.
+A reply was previously sent to this message\&.
 .RE
 .PP
 bool marked
 .RS 4
-This message is marked for further processing\.
+This message is marked for further processing\&.
 .RE
 .PP
 bool deleted
 .RS 4
-This message is marked for deletion\.
+This message is marked for deletion\&.
 .RE
 .PP
 bool unread
 .RS 4
-The contents of this message have not been read\.
+The contents of this message have not been read\&.
 .RE
 .PP
 bool recent
 .RS 4
-This is the first time the folder was opened with this message in the folder\.
+This is the first time the folder was opened with this message in the folder\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
-This message flag is considered obsolete, and should only be used by IMAP\-based clients that absolutely need this flag\. Applications that absolutely require this flag should be evaluated for correctness, since the IMAP specification indicates that this flag\'s setting is not defined in situations where the same mail folder is opened by multiple applications at the same time\. Since this is nearly always the case, it seems that this flag\'s usability is rather limited\. For this reason, the
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+This message flag is considered obsolete, and should only be used by IMAP\-based clients that absolutely need this flag\&. Applications that absolutely require this flag should be evaluated for correctness, since the IMAP specification indicates that this flag\'s setting is not defined in situations where the same mail folder is opened by multiple applications at the same time\&. Since this is nearly always the case, it seems that this flag\'s usability is rather limited\&. For this reason, the
 recent
 flag was not reimplemented in
 SMAP, and will not be set for accounts that are accessed via
-SMAP\.
+SMAP\&.
+.sp .5v
 .RE
+.RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
-Not all types of mail accounts support every message status flag\. Unsupported message status flags will be automatically emulated, where possible\. Specifically, POP3 mail accounts do not have a concept of message status flags at all\. Each time a POP3 mail account is opened, the status of all messages in the POP3 account will be reset to the default status (unread message, no other flags set)\.
+Not all types of mail accounts support every message status flag\&. Unsupported message status flags will be automatically emulated, where possible\&. Specifically, POP3 mail accounts do not have a concept of message status flags at all\&. Each time a POP3 mail account is opened, the status of all messages in the POP3 account will be reset to the default status (unread message, no other flags set)\&.
+.sp .5v
+.RE
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::readMessageAttributes\fR(3x),
 \fBmail::account::getFolderIndexSize\fR(3x),
-\fBmail::folder::getMyRights\fR(3x)\.
+\fBmail::folder::getMyRights\fR(3x)\&.

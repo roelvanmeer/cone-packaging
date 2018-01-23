@@ -1,28 +1,35 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::account::process
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::PROCE" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::PROCE" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::account::process - Process pending events
+mail::account::process \- Process pending events
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 
 class myCallback : public mail::callback {
@@ -31,13 +38,11 @@ public:
     void fail(std::string msg);
 };
 .fi
-.RE
 .sp
-.RS 4
 .nf
-#include <sys/time\.h>
-#include <sys/types\.h>
-#include <unistd\.h>
+#include <sys/time\&.h>
+#include <sys/types\&.h>
+#include <unistd\&.h>
 
 mail::account::function( \fIparameter list\fR,
                          myCallback &\fIcallback\fR)
@@ -49,14 +54,12 @@ for (;;)
 
   timeout=15 * 60 * 60 * 1000;
 .fi
-.RE
-.HP 23
+.HP \w'mail::account::process('u
 .BI "mail::account::process(" "pollfds" ", " "timeout" ");"
 .sp
-.RS 4
 .nf
 
-  if (myCallback\.completed())
+  if (myCallback\&.completed())
       break;
 
   if (mail::account::poll(pollfds, timeout) < 0 && errno != EINTR)
@@ -65,31 +68,30 @@ for (;;)
   }
 }
 .fi
-.RE
 .SH "USAGE"
 .PP
-This function processes all pending events for all opened mail accounts\. Most
+This function processes all pending events for all opened mail accounts\&. Most
 mail
-requests are not immediately processed (some are, but most aren\'t)\. A
+requests are not immediately processed (some are, but most aren\'t)\&. A
 mail
 request usually includes a
-mail::callback\-derived object as one of its arguments\. When the mail request completes the
+mail::callback\-derived object as one of its arguments\&. When the mail request completes the
 \fBsuccess\fR
 or
 \fBfail\fR
 method (some
 mail::callback
-subclasses use additional or alternative methods) is invoked\. If the mail request cannot be completed immediately,
+subclasses use additional or alternative methods) is invoked\&. If the mail request cannot be completed immediately,
 \fB\fImail::account::function\fR\fR
-still returns right away\.
+still returns right away\&.
 \fBmail::account::process\fR
 handles any pending events for all outstanding
 mail
-requests\. The
+requests\&. The
 \fBsuccess\fR
 or
 \fBfail\fR
-method will be invoked for all completed requests\.
+method will be invoked for all completed requests\&.
 .PP
 The
 mail::pollfd
@@ -97,53 +99,59 @@ structure is a C++ wrapper for the
 \(lqstruct pollfd\(rq
 that\'s used by the
 \fBpoll\fR(2)
-system call\.
+system call\&.
 \fBmail::account::process\fR
 receives a reference to a vector of
 mail::pollfd
-objects\. After
+objects\&. After
 \fBmail::account::process\fR
 handles any pending events, the function initializes the vector with all open file descriptors on which activity is expected before
 \fBmail::account::process\fR
-expects any more events to occur\.
+expects any more events to occur\&.
 .PP
 Any existing contents of the
 mail::pollfd
-vector will be destroyed\. On the other hand,
+vector will be destroyed\&. On the other hand,
 \fItimeout\fR
 must be initialized prior to invoking
-\fBmail::account::process\fR\.
+\fBmail::account::process\fR\&.
 \fItimeout\fR
-contains a time interval, in milliseconds, before the calling application expects to process any regularly\-scheduled event\. If
+contains a time interval, in milliseconds, before the calling application expects to process any regularly\-scheduled event\&. If
 \fBmail::account::process\fR
 expects any regularly\-scheduled event to occur earlier, it will replace
 \fItimeout\fR
-with the smaller timeout interval\.
+with the smaller timeout interval\&.
 .PP
 The expectation is that the application\'s main loops alternatively invokes
 \fBmail::account::process\fR
 and
-\fBpoll\fR(2)\.
+\fBpoll\fR(2)\&.
 \fBpoll\fR(2)
 waits for some I/O occur, or a timeout expiring;
 \fBmail::account::process\fR
-processes any resulting events, then the cycle repeats\.
+processes any resulting events, then the cycle repeats\&.
 .PP
 The application may add its own file descriptors to the
 mail::pollfd
 vector, before calling
-\fBpoll\fR(2)\. The application is reponsible for handling any I/O activity from its own file descriptors\.
+\fBpoll\fR(2)\&. The application is reponsible for handling any I/O activity from its own file descriptors\&.
 .SH "RETURN CODES"
 .PP
 
 \fBmail::account::process\fR
-always returns succesfully\.
+always returns succesfully\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 The application should not invoke
 \fBmail::account::process\fR
@@ -155,10 +163,12 @@ again until it either invokes
 
 
 LibMAIL
-function\.
+function\&.
+.sp .5v
+.RE
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::open\fR(3x),
 \fBmail::account::poll\fR(3x),
-\fBmail::account::resume\fR(3x)\.
+\fBmail::account::resume\fR(3x)\&.

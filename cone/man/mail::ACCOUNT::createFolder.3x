@@ -1,70 +1,80 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::ACCOUNT::createFolder
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::CREAT" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::CREAT" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::ACCOUNT::createFolder - Create a new folder
+mail::ACCOUNT::createFolder \- Create a new folder
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/sync\.H>
+#include <libmail/sync\&.H>
 
 mail::ACCOUNT *mail;
 mail::folder *folder;
 .fi
-.RE
-.HP 35
+.HP \w'mail::folder\ *f=mail->createFolder('u
 .BI "mail::folder *f=mail->createFolder(const\ mail::folder\ *" "parentFolder" ", std::string\ " "name" ", bool\ " "createDirectory" ");"
-.HP 27
+.HP \w'bool\ ok=mail->createFolder('u
 .BI "bool ok=mail->createFolder(const\ mail::folder\ *" "folder" ", bool\ " "createDirectory" ");"
 .sp
-.RS 4
 .nf
 std::string errmsg=mail\->getErrmsg();
 .fi
-.RE
 .SH "USAGE"
 .PP
-Most mail accounts support the ability to create and delete folders, which are arranged in a tree\-like hierarchy\.
+Most mail accounts support the ability to create and delete folders, which are arranged in a tree\-like hierarchy\&.
 \fBmail::ACCOUNT::createFolder\fR
-creates a new folder\. There are two versions of this function\.
+creates a new folder\&. There are two versions of this function\&.
 .PP
 The first version creates a subfolder of an existing folder,
-\fIparentFolder\fR\.
+\fIparentFolder\fR\&.
 \fIname\fR
-is the new folder\'s name, in the application\'s character set\. If the folder is succesfully created a
+is the new folder\'s name, in the application\'s character set\&. If the folder is succesfully created a
 mail::folder
 object is returned that represents the newly\-created folder (the application is responsible for destroying the new
 mail::folder
-object)\.
+object)\&.
 .PP
 The second version creates a new folder that\'s specified by an existing
 mail::folder
 object (which is usually created by
 \fBmail::ACCOUNT::getFolderFromString\fR(3x)
 or
-\fBmail::ACCOUNT::getFolderFromPath\fR(3x))\.
+\fBmail::ACCOUNT::getFolderFromPath\fR(3x))\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 \fIcreateDirectory\fR
@@ -72,38 +82,62 @@ should be set to
 true
 to create a new folder directory, and
 false
-for a regular folder\. See
+for a regular folder\&. See
 \fBmail::folder::createSubFolder\fR(3x)
-for more information\.
+for more information\&.
+.sp .5v
+.RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
-Some mail servers reserve certain characters which cannot be used in folder names\. IMAP mail servers use a special character (usually "/" or "\.") as a separator between names in a hierarchical folder path\. The actual character varies from server to server\. An attempt to create/rename a folder whose name includes a reserved character will fail\. Different IMAP servers use different hierarchy separator characters\. An attempt to create a folder may fail on one IMAP server even if another IMAP server can succesfully create a folder with the same name\. This is, unfortunately, a design flaw in the IMAP protocol\.
+Some mail servers reserve certain characters which cannot be used in folder names\&. IMAP mail servers use a special character (usually "/" or "\&.") as a separator between names in a hierarchical folder path\&. The actual character varies from server to server\&. An attempt to create/rename a folder whose name includes a reserved character will fail\&. Different IMAP servers use different hierarchy separator characters\&. An attempt to create a folder may fail on one IMAP server even if another IMAP server can succesfully create a folder with the same name\&. This is, unfortunately, a design flaw in the IMAP protocol\&.
+.sp .5v
+.RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 Maildir folders created by are compatible and can be read by the
-\fICourier\-IMAP\fR\&[1]
-server\. Names of maildir folders may contain any character, including the characters ":", "/", "\.", "~", and ":"\. However, if the same folders are exported via IMAP, folders whose name includes these characters may not be readable by some IMAP clients\. Even a
+\m[blue]\fBCourier\-IMAP\fR\m[]\&\s-2\u[1]\d\s+2
+server\&. Names of maildir folders may contain any character, including the characters ":", "/", "\&.", "~", and ":"\&. However, if the same folders are exported via IMAP, folders whose name includes these characters may not be readable by some IMAP clients\&. Even a
 
 
 
 LibMAIL
-application may not be able to read one of these folders via IMAP\.
+application may not be able to read one of these folders via IMAP\&.
+.sp .5v
+.RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 Mbox mail folders created by
 
@@ -115,7 +149,9 @@ are mostly compatible and can be exported by IMAP servers that read mbox\-format
 
 
 LibMAIL
-and another application at the same time)\. Names of mbox folders can contain any character, including the characters "/", and "~"\. However if mbox folders are exported via IMAP, folders whose name includes these characters may not be readable by some IMAP clients\.
+and another application at the same time)\&. Names of mbox folders can contain any character, including the characters "/", and "~"\&. However if mbox folders are exported via IMAP, folders whose name includes these characters may not be readable by some IMAP clients\&.
+.sp .5v
+.RE
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 This first
@@ -124,14 +160,14 @@ function returns a NULL pointer if it cannot create the new folder, for some rea
 \fBmail::ACCOUNT::createFolder\fR
 function returns
 false
-if it fails\.
+if it fails\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::ACCOUNT::getFolderFromPath\fR(3x),
 \fBmail::ACCOUNT::getFolderFromString\fR(3x),
 \fBmail::folder::createSubFolder\fR(3x),
-\fBmail::setAppCharset\fR(3x)\.
+\fBmail::setAppCharset\fR(3x)\&.
 .SH "NOTES"
 .IP " 1." 4
 Courier-IMAP

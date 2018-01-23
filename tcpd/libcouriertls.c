@@ -1,5 +1,5 @@
 /*
-** Copyright 2000-2008 Double Precision, Inc.
+** Copyright 2000-2009 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 #include	"config.h"
@@ -567,7 +567,7 @@ SSL_CTX *tls_create(int isserver, const struct tls_info *info)
 	SSL_CTX_set_options(ctx, SSL_OP_ALL);
 
 	if (!ssl_cipher_list)
-		ssl_cipher_list="SSLv3:TLSv1:!SSLv2:HIGH:!LOW:!MEDIUM:!EXP:!NULL@STRENGTH";
+		ssl_cipher_list="SSLv3:TLSv1:!SSLv2:HIGH:!LOW:!MEDIUM:!EXP:!NULL:!aNULL@STRENGTH";
 
 	SSL_CTX_set_cipher_list(ctx, ssl_cipher_list);
 	SSL_CTX_set_timeout(ctx, session_timeout);
@@ -1343,7 +1343,7 @@ void tls_dump_connection_info(ssl_handle ssl,
 			      void (*dump_func)(const char *, int cnt, void *),
 			      void *dump_arg)
 {
-	SSL_CIPHER *cipher;
+	const SSL_CIPHER *cipher;
 
 	{
 		STACK_OF(X509) *peer_cert_chain=SSL_get_peer_cert_chain(ssl);
@@ -1406,7 +1406,7 @@ void tls_dump_connection_info(ssl_handle ssl,
 char *tls_get_encryption_desc(ssl_handle ssl)
 {
 	char protocolbuf[256];
-	SSL_CIPHER *cipher;
+	const SSL_CIPHER *cipher;
 	const char *c, *d;
 
 	cipher=SSL_get_current_cipher(ssl);

@@ -1,44 +1,50 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::account::translatePath
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::TRANS" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::TRANS" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::account::translatePath - Convert readable folder path to internal folder path
+mail::account::translatePath \- Convert readable folder path to internal folder path
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 std::string folderPath=folder\->getPath();
 .fi
-.RE
-.HP 40
+.HP \w'std::string\ path=account->translatePath('u
 .BI "std::string path=account->translatePath(std::string\ " "folderPath" ");"
 .SH "USAGE"
 .PP
-This function converts a human\-readable representation of a folder\'s path to the internal folder path in the mail account\. For example, IMAP server mailboxes use names encoded in a modified version of the
+This function converts a human\-readable representation of a folder\'s path to the internal folder path in the mail account\&. For example, IMAP server mailboxes use names encoded in a modified version of the
 UTF\-7
 character set, and this method converts a folder path from the application\'s character set to the modified
 UTF\-7
-character set\. Specifically:
+character set\&. Specifically:
 .PP
-\fIIMAP\fR\&[1]
+\m[blue]\fBIMAP\fR\m[]\&\s-2\u[1]\d\s+2
 .RS 4
 
 \fIfolderPath\fR
 is converted from application\'s character set to the modified
 UTF\-7
-character set\.
+character set\&.
 .RE
 .PP
 SMAP
@@ -46,14 +52,14 @@ SMAP
 
 \fIfolderPath\fR
 is converted from application\'s character set to
-UTF\-8\. The forward slash character,
+UTF\-8\&. The forward slash character,
 \(lq/\(rq
 separates names of individual folders in the
 SMAP
-hierarchy\. Unicode/ISO\-10646 characters that cannot be represented in the application\'s character set may be specified as
+hierarchy\&. Unicode/ISO\-10646 characters that cannot be represented in the application\'s character set may be specified as
 \(lq%\fIn\fR;\(rq, where
 \fIn\fR
-is a decimal Unicode value\. Use
+is a decimal Unicode value\&. Use
 \(lq\e/\(rq
 to specify a forward slash character in the folder name,
 \(lq\e\e\(rq
@@ -61,7 +67,7 @@ to specify a backslash character, and
 \(lq\e%\(rq
 to specify the
 \(lq%\(rq
-character\.
+character\&.
 .RE
 .PP
 mbox mail folders, and maildirs
@@ -70,30 +76,30 @@ mbox mail folders, and maildirs
 \fIfolderPath\fR
 is converted from application\'s character set to modified
 UTF\-7
-encoding\. The forward slash character,
+encoding\&. The forward slash character,
 \(lq/\(rq
-separates names of individual folders in the local mail folder hierarchy\. Unicode/ISO\-10646 characters that cannot be represented in the application\'s character set may be specified as
+separates names of individual folders in the local mail folder hierarchy\&. Unicode/ISO\-10646 characters that cannot be represented in the application\'s character set may be specified as
 \(lq%\fIn\fR;\(rq, where
 \fIn\fR
-is a decimal Unicode value\. Use
+is a decimal Unicode value\&. Use
 \(lq\e\e\(rq
 to specify a backslash character, and
 \(lq\e%\(rq
 to specify the
 \(lq%\(rq
-character\.
+character\&.
 .RE
 .SH "RETURN CODES AND CALLBACKS"
 .PP
-This function returns the converted path string\. An empty string is returned if
+This function returns the converted path string\&. An empty string is returned if
 \fIfolderPath\fR
-is not a valid folder path\.
+is not a valid folder path\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::findfolder\fR(3x),
 \fBmail::account::folderFromString\fR(3x),
-\fBmail::setAppCharset\fR(3x)\.
+\fBmail::setAppCharset\fR(3x)\&.
 .SH "NOTES"
 .IP " 1." 4
 IMAP

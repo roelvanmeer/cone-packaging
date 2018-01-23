@@ -1,66 +1,80 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::ACCOUNT::removeMessages
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::REMOV" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::REMOV" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::ACCOUNT::removeMessages - Remove messages from the folder
+mail::ACCOUNT::removeMessages \- Remove messages from the folder
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/sync\.H>
+#include <libmail/sync\&.H>
 
 mail::ACCOUNT *mail;
 .fi
-.RE
-.HP 21
+.HP \w'mail->removeMessages('u
 .BI "mail->removeMessages(const\ std::vector<size_t>\ " "msgList" ");"
 .SH "USAGE"
 .PP
-This function removes messages from the currently open folder\.
+This function removes messages from the currently open folder\&.
 \fImsgList\fR
-is a list of messages to be removed\.
+is a list of messages to be removed\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 This request should not be used with accounts on IMAP servers that do not implement the
-\fIUIDPLUS\fR\&[1]
-IMAP extension\.
+\m[blue]\fBUIDPLUS\fR\m[]\&\s-2\u[1]\d\s+2
+IMAP extension\&.
 \(lqUIDPLUS\(rq
-is required to directly support this functionality\. An alternative, much slower, fallback implementation will be used with IMAP servers that do not implement this protocol extension\.
+is required to directly support this functionality\&. An alternative, much slower, fallback implementation will be used with IMAP servers that do not implement this protocol extension\&.
+.sp .5v
+.RE
 .SH "RETURN CODES"
 .PP
 This method returns
 true
 if it succeeds, or
 false
-if it fails\. If the method fails, use
-mail::ACCOUNT::getErrmsg()
-to read a brief description of the error\.
+if it fails\&. If the method fails, use
+\fImail::ACCOUNT::getErrmsg()\fR
+to read a brief description of the error\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::ACCOUNT::saveFolderIndexInfo\fR(3x),
 \fBmail::ACCOUNT::getFolderIndexInfo\fR(3x),
-\fBmail::ACCOUNT::removeMessages\fR(3x)\.
+\fBmail::ACCOUNT::removeMessages\fR(3x)\&.
 .SH "NOTES"
 .IP " 1." 4
 UIDPLUS

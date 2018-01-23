@@ -1,87 +1,97 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::ACCOUNT::getTopLevelFolders
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::GETTO" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::GETTO" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::ACCOUNT::getTopLevelFolders - Enumerate top-level folders
+mail::ACCOUNT::getTopLevelFolders \- Enumerate top\-level folders
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/sync\.H>
+#include <libmail/sync\&.H>
 
 mail::ACCOUNT *mail;
 mail::ACCOUNT::FolderList folderList;
 .fi
-.RE
-.HP 33
+.HP \w'bool\ ok=mail->getTopLevelFolders('u
 .BI "bool ok=mail->getTopLevelFolders(" "folderList" ");"
 .sp
-.RS 4
 .nf
 std::string errmsg=mail\->getErrmsg();
 .fi
-.RE
 .sp
-.RS 4
 .nf
 size_t nFolders=folderList::size();
 const mail::folder *folder=folderList[n];
 .fi
-.RE
 .SH "USAGE"
 .PP
-A mail account contains a collection of folders, arranged in a top\-to\-bottom hierarchy\. This function returns the list of the folders at the top\-level of the folder hierarchy\.
+A mail account contains a collection of folders, arranged in a top\-to\-bottom hierarchy\&. This function returns the list of the folders at the top\-level of the folder hierarchy\&.
 .PP
 
 \fBmail::ACCOUNT::getTopLevelFolders\fR, if succesful, initializes a list of
 mail::folder
 objects, which are maintained by the
 mail::ACCOUNT::FolderList
-class\. Each
+class\&. Each
 mail::folder
-object represents a mail account\'s folder\. The number of folders, and a pointer to each folder object, is obtained according to the example above\.
+object represents a mail account\'s folder\&. The number of folders, and a pointer to each folder object, is obtained according to the example above\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 Pointers to
 mail::folder
 objects are no longer valid after the
 mail::ACCOUNT::FolderList
-object is destroyed\. The application should use
+object is destroyed\&. The application should use
 \fBmail::folder::clone\fR(3x)
 to create a duplicate copy of the
 mail::folder
-object (which the application is now responsible for destroying)\.
+object (which the application is now responsible for destroying)\&.
+.sp .5v
+.RE
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 This method returns
 true
 if it succeeds, or
 false
-if it fails\. If the method fails, use
-mail::ACCOUNT::getErrmsg()
-to read a brief description of the error\.
+if it fails\&. If the method fails, use
+\fImail::ACCOUNT::getErrmsg()\fR
+to read a brief description of the error\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::ACCOUNT::login\fR(3x),
-\fBmail::ACCOUNT::getSubFolders\fR(3x)\.
+\fBmail::ACCOUNT::getSubFolders\fR(3x)\&.

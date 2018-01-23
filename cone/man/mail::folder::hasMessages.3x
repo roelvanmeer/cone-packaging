@@ -1,84 +1,112 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::folder::hasMessages
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::FOLDER::HASMES" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::FOLDER::HASMES" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::folder::hasMessages - Determine if the folder is capable of storing messages
+mail::folder::hasMessages \- Determine if the folder is capable of storing messages
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 mail::folder *folder;
 .fi
-.RE
-.HP 30
+.HP \w'bool\ flag=folder->hasMessages('u
 .BI "bool flag=folder->hasMessages(void);"
 .SH "USAGE"
 .PP
-Some folders contain messages\. Other folders contain other folder (subfolders)\. Some IMAP servers are capable of creating dual\-purpose folders that contain both messages and other subfolders\. The
+Some folders contain messages\&. Other folders contain other folder (subfolders)\&. Some IMAP servers are capable of creating dual\-purpose folders that contain both messages and other subfolders\&. The
 \fBhasMessages\fR
 method indicates whether
 \fIfolder\fR
-is capable of storing messages\.
+is capable of storing messages\&.
 .SH "RETURN CODES"
 .PP
 A
 true
 result indicates that
 \fIfolder\fR
-is capable of storing messages\. It may not necessarily mean that
+is capable of storing messages\&. It may not necessarily mean that
 \fIfolder\fR
-actually contains any messages, it might very well be an empty folder\.
+actually contains any messages, it might very well be an empty folder\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 POP3
 folders return a
 true, even though application cannot directly add messages to
 POP3
-folders\. Applications should interpret a
+folders\&. Applications should interpret a
 true
 result to mean that:
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+
 \fBmail::folder::open\fR(3x)
-may be used to open this folder\.
+may be used to open this folder\&.
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'This folder\'s
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+This folder\'s
 \fBmail::folder::addmessage\fR(3x)
 method, and using this folder as a parameter to
 \fBmail::folder::copyMessagesTo\fR(3x)
-will probably work\.
+will probably work\&.
 .RE
 .PP
 Applications should interpret a
 false
-result as a guarantee that neither of the above procedures will work\.
+result as a guarantee that neither of the above procedures will work\&.
+.sp .5v
+.RE
 .SH "SEE ALSO"
 .PP
 
-\fBmail::folder::hasSubFolders\fR(3x)\.
+\fBmail::folder::hasSubFolders\fR(3x)\&.

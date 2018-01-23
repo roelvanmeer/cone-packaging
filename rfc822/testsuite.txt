@@ -87,31 +87,11 @@ Atom: com
 Token: >
 ----
 nobody@example.com (Nobody (is) here\) right)
-nobody@example.com
-Nobody (is) here\) right
 ----
 Distribution list: nobody@example.com, daemon@example.com
-nobody@example.com
-daemon@example.com
-nobody@example.com
-daemon@example.com
 ----
 Mr Nobody <nobody@example.com>, "Mr. Nobody" <nobody@example.com>
-nobody@example.com
-nobody@example.com
-Mr Nobody
-Mr. Nobody
 ----
 nobody@example.com, nobody@example.com, "Mr. Nobody" <nobody@example.com>
-nobody@example.com
-nobody@example.com
-nobody@example.com
-nobody@example.com
-nobody@example.com
-Mr. Nobody
 ----
 =?UTF-8?Q?Test?= <nobody@example.com>, "foo=bar" <nobody@example.com>
-nobody@example.com
-nobody@example.com
-=?UTF-8?Q?Test?=
-foo=bar

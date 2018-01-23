@@ -1,28 +1,35 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::folder::getMyRights
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::FOLDER::GETMYR" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::FOLDER::GETMYR" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::folder::getMyRights - Compute my access rights on a folder
+mail::folder::getMyRights \- Compute my access rights on a folder
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 
 class myCallback : public mail::callback {
@@ -31,99 +38,98 @@ public:
     void fail(std::string msg);
 };
 .fi
-.RE
-.HP 20
+.HP \w'folder->getMyRights('u
 .BI "folder->getMyRights(myCallback\ &" "callback" ", std::string\ &" "rights" ");"
 .SH "USAGE"
 .PP
-This function implements folder access control lists (ACLs)\. Access control lists define who is allowed to do certain operations on a folder, or on messages in the folder\. Folder ACLs are implement only for IMAP accounts on IMAP servers that implement access control lists\. This function will fail if
+This function implements folder access control lists (ACLs)\&. Access control lists define who is allowed to do certain operations on a folder, or on messages in the folder\&. Folder ACLs are implement only for IMAP accounts on IMAP servers that implement access control lists\&. This function will fail if
 \fIfolder\fR
-is not a folder on an IMAP server that supports access control lists\.
+is not a folder on an IMAP server that supports access control lists\&.
 .PP
 This function computes application\'s access rights on the
-\fIfolder\fR\. If this function succeeds (this function may fail if the requesting client does not have the required access to the folder),
+\fIfolder\fR\&. If this function succeeds (this function may fail if the requesting client does not have the required access to the folder),
 \fIrights\fR
-will be initialized by a text string that contains a list of character which describe the requested client\'s access rights on the folder\.
+will be initialized by a text string that contains a list of character which describe the requested client\'s access rights on the folder\&.
 .PP
 At this time, the following access rights are supported:
 .PP
 \(lqa\(rq
 .RS 4
-Administrator access: view and change folder access control lists\.
+Administrator access: view and change folder access control lists\&.
 .RE
 .PP
 \(lqc\(rq
 .RS 4
-Create subfolders\.
+Create subfolders\&.
 .RE
 .PP
 \(lqe\(rq
 .RS 4
-Expunge deleted messages from the folder\.
+Expunge deleted messages from the folder\&.
 .RE
 .PP
 \(lqi\(rq
 .RS 4
-Insert, or add messages to the folder\.
+Insert, or add messages to the folder\&.
 .RE
 .PP
 \(lql\(rq
 .RS 4
-List, or view the folder\'s existence\. If a folder does not have the
+List, or view the folder\'s existence\&. If a folder does not have the
 \(lql\(rq
-access right, the server will not include this folder when it\'s asked to list all folders in the folder directory\. However, if the
+access right, the server will not include this folder when it\'s asked to list all folders in the folder directory\&. However, if the
 \(lqr\(rq
-access right is present, the folder may be opened if the folder\'s name is known\.
+access right is present, the folder may be opened if the folder\'s name is known\&.
 .RE
 .PP
 \(lqr\(rq
 .RS 4
-Read, or open the folder\. An attempt to open the folder will fail without the
+Read, or open the folder\&. An attempt to open the folder will fail without the
 \(lqr\(rq
-access right, even if the folder\'s name is known\.
+access right, even if the folder\'s name is known\&.
 .RE
 .PP
 \(lqp\(rq
 .RS 4
 
 \(lqPost messages\(rq
-to the folder\. This access right is currently listed in the ACL specification; however its intention is not clear, and most servers do not do anything useful with this access right\. It is listed here for information purposes only\.
+to the folder\&. This access right is currently listed in the ACL specification; however its intention is not clear, and most servers do not do anything useful with this access right\&. It is listed here for information purposes only\&.
 .RE
 .PP
 \(lqs\(rq
 .RS 4
-Allow changing the read/unread status of messages in the folder\. The server will not automatically clear the
-unread
+Allow changing the read/unread status of messages in the folder\&. The server will not automatically clear the
+\fIunread\fR
 message status flag on messages after they are read, or let this status flag be explicitly changed, without the
 \(lqs\(rq
-access right\.
+access right\&.
 .RE
 .PP
 \(lqt\(rq
 .RS 4
-Allow tagging of messages as deleted or undeleted\. The server will prohibit changing the messages\'
-deleted
+Allow tagging of messages as deleted or undeleted\&. The server will prohibit changing the messages\'
+\fIdeleted\fR
 message status flag without the
 \(lqt\(rq
-access right\.
+access right\&.
 .RE
 .PP
 \(lqw\(rq
 .RS 4
 Allow changing the
-draft,
-replied, and
-marked
-message status flags\. The server will not allow changes to these flags without the
+\fIdraft\fR,
+\fIreplied\fR, and
+\fImarked\fR
+message status flags\&. The server will not allow changes to these flags without the
 \(lqw\(rq
-access right\.
+access right\&.
 .RE
 .PP
 \(lqx\(rq
 .RS 4
-Allow this folder to be removed\. The server will not this folder to be deleted without the
+Allow this folder to be removed\&. The server will not this folder to be deleted without the
 \(lqx\(rq
-access right\.
+access right\&.
 .RE
 .SH "RETURN CODES AND CALLBACKS"
 .PP
@@ -132,32 +138,40 @@ The application must wait until
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\. The
+method is invoked\&. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed\. The
+method is invoked when this request is succesfully processed\&. The
 \fBfail\fR
-method is invoked if this request cannot be processed\. The application must not destroy
+method is invoked if this request cannot be processed\&. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\.
+method is invoked\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 \fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
+method may be invoked even after other callback methods were invoked\&. This indicates that the request was partially completed before the error was encountered\&.
+.sp .5v
+.RE
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::delRights\fR(3x),
 \fBmail::account::getFolderIndexInfo\fR(3x),
 \fBmail::account::getRights\fR(3x),
-\fBmail::account::setRights\fR(3x)\.
+\fBmail::account::setRights\fR(3x)\&.

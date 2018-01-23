@@ -1,4 +1,4 @@
-/* $Id: mymessage.C,v 1.9 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: mymessage.C,v 1.10 2009/10/31 22:38:07 mrsam Exp $
 **
 ** Copyright 2003-2004, Double Precision Inc.
 **
@@ -673,9 +673,13 @@ void myMessage::newMessageAddressHdr(string addresses,
 		vector<mail::address>::iterator b, e;
 
 		for (b=addrvec.begin(), e=addrvec.end(); b != e; ++b)
-			addrvecNative
-				.push_back(mail::emailAddress(b->getName(),
-							      b->getAddr()));
+		{
+			mail::emailAddress addr;
+
+			addr.setDisplayName(b->getName());
+			addr.setDisplayAddr(b->getAddr());
+			addrvecNative.push_back(addr);
+		}
 	}
 
 	if (addrvecNative.size() == 0)

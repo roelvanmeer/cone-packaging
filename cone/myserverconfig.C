@@ -1,4 +1,4 @@
-/* $Id: myserverconfig.C,v 1.26 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: myserverconfig.C,v 1.27 2009/11/08 23:52:31 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -1327,8 +1327,8 @@ static string getProp(xmlNodePtr node, const char *prop)
 			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
-	return mail::rfc2047::decoder::decodeEnhanced(s,
-						   *Gettext::defaultCharset());
+	return mail::rfc2047::decoder::decoder().
+		decode(s, *Gettext::defaultCharset());
 }
 
 // 8-bit octet-based properties are also 2047-encoded, but the character set
@@ -1367,8 +1367,8 @@ static string getTextNode(xmlNodePtr node)
 			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
-	return mail::rfc2047::decoder::decodeEnhanced(s,
-						   *Gettext::defaultCharset());
+	return mail::rfc2047::decoder::decoder()
+		.decode(s, *Gettext::defaultCharset());
 }
 		
 bool myServer::loadconfig()
@@ -2160,8 +2160,8 @@ void myServer::config::loadserver(xmlNodePtr root,
 			const char *a=(const char *)attr->name;
 
 			string aDecode=
-				mail::rfc2047::decoder::
-				decodeEnhanced(a, *Gettext::defaultCharset());
+				mail::rfc2047::decoder::decoder()
+				.decode(a, *Gettext::defaultCharset());
 
 			string val;
 

@@ -1,64 +1,91 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::folder::getPath
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::FOLDER::GETPAT" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::FOLDER::GETPAT" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::folder::getPath - Return the folder's server address
+mail::folder::getPath \- Return the folder\'s server address
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 mail::folder *folder;
 .fi
-.RE
-.HP 36
+.HP \w'std::string\ pathStr=folder->getPath('u
 .BI "std::string pathStr=folder->getPath(void);"
 .SH "USAGE"
 .PP
 This function returns
-\fIfolder\fR\'s "server path"\. In general, this is the folder\'s location on the mail server\. Applications should generally generally handle the path as an opaque text string that carries no specific interpretation\. Valid uses of the folder\'s server path are limited to:
+\fIfolder\fR\'s "server path"\&. In general, this is the folder\'s location on the mail server\&. Applications should generally generally handle the path as an opaque text string that carries no specific interpretation\&. Valid uses of the folder\'s server path are limited to:
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'If two
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+If two
 mail::folder
-objects are linked to the same account and have the same path, it means that both objects refer to the same folder\.
+objects are linked to the same account and have the same path, it means that both objects refer to the same folder\&.
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'The server path may be used as a parameter
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+The server path may be used as a parameter
 \fBmail::account::findFolder\fR(3x)
 in order to create a
 mail::folder
-object which refers to this specific folder\.
+object which refers to this specific folder\&.
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'The server path may be used as a parameter
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+The server path may be used as a parameter
 \fBmail::folder::isParentOf\fR(3x)
-to determine whether this folder is contained within another folder\.
+to determine whether this folder is contained within another folder\&.
 .RE
 .SH "RETURN CODES"
 .PP
-A string that specifies the folder\'s address on the mail server\.
+A string that specifies the folder\'s address on the mail server\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::findFolder\fR(3x),
 \fBmail::folder::isParentOf\fR(3x),
-\fBmail::folder::getName\fR(3x)\.
+\fBmail::folder::getName\fR(3x)\&.

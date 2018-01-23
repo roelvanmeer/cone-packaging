@@ -176,9 +176,26 @@ bool CursesAddressList::validate(size_t rowNum,  // Changed AddressField
 		vector<mail::address>::iterator b, e;
 
 		for (b=addrvec.begin(), e=addrvec.end(); b != e; ++b)
-			addrvecNative
-				.push_back(mail::emailAddress(b->getName(),
-							      b->getAddr()));
+		{
+			mail::emailAddress newAddress;
+
+			std::string errmsg=newAddress
+				.setDisplayName(b->getName());
+
+			if (errmsg == "")
+				errmsg=newAddress
+					.setDisplayAddr(b->getAddr());
+
+			if (errmsg != "")
+			{
+				statusBar->clearstatus();
+				statusBar->status(errmsg);
+				statusBar->beepError();
+				return false;
+			}
+
+			addrvecNative.push_back(newAddress);
+		}
 	}
 
 	return validate(rowNum, addrvecNative);
@@ -291,8 +308,8 @@ bool CursesAddressList::validate(size_t rowNum,  // Changed AddressField
 	{
 		// We want toString() to use the encoded form.
 
-		string s= mail::address(b->getAddrName(),
-					b->getAddr()).toString();
+		string s= mail::address(b->getDisplayName(),
+					b->getDisplayAddr()).toString();
 
 		if (rowNum + 1 < fields.size())
 			s += ","; // All but last addy has a trailing comma
@@ -379,8 +396,14 @@ bool CursesAddressList::getAddresses( vector<mail::emailAddress> &addressArray)
 	vector<mail::address>::iterator b, e;
 
 	for (b=addrBuf.begin(), e=addrBuf.end(); b != e; ++b)
-		addressArray.push_back(mail::emailAddress(b->getName(),
-							  b->getAddr()));
+	{
+		mail::emailAddress addr;
+
+		addr.setDisplayName(b->getName());
+		addr.setDisplayAddr(b->getAddr());
+
+		addressArray.push_back(addr);
+	}
 	return true;
 }
 

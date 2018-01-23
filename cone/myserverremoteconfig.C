@@ -1,4 +1,4 @@
-/* $Id: myserverremoteconfig.C,v 1.10 2008/07/07 03:25:41 mrsam Exp $
+/* $Id: myserverremoteconfig.C,v 1.11 2009/10/31 22:38:07 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -298,8 +298,9 @@ bool myServer::remoteConfig::saveconfig2(std::string filename,
 			mail::Header::list headers;
 
 			headers << mail::Header
-				::addresslist("From")("LibMAIL configuration",
-						      "nobody@localhost")
+				::addresslist("From")(mail::address("LibMAIL configuration",
+								    "nobody@localhost")
+						      )
 				<< mail::Header::encoded("Subject",
 							 subjmarker,
 							 unicode_UTF8.chset)

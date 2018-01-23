@@ -1,28 +1,35 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::folder::open
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::FOLDER::OPEN" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::FOLDER::OPEN" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::folder::open - Open a folder
+mail::folder::open \- Open a folder
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/mail\.H>
+#include <libmail/mail\&.H>
 
 
 class myCallback : public mail::callback {
@@ -31,11 +38,9 @@ public:
     void fail(std::string msg);
 };
 .fi
-.RE
 .sp
-.RS 4
 .nf
-#include <libmail/snapshot\.H>
+#include <libmail/snapshot\&.H>
 
 class myFolderCallback : public mail::callback::folder {
 
@@ -60,56 +65,84 @@ public:
 };
 
 .fi
-.RE
-.HP 13
+.HP \w'folder->open('u
 .BI "folder->open(myCallback\ &" "callback" ", myRestoreSnapshot\ &" "restoreSnapshot" ", myFolderCallback\ &" "folderCallback" ");"
 .SH "USAGE"
 .PP
-A mail folder must be formally "opened" before the messages in the folder may be accessed\. Each mail account can have only one mail folder at any time Opening another folder automatically "closes" the previous folder\.
+A mail folder must be formally "opened" before the messages in the folder may be accessed\&. Each mail account can have only one mail folder at any time Opening another folder automatically "closes" the previous folder\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 Different
 mail::account
 or
 mail::ACCOUNT
-objects may each have a folder opened, at the same time\. It is possible to create multiple
+objects may each have a folder opened, at the same time\&. It is possible to create multiple
 mail::account
 or
 mail::ACCOUNT
-objects that refer to the same actual mail account\. Whether it is possible to access the same account multiple times, using different objects, and whether each object may have the same folder opened depends on the account type and/or the remote server\.
+objects that refer to the same actual mail account\&. Whether it is possible to access the same account multiple times, using different objects, and whether each object may have the same folder opened depends on the account type and/or the remote server\&.
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'Whether it\'s possible to open the same remote IMAP or POP3 account more than once depends on the remote IMAP/POP3 server\.
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Whether it\'s possible to open the same remote IMAP or POP3 account more than once depends on the remote IMAP/POP3 server\&.
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'Whether it\'s possible to open the same folder on a remote IMAP server account more than once depends on the remote IMAP/POP3 server\. Most IMAP servers allow the same account to be opened more than once, as long as the different login sessions do not try to open the same folder\. Some IMAP servers allow the same folder to be opened simultaneously by multiple sessions\.
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Whether it\'s possible to open the same folder on a remote IMAP server account more than once depends on the remote IMAP/POP3 server\&. Most IMAP servers allow the same account to be opened more than once, as long as the different login sessions do not try to open the same folder\&. Some IMAP servers allow the same folder to be opened simultaneously by multiple sessions\&.
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'It is generally possible to open the same local mail folder simultaneously, via multiple
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+It is generally possible to open the same local mail folder simultaneously, via multiple
 mail::account
-objects, as long as only one pending request is issued at a time\. Concurrent access to local maildirs generally works well, however simultaneous access to the same mbox folder may be rather slow, due to the overhead of locking and rescanning of the folder by each
+objects, as long as only one pending request is issued at a time\&. Concurrent access to local maildirs generally works well, however simultaneous access to the same mbox folder may be rather slow, due to the overhead of locking and rescanning of the folder by each
 mail::account
-object\.
+object\&.
+.RE
+.sp .5v
 .RE
 .PP
-Any previously\-opened folder is closed before the an attempt to open this folder is made\. If the new folder cannot be opened, the previous folder is still considered closed\.
+Any previously\-opened folder is closed before the an attempt to open this folder is made\&. If the new folder cannot be opened, the previous folder is still considered closed\&.
 .SS "Folder Updates"
 .PP
 The
 \fIfolderCallback\fR
-object is used to notify the application of changes to the folder\'s contents\. The application must not destroy
+object is used to notify the application of changes to the folder\'s contents\&. The application must not destroy
 \fIfolderCallback\fR
 until either the
 mail::account
-is destroyed, or another folder is opened\. Changes to the folder\'s contents are reflected by invoking
-\fIfolderCallback\fR\'s methods\.
+is destroyed, or another folder is opened\&. Changes to the folder\'s contents are reflected by invoking
+\fIfolderCallback\fR\'s methods\&.
 .PP
 
 \fIfolderCallback\fR\'s methods are usually invoked by
@@ -118,70 +151,78 @@ is destroyed, or another folder is opened\. Changes to the folder\'s contents ar
 \fBmail::account::saveFolderIndexInfo\fR(3x),
 \fBmail::account::updateFolderIndexFlags\fR(3x), and
 \fBmail::account::checkNewMail\fR(3x), however the application must be prepared to handle any
-\fIfolderCallback\fR\'s method to be invoked at any time\. Most mail servers reserve the right to notify the client of changes to the folder\'s contents at any time\.
+\fIfolderCallback\fR\'s method to be invoked at any time\&. Most mail servers reserve the right to notify the client of changes to the folder\'s contents at any time\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
-As always, messages are numbered starting with 0\. That is, a folder with ten messages contains messages #0 through #9\.
+As always, messages are numbered starting with 0\&. That is, a folder with ten messages contains messages #0 through #9\&.
+.sp .5v
+.RE
 .PP
 void newMessages()
 .RS 4
-This method is invoked whenever new messages are added to the currently open folder\. The application should use
+This method is invoked whenever new messages are added to the currently open folder\&. The application should use
 \fBmail::account::getFolderIndexSize\fR(3x)
-to determine how many messages now exist in the current folder, and use the number of messages the application already knows about to determine how many new messages have been added\.
+to determine how many messages now exist in the current folder, and use the number of messages the application already knows about to determine how many new messages have been added\&.
 .sp
-Example: The application already knows that the folder has three messages\. After
+Example: The application already knows that the folder has three messages\&. After
 \fBmail::callback::folder::newMessages\fR
 is invoked
 \fBmail::account::getFolderIndexSize\fR(3x)
-now claims there are five messages in the folder\. This means that the last two messages in the folder are new messages\.
+now claims there are five messages in the folder\&. This means that the last two messages in the folder are new messages\&.
 .RE
 .PP
 void messagesRemoved(vector< pair<size_t, size_t> > &removedList);
 .RS 4
-Messages were removed from the folder, and the remaining messages have been renumbered to fill in the gaps\.
+Messages were removed from the folder, and the remaining messages have been renumbered to fill in the gaps\&.
 \fIremovedList\fR
-is an array that lists which messages were removed\. Each array element contains a starting range and an ending range\. The range
+is an array that lists which messages were removed\&. Each array element contains a starting range and an ending range\&. The range
 \(lq7\-9\(rq
-specifies that messages #7 through #9, three messages overall, were removed\. The range
+specifies that messages #7 through #9, three messages overall, were removed\&. The range
 \(lq5\-5\(rq
-specifies that message #5 was removed\.
+specifies that message #5 was removed\&.
 .sp
-The remaining messages have been renumbered\. For example, if the application knows that the folder has ten messages, then if
+The remaining messages have been renumbered\&. For example, if the application knows that the folder has ten messages, then if
 \fIremovedList\fR
 contains two ranges:
 \(lq3\-3\(rq, and
-\(lq5\-7\(rq, this indicates that messages #3, #5, #6, and #7 were removed\. The old message #4 is now message #3, the old mesasge #8 is now message #4, and the old message #9 is now message #5, and there are now six messages left in the folder\.
+\(lq5\-7\(rq, this indicates that messages #3, #5, #6, and #7 were removed\&. The old message #4 is now message #3, the old mesasge #8 is now message #4, and the old message #9 is now message #5, and there are now six messages left in the folder\&.
 .RE
 .PP
 void messageChanged(size_t messageNumber)
 .RS 4
-The flags of the indicated message have changed\. The application should use
+The flags of the indicated message have changed\&. The application should use
 \fBmail::account::getFolderIndexInfo\fR(3x)
-to read the current message flags\.
+to read the current message flags\&.
 .RE
 .SS "Snapshots"
 .PP
-Folder index snapshots are implemented by some mail account types\. Folder index snapshots allow large folders to be opened quickly\. If a folder contains many messages,
+Folder index snapshots are implemented by some mail account types\&. Folder index snapshots allow large folders to be opened quickly\&. If a folder contains many messages,
 
 
 
 LibMAIL
-may take a long time to open a folder\. Folder index snapshots speed up the process of opening a folder which was recently opened\. At this time, folder index snapshots are implemented with
+may take a long time to open a folder\&. Folder index snapshots speed up the process of opening a folder which was recently opened\&. At this time, folder index snapshots are implemented with
 NNTP,
 pop3, and
-SMAP\-based accounts\. Attempts to use folder index snapshots with other account types will be quietly ignored\.
+SMAP\-based accounts\&. Attempts to use folder index snapshots with other account types will be quietly ignored\&.
 .PP
-Implementing folder index snapshots is optional\.
+Implementing folder index snapshots is optional\&.
 \fIrestoreSnapshot\fR
 may be
 NULL, and
 Cone
-will open folder the old\-fashional way, by patiently downloading the entire folder index when opening the folder\. To implement snapshots the application must implemented the
+will open folder the old\-fashional way, by patiently downloading the entire folder index when opening the folder\&. To implement snapshots the application must implemented the
 \fBsaveSnapshot\fR
 method of its
 mail::callback::folder
@@ -194,7 +235,7 @@ Applications can pass a
 NULL
 pointer, and not define
 \fBsaveSnapshot\fR
-if folder index snapshots are not needed\. If
+if folder index snapshots are not needed\&. If
 \fBmail::folder::open\fR
 receives a non\-NULL
 pointer, the object must not be destroyed until
@@ -202,7 +243,7 @@ pointer, the object must not be destroyed until
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\.
+method is invoked\&.
 .PP
 When snapshots are enabled,
 
@@ -211,19 +252,19 @@ When snapshots are enabled,
 LibMAIL
 invokes
 \fBmail::callback::folder::saveSnapshot\fR
-whenever a snapshot of the opened folder\'s index should be saved\.
+whenever a snapshot of the opened folder\'s index should be saved\&.
 \fBmail::callback::folder::saveSnapshot\fR
-gets invoked periodically as long as the folder remains open\.
+gets invoked periodically as long as the folder remains open\&.
 \fBmail::callback::folder::saveSnapshot\fR
 receives an opaque identifier,
-\fIsnapshotId\fR\.
+\fIsnapshotId\fR\&.
 \fBmail::callback::folder::saveSnapshot\fR
 should use
 \fBmail::account::getFolderIndexSize\fR(3x)
 to obtain the number of messages in the folder, then use
 \fBmail::account::getFolderIndexInfo\fR(3x)
 to save each message\'s folder index entry, alongside with the
-\fIsnapshotId\fR, and the total number of messages\.
+\fIsnapshotId\fR, and the total number of messages\&.
 .PP
 
 mail::messageInfo
@@ -231,11 +272,11 @@ has a convenient
 \fBoperator string()\fR
 that converts the entire object into a string, and a corresponding constructor that initializes the entire
 mail::messageInfo
-object from a string\.
+object from a string\&.
 .PP
-The application needs only to save the most recent snapshot\.
+The application needs only to save the most recent snapshot\&.
 \fBmail::callback::folder::saveSnapshot\fR
-should discard any previously\-saved snapshot, and replace it with the current one\.
+should discard any previously\-saved snapshot, and replace it with the current one\&.
 \fBmail::callback::folder::saveSnapshot\fR
 should not invoke any other
 
@@ -245,7 +286,7 @@ LibMAIL
 methods, except
 \fBmail::account::getFolderIndexSize\fR(3x)
 and
-\fBmail::account::getFolderIndexInfo\fR(3x)\.
+\fBmail::account::getFolderIndexInfo\fR(3x)\&.
 .PP
 The
 mail::snapshot\-subclassed object passed to
@@ -253,19 +294,19 @@ mail::snapshot\-subclassed object passed to
 implements two methods:
 \fBgetSnapShotInfo\fR
 and
-\fBrestoreSnapshot\fR\.
+\fBrestoreSnapshot\fR\&.
 \fBgetSnapShotInfo\fR
 should initialize
 \fIsnapshotId\fR
 to the opaque snapshot identifier of the most\-recently saved snapshot, and
 \fInMessages\fR
-to the number of messages in the snapshot\.
+to the number of messages in the snapshot\&.
 .PP
 An application that does not have a snapshot, but wishes to use snapshots (perhaps this is the very first time this folder was opened) should initialize
 \fIsnapshotId\fR
 to an empty string, and set
 \fInMessages\fR
-to zero\. The application should not pass a
+to zero\&. The application should not pass a
 NULL
 \fIrestoreSnapshot\fR
 parameter, since that disables
@@ -273,7 +314,7 @@ parameter, since that disables
 
 
 LibMAIL
-\'s usage of snapshots\.
+\'s usage of snapshots\&.
 .PP
 After invoking
 \fBgetSnapShotInfo\fR,
@@ -282,7 +323,7 @@ After invoking
 
 LibMAIL
 will invoke
-\fBrestoreSnapshot\fR, at which time the application needs to restore the folder index as it was saved by the snapshot\.
+\fBrestoreSnapshot\fR, at which time the application needs to restore the folder index as it was saved by the snapshot\&.
 \fBrestoreSnapshot\fR
 receives a reference to a
 mail::snapshot::restore
@@ -292,33 +333,41 @@ void restoreIndex(size_t msgNum, const mail::messageInfo &msgInfo);
 .RS 4
 Repeatedly invoke this function to specify the previously saved
 mail::messageInfo
-of each message\.
+of each message\&.
 .RE
 .PP
 void abortRestore()
 .RS 4
 After restoring the entire folder index,
 \fBrestoreSnapshot\fR
-should simply terminate\. If the application cannot restore the entire folder index, for some reason,
+should simply terminate\&. If the application cannot restore the entire folder index, for some reason,
 \fBabortRestore\fR
-should be invoke to invalidate any partially\-restored index data\.
+should be invoke to invalidate any partially\-restored index data\&.
 .RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 With
 POP3
-accounts, message status flags are going to be preserved only when snapshots are used\. The
+accounts, message status flags are going to be preserved only when snapshots are used\&. The
 POP3
 does not provide any facility for saving message status flags; and without snapshots each time a
 POP3
-folder is opened all messages will be seen as new messages\. Using snapshots saves each message\'s status, and restores it when the
+folder is opened all messages will be seen as new messages\&. Using snapshots saves each message\'s status, and restores it when the
 POP3
-folder is reopened\.
+folder is reopened\&.
+.sp .5v
+.RE
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 The application must wait until
@@ -326,28 +375,36 @@ The application must wait until
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\. The
+method is invoked\&. The
 \fBsuccess\fR
-method is invoked when this request is succesfully processed\. The
+method is invoked when this request is succesfully processed\&. The
 \fBfail\fR
-method is invoked if this request cannot be processed\. The application must not destroy
+method is invoked if this request cannot be processed\&. The application must not destroy
 \fIcallback\fR
 until either the
 \fBsuccess\fR
 or
 \fBfail\fR
-method is invoked\.
+method is invoked\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 \fIcallback\fR\'s
 \fBfail\fR
-method may be invoked even after other callback methods were invoked\. This indicates that the request was partially completed before the error was encountered\.
+method may be invoked even after other callback methods were invoked\&. This indicates that the request was partially completed before the error was encountered\&.
+.sp .5v
+.RE
 .SH "SEE ALSO"
 .PP
 
@@ -358,4 +415,4 @@ method may be invoked even after other callback methods were invoked\. This indi
 \fBmail::account::removeMessages\fR(3x),
 \fBmail::account::saveFolderIndexInfo\fR(3x),
 \fBmail::account::updateFolderIndexFlags\fR(3x),
-\fBmail::account::updateFolderIndexInfo\fR(3x)\.
+\fBmail::account::updateFolderIndexInfo\fR(3x)\&.

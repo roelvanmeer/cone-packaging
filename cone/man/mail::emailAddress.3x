@@ -1,62 +1,110 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::emailAddress
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::EMAILADDRESS" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::EMAILADDRESS" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::emailAddress - An E-mail address
+mail::emailAddress \- An E\-mail address
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
-#include <libmail/rfcaddr\.H>
+#include <libmail/rfcaddr\&.H>
 
-mail::emailAddress address("Jóse Smith", "josesmith@example\.com");
+mail::emailAddress address;
 
-std::string addr=address\.getAddr();
-std::string name=address\.getAddrName();
+address\&.setDisplayName("Jóse Smith");
+address\&.setDisplayAddr("josesmith@example\&.com");
 
-address\.setAddr(addr);
-address\.setAddrName(name);
+std::string addr=address\&.getDisplayAddr();
+std::string name=address\&.getDisplayName();
+
+address\&.setAddr(addr);
+address\&.setDisplayName(name);
 
 .fi
-.RE
 .SH "USAGE"
 .PP
 
 mail::emailAddress
 is a subclass of
 mail::address
-that defines two new methods:
-\fBgetAddrName()\fR,
-\fBsetAddrName()\fR, which retrieve or set the name component of an E\-mail address using the native character set\. For most purposes, using
+that defines four new methods:
+\fBgetDisplayName()\fR,
+\fBsetDisplayName()\fR,
+\fBgetDisplayAddr()\fR
+and
+\fBsetDisplayAddr()\fR, which retrieve or set the name and the address components of an E\-mail address using the native character set\&.
+mail::emailAddress
+can be constructed from an existing
+mail::address; or, the default constructor initializes an empty address, then use
+\fBsetDisplayName()\fR
+and
+\fBsetDisplayAddr()\fR
+to set the address structure\&.
+\fBsetDisplayName()\fR
+and
+\fBsetDisplayAddr()\fR
+return an empty string if the display name or address was succesfully mapped from the native character, or an error message\&.
+.PP
+Non\-Latin characters in the name component use MIME encoding\&. Passing the name component to
+\fBsetDisplayName()\fR
+MIME\-encodes it using RFC 2047 and stores the encoded name in the
+mail::address
+superclass\&.
+\fBsetDisplayAddr()\fR
+encoded non\-Latin characters in the domain portion of the address using IDNA encoding\&.
+\fBgetDisplayName()\fR
+and
+\fBgetDisplayAddr()\fR
+retrieve the name or the address portion from the
+mail::address
+superclass, and decode it into the native character set, accordingly\&.
+.PP
+For most purposes, using
 mail::emailAddress
 is preferrable to using
-mail::address\.
+mail::address\&.
 mail::address\'s
-\fBgetName()\fR
+\fBgetName()\fR,
+\fBsetName()\fR,
+\fBgetAddr()\fR
 and
-\fBsetName()\fR
-methods deal with the raw, MIME\-encoded format of E\-mail address names (see
-\fIRFC 2047\fR\&[1])\.
+\fBsetAddr()\fR
+methods deal with the raw, MIME\-encoded format of E\-mail addresses\&. This structure lets the application deal with human\-readable representation of the email address\&.
 .PP
 Convert a native name to its MIME\-encoded format by using
-\fBsetAddrName()\fR
+\fBsetDisplayName()\fR
 followed by
-\fBgetName()\fR\. Similarly, decoded a MIME\-encoded name by using
+\fBgetName()\fR\&. Similarly, decode a MIME\-encoded name by using
 \fBsetName()\fR
 followed by
-\fBgetAddrName()\fR\.
+\fBgetDisplayName()\fR\&.
+.PP
+Convert an email address to its IDNA\-encoded format by using
+\fBsetDisplayAddr()\fR
+followed by
+\fBgetAddr()\fR\&. Similarly, decode an IDNA\-encoded name by using
+\fBsetAddr()\fR
+followed by
+\fBgetDisplayAddr()\fR\&.
 .PP
 The
 \fBtoString\fR
@@ -66,18 +114,12 @@ methods are templates, and may be used with a vector of
 mail::emailAddress
 or
 mail::address
-objects\. The two classes are completely interchangable\. A
+objects\&. The two classes are completely interchangable\&. A
 mail::emailAddress
 object may be assigned or converted to a
-mail::address, and vice\-versa\.
+mail::address, and vice\-versa\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::address\fR(3x),
-\fBmail::setappcharset\fR(3x)\.
-.SH "NOTES"
-.IP " 1." 4
-RFC 2047
-.RS 4
-\%http://www.rfc-editor.org/rfc/rfc2047.txt
-.RE
+\fBmail::setappcharset\fR(3x)\&.

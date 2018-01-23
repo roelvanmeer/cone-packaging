@@ -1,53 +1,65 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::setAppCharset
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::SETAPPCHARSET" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::SETAPPCHARSET" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::setAppCharset - Set application character set
+mail::setAppCharset \- Set application character set
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
-#include <libmail/misc\.H>
-#include <langinfo\.h>
+#include <libmail/misc\&.H>
+#include <langinfo\&.h>
 
 const char *myCharset=nl_langinfo(CODESET);
 .fi
-.RE
-.HP 20
+.HP \w'mail::setAppCharset('u
 .BI "mail::setAppCharset(const\ char\ *" "myCharset" ");"
 .SH "USAGE"
 .PP
-This function should be used to specify the application\'s character set\.
+This function should be used to specify the application\'s character set\&.
 
 
 
 LibMAIL
-automatically translates names of folders between the application\'s character set, and the mail server\'s character set\.
+automatically translates names of folders between the application\'s character set, and the mail server\'s character set\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 
 
 
 LibMAIL
-supports a limited number of character sets\. The full
+supports a limited number of character sets\&. The full
 
 
 
@@ -57,15 +69,17 @@ ISO\-8859
 character set family, most
 windows
 character sets, and
-KOI8\-R\. Some East Asian character sets (Japanese, traditional and simplified Chinese) are experimental, and have not been fully tested\.
+KOI8\-R\&. Some East Asian character sets (Japanese, traditional and simplified Chinese) are experimental, and have not been fully tested\&.
+.sp .5v
+.RE
 .SH "RETURN CODES"
 .PP
 This function returns
 true
 if the character set was succesfully installed;
 false
-if the character set is not supported\.
+if the character set is not supported\&.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::account::open\fR(3x)\.
+\fBmail::account::open\fR(3x)\&.

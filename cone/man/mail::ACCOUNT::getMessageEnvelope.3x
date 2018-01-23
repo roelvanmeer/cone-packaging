@@ -1,73 +1,85 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::ACCOUNT::getMessageEnvelope
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::GETME" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::GETME" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::ACCOUNT::getMessageEnvelope - Return message header envelope
+mail::ACCOUNT::getMessageEnvelope \- Return message header envelope
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/sync\.H>
+#include <libmail/sync\&.H>
 
-#include <libmail/envelope\.H>
+#include <libmail/envelope\&.H>
 
 mail::ACCOUNT *mail;
 .fi
-.RE
-.HP 33
+.HP \w'bool\ ok=mail->getMessageEnvelope('u
 .BI "bool ok=mail->getMessageEnvelope(const\ std::vector<size_t>\ &" "msgList" ", std::vector<mail::xenvelope>\ &" "envelopes" ");"
 .sp
-.RS 4
 .nf
 std::string errmsg=mail\->getErrmsg();
 .fi
-.RE
-.HP 52
+.HP \w'mail::xenvelope\ myEnvelope=mail->getMessageEnvelope('u
 .BI "mail::xenvelope myEnvelope=mail->getMessageEnvelope(size_t\ " "messageNum" ");"
 .SH "USAGE"
 .PP
 
 \fImsgList\fR
-specifies a list of messages\. Messages are numbered starting with message #0 and up to one less than
+specifies a list of messages\&. Messages are numbered starting with message #0 and up to one less than
 \fBmail::ACCOUNT::getFolderIndexSize\fR(3x)
 (when
 \fBmail::account::getFolderIndexSize\fR
-returns 6, the messages are numbered 0 through 5)\. Only the messages that appear in
+returns 6, the messages are numbered 0 through 5)\&. Only the messages that appear in
 \fImsgList\fR
-are processed by this request\. When a message is removed from the folder, by
-\fBmail::ACCOUNT::updateFolderIndexInfo\fR(3x), the following messages are renumbered accordingly\.
+are processed by this request\&. When a message is removed from the folder, by
+\fBmail::ACCOUNT::updateFolderIndexInfo\fR(3x), the following messages are renumbered accordingly\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
-Most mail servers allow multiple applications to open the same folder\. Therefore, changes to the folder\'s contents can occur at any time\. Before making this request, the application should use
+Most mail servers allow multiple applications to open the same folder\&. Therefore, changes to the folder\'s contents can occur at any time\&. Before making this request, the application should use
 \fBmail::ACCOUNT::checkNewMail\fR(3x)
-to verify that no unexpected changes have been made to the folder\'s contents\.
+to verify that no unexpected changes have been made to the folder\'s contents\&.
+.sp .5v
+.RE
 .PP
 This function reads the message envelope header information of each message specified by
-\fImsgList\fR\. This function initializes the
+\fImsgList\fR\&. This function initializes the
 \fIenvelopes\fR
 array to the same size as
 \fImsgList\fR, with each array member containing the envelope header information for the corresponding message in
-\fImsgList\fR\.
+\fImsgList\fR\&.
 .SS "mail::xenvelope"
 .PP
 The
@@ -79,12 +91,12 @@ time_t arrivalDate
 .RS 4
 When this message was received by the mail server (or
 0
-if the time cannot be determined)\.
+if the time cannot be determined)\&.
 .RE
 .PP
 unsigned long messageSize
 .RS 4
-The approximate size of the message, in bytes\. This size should be considered as an estimated only, and the actual size may be slightly higher or lower\.
+The approximate size of the message, in bytes\&. This size should be considered as an estimated only, and the actual size may be slightly higher or lower\&.
 .RE
 .SH "RETURN CODES"
 .PP
@@ -92,18 +104,18 @@ This method returns
 true
 if it succeeds, or
 false
-if it fails\. If the method fails, use
-mail::ACCOUNT::getErrmsg()
-to read a brief description of the error\.
+if it fails\&. If the method fails, use
+\fImail::ACCOUNT::getErrmsg()\fR
+to read a brief description of the error\&.
 .PP
 The second version of
 \fBmail::ACCOUNT::getMessageEnvelope\fR
 returns the envelope information of a single message, ignoring any error condition (a failure results in the returned
 mail::xenvelope
-object being completely empty)\.
+object being completely empty)\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::envelope\fR(3x),
 \fBmail::ACCOUNT::getFolderIndexInfo\fR(3x),
-\fBmail::ACCOUNT::getFolderIndexSize\fR(3x)\.
+\fBmail::ACCOUNT::getFolderIndexSize\fR(3x)\&.

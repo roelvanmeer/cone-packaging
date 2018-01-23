@@ -1,101 +1,123 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::Attachment
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ATTACHMENT" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ATTACHMENT" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::Attachment - Create MIME content.
+mail::Attachment \- Create MIME content\&.
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
-#include <libmail/attachments\.H>
+#include <libmail/attachments\&.H>
 .fi
-.RE
 .SH "USAGE"
 .PP
 The
 mail::Attachment
-class formats a wide variety of MIME messages from raw content\. Most of the functionality in this class is provided by the constructors\.
+class formats a wide variety of MIME messages from raw content\&. Most of the functionality in this class is provided by the constructors\&.
 mail::Attachment
-provides a variety of constructors for creating content MIME entities, and multipart MIME entities\.
+provides a variety of constructors for creating content MIME entities, and multipart MIME entities\&.
 .SS "Creating content MIME entities"
-.HP 17
+.HP \w'mail::Attachment('u
 .BI "mail::Attachment(std::string\ " "headers" ", int\ " "content_fd" ");"
-.HP 17
+.HP \w'mail::Attachment('u
 .BI "mail::Attachment(std::string\ " "headers" ", int\ " "content_fd" ", std::string\ " "charset" ", std::string\ " "transfer_encoding" "="");"
-.HP 17
+.HP \w'mail::Attachment('u
 .BI "mail::Attachment(std::string\ " "headers" ", std::string\ " "content_str" ");"
-.HP 17
+.HP \w'mail::Attachment('u
 .BI "mail::Attachment(std::string\ " "headers" ", std::string\ " "content_str" ", std::string\ " "charset" ", std::string\ " "transfer_encoding" "="");"
 .PP
-A non\-multipart entity is created by providing the content in a file descriptor (\fIcontent_fd\fR) or explicitly (\fIcontent_str\fR)\.
+A non\-multipart entity is created by providing the content in a file descriptor (\fIcontent_fd\fR) or explicitly (\fIcontent_str\fR)\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 The
 mail::Attachment
-object makes an internal copy of the file descriptor\. The original file descriptor does not need to remain open after the
+object makes an internal copy of the file descriptor\&. The original file descriptor does not need to remain open after the
 mail::Attachment
-object is constructed\. The duplicate file descriptor will be closed automatically when the object is destroyed\.
+object is constructed\&. The duplicate file descriptor will be closed automatically when the object is destroyed\&.
+.sp .5v
+.RE
 .PP
-The headers of the MIME entity are provided explicitly\. The first argument to the constructor (\fIheaders\fR) is usually an initialized
+The headers of the MIME entity are provided explicitly\&. The first argument to the constructor (\fIheaders\fR) is usually an initialized
 \fBmail::Header::list\fR(3x)
-object\. It\'s
+object\&. It\'s
 \fBstd::string\fR
-operator will conveniently generate a well\-formed list of mail headers\.
+operator will conveniently generate a well\-formed list of mail headers\&.
 .PP
 The
 \fIcharset\fR
 and
 \fItransfer_encoding\fR
-parameters are optional\.
+parameters are optional\&.
 \fIcontent_fd\fR
 or
 \fIcontent_str\fR
-provides the raw, unencoded, data for the MIME object\. The
+provides the raw, unencoded, data for the MIME object\&. The
 mail::Attachment
 object will heuristically select the most appropriate MIME encoding if the
 \fIcharset\fR
 and
 \fItransfer_encoding\fR
-parameters are not provided\.
+parameters are not provided\&.
 .PP
-The data may be either plain text, or binary data\.
+The data may be either plain text, or binary data\&.
 mail::Attachment
-will determine it automatically\. The optional
+will determine it automatically\&. The optional
 \fIcharset\fR
-parameter specifies the plain text\'s character set\. If specified, it will be factored into
-mail::Attachment\'s heuristic selection of the most appropriate MIME encoding for this plain text content\. Finally, specifying
+parameter specifies the plain text\'s character set\&. If specified, it will be factored into
+mail::Attachment\'s heuristic selection of the most appropriate MIME encoding for this plain text content\&. Finally, specifying
 \fItransfer_encoding\fR
 will override
-mail::Attachment\'s heuristics, and forcibly set the MIME encoding accordingly\.
+mail::Attachment\'s heuristics, and forcibly set the MIME encoding accordingly\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 To specify the MIME encoding only, specify an empty string for
 \fIcharset\fR
 (this would be appropriate for setting the MIME encoding \- which will obviously be
 base64
-here \- for binary content that is not associated with any character set\.
+here \- for binary content that is not associated with any character set\&.
+.sp .5v
+.RE
 .PP
 
 \fIheaders\fR
@@ -105,14 +127,14 @@ header, but must not contain the
 Content\-Transfer\-Encoding
 header, which will be provided by the
 mail::Attachment
-class\.
+class\&.
 .SS "Pre\-formatted MIME content"
 .PP
 It is possible to set
 \fIcontent_fd\fR
 or
 \fIcontent_str\fR
-to something that\'s already MIME\-formatted\.
+to something that\'s already MIME\-formatted\&.
 mail::Attachment
 will conclude that the content is already MIME\-formatted when
 \fIheaders\fR
@@ -124,34 +146,42 @@ header that sets the MIME type to either
 \(lqmessage/rfc822\(rq
 or any
 \(lqmultipart\(rq
-MIME type\.
+MIME type\&.
 .PP
-This is often used when the content is an existing, well\-formed MIME message\. Providing a
+This is often used when the content is an existing, well\-formed MIME message\&. Providing a
 \(lqContent\-Type: message/rfc822\(rq
 in
 \fIheaders\fR
-creates an attached MIME message\. This is just one of the two ways to create an attached MIME message\. A better way to create an attached MIME message is described later\.
+creates an attached MIME message\&. This is just one of the two ways to create an attached MIME message\&. A better way to create an attached MIME message is described later\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 A
 \(lqmultipart\(rq
 Content\-Type
 header must have a
 \(lqboundary\(rq
-parameter that actually matches the the MIME boundary delimiter in the specified content\.
+parameter that actually matches the the MIME boundary delimiter in the specified content\&.
+.sp .5v
+.RE
 .SS "Creating multipart MIME content"
 .PP
 A multipart MIME content is constructed by creating
 mail::Attachment
 for each content MIME section, then using the following multipart constructors:
-.HP 17
+.HP \w'mail::Attachment('u
 .BI "mail::Attachment(std::string\ " "headers" ", const\ std::vector<mail::Attachment\ *>\ &" "parts" ");"
-.HP 17
+.HP \w'mail::Attachment('u
 .BI "mail::Attachment(std::string\ " "headers" ", const\ std::vector<mail::Attachment\ *>\ &" "parts" ", std::string\ " "multipart_type" ", const\ mail::mimestruct::parameterList\ &" "multipart_parameters" ");"
 .PP
 The headers of a multipart MIME section must include a well\-formed
@@ -159,20 +189,26 @@ Content\-Type
 header set to either
 \(lqmessage/rfc822\(rq
 or
-\(lqmultipart/\fIsubtype\fR\(rq\. Alternatively,
+\(lqmultipart/\fIsubtype\fR\(rq\&. Alternatively,
 mail::Attachment
 will supply a
 Content\-Type
 header when provided with
 \fImultipart_type\fR
 and
-\fImultipart_parameters\fR\.
+\fImultipart_parameters\fR\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 \fIparts\fR
@@ -181,22 +217,28 @@ must be a vector of exactly one element when
 (or an existing
 Content\-Type
 header) is
-\(lqmessage/rfc822\(rq)\.
+\(lqmessage/rfc822\(rq)\&.
+.sp .5v
+.RE
 .SS "Generating MIME\-formatted messages"
 .sp
+.if n \{\
 .RS 4
+.\}
 .nf
 mail::Attachment top_attachment;
 std::string buffer;
 bool errflag;
 
    top_attachment\->begin();
-   while ((buffer=top_attachment\->generate(errflag))\.size() > 0)
+   while ((buffer=top_attachment\->generate(errflag))\&.size() > 0)
    {
        std::cout << buffer;
    }
 .fi
+.if n \{\
 .RE
+.\}
 .PP
 Once all
 mail::Attachment
@@ -204,38 +246,46 @@ objects are created, the MIME\-formatted message is generated by first calling t
 \fBbegin\fR() method of the topmost
 mail::Attachment
 object, then repeatedly calling the
-\fBgenerate\fR() method until it returns an empty string\. Each call to
-\fBgenerate\fR() returns the next portion of the formatted MIME message, and the empty string is returned after the entire MIME message is produced\. All
+\fBgenerate\fR() method until it returns an empty string\&. Each call to
+\fBgenerate\fR() returns the next portion of the formatted MIME message, and the empty string is returned after the entire MIME message is produced\&. All
 mail::Attachment
-objects must be destroyed immediately afterwards\.
+objects must be destroyed immediately afterwards\&.
 .PP
 A
 false
 \fIerrflag\fR, when
-\fBgenerate\fR() returns an empty string, indicates that the MIME\-formatted message was generated succesfully\. A
+\fBgenerate\fR() returns an empty string, indicates that the MIME\-formatted message was generated succesfully\&. A
 true
 \fIerrflag\fR
 indicated an
-errno\-related failure to generate the MIME\-formatted message\.
+errno\-related failure to generate the MIME\-formatted message\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 
 \fBgenerate\fR() will supply the
-\(lqMime\-Version: 1\.0\(rq
-header\. This header does not need to be explicitly included in the
+\(lqMime\-Version: 1\&.0\(rq
+header\&. This header does not need to be explicitly included in the
 \fIheaders\fR
 of the topmost
 mail::Attachment
-object\.
+object\&.
+.sp .5v
+.RE
 .SH "SEE ALSO"
 .PP
 
 \fBmail::Header::addresslist\fR(3x),
 \fBmail::Header::encoded\fR(3x),
 \fBmail::Header::mime\fR(3x),
-\fBmail::Header::plain\fR(3x)\.
+\fBmail::Header::plain\fR(3x)\&.

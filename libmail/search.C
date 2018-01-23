@@ -1,4 +1,4 @@
-/* $Id: search.C,v 1.6 2009/06/27 17:12:00 mrsam Exp $
+/* $Id: search.C,v 1.7 2009/11/08 23:52:31 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -10,6 +10,7 @@
 #include "envelope.H"
 #include "structure.H"
 #include "rfcaddr.H"
+#include "rfc2047decode.H"
 #include "unicode/unicode.h"
 
 #include "rfc822/rfc822.h"
@@ -769,20 +770,20 @@ void mail::searchOneMessage::searchEnvelope(const mail::envelope &envelope)
 		return;
 	}
 
-	char *p=rfc2047_decode_unicode(searchStr.c_str(),
-				       &unicode_UTF8, 0);
+	// TODO -- fix decoding
 
-	if (!p)
-		return;
+	std::string searchStrUTF8=
+		mail::rfc2047::decoder().decode(searchStr,
+						unicode_UTF8);
 
-	char *q= (*unicode_UTF8.toupper_func)(&unicode_UTF8, p, NULL);
-	free(p);
+	char *q= (*unicode_UTF8.toupper_func)(&unicode_UTF8,
+					      searchStrUTF8.c_str(), NULL);
 
 	if (!q)
 		return;
 
-	p=unicode_convert(searchInfo.param2.c_str(),
-			  searchCharset, &unicode_UTF8);
+	char *p=unicode_convert(searchInfo.param2.c_str(),
+				searchCharset, &unicode_UTF8);
 
 	if (!p)
 	{
@@ -970,17 +971,12 @@ void mail::searchOneMessage::search(string text)
 
 			text=text.substr(n+1);
 
-			char *p=rfc2047_decode_unicode(s.c_str(),
-						       &unicode_UTF8, 0);
+			std::string sutf8=
+				mail::rfc2047::decoder().decode(s,
+								unicode_UTF8);
 
-			if (p)
-			{
-				char *q= (*unicode_UTF8.toupper_func)
-					(&unicode_UTF8, p, 0);
-
-				free(p);
-				p=q;
-			}
+			char *p= (*unicode_UTF8.toupper_func)
+				(&unicode_UTF8, sutf8.c_str(), 0);
 
 			if (!p)
 				continue;

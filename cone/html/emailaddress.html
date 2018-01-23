@@ -6,7 +6,7 @@
   <title>mail::emailAddress</title>
   <link rel="stylesheet" href="manpage.css" type="text/css"/>
   
-  <link rel="start" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
+  <link rel="home" href="index.html" title="Cone: COnsole Newsreader And Emailer"/>
   <link rel="up" href="misc.html" title="Extra/Miscellaneous objects/methods"/>
   <link rel="prev" href="mail-attachments.html" title="mail::Attachment"/>
   <link rel="next" href="envelope.html" title="mail::envelope"/>
@@ -60,36 +60,63 @@ information.
         <p><br clear="none"/>
         #include&#160;&lt;libmail/rfcaddr.H&gt;<br clear="none"/>
         <br clear="none"/>
-        mail::emailAddress&#160;address("J&#243;se&#160;Smith",&#160;"josesmith@example.com");<br clear="none"/>
-
+        mail::emailAddress&#160;address;<br clear="none"/>
         <br clear="none"/>
-        std::string&#160;addr=address.getAddr();<br clear="none"/>
-        std::string&#160;name=address.getAddrName();<br clear="none"/>
+        address.setDisplayName("J&#243;se&#160;Smith");<br clear="none"/>
+        address.setDisplayAddr("josesmith@example.com");<br clear="none"/>
+        <br clear="none"/>
+        std::string&#160;addr=address.getDisplayAddr();<br clear="none"/>
+        std::string&#160;name=address.getDisplayName();<br clear="none"/>
         <br clear="none"/>
         address.setAddr(addr);<br clear="none"/>
-        address.setAddrName(name);<br clear="none"/>
+        address.setDisplayName(name);<br clear="none"/>
         <br clear="none"/></p>
       </div>
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id641852" shape="rect" name="id641852"> </a>
+      <a id="id624906" shape="rect" name="id624906"> </a>
 
       <h2>USAGE</h2>
 
       <p><span class="structname">mail::emailAddress</span> is a
       subclass of <span class="structname">mail::address</span>
-      that defines two new methods: <code class="function">getAddrName()</code>, <code class="function">setAddrName()</code>, which retrieve or set the
-      name component of an E-mail address using the native
-      character set. For most purposes, using <span class="structname">mail::emailAddress</span> is preferrable to
+      that defines four new methods: <code class="function">getDisplayName()</code>, <code class="function">setDisplayName()</code>, <code class="function">getDisplayAddr()</code> and <code class="function">setDisplayAddr()</code>, which retrieve or set the
+      name and the address components of an E-mail address using
+      the native character set. <span class="structname">mail::emailAddress</span> can be constructed
+      from an existing <span class="structname">mail::address</span>; or, the default
+      constructor initializes an empty address, then use
+      <code class="function">setDisplayName()</code> and
+      <code class="function">setDisplayAddr()</code> to set the
+      address structure. <code class="function">setDisplayName()</code> and <code class="function">setDisplayAddr()</code> return an empty string if
+      the display name or address was succesfully mapped from the
+      native character, or an error message.</p>
+
+      <p>Non-Latin characters in the name component use MIME
+      encoding. Passing the name component to <code class="function">setDisplayName()</code> MIME-encodes it using RFC
+      2047 and stores the encoded name in the <span class="structname">mail::address</span> superclass. <code class="function">setDisplayAddr()</code> encoded non-Latin
+      characters in the domain portion of the address using IDNA
+      encoding. <code class="function">getDisplayName()</code> and
+      <code class="function">getDisplayAddr()</code> retrieve the
+      name or the address portion from the <span class="structname">mail::address</span> superclass, and decode it
+      into the native character set, accordingly.</p>
+
+      <p>For most purposes, using <span class="structname">mail::emailAddress</span> is preferrable to
       using <span class="structname">mail::address</span>.
-      <span class="structname">mail::address</span>'s <code class="function">getName()</code> and <code class="function">setName()</code> methods deal with the raw,
-      MIME-encoded format of E-mail address names (see <a class="ulink" href="http://www.rfc-editor.org/rfc/rfc2047.txt" target="_top" shape="rect">RFC 2047</a>).</p>
+      <span class="structname">mail::address</span>'s <code class="function">getName()</code>, <code class="function">setName()</code>, <code class="function">getAddr()</code> and <code class="function">setAddr()</code> methods deal with the raw,
+      MIME-encoded format of E-mail addresses. This structure lets
+      the application deal with human-readable representation of
+      the email address.</p>
 
       <p>Convert a native name to its MIME-encoded format by using
-      <code class="function">setAddrName()</code> followed by
-      <code class="function">getName()</code>. Similarly, decoded a
-      MIME-encoded name by using <code class="function">setName()</code> followed by <code class="function">getAddrName()</code>.</p>
+      <code class="function">setDisplayName()</code> followed by
+      <code class="function">getName()</code>. Similarly, decode a
+      MIME-encoded name by using <code class="function">setName()</code> followed by <code class="function">getDisplayName()</code>.</p>
+
+      <p>Convert an email address to its IDNA-encoded format by
+      using <code class="function">setDisplayAddr()</code> followed
+      by <code class="function">getAddr()</code>. Similarly, decode
+      an IDNA-encoded name by using <code class="function">setAddr()</code> followed by <code class="function">getDisplayAddr()</code>.</p>
 
       <p>The <code class="function">toString</code> and
       <code class="function">fromString</code> methods are
@@ -99,7 +126,7 @@ information.
     </div>
 
     <div class="refsect1" lang="en" xml:lang="en">
-      <a id="id641970" shape="rect" name="id641970"> </a>
+      <a id="id625145" shape="rect" name="id625145"> </a>
 
       <h2>SEE ALSO</h2>
 

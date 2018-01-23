@@ -1,34 +1,40 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::ACCOUNT::getFolderKeywordInfo
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::GETFO" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::GETFO" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::ACCOUNT::getFolderKeywordInfo - Return message keywords
+mail::ACCOUNT::getFolderKeywordInfo \- Return message keywords
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/sync\.H>
+#include <libmail/sync\&.H>
 
 
 mail::ACCOUNT *mail;
 .fi
-.RE
-.HP 35
+.HP \w'bool\ ok=mail->getFolderKeywordInfo('u
 .BI "bool ok=mail->getFolderKeywordInfo(size_t\ " "messageNum" ", std::set<std::string>\ &" "keywords" ");"
 .SH "USAGE"
 .PP
@@ -37,21 +43,21 @@ mail::ACCOUNT *mail;
 retrieves the current keywords for message #\fImessagenum\fR
 and places them into
 \fIkeywords\fR
-(removing any existing contents)\. If the message does not have any keywords set,
+(removing any existing contents)\&. If the message does not have any keywords set,
 \fIkeywords\fR
-will be an empty set\.
+will be an empty set\&.
 
 
 
 \fImessageNum\fR
 must be between zero and one less than the return code from
-\fBmail::ACCOUNT::getFolderIndexSize\fR(3x)\.
+\fBmail::ACCOUNT::getFolderIndexSize\fR(3x)\&.
 .SH "RETURN CODES"
 .PP
-This function returns immediately\.
+This function returns immediately\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::ACCOUNT::getFolderIndexSize\fR(3x),
 \fBmail::ACCOUNT::getFolderIndexInfo\fR(3x),
-\fBmail::ACCOUNT::updateKeywords\fR(3x)\.
+\fBmail::ACCOUNT::updateKeywords\fR(3x)\&.

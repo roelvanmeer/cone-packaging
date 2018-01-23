@@ -1,4 +1,4 @@
-/* $Id: headers.H,v 1.3 2004/06/23 00:55:01 mrsam Exp $
+/* $Id: headers.H,v 1.4 2009/10/31 22:38:07 mrsam Exp $
 **
 ** Copyright 2004, Double Precision Inc.
 **
@@ -95,11 +95,18 @@ public:
 		    const std::vector<mail::emailAddress> &addressesArg);
 	~addresslist();
 
+#if 0
 	addresslist &operator()(std::string name, std::string addr)
 	{
-		addresses.push_back(mail::emailAddress(name, addr));
+		mail::emailAddress addr;
+
+		addr.setDisplayName(name);
+		addr.setDisplayAddr(addr);
+
+		addresses.push_back(addr);
 		return *this;
 	}
+#endif
 
 	addresslist &operator()(const mail::emailAddress &a)
 	{

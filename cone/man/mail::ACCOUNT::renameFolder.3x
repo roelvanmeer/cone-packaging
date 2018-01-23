@@ -1,83 +1,109 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::ACCOUNT::renameFolder
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::RENAM" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::RENAM" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::ACCOUNT::renameFolder - Rename a folder
+mail::ACCOUNT::renameFolder \- Rename a folder
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/sync\.H>
+#include <libmail/sync\&.H>
 
 mail::ACCOUNT *mail;
 .fi
-.RE
-.HP 40
+.HP \w'mail::folder\ *folder=mail->renameFolder('u
 .BI "mail::folder *folder=mail->renameFolder(const\ mail::folder\ *" "oldFolder" ", const\ mail::folder\ *" "newParent" ", std::string\ " "name" ");"
 .sp
-.RS 4
 .nf
 std::string errmsg=mail\->getErrmsg();
 .fi
-.RE
 .SH "USAGE"
 .PP
-This function renames an existing folder\.
+This function renames an existing folder\&.
 \fIoldFolder\fR
 is an existing folder or a folder directory (see
 \fBmail::folder::createSubFolder\fR(3x)
-for more information on folders and folder directories)\.
-\fInewParent\fR, if not NULL, specifies the new parent folder directory\. A NULL
+for more information on folders and folder directories)\&.
+\fInewParent\fR, if not NULL, specifies the new parent folder directory\&. A NULL
 \fInewParent\fR
-specifies that the folder should be be moved to the top level of the mail account\'s folder hierarchy\.
+specifies that the folder should be be moved to the top level of the mail account\'s folder hierarchy\&.
 .PP
 
 \fIname\fR
-specifies the new name of the folder, in the application\'s character set\.
+specifies the new name of the folder, in the application\'s character set\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
-Some mail servers reserve certain characters which cannot be used in folder names\. IMAP mail servers use a special character (usually "/" or "\.") as a separator between names in a hierarchical folder path\. The actual character varies from server to server\. An attempt to create/rename a folder whose name includes a reserved character will fail\. Different IMAP servers use different hierarchy separator characters\. An attempt to create a folder may fail on one IMAP server even if another IMAP server can succesfully create a folder with the same name\. This is, unfortunately, a design flaw in the IMAP protocol\.
+Some mail servers reserve certain characters which cannot be used in folder names\&. IMAP mail servers use a special character (usually "/" or "\&.") as a separator between names in a hierarchical folder path\&. The actual character varies from server to server\&. An attempt to create/rename a folder whose name includes a reserved character will fail\&. Different IMAP servers use different hierarchy separator characters\&. An attempt to create a folder may fail on one IMAP server even if another IMAP server can succesfully create a folder with the same name\&. This is, unfortunately, a design flaw in the IMAP protocol\&.
+.sp .5v
+.RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 Maildir folders created by are compatible and can be read by the
-\fICourier\-IMAP\fR\&[1]
-server\. Names of maildir folders may contain any character, including the characters ":", "/", "\.", "~", and ":"\. However, if the same folders are exported via IMAP, folders whose name includes these characters may not be readable by some IMAP clients\. Even a
+\m[blue]\fBCourier\-IMAP\fR\m[]\&\s-2\u[1]\d\s+2
+server\&. Names of maildir folders may contain any character, including the characters ":", "/", "\&.", "~", and ":"\&. However, if the same folders are exported via IMAP, folders whose name includes these characters may not be readable by some IMAP clients\&. Even a
 
 
 
 LibMAIL
-application may not be able to read one of these folders via IMAP\.
+application may not be able to read one of these folders via IMAP\&.
+.sp .5v
+.RE
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
 Mbox mail folders created by
 
@@ -89,18 +115,20 @@ are mostly compatible and can be exported by IMAP servers that read mbox\-format
 
 
 LibMAIL
-and another application at the same time)\. Names of mbox folders can contain any character, including the characters "/", and "~"\. However if mbox folders are exported via IMAP, folders whose name includes these characters may not be readable by some IMAP clients\.
+and another application at the same time)\&. Names of mbox folders can contain any character, including the characters "/", and "~"\&. However if mbox folders are exported via IMAP, folders whose name includes these characters may not be readable by some IMAP clients\&.
+.sp .5v
+.RE
 .SH "RETURN CODES AND CALLBACKS"
 .PP
 This function returns a pointer to the renamed
 mail::folder
-object, or a NULL pointer if the folder cannot be renamed for some reason\. The application is responsible for destroying the new
+object, or a NULL pointer if the folder cannot be renamed for some reason\&. The application is responsible for destroying the new
 mail::folder
-object, when it is no longer needed\.
+object, when it is no longer needed\&.
 .SH "SEE ALSO"
 .PP
 
-\fBmail::ACCOUNT::createFolder\fR(3x)\.
+\fBmail::ACCOUNT::createFolder\fR(3x)\&.
 .SH "NOTES"
 .IP " 1." 4
 Courier-IMAP

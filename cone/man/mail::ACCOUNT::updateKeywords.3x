@@ -1,64 +1,78 @@
 .\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
 .\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
+'\" t
 .\"     Title: mail::ACCOUNT::updateKeywords
-.\"    Author: 
-.\" Generator: DocBook XSL Stylesheets v1.73.2 <http://docbook.sf.net/>
-.\"      Date: 11/28/2008
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.74.3 <http://docbook.sf.net/>
+.\"      Date: 10/31/2009
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: 
+.\"    Source: [FIXME: source]
+.\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::UPDAT" "3x" "11/28/2008" "" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::UPDAT" "3x" "10/31/2009" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
 .SH "NAME"
-mail::ACCOUNT::updateKeywords - Update message keywords
+mail::ACCOUNT::updateKeywords \- Update message keywords
 .SH "SYNOPSIS"
 .sp
-.RS 4
 .nf
 
 
 
-#include <libmail/sync\.H>
+#include <libmail/sync\&.H>
 
 mail::ACCOUNT *mail;
 .fi
-.RE
-.HP 29
+.HP \w'bool\ ok=mail->updateKeywords('u
 .BI "bool ok=mail->updateKeywords(const\ std::vector<size_t>\ " "msgList" ", const\ std::set<std::string>\ &" "keywords" ", bool\ " "setOrChange" ", bool\ " "changeTo" ");"
-.HP 29
+.HP \w'bool\ ok=mail->updateKeywords('u
 .BI "bool ok=mail->updateKeywords(const\ std::vector<size_t>\ " "msgList" ", const\ std::list<std::string>\ &" "keywords" ", bool\ " "setOrChange" ", bool\ " "changeTo" ");"
-.HP 29
+.HP \w'bool\ ok=mail->updateKeywords('u
 .BI "bool ok=mail->updateKeywords(const\ std::vector<size_t>\ " "msgList" ", const\ std::vector<std::string>\ &" "keywords" ", bool\ " "setOrChange" ", bool\ " "changeTo" ");"
 .SH "USAGE"
 .PP
-This function updates the set of keywords of one or more messages\.
+This function updates the set of keywords of one or more messages\&.
 \fIkeywords\fR
-may also be specified as a list, or a vector (and duplicate occurences of a keyword are automatically removed)\.
+may also be specified as a list, or a vector (and duplicate occurences of a keyword are automatically removed)\&.
 .PP
 
 \fImsgList\fR
-specifies a list of messages\. Messages are numbered starting with message #0 and up to one less than
+specifies a list of messages\&. Messages are numbered starting with message #0 and up to one less than
 \fBmail::ACCOUNT::getFolderIndexSize\fR(3x)
 (when
 \fBmail::account::getFolderIndexSize\fR
-returns 6, the messages are numbered 0 through 5)\. Only the messages that appear in
+returns 6, the messages are numbered 0 through 5)\&. Only the messages that appear in
 \fImsgList\fR
-are processed by this request\. When a message is removed from the folder, by
-\fBmail::ACCOUNT::updateFolderIndexInfo\fR(3x), the following messages are renumbered accordingly\.
+are processed by this request\&. When a message is removed from the folder, by
+\fBmail::ACCOUNT::updateFolderIndexInfo\fR(3x), the following messages are renumbered accordingly\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
+.ps +1
+\fBNote\fR
+.ps -1
+.br
 .PP
-Most mail servers allow multiple applications to open the same folder\. Therefore, changes to the folder\'s contents can occur at any time\. Before making this request, the application should use
+Most mail servers allow multiple applications to open the same folder\&. Therefore, changes to the folder\'s contents can occur at any time\&. Before making this request, the application should use
 \fBmail::ACCOUNT::checkNewMail\fR(3x)
-to verify that no unexpected changes have been made to the folder\'s contents\.
+to verify that no unexpected changes have been made to the folder\'s contents\&.
+.sp .5v
+.RE
 .PP
 When
 \fIsetOrChange\fR
@@ -68,7 +82,7 @@ false,
 is ignored, and any existing keywords set for each message in
 \fImsgList\fR
 are completely replaced by
-\fIkeywords\fR\. When
+\fIkeywords\fR\&. When
 \fIsetOrChange\fR
 is
 true
@@ -79,75 +93,133 @@ are added to the existing set of keywords that are already set for each message 
 is
 true), or removed from the existing set of keywords (\fIchangeTo\fR
 is
-false)\.
+false)\&.
 .SS "Keywords"
 .PP
-Keywords are application\-defined flags, or markers, that are associated which each message in a folder\. Keywords names are arbitrary, and are subject to certain restrictions\.
+Keywords are application\-defined flags, or markers, that are associated which each message in a folder\&. Keywords names are arbitrary, and are subject to certain restrictions\&.
 
 
 
 LibMAIL
-does not place any special meaning on any particular keyword name\.
+does not place any special meaning on any particular keyword name\&.
 
 
 
 LibMAIL
-\'s sole involvement is to store the save the list of keywords set for a given message, and then retrieve it upon demand\.
+\'s sole involvement is to store the save the list of keywords set for a given message, and then retrieve it upon demand\&.
 .PP
-Which characters may be included in a keyword name depends on the underlying account type\. Applications that expect to use any supported account type should limit themselves to the lowest common denominator: case insensitive
+Which characters may be included in a keyword name depends on the underlying account type\&. Applications that expect to use any supported account type should limit themselves to the lowest common denominator: case insensitive
 us\-ascii
-character set; no whitespace or any of the following characters: commas; apostrophes; quotes; backslashes; forward slashes; opening/closing braces, brackets, and parenthesis; question marks; asterisks; percent signs\. In all cases, keyword names may not include any control characters\. Unless keywords are permanently saved, and remain available after the folder is closed, and subsequently reopened\. When the folder is reopened at some point later, all keywords will remain set for their corresponding messages (unless they were modified by another process)\.
+character set; no whitespace or any of the following characters: commas; apostrophes; quotes; backslashes; forward slashes; opening/closing braces, brackets, and parenthesis; question marks; asterisks; percent signs\&. In all cases, keyword names may not include any control characters\&. Unless keywords are permanently saved, and remain available after the folder is closed, and subsequently reopened\&. When the folder is reopened at some point later, all keywords will remain set for their corresponding messages (unless they were modified by another process)\&.
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'Temporary folders do not implement keywords\.
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Temporary folders do not implement keywords\&.
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'IMAP accounts have case\-insensitive keywords in the
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+IMAP accounts have case\-insensitive keywords in the
 us\-ascii
-character set\. Keyword names may not contain: apostrophes; quotes; backslashes; forward slashes; opening/closing braces, brackets, and parenthesis; question marks; asterisks; and percent signs\.
+character set\&. Keyword names may not contain: apostrophes; quotes; backslashes; forward slashes; opening/closing braces, brackets, and parenthesis; question marks; asterisks; and percent signs\&.
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+
 SMAP
 accounts have case\-sensitive keywords that use the
 UTF\-8
-character set\. Keyword names may not contain commas\.
+character set\&. Keyword names may not contain commas\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
-IMAP restrictions also apply if the same account is accessible via IMAP\.
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+IMAP restrictions also apply if the same account is accessible via IMAP\&.
+.sp .5v
+.RE
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'Maildir accounts have case\-sensitive keywords that use the
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Maildir accounts have case\-sensitive keywords that use the
 UTF\-8
-character set\.
+character set\&.
+.if n \{\
 .sp
+.\}
+.RS 4
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
 .br
-Note
-IMAP and/or SMAP restrictions also apply if the maildir is also accessible via IMAP or SMAP\.
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+IMAP and/or SMAP restrictions also apply if the maildir is also accessible via IMAP or SMAP\&.
+.sp .5v
+.RE
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'Mbox accounts have case\-sensitive keywords that use the
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Mbox accounts have case\-sensitive keywords that use the
 UTF\-8
-character set\.
+character set\&.
 .RE
 .sp
 .RS 4
-\h'-04'\(bu\h'+03'NNTP and POP3 accounts have case\-sensitive keywords that use the
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+NNTP and POP3 accounts have case\-sensitive keywords that use the
 UTF\-8
-character set\. Keywords are not saved\. When the folder is closed, all set keywords are lost\. Snapshots may be used to obtain permanent keyword storage for NNTP and POP3 accounts\. See
+character set\&. Keywords are not saved\&. When the folder is closed, all set keywords are lost\&. Snapshots may be used to obtain permanent keyword storage for NNTP and POP3 accounts\&. See
 \fBmail::folder::open\fR(3x)
-for more information\.
+for more information\&.
 .RE
 .SH "RETURN CODES"
 .PP
@@ -155,12 +227,12 @@ This method returns
 true
 if it succeeds, or
 false
-if it fails\. If the method fails, use
-mail::ACCOUNT::getErrmsg()
-to read a brief description of the error\.
+if it fails\&. If the method fails, use
+\fImail::ACCOUNT::getErrmsg()\fR
+to read a brief description of the error\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::ACCOUNT::saveFolderIndexInfo\fR(3x),
 \fBmail::ACCOUNT::getFolderIndexInfo\fR(3x),
-\fBmail::ACCOUNT::getFolderKeywordInfo\fR(3x)\.
+\fBmail::ACCOUNT::getFolderKeywordInfo\fR(3x)\&.
