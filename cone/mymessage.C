@@ -1,4 +1,4 @@
-/* $Id: mymessage.C,v 1.8 2007/04/06 17:57:29 mrsam Exp $
+/* $Id: mymessage.C,v 1.9 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2004, Double Precision Inc.
 **
@@ -357,7 +357,7 @@ void myMessage::copyContentsTo(mail::folder *f, myServer::Callback &cb)
 			myserver->copyMessagesTo(msgList, f, cb);
 	} catch (...) {
 		usingTmpaccount=wasUsingTmpaccount;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -497,7 +497,7 @@ bool myMessage::checkInterrupted(bool ignoreDrafts)
 			delete f;
 		} catch (...) {
 			delete f;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		return true;
 	}
@@ -859,7 +859,7 @@ void myMessage::readAttFiles(vector<string> &filenameList)
 	} catch (...) {
 		if (dirp)
 			closedir(dirp);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	sort(attachments.begin(), attachments.end(),
@@ -909,7 +909,7 @@ void myMessage::clearAttFiles()
 	} catch (...) {
 		if (dirp)
 			closedir(dirp);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 

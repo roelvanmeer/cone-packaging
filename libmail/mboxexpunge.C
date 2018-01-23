@@ -1,4 +1,4 @@
-/* $Id: mboxexpunge.C,v 1.2 2008/05/24 17:57:42 mrsam Exp $
+/* $Id: mboxexpunge.C,v 1.3 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -130,7 +130,7 @@ bool mail::mbox::ExpungeTask::locked(mail::mbox::lock &mlock, string path)
 	} catch (...) {
 		if (f >= 0)
 			close(f);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	if (rc)

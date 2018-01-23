@@ -9,7 +9,7 @@
 #include	<string.h>
 #include	<stdlib.h>
 
-static const char rcsid[]="$Id: sha1.c,v 1.2 2001/11/01 08:43:43 mrsam Exp $";
+static const char rcsid[]="$Id: sha1.c,v 1.3 2008/12/18 12:08:26 mrsam Exp $";
 
 #define	K0 0x5A827999
 #define	K1 0x6ED9EBA1
@@ -122,8 +122,8 @@ unsigned ll;
 
 void sha1_context_endstream(struct SHA1_CONTEXT *c, unsigned long l)
 {
-unsigned char buf[8];
-static unsigned char zero[SHA1_BLOCK_SIZE-8];
+	unsigned char buf[8];
+	static const unsigned char zero[SHA1_BLOCK_SIZE-8];
 
 	buf[0]=0x80;
 	sha1_context_hashstream(c, &buf, 1);

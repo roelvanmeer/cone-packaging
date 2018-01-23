@@ -1,4 +1,4 @@
-/* $Id: curseseditmessage.C,v 1.10 2005/02/24 03:39:09 mrsam Exp $
+/* $Id: curseseditmessage.C,v 1.11 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2005, Double Precision Inc.
 **
@@ -209,7 +209,7 @@ CursesEditMessage::yankHelper::cut::operator std::string()
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	return s;
 }
@@ -310,7 +310,7 @@ void CursesEditMessage::getText(size_t line,
 		free(ucp);
 	} catch (...) {
 		free(ucp);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -338,7 +338,7 @@ void CursesEditMessage::setText(size_t line,
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -517,7 +517,7 @@ bool CursesEditMessage::processKeyInFocus(const Key &key)
 					free(p);
 				} catch (...) {
 					free(p);
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 
 				restoredParagraph.push_back(s);
@@ -669,7 +669,7 @@ bool CursesEditMessage::processKeyInFocus(const Key &key)
 				free(uc);
 			} catch (...) {
 				free(uc);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 		}
 
@@ -711,7 +711,7 @@ bool CursesEditMessage::processKeyInFocus(const Key &key)
 				free(p);
 			} catch (...) {
 				free(p);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 		}
 
@@ -839,13 +839,13 @@ bool CursesEditMessage::processKeyInFocus(const Key &key)
 					free(p);
 				} catch (...) {
 					free(p);
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 
 				free(uc);
 			} catch (...) {
 				free(uc);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 			if (j == 0)
@@ -960,7 +960,7 @@ bool CursesEditMessage::processKeyInFocus(const Key &key)
 							free(p);
 						} catch (...) {
 							free(p);
-							LIBMAIL_THROW();
+							LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 						}
 				}
 
@@ -1072,7 +1072,7 @@ bool CursesEditMessage::processKeyInFocus(const Key &key)
 				free(p);
 			} catch (...) {
 				free(p);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 			filebuffer.push_back(line);
@@ -1198,7 +1198,7 @@ bool CursesEditMessage::processKeyInFocus(const Key &key)
 						free(p);
 					} catch (...) {
 						free(p);
-						LIBMAIL_THROW();
+						LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 					}
 			}
 
@@ -1285,7 +1285,7 @@ bool CursesEditMessage::processKeyInFocus(const Key &key)
 					free(uc);
 				} catch (...) {
 					free(uc);
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 
 				manager->replace(origWord, word_c);
@@ -1445,7 +1445,7 @@ bool CursesEditMessage::processKeyInFocus(const Key &key)
 				free(p);
 			} catch (...) {
 				free(p);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 			text_UTF8.push_back(line);
@@ -1540,7 +1540,7 @@ bool CursesEditMessage::processKeyInFocus(const Key &key)
 				} catch (...)
 				{
 					free(uc);
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 			}
 		}
@@ -1772,7 +1772,7 @@ bool CursesEditMessage::checkReplace(bool &doReplace, string &replaceWord,
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		break;
 	}
@@ -1831,7 +1831,7 @@ bool CursesEditMessage::ReplacePrompt::listKeys( vector< pair<string, string> >
 			free(uc);
 		} catch (...) {
 			free(uc);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		wc.push_back(0);
@@ -2260,7 +2260,7 @@ bool CursesEditMessage::search(bool doUpdate, bool doWrap,
 				free(uc);
 			} catch (...) {
 				free(uc);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 			searchPos=0;
@@ -2962,7 +2962,7 @@ void CursesEditMessage::load(istream &i)
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		++n;
 	}

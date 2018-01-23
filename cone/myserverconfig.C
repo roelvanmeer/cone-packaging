@@ -1,4 +1,4 @@
-/* $Id: myserverconfig.C,v 1.24 2008/07/13 15:50:10 mrsam Exp $
+/* $Id: myserverconfig.C,v 1.26 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -1295,7 +1295,7 @@ void myServer::config::save()
 					catch (...)
 					{
 						free(p);
-						LIBMAIL_THROW();
+						LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 					}
 
 			}
@@ -1324,7 +1324,7 @@ static string getProp(xmlNodePtr node, const char *prop)
 			free(val);
 		} catch (...) {
 			free(val);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 	return mail::rfc2047::decoder::decodeEnhanced(s,
@@ -1346,7 +1346,7 @@ static string getPropNC(xmlNodePtr node, const char *prop)
 			free(val);
 		} catch (...) {
 			free(val);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 	return mail::rfc2047::decoder::decodeSimple(s);
@@ -1364,7 +1364,7 @@ static string getTextNode(xmlNodePtr node)
 			free(val);
 		} catch (...) {
 			free(val);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 	return mail::rfc2047::decoder::decodeEnhanced(s,
@@ -1755,7 +1755,7 @@ bool myServer::config::loadconfig(xmlDocPtr doc,
 							abook);
 				} catch (...) {
 					delete abook;
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 				continue;
 			}
@@ -2309,7 +2309,7 @@ void myServer::config::loadmacros(Macros *mp, xmlDocPtr docPtr)
 			} catch (...)
 			{
 				free(uc);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 			free(uc);
 		}
@@ -2320,9 +2320,22 @@ void myServer::config::loadmacros(Macros *mp, xmlDocPtr docPtr)
 		{
 			if (strcasecmp((const char *)c->name, "TEXT") == 0)
 			{
-				mp->macroList.insert(make_pair(mn,
-							       getTextNode(c))
-						     );
+				std::string text_str;
+
+				char *cp=(char *)xmlNodeGetContent(c);
+
+				if (!cp)
+					continue;
+
+				try {
+					text_str=cp;
+					free(cp);
+				} catch (...) {
+					free(cp);
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
+				}
+
+				mp->macroList.insert(make_pair(mn, text_str));
 				break;
 			}
 		}
@@ -2570,7 +2583,7 @@ void myServer::saveFolderIndex(myFolder *mf)
 		xmlFreeDoc(doc);
 	} catch (...) {
 		xmlFreeDoc(doc);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -2704,7 +2717,7 @@ bool myServer::loadFolderIndex(string filename,
 							free(cp);
 						} catch (...) {
 							free(cp);
-							LIBMAIL_THROW();
+							LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 						}
 					}
 
@@ -2724,7 +2737,7 @@ bool myServer::loadFolderIndex(string filename,
 							free(cp);
 						} catch (...) {
 							free(cp);
-							LIBMAIL_THROW();
+							LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 						}
 					}
 				}
@@ -2775,7 +2788,7 @@ bool myServer::loadFolderIndex(string filename,
 		xmlFreeDoc(doc);
 	} catch (...) {
 		xmlFreeDoc(doc);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	return flag;

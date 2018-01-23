@@ -1,4 +1,4 @@
-/* $Id: filtereditscreen.C,v 1.7 2003/11/15 18:38:32 mrsam Exp $
+/* $Id: filtereditscreen.C,v 1.8 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -134,7 +134,7 @@ void Filter::editScreen::init(string filter)
 			buttons.push_back(bb);
 		} catch (...) {
 			delete bb;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		bb->myPos= --buttons.end();

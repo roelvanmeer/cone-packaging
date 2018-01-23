@@ -1,10 +1,10 @@
 /*
-** Copyright 1998 - 1999 Double Precision, Inc.  See COPYING for
+** Copyright 1998 - 2008 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
 /*
-** $Id: rfc2045_fromfd.c,v 1.7 2003/03/07 00:47:31 mrsam Exp $
+** $Id: rfc2045_fromfd.c,v 1.8 2008/10/12 03:05:49 mrsam Exp $
 */
 #if	HAVE_CONFIG_H
 #include "rfc2045_config.h"
@@ -55,7 +55,7 @@ off_t        orig_pos;
         if (lseek(fd, (off_t)0, SEEK_SET) == (off_t)-1)        return (NULL);
         if ((rfc=rfc2045_alloc()) == 0)        return (NULL);
 
-        while ((n=read(fd, buf, sizeof(buf))) > 0 && rfc->workinheader)
+        while (rfc->workinheader && (n=read(fd, buf, sizeof(buf))) > 0)
                 rfc2045_parse(rfc, buf, n);
         if (lseek(fd, orig_pos, SEEK_SET) == (off_t)-1)
         {

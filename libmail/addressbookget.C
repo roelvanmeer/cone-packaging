@@ -1,4 +1,4 @@
-/* $Id: addressbookget.C,v 1.5 2004/06/12 23:48:52 mrsam Exp $
+/* $Id: addressbookget.C,v 1.6 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -145,7 +145,7 @@ void mail::addressbook::GetAddressList<T>::readContents(string successMsg)
 		delete this;
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -157,7 +157,7 @@ void mail::addressbook::GetAddressList<T>::fail(std::string failMsg)
 		delete this;
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 

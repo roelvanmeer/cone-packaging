@@ -1,4 +1,4 @@
-/* $Id: imapfolders.C,v 1.7 2004/04/25 03:37:15 mrsam Exp $
+/* $Id: imapfolders.C,v 1.8 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -460,12 +460,12 @@ bool mail::imapCREATE::taggedMessage(mail::imap &imapAccount, string msgname,
 						free(p);
 					} catch (...) {
 						free(p);
-						LIBMAIL_THROW();
+						LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 					}
 				free(uc);
 			} catch (...) {
 				free(uc);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 		imapAccount.imapcmd("CREATE",

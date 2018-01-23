@@ -1,4 +1,4 @@
-/* $Id: configscreen.C,v 1.18 2008/07/07 03:25:40 mrsam Exp $
+/* $Id: configscreen.C,v 1.19 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -460,7 +460,7 @@ ConfigScreen::ConfigScreen(CursesContainer *parent)
 				catch (...)
 				{
 					free(p);
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 			}
 
@@ -474,7 +474,7 @@ ConfigScreen::ConfigScreen(CursesContainer *parent)
 			} catch (...)
 			{
 				delete mb;
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 		}
 

@@ -1,4 +1,4 @@
-/* $Id: addressbooksearch.C,v 1.2 2004/05/30 02:43:00 mrsam Exp $
+/* $Id: addressbooksearch.C,v 1.3 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -38,7 +38,7 @@ void mail::addressbook::Search<T>::fail(std::string msg)
 		delete this;
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -65,7 +65,7 @@ void mail::addressbook::Search<T>::go()
 			delete this;
 		} catch (...) {
 			delete this;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		return;
 	}

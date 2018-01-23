@@ -1,4 +1,4 @@
-/* $Id: filter.H,v 1.3 2003/09/01 20:58:43 mrsam Exp $
+/* $Id: filter.H,v 1.4 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -39,7 +39,7 @@ public:
 			filter_step_move, // Move msgs to another folder
 
 			filter_step_watch, // Watch
-			filter_step_unwatch, // Unwatch
+			filter_step_unwatch // Unwatch
 		} type;
 
 		mail::searchParams searchType;

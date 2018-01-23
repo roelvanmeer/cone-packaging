@@ -1,4 +1,4 @@
-#$Id: Makefile.am,v 1.58 2008/08/24 17:58:37 mrsam Exp $
+#$Id: Makefile.am,v 1.59 2009/06/27 16:32:38 mrsam Exp $
 #
 # Copyright 1998 - 2005 Double Precision, Inc.  See COPYING for
 # distribution information.
@@ -180,22 +180,22 @@ maildirkw.1: maildirkw.sgml ../docbook/sgml2man
 endif
 
 deliverquota.html: deliverquota.html.in
-	CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	./config.status --file=$@
 
 deliverquota.8: deliverquota.8.in
-	CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	./config.status --file=$@
 
 maildirmake.html: maildirmake.html.in
-	CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	./config.status --file=$@
 
 maildirmake.1: maildirmake.1.in
-	CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	./config.status --file=$@
 
 maildiracl.html: maildiracl.html.in
-	CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	./config.status --file=$@
 
 maildiracl.1: maildiracl.1.in
-	CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	./config.status --file=$@
 
 # autoresponse.c: autoresponsequota.h
 

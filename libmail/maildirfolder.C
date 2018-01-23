@@ -1,4 +1,4 @@
-/* $Id: maildirfolder.C,v 1.6 2004/04/25 03:37:15 mrsam Exp $
+/* $Id: maildirfolder.C,v 1.7 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -179,7 +179,7 @@ void mail::maildir::scan(string folderStr, vector<maildirMessageInfo> &index,
 		free(d);
 	} catch (...) {
 		free(d);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	static const char * const subdirs[]={"/cur","/new"};
@@ -225,7 +225,7 @@ void mail::maildir::scan(string folderStr, vector<maildirMessageInfo> &index,
 		} catch (...) {
 			if (dirp)
 				closedir(dirp);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	}
 
@@ -376,7 +376,7 @@ void mail::maildir::folder::readSubFolders( mail::callback::folderList
 
 			b++;
 		}
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	b=folderList.begin();
@@ -440,7 +440,7 @@ void mail::maildir::folder::buildFolderList(list<mail::folder *> &folderList,
 			folderList.push_back(p);
 		} catch (...) {
 			delete p;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	}
 }
@@ -466,7 +466,7 @@ mail::addMessage *mail::maildir::folder::addMessage(mail::callback
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	mail::maildir::addmessage *m=new
@@ -510,7 +510,7 @@ void mail::maildir::moveMessagesTo(const vector<size_t> &messages,
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	vector<size_t>::const_iterator b=messages.begin(), e=messages.end();
@@ -570,13 +570,13 @@ void mail::maildir::folder::createSubFolder(string name, bool isDirectory,
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		free(uc);
 	} catch (...) {
 		free(uc);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	mail::maildir::folder newFolder(maildirAccount, path + "." + nameutf7);
@@ -621,7 +621,7 @@ bool mail::maildir::folder::doCreate(bool isDirectory) const
 		free(d);
 	} catch (...) {
 		free(d);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	return mail::maildir::maildirmake(subdir, true);
@@ -701,7 +701,7 @@ void mail::maildir::folder::destroy(mail::callback &callback,
 			free(d);
 		} catch (...) {
 			free(d);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		if (!mail::maildir::maildirdestroy(s))
@@ -766,13 +766,13 @@ void mail::maildir::folder::renameFolder(const mail::folder *newParent,
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		free(uc);
 	} catch (...) {
 		free(uc);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	mail::maildir::folder newFolder(maildirAccount,
@@ -797,7 +797,7 @@ void mail::maildir::folder::renameFolder(const mail::folder *newParent,
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 	p=maildir_name2dir(".", newFolder.path.c_str());
@@ -807,7 +807,7 @@ void mail::maildir::folder::renameFolder(const mail::folder *newParent,
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 
@@ -852,7 +852,7 @@ bool mail::maildir::maildirdestroy(string d)
 	} catch (...) {
 		if (dirp)
 			closedir(dirp);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	list<string>::iterator b=contents.begin(), e=contents.end();

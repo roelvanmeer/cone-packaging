@@ -1,5 +1,5 @@
 /*
-** Copyright 2007-2008 Double Precision, Inc.
+** Copyright 2007-2009 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 #include	"config.h"
@@ -182,7 +182,6 @@ struct ssl_handle_t {
 	gnutls_dh_params_t dhparams;
 	gnutls_session_t session;
 
-	gnutls_x509_crt x509_crt;
 	gnutls_x509_privkey x509_key;
 
 	gnutls_openpgp_key_t pgp_crt;
@@ -726,9 +725,6 @@ static int add_certificates(gnutls_certificate_credentials_t xcred,
 
 static void tls_free_session_keys(ssl_handle ssl)
 {
-	if (ssl->x509_crt)
-		gnutls_x509_crt_deinit(ssl->x509_crt);
-
 	if (ssl->x509_key)
 		gnutls_x509_privkey_deinit(ssl->x509_key);
 
@@ -738,7 +734,6 @@ static void tls_free_session_keys(ssl_handle ssl)
 	if (ssl->pgp_key)
 		gnutls_openpgp_privkey_deinit(ssl->pgp_key);
 
-	ssl->x509_crt=NULL;
 	ssl->x509_key=NULL;
 	ssl->pgp_crt=NULL;
 	ssl->pgp_key=NULL;
@@ -1165,8 +1160,7 @@ static int set_cert(ssl_handle ssl,
 
 		cert_cnt=0;
 
-		if ((rc=gnutls_x509_crt_init(&ssl->x509_crt)) < 0 ||
-		    (rc=gnutls_x509_privkey_init(&ssl->x509_key)) < 0 ||
+		if ((rc=gnutls_x509_privkey_init(&ssl->x509_key)) < 0 ||
 		    (rc=gnutls_x509_privkey_import(ssl->x509_key, &filebuf,
 						   GNUTLS_X509_FMT_PEM)) < 0)
 			break;
@@ -1189,8 +1183,8 @@ static int set_cert(ssl_handle ssl,
 		if (rc < 0)
 		{
 			st->ncerts=0;
-			st->cert.x509=0;
 			gnutls_free(st->cert.x509);
+			st->cert.x509=0;
 			break;
 		}
 		st->ncerts=rc;
@@ -1708,7 +1702,7 @@ RT |
 	    gnutls_compression_set_priority(ssl->session, ctx->comp_list) < 0 ||
 	    gnutls_protocol_set_priority(ssl->session, ctx->protocol_list) < 0||
 	    (ctx->certfiledh && read_dh_params(ssl->dhparams,
-					       ctx->certfile)) < 0 ||
+					       ctx->certfile) < 0) ||
 	    add_certificates(ssl->xcred, ctx->trustcerts) < 0 ||
 #if 0
 	    add_certificates(ssl->xcred, ctx->certfile) < 0 ||
@@ -1727,8 +1721,8 @@ RT |
 	    (ctx->info_cpy.peer_verify_domain &&
 	     gnutls_server_name_set(ssl->session, GNUTLS_NAME_DNS,
 				    ctx->info_cpy.peer_verify_domain,
-				    strlen(ctx->info_cpy.peer_verify_domain))
-	     < 0)
+				    strlen(ctx->info_cpy.peer_verify_domain)
+	     < 0))
 	    )
 	{
 		tls_free_session(ssl);
@@ -1745,8 +1739,11 @@ RT |
 
 	if (ctx->isserver)
 	{
-		gnutls_certificate_server_set_request(ssl->session,
-						      GNUTLS_CERT_REQUEST);
+		if (ctx->verify_cert)
+			gnutls_certificate_server_set_request(ssl->session,
+							      ctx->fail_if_no_cert ?
+							      GNUTLS_CERT_REQUIRE:
+							      GNUTLS_CERT_REQUEST);
 		gnutls_certificate_server_set_retrieve_function(ssl->xcred,
 								get_server_cert
 								);
@@ -2258,7 +2255,7 @@ static void gen_encryption_desc(gnutls_session_t session,
 	snprintf(buf, sizeof(buf), "%d",
 		 (int)gnutls_cipher_get_key_size(gnutls_cipher_get(session))
 		 *8);
-	buf[sizeof(buf)]=0;
+	buf[sizeof(buf)-1]=0;
 	(*dump_func)(buf, -1, dump_arg);
 	(*dump_func)("bits,", -1, dump_arg);
 	dump_cipher_name(session, dump_func, dump_arg);

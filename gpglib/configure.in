@@ -3,7 +3,7 @@ dnl
 dnl Copyright 2001 Double Precision, Inc.  See COPYING for
 dnl distribution information.
 dnl
-dnl $Id: configure.in,v 1.17 2007/02/26 04:13:40 mrsam Exp $
+dnl $Id: configure.in,v 1.18 2008/11/27 21:51:16 mrsam Exp $
 
 AC_INIT(webpgp, 0.10, [courier-users@lists.sourceforge.net])
 
@@ -30,7 +30,7 @@ then
         AC_MSG_ERROR(Perl is required)
 fi
 
-AC_CACHE_CHECK( [for gpg charset], gpg_charset,
+AC_CACHE_CHECK( [for gpg charset], ac_cv_gpg_charset,
 
 rm -rf conftestdir
 mkdir conftestdir
@@ -40,16 +40,16 @@ export GNUPGHOME
 
 if gpg --charset utf-8 --list-keys >/dev/null 2>&1
 then
-	gpg_charset=utf-8
+	ac_cv_gpg_charset=utf-8
 else
-	gpg_charset=iso-8859-1
+	ac_cv_gpg_charset=iso-8859-1
 fi
 rm -rf conftestdir
 unset GNUPGHOME
 
 )
 
-AC_DEFINE_UNQUOTED(GPG_CHARSET,"$gpg_charset",
+AC_DEFINE_UNQUOTED(GPG_CHARSET,"$ac_cv_gpg_charset",
 	[ Default gpg output character set ])
 
 VERSION="`$GPG --version | sed '2,$d;s/.* //'`"

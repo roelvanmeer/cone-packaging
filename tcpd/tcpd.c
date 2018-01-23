@@ -52,7 +52,7 @@
 
 #include	<netdb.h>
 
-static const char rcsid[]="$Id: tcpd.c,v 1.45 2007/08/30 01:38:49 mrsam Exp $";
+static const char rcsid[]="$Id: tcpd.c,v 1.46 2009/06/27 16:32:38 mrsam Exp $";
 
 static const char *accessarg=0;
 static const char *accesslocal=0;
@@ -1173,7 +1173,7 @@ static void accepted(int n, int sockfd, RFC1035_NETADDR *sin, int sinl,
 	{
 		wait_restore(childsig);
 
-		if (accesslocal) // Lookup local interface address too?
+		if (accesslocal) /* Lookup local interface address too? */
 		{
 		RFC1035_NETADDR lsin;
 		RFC1035_ADDR laddr;

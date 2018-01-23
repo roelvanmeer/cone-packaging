@@ -1,4 +1,4 @@
-/* $Id: addressbookadd.C,v 1.8 2008/05/24 17:57:41 mrsam Exp $
+/* $Id: addressbookadd.C,v 1.9 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -250,7 +250,7 @@ void mail::addressbook::Add::reindexed(string successMsg)
 		delete this;
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -261,7 +261,7 @@ void mail::addressbook::Add::fail(string failMsg)
 		delete this;
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 

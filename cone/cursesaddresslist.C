@@ -269,7 +269,7 @@ bool CursesAddressList::validate(size_t rowNum,  // Changed AddressField
 			}
 			fields.erase(fields.begin() + rowNum+1,
 				     fields.begin() + rowNum + addrvec.size());
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		for (i=fields.size(); i > rowNum + addrvec.size(); )
@@ -397,7 +397,7 @@ void CursesAddressList::setAddresses( vector<mail::emailAddress> &addressArray)
 		fields.push_back(p);
 	} catch (...) {
 		delete p;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	resized();
 

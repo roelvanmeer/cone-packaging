@@ -1,4 +1,4 @@
-/* $Id: cursesindexdisplay.C,v 1.22 2006/04/11 02:24:59 mrsam Exp $
+/* $Id: cursesindexdisplay.C,v 1.23 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2006, Double Precision Inc.
 **
@@ -332,7 +332,7 @@ void CursesIndexDisplay::drawLine(size_t row)
 				free(name_locale);
 			} catch (...) {
 				free(name_locale);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 		// Pad subject to field width
@@ -405,7 +405,7 @@ void CursesIndexDisplay::drawLine(size_t row)
 			} catch (...)
 			{
 				free(p);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 			if (subj_flags & CORESUBJ_RE)
@@ -427,7 +427,7 @@ void CursesIndexDisplay::drawLine(size_t row)
 				free(subject_locale);
 			} catch (...) {
 				free(subject_locale);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 		vector<wchar_t> thread_pad;
@@ -667,7 +667,7 @@ bool CursesIndexDisplay::processKeyInFocus(const Curses::Key &key)
 				delete folder;
 			if (smtpServer)
 				delete smtpServer;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		return true;

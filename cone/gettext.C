@@ -1,4 +1,4 @@
-/* $Id: gettext.C,v 1.18 2008/07/07 03:25:40 mrsam Exp $
+/* $Id: gettext.C,v 1.19 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -430,7 +430,7 @@ string Gettext::toutf8(string str)
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	return u;
@@ -451,7 +451,7 @@ string Gettext::fromutf8(string str)
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	return c;

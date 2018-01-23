@@ -5,7 +5,7 @@
 ** distribution information.
 */
 
-static const char gpglib_h_rcsid[]="$Id: gpglib.h,v 1.9 2008/07/07 03:25:41 mrsam Exp $";
+static const char gpglib_h_rcsid[]="$Id: gpglib.h,v 1.10 2009/06/27 17:12:00 mrsam Exp $";
 
 #ifdef  __cplusplus
 extern "C" {
@@ -237,6 +237,6 @@ struct rfc2045 *libmail_gpgmime_signed_content(const struct rfc2045 *);
 	*/
 
 #ifdef  __cplusplus
-} ;
+}
 #endif
 #endif

@@ -1,4 +1,4 @@
-/* $Id: imapparsefmt.C,v 1.2 2004/02/22 03:59:46 mrsam Exp $
+/* $Id: imapparsefmt.C,v 1.3 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -37,7 +37,7 @@ mail::imapparsefmt::imapparsefmt(const mail::imapparsefmt &cpy)
 	{
 		destroy();
 		children.clear();
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -73,7 +73,7 @@ mail::imapparsefmt &mail::imapparsefmt
 		} catch (...)
 		{
 			delete ptr;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		b++;
 	}

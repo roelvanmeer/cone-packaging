@@ -1,4 +1,4 @@
-/* $Id: cursesedit.C,v 1.31 2008/07/07 03:25:40 mrsam Exp $
+/* $Id: cursesedit.C,v 1.32 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -855,13 +855,13 @@ void CursesEdit::init()
 			} catch (...) {
 				free(disposition_name);
 				free(disposition_filename);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 			rfc2045_free(rfcp);
 		} catch (...) {
 			rfc2045_free(rfcp);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		string name;
@@ -881,7 +881,7 @@ void CursesEdit::init()
 			attachmentList.push_back(b);
 		} catch (...) {
 			delete b;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	}
 
@@ -1138,7 +1138,7 @@ void CursesEdit::addAttachment(vector<string> &fileList, string mimeContentType)
 			attachmentList.push_back(b);
 		} catch (...) {
 			delete b;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		addressResized(); // Redo layout
@@ -1337,14 +1337,14 @@ string CursesEdit::attach(string filename, string description,
 			fclose(ifp);
 		} catch (...) {
 			fclose(ifp);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		fclose(fp);
 	} catch (...) {
 		fclose(fp);
 		unlink(tmpname.c_str());
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	if (errmsg.size() > 0)
@@ -1798,7 +1798,7 @@ bool CursesEdit::processKey(const Curses::Key &key)
 			delete f;
 		} catch (...) {
 			delete f;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		return true;
 	}
@@ -1964,7 +1964,7 @@ bool CursesEdit::processKey(const Curses::Key &key)
 
 			if (sentFolder)
 				delete sentFolder;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		return true;
 	}
@@ -3092,7 +3092,7 @@ void CursesEdit::markreplied()
 		} catch (...) {
 			if (anotherLogin)
 				delete anotherLogin;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		mail::folder *loginFolder=NULL;
@@ -3185,7 +3185,7 @@ void CursesEdit::markreplied()
 				delete loginFolder;
 
 			delete anotherLogin;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		break;
 	}
@@ -3693,7 +3693,7 @@ bool CursesEdit::save(SaveSink &sink,
 		fclose(fp2);
 	} catch (...) {
 		fclose(fp2);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	if (errmsg.size() > 0)

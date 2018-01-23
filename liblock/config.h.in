@@ -75,6 +75,10 @@
 /* Either off64_t or off_t */
 #undef LL_OFFSET_TYPE
 
+/* Define to the sub-directory in which libtool stores uninstalled libraries.
+   */
+#undef LT_OBJDIR
+
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
 

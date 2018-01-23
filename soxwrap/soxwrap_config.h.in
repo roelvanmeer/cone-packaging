@@ -81,6 +81,9 @@
 /* Whether sockaddr_storage is available */
 #undef SOCKADDR_STORAGE
 
+/* The address family field in SOCKADDR_STORAGE */
+#undef SS_family
+
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 

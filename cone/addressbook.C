@@ -1,4 +1,4 @@
-/* $Id: addressbook.C,v 1.12 2007/09/26 01:42:40 mrsam Exp $
+/* $Id: addressbook.C,v 1.13 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2006, Double Precision Inc.
 **
@@ -189,7 +189,7 @@ void AddressBook::init()
 							abook);
 				} catch (...) {
 					delete abook;
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 
 				myServer::saveconfig();
@@ -270,12 +270,12 @@ void AddressBook::init()
 		} catch (...) {
 			if (abook)
 				delete abook;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	} catch (...) {
 		delete defaultAddressBook;
 		defaultAddressBook=NULL;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -313,7 +313,7 @@ bool AddressBook::open()
 		} catch (...)
 		{
 			delete i;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		delete i;
 #endif
@@ -334,7 +334,7 @@ bool AddressBook::open()
 		} catch (...)
 		{
 			delete i;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		delete i;
 	}
@@ -395,7 +395,7 @@ void AddressBook::close()
 	} catch (...)
 	{
 		delete i;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	delete i;
@@ -949,7 +949,7 @@ AddressBookIndexScreen::AddressBookIndexScreen(CursesMainScreen *parent,
 			buttons.insert(buttons.end(), bb);
 		} catch (...) {
 			delete bb;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		indexDialog.addPrompt(NULL, bb);
@@ -1135,7 +1135,7 @@ bool AddressBookIndexScreen::processKey(const Curses::Key &key)
 				free(p);
 			} catch (...) {
 				free(p);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 			size_t ip;
@@ -1464,7 +1464,7 @@ void AddLdapScreen::save()
 							abook);
 				} catch (...) {
 					delete abook;
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 
 				myServer::saveconfig();
@@ -1637,7 +1637,7 @@ ListAddressBookScreen::ListAddressBookScreen(CursesMainScreen *parent)
 			buttons.insert(buttons.end(), bp);
 		} catch (...) {
 			delete bp;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		listDialog.addPrompt(NULL, bp);
@@ -1662,7 +1662,7 @@ ListAddressBookScreen::ListAddressBookScreen(CursesMainScreen *parent)
 			buttons.insert(buttons.end(), bp);
 		} catch (...) {
 			delete bp;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		listDialog.addPrompt(NULL, bp);
@@ -1904,7 +1904,7 @@ AddressBookTakeScreen::AddressBookTakeScreen(CursesMainScreen *parent,
 			buttons.insert(buttons.end(), bb);
 		} catch (...) {
 			delete bb;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		indexDialog.addPrompt(NULL, bb);
@@ -1982,7 +1982,7 @@ void AddressBook::takeScreen(void *arg)
 	{
 		if (addresses)
 			delete addresses;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -2031,7 +2031,7 @@ void AddressBook::take(vector<mail::address> &addrListArg)
 	catch (...)
 	{
 		delete addrbuf;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	if (addrbuf->size() == 0)

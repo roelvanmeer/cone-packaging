@@ -1,4 +1,4 @@
-/* $Id: sync.C,v 1.12 2008/05/24 17:57:42 mrsam Exp $
+/* $Id: sync.C,v 1.13 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -106,7 +106,7 @@ void mail::ACCOUNT::FolderList::append(const mail::folder *f)
 	} catch (...)
 	{
 		delete g;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 

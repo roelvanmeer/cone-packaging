@@ -1,4 +1,4 @@
-/* $Id: cursesattachmentdisplay.C,v 1.8 2005/06/17 02:05:56 mrsam Exp $
+/* $Id: cursesattachmentdisplay.C,v 1.9 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2005, Double Precision Inc.
 **
@@ -161,7 +161,7 @@ void CursesAttachmentDisplay::createAttList(mail::mimestruct *mimePtr,
 			children.push_back(l);
 		} catch (...) {
 			delete l;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		l->setRow(rowNum++);
@@ -199,7 +199,7 @@ void CursesAttachmentDisplay::createMsgAtt(mail::mimestruct *mimePtr,
 		children.push_back(a);
 	} catch (...) {
 		delete a;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	a->setRow(rowNum++);
 	a->setCol(nestingLevel * 2);
@@ -376,7 +376,7 @@ bool CursesAttachmentDisplay::processKey(const Curses::Key &key)
 		} catch (...) {
 			if (s->currentFolder)
 				s->currentFolder->isExpungingDrafts=false;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		keepgoing=false;
 		if (myServer::nextScreen == NULL)

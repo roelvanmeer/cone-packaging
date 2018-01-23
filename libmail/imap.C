@@ -1,4 +1,4 @@
-/* $Id: imap.C,v 1.13 2008/07/07 03:25:41 mrsam Exp $
+/* $Id: imap.C,v 1.14 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -1277,7 +1277,7 @@ void mail::imap::readMessageContent(size_t messageNum,
 						     *fakeCallback);
 			} catch (...) {
 				delete fakeCallback;
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 			return;
 		}
@@ -1327,7 +1327,7 @@ void mail::imap::readMessageContentDecoded(size_t messageNum,
 	} catch (...)
 	{
 		delete d;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -1549,7 +1549,7 @@ void mail::imap::doReadMessageContent(const vector<size_t> &messages,
 	} catch (...) {
 		if (decodeCallback)
 			delete decodeCallback;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 

@@ -1,4 +1,4 @@
-/* $Id: mail.H,v 1.16 2008/07/07 03:25:41 mrsam Exp $
+/* $Id: mail.H,v 1.17 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -45,6 +45,9 @@ struct unicode_info;
 #define LIBMAIL_THROW(x) do { fprintf(stderr, "Exception at %s(%d)\n", __FILE__, __LINE__); throw x;} while (0)
 #else
 #define LIBMAIL_THROW(x) throw x
+
+#define LIBMAIL_THROW_EMPTY
+
 #endif
 
 LIBMAIL_START

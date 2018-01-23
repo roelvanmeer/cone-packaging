@@ -1,4 +1,4 @@
-/* $Id: generic.C,v 1.15 2005/06/30 15:25:49 mrsam Exp $
+/* $Id: generic.C,v 1.16 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -738,7 +738,7 @@ void mail::generic::ReadMultiple::success(string s)
 		}
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	mail::callback *c=callback;
@@ -807,7 +807,7 @@ void mail::generic::ReadMultiple::RunningLater()
 						     temp_callback);
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -836,7 +836,7 @@ void mail::generic::ReadMultiple::processTempFile(string s)
 	} catch (...) {
 		delete this;
 
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	success(s);
 }
@@ -969,7 +969,7 @@ void mail::generic::ReadMimePart::success(string message)
 				? copyContents():copyHeaders();
 		} catch (...) {
 			delete this;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 	mail::callback *c=callback;
@@ -1005,7 +1005,7 @@ bool mail::generic::ReadMimePart::copyHeaders()
 	} catch (...) {
 		if (h)
 			rfc2045header_end(h);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	return true;
 }
@@ -1171,7 +1171,7 @@ void mail::generic::genericGetMessageFdStruct(string uid,
 		genericGetMessageFd(uid, messageNumber, peek, fdRet, *s);
 	} catch (...) {
 		delete s;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -1256,7 +1256,7 @@ void mail::generic::genericReadMessageContent(mail::account *account,
 		r->success("OK");
 	} catch (...) {
 		delete r;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -1286,7 +1286,7 @@ void mail::generic::genericReadMessageContentDecoded(mail::account *account,
 	} catch (...)
 	{
 		delete d;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -1330,7 +1330,7 @@ void mail::generic::genericReadMessageContent(mail::account *account,
 
 	} catch (...) {
 		delete m;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -1505,7 +1505,7 @@ void mail::generic::genericMakeMimeStructure(mail::mimestruct &s,
 	} catch (...) {
 		if (h)
 			rfc2045header_end(h);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	if (h)
@@ -1767,7 +1767,7 @@ void mail::generic::genericRemoveMessages(mail::account *account,
 		r->success("OK");
 	} catch (...) {
 		delete r;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 

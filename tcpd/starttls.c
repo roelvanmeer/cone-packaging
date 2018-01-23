@@ -62,7 +62,7 @@
 #endif
 #include	<locale.h>
 
-static const char rcsid[]="$Id: starttls.c,v 1.43 2008/06/29 20:18:36 mrsam Exp $";
+static const char rcsid[]="$Id: starttls.c,v 1.44 2009/06/27 16:32:38 mrsam Exp $";
 
 /* Command-line options: */
 const char *clienthost=0;
@@ -220,7 +220,7 @@ static void dump_to_fp(const char *p, int cnt, void *arg)
 		cnt=strlen(p);
 
 	if (dcs->fp && fwrite(p, cnt, 1, dcs->fp) != 1)
-		; // NOOP
+		; /* NOOP */
 
 	while (cnt)
 	{

@@ -4,7 +4,7 @@
 */
 
 /*
-** $Id: imaprefs.c,v 1.10 2003/07/09 21:33:20 mrsam Exp $
+** $Id: imaprefs.c,v 1.11 2008/12/02 03:41:19 mrsam Exp $
 */
 
 #include	"config.h"
@@ -254,7 +254,7 @@ int n;
 	{
 		char *msgid=rfc822_getaddr(a, n);
 
-		msg=*msgid ? rfc822_threadsearchmsg(mt, msgid ? msgid:""):0;
+		msg=msgid ? rfc822_threadsearchmsg(mt, msgid):0;
 		if (!msg)
 		{
 			msg=rfc822_threadallocmsg(mt, msgid ? msgid:"");

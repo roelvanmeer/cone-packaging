@@ -1,4 +1,4 @@
-/* $Id: cone.C,v 1.22 2008/07/13 15:50:10 mrsam Exp $
+/* $Id: cone.C,v 1.23 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -293,7 +293,7 @@ myServer *tryCreateAccount(string account, string url, string password,
 	} catch (...)
 	{
 		delete ms;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	return ms;

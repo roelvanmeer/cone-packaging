@@ -1,4 +1,4 @@
-/* $Id: myfolder.C,v 1.24 2007/04/06 17:57:29 mrsam Exp $
+/* $Id: myfolder.C,v 1.25 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2006, Double Precision Inc.
 **
@@ -415,11 +415,11 @@ void myFolder::newMessages()
 			} catch (...) {
 				--newMailCheckCount;
 				delete update_index;
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 		} catch (...) {
 			delete new_mail_update;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	}
 
@@ -848,7 +848,7 @@ void myFolder::markDeleted(size_t n, bool isDeleted, bool setStatusFlag)
 			s->server->saveFolderIndexInfo(sIndex, msgInfo, *cb);
 		} catch (...) {
 			delete cb;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	}
 }
@@ -931,7 +931,7 @@ void myFolder::toggleMark(size_t n)
 			s->server->saveFolderIndexInfo(sIndex, msgInfo, *cb);
 		} catch (...) {
 			delete cb;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	}
 }
@@ -1497,7 +1497,7 @@ void myFolder::goDraft()
 	} catch (...) {
 		fclose(openDraft.fp);
 		rfc2045_free(openDraft.rfc2045p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	fclose(openDraft.fp);
 	rfc2045_free(openDraft.rfc2045p);
@@ -1527,7 +1527,7 @@ void myFolder::goDraft()
 			isExpungingDrafts=false;
 		} catch (...) {
 			isExpungingDrafts=false;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	}
 
@@ -1877,7 +1877,7 @@ void myFolder::openMessage(size_t messageNum,
 			mymessage=cm;
 		} catch (...) {
 			delete cm;
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		if (completedFuncArg)
@@ -2009,12 +2009,12 @@ void myFolder::FolderIndexUpdate
 					good=true;
 				} catch (...) {
 					free(p);
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 			free(uc);
 		} catch (...) {
 			free(uc);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		if (!good)
@@ -2258,7 +2258,7 @@ void myFolder::Index::toupper()
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	p=(*unicode_UTF8.toupper_func)(&unicode_UTF8,
@@ -2271,7 +2271,7 @@ void myFolder::Index::toupper()
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -2410,7 +2410,7 @@ bool myFolder::sortBySubject(size_t a, size_t b)
 		free(as);
 	} catch (...) {
 		free(as);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	char *bs=rfc822_coresubj_nouc(sb.c_str(), &brefwd);
@@ -2423,7 +2423,7 @@ bool myFolder::sortBySubject(size_t a, size_t b)
 		free(bs);
 	} catch (...) {
 		free(bs);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	if (sa == sb)

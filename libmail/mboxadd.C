@@ -1,4 +1,4 @@
-/* $Id: mboxadd.C,v 1.4 2006/06/04 21:36:02 mrsam Exp $
+/* $Id: mboxadd.C,v 1.5 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2006, Double Precision Inc.
 **
@@ -208,7 +208,7 @@ void mail::mbox::folder::add::copyTo(mail::file &file)
 		success("OK");
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 

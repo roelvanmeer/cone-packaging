@@ -1,11 +1,11 @@
 /*
-** $Id: rfc822.h,v 1.24 2006/04/11 02:24:59 mrsam Exp $
+** $Id: rfc822.h,v 1.25 2009/06/27 16:32:38 mrsam Exp $
 */
 #ifndef	rfc822_h
 #define	rfc822_h
 
 /*
-** Copyright 1998 - 2006 Double Precision, Inc.
+** Copyright 1998 - 2009 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
@@ -83,9 +83,6 @@ struct rfc822t {
 	struct rfc822token *tokens;
 	int	ntokens;
 } ;
-
-struct rfc822t *rfc822t_alloc(const char *p,
-	void (*err_func)(const char *, int));	/* Parse addresses */
 
 struct rfc822t *rfc822t_alloc_new(const char *p,
 	void (*err_func)(const char *, int, void *), void *);

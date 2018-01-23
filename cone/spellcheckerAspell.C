@@ -1,4 +1,4 @@
-/* $Id: spellcheckerAspell.C,v 1.5 2008/05/24 17:57:41 mrsam Exp $
+/* $Id: spellcheckerAspell.C,v 1.6 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -207,7 +207,7 @@ bool SpellChecker::Manager::suggestions(string word,
 		delete elements;
 	} catch (...) {
 		delete elements;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 #else
 
@@ -232,7 +232,7 @@ bool SpellChecker::Manager::suggestions(string word,
 	}
 	catch (...) {
 		delete_aspell_string_enumeration(elements);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 #endif

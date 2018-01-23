@@ -1,4 +1,4 @@
-/* $Id: myserver.C,v 1.14 2008/07/07 03:25:41 mrsam Exp $
+/* $Id: myserver.C,v 1.15 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -340,7 +340,7 @@ bool myServer::eventloop(myServer::Callback &callback)
 		--cmdcount;
 	} catch (...) {
 		--cmdcount;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	return rc;
 }
@@ -882,7 +882,7 @@ void myServer::addTopLevelFolder(string path)
 	} catch (...)
 	{
 		delete f;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	if (!hf)
 		outofmemory();

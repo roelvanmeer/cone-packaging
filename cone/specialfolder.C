@@ -1,4 +1,4 @@
-/* $Id: specialfolder.C,v 1.1 2003/05/27 14:09:04 mrsam Exp $
+/* $Id: specialfolder.C,v 1.2 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -152,7 +152,7 @@ mail::folder *SpecialFolder::Info::getFolder(myServer *&s)
 					return NULL;
 			} catch (...) {
 				delete f;
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 
 			return f;
@@ -225,7 +225,7 @@ mail::folder *SpecialFolder::Info::getFolder(myServer *&s)
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	}
 

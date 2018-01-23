@@ -1,4 +1,4 @@
-/* $Id: smap.C,v 1.7 2008/05/24 17:57:42 mrsam Exp $
+/* $Id: smap.C,v 1.8 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2008, Double Precision Inc.
 **
@@ -685,12 +685,12 @@ string mail::smapHandler::words2path(vector<const char *> &w)
 					free(p);
 				} catch (...) {
 					free(p);
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 			free(u);
 		} catch (...) {
 			free(u);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 		b++;
@@ -732,14 +732,14 @@ void mail::smapHandler::path2words(string path, vector<string> &words)
 						free(p);
 					} catch (...) {
 						free(p);
-						LIBMAIL_THROW();
+						LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 					}
 
 				words.push_back(s);
 				free(u);
 			} catch (...) {
 				free(u);
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-/* $Id: rfc2047encode.C,v 1.4 2007/04/06 17:57:29 mrsam Exp $
+/* $Id: rfc2047encode.C,v 1.5 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -23,7 +23,7 @@ mail::rfc2047::encode::encode(std::string txt, std::string charset)
 		encodedString=p;
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	free(p);
@@ -48,7 +48,7 @@ mail::rfc2047::encodeAddrName::encodeAddrName(std::string txt,
 		encodedString=p;
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	free(p);
 }

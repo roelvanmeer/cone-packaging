@@ -1,5 +1,5 @@
 /*
-** Copyright 2004-2006 Double Precision, Inc.
+** Copyright 2004-2009 Double Precision, Inc.
 ** See COPYING for distribution information.
 */
 
@@ -17,7 +17,7 @@
 #include	<stdlib.h>
 #include	"soxwrap.h"
 
-static const char rcsid[]="$Id: mksocket.c,v 1.3 2006/04/16 02:24:35 mrsam Exp $";
+static const char rcsid[]="$Id: mksocket.c,v 1.4 2009/06/13 18:10:27 mrsam Exp $";
 
 #define MKS_USEAFINET4 1
 #define MKS_ERROK 2
@@ -49,32 +49,48 @@ struct recycle_info {
 static int try_recycle_socket(int fd, void *voidarg)
 {
 	struct recycle_info *ri=(struct recycle_info *)voidarg;
-	SOCKADDR_STORAGE sa;
+
+	union {
+		SOCKADDR_STORAGE ss;
+		struct sockaddr_in sin;
+#if	HAVE_SOXWRAP_IPV6
+		struct sockaddr_in6 sin6;
+#endif
+	} sa;
+
 	socklen_t salen=sizeof(sa);
 
 	if (getsockname(fd, (struct sockaddr *)&sa, &salen) < 0)
 		return 0;
-	if (ri->sin->sa_family !=
-	    ((struct sockaddr *)&sa)->sa_family)
+
+	if (ri->sin->sa_family != sa.ss.SS_family)
 		return 0;
 
 	switch (ri->sin->sa_family) {
 	case AF_INET:
-		if (((struct sockaddr_in *)ri->sin)->sin_addr.s_addr !=
-		    ((struct sockaddr_in *)&sa)->sin_addr.s_addr ||
-		    ((struct sockaddr_in *)ri->sin)->sin_port !=
-		    ((struct sockaddr_in *)&sa)->sin_port)
-			return 0;
+		{
+			struct sockaddr_in ri_sin;
+
+			memcpy(&ri_sin, ri->sin, sizeof(ri_sin));
+
+			if (ri_sin.sin_addr.s_addr != sa.sin.sin_addr.s_addr
+			    || ri_sin.sin_port != sa.sin.sin_port)
+				return 0;
+		}
 		break;
 
 #if	HAVE_SOXWRAP_IPV6
 	case AF_INET6:
-		if (memcmp(&((struct sockaddr_in6 *)ri->sin)->sin6_addr,
-			   &((struct sockaddr_in6 *)&sa)->sin6_addr,
-			   sizeof(((struct sockaddr_in6 *)&sa)->sin6_addr)) ||
-		    ((struct sockaddr_in6 *)ri->sin)->sin6_port !=
-		    ((struct sockaddr_in6 *)&sa)->sin6_port)
-			return 0;
+		{
+			struct sockaddr_in6 ri_sin;
+
+			memcpy(&ri_sin, ri->sin, sizeof(ri_sin));
+
+			if (memcmp(&ri_sin.sin6_addr, &sa.sin6.sin6_addr,
+				   sizeof(sa.sin6.sin6_addr)) ||
+			    ri_sin.sin6_port != sa.sin6.sin6_port)
+				return 0;
+		}
 		break;
 #endif
 	default:

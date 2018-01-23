@@ -9,7 +9,7 @@
 #include	<stdlib.h>
 #include	<string.h>
 
-static const char rcsid[]="$Id: testsuite.c,v 1.3 2005/02/21 03:18:31 mrsam Exp $";
+static const char rcsid[]="$Id: testsuite.c,v 1.4 2008/12/18 12:08:26 mrsam Exp $";
 
 static char foo[1000001];
 
@@ -51,7 +51,7 @@ static void sha256()
 		i=strlen(testcases[n]);
 		sha256_digest(testcases[n], i, digest);
 		printf( (i < 200 ? "SHA256(%s)=":
-			 "SHA1(%-1.20s...)="), testcases[n]);
+			 "SHA256(%-1.20s...)="), testcases[n]);
 
 		for (i=0; i<sizeof(digest); i++)
 		{
@@ -62,11 +62,36 @@ static void sha256()
 	}
 }
 
+static void sha512()
+{
+	SHA512_DIGEST	digest;
+	unsigned i, n;
+
+	static char *testcases[]={"abc",
+				  "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu",
+				  foo};
+
+	for (n=0; n<sizeof(testcases)/sizeof(testcases[0]); n++)
+	{
+		i=strlen(testcases[n]);
+		sha512_digest(testcases[n], i, digest);
+		printf( (i < 200 ? "SHA512(%s)=":
+			 "SHA512(%-1.20s...)="), testcases[n]);
+
+		for (i=0; i<sizeof(digest); i++)
+		{
+			if (i && (i & 7) == 0)	putchar(' ');
+			printf("%02X", digest[i]);
+		}
+		printf("\n");
+	}
+}
 int main()
 {
 	memset(foo, 'a', 1000000);
 	sha1();
 	sha256();
+	sha512();
 	exit (0);
 	return (0);
 }

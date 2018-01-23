@@ -1,6 +1,6 @@
-/* $Id: qp.C,v 1.1 2003/05/27 14:09:08 mrsam Exp $
+/* $Id: qp.C,v 1.2 2009/04/24 01:44:18 mrsam Exp $
 **
-** Copyright 2002, Double Precision Inc.
+** Copyright 2002-2009, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -16,7 +16,7 @@ static inline int xdigit(char c)
 {
 	static const char xdigits[]="0123456789ABCDEFabcdef";
 
-	char *p=strchr(xdigits, c);
+	const char *p=strchr(xdigits, c);
 
 	if (p == NULL)
 		return -1;

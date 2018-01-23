@@ -1,4 +1,4 @@
-/* $Id: mail.C,v 1.11 2004/04/25 03:37:15 mrsam Exp $
+/* $Id: mail.C,v 1.12 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -298,7 +298,7 @@ void upper(string &w)
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 }
 LIBMAIL_END
@@ -708,7 +708,7 @@ string toutf8(string s)
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	return u;
 }
@@ -725,7 +725,7 @@ string fromutf8(string s)
 		free(p);
 	} catch (...) {
 		free(p);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	return u;
 }
@@ -820,7 +820,7 @@ string mail::mbox::translatePathCommon(string path,
 			}
 		} catch (...) {
 			free(uc);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 		ucvec.push_back(0);
 
@@ -840,7 +840,7 @@ string mail::mbox::translatePathCommon(string path,
 			free(p);
 		} catch (...) {
 			free(p);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	} while (path.size() > 0);
 

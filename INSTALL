@@ -3,8 +3,8 @@
    Link: Cone: COnsole Newsreader And Emailer (previous)
    Link: Building Cone (next)
 
-                                Installing Cone
-   Prev                                                                  Next
+                                Installing Cone                              
+   Prev                                                                  Next
 
    --------------------------------------------------------------------------
 
@@ -14,44 +14,44 @@ Installing Cone
    satisfied. See RPM instructions below if building for Red Hat Linux. See
    additional notes below for upgrade instructions. Otherwise:
 
-     o Download the Courier Socks 5 proxy client library from
+     o Download the Courier Socks 5 proxy client library from
        http://www.courier-mta.org/download.php#sox and follow its
        installation instructions. Binary RPMs can be built from the source
        code tarball by following the procedure outlined in
        http://www.courier-mta.org/FAQ.html#rpm using the
-       "courier-sox-version" tarball, and installing the "courier-sox" and
-       "courier-sox-devel" binary RPMs afterwards.
+       “courier-sox-version” tarball, and installing the “courier-sox” and
+       “courier-sox-devel” binary RPMs afterwards.
 
        This step can be omitted if Socks 5 support is not required. Cone will
        compile without the Socks 5 proxy toolkit.
 
-     o Download the source code tarball from
+     o Download the source code tarball from
        http://www.courier-mta.org/download.php#cone and unpack it.
 
-     o Set the appropriate environment variables if the compiler or linker
-       needs any custom command line flags. Run "./configure --help" to list
+     o Set the appropriate environment variables if the compiler or linker
+       needs any custom command line flags. Run “./configure --help” to list
        the available environment variables that specify additional arbitrary
        parameters for the C/C++ compiler.
 
-     o Run "./configure [options]". See below for a list of available
+     o Run “./configure [options]”. See below for a list of available
        options.
 
-     o Run make.
+     o Run make.
 
   Note
 
        The GNU version of the command is required. On BSD systems it's the
        gmake. Use gmake in this, and the following steps.
 
-     o Run make check.
+     o Run make check.
 
-     o Run make install.
+     o Run make install.
 
-     o Run make install-configure.
+     o Run make install-configure.
 
   Note
 
-   Do not forget "make install-configure". It is required.
+   Do not forget “make install-configure”. It is required.
 
    Unless other options are used, Cone installs in /usr/local:
 
@@ -150,22 +150,22 @@ Installing Cone
 
    Finally, download the source code to Cone from
    http://www.courier-mta.org/download.php#cone. Do not unpack the tarball.
-   Execute "rpmbuild -ta cone-version.tar.bz2". Two binary RPMs will be
-   created: the main binary package contains Cone. The "devel" package
+   Execute “rpmbuild -ta cone-version.tar.bz2”. Two binary RPMs will be
+   created: the main binary package contains Cone. The “devel” package
    contains the LibMAIL library and development files. It is only necessary
-   to install the main package to run Cone the "devel" subpackage is only
+   to install the main package to run Cone the “devel” subpackage is only
    needed for additional development with LibMAIL .
 
   CVS Source checkouts
 
    It is also possible to check out the source from CVS, however additional
    requirements apply. Besides the usual prerequisites for building Cone,
-   additional development software must be installed. See the "Download via
-   CVS" instructions at http://www.courier-mta.org/status.html. Cone has the
+   additional development software must be installed. See the “Download via
+   CVS” instructions at http://www.courier-mta.org/status.html. Cone has the
    same requirements as Courier for CVS builds (technically, Cone does not
    need libtool, but that may change in the future). Make sure that the
-   prerequisite software is installed, then check out the "Cone" module from
-   CVS, tagged at revision "Cone-latest". The HEAD may be checked out, but
+   prerequisite software is installed, then check out the “Cone” module from
+   CVS, tagged at revision “Cone-latest”. The HEAD may be checked out, but
    carries more of the usual risks.
 
    After the module is checked out, run the autobloat shell script to rebuild
@@ -173,8 +173,8 @@ Installing Cone
 
    --------------------------------------------------------------------------
 
-   Prev                                                                  Next
-   Cone: COnsole Newsreader And Emailer    Home | ToC           Building Cone
+   Prev                                                                  Next
+   Cone: COnsole Newsreader And Emailer    Home | ToC           Building Cone
 
 References
 

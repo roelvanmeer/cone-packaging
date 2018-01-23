@@ -1,4 +1,4 @@
-/* $Id: mboxmultilock.C,v 1.3 2005/07/06 12:56:25 mrsam Exp $
+/* $Id: mboxmultilock.C,v 1.4 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002, Double Precision Inc.
 **
@@ -94,7 +94,7 @@ void mail::mbox::MultiLockGenericAttributes::fail(string message)
 		delete this;
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -157,7 +157,7 @@ void mail::mbox::MultiLockGenericMessageRead::fail(std::string message)
 		delete this;
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -218,7 +218,7 @@ void mail::mbox::MultiLockRelease::success(std::string message)
 		p->success(message);
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	delete this;
 }
@@ -242,7 +242,7 @@ void mail::mbox::MultiLockRelease::fail(std::string message)
 		delete this;
 	} catch (...) {
 		delete this;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 

@@ -1,4 +1,4 @@
-/* $Id: imapfolder.C,v 1.14 2004/06/12 23:48:52 mrsam Exp $
+/* $Id: imapfolder.C,v 1.15 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003-2004, Double Precision Inc.
 **
@@ -2403,7 +2403,7 @@ void mail::imap::updateFolderIndexFlags(const vector<size_t> &messages,
 			   "UID STORE", "STORE", *c);
 	} catch (...) {
 		delete c;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -2731,7 +2731,7 @@ void mail::imap::updateImapKeywords(const vector<size_t> &messages,
 			   "UID STORE", "STORE", *c);
 	} catch (...) {
 		delete c;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -2776,7 +2776,7 @@ void mail::imap::copyMessagesTo(const vector<size_t> &messages,
 			   "UID COPY", "COPY", *c);
 	} catch (...) {
 		delete c;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 }

@@ -1,4 +1,4 @@
-/* $Id: addressbook.C,v 1.5 2008/05/24 17:57:41 mrsam Exp $
+/* $Id: addressbook.C,v 1.6 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2008, Double Precision Inc.
 **
@@ -158,7 +158,7 @@ void mail::addressbook::setIndex(size_t messageNumber,
 					free(p);
 				} catch (...) {
 					free(p);
-					LIBMAIL_THROW();
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 				}
 			}
 		}
@@ -239,7 +239,7 @@ void mail::addressbook::searchNickname( string nickname,
 		s->go();
 	} catch (...) {
 		delete s;
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 }
 
@@ -278,7 +278,7 @@ void mail::addressbook::getEntry( string uid,
 				get->go();
 			} catch (...) {
 				delete get;
-				LIBMAIL_THROW();
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
 			return;
 		}

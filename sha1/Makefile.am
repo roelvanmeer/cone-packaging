@@ -1,8 +1,8 @@
 #
-# Copyright 2001-2005 Double Precision, Inc.
+# Copyright 2001-2008 Double Precision, Inc.
 # See COPYING for distribution information.
 #
-# $Id: Makefile.am,v 1.8 2007/06/30 15:40:53 mrsam Exp $
+# $Id: Makefile.am,v 1.9 2008/12/18 12:08:25 mrsam Exp $
 
 
 if HMACC
@@ -13,7 +13,7 @@ endif
 
 noinst_LTLIBRARIES=libsha1.la
 
-libsha1_la_SOURCES=sha1.c sha1.h sha1_hash.c sha256.c sha256_hash.c $(HMAC)
+libsha1_la_SOURCES=sha1.c sha1.h sha1_hash.c sha256.c sha256_hash.c sha512.c sha512_hash.c $(HMAC)
 
 noinst_PROGRAMS=testsuite
 

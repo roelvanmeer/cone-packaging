@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-static const char keywords_h_rcsid[]="$Id: maildirkeywords.h,v 1.8 2004/03/13 16:34:00 mrsam Exp $";
+static const char keywords_h_rcsid[]="$Id: maildirkeywords.h,v 1.9 2009/06/27 16:32:38 mrsam Exp $";
 
 /*
 ** IMAP keywords.  This data structure is designed so that it is possible to:
@@ -481,11 +481,11 @@ namespace mail {
 			Message &operator=(const Message &);
 
 			void getFlags(std::set<std::string> &) const;
-			// Extract list of flags
+			/* Extract list of flags */
 
 			bool setFlags(Hashtable &,
 				      const std::set<std::string> &);
-			// Set the flags.
+			/* Set the flags. */
 
 			bool addFlag(Hashtable &, std::string);
 			bool remFlag(std::string);
@@ -517,7 +517,7 @@ namespace mail {
 }
 
 
-// BONUS:
+/* BONUS: */
 
 int maildir_kwSave(const char *maildir,
 		   const char *filename,

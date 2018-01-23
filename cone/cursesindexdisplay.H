@@ -1,4 +1,4 @@
-/* $Id: cursesindexdisplay.H,v 1.8 2003/09/14 19:20:37 mrsam Exp $
+/* $Id: cursesindexdisplay.H,v 1.9 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -36,7 +36,7 @@ public:
 		// Screen terminated as a result of selecting copy batch.
 
 		move_single,
-		move_batch, // Move instead of Copy
+		move_batch // Move instead of Copy
 	} action;
 
 	CursesIndexDisplay(CursesContainer *parentArg,

@@ -1,4 +1,4 @@
-/* $Id: maildir.C,v 1.14 2004/06/14 00:18:42 mrsam Exp $
+/* $Id: maildir.C,v 1.15 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2002-2004, Double Precision Inc.
 **
@@ -281,14 +281,16 @@ bool mail::maildir::updateFlags(const char *filename,
 #define DOFLAG(name, NOT, theChar) \
 	if ((flag= NOT !!maildir_hasflag(filename, theChar)) != info.name) \
 		{ info.name=flag; changed=true; }
+#define DOFLAG_EMPTY
 
-	DOFLAG(draft, , 'D');
-	DOFLAG(replied, , 'R');
-	DOFLAG(marked, , 'F');
-	DOFLAG(deleted, , 'T');
+	DOFLAG(draft, DOFLAG_EMPTY, 'D');
+	DOFLAG(replied, DOFLAG_EMPTY, 'R');
+	DOFLAG(marked, DOFLAG_EMPTY, 'F');
+	DOFLAG(deleted, DOFLAG_EMPTY, 'T');
 	DOFLAG(unread, !, 'S');
 
 #undef DOFLAG
+#undef DOFLAG_EMPTY
 
 	return changed;
 }
@@ -317,7 +319,7 @@ string mail::maildir::getfilename(size_t i)
 		free(dir);
 	} catch (...) {
 		free(dir);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	if (fn)
@@ -326,7 +328,7 @@ string mail::maildir::getfilename(size_t i)
 			free(fn);
 		} catch (...) {
 			free(fn);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 
 	return n;
@@ -644,7 +646,7 @@ void mail::maildir::checkNewMail(callback *callback)
 		free(d);
 	} catch (...) {
 		free(d);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	// Move messages from new to cur
@@ -1103,7 +1105,7 @@ void mail::maildir::open(string pathStr, mail::callback &callback,
 		free(d);
 	} catch (...) {
 		free(d);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	{
@@ -1196,7 +1198,7 @@ void mail::maildir::genericMessageRead(string uid,
 
 	} catch (...) {
 		close(fd);
-		LIBMAIL_THROW();
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	close(fd);
@@ -1456,7 +1458,7 @@ void mail::maildir::updateKeywords(const vector<size_t> &messages,
 			free(dirs);
 		} catch (...) {
 			free(dirs);
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 	}
 

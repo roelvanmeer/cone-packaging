@@ -1,4 +1,4 @@
-/* $Id: curseseditmessage.H,v 1.4 2004/05/01 04:59:52 mrsam Exp $
+/* $Id: curseseditmessage.H,v 1.5 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2003, Double Precision Inc.
 **
@@ -27,7 +27,7 @@
 
 namespace mail {
 	class Search;
-};
+}
 
 class CursesEditMessage : public Curses,
 			  public CursesKeyHandler,

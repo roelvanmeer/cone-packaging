@@ -1,4 +1,4 @@
-/* $Id: addressbookinterfacemail.C,v 1.2 2008/07/07 03:25:40 mrsam Exp $
+/* $Id: addressbookinterfacemail.C,v 1.3 2009/06/27 17:12:00 mrsam Exp $
 **
 ** Copyright 2006, Double Precision Inc.
 **
@@ -233,7 +233,7 @@ void AddressBook::Interface::Mail::close()
 				delete folder;
 				folder=NULL;
 			}
-			LIBMAIL_THROW();
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
 }
 

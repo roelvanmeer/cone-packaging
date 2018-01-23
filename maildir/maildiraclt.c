@@ -32,7 +32,7 @@
 #include	<stdlib.h>
 #include	<assert.h>
 
-static const char rcsid[]="$Id: maildiraclt.c,v 1.5 2005/07/16 21:26:28 mrsam Exp $";
+static const char rcsid[]="$Id: maildiraclt.c,v 1.6 2009/06/27 16:32:38 mrsam Exp $";
 
 int maildir_acl_disabled=0;
 
@@ -657,7 +657,7 @@ static int is_admin(const char *isme, void *void_arg)
 {
 	return strcmp(isme, "administrators") == 0;
 
-	// We don't need to check for group=administrators, see chk_admin()
+	/* We don't need to check for group=administrators, see chk_admin() */
 }
 
 static int check_adminrights(maildir_aclt *list)
