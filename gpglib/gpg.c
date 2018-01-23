@@ -1,9 +1,8 @@
 /*
-** Copyright 2001-2006 Double Precision, Inc.  See COPYING for
+** Copyright 2001-2011 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: gpg.c,v 1.12 2007/07/04 02:24:38 mrsam Exp $";
 
 #include "config.h"
 #include <stdio.h>
@@ -1452,13 +1451,27 @@ static int copyfp(FILE *t,
 		  void (*output_func)(const char *,
 				      size_t,
 				      void *),
-		  void *output_func_arg)
+		  void *output_func_arg,
+		  int stripcr)
 {
 	char buf[BUFSIZ];
 	int rc=0;
 
 	while ((rc=fread(buf, 1, sizeof(buf), t)) > 0)
+	{
+		if (stripcr)
+		{
+			int i, j;
+
+			for (i=j=0; i<rc; ++i)
+			{
+				if (buf[i] != '\r')
+					buf[j++]=buf[i];
+			}
+			rc=j;
+		}
 		(*output_func)(buf, rc, output_func_arg);
+	}
 
 	return rc;
 }
@@ -1514,7 +1527,7 @@ static int dochecksign(const char *gpghome,
 		return -1;
 	}
 
-	if (copyfp(content_fp, output_func, output_func_arg))
+	if (copyfp(content_fp, output_func, output_func_arg, 1))
 		return -1;
 
 	(*output_func)("\n--", 3, output_func_arg);
@@ -1811,7 +1824,7 @@ static int decrypt(const char *gpghome,
 
 	if (!flag)
 	{
-		int c=copyfp(temp_fp, output_func, output_func_arg);
+		int c=copyfp(temp_fp, output_func, output_func_arg, 0);
 
 		fclose(temp_fp);
 		unlink(temp_file);
@@ -1937,7 +1950,7 @@ static int dodecrypt(const char *gpghome,
 			       output_func_arg);
 		(*output_func)("\n", 1, output_func_arg);
 
-		if (copyfp(fpout, output_func, output_func_arg))
+		if (copyfp(fpout, output_func, output_func_arg, 1))
 		    return -1;
 	}
 
@@ -2001,6 +2014,7 @@ static int dosignencode(int dosign, int doencode, int dodecode,
 	int fdout;
 	FILE *fdin_fp;
 	char buffer[8192];
+	struct rfc2045src *src;
 	struct rfc2045 *rfcp;
 	int rc;
 
@@ -2091,12 +2105,17 @@ static int dosignencode(int dosign, int doencode, int dodecode,
 
 	fdout=libmail_tempfile(temp_decode_name);
 
-	if (fdout < 0 ||
-	    rfc2045_rewrite(rfcp, fileno(fdin_fp), fdout, "mimegpg") < 0 ||
+	src=rfc2045src_init_fd(fileno(fdin_fp));
+
+	if (fdout < 0 || src == NULL ||
+	    rfc2045_rewrite(rfcp, src, fdout, "mimegpg") < 0 ||
 	    lseek(fdout, 0L, SEEK_SET) < 0)
 	{
 		if (fdout >= 0)
 			close(fdout);
+		if (src)
+			rfc2045src_deinit(src);
+
 		(*errhandler_func)(strerror(errno), errhandler_arg);
 		rfc2045_free(rfcp);
 		fclose(fdin_fp);
@@ -2104,6 +2123,7 @@ static int dosignencode(int dosign, int doencode, int dodecode,
 	}
 	fclose(fdin_fp);
 	rfc2045_free(rfcp);
+	rfc2045src_deinit(src);
 
 	/* Now, read the converted message, from the temp file */
 

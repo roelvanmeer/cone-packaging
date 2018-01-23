@@ -7,7 +7,6 @@
 #include	<stdlib.h>
 #include	<stdio.h>
 
-static const char rcsid[]="$Id: testprog.c,v 1.6 2006/04/16 02:32:28 mrsam Exp $";
 
 int main(int argc, char **argv)
 {

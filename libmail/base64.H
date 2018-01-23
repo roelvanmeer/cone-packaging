@@ -1,5 +1,4 @@
-/* $Id: base64.H,v 1.2 2004/04/10 03:40:13 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.

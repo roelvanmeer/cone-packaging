@@ -1,14 +1,12 @@
-/* $Id: tmpaccountfolder.C,v 1.2 2008/05/24 17:57:42 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
-#include <cstring>
-
 #include "tmpaccount.H"
 #include <errno.h>
 #include <vector>
+#include <cstring>
 
 using namespace std;
 

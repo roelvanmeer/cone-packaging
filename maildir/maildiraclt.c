@@ -32,7 +32,6 @@
 #include	<stdlib.h>
 #include	<assert.h>
 
-static const char rcsid[]="$Id: maildiraclt.c,v 1.6 2009/06/27 16:32:38 mrsam Exp $";
 
 int maildir_acl_disabled=0;
 

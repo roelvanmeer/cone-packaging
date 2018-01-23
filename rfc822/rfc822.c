@@ -4,13 +4,12 @@
 */
 
 /*
-** $Id: rfc822.c,v 1.26 2009/11/22 19:39:52 mrsam Exp $
 */
+#include	"rfc822.h"
 #include	<stdio.h>
 #include	<ctype.h>
 #include	<stdlib.h>
 #include	<string.h>
-#include	"rfc822.h"
 
 static void tokenize(const char *p, struct rfc822token *tokp, int *toklen,
 	void (*err_func)(const char *, int, void *), void *voidp)
@@ -627,9 +626,11 @@ static int rfc822_print_common_nameaddr(const struct rfc822addr *addrs,
 	p=(*decode_func)(addrbuf, chset, 1);
 	free(addrbuf);
 
+	if (!p)
+		return -1;
+
 	if (print_braces)
 		(*print_func)(' ', ptr);
-
 
 	for (q=p; *q; ++q)
 		if (*q != '.' && *q != '@' && strchr(RFC822_SPECIALS, *q))
@@ -640,9 +641,6 @@ static int rfc822_print_common_nameaddr(const struct rfc822addr *addrs,
 
 	if (print_braces)
 		(*print_func)('<', ptr);
-
-	if (!p)
-		return -1;
 
 	for (addrbuf=p; *p; p++)
 		(*print_func)(*p, ptr);

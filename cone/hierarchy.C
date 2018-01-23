@@ -1,5 +1,4 @@
-/* $Id: hierarchy.C,v 1.4 2009/06/27 17:12:00 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

@@ -1,5 +1,4 @@
-/* $Id: configscreen.H,v 1.13 2008/07/07 03:25:40 mrsam Exp $
-**
+/*
 ** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -208,6 +207,7 @@ public:
 	static std::string suspendCommandStr;
 
 private:
+	void init();
 
 	void addPrompt(CursesLabel *label,
 		       CursesField *field,

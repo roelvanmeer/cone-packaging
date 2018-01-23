@@ -1,5 +1,4 @@
-/* $Id: savedialog.H,v 1.3 2004/11/20 02:37:20 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

@@ -43,7 +43,6 @@ typedef struct ssl_handle_t *ssl_handle;
 extern "C" {
 #endif
 
-static const char libcouriertls_h_rcsid[]="$Id: libcouriertls.h,v 1.13 2008/07/07 03:25:41 mrsam Exp $";
 
 /*
 **                   High level TLS interface library

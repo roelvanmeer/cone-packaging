@@ -6,7 +6,6 @@
 ** See COPYING for distribution information.
 */
 
-static const char maildirfiltertypelist_h_rcsid[]="$Id: maildirfiltertypelist.h,v 1.3 2006/05/03 01:57:06 mrsam Exp $";
 
 #include	"config.h"
 

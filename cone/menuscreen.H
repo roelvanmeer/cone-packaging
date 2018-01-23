@@ -1,5 +1,4 @@
-/* $Id: menuscreen.H,v 1.3 2003/09/14 19:20:38 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

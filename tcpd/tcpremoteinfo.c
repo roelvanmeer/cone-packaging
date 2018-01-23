@@ -21,7 +21,6 @@
 
 #include	"soxwrap/soxwrap.h"
 
-static const char rcsid[]="$Id: tcpremoteinfo.c,v 1.7 2002/02/21 00:37:01 mrsam Exp $";
 
 const char *tcpremoteinfo(const RFC1035_ADDR *laddr, int lport,
 	const RFC1035_ADDR *raddr, int rport, const char **ostype)

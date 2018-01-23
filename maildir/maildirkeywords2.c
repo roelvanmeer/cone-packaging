@@ -39,7 +39,6 @@
 #endif
 #endif
 
-static const char rcsid[]="$Id: maildirkeywords2.c,v 1.8 2007/04/16 22:31:53 mrsam Exp $";
 
 int libmail_kwEnabled=1;
 

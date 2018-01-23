@@ -11,7 +11,6 @@
 #include	<ctype.h>
 #include	<errno.h>
 
-static const char rcsid[]="$Id: maildirshared2.c,v 1.2 2004/01/11 02:47:33 mrsam Exp $";
 
 FILE *maildir_shared_fopen(const char *maildir, const char *mode)
 {

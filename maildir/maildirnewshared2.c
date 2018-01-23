@@ -35,7 +35,6 @@
 #include	"config.h"
 #include	"maildir/maildirnewshared.h"
 
-static const char rcsid[]="$Id: maildirnewshared2.c,v 1.2 2007/04/16 22:31:53 mrsam Exp $";
 
 static struct maildir_shindex_cache *shared_cache=NULL;
 

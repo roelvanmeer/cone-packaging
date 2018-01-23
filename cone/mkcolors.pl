@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: mkcolors.pl,v 1.2 2003/09/30 03:31:49 mrsam Exp $
 #
 # Copyright 2003, Double Precision Inc.
 #

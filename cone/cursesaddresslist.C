@@ -146,19 +146,18 @@ bool CursesAddressList::validate(size_t rowNum,  // Changed AddressField
 			return false;
 		}
 
-
 		if (errIndex <= addresses.size())
 		{
-			vector<wchar_t> buf;
-
 			// Figure out the cursor position
 
 			string s=addresses.substr(0, errIndex);
 
-			mbtow(s.c_str(), buf);
+			widecharbuf wc;
+
+			wc.init_string(s);
 
 			fields[rowNum]->requestFocus();
-			fields[rowNum]->setCursorPos(buf.size());
+			fields[rowNum]->setCursorPos(wc.wcwidth(0));
 			statusBar->clearstatus();
 			statusBar->status(_("Syntax error"));
 			statusBar->beepError();
@@ -180,11 +179,14 @@ bool CursesAddressList::validate(size_t rowNum,  // Changed AddressField
 			mail::emailAddress newAddress;
 
 			std::string errmsg=newAddress
-				.setDisplayName(b->getName());
+				.setDisplayName(b->getName(),
+						unicode_default_chset());
 
 			if (errmsg == "")
 				errmsg=newAddress
-					.setDisplayAddr(b->getAddr());
+					.setDisplayAddr(b->getAddr(),
+							unicode_default_chset()
+							);
 
 			if (errmsg != "")
 			{
@@ -308,8 +310,8 @@ bool CursesAddressList::validate(size_t rowNum,  // Changed AddressField
 	{
 		// We want toString() to use the encoded form.
 
-		string s= mail::address(b->getDisplayName(),
-					b->getDisplayAddr()).toString();
+		string s= mail::address(b->getDisplayName(unicode_default_chset()),
+					b->getDisplayAddr(unicode_default_chset())).toString();
 
 		if (rowNum + 1 < fields.size())
 			s += ","; // All but last addy has a trailing comma
@@ -362,6 +364,7 @@ bool CursesAddressList::validateAll()
 		if (fields[i])
 			if (!validate(i, fields[i]->getText()))
 			{
+				fields[i]->requestFocus();
 				return false;
 			}
 	}
@@ -399,8 +402,8 @@ bool CursesAddressList::getAddresses( vector<mail::emailAddress> &addressArray)
 	{
 		mail::emailAddress addr;
 
-		addr.setDisplayName(b->getName());
-		addr.setDisplayAddr(b->getAddr());
+		addr.setDisplayName(b->getName(), unicode_default_chset());
+		addr.setDisplayAddr(b->getAddr(), unicode_default_chset());
 
 		addressArray.push_back(addr);
 	}

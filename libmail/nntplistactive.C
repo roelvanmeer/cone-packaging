@@ -1,5 +1,4 @@
-/* $Id: nntplistactive.C,v 1.4 2008/05/24 17:57:42 mrsam Exp $
-**
+/*
 ** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -7,7 +6,6 @@
 #include "nntplistactive.H"
 #include "nntpfolder.H"
 #include "nntpnewsrc.H"
-#include <ctype.h>
 #include <sstream>
 #include <algorithm>
 #include <errno.h>
@@ -54,10 +52,10 @@ void mail::nntp::ListActiveTask::processDateStatus(const char *msg)
 
 	if (msg[0] == '1')
 	{
-		while (*msg && !isspace((int)(unsigned char)*msg))
+		while (*msg && !unicode_isspace((unsigned char)*msg))
 			msg++;
 
-		while (*msg && isspace((int)(unsigned char)*msg))
+		while (*msg && unicode_isspace((unsigned char)*msg))
 			msg++;
 
 		serverDate=msg;
@@ -92,7 +90,7 @@ void mail::nntp::ListActiveTask::processSubscription(const char *msg)
 	{
 		const char *p=msg;
 
-		while (*p && !isspace((int)(unsigned char)*p))
+		while (*p && !unicode_isspace((unsigned char)*p))
 			p++;
 
 		string newsgName=string(msg, p);

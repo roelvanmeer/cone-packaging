@@ -1,5 +1,4 @@
-/* $Id: fdtls.C,v 1.4 2008/07/07 03:25:41 mrsam Exp $
-**
+/*
 ** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.

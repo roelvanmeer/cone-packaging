@@ -1,6 +1,5 @@
-/* $Id: addressbook.C,v 1.8 2010/04/29 00:34:49 mrsam Exp $
-**
-** Copyright 2002-2008, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -123,8 +122,7 @@ mail::addressbook::Index::~Index()
 void mail::addressbook::setIndex(size_t messageNumber,
 				 string subject)
 {
-	subject= mail::rfc2047::decoder()
-		.decode(subject, unicode_UTF8);
+	subject= mail::rfc2047::decoder().decode(subject, "utf-8");
 
 	if (messageNumber < index.size())
 	{
@@ -144,11 +142,12 @@ void mail::addressbook::setIndex(size_t messageNumber,
 				if (newEntry.nickname.size() == 0)
 					newEntry.nickname="(none)";
 
-				char *p=unicode_xconvert(newEntry.nickname
-							 .c_str(),
-							 &unicode_UTF8,
-							 mail::appcharset
-							 );
+				char *p=libmail_u_convert_tobuf(newEntry
+								.nickname
+								.c_str(),
+								"utf-8",
+								unicode_default_chset(),
+								NULL);
 
 				if (!p)
 					LIBMAIL_THROW(strerror(errno));

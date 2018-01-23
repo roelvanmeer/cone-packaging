@@ -1,6 +1,5 @@
-/* $Id: myserverpromptinfo.C,v 1.3 2003/09/14 19:20:38 mrsam Exp $
-**
-** Copyright 2003, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -10,12 +9,11 @@
 #include "myserverpromptinfo.H"
 #include "curses/cursesfield.H"
 #include "curses/cursesstatusbar.H"
-
-using namespace std;
+#include "curses/widechar.H"
 
 extern CursesStatusBar *statusBar;
 
-myServer::promptInfo::promptInfo(string promptArg)
+myServer::promptInfo::promptInfo(std::string promptArg)
 	: prompt(promptArg), value(""), isPassword(false),
 	  isYesNo(false),
 	  currentFocus(Curses::currentFocus), abortflag(false)
@@ -26,7 +24,7 @@ myServer::promptInfo::~promptInfo()
 {
 }
 
-myServer::promptInfo &myServer::promptInfo::initialValue(string v)
+myServer::promptInfo &myServer::promptInfo::initialValue(std::string v)
 {
 	value=v;
 	return *this;
@@ -43,18 +41,6 @@ myServer::promptInfo &myServer::promptInfo::yesno()
 	isYesNo=true; return *this;
 }
 
-#if 0
-myServer::promptInfo &myServer::promptInfo::option(wchar_t key, wchar_t keyL,
-						   string keyname,
-						   string keydescr)
-{
-	optionHelp.push_back(make_pair(keyname, keydescr));
-	optionList.push_back(key);
-	if (keyL)
-		optionList.push_back(keyL);
-	return *this;
-}
-#endif
 
 myServer::promptInfo &myServer::promptInfo::option(Gettext::Key &theKey,
 						   std::string keyname,
@@ -62,9 +48,8 @@ myServer::promptInfo &myServer::promptInfo::option(Gettext::Key &theKey,
 {
 	optionHelp.push_back(make_pair(keyname, keydescr));
 
-	const vector<wchar_t> kv=theKey;
-
-	optionList.insert(optionList.end(), kv.begin(), kv.end());
+	std::vector<unicode_char> ukv=theKey;
+	optionList.insert(optionList.end(), ukv.begin(), ukv.end());
 	return *this;
 
 }
@@ -104,4 +89,16 @@ myServer::promptInfo myServer::prompt(myServer::promptInfo info)
 		info.currentFocus->requestFocus();
 
 	return info;
+}
+
+unicode_char myServer::promptInfo::firstChar()
+{
+	std::vector<unicode_char> buf;
+
+	mail::iconvert::convert(value, unicode_default_chset(), buf);
+
+	if (buf.empty())
+		buf.push_back(0);
+
+	return *buf.begin();
 }

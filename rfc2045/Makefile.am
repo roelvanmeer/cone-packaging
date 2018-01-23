@@ -1,22 +1,21 @@
-#$Id: Makefile.am,v 1.36 2009/11/22 19:39:52 mrsam Exp $
 #
-# Copyright 1998 - 2009 Double Precision, Inc.  See COPYING for
+# Copyright 1998 - 2011 Double Precision, Inc.  See COPYING for
 # distribution information.
 
-
-DISTCLEANFILES=testsuite.dat
-
 noinst_LTLIBRARIES=librfc2045.la
-noinst_PROGRAMS=reformime makemime headercheck
+noinst_PROGRAMS=reformime makemime headercheck testrfc3676parser
 
 BUILT_SOURCES=reformime.html reformime.1 makemime.html makemime.1 \
 	rfc2045.html rfc2045.3
 
-EXTRA_DIST=$(BUILT_SOURCES) testsuite testsuite.txt
+EXTRA_DIST=$(BUILT_SOURCES) testsuite testsuite.txt.idn testsuite.txt.noidn \
+	testsuitemm testsuitemm.txt \
+	testrfc3676parsersuite testrfc3676parsersuite.txt
 
 noinst_DATA=$(BUILT_SOURCES)
 
-librfc2045_la_SOURCES=rfc2045.c rfc2045.h rfc2045acchk.c rfc2045acprep.c \
+librfc2045_la_SOURCES=rfc2045.c rfc2045.h rfc2045src.h \
+		     rfc2045acchk.c rfc2045acprep.c \
 		     rfc2045appendurl.c rfc2045cdecode.c rfc2045decode.c \
 		     rfc2045enomem.c \
 		     rfc2045_fromfd.c \
@@ -24,10 +23,10 @@ librfc2045_la_SOURCES=rfc2045.c rfc2045.h rfc2045acchk.c rfc2045acprep.c \
                      rfc2045tryboundary.c rfc2045xdump.c \
 		     rfc2045searchcontenttype.c rfc2045decodemimesection.c \
 		     rfc2045decodemimesectionu.c rfc2045header.c \
-		     rfc2045replyunicode.c rfc2045reply.c \
+		     rfc2045reply.c \
+		     rfc2045decodemsgtoutf8.c \
 		     rfc2231.c rfc2231encode.c \
-		     rfc2646.h rfc2646.c rfc2646create.c rfc2646fwd.c \
-		     rfc2646reply.c rfc2646rewrap.c \
+		     rfc3676parser.h rfc3676parser.c rfc3676parsercpp.C \
 		     base64.c base64.h
 
 reformime_SOURCES=reformime.c
@@ -46,6 +45,10 @@ headercheck_LDADD=librfc2045.la ../rfc822/librfc822.la ../numlib/libnumlib.la \
 		../unicode/libunicode.la
 headercheck_DEPENDENCIES=$(headercheck_LDADD)
 headercheck_LDFLAGS=-static
+
+testrfc3676parser_SOURCES=testrfc3676parser.c
+testrfc3676parser_LDADD=librfc2045.la ../unicode/libunicode.la
+testrfc3676parser_DEPENDENCIES=$(testrfc3676parser_LDADD)
 
 if HAVE_SGML
 reformime.html: reformime.sgml ../docbook/sgml2html
@@ -67,5 +70,13 @@ rfc2045.3: rfc2045.sgml ../docbook/sgml2html
 	../docbook/sgml2man rfc2045.sgml rfc2045.3
 endif
 
+if HAVE_LIBIDN
+TESTSUITE=testsuite.txt.idn
+else
+TESTSUITE=testsuite.txt.noidn
+endif
+
 check-am:
-	@SHELL@ $(srcdir)/testsuite | cmp -s - $(srcdir)/testsuite.txt
+	@SHELL@ $(srcdir)/testsuite | cmp -s - $(srcdir)/$(TESTSUITE)
+	@SHELL@ $(srcdir)/testsuitemm | cmp -s - $(srcdir)/testsuitemm.txt
+	@SHELL@ $(srcdir)/testrfc3676parsersuite | diff -U 3 $(srcdir)/testrfc3676parsersuite.txt -

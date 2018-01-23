@@ -1,6 +1,5 @@
-/* $Id: acl.C,v 1.5 2010/04/29 00:34:49 mrsam Exp $
-**
-** Copyright 2004, Double Precision Inc.
+/*
+** Copyright 2004-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -21,7 +20,6 @@
 #include "maildir/maildiraclt.h"
 #include	<errno.h>
 
-using namespace std;
 extern CursesMainScreen *mainScreen;
 extern CursesTitleBar *titleBar;
 extern CursesStatusBar *statusBar;
@@ -54,7 +52,7 @@ extern struct CustomColor color_perms_owner,
 		ACL_LOOKUP ACL_POST ACL_READ ACL_SEEN ACL_DELETEMSGS \
 		ACL_WRITE ACL_DELETEFOLDER
 
-Acl::Acl(string codeArg)
+Acl::Acl(std::string codeArg)
 	: code(codeArg), descr(Gettext(_("Unknown permission \"%1%\""))
 			       << codeArg)
 {
@@ -80,9 +78,9 @@ Acl::~Acl()
 
 /* Return comma-separated access rights list */
 
-string Acl::getDescription(string rights)
+std::string Acl::getDescription(std::string rights)
 {
-	string descr;
+	std::string descr;
 	size_t i;
 
 	for (i=0; i<rights.size(); i++)
@@ -96,10 +94,10 @@ string Acl::getDescription(string rights)
 
 /* Format ACL2 RIGHTS-INFO reply into something a human will understand */
 
-string Acl::getErrorRightsDescription(string errorIdentifier,
-				      vector<string> &errorRights)
+std::string Acl::getErrorRightsDescription(std::string errorIdentifier,
+				      std::vector<std::string> &errorRights)
 {
-	string verboseDescription=
+	std::string verboseDescription=
 		Gettext(_("Unable to set the requested permissions for %1%. "
 			  "The mail server's valid permissions are"
 			  " restricted as follows:\n\n"))
@@ -114,9 +112,9 @@ string Acl::getErrorRightsDescription(string errorIdentifier,
 			Acl::getDescription(errorRights[0]);
 	}
 
-	string singleRights;
+	std::string singleRights;
 
-	vector<string>::iterator
+	std::vector<std::string>::iterator
 		b=errorRights.begin(), e=errorRights.end();
 
 	if (b != e)
@@ -158,14 +156,14 @@ class Acl::EditScreen : public CursesDialog,
 
 	class EntryButton : public CursesButton {
 		Acl::EditScreen *parent;
-		string identifier;
-		string rights;
+		std::string identifier;
+		std::string rights;
 
 	public:
 		EntryButton(Acl::EditScreen *parentArg,
-			    string label,
-			    string identifierArg,
-			    string rightsArg);
+			    std::string label,
+			    std::string identifierArg,
+			    std::string rightsArg);
 		~EntryButton();
 		void clicked();
 		bool processKeyInFocus(const Curses::Key &key);
@@ -173,7 +171,7 @@ class Acl::EditScreen : public CursesDialog,
 
 	class Entry {
 	public:
-		string identifierStr, rightsStr;
+		std::string identifierStr, rightsStr;
 
 		EntryButton identifier;
 		CursesMultilineLabel rights;
@@ -191,16 +189,16 @@ class Acl::EditScreen : public CursesDialog,
 		void resized();
 
 		Entry(Acl::EditScreen *parent,
-		      string identifierArg, string rightsArg);
+		      std::string identifierArg, std::string rightsArg);
 		~Entry();
 	};
 
 	CursesButtonRedirect<Acl::EditScreen> *saveButton;
 
-	vector<Entry *> entries;
+	std::vector<Entry *> entries;
 
 	void clearrights();
-	void setrights(	list<pair<string, string> > &);
+	void setrights(	std::list<std::pair<std::string, std::string> > &);
 public:
 	EditScreen(Hierarchy::Folder *folderArg);
 	~EditScreen();
@@ -211,13 +209,13 @@ public:
 	// Inherited from CursesKeyHandler:
 
 	bool processKey(const Curses::Key &key);
-	bool listKeys( vector< pair<string, string> > &list);
+	bool listKeys( std::vector< std::pair<std::string, std::string> > &list);
 
 	bool goEditIdentifier; // true: go to edit identifier screen
-	string editIdentifier;
-	string editRights;
+	std::string editIdentifier;
+	std::string editRights;
 
-	void deleteIdentifier(string identifier);
+	void deleteIdentifier(std::string identifier);
 
 	void doSave();
 };
@@ -231,21 +229,21 @@ class Acl::RightsScreen : public CursesContainer,
 	CursesButtonRedirect<Acl::RightsScreen> saveButton;
 
 	mail::folder *folder;
-	string identifier;
-	string origRights;
+	std::string identifier;
+	std::string origRights;
 
-	vector<CursesButton *> buttons;
+	std::vector<CursesButton *> buttons;
 
 public:
 	RightsScreen(mail::folder *folderArg,
-		     string identifierArg, string origRightsArg);
+		     std::string identifierArg, std::string origRightsArg);
 	~RightsScreen();
 	void init();
 
 	// Inherited from CursesKeyHandler:
 
 	bool processKey(const Curses::Key &key);
-	bool listKeys( vector< pair<string, string> > &list);
+	bool listKeys( std::vector< std::pair<std::string, std::string> > &list);
 
 	bool rightsUpdated;
 private:
@@ -255,8 +253,8 @@ private:
 
 
 Acl::EditScreen::Entry::Entry(Acl::EditScreen *parent,
-			      string identifierArg,
-			      string rightsArg)
+			      std::string identifierArg,
+			      std::string rightsArg)
 	: identifierStr(identifierArg),
 	  rightsStr(rightsArg),
 	  identifier(parent, Gettext::fromutf8(identifierArg),
@@ -298,9 +296,9 @@ Acl::EditScreen::Entry::~Entry()
 
 
 Acl::EditScreen::EntryButton::EntryButton(Acl::EditScreen *parentArg,
-					  string label,
-					  string identifierArg,
-					  string rightsArg)
+					  std::string label,
+					  std::string identifierArg,
+					  std::string rightsArg)
 	: CursesButton(parentArg, label),
 	  parent(parentArg),
 	  identifier(identifierArg),
@@ -327,7 +325,7 @@ bool Acl::EditScreen::EntryButton::processKeyInFocus(const Curses::Key &key)
 		prompt=myServer::prompt(prompt);
 
 		if (prompt.abortflag ||
-		    (string)prompt != "Y")
+		    (std::string)prompt != "Y")
 			return true;
 
 		parent->deleteIdentifier(identifier);
@@ -360,11 +358,11 @@ Acl::EditScreen::~EditScreen()
 		delete saveButton;
 }
 
-void Acl::EditScreen::setrights( list<pair<string, string> > &rights)
+void Acl::EditScreen::setrights( std::list<std::pair<std::string, std::string> > &rights)
 {
 	clearrights();
 
-	list<pair<string, string> >::iterator b=rights.begin(), e=rights.end();
+	std::list<std::pair<std::string, std::string> >::iterator b=rights.begin(), e=rights.end();
 	int row=1;
 
 	size_t maxw=10;
@@ -389,7 +387,7 @@ void Acl::EditScreen::setrights( list<pair<string, string> > &rights)
 		++b;
 	}
 
-	vector<Entry *>::iterator bb=entries.begin(), ee=entries.end();
+	std::vector<Entry *>::iterator bb=entries.begin(), ee=entries.end();
 
 	while (bb != ee)
 	{
@@ -424,7 +422,7 @@ void Acl::EditScreen::setrights( list<pair<string, string> > &rights)
 
 void Acl::EditScreen::clearrights()
 {
-	vector<Entry *>::iterator b, e;
+	std::vector<Entry *>::iterator b, e;
 
 	b=entries.begin();
 	e=entries.end();
@@ -444,15 +442,15 @@ void Acl::EditScreen::init()
 	statusBar->clearstatus();
 	statusBar->status(_("Reading folder permissions..."));
 
-	list<pair<string, string> > rights;
+	std::list<std::pair<std::string, std::string> > rights;
 
 	myServer::Callback callback;
 
 	folder->getFolder()->getRights(callback, rights);
 
 #if 0
-	rights.push_back(make_pair(string("anyone"), string("lr")));
-	rights.push_back(make_pair(string("user=fred"), string("lr")));
+	rights.push_back(make_pair(std::string("anyone"), std::string("lr")));
+	rights.push_back(make_pair(std::string("user=fred"), std::string("lr")));
 #endif
 	if (!myServer::eventloop(callback))
 		return;
@@ -466,7 +464,7 @@ void Acl::EditScreen::init()
 
 void Acl::EditScreen::resized()
 {
-	vector<Entry *>::iterator b, e;
+	std::vector<Entry *>::iterator b, e;
 
 	b=entries.begin();
 	e=entries.end();
@@ -503,7 +501,7 @@ bool Acl::EditScreen::processKey(const Curses::Key &key)
 	{
 		bool negativeRights=false;
 
-		string identifier;
+		std::string identifier;
 
 		for (;;)
 		{
@@ -542,50 +540,48 @@ bool Acl::EditScreen::processKey(const Curses::Key &key)
 			if (prompt.abortflag)
 				return true;
 
-			vector<wchar_t> ka;
+			unicode_char promptKey=prompt.firstChar();
 
-			Curses::mbtow( ((string)prompt).c_str(), ka);
-
-			if (ka.size() == 0)
+			if (promptKey == 0)
 				return true;
 
-			if (key_ADDREMOVE == ka[0])
+			if (key_ADDREMOVE == promptKey)
 			{
 				negativeRights= !negativeRights;
 				continue;
 			}
 
-			if (key_ADDRIGHTSANYONE == ka[0])
+			if (key_ADDRIGHTSANYONE == promptKey)
 			{
 				identifier="anyone";
 				break;
 			}
 
-			if (key_ADDRIGHTSANON == ka[0])
+			if (key_ADDRIGHTSANON == promptKey)
 			{
 				identifier="anonymous";
 				break;
 			}
 
-			if (key_ADDRIGHTSAUTHUSER == ka[0])
+			if (key_ADDRIGHTSAUTHUSER == promptKey)
 			{
 				identifier="authuser";
 				break;
 			}
 
-			if (key_ADDRIGHTSOWNER == ka[0])
+			if (key_ADDRIGHTSOWNER == promptKey)
 			{
 				identifier="owner";
 				break;
 			}
 
-			if (key_ADDRIGHTSADMINS == ka[0])
+			if (key_ADDRIGHTSADMINS == promptKey)
 			{
 				identifier="administrators";
 				break;
 			}
 
-			if (key_ADDRIGHTSUSER == ka[0])
+			if (key_ADDRIGHTSUSER == promptKey)
 			{
 				prompt=myServer::promptInfo(_("User: "));
 				prompt=myServer::prompt(prompt);
@@ -598,7 +594,7 @@ bool Acl::EditScreen::processKey(const Curses::Key &key)
 				break;
 			}
 					
-			if (key_ADDRIGHTSGROUP == ka[0])
+			if (key_ADDRIGHTSGROUP == promptKey)
 			{
 				prompt=myServer::promptInfo(_("Group: "));
 				prompt=myServer::prompt(prompt);
@@ -624,12 +620,12 @@ bool Acl::EditScreen::processKey(const Curses::Key &key)
 	return false;
 }
 
-bool Acl::EditScreen::listKeys( vector< pair<string, string> > &list)
+bool Acl::EditScreen::listKeys( std::vector< std::pair<std::string, std::string> > &list)
 {
-        list.push_back( make_pair(Gettext::keyname(_("ADDRIGHTS:A")),
-                                  _("Add")));
-        list.push_back( make_pair(Gettext::keyname(_("DELRIGHTS:D")),
-                                  _("Delete")));
+        list.push_back( std::make_pair(Gettext::keyname(_("ADDRIGHTS:A")),
+				       _("Add")));
+        list.push_back( std::make_pair(Gettext::keyname(_("DELRIGHTS:D")),
+				       _("Delete")));
 	return true;
 }
 
@@ -637,8 +633,8 @@ void Acl::editScreen(void *voidArg)
 {
 	for (;;)
 	{
-		string identifier;
-		string rights;
+		std::string identifier;
+		std::string rights;
 
 		{
 			Acl::EditScreen scrn((Hierarchy::Folder *)voidArg);
@@ -667,10 +663,10 @@ void Acl::editScreen(void *voidArg)
 }
 
 
-void Acl::EditScreen::deleteIdentifier(string identifier)
+void Acl::EditScreen::deleteIdentifier(std::string identifier)
 {
-	string errorIdentifier;
-	vector<string> errorRights;
+	std::string errorIdentifier;
+	std::vector<std::string> errorRights;
 	myServer::Callback cb;
 
 	statusBar->clearstatus();
@@ -698,7 +694,7 @@ void Acl::EditScreen::deleteIdentifier(string identifier)
 
 
 Acl::RightsScreen::RightsScreen(mail::folder *folderArg,
-				string identifierArg, string origRightsArg)
+				std::string identifierArg, std::string origRightsArg)
 	: CursesContainer(mainScreen),
 	  CursesKeyHandler(PRI_SCREENHANDLER),
 	  saveButton(this, _("Save")),
@@ -719,7 +715,7 @@ Acl::RightsScreen::RightsScreen(mail::folder *folderArg,
 
 Acl::RightsScreen::~RightsScreen()
 {
-	vector<CursesButton *>::iterator
+	std::vector<CursesButton *>::iterator
 		b=buttons.begin(),
 		e=buttons.end();
 
@@ -735,7 +731,7 @@ void Acl::RightsScreen::init()
 	size_t i;
 	char c[2];
 
-	string s=Gettext::fromutf8(identifier);
+	std::string s=Gettext::fromutf8(identifier);
 
 	titleBar->setTitles(s,_("PERMISSIONS"));
 
@@ -781,10 +777,11 @@ bool Acl::RightsScreen::processKey(const Curses::Key &key)
 	return false;
 }
 
-bool Acl::RightsScreen::listKeys( vector< pair<string, string> > &list)
+bool Acl::RightsScreen::listKeys( std::vector< std::pair<std::string,
+							 std::string> > &list)
 {
-        list.push_back( make_pair(Gettext::keyname(_("ABORT:^C")),
-                                  _("Cancel")));
+        list.push_back( std::make_pair(Gettext::keyname(_("ABORT:^C")),
+				       _("Cancel")));
 	return true;
 }
 
@@ -794,9 +791,9 @@ void Acl::RightsScreen::doSave()
 	size_t i;
 	char c[2];
 
-	string saveRights=origRights;
-	string rightsAdded;
-	string rightsRemoved;
+	std::string saveRights=origRights;
+	std::string rightsAdded;
+	std::string rightsRemoved;
 
 	for (i=0; (c[0]=ACL_BITS[i]) != 0; i++)
 	{
@@ -846,8 +843,8 @@ void Acl::RightsScreen::doSave()
 
 		origRights=saveRights;
 
-		string errorIdentifier;
-		vector<string> errorRights;
+		std::string errorIdentifier;
+		std::vector<std::string> errorRights;
 
 		myServer::Callback cb;
 

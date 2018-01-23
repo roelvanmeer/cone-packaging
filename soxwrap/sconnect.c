@@ -17,7 +17,6 @@
 
 #include	"soxwrap.h"
 
-static const char rcsid[]="$Id: sconnect.c,v 1.5 2006/03/04 14:48:32 mrsam Exp $";
 
 int s_connect(int sockfd, const struct sockaddr *addr, size_t addr_s,
 	      time_t connect_timeout)

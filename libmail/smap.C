@@ -1,5 +1,4 @@
-/* $Id: smap.C,v 1.9 2010/04/29 00:34:50 mrsam Exp $
-**
+/*
 ** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -9,7 +8,6 @@
 #include "imapfolder.H"
 #include "smapnoopexpunge.H"
 #include "smapnewmail.H"
-#include <ctype.h>
 #include <limits.h>
 #include <iostream>
 #include <sstream>
@@ -61,7 +59,7 @@ int mail::smapHandler::singleLineProcess(imap &imapAccount,
 
 	while (b != e)
 	{
-		if (isspace((int)(unsigned char)*b))
+		if (unicode_isspace((unsigned char)*b))
 		{
 			b++;
 			continue;
@@ -74,7 +72,7 @@ int mail::smapHandler::singleLineProcess(imap &imapAccount,
 				string s=string(b, e);
 
 				while (s.size() > 0 &&
-				       isspace((int)(unsigned char)
+				       unicode_isspace((unsigned char)
 					       s.end()[-1]))
 					s.erase(s.end()-1, s.end());
 
@@ -94,7 +92,7 @@ int mail::smapHandler::singleLineProcess(imap &imapAccount,
 				string s=string(b, e);
 
 				while (s.size() > 0 &&
-				       isspace((int)(unsigned char)
+				       unicode_isspace((unsigned char)
 					       s.end()[-1]))
 					s.erase(s.end()-1, s.end());
 
@@ -115,7 +113,7 @@ int mail::smapHandler::singleLineProcess(imap &imapAccount,
 
 		if (*b != '"') // Not quoted - look for next space
 		{
-			while (b != e && !isspace((int)(unsigned char)*b))
+			while (b != e && !unicode_isspace((unsigned char)*b))
 				b++;
 
 			if (b != e)
@@ -659,10 +657,6 @@ void mail::smapHandler::timedOut(const char *errmsg)
 string mail::smapHandler::words2path(vector<const char *> &w)
 {
 	string path="";
-	unicode_char specials[2];
-
-	specials[0]='/';
-	specials[1]=0;
 
 	vector<const char *>::iterator b=w.begin(), e=w.end();
 
@@ -671,27 +665,8 @@ string mail::smapHandler::words2path(vector<const char *> &w)
 		if (path.size() > 0)
 			path += "/";
 
-		unicode_char *u= (*unicode_UTF8.c2u)(&unicode_UTF8, *b, NULL);
-
-		if (!u)
-			continue;
-
-		try {
-			char *p=unicode_uctomodutf7x(u, specials);
-
-			if (p)
-				try {
-					path += p;
-					free(p);
-				} catch (...) {
-					free(p);
-					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-				}
-			free(u);
-		} catch (...) {
-			free(u);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-		}
+		path += mail::iconvert::convert(*b, "utf-8",
+						unicode_x_imap_modutf7 " /");
 
 		b++;
 	}
@@ -716,32 +691,9 @@ void mail::smapHandler::path2words(string path, vector<string> &words)
 		if (b != e)
 			b++;
 
-		unicode_char *u=unicode_modutf7touc(component.c_str(), NULL);
-
-		if (u)
-		{
-			try {
-				string s;
-
-				char *p= (*unicode_UTF8.u2c)(&unicode_UTF8,
-							     u, NULL);
-
-				if (p)
-					try {
-						s=p;
-						free(p);
-					} catch (...) {
-						free(p);
-						LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-					}
-
-				words.push_back(s);
-				free(u);
-			} catch (...) {
-				free(u);
-				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-			}
-		}
+		words.push_back(mail::iconvert::convert(component,
+							unicode_x_imap_modutf7,
+							"utf-8"));
 	}
 
 	if (words.size() == 0)

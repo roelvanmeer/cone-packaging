@@ -1,5 +1,4 @@
-/* $Id: mboxsighandler.H,v 1.2 2006/06/04 21:36:02 mrsam Exp $
-**
+/*
 ** Copyright 2002-2006, Double Precision Inc.
 **
 ** See COPYING for distribution information.

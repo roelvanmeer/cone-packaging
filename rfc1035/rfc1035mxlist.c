@@ -3,6 +3,7 @@
 ** See COPYING for distribution information.
 */
 
+#include	"config.h"
 #include	<stdio.h>
 #include	<stdlib.h>
 #include	<string.h>
@@ -10,7 +11,6 @@
 #include	"rfc1035mxlist.h"
 #include	"rfc1035_res.h"
 
-static const char rcsid[]="$Id: rfc1035mxlist.c,v 1.15 2006/10/09 22:17:20 mrsam Exp $";
 
 void rfc1035_mxlist_free(struct rfc1035_mxlist *p)
 {

@@ -7,7 +7,6 @@
 */
 
 /*
-** $Id: tcpremoteinfo.h,v 1.3 2000/05/21 20:27:57 mrsam Exp $
 */
 
 #include	<sys/types.h>

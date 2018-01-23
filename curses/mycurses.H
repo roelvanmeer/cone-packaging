@@ -1,6 +1,5 @@
-/* $Id: mycurses.H,v 1.11 2006/02/03 02:51:59 mrsam Exp $
-**
-** Copyright 2002-2004, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -9,6 +8,7 @@
 #define curses_H
 
 #include "../curses/curses_config.h"
+#include "../unicode/unicode.h"
 #include <string.h>
 
 #include <wchar.h>
@@ -16,6 +16,7 @@
 #include <vector>
 
 #include "cursesobject.H"
+#include "widechar.H"
 
 class Curses;
 class CursesContainer;
@@ -145,22 +146,22 @@ public:
 
 	class Key {
 	public:
-		wchar_t key;
+		unicode_char ukey;
 		const char *keycode;
 
-		Key(wchar_t ch) : key(ch), keycode(0) {}
+		Key(unicode_char ch) : ukey(ch), keycode(0) {}
 
-		Key(const char *k) : key(0), keycode(k) {}
+		Key(const char *k) : ukey(0), keycode(k) {}
 
-		int plain() const { return keycode == 0; }
+		bool plain() const { return keycode == 0; }
 
-		int nokey() const { return key == 0 && keycode == 0; }
+		bool nokey() const { return ukey == 0 && keycode == 0; }
 
 		bool fkey() const { return keycode &&
-					    strcmp(keycode, "FKEY") == 0; }
+				strcmp(keycode, "FKEY") == 0; }
 		// This is a function key
 
-		int fkeynum() const { return (int)key; }
+		int fkeynum() const { return (int)ukey; }
 
 		static const char LEFT[],
 			RIGHT[],
@@ -190,24 +191,34 @@ public:
 			return keycode != 0 && strcmp(keycode, p) == 0;
 		}
 
-		bool operator==(wchar_t k) const
+#if 0
+		bool operator==(unicode_char k) const
 		{
 			return keycode == 0 && key == k;
 		}
+#endif
 
-		bool operator==(const std::vector<wchar_t> &v) const;
+		bool operator==(const Key &k) const
+		{
+			return strcmp(keycode ? keycode:"",
+				      k.keycode ? k.keycode:"") == 0 &&
+				ukey == k.ukey;
+		}
+
+		bool operator==(const std::vector<unicode_char> &v) const;
 
 		bool operator!=(const char *p) const
 		{
 			return !operator==(p);
 		}
 
+#if 0
 		bool operator!=(wchar_t k) const
 		{
 			return !operator==(k);
 		}
-
-		bool operator!=(const std::vector<wchar_t> &v) const
+#endif
+		bool operator!=(const std::vector<unicode_char> &v) const
 		{
 			return !operator==(v);
 		}
@@ -232,22 +243,6 @@ public:
 
 	Curses(CursesContainer *parent=0);
 	virtual ~Curses();
-
-	// Convert a wide character string to a multibyte string in the
-	// current character set.  Wide chars that cannot be converted are
-	// replaced by '?'s.
-
-	static std::string wtomb(const wchar_t *w);
-
-	// mbtow converts a (multibyte) string to a widechar string (wbuf).
-	// NOTE: mbtow() does not supply the trailing null bytes.
-	// NOTE: wide characters that wcwidth() claims will take up more than
-	// one character cell will be automatically padded with spaces, so
-	// at exit wbuf.size() is a reliable indicator how much real estate
-	// the string needs on the screen.  The spaces are automagically
-	// deleted by wtomb(), going the other way.
-
-	static void mbtow(const char *text, std::vector<wchar_t> &wbuf);
 
 	// Subclasses must define getWidth() and getHeight() to provide their
 	// sizes.
@@ -343,76 +338,16 @@ public:
 
 	virtual bool writeText(const char *text, int row, int col,
 			       const CursesAttr &attr) const;
-	virtual bool writeText(const wchar_t *text, int row, int col,
-			       const CursesAttr &attr) const;
+	virtual bool writeText(const std::vector<unicode_char> &text,
+			       int row, int col,
+			       const Curses::CursesAttr &attr) const;
+
 	void writeText(std::string text, int row, int col,
 		       const CursesAttr &attr) const;
-
-	//
-	// To have any kind of any idea of what's going to appear on the
-	// display, getTextPos() takes a wchar_t vector, 'line' and calculates
-	// the screen column where the corresponding character appears,
-	// creating and initializing the pos_t array.  So line[x] will appear
-	// at column[x].  It's not necessarily a one-to-one relationship,
-	// for the simple reasons that tab stops exist.
-	//
-	// The expandTabs() function puts its mouth where getTextPos()'s mouth
-	// is: namely replacing all tab characters in 'line' with the correct
-	// amount of space characters.  In addition to 'line', expandTabs()
-	// also needs the 'pos' array, as calculated by getTextPos().
-	//
-	// The 'pos' array is initialized by getTextPos(), and its size will
-	// be one more than line.size().  The last element of 'pos' will be
-	// set to the column of the next character following the last
-	// character of line().
-	//
-	// The wordWrap() function figures out where a string of text needs
-	// to be word-wrapped, given maximum line width.
-	//
-	// wordWrap() receives an iterator to the beginning and end of
-	// a wide-character array, and initializes an array of line begin/end
-	// pairs.
-	//
-	// MULTICOLUMN CHARACTERS
-	//
-	// getTextPos() handles characters that take up more than one cell,
-	// see wcwidth(3).
-	//
-	// expandTabs() adds additional spaces, following each multicell
-	// character.
-	//
-	// unexpandMulticell() removes the additional spaces after multicell
-	// characters (use expandTabs to figure out how big the string is,
-	// then use unexpandMulticell() to get rid of the extra padding
-	// so that the text string can be printed)
-	//
-	// wordWrap() behaves accordingly.
-
-#define MCPAD	0xA0	// Padding for multicell characters
-
-
-	static void getTextPos(std::vector<wchar_t> &line,
-			       std::vector<size_t> &pos);
-
-	static void expandTabs(std::vector<wchar_t> &line,
-			       std::vector<size_t> &pos);
-
-	static void unexpandMulticell(std::vector<wchar_t> &line);
-
-	static void wordWrap(std::vector<wchar_t>::iterator b,
-			     std::vector<wchar_t>::iterator e,
-			     std::vector<std::pair
-			     <std::vector<wchar_t>::iterator,
-			     std::vector<wchar_t>::iterator> > &lines,
-			     size_t toWidth);
 
 	// Beep the terminal.
 
 	virtual void beepError();
-
-	// Calculate the text length, in character spaces.
-	virtual int getTextLength(const char *text) const;
-	virtual int getTextLength(const wchar_t *text) const;
 
 private:
 	Alignment alignment;

@@ -3,7 +3,6 @@
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: mimegpg.c,v 1.11 2007/07/04 02:24:38 mrsam Exp $";
 #include "config.h"
 #include "gpglib.h"
 #include <stdio.h>

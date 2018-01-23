@@ -1,5 +1,4 @@
-/* $Id: addressbookget.H,v 1.2 2004/05/30 02:43:00 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -27,8 +26,6 @@ class mail::addressbook::GetAddressList : public mail::callback::message {
 	size_t msgNum;
 	std::vector<T> &addrListRet;
 	mail::callback &callback;
-	const struct unicode_info *unicodeInfo;
-
 	mail::mimestruct mimeStructure;
 
 	void success(std::string successMsg);

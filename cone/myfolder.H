@@ -1,5 +1,4 @@
-/* $Id: myfolder.H,v 1.11 2004/04/28 00:35:14 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -104,6 +103,7 @@ public:
 
 		time_t arrivalDate;
 		time_t messageDate;
+
 		unsigned long messageSize;
 		char	status_code;
 		size_t tag;
@@ -390,6 +390,11 @@ public:
 	}
 
 	const Index &getIndex(size_t n) const
+	{
+		return serverIndex[sorted_index[n]];
+	}
+
+	Index &getIndex(size_t n)
 	{
 		return serverIndex[sorted_index[n]];
 	}

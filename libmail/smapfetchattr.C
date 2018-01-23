@@ -1,5 +1,4 @@
-/* $Id: smapfetchattr.C,v 1.8 2010/04/29 00:34:50 mrsam Exp $
-**
+/*
 ** Copyright 2003-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -17,7 +16,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <ctype.h>
 #include <stdio.h>
 
 using namespace std;
@@ -386,7 +384,7 @@ void mail::smapFETCHATTR::processFetchedHeader(string hdr)
 
 	string::iterator b=hdr.begin()+n+1;
 
-	while (b != hdr.end() && isspace((int)(unsigned char)*b))
+	while (b != hdr.end() && unicode_isspace((unsigned char)*b))
 		b++;
 
 	string v=string(b, hdr.end());
@@ -541,69 +539,83 @@ void mail::smapFETCHATTR::parseMimeHeader(std::string hdr,
 {
 	p=mail::mimestruct::parameterList();
 
-	size_t n=hdr.find(';');
+	string::iterator b=hdr.begin(), e=hdr.end();
 
-	if (n == std::string::npos)
+	name.clear();
+
+	while (b != e && *b != ';')
 	{
-		name=hdr;
-		mail::upper(name);
-		return;
+		if (!unicode_isspace((unsigned char)*b))
+			name += *b;
+		++b;
 	}
 
-	name=hdr.substr(0, n);
-	hdr=hdr.substr(n+1);
 	mail::upper(name);
-
-	string::iterator b=hdr.begin(), e=hdr.end();
 
 	while (b != e)
 	{
-		if (isspace((int)(unsigned char)*b) || *b == ';')
+		if (unicode_isspace((unsigned char)*b) || *b == ';')
 		{
 			b++;
 			continue;
 		}
 
-		string param="";
-		bool inQuote=false;
+		string::iterator s=b;
 
 		while (b != e)
 		{
-			if (!inQuote && (*b == ';' ||
-					 isspace((int)(unsigned char)*b)))
-			{
-				b++;
+			if (*b == ';' ||
+			    unicode_isspace((unsigned char)*b) || *b == '=')
 				break;
-			}
-
-			if (*b == '"')
-			{
-				b++;
-				inQuote= !inQuote;
-				continue;
-			}
-
-			if (*b == '\\')
-			{
-				b++;
-				if (b == e)
-					break;
-			}
-
-			param += *b;
-			b++;
+			++b;
 		}
 
-		string value="1";
+		string name(s, b), value;
 
-		if ((n=param.find('=')) != std::string::npos)
+		while (b != e && unicode_isspace((unsigned char)*b))
+			++b;
+
+		if (b != e && *b == '=')
 		{
-			value=param.substr(n+1);
-			param=param.substr(0, n);
+			++b;
+
+			while (b != e && unicode_isspace((unsigned char)*b))
+				++b;
+
+			bool inQuote=false;
+
+			while (b != e)
+			{
+				if (!inQuote && (*b == ';' ||
+						 unicode_isspace(*b)))
+				{
+					b++;
+					break;
+				}
+
+				if (*b == '"')
+				{
+					++b;
+					inQuote= !inQuote;
+					continue;
+				}
+
+				if (*b == '\\')
+				{
+					++b;
+					if (b == e)
+						break;
+				}
+
+				value += *b;
+				b++;
+			}
 		}
+		else
+			value="1";
 
-		mail::upper(param);
+		mail::upper(name);
 
-		p.set_simple(param, value);
+		p.set_simple(name, value);
 	}
 }

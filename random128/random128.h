@@ -9,7 +9,6 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-static const char random128_h_rcsid[]="$Id: random128.h,v 1.4 2002/07/01 03:17:05 mrsam Exp $";
 
 /*
 	random128 returns 128 random bits from the entropy.  random128

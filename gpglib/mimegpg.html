@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>mimegpg</title><link rel="stylesheet" href="style.css" type="text/css"/><meta name="generator" content="DocBook XSL Stylesheets V1.73.2"/><link rel="start" href="#mimegpg" title="mimegpg"/><link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/><meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/><link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>mimegpg</title><link rel="stylesheet" href="style.css" type="text/css"/><meta name="generator" content="DocBook XSL Stylesheets V1.75.2"/><link rel="home" href="#id436749" title="mimegpg"/><link xmlns="" rel="stylesheet" type="text/css" href="manpage.css"/><meta xmlns="" name="MSSmartTagsPreventParsing" content="TRUE"/><link xmlns="" rel="icon" href="icon.gif" type="image/gif"/><!--
 
-Copyright 1998 - 2007 Double Precision, Inc.  See COPYING for distribution
+Copyright 1998 - 2009 Double Precision, Inc.  See COPYING for distribution
 information.
 
---></head><body><div class="refentry" lang="en" xml:lang="en"><a id="mimegpg" shape="rect"> </a><div class="titlepage"/><div class="refnamediv"><h2>Name</h2><p>mimegpg — MIME-GPG utility</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">mimegpg</code>  [-s] [-E] [-e] [-c] [-d] [-p <em class="replaceable"><code>n</code></em>] {--} {gpg options...}</p></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id493890" shape="rect"> </a><h2>DESCRIPTION</h2><p>
+--></head><body><div class="refentry" title="mimegpg"><a id="id436749" shape="rect"> </a><div class="titlepage"/><div class="refnamediv"><h2>Name</h2><p>mimegpg — MIME-GPG utility</p></div><div class="refsynopsisdiv" title="Synopsis"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">mimegpg</code>  [-s] [-E] [-e] [-c] [-d] [-p <em class="replaceable"><code>n</code></em>] {--} {gpg options...}</p></div></div><div class="refsect1" title="DESCRIPTION"><a id="id436543" shape="rect"> </a><h2>DESCRIPTION</h2><p>
 The <span class="command"><strong>mimegpg</strong></span> tool signs, encrypts, or decrypts MIME-formatted E-mail
 messages using GnuPG. <span class="command"><strong>mimegpg</strong></span> does not contain any encryption code. It
 uses the GnuPG utility for all encryption and decryption functions.</p><p>
@@ -33,7 +33,7 @@ automatically adds any GnuPG options that are needed to perform the given
 operation). The "--no-tty" option can be useful when <span class="command"><strong>mimegpg</strong></span> is
 used in a non-interactive mode.  As always, secret keys that are
 password-protected secret keys cannot be used in the <code class="option">--no-tty</code>
-mode, unless the <code class="option">-p</code> option is used.</p><div class="refsect2" lang="en" xml:lang="en"><a id="id458718" shape="rect"> </a><h3>SIGNING AND ENCRYPTING MESSAGES</h3><p>
+mode, unless the <code class="option">-p</code> option is used.</p><div class="refsect2" title="SIGNING AND ENCRYPTING MESSAGES"><a id="id471115" shape="rect"> </a><h3>SIGNING AND ENCRYPTING MESSAGES</h3><p>
 Use the <code class="option">-s</code> option to sign MIME message content. Use the
 <code class="option">-E</code> option to encrypt it. Use both options to both sign and
 encrypt. Follow with <code class="literal">--</code>, then any other GnuPG options. The
@@ -52,7 +52,7 @@ invoked separately for each attachment in the MIME message, and each
 invocation will prompt for any required key password.  Note that the initial
 message headers are not signed and/or encrypted, except for the MIME headers
 themselves.  However, any <code class="literal">message/rfc822</code> MIME content - attached
-messages - are encrypted/signed in their entirety, headers and content.</p></div><div class="refsect2" lang="en" xml:lang="en"><a id="id459315" shape="rect"> </a><h3>DECRYPTING AND CHECKING SIGNATURES</h3><p>
+messages - are encrypted/signed in their entirety, headers and content.</p></div><div class="refsect2" title="DECRYPTING AND CHECKING SIGNATURES"><a id="id435684" shape="rect"> </a><h3>DECRYPTING AND CHECKING SIGNATURES</h3><p>
 The <code class="option">-d</code> option attempts to decrypt any encrypted content in a
 MIME message.  The <code class="option">-c</code> option attempts to verify signatures of
 any signed content.  Both <code class="option">-c</code> and <code class="option">-d</code>
@@ -77,5 +77,5 @@ include the signed content even if the signature could not be verified (check
 not be included (obviously).</p><p>
 Note - any existing x-mimegpg MIME section will have its content-type
 quietly reset to multipart/mixed, in order to avoid confusion (except when
-this is what got decrypted).</p></div></div><div class="refsect1" lang="en" xml:lang="en"><a id="id458910" shape="rect"> </a><h2>SEE ALSO</h2><p>
+this is what got decrypted).</p></div></div><div class="refsect1" title="SEE ALSO"><a id="id435926" shape="rect"> </a><h2>SEE ALSO</h2><p>
 <a class="ulink" href="reformime.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">reformime</span>(1)</span></a>.</p></div></div></body></html>

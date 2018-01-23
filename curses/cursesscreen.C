@@ -1,18 +1,20 @@
-/* $Id: cursesscreen.C,v 1.18 2010/04/29 00:34:49 mrsam Exp $
-**
-** Copyright 2002-2006, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 
+#include "curses_config.h"
 #include <signal.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <iomanip>
 #include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cerrno>
 
-#include "curses_config.h"
 #if HAVE_SYS_WAIT_H
 #include <sys/wait.h>
 #endif
@@ -26,9 +28,7 @@
 #include "cursesscreen.H"
 #include "cursesfield.H"
 
-using namespace std;
-
-static char termStopKey= 'Z' & 31;
+static unsigned char termStopKey= 'Z' & 31;
 
 static RETSIGTYPE bye(int dummy)
 {
@@ -42,6 +42,78 @@ int Curses::getColorCount()
 	if (has_colors())
 		return COLORS;
 	return 0;
+}
+
+
+CursesScreen::KeyReader::KeyReader()
+	: h(iconv_open(libmail_u_ucs4_native, unicode_default_chset())),
+	  winput_cnt(0)
+{
+	if (h == (iconv_t)-1)
+	{
+		std::cerr << "Unable to initiale "
+			  << unicode_default_chset()
+			  << " mapping to UCS-4" << std::endl;
+		exit(1);
+	}
+}
+
+CursesScreen::KeyReader::~KeyReader()
+{
+	if (h != (iconv_t)-1)
+		iconv_close(h);
+}
+
+void CursesScreen::KeyReader::operator<<(char ch)
+{
+	input_buf.push_back(ch);
+
+	winput_buf.resize(winput_cnt+128);
+
+	while (input_buf.size() > 0)
+	{
+
+		char *inbuf=&input_buf[0], *outbuf=&winput_buf[winput_cnt];
+		size_t inbytesleft=input_buf.size(),
+			outbytesleft=winput_buf.size()-winput_cnt;
+
+		size_t res=iconv(h, &inbuf, &inbytesleft, &outbuf,
+				 &outbytesleft);
+
+		if (inbuf != &input_buf[0])
+			input_buf.erase(input_buf.begin(),
+					input_buf.begin() +
+					(inbuf - &input_buf[0]));
+
+		winput_cnt=outbuf - &winput_buf[0];
+
+		if (res == (size_t)-1 && errno == EILSEQ)
+		{
+			if (input_buf.size() > 0)
+				input_buf.erase(input_buf.begin(),
+						input_buf.begin()+1);
+			continue;
+		}
+
+		if (res == (size_t)-1 && errno == E2BIG)
+			winput_buf.resize(winput_buf.size()+128);
+
+		if (res == (size_t)-1 && errno == EINVAL)
+			break;
+	}
+}
+
+bool CursesScreen::KeyReader::operator>>(unicode_char &ch)
+{
+	if (winput_cnt < sizeof(ch))
+		return false;
+
+	memcpy(&ch, &winput_buf[0], sizeof(ch));
+
+	winput_buf.erase(winput_buf.begin(),
+			 winput_buf.begin()+sizeof(ch));
+	winput_cnt -= sizeof(ch);
+	return true;
 }
 
 CursesScreen::CursesScreen() : inputcounter(0)
@@ -100,7 +172,6 @@ CursesScreen::CursesScreen() : inputcounter(0)
 	signal(SIGHUP, bye);
 	signal(SIGTERM, bye);
 
-	memset(&inputstate, 0, sizeof(inputstate));
 	save_w=COLS;
 	save_h=LINES;
 	shiftmode=false;
@@ -138,93 +209,186 @@ void CursesScreen::resized()
 	draw();
 }
 
-bool CursesScreen::writeText(const char *text, int row, int col,
+bool CursesScreen::writeText(const char *ctext, int row, int col,
 			     const Curses::CursesAttr &attr) const
 {
-	vector<wchar_t> wbuf;
+	std::vector<unicode_char> ubuf;
 
-	mbtow(text, wbuf);
-	wbuf.push_back(0);
+	mail::iconvert::convert(ctext, unicode_default_chset(), ubuf);
 
-	return writeText(&wbuf[0], row, col, attr);
+	return writeText(ubuf, row, col, attr);
 }
 
-bool CursesScreen::writeText(const wchar_t *text, int row, int col,
+//
+// Eliminate time-consuming expantabs() call in the hot writeText() codepath
+// by loading widecharbuf from an iterator that replaces tabs with a single
+// space character. writeText() should not get a string with tabs anyway.
+//
+// As a bonus, any NUL character gets also replaced with a space.
+//
+
+class CursesScreen::repltabs_spaces :
+	public std::iterator<std::random_access_iterator_tag,
+			     const unicode_char> {
+
+	const unicode_char *p;
+
+	unicode_char tmp;
+
+public:
+	repltabs_spaces() : p(0) {}
+
+	repltabs_spaces(const unicode_char *pVal) : p(pVal) {}
+
+	bool operator==(const repltabs_spaces &v)
+	{
+		return p == v.p;
+	}
+
+	bool operator!=(const repltabs_spaces &v)
+	{
+		return p != v.p;
+	}
+
+	bool operator<(const repltabs_spaces &v)
+	{
+		return p < v.p;
+	}
+
+	bool operator<=(const repltabs_spaces &v)
+	{
+		return p <= v.p;
+	}
+
+	bool operator>(const repltabs_spaces &v)
+	{
+		return p < v.p;
+	}
+
+	bool operator>=(const repltabs_spaces &v)
+	{
+		return p <= v.p;
+	}
+
+	unicode_char operator*() const { return operator[](0); }
+
+	repltabs_spaces &operator++() { ++p; return *this; }
+
+	const unicode_char *operator++(int) { tmp=operator*(); ++p; return &tmp; }
+
+	repltabs_spaces &operator--() { --p; return *this; }
+
+	const unicode_char *operator--(int) { tmp=operator*(); --p; return &tmp; }
+
+	repltabs_spaces &operator+=(difference_type diff) { p += diff; return *this; }
+
+	repltabs_spaces &operator-=(difference_type diff) { p -= diff; return *this; }
+
+	repltabs_spaces operator+(difference_type diff) const { repltabs_spaces tmp=*this; tmp += diff; return tmp; }
+	repltabs_spaces operator-(difference_type diff) const { repltabs_spaces tmp=*this; tmp -= diff; return tmp; }
+
+	difference_type operator-(const repltabs_spaces b) const { return p-b.p; }
+
+	const unicode_char operator[](difference_type diff) const { return p[diff] == 0 || p[diff] == '\t' ? ' ':p[diff]; }
+};
+
+bool CursesScreen::writeText(const std::vector<unicode_char> &utext,
+			     int row, int col,
 			     const Curses::CursesAttr &attr) const
 {
-
 	// Truncate text to fit within the display
 
 	if (row < 0 || row >= getHeight() || col >= getWidth())
 		return false;
 
-	while (col < 0)
-	{
-		if (!*text)
-			return true;
+	widecharbuf wc;
 
-		text++;
-		col++;
+	{
+		repltabs_spaces ptr(utext.size() ? &*utext.begin():NULL);
+
+		wc.init_unicode(ptr, ptr+utext.size());
 	}
 
-	if (!*text)
-		return true;
+	// Advance past any part of the script beyond the left margin
+
+	bool left_margin_crossed=false;
+
+	std::vector<widecharbuf::grapheme_t>::const_iterator
+		b(wc.graphemes.begin()), e(wc.graphemes.end());
+
+	if (b != e)
+	{
+		while (col < 0)
+		{
+			if (b == e)
+				return false;
+
+			col += b->wcwidth(col);
+			++b;
+			left_margin_crossed=true;
+		}
+
+		if (col < 0 || b == e)
+			return false;
+	}
+
+	if (left_margin_crossed)
+	{
+		// Clear any cells that contain a partial graphemes that
+		// extends from beyond the left margin
+		move(row, 0);
+
+		for (int i=0; i<col; i++)
+			addstr(" ");
+	}
+	else
+		move(row, col);
 
 	int w=getWidth();
-	size_t i;
 
-	for (i=0; text[i]; i++)
-		;
+	if (col >= w)
+		return false;
 
-	if ((size_t)(w - col) < i)
-		i=w-col;
-
-	if (i == 0)
+	if (b == e)
 		return true;
 
-	vector<wchar_t> buf;
+	size_t cells=w-col;
 
-	buf.insert(buf.end(), text, text+i);
+	const unicode_char *uptr=b->uptr;
+	size_t ucnt=0;
 
-	// Replace unprintable characters with question marks.
-	for (i=0; i < buf.size(); )
+	bool right_margin_crossed=false;
+
+	while (b != e)
 	{
-#if HAVE_WCWIDTH
-		int ww=wcwidth(buf[i]);
-#endif
+		size_t grapheme_width=b->wcwidth(col);
 
-		if ((buf[i] >= 0 && buf[i] < ' ')
-		    || (buf[i] >= 127 && buf[i] < 160)
-
-#if HAVE_WCWIDTH
-		    || ww <= 0
-#endif
-		    )
+		if (grapheme_width > cells)
 		{
-			buf[i]='?';
+			if (cells)
+				right_margin_crossed=true;
+			break;
 		}
 
-#if HAVE_WCWIDTH
-		if (ww > 1)
-		{
-			if (i + ww > buf.size()) // Truncated
-			{
-				while (i < buf.size())
-					buf[i++]=' ';
-				continue;
-			}
-
-			buf.erase(buf.begin() + i + 1,
-				  buf.begin() + i + ww);
-		}
-#endif
-
-		i++;
+		ucnt += b->cnt;
+		cells -= grapheme_width;
+		col += grapheme_width;
+		++b;
 	}
 
-	buf.push_back(0);
+	std::vector<wchar_t> text_buf;
 
-	text=&buf[0];
+	{
+		std::string s;
+
+		mail::iconvert::fromu::convert(uptr, uptr+ucnt,
+					       unicode_default_chset(), s);
+
+		towidechar(s.begin(), s.end(), text_buf);
+	}
+	text_buf.push_back(0);
+
+	wchar_t *text=&text_buf[0];
 
 	int c=0;
 
@@ -270,9 +434,9 @@ bool CursesScreen::writeText(const wchar_t *text, int row, int col,
 			{
 				size_t i=0;
 
-				for (i=0; buf[i]; i++)
-					if (buf[i] == ' ')
-						buf[i]=0xA0;
+				for (i=0; text[i]; i++)
+					if (text[i] == ' ')
+						text[i]=0xA0;
 			}
 			attron(A_UNDERLINE);
 		}
@@ -280,83 +444,22 @@ bool CursesScreen::writeText(const wchar_t *text, int row, int col,
 		{
 			size_t i;
 
-			for (i=0; buf[i]; i++)
-				if (buf[i] == ' ')
-					buf[i]='_';
+			for (i=0; text[i]; i++)
+				if (text[i] == ' ')
+					text[i]='_';
 		}
 	}
 
-#if WIDECURSES
-	mvaddwstr(row, col, text);
-#else
-	//	mvaddwstr(row, col, text);
-
-	string mb=wtomb(text);
-
-	if (col == 0 && mb.size() == (size_t)getWidth() &&
-	    mb.find_first_not_of(' ') == std::string::npos &&
-	    attr.getBgColor() == 0 &&
-	    !attr.getHighlight() &&
-	    !attr.getReverse() &&
-	    !attr.getUnderline())
-	{
-		// Hope that curses can optimize this...
-
-		move(row, col);
-		clrtoeol();
-	}
-	else
-	{
-		for (i=0; i<mb.size(); i++)
-		{
-			if (mb[i] == 127 || buf[i] < ' ')
-			{
-				buf[i]=' ';
-			}
-		}
-#if 0
-		cerr << "ADDSTR " << row << "x" << col << ": "
-		     << mb.c_str() << endl;
-#endif
-		mvaddstr(row, col, mb.c_str());
-	}
-#endif
+	addwstr(text);
 
 	if (c)
 		attroff(COLOR_PAIR(c));
 	attroff(A_STANDOUT | A_BOLD | A_UNDERLINE | A_REVERSE);
+
+	if (right_margin_crossed)
+		clrtoeol();
+
 	return true;
-}
-
-int CursesScreen::getTextLength(const char *text) const
-{
-	vector<wchar_t> wbuf;
-
-	mbtow(text, wbuf);
-	wbuf.push_back(0);
-
-	return getTextLength(&wbuf[0]);
-}
-
-int CursesScreen::getTextLength(const wchar_t *text) const
-{
-	size_t l=0;
-
-	while (text && *text)
-	{
-#if HAVE_WCWIDTH
-		int w=wcwidth(*text);
-
-		if (w <= 0)
-			w=1;
-
-		l += w;
-#else
-		l++;
-#endif
-		text++;
-	}
-	return l;
 }
 
 void CursesScreen::flush()
@@ -383,11 +486,11 @@ Curses::Key CursesScreen::getKey()
 
 		if (k.plain())
 		{
-			if (k.key == termStopKey)
+			if (k.plain() && k.ukey == termStopKey)
 			{
 				if (suspendCommand.size() > 0)
 				{
-					vector<const char *> argv;
+					std::vector<const char *> argv;
 
 					const char *p=getenv("SHELL");
 
@@ -428,15 +531,15 @@ Curses::Key CursesScreen::getKey()
 	}
 }
 
-int Curses::runCommand(vector<const char *> &argv,
+int Curses::runCommand(std::vector<const char *> &argv,
 		       int stdinpipe,
-		       string continuePrompt)
+		       std::string continuePrompt)
 {
 	endwin();
 	if (continuePrompt.size() > 0)
 	{
-		cout << endl << endl;
-		cout.flush();
+		std::cout << std::endl << std::endl;
+		std::cout.flush();
 	}
 
 	pid_t editor_pid, p2;
@@ -523,9 +626,9 @@ int Curses::runCommand(vector<const char *> &argv,
 	{
 		char buffer[80];
 
-		cout << endl << continuePrompt;
-		cout.flush();
-		cin.getline(buffer, sizeof(buffer));
+		std::cout << std::endl << continuePrompt;
+		std::cout.flush();
+		std::cin.getline(buffer, sizeof(buffer));
 	}
 
 	refresh();
@@ -535,6 +638,15 @@ int Curses::runCommand(vector<const char *> &argv,
 
 Curses::Key CursesScreen::doGetKey()
 {
+	// If, for some reason, a unicode key is available, take it
+
+	{
+		unicode_char uk;
+
+		if (keyreader >> uk)
+			return doGetPlainKey(uk);
+	}
+
 	// Position cursor first.
 
 	int row=getHeight();
@@ -561,38 +673,41 @@ Curses::Key CursesScreen::doGetKey()
 	else
 		curs_set(0);
 
-	//	flush(); // BUG ncurses-5.2, blocking read after sigwinch.
+	move(row, col);
 
-	int k=mvgetch(row, col);
+	// As long as the bytes from the keyboard keep getting read,
+	// accumulate them.
 
-	if (k == ERR)
+	while (1)
 	{
-		flush();
+		int k=getch();
 
-		if (++inputcounter >= 100)
+		if (k == ERR)
 		{
-			// Detect closed xterm without SIGHUP
+			flush();
 
-			if (write(1, "", 1) < 0)
-				bye(0);
-			inputcounter=0;
+			if (++inputcounter >= 100)
+			{
+				// Detect closed xterm without SIGHUP
+
+				if (write(1, "", 1) < 0)
+					bye(0);
+				inputcounter=0;
+			}
+
+			if (LINES != save_h || COLS != save_w)
+				return (Key(Key::RESIZE));
+
+			return Key((unicode_char)0);
 		}
-
-		if (LINES != save_h || COLS != save_w)
-			return (Key(Key::RESIZE));
-
-		return Key((wchar_t)0);
-	}
-	inputcounter=0;
+		inputcounter=0;
 
 #ifdef KEY_SUSPEND
 
-	if (k == KEY_SUSPEND)
-		k=termStopKey;
+		if (k == KEY_SUSPEND)
+			k=termStopKey;
 #endif
 
-	if ( (k & 0xFF) != k)
-	{
 		static const struct {
 			int keyval;
 			const char *keycode;
@@ -658,14 +773,27 @@ Curses::Key CursesScreen::doGetKey()
 		if (k >= KEY_F(0) && k <= KEY_F(63))
 		{
 			Key kk("FKEY");
-			kk.key=k-KEY_F(0);
+			kk.ukey=k-KEY_F(0);
 			return kk;
 		}
 #endif
 
-		return Key( (wchar_t)0);
-	}
+		if ( (unsigned char)k == k)
+		{
+			// Plain key
 
+			keyreader << k;
+
+			unicode_char uk;
+
+			if (keyreader >> uk)
+				return doGetPlainKey(uk);
+		}
+	}
+}
+
+Curses::Key CursesScreen::doGetPlainKey(unicode_char k)
+{
 	if (k == 0)
 	{
 		shiftmode= !shiftmode;
@@ -673,7 +801,7 @@ Curses::Key CursesScreen::doGetKey()
 		return Key(Key::SHIFT);
 	}
 
-	if (k == CursesField::clrEolKey)
+	if (k == (unicode_char)CursesField::clrEolKey)
 		return Key(Key::CLREOL);
 
 	if (k == '\r')
@@ -681,24 +809,7 @@ Curses::Key CursesScreen::doGetKey()
 
 	shiftmode=false;
 
-	char inputChar=(char)k;
-
-	wchar_t w;
-
-	size_t n=mbrtowc(&w, &inputChar, 1, &inputstate);
-
-	if (n != 1)
-	{
-		if (n != (size_t)-2)
-		{
-			memset(&inputstate, 0, sizeof(inputstate));
-			// -2 - not enough chars, it's ok, else reset
-		}
-
-		return (Key((wchar_t)0));
-	}
-
-	return (Key((wchar_t)w));
+	return (Key(k));
 }
 
 void CursesScreen::beepError()

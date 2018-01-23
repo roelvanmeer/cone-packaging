@@ -1,6 +1,5 @@
-/* $Id: outputdialog.C,v 1.2 2010/04/29 00:34:49 mrsam Exp $
-**
-** Copyright 2003, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -8,10 +7,7 @@
 #include "config.h"
 #include "outputdialog.H"
 #include "gettext.H"
-#include "wraptext.H"
 #include "myserver.H"
-
-using namespace std;
 
 OutputDialog::OutputDialog(CursesMainScreen *parent)
 	: CursesContainer(parent),
@@ -49,7 +45,7 @@ bool OutputDialog::processKeyInFocus(const Key &key)
 
 // Display progressive output, as it comes in.
 
-void OutputDialog::output(string s)
+void OutputDialog::output(std::string s)
 {
 	// Previous output ended in a partial line?
 	// Prepend the partial line to s, then erase the last line, and
@@ -59,13 +55,12 @@ void OutputDialog::output(string s)
 	{
 		s=buf.end()[-1]+s;
 
-		vector<wchar_t> blankLine;
+		std::vector<unicode_char> blankLine;
 
 		blankLine.insert(blankLine.end(), getWidth(), ' ');
-		blankLine.push_back(0);
 
 		CursesAttr attr;
-		writeText(&blankLine[0], buf.size()-1, 0, attr);
+		writeText(blankLine, buf.size()-1, 0, attr);
 		buf.erase(buf.end()-1, buf.end());
 	}
 	partialLine=false;
@@ -74,7 +69,7 @@ void OutputDialog::output(string s)
 
 	while ((n=s.find('\n')) != std::string::npos)
 	{
-		string l=s.substr(0, n);
+		std::string l=s.substr(0, n);
 		s=s.substr(n+1);
 		outputLine(l);
 	}
@@ -86,11 +81,11 @@ void OutputDialog::output(string s)
 	}
 }
 
-void OutputDialog::outputLine(string s)
+void OutputDialog::outputLine(std::string s)
 {
 	CursesAttr attr;
 
-	string::iterator b=s.begin(), p=b, e=s.end();
+	std::string::iterator b=s.begin(), p=b, e=s.end();
 
 	while (b != e)
 	{
@@ -106,7 +101,33 @@ void OutputDialog::outputLine(string s)
 	s.erase(p, e);
 
 
-	vector<string> addStrings=WrapText(s, getWidth());
+	std::vector<std::string> addStrings;
+
+	{
+		std::vector< std::vector<unicode_char> > ulines;
+		std::back_insert_iterator
+			<std::vector< std::vector<unicode_char>
+				      > > insert_iter(ulines);
+
+		std::vector<unicode_char> uline;
+
+		mail::iconvert::convert(s,
+					unicode_default_chset(),
+					uline);
+
+		unicodewordwrap(uline.begin(), uline.end(),
+				unicoderewrapnone(),
+				insert_iter, getWidth(), true);
+
+		for (std::vector<std::vector<unicode_char> >::iterator
+			     b=ulines.begin(),
+			     e=ulines.end(); b != e; ++b)
+		{
+			addStrings.push_back(mail::iconvert::convert(*b,
+								     unicode_default_chset()));
+		}
+
+	}
 
 	size_t h=getHeight();
 

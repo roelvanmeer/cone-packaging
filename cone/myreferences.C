@@ -1,5 +1,4 @@
-/* $Id: myreferences.C,v 1.2 2003/07/31 06:02:43 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

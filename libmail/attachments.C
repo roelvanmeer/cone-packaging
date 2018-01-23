@@ -1,5 +1,4 @@
-/* $Id: attachments.C,v 1.4 2008/05/24 17:57:41 mrsam Exp $
-**
+/*
 ** Copyright 2004-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -99,7 +98,8 @@ mail::Attachment::Attachment(string h, int fd)
 
 		if (transfer_encoding.size() == 0)
 			transfer_encoding=
-				libmail_encode_autodetect_fp(content_fp, 1);
+				libmail_encode_autodetect_fp(content_fp, 1,
+							     NULL);
 	} catch (...)
 	{
 		fclose(content_fp);
@@ -138,9 +138,8 @@ mail::Attachment::Attachment(std::string h, int fd,
 
 		if (transfer_encoding.size() == 0)
 			transfer_encoding=
-				libmail_encode_autodetect_fppos(content_fp,
-								chs.c_str(),
-								0, -1);
+				libmail_encode_autodetect_fp(content_fp, 0,
+							     NULL);
 		add_content_encoding();
 
 	} catch (...) {
@@ -156,8 +155,8 @@ mail::Attachment::Attachment(string h, string content)
 	check_multipart_encoding();
 	if (transfer_encoding.size() == 0)
 		transfer_encoding=
-			libmail_encode_autodetect_str(content.c_str(),
-						      "ISO-8859-1");
+			libmail_encode_autodetect_buf(content.c_str(), 1);
+
 	add_content_encoding();
 }
 
@@ -174,8 +173,7 @@ mail::Attachment::Attachment(string h, string content,
 
 	if (transfer_encoding.size() == 0)
 		transfer_encoding=
-			libmail_encode_autodetect_str(content.c_str(),
-						      chs.c_str());
+			libmail_encode_autodetect_buf(content.c_str(), 1);
 	add_content_encoding();
 }
 
@@ -290,10 +288,10 @@ std::string mail::Attachment::find_header(const char *header_name,
 	if (s != b)
 		s += l;
 
-	while (s != b && isspace((int)(unsigned char)*s))
+	while (s != b && unicode_isspace((unsigned char)*s))
 		++s;
 
-	while (s != b && isspace((int)(unsigned char)b[-1]))
+	while (s != b && unicode_isspace((unsigned char)b[-1]))
 		--b;
 
 	return string(s,b);

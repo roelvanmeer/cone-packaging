@@ -1,6 +1,5 @@
-/* $Id: cursesscreen.H,v 1.3 2007/07/30 02:47:52 mrsam Exp $
-**
-** Copyright 2002, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -9,6 +8,7 @@
 #define cursesscreen_H
 
 #include "../curses/curses_config.h"
+#include "../unicode/unicode.h"
 #include "cursescontainer.H"
 
 #if HAVE_NCURSESW_CURSES_H
@@ -16,6 +16,9 @@
 #else
 #include <curses.h>
 #endif
+
+#include <iconv.h>
+#include <vector>
 
 //
 // A libcurses implementation.  A CursesScreen object is typically the
@@ -27,11 +30,33 @@ class CursesScreen : public CursesContainer {
 
 	int save_w, save_h; // Fix some libcurses.a resizing bugs.
 
-	mbstate_t inputstate;
-
 	int inputcounter;
 
 	bool underline_hack;
+
+	// Read keyboard input, convert to unicode_chars
+
+	class KeyReader {
+
+		iconv_t h;
+
+		std::vector<char> input_buf;
+		std::vector<char> winput_buf;
+
+		size_t winput_cnt;
+
+	public:
+		KeyReader();
+		~KeyReader();
+
+		void operator<<(char);
+
+		bool operator>>(unicode_char &);
+	};
+
+	KeyReader keyreader;
+
+	class repltabs_spaces;
 
 public:
 	CursesScreen();
@@ -46,11 +71,9 @@ public:
 
 	bool writeText(const char *text, int row, int col,
 		       const Curses::CursesAttr &attr) const;
-	bool writeText(const wchar_t *text, int row, int col,
-		       const Curses::CursesAttr &attr) const;
 
-	int getTextLength(const char *text) const;
-	int getTextLength(const wchar_t *text) const;
+	bool writeText(const std::vector<unicode_char> &text, int row, int col,
+		       const Curses::CursesAttr &attr) const;
 
 	// Return keyboard input.  Returns Key::nokey() if no keyboard input
 	// isavailable.
@@ -60,6 +83,8 @@ public:
 private:
 
 	Key doGetKey();
+	Key doGetPlainKey(unicode_char);
+
 public:
 	void resized();
 };

@@ -4,7 +4,6 @@
 */
 
 /*
-** $Id: rfc2045appendurl.c,v 1.4 2003/03/07 00:47:31 mrsam Exp $
 */
 #if    HAVE_CONFIG_H
 #include       "rfc2045_config.h"
@@ -71,7 +70,7 @@ char *buf, *q;
 	{
 		buf=malloc(strlen(loc)+1);
 		if (!buf)
-			rfc2045_enomem();
+			return NULL;
 		else
 			strcpy(buf, loc);
 		return (buf);
@@ -87,8 +86,7 @@ char *buf, *q;
 
 	if (!buf)
 	{
-		rfc2045_enomem();
-		return (0);
+		return NULL;
 	}
 
 	if (loc_method_l)

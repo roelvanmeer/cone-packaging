@@ -1,6 +1,5 @@
-/* $Id: smtp.C,v 1.12 2010/04/29 00:34:50 mrsam Exp $
-**
-** Copyright 2002-2008, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -17,7 +16,6 @@
 #include "libcouriertls.h"
 
 #include <errno.h>
-#include <ctype.h>
 
 #include <sstream>
 #include <iomanip>
@@ -209,7 +207,7 @@ int mail::smtp::socketRead(const string &readbuffer)
 
 	if (b == l.begin()+3)
 	{
-		if (b == e || isspace((int)(unsigned char)*b))
+		if (b == e || unicode_isspace((unsigned char)*b))
 		{
 			string s="";
 
@@ -574,22 +572,12 @@ void mail::smtp::ehloResponse(int n, string s)
 
 		// Put capability to uppercase
 
-		line=line.substr(p);
-
-		char *t=(*unicode_ISO8859_1.toupper_func)(&unicode_ISO8859_1,
-							  line.c_str(), NULL);
-
-		if (t)
-			try {
-				line=t;
-				free(t);
-			} catch (...) {
-				free(t);
-				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-			}
+		line=mail::iconvert::convert_tocase(line.substr(p),
+						    "iso-8859-1",
+						    unicode_uc);
 
 		for (p=0; p<line.size(); p++)
-			if (isspace((int)(unsigned char)line[p]) ||
+			if (unicode_isspace((unsigned char)line[p]) ||
 			    line[p] == '=')
 				break;
 
@@ -608,7 +596,7 @@ void mail::smtp::ehloResponse(int n, string s)
 			while (line.size() > 0)
 			{
 				for (p=0; p<line.size(); p++)
-					if (isspace((int)(unsigned char)
+					if (unicode_isspace((unsigned char)
 						    line[p]) ||
 					    line[p] == ',')
 						break;

@@ -1,4 +1,3 @@
-# $Id: Makefile.am,v 1.22 2009/11/22 19:39:52 mrsam Exp $
 #
 # Copyright 1998 - 2009 Double Precision, Inc.  See COPYING for
 # distribution information.
@@ -13,6 +12,8 @@ librfc822_la_SOURCES=rfc822.c rfc822.h rfc822hdr.c rfc822hdr.h \
 		  encodeautodetect.c
 librfc822_la_LIBADD = $(LIBIDN_LIBS)
 
+DISTCLEANFILES=rfc822.config
+
 AM_CFLAGS = $(LIBIDN_CFLAGS)
 
 libencode_la_SOURCES=encode.c encode.h
@@ -22,8 +23,8 @@ noinst_DATA=$(BUILT_SOURCES)
 
 noinst_PROGRAMS=testsuite reftest
 testsuite_SOURCES=testsuite.c
-testsuite_DEPENDENCIES=librfc822.la
-testsuite_LDADD=librfc822.la
+testsuite_DEPENDENCIES=librfc822.la ../unicode/libunicode.la
+testsuite_LDADD=librfc822.la ../unicode/libunicode.la
 testsuite_LDFLAGS=-static
 
 reftest_SOURCES=reftest.c imaprefs.h

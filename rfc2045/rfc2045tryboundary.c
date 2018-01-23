@@ -18,7 +18,6 @@
 #endif
 
 
-/* $Id: rfc2045tryboundary.c,v 1.7 2003/03/07 00:47:31 mrsam Exp $ */
 
 extern void rfc2045_add_buf( char **, size_t *, size_t *,
 	const char *, size_t);
@@ -63,7 +62,7 @@ static	size_t	i, j;
 	return (0);
 }
 
-static int try_boundary(struct rfc2045 *p, int fd)
+static int try_boundary(struct rfc2045 *p, struct rfc2045src *src)
 {
 int	rc;
 char	buf[512];
@@ -73,7 +72,7 @@ off_t	ps;
 	if (p->firstpart)
 	{
 		for (p=p->firstpart; p; p=p->next)
-			if ((rc=try_boundary(p, fd)) != 0)
+			if ((rc=try_boundary(p, src)) != 0)
 				return (rc);
 		return (0);
 	}
@@ -85,7 +84,7 @@ off_t	ps;
 	boundary_chk_flag=0;
 	boundary_chk_buflen=0;
 
-	if (lseek(fd, p->startbody, SEEK_SET) == -1)	return (-1);
+	if ((*src->seek_func)(p->startbody, src->arg) == -1)	return (-1);
 	rfc2045_cdecode_start(p, boundary_chk, 0);
 
 	ps=p->startbody;
@@ -94,7 +93,7 @@ off_t	ps;
 		if (p->endbody - ps < sizeof(buf))
 			cnt=p->endbody-ps;
 		else	cnt=sizeof(buf);
-		n=read(fd, buf, cnt);
+		n=(*src->read_func)(buf, cnt, src->arg);
 		if (n <= 0)	return (-1);
 		rfc2045_cdecode(p, buf, n);
 		ps += n;
@@ -106,14 +105,15 @@ off_t	ps;
 	return (boundary_chk_flag);
 }
 
-int rfc2045_try_boundary(struct rfc2045 *p, int fd, const char *boundary)
+int rfc2045_try_boundary(struct rfc2045 *p, struct rfc2045src *src,
+			 const char *boundary)
 {
 int	n;
 
 	boundary_chk_val_len=strlen(boundary_chk_val=boundary);
 	boundary_chk_buf=0;
 	boundary_chk_bufsize=0;
-	n=try_boundary(p, fd);
+	n=try_boundary(p, src);
 	if (boundary_chk_buf)	free(boundary_chk_buf);
 	return (n);
 }

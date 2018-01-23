@@ -6,7 +6,6 @@
 ** See COPYING for distribution information.
 */
 
-static const char maildir_autoresponse_h_rcsid[]="$Id: autoresponse.h,v 1.5 2003/01/05 03:32:47 mrsam Exp $";
 
 #include	"config.h"
 #include	<stdio.h>

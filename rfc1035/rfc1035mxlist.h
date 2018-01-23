@@ -14,7 +14,6 @@
 #include	<netinet/in.h>
 #include	<arpa/inet.h>
 
-static const char rfc1035mxlist_h_rcsid[]="$Id: rfc1035mxlist.h,v 1.5 2004/08/15 16:41:02 mrsam Exp $";
 
 #ifdef  __cplusplus
 extern "C" {

@@ -41,7 +41,6 @@
 #include	"maildircreate.h"
 #include	"maildirsharedrc.h"
 
-static const char rcsid[]="$Id: maildirshared.c,v 1.23 2007/04/16 22:31:53 mrsam Exp $";
 
 /* Prerequisited for shared folder support */
 

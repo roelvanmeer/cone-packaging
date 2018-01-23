@@ -1,8 +1,6 @@
-dnl $Id: configure.in,v 1.15 2007/10/11 01:46:34 mrsam Exp $
 dnl
 dnl Copyright 1998 - 2004 Double Precision, Inc.  See COPYING for
 dnl distribution information.
-dnl $Id: configure.in,v 1.15 2007/10/11 01:46:34 mrsam Exp $
 
 AC_PREREQ(2.59)
 AC_INIT(liblock, 0.60, courier-users@lists.sourceforge.net)
@@ -33,6 +31,7 @@ AC_C_CONST
 AC_TYPE_OFF_T
 AC_TYPE_PID_T
 AC_TYPE_SIGNAL
+AC_SYS_LARGEFILE
 
 AC_CACHE_CHECK( [for off64_t], liblock_cv_hasoff64t,
 

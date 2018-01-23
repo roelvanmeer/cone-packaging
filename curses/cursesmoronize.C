@@ -1,5 +1,4 @@
-/* $Id: cursesmoronize.C,v 1.4 2004/05/01 02:28:21 mrsam Exp $
-**
+/*
 ** Copyright 2003-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -7,8 +6,6 @@
 
 #include "curses_config.h"
 #include "cursesmoronize.H"
-
-using namespace std;
 
 bool CursesMoronize::enabled=false;
 
@@ -22,23 +19,21 @@ CursesMoronize::Entry CursesMoronize::moronizationList[] = {
 	{ "]mt[", 4, 8482},
 	{ "-<", 2, 8592},
 	{ ">-", 2, 8594},
-	{ ">-<", 3, 8596},
 	{ "``", 2, 8220},
 	{ "''", 2, 8221},
 	{ " * ", 3, 8226},
 	{ "...", 3, 8230},
 	{ NULL, 0, 0}};
 
-size_t CursesMoronize::moronize(const char *buf, wchar_t &nreplaced)
+size_t CursesMoronize::moronize(const char *buf, unicode_char &nreplaced)
 {
 	Entry *e=moronizationList;
 
 	while (e->keycode)
 	{
-		if (strncmp(e->keycode, buf, e->keycodeLen) == 0 &&
-		    e->unicode_char)
+		if (strncmp(e->keycode, buf, e->keycodeLen) == 0 && e->uc)
 		{
-			nreplaced=e->unicode_char;
+			nreplaced=e->uc;
 			return e->keycodeLen;
 		}
 		++e;

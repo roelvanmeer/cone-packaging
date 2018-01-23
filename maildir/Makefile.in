@@ -15,7 +15,6 @@
 
 @SET_MAKE@
 
-#$Id: Makefile.am,v 1.59 2009/06/27 16:32:38 mrsam Exp $
 #
 # Copyright 1998 - 2005 Double Precision, Inc.  See COPYING for
 # distribution information.
@@ -45,7 +44,7 @@ target_triplet = @target@
 noinst_PROGRAMS = deliverquota$(EXEEXT) maildirmake$(EXEEXT) \
 	testmaildirfilter$(EXEEXT) maildirkwtest$(EXEEXT) \
 	maildirkw$(EXEEXT) maildiracl$(EXEEXT) \
-	maildiraclttest$(EXEEXT)
+	maildiraclttest$(EXEEXT) testmaildirsearch$(EXEEXT)
 subdir = .
 DIST_COMMON = $(am__configure_deps) $(srcdir)/../config.guess \
 	$(srcdir)/../config.sub $(srcdir)/../depcomp \
@@ -115,6 +114,8 @@ testmaildirfilter_OBJECTS = $(am_testmaildirfilter_OBJECTS)
 testmaildirfilter_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(testmaildirfilter_LDFLAGS) $(LDFLAGS) -o $@
+am_testmaildirsearch_OBJECTS = testmaildirsearch.$(OBJEXT)
+testmaildirsearch_OBJECTS = $(am_testmaildirsearch_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__depfiles_maybe = depfiles
@@ -140,11 +141,11 @@ CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 SOURCES = $(libmaildir_la_SOURCES) $(deliverquota_SOURCES) \
 	maildiracl.c $(maildiraclttest_SOURCES) $(maildirkw_SOURCES) \
 	$(maildirkwtest_SOURCES) $(maildirmake_SOURCES) \
-	$(testmaildirfilter_SOURCES)
+	$(testmaildirfilter_SOURCES) $(testmaildirsearch_SOURCES)
 DIST_SOURCES = $(libmaildir_la_SOURCES) $(deliverquota_SOURCES) \
 	maildiracl.c $(maildiraclttest_SOURCES) $(maildirkw_SOURCES) \
 	$(maildirkwtest_SOURCES) $(maildirmake_SOURCES) \
-	$(testmaildirfilter_SOURCES)
+	$(testmaildirfilter_SOURCES) $(testmaildirsearch_SOURCES)
 DATA = $(noinst_DATA)
 ETAGS = etags
 CTAGS = ctags
@@ -263,7 +264,6 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
 localstatedir = @localstatedir@
-lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
@@ -369,6 +369,9 @@ maildiraclttest_DEPENDENCIES = libmaildir.la ../liblock/liblock.la \
 		../numlib/libnumlib.la maildir.libdeps
 
 maildiraclttest_LDFLAGS = -static
+testmaildirsearch_SOURCES = testmaildirsearch.c
+testmaildirsearch_LDADD = libmaildir.la ../unicode/libunicode.la
+testmaildirsearch_DEPENDENCIES = libmaildir.la ../unicode/libunicode.la
 EXTRA_DIST = README.maildirquota.html README.maildirquota.txt \
 	README.imapkeywords.html \
 	README.maildirfilter.html \
@@ -481,6 +484,9 @@ maildirmake$(EXEEXT): $(maildirmake_OBJECTS) $(maildirmake_DEPENDENCIES)
 testmaildirfilter$(EXEEXT): $(testmaildirfilter_OBJECTS) $(testmaildirfilter_DEPENDENCIES) 
 	@rm -f testmaildirfilter$(EXEEXT)
 	$(testmaildirfilter_LINK) $(testmaildirfilter_OBJECTS) $(testmaildirfilter_LDADD) $(LIBS)
+testmaildirsearch$(EXEEXT): $(testmaildirsearch_OBJECTS) $(testmaildirsearch_DEPENDENCIES) 
+	@rm -f testmaildirsearch$(EXEEXT)
+	$(LINK) $(testmaildirsearch_OBJECTS) $(testmaildirsearch_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -530,6 +536,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/maildirwatch.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testmaildiraclt.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testmaildirfilter.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testmaildirsearch.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -939,6 +946,11 @@ check-am:
 	test "@LIBPCRE@" != "" || exit 0 ; @SHELL@ $(srcdir)/testsuite2 2>&1 | cmp - $(srcdir)/testsuite2.txt
 	LC_ALL=C; export LC_ALL; ./maildirkwtest | cmp -s - $(srcdir)/maildirkwtest.txt
 	LC_ALL=C; export LC_ALL; ./maildiraclttest
+	./testmaildirsearch iso-8859-1 needle haystack; test $$? = 2 && exit 0; exit 1
+	./testmaildirsearch iso-8859-1 nEEdle needlE
+	./testmaildirsearch iso-8859-1 "abra  cadAbra" "abra   cadabra"
+	./testmaildirsearch iso-8859-1 "  abra  cadAbra  " " abra   cadabra"
+	./testmaildirsearch iso-8859-1 "  abra  cadAbra  " " abra   cadabra  "
 
 @HAVE_SGML_TRUE@deliverquota.html.in: deliverquota.sgml ../docbook/sgml2html
 @HAVE_SGML_TRUE@	../docbook/sgml2html deliverquota.sgml deliverquota.html.in

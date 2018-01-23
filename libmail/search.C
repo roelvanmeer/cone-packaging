@@ -1,6 +1,5 @@
-/* $Id: search.C,v 1.8 2010/04/29 00:34:50 mrsam Exp $
-**
-** Copyright 2002, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -14,6 +13,7 @@
 #include "unicode/unicode.h"
 
 #include "rfc822/rfc822.h"
+#include "rfc822/rfc822hdr.h"
 #include "rfc822/rfc2047.h"
 
 #include <sstream>
@@ -242,6 +242,21 @@ string mail::searchParams::encode(std::string s)
 
 ///////////////////////////////////////////////////////////////////////////
 
+int mail::searchOneMessage::Searcher::converted(const char *str,
+						size_t n)
+{
+	const unicode_char *uc=reinterpret_cast<const unicode_char *>(str);
+	n /= sizeof(unicode_char);
+
+	while (n)
+	{
+		mail::Search::operator<<(*uc);
+		++uc;
+		--n;
+	}
+	return 0;
+}
+
 mail::searchCallback::searchCallback()
 {
 }
@@ -337,80 +352,45 @@ mail::searchOneMessage::~searchOneMessage()
 
 void mail::searchOneMessage::go()
 {
-	if (searchInfo.charset.size() > 0)
+	char *c=libmail_u_convert_tocase(searchInfo.param2.c_str(),
+					 searchInfo.charset.c_str(),
+					 unicode_uc,
+					 NULL);
+
+	if (c == NULL)
 	{
-		const struct unicode_info *u=unicode_find(searchInfo.charset
-							  .c_str());
-
-		if (u == NULL)
-		{
-			my_callback.fail("Unknown search charset.");
-			return;
-		}
-
-		if (u->search_chset)
-		{
-			char *p=unicode_convert(searchInfo.param2.c_str(),
-						u, u->search_chset);
-
-			if (!p)
-			{
-				my_callback.fail(errno == EINVAL
-						 ? "Invalid search string":
-						 "Unknown search charset.");
-				return;
-			}
-
-			try {
-				searchInfo.param2=p;
-				free(p);
-			} catch (...) {
-				free(p);
-				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-			}
-			u=u->search_chset;
-		}
-
-		searchCharset=u;
+		my_callback.fail("Unknown search charset.");
+		return;
 	}
-	else
-		searchCharset=&unicode_ISO8859_1;
 
-	char *p=(*searchCharset->toupper_func)(searchCharset,
-					       searchInfo.param2.c_str(),
-					       NULL);
+	try
+	{
+		searchInfo.param2=c;
+		free(c);
+	} catch (...) {
+		free(c);
+		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
+	}
 
-	if (!p)
+	c=libmail_u_convert_tocase(searchInfo.param1.c_str(),
+				   "iso-8859-1",
+				   unicode_uc,
+				   NULL);
+	if (!c)
 	{
 		my_callback.fail(strerror(errno));
 		return;
 	}
 
 	try {
-		searchInfo.param2=p;
-		free(p);
+		searchInfo.param1=c;
+		free(c);
 	} catch (...) {
-		free(p);
+		free(c);
 		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
-	p=(*unicode_ISO8859_1.toupper_func)(&unicode_ISO8859_1,
-					    searchInfo.param1.c_str(), NULL);
-
-	if (!p)
-	{
-		my_callback.fail(strerror(errno));
-		return;
-	}
-
-	try {
-		searchInfo.param1=p;
-		free(p);
-	} catch (...) {
-		free(p);
-		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-	}
-
+	searchCharset=searchInfo.charset;
 	searchFlag=false;
 
 	try {
@@ -439,7 +419,8 @@ void mail::searchOneMessage::go()
 		case searchParams::sentsince:
 
 			while (searchInfo.param2.size() > 0 &&
-			       isspace((unsigned char)searchInfo.param2[0]))
+			       unicode_isspace((unsigned char)searchInfo
+					       .param2[0]))
 				searchInfo.param2=searchInfo.param2.substr(1);
 
 			n=searchInfo.param2.find(' ');
@@ -493,8 +474,11 @@ void mail::searchOneMessage::go()
 		case searchParams::header:
 		case searchParams::body:
 		case searchParams::text:
-			mimeSearch.empty();
-			searchBuffer="";
+
+			while (!mimeSearch.empty())
+				mimeSearch.pop();
+
+			headerSearchBuffer="";
 			my_callback.nextFunc=
 				&mail::searchOneMessage::checkNextHeader;
 			ptr->readMessageAttributes(messageNumVector,
@@ -554,13 +538,20 @@ void mail::searchOneMessage::checkFwdEnvelope()
 
 void mail::searchOneMessage::checkNextHeader()
 {
+	if (searchInfo.criteria == searchParams::header &&
+	    headerSearchBuffer.size() > 0)
+		search("\n");
+
+	searchEngine.end();
+
+	if (searchEngine)
+		searchFlag=true;
+
 	if (!sanityCheck())
 		return;
 
-	if (searchBuffer.size() > 0) // Last line is a partial line
-		search(string("\n"));
-
 	mail::mimestruct *hdrs;
+	std::string bodyCharset("iso-8859-1");
 
 	for (;;) {
 
@@ -575,96 +566,52 @@ void mail::searchOneMessage::checkNextHeader()
 		mimeSearch.pop();
 
 		my_callback.nextFunc=&mail::searchOneMessage::checkNextHeader;
-		searchBuffer="";
-
-		char *q;
-
-		const struct unicode_info *u;
-		string bodySearch;
+		headerSearchBuffer="";
 
 		switch (searchInfo.criteria) {
 		case searchParams::header:
 
-			q=unicode_convert(searchInfo.param2.c_str(),
-					  searchCharset, &unicode_UTF8);
-
-			if (!q)
+			if (!searchEngine.setString(searchInfo.param2,
+						    searchCharset))
 			{
 				my_callback.fail(strerror(errno));
 				return;
 			}
-
-			try {
-				prepSearch(q);
-				free(q);
-			} catch (...) {
-				free(q);
-				my_callback.fail("Unexpected exception occured.");
-				return;
-			}
+			bodyCharset="utf-8";
 			break;
 
 		case searchParams::body:
 		case searchParams::text:
 
-			u=NULL;
-
-			bodySearch=searchInfo.param2;
-			if (hdrs->type == "TEXT")
+			if (!searchEngine.setString(searchInfo.param2,
+						    searchCharset))
 			{
-				if (hdrs->type_parameters.exists("CHARSET"))
-				{
-					string charset=hdrs->type_parameters
-						.get("CHARSET");
-
-					u=unicode_find(charset.c_str());
-				}
-				else
-					u=&unicode_ISO8859_1;
+				my_callback.fail(strerror(errno));
+				return;
 			}
 
-			bodyCharset=u;
-
-			if (u && u->search_chset)
-				u=u->search_chset;
-
-			if (u)
+			if (hdrs->type == "TEXT" &&
+			    hdrs->type_parameters.exists("CHARSET"))
 			{
-				q=unicode_convert(bodySearch.c_str(),
-						  searchCharset, u);
-
-				if (!q)
-				{
-					if (errno != EINVAL)
-					{
-						my_callback.fail(strerror(errno));
-						return;
-					}
-
-					// Search string cannot be expressed
-					// in the body content's charset.
-					// That's OK.
-
-					continue;
-				}
-
-				try {
-					bodySearch=q;
-					free(q);
-				} catch (...) {
-					free(q);
-					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-				}
+				bodyCharset=hdrs->type_parameters
+					.get("CHARSET");
 			}
-
-			prepSearch(bodySearch.c_str());
 			break;
 		default:
 			checkSearch(); // Shouldn't happen.
 			return;
 		}
+
+		if (searchEngine.getSearchLen() == 0) // Empty srch string
+		{
+			checkSearch();
+			return;
+		}
 		break;
 	}
+
+	searchEngine.begin(bodyCharset.c_str(),
+			   libmail_u_ucs4_native);
 
 	switch (searchInfo.criteria) {
 	case searchParams::header:
@@ -690,7 +637,7 @@ void mail::searchOneMessage::checkSearch()
 
 		searchInfo.criteria=searchInfo.header;
 		searchInfo.param1="";
-		searchBuffer="";
+		headerSearchBuffer="";
 		searchFwdEnvelope(structureBuffer);
 		checkNextHeader();
 		return;
@@ -742,19 +689,24 @@ void mail::searchOneMessage::search(const mail::envelope &envelope)
 void mail::searchOneMessage::searchEnvelope(const mail::envelope &envelope)
 {
 	string searchStr;
+	const char *header="Subject";
 
 	switch (searchInfo.criteria) {
 	case searchParams::from:
 		searchStr= mail::address::toString("", envelope.from);
+		header="From";
 		break;
 	case searchParams::to:
 		searchStr= mail::address::toString("", envelope.to);
+		header="To";
 		break;
 	case searchParams::cc:
 		searchStr= mail::address::toString("", envelope.cc);
+		header="Cc";
 		break;
 	case searchParams::bcc:
 		searchStr= mail::address::toString("", envelope.bcc);
+		header="Bcc";
 		break;
 	case searchParams::subject:
 		searchStr=envelope.subject;
@@ -770,106 +722,44 @@ void mail::searchOneMessage::searchEnvelope(const mail::envelope &envelope)
 		return;
 	}
 
-	// TODO -- fix decoding
-
-	std::string searchStrUTF8=
-		mail::rfc2047::decoder().decode(searchStr,
-						unicode_UTF8);
-
-	char *q= (*unicode_UTF8.toupper_func)(&unicode_UTF8,
-					      searchStrUTF8.c_str(), NULL);
+	char *q=rfc822_display_hdrvalue_tobuf(header,
+					      searchStr.c_str(),
+					      "utf-8",
+					      NULL, NULL);
 
 	if (!q)
 		return;
 
-	char *p=unicode_convert(searchInfo.param2.c_str(),
-				searchCharset, &unicode_UTF8);
-
-	if (!p)
+	if (!searchEngine.setString(searchInfo.param2, searchCharset))
 	{
 		free(q);
 		return;
 	}
 
-	try {
-		prepSearch(p);
-		beginSearch();
-		dosearch(q);
-		if (endSearch())
-			searchFlag=true;
-		free(p);
-		free(q);
-	} catch (...) {
-		free(p);
-		free(q);
-		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-	}
-
-}
-
-void mail::searchOneMessage::prepSearch(const char *s)
-{
-	string searchEngineStr=s;
-
-	string::iterator b=searchEngineStr.begin(), e=searchEngineStr.end(),
-		c=b;
-
-	while (b != e)
+	if (searchEngine.getSearchLen() == 0)
 	{
-		if (!isspace((int)(unsigned char)*b))
-		{
-			*c++ = *b++;
-			continue;
-		}
-
-		while (b != e && isspace((int)(unsigned char)*b))
-			b++;
-
-		*c++ = ' ';
+		free(q);
+		return;
 	}
 
-	searchEngineStr.erase(c, e);
+	std::vector<unicode_char> uc;
 
-	if (searchEngine.setString(searchEngineStr))
-		LIBMAIL_THROW("Out of memory.");
-}
-
-void mail::searchOneMessage::beginSearch()
-{
-	searchBuffer="";
-}
-
-void mail::searchOneMessage::dosearch(string s)
-{
-	char *p= (*searchCharset->toupper_func)(searchCharset,
-						s.c_str(), NULL);
-
-	if (!p)
-		LIBMAIL_THROW("Out of memory.");
-
-	char *q;
-
-	for (q=p; *q; )
+	if (!mail::iconvert::convert(q, "utf-8", uc))
 	{
-		if (!isspace((int)(unsigned char)*q))
-		{
-			searchEngine << *q;
-			q++;
-			continue;
-		}
-
-		while (*q && isspace((int)(unsigned char)*q))
-			++q;
-
-		searchEngine << ' ';
+		free(q);
+		return;
 	}
-	free(p);
+	free(q);
+
+	for (std::vector<unicode_char>::iterator
+		     b(uc.begin()), e(uc.end()); b != e; ++b)
+		searchEngine << *b;
+
+	if (searchEngine)
+		searchFlag=true;
 }
 
-bool mail::searchOneMessage::endSearch()
-{
-	return searchEngine;
-}
+static const char spaces[]=" \t\r\n";
 
 void mail::searchOneMessage::search(time_t internaldate)
 {
@@ -956,94 +846,86 @@ void mail::searchOneMessage::searchFwdEnvelope(mail::mimestruct &structureInfo)
 
 void mail::searchOneMessage::search(string text)
 {
+	if (searchFlag)
+		return;
+
 	if (searchInfo.criteria == searchInfo.header)
 	{
-		text=searchBuffer + text;
+		text=headerSearchBuffer + text;
 
 		size_t n;
 
 		while (!searchFlag && (n=text.find('\n')) != std::string::npos)
 		{
 			searchEngine.reset();
-			beginSearch();
 
 			string s=text.substr(0, n);
 
 			text=text.substr(n+1);
 
-			std::string sutf8=
-				mail::rfc2047::decoder().decode(s,
-								unicode_UTF8);
+			std::string headername;
 
-			char *p= (*unicode_UTF8.toupper_func)
-				(&unicode_UTF8, sutf8.c_str(), 0);
+			size_t colon=s.find(':');
 
-			if (!p)
-				continue;
+			if (colon != std::string::npos)
+			{
+				headername=s.substr(0, colon);
+				s=s.substr(colon+1);
+			}
 
 			if (searchInfo.param1.size() > 0 &&
-			    (strncasecmp(searchInfo.param1.c_str(), p,
-				       searchInfo.param1.size()) ||
-			     p[searchInfo.param1.size()] != ':'))
+			    rfc822hdr_namecmp(headername.c_str(),
+					      searchInfo.param1.c_str()))
+				continue;
+
+			char *value=
+				rfc822_display_hdrvalue_tobuf(headername
+							      .c_str(),
+							      s.c_str(),
+							      "utf-8",
+							      NULL,
+							      NULL);
+
+			if (!value)
+				continue;
+
+
+			unicode_char *uc;
+			size_t ucsize;
+
+			if (libmail_u_convert_tou_tobuf(value,
+							strlen(value),
+							"utf-8",
+							&uc,
+							&ucsize,
+							NULL))
 			{
-				free(p);
+				free(value);
 				continue;
 			}
+			free(value);
 
-			try {
-				dosearch(p+searchInfo.param1.size()+1);
-				free(p);
-			} catch (...) {
-				free(p);
+			size_t n;
+
+			for (n=0; n<ucsize; ++n)
+			{
+				searchEngine << uc[n];
 			}
+			free(uc);
 
-			if (endSearch())
+			if (searchEngine)
 				searchFlag=true;
 		}
 		if (!searchFlag)
-			searchBuffer=text;
+			headerSearchBuffer=text;
 	}
 	else if (searchInfo.criteria == searchInfo.body ||
 		 searchInfo.criteria == searchInfo.text)
 	{
-		text=searchBuffer + text;
+		searchEngine(text.c_str(), text.size());
 
-		size_t i=text.size();
-
-		while (i > 0)
-		{
-			if (text[i-1] == '\n')
-				break;
-			--i;
-		}
-
-		searchBuffer=text.substr(i);
-		text=text.substr(0, i);
-
-		if (!searchFlag && i > 0)
-		{
-			if (bodyCharset && bodyCharset->search_chset)
-			{
-				char *p=unicode_convert(text.c_str(),
-							bodyCharset,
-							bodyCharset
-							->search_chset);
-
-				if (p)
-					try {
-						text=p;
-						free(p);
-					} catch (...) {
-						free(p);
-						LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-					}
-			}
-
-			dosearch(text);
-
-			if (endSearch())
-				searchFlag=true;
-		}
+		if (searchEngine)
+			searchFlag=true;
 	}
 }
 

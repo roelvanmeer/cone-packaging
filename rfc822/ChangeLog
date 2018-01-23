@@ -1,3 +1,47 @@
+2011-02-12  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* rfc2047.c (do_encode_words_method): Avoid splitting RFC 2047-encoded
+	works in a middle of a grapheme.
+
+2011-02-10  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* rfc2047.c (rfc2047_encode_callback): Likely bug fixed.
+	(rfc2047_encode_str): Ignore invalid charset sequence when encoding
+	RFC-2047, too much code assumes that encoding always works.
+
+2011-01-24  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* rfc822/rfc2047.c (rfc2047_encode_callback): Rewrite broken logic.
+
+2011-01-22  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* rfc822/encodeautodetect.c (libmail_encode_autodetect): Remove obsolete
+	unicode API. Determine encoding with heuristics based entirely on
+	the content. Remove charset arg, replace with "use7bit", to force
+	qp or base64, instead of 8bit. Take a binaryflag param that gets set
+	to indicate whether base64 was selected based on binary content.
+
+	* rfc2047.c (rfc2047_encode_str): Removed
+	rfc2047_encode_callback_base64, invoked from rfc2047_encode_str().
+	Rewrite rfc2047_encode_str() to use the new unicode API.
+
+	* rfc2047u.c: Unicode API updates.
+
+2011-01-09  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* rfc822_parsedt.c: Eliminate the dependency on ctype, replaced
+	them with macros.
+
+2011-01-08  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* rfc822hdr.c (rfc822hdr_namecmp): Factor out rfc822hdr_namecmp from
+	rfc822hdr_is_addr, and make it usable, generically.
+
+2010-06-25  Sam Varshavchik  <mrsam@courier-mta.com>
+
+	* rfc822.c (rfc822_print_common_nameaddr): Prevent segfault if
+	address decode fails.
+
 2009-11-22  Sam Varshavchik  <mrsam@courier-mta.com>
 
 	* rfc822.c: Removed rfc822_praddr().

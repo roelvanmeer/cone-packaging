@@ -8,7 +8,6 @@
 #include	<errno.h>
 #include	"rfc1035_res.h"
 
-static const char rcsid[]="$Id: rfc1035qptr.c,v 1.10 2005/06/24 17:47:33 mrsam Exp $";
 
 static int ptr(struct rfc1035_res *, const void *, int,
 	       void (*)(const char *, void *),

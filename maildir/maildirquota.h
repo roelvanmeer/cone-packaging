@@ -20,7 +20,6 @@
 extern "C" {
 #endif
 
-static const char maildirquota_h_rcsid[]="$Id: maildirquota.h,v 1.10 2010/03/19 01:09:26 mrsam Exp $";
 
 #define	MDQUOTA_SIZE	'S'	/* Total size of all messages in maildir */
 #define	MDQUOTA_BLOCKS	'B'	/* Total # of blocks for all messages in

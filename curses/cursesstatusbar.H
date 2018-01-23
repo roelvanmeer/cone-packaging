@@ -1,6 +1,5 @@
-/* $Id: cursesstatusbar.H,v 1.2 2003/10/12 01:36:33 mrsam Exp $
-**
-** Copyright 2002, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -53,15 +52,15 @@ class CursesScreen;
 
 class CursesStatusBar : public CursesContainer, public CursesKeyHandler {
 
-	std::vector<wchar_t> statusText;
-	std::vector<wchar_t> progressText;
+	std::vector<unicode_char> statusText;
+	std::vector<unicode_char> progressText;
 	time_t progressTime;
 
 	int busyCounter;
 
 	CursesScreen *parentScreen;
 
-	std::vector< std::vector<wchar_t> > extendedErrorMsg;
+	std::vector< std::vector<unicode_char> > extendedErrorMsg;
 
 	// The status bar is sometimes turned into a one-line field entry.
 	// This is done by creating a CursesField child, which is why
@@ -80,8 +79,9 @@ class CursesStatusBar : public CursesContainer, public CursesKeyHandler {
 
 		bool writeText(const char *text, int row, int col,
 			       const CursesAttr &attr) const;
-		bool writeText(const wchar_t *text, int row, int col,
-			       const CursesAttr &attr) const;
+		bool writeText(const std::vector<unicode_char> &text,
+			       int row, int col,
+			       const Curses::CursesAttr &attr) const;
 	};
 
 	Field *fieldActive;      // Not NULL when input takes place
@@ -104,7 +104,8 @@ private:
 	size_t max_sc_dlen;	// Largest shortcut description
 
 	std::vector <std::vector <std::vector <
-		std::pair< std::vector<wchar_t>, std::vector<wchar_t> > > > > shortcuts;
+		std::pair< std::vector<unicode_char>,
+			   std::vector<unicode_char> > > > > shortcuts;
 
 	// A std::pair of name/description string, inside a two-element vector
 	// (the two-row column on the status bar), inside a vector of all
@@ -118,7 +119,7 @@ public:
 
 	static std::string shortcut_next_key;
 	static std::string shortcut_next_descr;
-	static wchar_t shortcut_next_keycode;
+	static unicode_char shortcut_next_keycode;
 
 	friend class Field;
 

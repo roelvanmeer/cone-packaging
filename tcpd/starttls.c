@@ -62,7 +62,6 @@
 #endif
 #include	<locale.h>
 
-static const char rcsid[]="$Id: starttls.c,v 1.44 2009/06/27 16:32:38 mrsam Exp $";
 
 /* Command-line options: */
 const char *clienthost=0;

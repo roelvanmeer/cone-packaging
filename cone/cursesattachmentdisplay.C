@@ -1,5 +1,4 @@
-/* $Id: cursesattachmentdisplay.C,v 1.9 2009/06/27 17:12:00 mrsam Exp $
-**
+/*
 ** Copyright 2003-2005, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -28,8 +27,6 @@
 #include <errno.h>
 #include <fstream>
 
-using namespace std;
-
 extern Gettext::Key key_PRIVATEKEY;
 
 extern Gettext::Key key_SAVE;
@@ -56,7 +53,7 @@ extern void showCurrentMessage(void *);
 CursesAttachmentDisplay::Attachment::Attachment(CursesAttachmentDisplay *p,
 						mail::mimestruct *mimeArg,
 						mail::envelope *envArg,
-						string nameArg)
+						std::string nameArg)
 	: CursesButton(p, nameArg),
 	  parent(p),
 	  name(nameArg),
@@ -184,8 +181,8 @@ void CursesAttachmentDisplay::createMsgAtt(mail::mimestruct *mimePtr,
 					   mail::envelope *env,
 					   int &rowNum, int nestingLevel)
 {
-	string name;
-	string filename;
+	std::string name;
+	std::string filename;
 
 	CursesMessage::getDescriptionOf(mimePtr, env, name, filename,
 					true);
@@ -208,7 +205,7 @@ void CursesAttachmentDisplay::createMsgAtt(mail::mimestruct *mimePtr,
 
 CursesAttachmentDisplay::~CursesAttachmentDisplay()
 {
-	list<Curses *>::iterator b, e;
+	std::list<Curses *>::iterator b, e;
 
 	while ( (b=children.begin()) != (e=children.end()))
 	{
@@ -236,7 +233,7 @@ bool CursesAttachmentDisplay::isFocusable()
 
 void CursesAttachmentDisplay::requestFocus()
 {
-	list<Curses *>::iterator b, e;
+	std::list<Curses *>::iterator b, e;
 
 	b=children.begin();
 	e=children.end();
@@ -273,8 +270,8 @@ bool CursesAttachmentDisplay::processKey(const Curses::Key &key)
 
 	if (key == key_EXPUNGE)
 	{
-		set<string> removeAttachments;
-		list<Attachment *>::iterator b=attachment_list.begin(),
+		std::set<std::string> removeAttachments;
+		std::list<Attachment *>::iterator b=attachment_list.begin(),
 			e=attachment_list.end();
 
 		while (b != e)
@@ -359,7 +356,7 @@ bool CursesAttachmentDisplay::processKey(const Curses::Key &key)
 				if (s->currentFolder->mymessage)
 					delete s->currentFolder->mymessage;
 
-				vector<size_t> msgList;
+				std::vector<size_t> msgList;
 
 				msgList.push_back(messageNum);
 
@@ -399,35 +396,35 @@ bool CursesAttachmentDisplay::processKey(const Curses::Key &key)
 	return false;
 }
 
-bool CursesAttachmentDisplay::listKeys( vector< pair<string, string> > &list)
+bool CursesAttachmentDisplay::listKeys( std::vector< std::pair<std::string, std::string> > &list)
 {
 	GlobalKeys::listKeys(list, GlobalKeys::ATTACHMENTSCREEN);
 
-	list.push_back(make_pair(Gettext::keyname(_("FOLDERINDEX_K:I")),
-				 _("Index")));
+	list.push_back(std::make_pair(Gettext::keyname(_("FOLDERINDEX_K:I")),
+				      _("Index")));
 
-	list.push_back(make_pair(Gettext::keyname(_("SAVE_K:S")),
-				 _("Save Att")));
+	list.push_back(std::make_pair(Gettext::keyname(_("SAVE_K:S")),
+				      _("Save Att")));
 
-	list.push_back(make_pair(Gettext::keyname(_("ENTER_K:ENTER")),
-				 _("View")));
+	list.push_back(std::make_pair(Gettext::keyname(_("ENTER_K:ENTER")),
+				      _("View")));
 
-        list.push_back( make_pair(Gettext::keyname(_("DELETE_K:D")),
-                                 _("Delete Att")));
+        list.push_back( std::make_pair(Gettext::keyname(_("DELETE_K:D")),
+				       _("Delete Att")));
 
-        list.push_back( make_pair(Gettext::keyname(_("UNDELETE_K:U")),
-                                 _("Undelete Att")));
+        list.push_back( std::make_pair(Gettext::keyname(_("UNDELETE_K:U")),
+				       _("Undelete Att")));
 
-        list.push_back( make_pair(Gettext::keyname(_("EXPUNGE_K:X")),
-                                 _("eXpunge Att")));
+        list.push_back( std::make_pair(Gettext::keyname(_("EXPUNGE_K:X")),
+				       _("eXpunge Att")));
 
 	return false;
 }
 
 void CursesAttachmentDisplay::download(Attachment *a)
 {
-	string name;
-	string filename;
+	std::string name;
+	std::string filename;
 
 	CursesMessage::getDescriptionOf(a->mime, a->env, name, filename,
 					false);
@@ -453,12 +450,12 @@ void CursesAttachmentDisplay::download(Attachment *a)
 
 void CursesAttachmentDisplay::downloadTo(CursesMessage *message,
 					 mail::mimestruct *mimePart,
-					 string filename)
+					 std::string filename)
 {
 	statusBar->clearstatus();
 	statusBar->status(_("Downloading..."));
 
-	ofstream saveFile(filename.c_str());
+	std::ofstream saveFile(filename.c_str());
 
 	if (saveFile.bad() || saveFile.fail())
 	{
@@ -490,7 +487,7 @@ void CursesAttachmentDisplay::downloadTo(CursesMessage *message,
 
 class CursesAttachmentDisplay::KeyImportHelper : public myMessage::ReadText {
 
-	string msg;
+	std::string msg;
 
 	bool errflag;
 
@@ -502,7 +499,7 @@ public:
 
 	bool finish();
 
-	operator string() { return msg; }
+	operator std::string() { return msg; }
 
 private:
 	// Also handle callback from libmail_gpg_import()
@@ -549,7 +546,7 @@ int CursesAttachmentDisplay::KeyImportHelper::dump_func(const char *p,
 int CursesAttachmentDisplay::KeyImportHelper::dump_func(const char *p,
 							size_t n)
 {
-	msg += string(p, p+n);
+	msg += std::string(p, p+n);
 	return 0;
 }
 
@@ -578,15 +575,10 @@ void CursesAttachmentDisplay::open(mail::mimestruct *mime)
 
 		bool privateKey=false;
 
-		if ((string)importPrompt == "N")
+		if ((std::string)importPrompt == "N")
 			return;
 
-		vector<wchar_t> ka;
-
-		Curses::mbtow( ((string)importPrompt).c_str(), ka);
-
-		if (ka.size() > 0 &&
-		    (key_PRIVATEKEY == ka[0]))
+		if (key_PRIVATEKEY == importPrompt.firstChar())
 			privateKey=true;
 
 		if (libmail_gpg_import_start("", privateKey ? 1:0))
@@ -612,7 +604,7 @@ void CursesAttachmentDisplay::open(mail::mimestruct *mime)
 		statusBar->clearstatus();
 		statusBar->status((flag ? _("Key import succeeded.\n\n")
 				   : _("Key import FAILED.\n\n")) +
-				  (string)helper);
+				  (std::string)helper);
 
 		if (!flag)
 			statusBar->beepError();

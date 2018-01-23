@@ -1,5 +1,4 @@
-/* $Id: misc.H,v 1.2 2004/06/14 00:18:42 mrsam Exp $
-**
+/*
 ** Copyright 2003-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -12,8 +11,6 @@
 
 #include <string>
 
-struct unicode_info;
-
 LIBMAIL_START
 
 class loginInfo;
@@ -24,17 +21,7 @@ std::string fromutf8(std::string);
 std::string hostname();
 	// Return this machine's name
 
-extern const struct unicode_info *appcharset;
-
-
 enum readMode {readHeadersFolded, readContents, readBoth, readHeaders};
-
-
-bool setAppCharset(const char *charsetName);
-	//
-	// The application character set.  Folder names are automatically
-	// translated to the specified character set.  Should be initialized
-	// by the application at startup.  Defaults to iso-8859-1 mapping.
 
 void upper(std::string &w);
 	//

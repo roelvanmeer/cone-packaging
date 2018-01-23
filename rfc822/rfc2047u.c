@@ -3,14 +3,13 @@
 ** distribution information.
 */
 
-
+#include	"rfc822.h"
 #include	<stdio.h>
 #include	<ctype.h>
 #include	<string.h>
 #include	<stdlib.h>
 #include	<errno.h>
 
-#include	"rfc822.h"
 #include	"rfc822hdr.h"
 #include	"rfc2047.h"
 #include	"../unicode/unicode.h"
@@ -20,7 +19,6 @@
 #include <stringprep.h>
 #endif
 
-static const char rcsid[]="$Id: rfc2047u.c,v 1.11 2009/11/22 19:39:52 mrsam Exp $";
 
 static ssize_t rfc822_decode_rfc2047_atom(const char *str,
 					  size_t cnt,
@@ -33,13 +31,13 @@ static ssize_t rfc822_decode_rfc2047_atom(const char *str,
 					  void *ptr);
 
 static int rfc2047_decode_unicode(const char *text,
-				  const struct unicode_info *u,
+				  const char *chset,
 				  void (*callback)(const char *, size_t,
 						   void *),
 				  void *ptr);
 
 struct decode_unicode_s {
-	const struct unicode_info *mychset;
+	const char *mychset;
 
 	char *bufptr;
 	size_t bufsize;
@@ -57,12 +55,13 @@ static void save_unicode_text(const char *p, size_t l, void *ptr)
 }
 
 struct rfc822_display_name_s {
-	const struct unicode_info *u;
+	const char *chset;
 	void (*print_func)(const char *, size_t, void *);
 	void *ptr;
 };
 
 static void unknown_charset(const char *chset,
+			    const char *tochset,
 			    void (*print_func)(const char *, size_t, void *),
 			    void *ptr)
 {
@@ -70,6 +69,8 @@ static void unknown_charset(const char *chset,
 
 	(*print_func)(unknown, sizeof(unknown)-1, ptr);
 	(*print_func)(chset, strlen(chset), ptr);
+	(*print_func)(" -> ", 4, ptr);
+	(*print_func)(tochset, strlen(tochset), ptr);
 	(*print_func)("]", 1, ptr);
 }
 
@@ -79,17 +80,10 @@ static void rfc822_display_addr_cb(const char *chset,
 				   size_t cnt,
 				   void *dummy)
 {
-	const struct unicode_info *uchset=unicode_find(chset);
 	struct rfc822_display_name_s *s=
 		(struct rfc822_display_name_s *)dummy;
 	char *ptr;
 	char *buf;
-
-	if (!uchset)
-	{
-		unknown_charset(chset, s->print_func, s->ptr);
-		return;
-	}
 
 	buf=malloc(cnt+1);
 
@@ -99,13 +93,18 @@ static void rfc822_display_addr_cb(const char *chset,
 	memcpy(buf, content, cnt);
 	buf[cnt]=0;
 
-	ptr=unicode_xconvert(buf, uchset, s->u);
+	ptr=libmail_u_convert_tobuf(buf, chset, s->chset, NULL);
 	free(buf);
 
 	if (ptr)
 	{
 		(*s->print_func)(ptr, strlen(ptr), s->ptr);
 		free(ptr);
+	}
+	else
+	{
+		unknown_charset(chset, s->chset, s->print_func, s->ptr);
+		return;
 	}
 }
 
@@ -132,17 +131,11 @@ int rfc822_display_name_int(const struct rfc822a *rfcp, int index,
 
 	if (chset == NULL)
 	{
-		s.u=NULL;
+		s.chset="iso-8859-1";
 	}
 	else
 	{
-		s.u=unicode_find(chset);
-
-		if (!s.u)
-		{
-			unknown_charset(chset, print_func, ptr);
-			return (0);
-		}
+		s.chset=chset;
 	}
 
 	s.print_func=print_func;
@@ -198,7 +191,7 @@ int rfc822_display_name_int(const struct rfc822a *rfcp, int index,
 				(*print_func)(p, strlen(p), ptr);
 			}
 			else if (rfc822_display_hdrvalue("subject",
-							 p, s.u->chset,
+							 p, s.chset,
 							 print_func,
 							 NULL, ptr) < 0)
 			{
@@ -319,7 +312,6 @@ int rfc822_display_addr_str(const char *tok,
 			    void *ptr)
 {
 	const char *p;
-	const struct unicode_info *uiptr;
 
 	p=strchr(tok,'@');
 
@@ -328,9 +320,9 @@ int rfc822_display_addr_str(const char *tok,
 	else
 		++p;
 
-	if (chset != NULL && (uiptr=unicode_find(chset)) != NULL)
+	if (chset != NULL)
 	{
-		int err;
+		int err=0;
 		char *utf8_ptr;
 
 		if (p > tok)
@@ -348,9 +340,9 @@ int rfc822_display_addr_str(const char *tok,
 			(*print_func)(p, strlen(p), ptr);
 		else
 		{
-			char *q=unicode_xconvert(utf8_ptr, &unicode_UTF8,
-						 uiptr);
-
+			char *q=libmail_u_convert_tobuf(utf8_ptr,
+							"utf-8",
+							chset, NULL);
 			if (q)
 			{
 				(*print_func)(q, strlen(q), ptr);
@@ -404,7 +396,6 @@ int rfc2047_print_unicodeaddr(const struct rfc822a *a,
 {
 	const char *sep=NULL;
 	int n;
-	const struct unicode_info *charsetu=unicode_find(charset);
 
 	for (n=0; n<a->naddrs; ++n)
 	{
@@ -467,7 +458,10 @@ int rfc2047_print_unicodeaddr(const struct rfc822a *a,
 			if (strchr(RFC822_SPECIALS, nbuf.bufptr[i]))
 				break;
 
-		if (!charsetu)
+		cpbuf=libmail_u_convert_tobuf(nbuf.bufptr, "utf-8", charset,
+					      NULL);
+
+		if (!cpbuf)
 		{
 			const char *errmsg="\"(unknown character set)\"";
 
@@ -477,15 +471,6 @@ int rfc2047_print_unicodeaddr(const struct rfc822a *a,
 		}
 		else
 		{
-			cpbuf=unicode_xconvert(nbuf.bufptr, &unicode_UTF8,
-					       charsetu);
-
-			if (!cpbuf)
-			{
-				free(nbuf.bufptr);
-				return -1;
-			}
-
 			if (i < nbuf.bufsize)
 			{
 				(*print_func)('"', ptr);
@@ -582,7 +567,6 @@ static int rfc2047_print_unicode_addrstr(const char *addrheader,
 
 struct rfc822_display_hdrvalue_s {
 
-	const struct unicode_info *u;
 	void (*display_func)(const char *, size_t, void *);
 	void *ptr;
 };
@@ -627,15 +611,7 @@ int rfc822_display_hdrvalue(const char *hdrname,
 						     &s);
 	}
 
-	s.u=unicode_find(charset);
-
-	if (!s.u)
-	{
-		unknown_charset(charset, display_func, ptr);
-		return (0);
-	}
-
-	return rfc2047_decode_unicode(hdrvalue, s.u, display_func, ptr);
+	return rfc2047_decode_unicode(hdrvalue, charset, display_func, ptr);
 }
 
 struct rfc822_display_hdrvalue_tobuf_s {
@@ -999,7 +975,7 @@ int rfc2047_decoder(const char *text,
 		}
 
 		if (i)
-			(*callback)(unicode_ISO8859_1.chset, "", text, i, ptr);
+			(*callback)("iso-8859-1", "", text, i, ptr);
 
 		text += i;
 
@@ -1014,7 +990,7 @@ int rfc2047_decoder(const char *text,
 
 		if (rc == 0)
 		{
-			(*callback)(unicode_ISO8859_1.chset, "", text, 2, ptr);
+			(*callback)("iso-8859-1", "", text, 2, ptr);
 			text += 2;
 			continue;
 		}
@@ -1043,14 +1019,14 @@ int rfc2047_decoder(const char *text,
 }
 
 static int rfc2047_decode_unicode(const char *text,
-				  const struct unicode_info *u,
+				  const char *chset,
 				  void (*callback)(const char *, size_t,
 						   void *),
 				  void *ptr)
 {
 	struct rfc822_display_name_s s;
 
-	s.u=u;
+	s.chset=chset;
 	s.print_func=callback;
 	s.ptr=ptr;
 

@@ -29,7 +29,6 @@
 
 #include	"rfc1035_res.h"
 
-static const char rcsid[]="$Id: rfc1035tcp.c,v 1.9 2000/05/28 18:17:25 mrsam Exp $";
 
 int rfc1035_open_tcp(struct rfc1035_res *res, const RFC1035_ADDR *addr)
 {

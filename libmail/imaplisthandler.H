@@ -1,5 +1,4 @@
-/* $Id: imaplisthandler.H,v 1.3 2004/03/21 05:30:01 mrsam Exp $
-**
+/*
 ** Copyright 2002-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.

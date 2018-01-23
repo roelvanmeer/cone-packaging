@@ -39,7 +39,6 @@
 #include	"maildirnewshared.h"
 #include	"unicode/unicode.h"
 
-static const char rcsid[]="$Id: maildirinfo.c,v 1.2 2004/01/24 21:13:21 mrsam Exp $";
 void maildir_info_destroy(struct maildir_info *info)
 {
 	if (info->homedir)
@@ -351,9 +350,10 @@ int maildir_info_imap_find(struct maildir_info *info, const char *path,
 			** identifiers are in UTF8.
 			*/
 
-			owner_utf8=unicode_xconvert(info->owner,
-						    &unicode_IMAP_MODUTF7,
-						    &unicode_UTF8);
+			owner_utf8=
+				libmail_u_convert_tobuf(info->owner,
+							unicode_x_imap_modutf7,
+							"utf-8", NULL);
 
 			if (!owner_utf8)
 			{
@@ -436,28 +436,11 @@ static char *smaptoUtf7(char **ptr)
 	char *f=NULL;
 	char *n;
 
-	unicode_char verbotten[5];
-
-	verbotten[0]='.';
-	verbotten[1]='/';
-	verbotten[2]='~';
-	verbotten[3]=':';
-	verbotten[4]=0;
-
 	while ((n=*ptr++) != NULL && *n)
 	{
-		unicode_char *uc= (*unicode_UTF8.c2u)(&unicode_UTF8, n, NULL);
-		char *p;
-
-		if (!uc)
-		{
-			if (f)
-				free(f);
-			return NULL;
-		}
-
-		p=unicode_uctomodutf7x(uc, verbotten);
-		free(uc);
+		char *p=libmail_u_convert_tobuf(n, "utf-8",
+						unicode_x_imap_modutf7 " ./~:",
+						NULL);
 
 		if (!p)
 		{
@@ -522,8 +505,6 @@ char **maildir_smapfn_fromutf7(const char *modutf7)
 	q=p;
 	do
 	{
-		unicode_char *uc;
-
 		for (i=0; q[i]; i++)
 			if (q[i] == '.' && q[i+1] && q[i+1] != '.')
 			{
@@ -531,24 +512,11 @@ char **maildir_smapfn_fromutf7(const char *modutf7)
 				break;
 			}
 
-		uc=unicode_modutf7touc(q, NULL);
-
-		if (!uc)
-			uc=unicode_modutf7touc("[invalid]", NULL);
-
-		if (!uc)
-		{
-			while (n)
-				free(fn[--n]);
-			free(fn);
-			free(p);
-			return NULL;
-		}
-
+		fn[n]=libmail_u_convert_tobuf(q,
+					      unicode_x_imap_modutf7 " ./~:",
+					      "utf-8", NULL);
 		q += i;
 
-		fn[n]=(*unicode_UTF8.u2c)(&unicode_UTF8, uc, NULL);
-		free(uc);
 		if (!fn[n])
 		{
 			while (n)
@@ -893,8 +861,8 @@ static size_t munge_complex(const char *, char *);
 
 char *maildir_info_imapmunge(const char *name)
 {
-	char *n=unicode_xconvert(name, &unicode_UTF8,
-				 &unicode_IMAP_MODUTF7);
+	char *n=libmail_u_convert_tobuf(name, "utf8",
+					unicode_x_imap_modutf7, NULL);
 	char *p;
 	size_t cnt;
 

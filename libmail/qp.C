@@ -1,5 +1,4 @@
-/* $Id: qp.C,v 1.3 2010/04/29 00:34:50 mrsam Exp $
-**
+/*
 ** Copyright 2002-2009, Double Precision Inc.
 **
 ** See COPYING for distribution information.

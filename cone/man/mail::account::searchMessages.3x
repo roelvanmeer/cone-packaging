@@ -1,16 +1,17 @@
-.\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
-.\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+.\"<!-- Copyright 2002-2010 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
 '\" t
 .\"     Title: mail::account::searchMessages
-.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\"    Author: Sam Varshavchik
 .\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
-.\"      Date: 05/08/2010
+.\"      Date: 04/04/2011
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: [FIXME: source]
+.\"    Source: 
+        Cone\(co
+      
 .\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::SEARC" "3x" "05/08/2010" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::SEARC" "3x" "04/04/2011" "Cone\(co" "Cone: COnsole Newsreader And E"
 .\" -----------------------------------------------------------------
 .\" * set default formatting
 .\" -----------------------------------------------------------------
@@ -28,7 +29,6 @@ mail::account::searchMessages \- Search messages in the current folder
 .nf
 
 
-
 #include <libmail/mail\&.H>
 
 #include <libmail/search\&.H>
@@ -38,7 +38,6 @@ public:
     void success(const std::vector<size_t> &found);
     void fail(std::string errmsg);
 };
-
 
 
 
@@ -59,7 +58,6 @@ mySearchParams\&.scope=\fIscope\fR;
 
 \fBmail::account::searchMessages\fR
 searches messages in the currently\-open folder\&.
-
 
 
 \fImsgList\fR
@@ -412,7 +410,6 @@ contains a text string of the form "mm\-ddd\-yyyy" for date\-related search crit
 Usenet servers offer very limited searching facilities\&. Consequently, searching NetNews folders will be slow, and inefficient\&. Searching on status flags is reasonably fast, since
 
 
-
 LibMAIL
 maintains status flags of NetNews folders internally\&. The following search parameters use the
 NNTP XPAT
@@ -429,7 +426,6 @@ mail::searchParams::header\&.
 For all other searches, or if the search string uses characters outside of the
 US\-ASCII
 character set,
-
 
 
 LibMAIL
@@ -541,3 +537,8 @@ method terminates\&. The application should make a copy of it for any later use\
 .PP
 
 \fBmail::account::getFolderIndexInfo\fR(3x)\&.
+.SH "AUTHOR"
+.PP
+\fBSam Varshavchik\fR
+.RS 4
+.RE

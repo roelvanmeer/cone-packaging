@@ -15,9 +15,8 @@
 
 @SET_MAKE@
 
-#$Id: Makefile.am,v 1.36 2009/11/22 19:39:52 mrsam Exp $
 #
-# Copyright 1998 - 2009 Double Precision, Inc.  See COPYING for
+# Copyright 1998 - 2011 Double Precision, Inc.  See COPYING for
 # distribution information.
 
 
@@ -42,7 +41,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 noinst_PROGRAMS = reformime$(EXEEXT) makemime$(EXEEXT) \
-	headercheck$(EXEEXT)
+	headercheck$(EXEEXT) testrfc3676parser$(EXEEXT)
 subdir = .
 DIST_COMMON = $(am__configure_deps) $(srcdir)/../config.guess \
 	$(srcdir)/../config.sub $(srcdir)/../depcomp \
@@ -68,9 +67,9 @@ am_librfc2045_la_OBJECTS = rfc2045.lo rfc2045acchk.lo rfc2045acprep.lo \
 	rfc2045mkboundary.lo rfc2045rewrite.lo rfc2045tryboundary.lo \
 	rfc2045xdump.lo rfc2045searchcontenttype.lo \
 	rfc2045decodemimesection.lo rfc2045decodemimesectionu.lo \
-	rfc2045header.lo rfc2045replyunicode.lo rfc2045reply.lo \
-	rfc2231.lo rfc2231encode.lo rfc2646.lo rfc2646create.lo \
-	rfc2646fwd.lo rfc2646reply.lo rfc2646rewrap.lo base64.lo
+	rfc2045header.lo rfc2045reply.lo rfc2045decodemsgtoutf8.lo \
+	rfc2231.lo rfc2231encode.lo rfc3676parser.lo \
+	rfc3676parsercpp.lo base64.lo
 librfc2045_la_OBJECTS = $(am_librfc2045_la_OBJECTS)
 PROGRAMS = $(noinst_PROGRAMS)
 am_headercheck_OBJECTS = headercheck.$(OBJEXT)
@@ -88,10 +87,21 @@ reformime_OBJECTS = $(am_reformime_OBJECTS)
 reformime_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(reformime_LDFLAGS) $(LDFLAGS) -o $@
+am_testrfc3676parser_OBJECTS = testrfc3676parser.$(OBJEXT)
+testrfc3676parser_OBJECTS = $(am_testrfc3676parser_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+LTCXXCOMPILE = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+CXXLD = $(CXX)
+CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
@@ -102,9 +112,11 @@ LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(librfc2045_la_SOURCES) $(headercheck_SOURCES) \
-	$(makemime_SOURCES) $(reformime_SOURCES)
+	$(makemime_SOURCES) $(reformime_SOURCES) \
+	$(testrfc3676parser_SOURCES)
 DIST_SOURCES = $(librfc2045_la_SOURCES) $(headercheck_SOURCES) \
-	$(makemime_SOURCES) $(reformime_SOURCES)
+	$(makemime_SOURCES) $(reformime_SOURCES) \
+	$(testrfc3676parser_SOURCES)
 DATA = $(noinst_DATA)
 ETAGS = etags
 CTAGS = ctags
@@ -131,6 +143,10 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
+CXX = @CXX@
+CXXCPP = @CXXCPP@
+CXXDEPMODE = @CXXDEPMODE@
+CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -184,6 +200,7 @@ abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_CC = @ac_ct_CC@
+ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
@@ -215,7 +232,6 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
 localstatedir = @localstatedir@
-lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
@@ -232,14 +248,17 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-DISTCLEANFILES = testsuite.dat
 noinst_LTLIBRARIES = librfc2045.la
 BUILT_SOURCES = reformime.html reformime.1 makemime.html makemime.1 \
 	rfc2045.html rfc2045.3
 
-EXTRA_DIST = $(BUILT_SOURCES) testsuite testsuite.txt
+EXTRA_DIST = $(BUILT_SOURCES) testsuite testsuite.txt.idn testsuite.txt.noidn \
+	testsuitemm testsuitemm.txt \
+	testrfc3676parsersuite testrfc3676parsersuite.txt
+
 noinst_DATA = $(BUILT_SOURCES)
-librfc2045_la_SOURCES = rfc2045.c rfc2045.h rfc2045acchk.c rfc2045acprep.c \
+librfc2045_la_SOURCES = rfc2045.c rfc2045.h rfc2045src.h \
+		     rfc2045acchk.c rfc2045acprep.c \
 		     rfc2045appendurl.c rfc2045cdecode.c rfc2045decode.c \
 		     rfc2045enomem.c \
 		     rfc2045_fromfd.c \
@@ -247,10 +266,10 @@ librfc2045_la_SOURCES = rfc2045.c rfc2045.h rfc2045acchk.c rfc2045acprep.c \
                      rfc2045tryboundary.c rfc2045xdump.c \
 		     rfc2045searchcontenttype.c rfc2045decodemimesection.c \
 		     rfc2045decodemimesectionu.c rfc2045header.c \
-		     rfc2045replyunicode.c rfc2045reply.c \
+		     rfc2045reply.c \
+		     rfc2045decodemsgtoutf8.c \
 		     rfc2231.c rfc2231encode.c \
-		     rfc2646.h rfc2646.c rfc2646create.c rfc2646fwd.c \
-		     rfc2646reply.c rfc2646rewrap.c \
+		     rfc3676parser.h rfc3676parser.c rfc3676parsercpp.C \
 		     base64.c base64.h
 
 reformime_SOURCES = reformime.c
@@ -269,11 +288,16 @@ headercheck_LDADD = librfc2045.la ../rfc822/librfc822.la ../numlib/libnumlib.la 
 
 headercheck_DEPENDENCIES = $(headercheck_LDADD)
 headercheck_LDFLAGS = -static
+testrfc3676parser_SOURCES = testrfc3676parser.c
+testrfc3676parser_LDADD = librfc2045.la ../unicode/libunicode.la
+testrfc3676parser_DEPENDENCIES = $(testrfc3676parser_LDADD)
+@HAVE_LIBIDN_FALSE@TESTSUITE = testsuite.txt.noidn
+@HAVE_LIBIDN_TRUE@TESTSUITE = testsuite.txt.idn
 all: $(BUILT_SOURCES) rfc2045_config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .lo .o .obj
+.SUFFIXES: .C .c .lo .o .obj
 am--refresh:
 	@:
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
@@ -337,7 +361,7 @@ clean-noinstLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 librfc2045.la: $(librfc2045_la_OBJECTS) $(librfc2045_la_DEPENDENCIES) 
-	$(LINK)  $(librfc2045_la_OBJECTS) $(librfc2045_la_LIBADD) $(LIBS)
+	$(CXXLINK)  $(librfc2045_la_OBJECTS) $(librfc2045_la_LIBADD) $(LIBS)
 
 clean-noinstPROGRAMS:
 	@list='$(noinst_PROGRAMS)'; test -n "$$list" || exit 0; \
@@ -356,6 +380,9 @@ makemime$(EXEEXT): $(makemime_OBJECTS) $(makemime_DEPENDENCIES)
 reformime$(EXEEXT): $(reformime_OBJECTS) $(reformime_DEPENDENCIES) 
 	@rm -f reformime$(EXEEXT)
 	$(reformime_LINK) $(reformime_OBJECTS) $(reformime_LDADD) $(LIBS)
+testrfc3676parser$(EXEEXT): $(testrfc3676parser_OBJECTS) $(testrfc3676parser_DEPENDENCIES) 
+	@rm -f testrfc3676parser$(EXEEXT)
+	$(LINK) $(testrfc3676parser_OBJECTS) $(testrfc3676parser_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -376,23 +403,42 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045decode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045decodemimesection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045decodemimesectionu.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045decodemsgtoutf8.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045enomem.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045find.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045header.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045mkboundary.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045reply.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045replyunicode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045rewrite.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045searchcontenttype.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045tryboundary.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2045xdump.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2231.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2231encode.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2646.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2646create.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2646fwd.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2646reply.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2646rewrap.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc3676parser.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc3676parsercpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testrfc3676parser.Po@am__quote@
+
+.C.o:
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ $<
+
+.C.obj:
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+.C.lo:
+@am__fastdepCXX_TRUE@	$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -650,7 +696,6 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
-	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -768,7 +813,9 @@ uninstall-am:
 @HAVE_SGML_TRUE@	../docbook/sgml2man rfc2045.sgml rfc2045.3
 
 check-am:
-	@SHELL@ $(srcdir)/testsuite | cmp -s - $(srcdir)/testsuite.txt
+	@SHELL@ $(srcdir)/testsuite | cmp -s - $(srcdir)/$(TESTSUITE)
+	@SHELL@ $(srcdir)/testsuitemm | cmp -s - $(srcdir)/testsuitemm.txt
+	@SHELL@ $(srcdir)/testrfc3676parsersuite | diff -U 3 $(srcdir)/testrfc3676parsersuite.txt -
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

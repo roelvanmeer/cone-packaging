@@ -28,7 +28,6 @@
 
 #include	"rfc1035_res.h"
 
-static const char rcsid[]="$Id: rfc1035udp.c,v 1.10 2006/01/23 23:22:10 mrsam Exp $";
 
 int rfc1035_open_udp(int *af)
 {

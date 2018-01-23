@@ -1,6 +1,5 @@
-/* $Id: mymessage.C,v 1.11 2010/04/29 00:34:49 mrsam Exp $
-**
-** Copyright 2003-2004, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -549,13 +548,13 @@ void myMessage::newMessage(const mail::folder *folderPtr,
 		if (serverPtr)
 			o << "X-Server: "
 			  << (string)mail::rfc2047::encode(serverPtr->url,
-							   "X-UNKNOWN")
+							   "iso-8859-1")
 			  << "\n";
 		if (folderPtr)
 			o << "X-Folder: "
 			  << (string)mail::rfc2047::encode(folderPtr
 							   ->getPath(),
-							   "X-UNKNOWN")
+							   "iso-8859-1")
 			  << "\n";
 
 		{
@@ -602,22 +601,8 @@ void myMessage::newMessage(const mail::folder *folderPtr,
 			}
 
 			vector<unicode_char> &s=args["subject"];
-			s.push_back(0);
 
-			string ss;
-
-			{
-				char *p=unicode_toutf8(&s[0]);
-
-				if (p)
-					try {
-						ss=p;
-						free(p);
-					} catch (...) {
-						free(p);
-						throw;
-					}
-			}
+			string ss=mail::iconvert::convert(s, "utf-8");
 
 			if (ss.size() > 0)
 			{
@@ -676,8 +661,10 @@ void myMessage::newMessageAddressHdr(string addresses,
 		{
 			mail::emailAddress addr;
 
-			addr.setDisplayName(b->getName());
-			addr.setDisplayAddr(b->getAddr());
+			addr.setDisplayName(b->getName(),
+					    unicode_default_chset());
+			addr.setDisplayAddr(b->getAddr(),
+					    unicode_default_chset());
 			addrvecNative.push_back(addr);
 		}
 	}
@@ -801,11 +788,11 @@ bool myMessage::getDefaultHeaders(const mail::folder *folder,
 			if (p != std::string::npos)
 				n=n.substr(0, std::string::npos);
 
-			n=mail::rfc2047::encode(n, Gettext::defaultCharset()
-					      ->chset);
-			a=mail::rfc2047::encode(a, Gettext::defaultCharset()
-					      ->chset);
-			from=mail::address(n, a).toString();
+			mail::emailAddress addr;
+
+			addr.setDisplayName(n, unicode_default_chset());
+			addr.setAddr(a);
+			from=addr.toString();
 		}
 	}
 	return true;

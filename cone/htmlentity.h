@@ -3,22 +3,11 @@
 
 #include "config.h"
 #include "unicode/unicode.h"
+#include <string>
+#include <vector>
+#include <map>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-struct unicode_info;
-
-struct unicodeEntity {
-	const char *name;
-	unicode_char iso10646;
-	const char *alt;	/* Not null - plaintext alternative */
-};
-
-extern const struct unicodeEntity unicodeEntityList[];
-
-/* Last list terminated by a NULL name */
+struct unicodeEntity;
 
 /*
 ** Rich text demoronization: replace unicode characters not displayable
@@ -27,29 +16,29 @@ extern const struct unicodeEntity unicodeEntityList[];
 ** Step 1: Build a hash table of replacable unicode characters
 */
 
-struct unicodeEntityHashBucket {
-	struct unicodeEntityHashBucket *next;
-	const struct unicodeEntity *entity;
+class Demoronize {
+
+	std::map<unicode_char, unicodeEntity> altlist;
+	std::string chset;
+
+public:
+	typedef enum {
+		none,
+		minimum,
+		maximum } demoron_t;
+
+	Demoronize(const std::string &chsetArg,
+		   demoron_t dodemoronize);
+	~Demoronize();
+
+	std::string alt(unicode_char ch) const;
+	std::string operator()(const std::vector<unicode_char> &uc,
+			       bool &errflag);
+
+	const std::vector<unicode_char>
+		&expand(const std::vector<unicode_char> &uc,
+			std::vector<unicode_char> &buffer);
+
 };
-
-typedef struct unicodeEntityHashBucket *unicodeEntityAltList[99];
-
-extern unicodeEntityAltList
-*unicode_createAltList(const struct unicode_info *);
-
-extern void unicode_destroyAltList(unicodeEntityAltList *);
-
-extern const char *unicode_searchAltList(unicodeEntityAltList *,
-					 unicode_char iso10646);
-
-/* Step 2: Replace */
-
-extern char *unicode_fromCharset(const struct unicode_info *chset,
-				 unicode_char *uc,
-				 unicodeEntityAltList *altMap);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

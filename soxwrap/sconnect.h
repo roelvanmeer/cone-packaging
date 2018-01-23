@@ -23,7 +23,6 @@
 ** See COPYING for distribution information.
 */
 
-static const char sconnect_h_rcsid[]="$Id: sconnect.h,v 1.3 2004/07/24 03:36:53 mrsam Exp $";
 
 #ifdef  __cplusplus
 extern "C"

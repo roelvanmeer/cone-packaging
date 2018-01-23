@@ -20,7 +20,6 @@
 extern "C" {
 #endif
 
-static const char maildirnewshared_h_rcsid[]="$Id: maildirnewshared.h,v 1.3 2004/11/13 23:24:48 mrsam Exp $";
 
 /*
 ** New-style shared folder support.

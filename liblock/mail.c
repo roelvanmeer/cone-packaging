@@ -19,7 +19,6 @@
 #include	<fcntl.h>
 #endif
 
-static const char rcsid[]="$Id: mail.c,v 1.10 2006/05/28 15:29:52 mrsam Exp $";
 
 struct ll_mail *ll_mail_alloc(const char *filename)
 {

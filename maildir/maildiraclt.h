@@ -5,7 +5,6 @@
 extern "C" {
 #endif
 
-static const char maildiraclt_h_rcsid[]="$Id: maildiraclt.h,v 1.5 2005/07/16 21:26:28 mrsam Exp $";
 
 /*
 ** Copyright 2003-2004 Double Precision, Inc.

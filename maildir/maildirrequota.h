@@ -14,7 +14,6 @@
 extern "C" {
 #endif
 
-static const char maildirrequota_h_rcsid[]="$Id: maildirrequota.h,v 1.4 1999/12/06 13:21:05 mrsam Exp $";
 
 /* Change the quota embedded in the filename of a maildir message */
 

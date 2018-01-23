@@ -47,7 +47,6 @@
 #define	EX_NOPERM	77
 #endif
 
-static const char rcsid[]="$Id: deliverquota.c,v 1.24 2009/09/05 21:44:05 mrsam Exp $";
 
 static long deliver(int fdin, const char *dir, long s,
 		    int auto_create, int quota_warn_percent, const char *pfix,

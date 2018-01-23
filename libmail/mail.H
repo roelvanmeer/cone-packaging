@@ -1,5 +1,4 @@
-/* $Id: mail.H,v 1.17 2009/06/27 17:12:00 mrsam Exp $
-**
+/*
 ** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -38,8 +37,6 @@
 #include "namespace.H"
 #include "objectmonitor.H"
 #include "misc.H"
-
-struct unicode_info;
 
 #if LIBMAIL_THROW_DEBUG
 #define LIBMAIL_THROW(x) do { fprintf(stderr, "Exception at %s(%d)\n", __FILE__, __LINE__); throw x;} while (0)

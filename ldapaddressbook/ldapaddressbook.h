@@ -1,7 +1,6 @@
 #ifndef	ldapaddressbook_h
 #define	ldapaddressbook_h
 
-/* $Id: ldapaddressbook.h,v 1.3 2006/02/05 20:39:52 mrsam Exp $ */
 
 #include <stdio.h>
 

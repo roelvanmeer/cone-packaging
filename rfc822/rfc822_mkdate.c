@@ -4,7 +4,6 @@
 */
 
 /*
-** $Id: rfc822_mkdate.c,v 1.4 2002/04/09 02:49:55 mrsam Exp $
 */
 
 #include	"rfc822.h"

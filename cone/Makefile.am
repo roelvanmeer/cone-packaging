@@ -1,4 +1,3 @@
-#$Id: Makefile.am,v 1.53 2009/06/27 17:12:00 mrsam Exp $
 #
 # Copyright 2003-2008, Double Precision Inc.
 #
@@ -47,11 +46,12 @@ cone_SOURCES= acl.C acl.H addressbook.C addressbook.H \
 	encryptionmenu.C encryptionmenu.H \
 	filter.C filter.H \
 	filtereditscreen.C filtereditscreen.H \
+	fkeytraphandler.C fkeytraphandler.H \
 	gettext.C gettext.H \
 	globalkeys.C globalkeys.H \
 	gpg.C gpg.H \
 	hierarchy.C hierarchy.H \
-	htmlentity.c htmlentity.h \
+	htmlentity.C htmlentity.h \
 	htmlparser.C htmlparser.H \
 	init.C init.H \
 	macros.C macros.H \
@@ -76,7 +76,6 @@ cone_SOURCES= acl.C acl.H addressbook.C addressbook.H \
 	outputdialog.C outputdialog.H \
 	passwordlist.C passwordlist.H \
 	previousscreen.C previousscreen.H \
-	rfc2646parse.C rfc2646parse.H \
 	savedialog.C savedialog.H \
 	searchcallback.C searchcallback.H \
 	searchprompt.C searchprompt.H \
@@ -84,13 +83,13 @@ cone_SOURCES= acl.C acl.H addressbook.C addressbook.H \
 	spellchecker.H \
 	spellcheckerbase.C spellcheckerbase.H \
 	tags.C tags.H \
-	typeahead.C typeahead.H \
-	wraptext.C wraptext.H
+	typeahead.C typeahead.H
 
 leaf_SOURCES=\
 	curseseditmessage.C \
+	fkeytraphandler.C \
 	gettext.C \
-	htmlentity.c \
+	htmlentity.C \
 	init.C \
 	leaf.C \
 	macros.C macros.H \
@@ -98,12 +97,11 @@ leaf_SOURCES=\
 	myserverpromptinfo.C \
 	opendialog.C \
 	savedialog.C \
-	spellcheckerbase.C \
-	wraptext.C
+	spellcheckerbase.C
 
 htmlparsertest_SOURCES=htmlparsertest.C htmlparser.C htmlparser.H \
-			htmlentity.c htmlentity.h
-htmlparsertest_LDADD=../unicode/libunicode.la
+			htmlentity.C htmlentity.h
+htmlparsertest_LDADD=../curses/libcurses.a ../unicode/libunicode.la
 
 check-am:
 	./htmlparsertest <$(srcdir)/testsuite1 | cmp -s - $(srcdir)/testsuite1.out
@@ -271,7 +269,7 @@ uninstall-local:
 	rm -f $(DESTDIR)$(pkgdatadir)/http.handler
 	rm -f $(DESTDIR)$(pkgdatadir)/https.handler
 
-EXTRA_DIST = testsuite1 testsuite1.out pwtest.txt colors.txt mkcolors.pl \
+EXTRA_DIST = ../config.rpath testsuite1 testsuite1.out pwtest.txt colors.txt mkcolors.pl \
 	fixonlinehelp.pl mkhtmlmsg.pl postproc.xsl $(SPELLSRC) \
 	m4/ChangeLog $(srcdir)/m4/*.m4
 

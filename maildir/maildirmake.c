@@ -3,7 +3,6 @@
 ** See COPYING for distribution information.
 */
 
-/* $Id: maildirmake.c,v 1.11 2006/09/20 01:41:27 mrsam Exp $ */
 
 #if	HAVE_CONFIG_H
 #include	"config.h"

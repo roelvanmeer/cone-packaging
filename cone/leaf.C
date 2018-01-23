@@ -1,10 +1,10 @@
-/* $Id: leaf.C,v 1.13 2010/04/29 00:34:49 mrsam Exp $
-**
-** Copyright 2003-2004, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 
+#include "config.h"
 #include <errno.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -31,6 +31,7 @@
 #include "htmlentity.h"
 #include "htmlparser.H"
 #include "macros.H"
+#include "colors.H"
 
 #if HAVE_UTIME_H
 #include <utime.h>
@@ -51,14 +52,24 @@ extern Gettext::Key key_OPENFILE;
 extern Gettext::Key key_SAVEFILE;
 extern Gettext::Key key_SAVEAS;
 extern Gettext::Key key_TODIRECTORY;
+extern Gettext::Key key_TOGGLEFLOWED;
 
-char larr[16];
-char rarr[16];
+unicode_char ularr, urarr, ucwrap, ucwrap_visible;
+
+static bool flowedmode;
+
+struct CustomColor color_md_headerName;
 
 void (*myServer::nextScreen)(void *)=NULL; // LEAF dummy
 void *myServer::nextScreenArg=NULL; // LEAF dummy
 
-unicodeEntityAltList *currentEntityAltList=NULL;
+Demoronize *currentDemoronizer;
+
+static void setflowedmode(bool flag)
+{
+	flowedmode=flag;
+	ucwrap=flag ? ucwrap_visible:' ';
+}
 
 //
 // Subclass CursesEditMessage to get something that looks like an editor.
@@ -269,7 +280,7 @@ void LeafEditMessage::saveTo()
 		return;
 	}
 
-	save(o);
+	save(o, flowedmode);
 	o.flush();
 	o.close();
 
@@ -427,6 +438,49 @@ bool LeafCtrlTHandler::listKeys( vector< pair<string, string> > &list)
 	return false;
 }
 
+
+class LeafCtrlFHandler : public CursesKeyHandler {
+
+	bool ctrlFpressed;
+
+public:
+	LeafCtrlFHandler();
+	~LeafCtrlFHandler();
+
+	operator bool() { return ctrlFpressed; }
+private:
+	virtual bool processKey(const Curses::Key &key);
+	bool listKeys( vector< pair<string, string> > &list);
+};
+
+LeafCtrlFHandler::LeafCtrlFHandler()
+	: CursesKeyHandler(PRI_STATUSOVERRIDEHANDLER), ctrlFpressed(false)
+{
+}
+
+LeafCtrlFHandler::~LeafCtrlFHandler()
+{
+}
+
+bool LeafCtrlFHandler::processKey(const Curses::Key &key)
+{
+	if (key == key_TOGGLEFLOWED)
+	{
+		ctrlFpressed=true;
+		statusBar->fieldAbort();
+		return true;
+	}
+
+	return false;
+}
+
+bool LeafCtrlFHandler::listKeys( vector< pair<string, string> > &list)
+{
+	list.push_back(make_pair(Gettext::keyname(_("FLOWED_K:^F")),
+				 _("Toggle flowed mode format")));
+	return false;
+}
+
 extern string curdir();
 extern void version();
 
@@ -436,19 +490,59 @@ Macros *Macros::getRuntimeMacros()
 	return NULL;
 }
 
+typedef enum {
+	open_ok,
+	open_directory,
+	open_again,
+	open_abort } open_action_t;
+
+static open_action_t openAction(std::string &filename,
+				bool &flowedmode)
+{
+	LeafCtrlTHandler ctrl_t;
+	LeafCtrlFHandler ctrl_f;
+
+	myServer::promptInfo response=
+		myServer::prompt(myServer
+				 ::promptInfo(Gettext(flowedmode ?
+						      _("Load (flowed text): ")
+						      : _("Load (plain text): ")
+						      )));
+
+	filename=response;
+
+	if (ctrl_t)
+		return open_directory;
+
+	if (ctrl_f)
+	{
+		flowedmode= !flowedmode;
+		return open_again;
+	}
+
+	if (response.aborted())
+		return open_abort;
+
+	return open_ok;
+}
+
 int main(int argc, char **argv)
 {
 	string dictionaryName;
 	int firstLineNum=1;
 	int optchar;
+	bool fflag=false;
 
 	optarg=getenv("DICTIONARY");
 
 	if (optarg && optarg)
 		dictionaryName=optarg;
 
-	while ((optchar=getopt(argc, argv, "vd:")) != -1)
+	while ((optchar=getopt(argc, argv, "fvd:")) != -1)
 		switch (optchar) {
+		case 'f':
+			fflag=true;
+			break;
 		case 'v':
 			version();
 			break;
@@ -463,41 +557,43 @@ int main(int argc, char **argv)
 
 
 	{
-		const struct unicode_info *myChset=Gettext::defaultCharset();
+		std::vector<unicode_char> ucbuf;
+		bool errflag;
 
-		unicode_char ucbuf[2];
-		int dummy;
+		ucbuf.push_back(8594);
 
-		ucbuf[0]=8594;
-		ucbuf[1]=0;
+		std::string s(mail::iconvert::convert(ucbuf,
+						      unicode_default_chset(),
+						      errflag));
 
-		char *p=(*myChset->u2c)(myChset, ucbuf, &dummy);
-
-		if (p == NULL)
-		{
-			strcpy(rarr, ">");
-		}
+		if (s.size() > 0 && !errflag)
+			urarr=ucbuf[0];
 		else
-		{
-			strcpy(rarr, p);
-			free(p);
-		}
+			urarr='>';
 
 		ucbuf[0]=8592;
-		ucbuf[1]=0;
 
-		p=(*myChset->u2c)(myChset, ucbuf, &dummy);
+		s=mail::iconvert::convert(ucbuf, unicode_default_chset(),
+					  errflag);
 
-		if (p == NULL)
-		{
-			strcpy(larr, "<");
-		}
+		if (s.size() > 0 && !errflag)
+			ularr=ucbuf[0];
 		else
-		{
-			strcpy(larr, p);
-			free(p);
-		}
+			ularr='<';
+
+		ucbuf[0]=8617;
+
+		s=mail::iconvert::convert(ucbuf, unicode_default_chset(),
+					  errflag);
+
+		if (s.size() > 0 && !errflag)
+			ucwrap_visible=ucbuf[0];
+		else
+			ucwrap_visible='<';
+
 	}
+
+	setflowedmode(fflag);
 
 	CursesFileReq::currentDir=curdir();
 
@@ -540,8 +636,9 @@ int main(int argc, char **argv)
 
 	string errmsg="";
 
-	currentEntityAltList=
-		unicode_createAltList(Gettext::defaultCharset());
+	currentDemoronizer=new Demoronize(unicode_default_chset(),
+					  Demoronize::none);
+
 	try
 	{
 		CursesScreen curses_screen;
@@ -575,7 +672,7 @@ int main(int argc, char **argv)
 		if (loadfile)
 		{
 			editMessage.loadingMessage();
-			editMessage.load(*loadfile);
+			editMessage.load(*loadfile, flowedmode, flowedmode);
 			cursesScreen->draw();
 			delete loadfile;
 		}
@@ -590,7 +687,7 @@ int main(int argc, char **argv)
 
 		statusBar->clearstatus();
 		statusBar->status(Gettext(_("Welcome to LEAF (%1%)"))
-				  << Gettext::defaultCharset()->chset);
+				  << unicode_default_chset());
 
 		for (;;)
 		{
@@ -629,24 +726,24 @@ int main(int argc, char **argv)
 					continue;
 
 				string defaultName;
-				bool flag;
 
+				open_action_t action;
+
+				bool open_flowedmode=flowedmode;
+
+				do
 				{
-					LeafCtrlTHandler ctrl_t;
+					action=openAction(defaultName,
+							  open_flowedmode);
+				} while (action == open_again);
 
-					myServer::promptInfo response=
-						myServer
-						::prompt(myServer
-							 ::promptInfo(Gettext(_("Load: ")))
-							 );
-					flag=ctrl_t;
-					defaultName=response;
-					if (response.aborted() && !flag)
-						continue;
-				}
+				switch (action) {
+				default:
+					break;
+				case open_abort:
+					continue;
 
-				if (flag)
-				{
+				case open_directory:
 					OpenDialog open_dialog;
 
 					open_dialog.noMultiples();
@@ -690,8 +787,9 @@ int main(int argc, char **argv)
 
 				editMessage.filename=defaultName;
 				editMessage.loadingMessage();
-				editMessage.eraseAllText();
-				editMessage.load(i);
+				setflowedmode(open_flowedmode);
+
+				editMessage.load(i, flowedmode, flowedmode);
 				editMessage.setModified(false);
 				editMessage.showModified();
 				continue;

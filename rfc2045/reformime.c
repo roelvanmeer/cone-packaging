@@ -1,5 +1,5 @@
 /*
-** Copyright 1998 - 2010 Double Precision, Inc.  See COPYING for
+** Copyright 1998 - 2011 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
@@ -48,9 +48,8 @@ int gethostname(const char *, size_t);
 
 extern int rfc2045_in_reformime;
 
-static const struct unicode_info *uniinfo;
+static const char *defchset;
 
-static const char rcsid[]="$Id: reformime.c,v 1.52 2010/02/15 14:27:34 mrsam Exp $";
 
 void rfc2045_error(const char *errmsg)
 {
@@ -94,7 +93,7 @@ void usage()
 	fprintf(stderr, "    -x - extract MIME section to a file.\n");
 	fprintf(stderr, "    -X - pipe MIME section to a program.\n");
 	fprintf(stderr, "    -i - show MIME info.\n");
-	fprintf(stderr, "    -s n.n.n.n - specify MIME section.\n");
+	fprintf(stderr, "    -s n.n.n.n[,n.n.n.n]* - specify MIME section(s).\n");
 	fprintf(stderr, "    -r - rewrite message, filling in missing MIME headers.\n");
 	fprintf(stderr, "    -r7 - also convert 8bit/raw encoding to quoted-printable, if possible.\n");
 	fprintf(stderr, "    -r8 - also convert quoted-printable encoding to 8bit, if possible.\n");
@@ -230,7 +229,7 @@ char *disposition_name, *disposition_filename;
 	{
 		char *s=rfc822_display_hdrvalue_tobuf("content-description",
 						      p,
-						      uniinfo->chset,
+						      defchset,
 						      NULL,
 						      NULL);
 
@@ -328,13 +327,19 @@ struct	rfc2045 *s;
 
 void rewrite(struct rfc2045 *p, int rwmode)
 {
+	struct rfc2045src *src;
+
 	rfc2045_ac_check(p, rwmode);
-	if (rfc2045_rewrite(p, fileno(stdin), fileno(stdout),
+
+	src=rfc2045src_init_fd(fileno(stdin));
+
+	if (src == NULL || rfc2045_rewrite(p, src, fileno(stdout),
 		"reformime (" RFC2045PKG " " RFC2045VER ")"))
 	{
 		perror("reformime");
 		exit(1);
 	}
+	rfc2045src_deinit(src);
 }
 
 static char *get_suitable_filename(struct rfc2045 *r, const char *pfix,
@@ -929,18 +934,28 @@ static void display_decoded_header(const char *ptr, size_t cnt, void *dummy)
 		fwrite(ptr, cnt, 1, stdout);
 }
 
+static int doconvtoutf8_stdout(const char *ptr, size_t n, void *dummy)
+{
+	if (fwrite(ptr, n, 1, stdout) != 1)
+		return -1;
+
+	return 0;
+}
+
 static int main2(const char *mimecharset, int argc, char **argv)
 {
 int	argn;
 char	optc;
 char	*optarg;
 char	*mimesection=0;
+char	*section=0;
 int	doinfo=0, dodecode=0, dorewrite=0, dodsn=0, domimedigest=0;
 int	dodecodehdr=0, dodecodeaddrhdr=0, doencodemime=0, doencodemimehdr=0;
 
 char	*decode_header="";
 struct	rfc2045 *p;
 int	rwmode=0;
+int     convtoutf8=0;
 int	dovalidate=0;
 void	(*do_extract)(struct rfc2045 *, const char *, int, char **)=0;
 const char *extract_filename=0;
@@ -962,20 +977,26 @@ int rc=0;
 				optarg=argv[argn++];
 			if (optarg && *optarg)
 			{
-				mimecharset=optarg;
-				if (unicode_find(mimecharset) == NULL)
+				char *p=libmail_u_convert_tobuf("",
+								optarg,
+								libmail_u_ucs4_native,
+								NULL);
+
+				if (!p)
 				{
 					fprintf(stderr, "Unknown charset: %s\n",
-						mimecharset);
+						optarg);
 					exit(1);
 				}
+				free(p);
+				mimecharset=optarg;
 			}
 			break;
 
 		case 's':
 			if (!optarg && argn < argc)
 				optarg=argv[argn++];
-			if (optarg && *optarg)	mimesection=optarg;
+			if (optarg && *optarg)	section=optarg;
 			break;
 		case 'i':
 			doinfo=1;
@@ -1007,9 +1028,6 @@ int rc=0;
 		case 'X':
 			do_extract=extract_pipe;
 			break;
-		case 'v':
-			printf("%s\n", rcsid);
-			exit(0);
 		case 'V':
 			dovalidate=1;
 			break;
@@ -1049,18 +1067,17 @@ int rc=0;
 			}
 			doencodemimehdr=1;
 			break;
-
+		case 'u':
+			convtoutf8=1;
+			break;
 		default:
 			usage();
 		}
 	}
 
-	uniinfo=unicode_find(mimecharset);
+	defchset=mimecharset;
 
-	if (!uniinfo)
-		uniinfo=&unicode_ISO8859_1;
-
-	rfc2045_setdefaultcharset(uniinfo->chset);
+	rfc2045_setdefaultcharset(defchset);
 
 	if (domimedigest)
 	{
@@ -1133,34 +1150,65 @@ int rc=0;
 
 	if (doinfo)
 	{
-		print_info(p, mimesection);
-		if (do_extract)
-			extract_section(p, mimesection, extract_filename,
-					argc-argn, argv+argn, do_extract);
+		mimesection = strtok(section,",");
+		do {
+			print_info(p, mimesection);
+			if (do_extract)
+				extract_section(p, mimesection,
+						extract_filename, argc-argn,
+						argv+argn, do_extract);
+			mimesection = strtok(NULL,",");
+		} while (mimesection != NULL);
 	}
 	else if (dodecode)
-		print_decode(p, mimesection);
+	{
+		mimesection = strtok(section,",");
+		do {
+			print_decode(p, mimesection);
+			mimesection = strtok(NULL,",");
+		} while (mimesection != NULL);
+	}
 	else if (dorewrite)
 		rewrite(p, rwmode);
 	else if (dodsn)
 		dsn(p, dodsn == 2);
 	else if (do_extract)
-		extract_section(p, mimesection, extract_filename,
-			argc-argn, argv+argn, do_extract);
+	{
+		mimesection = strtok(section,",");
+		do {
+			extract_section(p, mimesection, extract_filename,
+					argc-argn, argv+argn, do_extract);
+			mimesection = strtok(NULL,",");
+		} while (mimesection != NULL);
+	}
 	else if (dovalidate)
 	{
 		rc=1;
 
-		if (p->rfcviolation & RFC2045_ERR8BITHEADER)
-			printf("ERROR: Illegal 8-bit header.\n");
-		else if (p->rfcviolation & RFC2045_ERR8BITCONTENT)
-			printf("ERROR: Illegal 8-bit content.\n");
-		else if (p->rfcviolation & RFC2045_ERR2COMPLEX)
+		if (p->rfcviolation & RFC2045_ERR2COMPLEX)
 			printf("ERROR: MIME complexity.\n");
 		else if (p->rfcviolation & RFC2045_ERRBADBOUNDARY)
 			printf("ERROR: Ambiguous  MIME boundary delimiters.\n");
 		else rc=0;
 
+	}
+	else if (convtoutf8)
+	{
+		struct rfc2045src *src;
+		struct rfc2045_decodemsgtoutf8_cb cb;
+
+		memset(&cb, 0, sizeof(cb));
+
+		cb.output_func=doconvtoutf8_stdout;
+		cb.arg=NULL;
+
+		src=rfc2045src_init_fd(0);
+
+		if (src)
+		{
+			rfc2045_decodemsgtoutf8(src, p, &cb);
+			rfc2045src_deinit(src);
+		}
 	}
 	else
 		print_structure(p);
@@ -1171,20 +1219,8 @@ int rc=0;
 
 int main(int argc, char **argv)
 {
-	char	*mimecharset;
 	int	rc;
 
-	setlocale(LC_ALL, "");
-	mimecharset=strdup(nl_langinfo(CODESET));
-	setlocale(LC_ALL, "C");
-
-	if (!mimecharset)
-	{
-		perror("malloc");
-		exit(1);
-	}
-
-	rc=main2(mimecharset, argc, argv);
-	free(mimecharset);
+	rc=main2(unicode_default_chset(), argc, argv);
 	return rc;
 }

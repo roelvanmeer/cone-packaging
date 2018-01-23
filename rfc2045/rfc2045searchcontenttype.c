@@ -6,7 +6,6 @@
 #include "rfc2045_config.h"
 #include	"rfc2045.h"
 
-static const char rcsid[]="$Id: rfc2045searchcontenttype.c,v 1.4 2003/03/07 00:47:31 mrsam Exp $";
 
 /*
 ** This function is generally called to find the "primary" text/plain

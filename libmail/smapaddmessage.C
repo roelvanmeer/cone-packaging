@@ -1,5 +1,4 @@
-/* $Id: smapaddmessage.C,v 1.5 2010/04/29 00:34:50 mrsam Exp $
-**
+/*
 ** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.

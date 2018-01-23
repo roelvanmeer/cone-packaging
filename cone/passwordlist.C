@@ -1,5 +1,4 @@
-/* $Id: passwordlist.C,v 1.6 2008/07/13 17:11:43 mrsam Exp $
-**
+/*
 ** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.

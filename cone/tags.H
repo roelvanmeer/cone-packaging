@@ -1,5 +1,4 @@
-/* $Id: tags.H,v 1.3 2003/09/01 21:47:03 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

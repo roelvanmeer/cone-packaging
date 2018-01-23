@@ -1,6 +1,5 @@
-/* $Id: addressbookget.C,v 1.9 2010/04/29 00:34:49 mrsam Exp $
-**
-** Copyright 2002-2009, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -23,8 +22,7 @@ mail::addressbook::GetAddressList<T>::GetAddressList(mail::addressbook
 	: addressBook(addressBookArg),
 	  msgNum(msgNumArg),
 	  addrListRet(addrListRetArg),
-	  callback(callbackArg),
-	  unicodeInfo(&unicode_UTF8)
+	  callback(callbackArg)
 {
 }
 
@@ -69,17 +67,6 @@ void mail::addressbook::GetAddressList<T>::readstructure(string successMsg)
 	    lastChild->subtype == "X-LIBMAIL-ADDRESSBOOK")
 	{
 		successFunc=&mail::addressbook::GetAddressList<T>::readContents;
-
-		if (lastChild->type_parameters.exists("CHARSET"))
-		{
-			const struct unicode_info *u=
-				unicode_find(lastChild->type_parameters
-					     .get("CHARSET").c_str());
-
-			if (u)
-				unicodeInfo=u;
-		}
-
 		addressBook->server->readMessageContentDecoded(msgNum, false,
 							       *lastChild,
 							       *this);
@@ -132,11 +119,11 @@ void mail::addressbook::GetAddressList<T>::readContents(string successMsg)
 			{
 				mail::emailAddress
 					convAddress(mail::address("",
-								  b->getAddr()\
+								  b->getAddr()
 								  ));
 
 				convAddress
-					.setDisplayName(fromutf8(b->getName()));
+					.setDisplayName(b->getName(), "utf-8");
 				*b=convAddress;
 				++b;
 			}
@@ -217,10 +204,10 @@ void mail::addressbook::GetAddressList<T>::addressBookLine(string text)
 	if (b == e)
 		return;
 
-	if ( isspace((int)(unsigned char)*b))
+	if ( unicode_isspace((unsigned char)*b))
 	{
 		while (b != e &&
-		       isspace((int)(unsigned char)*b))
+		       unicode_isspace((unsigned char)*b))
 			b++;
 
 		text= " " + string(b, e);
@@ -238,7 +225,8 @@ void mail::addressbook::GetAddressList<T>::addressBookLine(string text)
 
 		text=text.substr(i+1);
 
-		while (text.size() > 0 && isspace((int)(unsigned char)text[0]))
+		while (text.size() > 0 &&
+		       unicode_isspace((unsigned char)text[0]))
 			text=text.substr(1);
 		mail::upper(hdr);
 		lastAddressBookLine=hdr;

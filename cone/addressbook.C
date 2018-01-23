@@ -1,10 +1,10 @@
-/* $Id: addressbook.C,v 1.16 2010/04/29 00:34:49 mrsam Exp $
-**
+/*
 ** Copyright 2003-2009, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 
+#include "config.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
@@ -532,7 +532,7 @@ bool AddressBook::searchAll(vector<mail::emailAddress> &addrList, // Orig list
 		{
 			mail::emailAddress addr= *curAddr;
 
-			if (addr.getDisplayName().size() == 0)
+			if (addr.getDisplayName("utf-8").size() == 0)
 			{
 				struct passwd *pw=getpwnam(addr.getAddr()
 							   .c_str());
@@ -546,7 +546,8 @@ bool AddressBook::searchAll(vector<mail::emailAddress> &addrList, // Orig list
 					if (n != std::string::npos)
 						nn=nn.substr(0, n);
 
-					addr.setDisplayName(nn);
+					addr.setDisplayName(nn,
+							    unicode_default_chset());
 				}
 			}
 
@@ -669,16 +670,19 @@ AddAddressBookScreen::AddAddressBookScreen(CursesMainScreen *mainScreen,
 	{
 		mail::emailAddress addr;
 
-		addr.setDisplayName(AddressBook::importName);
-		addr.setDisplayAddr(AddressBook::importAddr);
+		addr.setDisplayName(AddressBook::importName,
+				    unicode_default_chset());
+		addr.setDisplayAddr(AddressBook::importAddr,
+				    unicode_default_chset());
 
 		addresses.push_back(addr);
 	}
 		
 	if (addresses.size() == 1)
 	{
-		name_field.setText(addresses[0].getDisplayName());
-		addresses[0].setDisplayName("");
+		name_field.setText(addresses[0]
+				   .getDisplayName(unicode_default_chset()));
+		addresses[0].setDisplayName("", "utf-8");
 	}
 
 	// We want to decode MIME encoded addresses.  Hack.
@@ -692,8 +696,8 @@ AddAddressBookScreen::AddAddressBookScreen(CursesMainScreen *mainScreen,
 
 		for (b=addresses.begin(), e=addresses.end(); b != e; ++b)
 			decodedAddresses
-				.push_back(mail::address(b->getDisplayName(),
-							 b->getDisplayAddr()));
+				.push_back(mail::address(b->getDisplayName(unicode_default_chset()),
+							 b->getDisplayAddr(unicode_default_chset())));
 	}
 
 	string s=mail::address::toString("", decodedAddresses, 0);
@@ -759,10 +763,14 @@ void AddAddressBookScreen::save()
 
 			std::string errmsg;
 
-			errmsg=addr.setDisplayName(b->getName());
+			errmsg=addr.setDisplayName(b->getName(),
+						   unicode_default_chset());
 
 			if (errmsg == "")
-				errmsg=addr.setDisplayAddr(b->getAddr());
+				errmsg=addr
+					.setDisplayAddr(b->getAddr(),
+							unicode_default_chset()
+							);
 
 			if (errmsg != "")
 			{
@@ -789,7 +797,8 @@ void AddAddressBookScreen::save()
 	if (newEntry.addresses.size() == 1 &&
 	    newEntry.addresses[0].getName().size() == 0)
 	{
-		newEntry.addresses[0].setDisplayName(name_field.getText());
+		newEntry.addresses[0].setDisplayName(name_field.getText(),
+						     unicode_default_chset());
 	}
 
 	if (addressBook->add(newEntry))
@@ -1143,25 +1152,15 @@ bool AddressBookIndexScreen::processKey(const Curses::Key &key)
 				continue;
 
 			if (name.size() == 0)
-				v[0].getName();
+				name=v[0].getName();
 
 			if (name.size() == 0)
 				name=v[0].getAddr();
 
-			name=Gettext::toutf8(name);
-
-			char *p= (*unicode_UTF8.tolower_func)(&unicode_UTF8,
-							      name.c_str(),
-							      NULL);
-
-			try
-			{
-				name=p;
-				free(p);
-			} catch (...) {
-				free(p);
-				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-			}
+			name=mail::iconvert
+				::convert_tocase(Gettext::toutf8(name),
+						 "utf-8",
+						 unicode_lc);
 
 			size_t ip;
 			ip=name.find(' ');
@@ -1968,10 +1967,10 @@ AddressBookTakeScreen::addressButton
 ::addressButton(AddressBookTakeScreen *myScreenArg,
 		mail::emailAddress addrArg)
 	: CursesButton(myScreenArg,
-		       mail::address(addrArg.getDisplayName(),
-				     addrArg.getDisplayAddr()).toString()),
-	  name(addrArg.getDisplayName()),
-	  addr(addrArg.getDisplayAddr())
+		       mail::address(addrArg.getDisplayName(unicode_default_chset()),
+				     addrArg.getDisplayAddr(unicode_default_chset())).toString()),
+	  name(addrArg.getDisplayName(unicode_default_chset())),
+	  addr(addrArg.getDisplayAddr(unicode_default_chset()))
 {
 	setStyle(MENU);
 }
@@ -2104,10 +2103,10 @@ bool AddressBookTakeScreen
 ::indexSort::operator()(const mail::emailAddress &a,
 			const mail::emailAddress &b)
 {
-	int n=a.getDisplayName().compare(b.getDisplayName());
+	int n=a.getDisplayName("utf-8").compare(b.getDisplayName("utf-8"));
 
 	if (n)
 		return n < 0;
 
-	return a.getDisplayAddr().compare(b.getDisplayAddr()) < 0;
+	return a.getDisplayAddr("utf-8").compare(b.getDisplayAddr("utf-8")) < 0;
 }

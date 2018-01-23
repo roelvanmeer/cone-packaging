@@ -13,7 +13,6 @@
 #include <unistd.h>
 #endif
 
-static const char rcsid[]="$Id: rfc1035ifconf.c,v 1.3 2009/06/27 17:40:07 mrsam Exp $";
 
 #if HAVE_SIOCGIFCONF
 

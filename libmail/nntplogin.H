@@ -1,5 +1,4 @@
-/* $Id: nntplogin.H,v 1.2 2003/10/22 02:50:01 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

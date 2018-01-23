@@ -1,5 +1,4 @@
-/* $Id: fd.C,v 1.12 2010/04/29 00:34:49 mrsam Exp $
-**
+/*
 ** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.

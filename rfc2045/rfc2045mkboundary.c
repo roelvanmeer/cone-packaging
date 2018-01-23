@@ -1,5 +1,5 @@
 /*
-** Copyright 1998 - 1999 Double Precision, Inc.  See COPYING for
+** Copyright 1998 - 2011 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
@@ -15,7 +15,6 @@
 #include	<time.h>
 #include	"numlib/numlib.h"
 
-/* $Id: rfc2045mkboundary.c,v 1.9 2003/03/07 00:47:31 mrsam Exp $ */
 
 #if	HAS_GETHOSTNAME
 
@@ -26,7 +25,7 @@ extern int gethostname(char *, size_t);
 
 extern void rfc2045_enomem();
 
-char *rfc2045_mk_boundary(struct rfc2045 *s, int fd)
+char *rfc2045_mk_boundary(struct rfc2045 *s, struct rfc2045src *src)
 {
 char	hostnamebuf[256];
 pid_t	mypid;
@@ -63,7 +62,7 @@ int	rc;
 
 		sprintf(p, "=_%s-%s-%s-%s", hostnamebuf,
 			pidbuf, timebuf, cntbuf);
-		if ((rc=rfc2045_try_boundary(s, fd, p)) == 0)
+		if ((rc=rfc2045_try_boundary(s, src, p)) == 0)
 			break;
 		free(p);
 		if (rc < 0)

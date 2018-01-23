@@ -1,5 +1,4 @@
-/* $Id: maildirfolder.C,v 1.8 2010/04/29 00:34:49 mrsam Exp $
-**
+/*
 ** Copyright 2002-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -59,24 +58,19 @@ mail::maildir::folder::folder(mail::maildir *maildirArg,
 	// Convert the name of the folder from modified UTF-7
 	// (Courier compatibility) to the current charset.
 
-	unicode_char *uc=unicode_modutf7touc(name.c_str(), NULL);
+	char *s=libmail_u_convert_tobuf(name.c_str(),
+					unicode_x_imap_modutf7,
+					unicode_default_chset(),
+					NULL);
 
-	if (uc)
+	if (s)
 	{
-		char *s;
-
-		if (appcharset &&
-		    (s=(*appcharset->u2c)(mail::appcharset,
-					  uc, NULL)) != NULL)
-		{
-			try {
-				name=s;
-				free(s);
-			} catch (...) {
-				free(s);
-			}
+		try {
+			name=s;
+			free(s);
+		} catch (...) {
+			free(s);
 		}
-		free(uc);
 	}
 }
 
@@ -164,15 +158,15 @@ bool mail::maildir::indexSort::operator()
 
 // Scan a maildirAccount
 
-void mail::maildir::scan(string folderStr, vector<maildirMessageInfo> &index,
-	  bool scanNew)
+bool mail::maildir::scan(string folderStr, vector<maildirMessageInfo> &index,
+			 bool scanNew)
 {
 	string p;
 
 	char *d=maildir_name2dir(path.c_str(), folderStr.c_str());
 
 	if (!d)
-		LIBMAIL_THROW(strerror(errno));
+		return false;
 
 	try {
 		p=d;
@@ -230,6 +224,7 @@ void mail::maildir::scan(string folderStr, vector<maildirMessageInfo> &index,
 	}
 
 	sort(index.begin(), index.end(), indexSort());
+	return true;
 }
 
 void mail::maildir::folder::getParentFolder(callback::folderList &callback1,
@@ -262,7 +257,12 @@ void mail::maildir::folder::readFolderInfo( mail::callback::folderInfo
 
 	vector<maildirMessageInfo> dummyIndex;
 
-	maildirAccount->scan(path, dummyIndex, true);
+	if (!maildirAccount->scan(path, dummyIndex, true))
+	{
+		callback1.success();
+		callback2.fail("Invalid folder");
+		return;
+	}
 
 	vector<maildirMessageInfo>::iterator b=dummyIndex.begin(),
 		e=dummyIndex.end();
@@ -544,39 +544,25 @@ void mail::maildir::folder::createSubFolder(string name, bool isDirectory,
 	// to modified UTF-7 (Courier-IMAP compatibility), with the following
 	// blacklisted characters:
 
-	vector<unicode_char> verbotten;
+	char *p=libmail_u_convert_tobuf(name.c_str(), unicode_default_chset(),
+					unicode_x_imap_modutf7 " ./~:", NULL);
 
-	mail::maildir::mkverbotten(verbotten);
-
-	string nameutf7;
-
-	unicode_char *uc= (*appcharset->c2u)(appcharset,
-						 name.c_str(), NULL);
-
-	if (!uc)
+	if (!p)
 	{
 		callback2.fail(strerror(errno));
 		return;
 	}
 
+	std::string nameutf7;
+
+	errno=ENOMEM;
 	try {
-		char *p=unicode_uctomodutf7x(uc, &verbotten[0]);
-
-		if (!p)
-			LIBMAIL_THROW(strerror(errno));
-
-		try {
-			nameutf7=p;
-			free(p);
-		} catch (...) {
-			free(p);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-		}
-
-		free(uc);
+		nameutf7=p;
+		free(p);
 	} catch (...) {
-		free(uc);
-		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
+		free(p);
+		callback2.fail(strerror(errno));
+		return;
 	}
 
 	mail::maildir::folder newFolder(maildirAccount, path + "." + nameutf7);
@@ -694,7 +680,10 @@ void mail::maildir::folder::destroy(mail::callback &callback,
 		char *d=maildir_name2dir(maildirAccount->path.c_str(),
 					 path.c_str());
 		if (!d)
-			LIBMAIL_THROW("Out of memory.");
+		{
+			callback.fail(strerror(errno));
+			return;
+		}
 
 		try {
 			s=d;
@@ -740,39 +729,26 @@ void mail::maildir::folder::renameFolder(const mail::folder *newParent,
 	// to modified UTF-7 (Courier-IMAP compatibility), with the following
 	// blacklisted characters:
 
-	vector<unicode_char> verbotten;
+	char *s=libmail_u_convert_tobuf(newName.c_str(),
+					unicode_default_chset(),
+					unicode_x_imap_modutf7 " ./~:", NULL);
 
-	mail::maildir::mkverbotten(verbotten);
-
-	string nameutf7;
-
-	unicode_char *uc= (*appcharset->c2u)(appcharset,
-					     newName.c_str(), NULL);
-
-	if (!uc)
+	if (!s)
 	{
 		callback2.fail(strerror(errno));
 		return;
 	}
 
+	std::string nameutf7;
+
+	errno=ENOMEM;
 	try {
-		char *p=unicode_uctomodutf7x(uc, &verbotten[0]);
-
-		if (!p)
-			LIBMAIL_THROW(strerror(errno));
-
-		try {
-			nameutf7=p;
-			free(p);
-		} catch (...) {
-			free(p);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-		}
-
-		free(uc);
+		nameutf7=s;
+		free(s);
 	} catch (...) {
-		free(uc);
-		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
+		free(s);
+		callback2.fail(strerror(errno));
+		return;
 	}
 
 	mail::maildir::folder newFolder(maildirAccount,
@@ -910,11 +886,7 @@ void mail::maildir::findFolder(string folder,
 
 string mail::maildir::translatePath(string path)
 {
-	vector<unicode_char> verbotten;
-
-	mkverbotten(verbotten);
-
-	return mail::mbox::translatePathCommon(path, verbotten, ".");
+	return mail::mbox::translatePathCommon(path, ":/.~", ".");
 }
 
 static string encword(string s)

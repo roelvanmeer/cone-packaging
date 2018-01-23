@@ -1,7 +1,6 @@
 # Copyright 2002 Double Precision, Inc.
 # See COPYING for distribution information.
 #
-# $Id: testsuite,v 1.1 2002/06/24 03:45:08 mrsam Exp $
 
 doit() {
   echo "--./tlscachetest $1--"
@@ -35,3 +34,5 @@ doit +11111111
 doit +22222222
 doit -00000000-77777777
 doit -11111111-55555555
+
+rm -f test.dat

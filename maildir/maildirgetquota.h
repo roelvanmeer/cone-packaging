@@ -17,7 +17,6 @@
 extern "C" {
 #endif
 
-static const char maildirgetquota_h_rcsid[]="$Id: maildirgetquota.h,v 1.5 1999/12/06 13:21:05 mrsam Exp $";
 
 #define	QUOTABUFSIZE	256
 

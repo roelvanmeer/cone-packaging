@@ -30,7 +30,6 @@
 #include	"rfc1035.h"
 
 
-static const char rcsid[]="$Id: rfc1035.c,v 1.11 2003/12/20 03:21:27 mrsam Exp $";
 
 #if RFC1035_IPV6
 

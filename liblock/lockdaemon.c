@@ -33,7 +33,6 @@
 
 #define exit(_a_) _exit(_a_)
 
-static const char rcsid[]="$Id: lockdaemon.c,v 1.14 2007/10/11 01:46:34 mrsam Exp $";
 
 static int start1(const char *, int);
 

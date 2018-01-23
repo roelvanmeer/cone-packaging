@@ -17,7 +17,6 @@
 #endif
 #include	"maildirkeywords.h"
 
-static const char rcsid[]="$Id: maildirkeywords.c,v 1.1 2003/08/01 18:30:53 mrsam Exp $";
 
 const char *libmail_kwVerbotten=NULL;
 int libmail_kwCaseSensitive=1;

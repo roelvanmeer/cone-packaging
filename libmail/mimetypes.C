@@ -1,5 +1,4 @@
-/* $Id: mimetypes.C,v 1.3 2010/04/29 00:34:50 mrsam Exp $
-**
+/*
 ** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -7,6 +6,7 @@
 #include "libmail_config.h"
 #include "mimetypes.H"
 #include "namespace.H"
+#include "unicode/unicode.h"
 #include <fstream>
 #include <cctype>
 #include <cstring>
@@ -51,13 +51,13 @@ mail::mimetypes::mimetypes(string searchKey)
 
 			while (b != e)
 			{
-				if (isspace((int)(unsigned char)*b))
+				if (unicode_isspace((unsigned char)*b))
 				{
 					b++;
 					continue;
 				}
 				c=b;
-				while (b != e && !isspace((int)(unsigned char)
+				while (b != e && !unicode_isspace((unsigned char)
 							  *b))
 					b++;
 

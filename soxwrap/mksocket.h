@@ -5,7 +5,6 @@
 #include	"soxwrap/soxwrap_config.h"
 #endif
 
-static const char mksocket_h_rcsid[]="$Id: mksocket.h,v 1.2 2004/12/05 02:45:55 mrsam Exp $";
 
 #ifdef  __cplusplus
 extern "C" {

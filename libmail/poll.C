@@ -1,5 +1,4 @@
-/* $Id: poll.C,v 1.2 2004/08/21 21:57:00 mrsam Exp $
-**
+/*
 ** Copyright 2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.

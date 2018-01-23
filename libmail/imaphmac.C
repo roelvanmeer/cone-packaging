@@ -1,5 +1,4 @@
-/* $Id: imaphmac.C,v 1.2 2005/02/21 04:55:52 mrsam Exp $
-**
+/*
 ** Copyright 2002-2005, Double Precision Inc.
 **
 ** See COPYING for distribution information.

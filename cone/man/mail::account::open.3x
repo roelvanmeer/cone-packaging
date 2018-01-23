@@ -1,16 +1,17 @@
-.\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
-.\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+.\"<!-- Copyright 2002-2010 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
 '\" t
 .\"     Title: mail::account::open
-.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\"    Author: Sam Varshavchik
 .\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
-.\"      Date: 05/08/2010
+.\"      Date: 04/04/2011
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: [FIXME: source]
+.\"    Source: 
+        Cone\(co
+      
 .\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::OPEN" "3x" "05/08/2010" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::OPEN" "3x" "04/04/2011" "Cone\(co" "Cone: COnsole Newsreader And E"
 .\" -----------------------------------------------------------------
 .\" * set default formatting
 .\" -----------------------------------------------------------------
@@ -26,7 +27,6 @@ mail::account::open \- Open a new mail account
 .SH "SYNOPSIS"
 .sp
 .nf
-
 
 
 #include <libmail/mail\&.H>
@@ -212,7 +212,6 @@ must be initialized to the name of a file where the list of subscribed newsgroup
 \fBNote\fR
 .ps -1
 .br
-
 
 
 
@@ -477,10 +476,8 @@ does not officially fail the login request; the application is subsequently noti
 is invoked from within
 
 
-
 LibMAIL
 ; as such no
-
 
 
 LibMAIL
@@ -488,7 +485,6 @@ calls can be made (except for
 \fBmail::loginCallback::callback\fR
 or
 \fBmail::loginCallback::callbackCancel\fR)\&. Note that all
-
 
 
 LibMAIL
@@ -728,6 +724,11 @@ object is destroyed\&.
 \fBmail::account::process\fR(3x),
 \fBmail::account::readTopLevelFolders\fR(3x),
 \fBmail::setAppCharset\fR(3x)\&.
+.SH "AUTHOR"
+.PP
+\fBSam Varshavchik\fR
+.RS 4
+.RE
 .SH "NOTES"
 .IP " 1." 4
 IMAP

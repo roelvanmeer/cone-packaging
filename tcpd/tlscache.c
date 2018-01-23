@@ -21,7 +21,6 @@
 
 #include	"tlscache.h"
 
-static const char rcsid[]="$Id: tlscache.c,v 1.3 2002/07/15 17:39:14 mrsam Exp $";
 
 /*
 ** The cache file begins with the following record:

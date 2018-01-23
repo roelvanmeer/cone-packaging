@@ -7,7 +7,6 @@
 #include	<string.h>
 #include	<stdio.h>
 
-static const char rcsid[]="$Id: md5_hash.c,v 1.6 2007/10/07 02:50:45 mrsam Exp $";
 
 static const char base64tab[]=
 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";

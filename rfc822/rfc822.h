@@ -1,5 +1,4 @@
 /*
-** $Id: rfc822.h,v 1.31 2009/11/22 19:39:52 mrsam Exp $
 */
 #ifndef	rfc822_h
 #define	rfc822_h

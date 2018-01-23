@@ -9,7 +9,6 @@
 #include	<string.h>
 #include	<stdlib.h>
 
-static const char rcsid[]="$Id: sha256.c,v 1.2 2008/12/18 12:08:26 mrsam Exp $";
 
 #define ROTR(x,n) ((SHA256_WORD)(((SHA256_WORD)(x) >> (n))|((x) << (32-(n)))))
 

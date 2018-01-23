@@ -1,5 +1,4 @@
-/* $Id: imaplisthandler.C,v 1.6 2010/04/29 00:34:49 mrsam Exp $
-**
+/*
 ** Copyright 2002-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -76,45 +75,26 @@ void mail::imap::findFolder(string folder,
 
 string mail::imap::translatePath(string path)
 {
-	int dummy;
-
 	if (!smap)
 	{
-		unicode_char *uc=
-			(*mail::appcharset->c2u)
-			(mail::appcharset, path.c_str(), &dummy);
+		char *p=libmail_u_convert_tobuf(path.c_str(),
+						unicode_default_chset(),
+						unicode_x_imap_modutf7, NULL);
 
-		if (!uc)
+		if (p)
 		{
-			errno=EINVAL;
-			return "";
-		}
-
-		try {
-			char *p=unicode_uctomodutf7(uc);
-
-			if (p)
+			try
 			{
-				try
-				{
-					path=p;
-					free(p);
-					free(uc);
-					return path;
-				} catch (...) {
-					free(p);
-					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-				}
+				path=p;
+				free(p);
+				return path;
+			} catch (...) {
+				free(p);
+				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 			}
-
-			errno=EINVAL;
-			path="";
-			free(uc);
-			return path;
-		} catch (...) {
-			free(uc);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
+
+		return "";
 	}
 
 	vector<string> words;
@@ -138,9 +118,23 @@ string mail::imap::translatePath(string path)
 
 		vector<unicode_char> ucvec;
 
-		unicode_char *uc=(*mail::appcharset->c2u)
-			(mail::appcharset, component.c_str(),
-			 &dummy);
+		unicode_char *uc;
+		size_t ucsize;
+		libmail_u_convert_handle_t h;
+
+		if ((h=libmail_u_convert_tou_init(unicode_default_chset(),
+						  &uc, &ucsize, 1)) == NULL)
+		{
+			uc=NULL;
+		}
+		else
+		{
+			libmail_u_convert(h, component.c_str(),
+					  component.size());
+
+			if (libmail_u_convert_deinit(h, NULL))
+				uc=NULL;
+		}
 
 		if (!uc)
 		{
@@ -199,10 +193,17 @@ string mail::imap::translatePath(string path)
 			free(uc);
 			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
-		ucvec.push_back(0);
 
-		char *p= (*unicode_UTF8.u2c)(&unicode_UTF8, &ucvec[0],
-					     &dummy);
+		char *p;
+		size_t psize;
+
+		if ((h=libmail_u_convert_fromu_init("utf-8", &p, &psize, 1))
+		    != NULL)
+		{
+			libmail_u_convert_uc(h, &ucvec[0], ucvec.size());
+			if (libmail_u_convert_deinit(h, NULL))
+				p=NULL;
+		}
 
 		if (!p)
 		{
@@ -433,30 +434,18 @@ void mail::imapLIST::get_name(mail::imap &imapAccount, Token t)
 			if (pfixLength <= nameVal.length())
 				nameVal.erase(0, pfixLength);
 		}
-		int errflag;
+		char *p=libmail_u_convert_tobuf(nameVal.c_str(),
+						unicode_x_imap_modutf7,
+						unicode_default_chset(),
+						NULL);
 
-		unicode_char *uc=unicode_modutf7touc(nameVal.c_str(),
-						     &errflag);
-
-		if (uc)
-			try {
-				char *p= (*mail::appcharset->u2c)
-					(mail::appcharset, uc, NULL);
-
-				if (p)
-					try {
-						nameVal=p;
-						free(p);
-					} catch (...) {
-						free(p);
-						LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-					}
-				free(uc);
-			} catch (...)
-			{
-				free(uc);
-				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-			}
+		try {
+			nameVal=p;
+			free(p);
+		} catch (...) {
+			free(p);
+			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
+		}
 
 		if (nameVal.size() == 0 && !oneNameOnly) // LIST % artifact
 		{

@@ -1,5 +1,4 @@
-/* $Id: mailtool.C,v 1.10 2008/05/24 17:57:42 mrsam Exp $
-**
+/*
 ** Copyright 2002-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.

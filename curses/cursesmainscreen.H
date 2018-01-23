@@ -1,6 +1,5 @@
-/* $Id: cursesmainscreen.H,v 1.2 2003/05/28 23:07:37 mrsam Exp $
-**
-** Copyright 2002-2003, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -60,8 +59,8 @@ public:
 
 	bool writeText(const char *text, int row, int col,
 		       const CursesAttr &attr) const;
-	bool writeText(const wchar_t *text, int row, int col,
-		       const CursesAttr &attr) const;
+	bool writeText(const std::vector<unicode_char> &text, int row, int col,
+		       const Curses::CursesAttr &attr) const;
 };
 
 #endif

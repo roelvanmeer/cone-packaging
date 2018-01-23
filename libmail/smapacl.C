@@ -1,5 +1,4 @@
-/* $Id: smapacl.C,v 1.1 2004/03/22 02:56:04 mrsam Exp $
-**
+/*
 ** Copyright 2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.

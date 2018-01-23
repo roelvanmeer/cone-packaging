@@ -1,5 +1,4 @@
-/* $Id: addmessageremoveattachments.C,v 1.2 2008/05/24 17:57:41 mrsam Exp $
-**
+/*
 ** Copyright 2004-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.

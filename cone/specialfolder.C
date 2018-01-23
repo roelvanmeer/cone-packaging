@@ -1,6 +1,5 @@
-/* $Id: specialfolder.C,v 1.2 2009/06/27 17:12:00 mrsam Exp $
-**
-** Copyright 2003, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -211,23 +210,8 @@ mail::folder *SpecialFolder::Info::getFolder(myServer *&s)
 		return NULL;
 	}
 
-	string nameStr;
-
-	{
-		char *p=unicode_cfromutf8(Gettext::defaultCharset(),
-					  nameUTF8.c_str(), NULL);
-
-		if (!p)
-			outofmemory();
-
-		try {
-			nameStr=p;
-			free(p);
-		} catch (...) {
-			free(p);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-		}
-	}
+	string nameStr(mail::iconvert::convert(nameUTF8, "utf-8",
+					       unicode_default_chset()));
 
 	{
 		OpenSubFoldersCallback tryCreateFolder;

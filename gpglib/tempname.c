@@ -3,7 +3,6 @@
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: tempname.c,v 1.2 2003/06/02 15:51:23 mrsam Exp $";
 
 #include "config.h"
 #include <stdio.h>

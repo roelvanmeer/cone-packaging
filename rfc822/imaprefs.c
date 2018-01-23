@@ -4,7 +4,6 @@
 */
 
 /*
-** $Id: imaprefs.c,v 1.12 2009/11/22 19:39:52 mrsam Exp $
 */
 
 #include	"config.h"

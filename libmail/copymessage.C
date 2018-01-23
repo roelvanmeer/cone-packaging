@@ -1,5 +1,4 @@
-/* $Id: copymessage.C,v 1.3 2010/05/02 19:50:32 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.

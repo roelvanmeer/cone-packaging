@@ -1,5 +1,4 @@
-/* $Id: curseshierarchy.H,v 1.4 2003/09/16 02:38:35 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

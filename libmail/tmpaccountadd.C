@@ -1,5 +1,4 @@
-/* $Id: tmpaccountadd.C,v 1.3 2008/05/24 17:57:42 mrsam Exp $
-**
+/*
 ** Copyright 2003-2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.

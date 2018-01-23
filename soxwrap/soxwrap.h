@@ -6,7 +6,6 @@
 ** See COPYING for distribution information.
 */
 
-static const char soxwrapproto_h_rcsid[]="$Id: soxwrap.h,v 1.6 2004/08/21 21:57:00 mrsam Exp $";
 
 #ifdef	__cplusplus
 extern "C" {

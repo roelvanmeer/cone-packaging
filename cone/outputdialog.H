@@ -1,5 +1,4 @@
-/* $Id: outputdialog.H,v 1.1 2003/06/16 03:18:01 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

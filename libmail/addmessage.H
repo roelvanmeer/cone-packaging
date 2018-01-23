@@ -1,5 +1,4 @@
-/* $Id: addmessage.H,v 1.3 2004/06/23 00:55:01 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.

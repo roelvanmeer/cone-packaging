@@ -21,7 +21,6 @@
 
 #include	"maildirmisc.h"
 
-static const char rcsid[]="$Id: maildirpath.c,v 1.7 2004/01/20 02:52:04 mrsam Exp $";
 
 char *maildir_name2dir(const char *maildir,	/* DIR location */
 		       const char *foldername) /* INBOX.name */

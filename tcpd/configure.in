@@ -1,5 +1,4 @@
 dnl Process this file with autoconf to produce a configure script.
-dnl $Id: configure.in,v 1.38 2010/05/30 20:27:43 mrsam Exp $
 dnl
 dnl Copyright 1998 - 2008 Double Precision, Inc.  See COPYING for
 dnl distribution information.
@@ -130,6 +129,7 @@ dnl Checks for typedefs, structures, and compiler characteristics.
 AC_PID_T
 AC_TYPE_UID_T
 AC_TYPE_SIGNAL
+AC_SYS_LARGEFILE
 
 AC_CACHE_CHECK([for socklen_t],
 	tcpd_cv_hassocklen_t,

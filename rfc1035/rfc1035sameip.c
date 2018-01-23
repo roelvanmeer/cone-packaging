@@ -10,7 +10,6 @@
 #include	<errno.h>
 #include	<string.h>
 
-static const char rcsid[]="$Id: rfc1035sameip.c,v 1.4 2000/07/30 01:08:10 mrsam Exp $";
 
 /*
 **	We have two socket addresses.  Did they come from the same IP

@@ -1,5 +1,4 @@
-/* $Id: mboxfolder.C,v 1.6 2010/04/29 00:34:49 mrsam Exp $
-**
+/*
 ** Copyright 2002-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -77,29 +76,21 @@ string mail::mbox::folder::defaultName(string path)
 
 	path=string(c, e);
 
-	int dummy;
+	char *p=libmail_u_convert_tobuf(path.c_str(),
+					unicode_x_imap_modutf7,
+					unicode_default_chset(),
+					NULL);
 
-	unicode_char *uc=unicode_modutf7touc(path.c_str(), &dummy);
-
-	if (uc != NULL)
+	if (p)
+	{
 		try {
-			char *p=(*mail::appcharset->u2c)
-				(mail::appcharset, uc, NULL);
-
-			if (p)
-				try {
-					path=p;
-					free(p);
-				} catch (...) {
-					free(p);
-					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-				}
-
-			free(uc);
+			path=p;
+			free(p);
 		} catch (...) {
-			free(uc);
+			free(p);
 			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
+	}
 
 	return path;
 }
@@ -387,36 +378,9 @@ void mail::mbox::folder::readSubFolders( mail::callback::folderList &callback1,
 			if (*p)
 				continue;
 
-			string fpath=path + "/" + de->d_name;
-
-			int errflag;
-
 			string name=de->d_name;
 
-			unicode_char *uc=
-				unicode_modutf7touc(name.c_str(),
-						    &errflag);
-
-			if (uc)
-				try {
-					p= (*mail::appcharset
-					    ->u2c)(mail::appcharset,
-						   uc, NULL);
-
-					if (p)
-						try {
-							name=p;
-							free(p);
-						} catch (...) {
-							free(p);
-							LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-						}
-
-					free(uc);
-				} catch (...) {
-					free(uc);
-					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-				}
+			string fpath=path + "/" + name;
 
 			folder *f=new folder(fpath, mboxAccount);
 
@@ -484,40 +448,19 @@ void mail::mbox::folder::createSubFolder(string name,
 					 mail::callback::folderList &callback1,
 					 mail::callback &callback2) const
 {
-	int dummy;
-
 	string fpath;
 
-	unicode_char *uc=(*mail::appcharset->c2u)
-		(mail::appcharset, name.c_str(), &dummy);
+	char *p=libmail_u_convert_tobuf(name.c_str(), unicode_default_chset(),
+					unicode_x_imap_modutf7 " ./~:", NULL);
 
-	if (!uc)
-	{
-		callback2.fail("Invalid folder name");
-		return;
-	}
+	if (!p)
+		LIBMAIL_THROW("Out of memory.");
 
 	try {
-		vector<unicode_char> verbotten;
-
-		mail::mbox::mkverbotten(verbotten);
-
-		char *p=unicode_uctomodutf7x(uc, &verbotten[0]);
-
-		if (!p)
-			LIBMAIL_THROW("Out of memory.");
-
-		try {
-			fpath=path + "/" + p;
-			free(p);
-		} catch (...) {
-			free(p);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-		}
-
-		free(uc);
+		fpath=path + "/" + p;
+		free(p);
 	} catch (...) {
-		free(uc);
+		free(p);
 		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
@@ -763,40 +706,9 @@ void mail::mbox::folder::renameFolder(const mail::folder *newParent,
 	// to modified UTF-7 (Courier-IMAP compatibility), with the following
 	// blacklisted characters:
 
-	vector<unicode_char> verbotten;
-
-	mail::mbox::mkverbotten(verbotten);
-
-	string nameutf7;
-
-	unicode_char *uc= (*appcharset->c2u)(appcharset,
-					     newName.c_str(), NULL);
-
-	if (!uc)
-	{
-		callback.fail(strerror(errno));
-		return;
-	}
-
-	try {
-		char *p=unicode_uctomodutf7x(uc, &verbotten[0]);
-
-		if (!p)
-			LIBMAIL_THROW(strerror(errno));
-
-		try {
-			nameutf7=p;
-			free(p);
-		} catch (...) {
-			free(p);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-		}
-
-		free(uc);
-	} catch (...) {
-		free(uc);
-		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-	}
+	string nameutf7=mail::iconvert::convert(newName,
+						unicode_default_chset(),
+						unicode_x_imap_modutf7 " ./~:");
 
 	string newpath=(newParent ? newParent->getPath() + "/":
 			string("")) + nameutf7;

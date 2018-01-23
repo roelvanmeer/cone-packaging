@@ -2,7 +2,6 @@
 # Copyright 2001-2007 Double Precision, Inc.  See COPYING for
 # distribution information.
 #
-# $Id: Makefile.am,v 1.14 2009/11/22 19:39:52 mrsam Exp $
 
 
 CLEANFILES=gpg.h

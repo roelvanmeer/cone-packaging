@@ -1,5 +1,4 @@
-/* $Id: cursesmultilinelabel.C,v 1.1 2004/03/21 05:30:01 mrsam Exp $
-**
+/*
 ** Copyright 2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -8,14 +7,12 @@
 #include "curses_config.h"
 #include "cursesmultilinelabel.H"
 
-using namespace std;
-
 CursesMultilineLabel::CursesMultilineLabel(CursesContainer *parent,
-					   string textArg,
+					   std::string textArg,
 					   Curses::CursesAttr attributeArg)
 	: Curses(parent), width(0), attribute(attributeArg)
 {
-	mbtow(textArg.c_str(), text);
+	mail::iconvert::convert(textArg, unicode_default_chset(), text);
 }
 
 void CursesMultilineLabel::init()
@@ -26,7 +23,12 @@ void CursesMultilineLabel::init()
 		w=10;
 
 	lines.clear();
-	wordWrap(text.begin(), text.end(), lines, w);
+
+	std::back_insert_iterator< std::vector< std::vector<unicode_char> > >
+		insert_iter(lines);
+
+	unicodewordwrap(text.begin(), text.end(),
+			unicoderewrapnone(), insert_iter, w, true);
 }
 
 CursesMultilineLabel::~CursesMultilineLabel()
@@ -47,11 +49,11 @@ void CursesMultilineLabel::setCol(int col)
 	draw();
 }
 
-void CursesMultilineLabel::setText(string newText)
+void CursesMultilineLabel::setText(std::string newText)
 {
 	erase();
 	text.clear();
-	mbtow(newText.c_str(), text);
+	mail::iconvert::convert(newText, unicode_default_chset(), text);
 	init();
 	draw();
 }
@@ -100,34 +102,25 @@ void CursesMultilineLabel::resized()
 
 void CursesMultilineLabel::draw()
 {
-	int i, n;
+	erase();
 
-	n=getHeight();
-	int w=getWidth();
+	size_t row=0;
 
-	for (i=0; i<n; i++)
+	for ( std::vector< std::vector<unicode_char> >::iterator
+		      b(lines.begin()), e(lines.end()); b != e; ++b, ++row)
 	{
-		vector<wchar_t> v;
-
-		if (i < (int)lines.size())
-			v.insert(v.begin(),
-				 lines[i].first,
-				 lines[i].second);
-		if ((int)v.size() < w)
-			v.insert(v.end(), w-v.size(), ' ');
-		v.push_back(0);
-		writeText(&v[0], i, 0, attribute);
+		writeText(*b, row, 0, attribute);
 	}
 }
 
 void CursesMultilineLabel::erase()
 {
-	string s="";
-	int i, n;
-	s.append(getWidth(), ' ');
+	std::vector<unicode_char> uc;
 
-	n=getHeight();
+	uc.insert(uc.end(), getWidth(), ' ');
+
+	size_t i, n=getHeight();
 	for (i=0; i<n; i++)
-		writeText(s.c_str(), i, 0, attribute);
+		writeText(uc, i, 0, attribute);
 }
 

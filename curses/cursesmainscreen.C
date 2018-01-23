@@ -1,6 +1,5 @@
-/* $Id: cursesmainscreen.C,v 1.1 2003/05/27 14:09:07 mrsam Exp $
-**
-** Copyright 2002, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -66,18 +65,12 @@ bool CursesMainScreen::writeText(const char *text, int row, int col,
 	return CursesVScroll::writeText(text, row, col, attr);
 }
 
-bool CursesMainScreen::writeText(const wchar_t *text, int row, int col,
-				 const CursesAttr &attr) const
+bool CursesMainScreen::writeText(const std::vector<unicode_char> &text,
+				 int row, int col,
+				 const Curses::CursesAttr &attr) const
 {
-	wchar_t dummy=0;
+	std::vector<unicode_char> dummy;
 
-	if (lockcnt > 0)
-		text= &dummy;
-
-	return CursesVScroll::writeText(text, row, col, attr);
+	return CursesVScroll::writeText(lockcnt > 0 ? dummy:text,
+					row, col, attr);
 }
-
-
-
-
-

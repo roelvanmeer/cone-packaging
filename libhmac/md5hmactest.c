@@ -13,7 +13,6 @@
 
 #include	<stdio.h>
 
-static const char rcsid[]="$Id: md5hmactest.c,v 1.3 1999/12/06 23:41:55 mrsam Exp $";
 
 static struct {
 	const char *key, *data;

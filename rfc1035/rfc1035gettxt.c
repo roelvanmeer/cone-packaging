@@ -6,7 +6,6 @@
 #include	"rfc1035.h"
 #include	<string.h>
 
-static const char rcsid[]="$Id: rfc1035gettxt.c,v 1.3 2000/05/27 04:59:27 mrsam Exp $";
 
 int rfc1035_rr_gettxt(struct rfc1035_rr *p, int startpos, char buf[256])
 {

@@ -9,7 +9,6 @@
 #include	<string.h>
 #include	<stdlib.h>
 
-static const char rcsid[]="$Id: sha512.c,v 1.2 2008/12/25 15:02:12 mrsam Exp $";
 
 #define ROTR(x,n) ((SHA512_WORD)(((SHA512_WORD)(x) >> (n))|((x) << (64-(n)))))
 

@@ -1,5 +1,4 @@
-/* $Id: generic.C,v 1.17 2010/04/29 00:34:49 mrsam Exp $
-**
+/*
 ** Copyright 2002-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -322,7 +321,7 @@ void mail::generic::Attributes::messageTextCallback(size_t dummy,
 			size_t nsave=n++;
 
 			while (n < header.size() &&
-			       isspace((int)(unsigned char)header[n]))
+			       unicode_isspace((unsigned char)header[n]))
 				n++;
 
 			value=header.substr(n);
@@ -530,7 +529,7 @@ bool mail::generic::CopyMimePart::copy(int fd,	// File descriptor to copy from
 					if (output_ptr > 0 &&
 					    output_buffer[output_ptr-1]
 					    == '\n' && input_buffer[i] != '\n'
-					    && isspace((int)(unsigned char)
+					    && unicode_isspace((unsigned char)
 						       input_buffer[i]))
 					{
 						output_buffer[output_ptr-1]
@@ -541,7 +540,7 @@ bool mail::generic::CopyMimePart::copy(int fd,	// File descriptor to copy from
 
 				if (foldingHeader &&
 				    (input_buffer[i] == '\n' ||
-				     !isspace((int)(unsigned char)
+				     !unicode_isspace((unsigned char)
 					     input_buffer[i])))
 				{
 					foldingHeader=false;
@@ -987,7 +986,8 @@ void mail::generic::ReadMimePart::success(string message)
 
 bool mail::generic::ReadMimePart::copyHeaders()
 {
-	struct rfc2045headerinfo *h=rfc2045header_start(fd, rfcp);
+	struct rfc2045src *src=rfc2045src_init_fd(fd);
+	struct rfc2045headerinfo *h=src ? rfc2045header_start(src, rfcp):NULL;
 	int flags=RFC2045H_NOLC;
 
 	if (readType == mail::readHeaders)
@@ -1002,9 +1002,13 @@ bool mail::generic::ReadMimePart::copyHeaders()
 
 		if (h)
 			rfc2045header_end(h);
+		if (src)
+			rfc2045src_deinit(src);
 	} catch (...) {
 		if (h)
 			rfc2045header_end(h);
+		if (src)
+			rfc2045src_deinit(src);
 		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 	return true;
@@ -1357,7 +1361,8 @@ void mail::generic::genericMakeMimeStructure(mail::mimestruct &s,
 
 	// Now read the headers, and figure out the rest
 
-	struct rfc2045headerinfo *h=rfc2045header_start(fd, rfcp);
+	struct rfc2045src *src=rfc2045src_init_fd(fd);
+	struct rfc2045headerinfo *h=src ? rfc2045header_start(src, rfcp):NULL;
 
 	char *header;
 	char *value;
@@ -1430,7 +1435,7 @@ void mail::generic::genericMakeMimeStructure(mail::mimestruct &s,
 
 			const char *p=value;
 
-			while (p && *p && *p != ';' && !isspace((int)(unsigned char)*p))
+			while (p && *p && *p != ';' && !unicode_isspace((unsigned char)*p))
 				p++;
 
 			*name= string((const char *)value, p);
@@ -1439,7 +1444,7 @@ void mail::generic::genericMakeMimeStructure(mail::mimestruct &s,
 
 			while (p && *p)
 			{
-				if (isspace((int)(unsigned char)*p) || *p == ';')
+				if (unicode_isspace((unsigned char)*p) || *p == ';')
 				{
 					p++;
 					continue;
@@ -1448,7 +1453,7 @@ void mail::generic::genericMakeMimeStructure(mail::mimestruct &s,
 				const char *q=p;
 
 				while (*q
-				       && !isspace((int)(unsigned char)*q) && *q != ';'
+				       && !unicode_isspace((unsigned char)*q) && *q != ';'
 				       && *q != '=')
 					q++;
 
@@ -1457,7 +1462,7 @@ void mail::generic::genericMakeMimeStructure(mail::mimestruct &s,
 				mail::upper(paramName);
 
 				while (*q
-				       && isspace((int)(unsigned char)*q))
+				       && unicode_isspace((unsigned char)*q))
 					q++;
 
 				string paramValue="";
@@ -1467,7 +1472,7 @@ void mail::generic::genericMakeMimeStructure(mail::mimestruct &s,
 					q++;
 
 					while (*q
-					       && isspace((int)(unsigned char)*q))
+					       && unicode_isspace((unsigned char)*q))
 						q++;
 
 					bool inQuote=false;
@@ -1478,7 +1483,7 @@ void mail::generic::genericMakeMimeStructure(mail::mimestruct &s,
 						{
 							if (*q == ';')
 								break;
-							if (isspace((int)
+							if (unicode_isspace(
 								    (unsigned char)*q))
 								break;
 						}
@@ -1505,11 +1510,16 @@ void mail::generic::genericMakeMimeStructure(mail::mimestruct &s,
 	} catch (...) {
 		if (h)
 			rfc2045header_end(h);
+		if (src)
+			rfc2045src_deinit(src);
 		LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 	}
 
 	if (h)
 		rfc2045header_end(h);
+
+	if (src)
+		rfc2045src_deinit(src);
 
 	// Fix content type/subtype
 

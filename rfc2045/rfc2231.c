@@ -1,10 +1,9 @@
 /*
-** Copyright 2002-2009 Double Precision, Inc.  See COPYING for
+** Copyright 2002-2011 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
 /*
-** $Id: rfc2231.c,v 1.5 2009/11/08 18:14:47 mrsam Exp $
 */
 
 #if    HAVE_CONFIG_H
@@ -306,33 +305,35 @@ int rfc2231_decodeDisposition(struct rfc2045 *rfc, const char *name,
 }
 
 static int conv_unicode(char **text, const char *fromChset,
-			const struct unicode_info *toChset)
+			const char *toChset)
 {
-	const struct unicode_info *u=unicode_find(fromChset);
+	int err;
+	char *p;
 
-	if (toChset == NULL)
+	if (!toChset)
+		toChset=unicode_default_chset();
+
+	if (!fromChset || !*fromChset)
+		return 0;
+
+	p=libmail_u_convert_tobuf(*text, fromChset, toChset, &err);
+
+	if (p && err)
 	{
-		toChset=unicode_find(unicode_default_chset());
-
-		if (!toChset)
-			toChset=&unicode_ISO8859_1;
+		free(p);
+		p=NULL;
 	}
 
-	if (u)
-	{
-		char *p=unicode_xconvert(*text, u, toChset);
+	if (!p)
+		return (-1);
 
-		if (!p)
-			return (-1);
-
-		free(*text);
-		*text=p;
-	}
+	free(*text);
+	*text=p;
 	return (0);
 }
 
 int rfc2231_udecodeType(struct rfc2045 *rfc, const char *name,
-			const struct unicode_info *myCharset,
+			const char *myCharset,
 			char **textPtr)
 {
 	char *text, *chset;
@@ -353,7 +354,7 @@ int rfc2231_udecodeType(struct rfc2045 *rfc, const char *name,
 }
 
 int rfc2231_udecodeDisposition(struct rfc2045 *rfc, const char *name,
-			       const struct unicode_info *myCharset,
+			       const char *myCharset,
 			       char **textPtr)
 {
 	char *text, *chset;

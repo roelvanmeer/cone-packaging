@@ -1,6 +1,5 @@
-/* $Id: cursesfield.H,v 1.2 2003/10/12 01:36:33 mrsam Exp $
-**
-** Copyright 2002, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -9,6 +8,7 @@
 #define cursesfield_H
 
 #include "mycurses.H"
+#include "cursesflowedline.H"
 #include <wchar.h>
 #include <vector>
 
@@ -19,18 +19,22 @@
 
 class CursesField : public Curses {
 
-	std::vector<wchar_t> text;	// Editable text.
+	editablewidechar text;		// Editable text.
+
+	void getbeforeafter(widecharbuf &, widecharbuf &);
+
+	void setselectpos();
 
 	size_t width;			// Field width
 	size_t maxlength;		// Maximum text length
 
 	size_t shiftoffset;		// First text char shown
-	size_t cursorpos, selectpos;	// Cursor position.
+	size_t selectpos;		// Start of selection position
 
-	wchar_t passwordChar;		// password overlay character
+	unicode_char passwordChar;	// password overlay character
 	bool yesnoField;		// True if yes/no field.
 
-	std::vector<wchar_t> optionField; // One character list of options
+	std::vector<unicode_char> optionField; // One character list of options
 
 	std::vector<std::pair<std::string, std::string> > optionHelp; // Option help keys
 	// This field is of primary use by cursesstatusbar
@@ -39,10 +43,10 @@ class CursesField : public Curses {
 protected:
 	Curses::CursesAttr attribute;
 public:
-	static std::vector<wchar_t> yesKeys, noKeys;
-	static wchar_t yankKey, clrEolKey;
+	static std::vector<unicode_char> yesKeys, noKeys;
+	static unicode_char yankKey, clrEolKey;
 
-	static std::string cutBuffer;	// for cut/paste
+	static std::list<CursesFlowedLine> cutBuffer; // for cut/paste.
 
 	CursesField(CursesContainer *parent,
 		    size_t widthArg=20,
@@ -55,15 +59,7 @@ public:
 	void setCol(int col);
 	void setText(std::string textArg);
 	void setAttribute(Curses::CursesAttr attr);
-	void setCursorPos(int o)
-	{
-		if (o >= 0 && (size_t)o <= text.size())
-		{
-			cursorpos=selectpos=o;
-			draw();
-		}
-	}
-
+	void setCursorPos(size_t o);
 	std::string getText() const;	// Return entered text
 
 	int getWidth() const;		// Our width is known
@@ -71,9 +67,9 @@ public:
 
 	void setWidth(int);
 
-	void setPasswordChar(wchar_t ch='*') { passwordChar=ch; }
+	void setPasswordChar(unicode_char ch='*') { passwordChar=ch; }
 	void setYesNo() { yesnoField=true; }
-	void setOptionField(const std::vector<wchar_t> &vec)
+	void setOptionField(const std::vector<unicode_char> &vec)
 	{
 		optionField=vec;
 	}
@@ -98,8 +94,6 @@ public:
 private:
 	void left();
 	void right();
-	void do_left();
-	void do_right();
 };
 
 //////////////////////////////////////////////////////////////////////////

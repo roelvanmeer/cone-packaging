@@ -1,5 +1,4 @@
-/* $Id: imapfolders.C,v 1.9 2010/04/29 00:34:49 mrsam Exp $
-**
+/*
 ** Copyright 2002-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -425,48 +424,42 @@ bool mail::imapCREATE::taggedMessage(mail::imap &imapAccount, string msgname,
 		listHierSent=true;
 		encodedname=name;
 
-
 		// The folder name should be utf7-encoded
 
-		int dummy;
+		{
+			char *p=libmail_u_convert_toutf8(encodedname.c_str(),
+							 unicode_default_chset(),
+							 NULL);
 
-		unicode_char *uc= (*mail::appcharset->c2u)
-			(mail::appcharset, encodedname.c_str(), &dummy);
-
-		if (uc)
-			try {
-				string hs=hiersep[0].getHierSep();
-
-				if (hs.size() > 0)
-				{
-					size_t i;
-
-					for (i=0; uc[i]; i++)
-						if (uc[i] ==
-						    (unsigned char)hs[0])
-						{
-							callback2.fail("Folder name contains an invalid character.");
-							imapAccount.uninstallHandler(this);
-							free(uc);
-							return true;
-						}
-				}
-
-				char *p=unicode_uctomodutf7(uc);
-
+			if (!p && strchr(p, *hiersep[0].getHierSep().c_str())
+			    != NULL)
+			{
 				if (p)
-					try {
-						encodedname=p;
-						free(p);
-					} catch (...) {
-						free(p);
-						LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-					}
-				free(uc);
-			} catch (...) {
-				free(uc);
-				LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
+					free(p);
+				callback2.fail("Folder name contains an invalid character.");
+				imapAccount.uninstallHandler(this);
+				return true;
 			}
+			free(p);
+
+
+			p=libmail_u_convert_tobuf(encodedname.c_str(),
+						  unicode_default_chset(),
+						  unicode_x_imap_modutf7,
+						  NULL);
+
+			if (p)
+			{
+				try {
+					encodedname=p;
+					free(p);
+				} catch (...) {
+					free(p);
+					LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
+				}
+			}
+		}
+
 
 		imapAccount.imapcmd("CREATE",
 				    (renamePath.size() > 0

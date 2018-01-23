@@ -6,7 +6,6 @@
 ** distribution information.
 */
 
-static const char mimegpgstack_h_rcsid[]="$Id: mimegpgstack.h,v 1.2 2003/06/02 15:51:23 mrsam Exp $";
 
 #include "config.h"
 

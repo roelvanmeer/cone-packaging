@@ -18,7 +18,6 @@
 #include	<unistd.h>
 #endif
 
-static const char rcsid[]="$Id: maildirfilter2.c,v 1.7 2007/04/16 22:31:53 mrsam Exp $";
 
 static const char *maildir_filter_config(const char *maildir,
 	const char *varname)

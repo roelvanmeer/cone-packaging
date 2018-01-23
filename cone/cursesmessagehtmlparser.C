@@ -1,5 +1,4 @@
-/* $Id: cursesmessagehtmlparser.C,v 1.1 2003/05/27 14:09:03 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -9,33 +8,38 @@
 #include "cursesmessagehtmlparser.H"
 #include "gettext.H"
 
-using namespace std;
-
 CursesMessage::HtmlParser
 ::HtmlParser( CursesMessage *messagePtrArg,
-	      const struct unicode_info *content_chsetArg,
-	      const struct unicode_info *my_chsetArg,
-	      unicodeEntityAltList *txtAltListArg,
+	      const std::string &content_chsetArg,
+	      const std::string &my_chsetArg,
+	      Demoronize &demoronizer,
 	      size_t displayWidthArg)
-	: ::htmlParser( (content_chsetArg ? *content_chsetArg
-			 : *my_chsetArg), *my_chsetArg,
-			txtAltListArg, displayWidthArg),
-	messagePtr(messagePtrArg),
-	streamPtr(NULL),
-	reply(false)
+	: ::htmlParser( content_chsetArg.size() == 0 ?
+			my_chsetArg:content_chsetArg,
+			my_chsetArg,
+			demoronizer, displayWidthArg),
+	  messagePtr(messagePtrArg),
+	  streamPtr(NULL),
+	  reply(false)
 {
 }
 
+bool CursesMessage::HtmlParser::conversionError()
+{
+	return ::htmlParser::conversionError();
+}
+
 CursesMessage::HtmlParser
-::HtmlParser( ostream &streamPtrArg,
+::HtmlParser( std::ostream &streamPtrArg,
 	      bool replyArg,
-	      const struct unicode_info *content_chsetArg,
-	      const struct unicode_info *my_chsetArg,
-	      unicodeEntityAltList *txtAltListArg,
+	      const std::string &content_chsetArg,
+	      const std::string &my_chsetArg,
+	      Demoronize &demoronizer,
 	      size_t displayWidthArg)
-	: ::htmlParser( (content_chsetArg ? *content_chsetArg
-			 : *my_chsetArg), *my_chsetArg,
-			txtAltListArg, displayWidthArg),
+	: ::htmlParser( content_chsetArg.size() == 0 ?
+			my_chsetArg:content_chsetArg,
+			my_chsetArg,
+			demoronizer, displayWidthArg),
 	messagePtr(NULL),
 	streamPtr(&streamPtrArg),
 	reply(replyArg)
@@ -52,7 +56,7 @@ CursesMessage::HtmlParser::~HtmlParser()
 {
 }
 
-void CursesMessage::HtmlParser::parse(string text)
+void CursesMessage::HtmlParser::parse(std::string text)
 {
 	::htmlParser::parse(text);
 }
@@ -63,7 +67,7 @@ bool CursesMessage::HtmlParser::finish()
 	return true;
 }
 
-void CursesMessage::HtmlParser::parsedLine(string line, bool wrapped)
+void CursesMessage::HtmlParser::parsedLine(std::string line, bool wrapped)
 {
 	if (reply)
 	{
@@ -72,17 +76,36 @@ void CursesMessage::HtmlParser::parsedLine(string line, bool wrapped)
 		line.insert(line.begin(), '>');
 	}
 
+	// Non-wrapped lines cannot terminate with spaces
+
+	if (line == "-- ")
+		wrapped=false;
+	else if (!wrapped)
+	{
+		std::string::iterator b(line.begin()), e(line.end());
+
+		while (b != e)
+		{
+			if (e[-1] != ' ')
+				break;
+			--e;
+		}
+
+		line.erase(e, line.end());
+	}
+
 	if (messagePtr)
 		messagePtr->reformatAddLine(line,
 					    CursesMessage::LineIndex::ATTRIBUTES);
 
 	if (streamPtr) // When replying, drop all attributes
 	{
-		vector<pair<textAttributes, string> > parsedLine;
+		std::vector<std::pair<textAttributes, std::string> > parsedLine;
 
 		textAttributes::getAttributedText(line, parsedLine);
 
-		vector<pair<textAttributes, string> >::iterator b, e;
+		std::vector<std::pair<textAttributes, std::string> >::iterator
+			b, e;
 
 		b=parsedLine.begin();
 		e=parsedLine.end();
@@ -93,6 +116,6 @@ void CursesMessage::HtmlParser::parsedLine(string line, bool wrapped)
 			b++;
 		}
 
-		(*streamPtr) << (wrapped ? " ":"") << endl;
+		(*streamPtr) << (wrapped ? " ":"") << std::endl;
 	}
 }

@@ -1,5 +1,4 @@
-/* $Id: smapcopy.C,v 1.2 2003/07/30 21:26:01 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

@@ -1,5 +1,4 @@
-/* $Id: smapsendfolder.C,v 1.4 2010/04/29 00:34:50 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

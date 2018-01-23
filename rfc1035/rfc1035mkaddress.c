@@ -10,7 +10,6 @@
 #include	<errno.h>
 #include	<string.h>
 
-static const char rcsid[]="$Id: rfc1035mkaddress.c,v 1.6 2003/12/16 01:19:02 mrsam Exp $";
 
 /*
 **	Ok, take an address, and a port, and come back with a socket address

@@ -1,4 +1,3 @@
-/* $Id: mail.h,v 1.3 2009/06/27 17:12:00 mrsam Exp $ */
 
 #ifndef liblockmail_h
 #define liblockmail_h

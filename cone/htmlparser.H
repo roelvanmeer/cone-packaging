@@ -1,5 +1,4 @@
-/* $Id: htmlparser.H,v 1.5 2005/11/24 01:45:18 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -76,13 +75,122 @@ class htmlParser {
 		~enhanced_char();
 	};
 
-	std::string charBuffer; // Accumulate raw HTML not yet swallowed.
+	//
+	// Assign linebreaking values to a unicode_char and a textAttribute.
+	// Saves them in a list before using linebreak_callback_base. When
+	// a linebreaking value comes back from linebreak_callback_base,
+	// pop the pair off the list, and there you go.
 
-	std::vector<enhanced_char> currentLine; // Current line being built.
+	class linebuf_calc_linebreak : public mail::linebreak_callback_base {
+
+		std::list< std::pair<unicode_char, textAttributes > > queue;
+
+	public:
+		void submit(unicode_char ch, textAttributes attr)
+		{
+			queue.push_back(std::make_pair(ch, attr));
+			linebreak_callback_base::operator<<(ch);
+		}
+
+	private:
+		// Override in subclass, to receive the linebreak values.
+
+		virtual void operator()(int, unicode_char, textAttributes)=0;
+
+		virtual int operator()(int v)
+		{
+			std::pair<unicode_char, textAttributes>
+				&p=queue.front();
+
+			unicode_char ch=p.first;
+			textAttributes attr=p.second;
+			queue.pop_front();
+			operator()(v, ch, attr);
+			return 0;
+		}
+	};
+
+	class linebuf : private linebuf_calc_linebreak {
+
+		std::vector<enhanced_char> line; // Current line being built.
+
+		size_t lineBreak; // Index of start of current word
+
+		size_t width_beforebreak;
+		// Width of the line before lineBreak
+
+		size_t startingCol;
+		// This line starts on this column.
+
+		size_t desiredWidth;
+		// Desired line width
+
+		// My parent class
+		htmlParser *parser;
+
+		bool isempty;
+
+		unicode_char lastchar;
+
+		size_t wantthiswidth();
+	public:
+		class towidth_iter;
+
+		linebuf(htmlParser *parserArg, size_t desiredWidthArg);
+		~linebuf();
+
+		void submit(unicode_char ch, textAttributes attr)
+		{
+			isempty=false;
+			lastchar=ch;
+			linebuf_calc_linebreak::submit(ch, attr);
+		}
+
+		unicode_char getLastChar()
+		{
+			return lastchar;
+		}
+
+		void flush();
+
+		bool empty()
+		{
+			return isempty;
+		}
+
+		void setDesiredWidth(size_t startingColArg,
+				     size_t desiredWidthArg)
+		{
+			startingCol=startingColArg;
+			desiredWidth=desiredWidthArg;
+		}
+
+	private:
+		virtual void operator()(int, unicode_char, textAttributes);
+
+		size_t wordtoolong(size_t);
+
+		void linebreak_allowed();
+	};
+
+	linebuf currentLine;
+
+	class converter : public mail::iconvert::tou {
+
+		htmlParser *parser;
+
+	public:
+		converter(htmlParser *parserArg);
+		~converter();
+		using mail::iconvert::tou::operator();
+
+	private:
+		int converted(const unicode_char *, size_t);
+	};
+
+	converter tounicode;
 
 	std::vector<unicode_char> leadin_prefix; // Used by <LI>
-
-	size_t wordBreak; // Index of last seen space character.
 
 	size_t desiredLineLength; // Wanted line length.
 
@@ -156,13 +264,20 @@ class htmlParser {
 	bool paragraphBreak; // Paragraph break just seen.
 	void newParagraph();
 
+	size_t getLinePrefixWidth(); // Compute indentation level of this line.
 	size_t getLineLength(); // Compute desired line length, for this line.
 
-	const struct unicode_info &htmlCharset; // HTML charset
-	const struct unicode_info &txtCharset; // Convert to this charset.
-	unicodeEntityAltList *txtAltList; // HTML entity aliases.
+	std::string htmlCharset; // HTML charset
+	std::string txtCharset; // Convert to this charset.
+
+	Demoronize &demoronizer; // HTML entity aliases.
 
 	static unicode_char getHtmlEntity(std::string entityName);
+
+protected:
+	bool conversionError();
+private:
+	bool conversionErrorFlag;
 
 public:
 	static void urlDecode(std::string url, std::vector<unicode_char> &uc);
@@ -170,14 +285,14 @@ public:
 	static void cgiDecode(const std::vector<unicode_char> &uc,
 			      std::map<std::string,
 			      std::vector<unicode_char> > &args);
-	htmlParser(const struct unicode_info &htmlCharsetArg,
+	htmlParser(const std::string &htmlCharsetArg,
 		   // HTML character set
 
-		   const struct unicode_info &txtCharsetArg,
+		   const std::string &txtCharsetArg,
 		   // Our character set.  This class does the necessary
 		   // translation
 
-		   unicodeEntityAltList *txtAltListArg,
+		   Demoronize &demoronizerArg,
 		   // Alternate representation of characters for
 		   // txtCharset (smart quotes, and other ms-crap)
 
@@ -194,16 +309,14 @@ public:
 
 	void parse(std::string); // Feed HTML to here.
 
-	void flush()
-	{
-		if (currentLine.size() > 0)
-			fmtline(false);
-	}
+	void flush();
 
+	friend class linebuf;
+	friend class converter;
 private:
-	void fmtline(bool);
+	void fmtline(const enhanced_char *b, const enhanced_char *e, bool);
 
-	void parseline(std::vector<unicode_char> &w);
+	void parse(const std::vector<unicode_char> &vec);
 };
 
 #endif

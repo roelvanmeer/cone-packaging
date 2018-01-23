@@ -1,5 +1,4 @@
-/* $Id: smapsearch.C,v 1.5 2004/04/25 03:37:16 mrsam Exp $
-**
+/*
 ** Copyright 2003-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.

@@ -1,5 +1,4 @@
-/* $Id: gettext.H,v 1.2 2003/09/14 19:20:38 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -9,6 +8,7 @@
 #define gettext_H
 
 #include "config.h"
+#include "../unicode/unicode.h"
 
 #include <libintl.h>
 #include <locale.h>
@@ -62,23 +62,20 @@ public:
 
 	static const char *keyname(const char *k);
 
-	static const struct unicode_info *defaultCharset();
-
-	static std::string defaultCharsetName();
-
 	static std::string toutf8(std::string);
 	static std::string fromutf8(std::string);
 
 
 	class Key {
 		const char *keyname;
-		std::vector<wchar_t> keys;
+		std::vector<unicode_char> keys;
 	public:
 		Key(const char *);
 		~Key();
-		bool operator==(wchar_t k);
 
-		operator const std::vector<wchar_t> &()
+		bool operator==(unicode_char k);
+
+		operator const std::vector<unicode_char> &()
 		{
 			init();
 			return keys;

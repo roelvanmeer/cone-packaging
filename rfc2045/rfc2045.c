@@ -4,7 +4,6 @@
 */
 
 /*
-** $Id: rfc2045.c,v 1.36 2004/06/27 02:28:22 mrsam Exp $
 */
 #if    HAVE_CONFIG_H
 #include       "rfc2045_config.h"
@@ -1253,6 +1252,13 @@ int rfc2045_isflowed(const struct rfc2045 *p)
 	const char *cb=rfc2045_getattr(p->content_type_attr, "format");
 
 	return (cb && strcmp(cb, "flowed") == 0);
+}
+
+int rfc2045_isdelsp(const struct rfc2045 *p)
+{
+	const char *cb=rfc2045_getattr(p->content_type_attr, "delsp");
+
+	return (cb && strcmp(cb, "yes") == 0);
 }
 
 const char *rfc2045_content_id(const struct rfc2045 *p)

@@ -1,4 +1,3 @@
-# $Id: configure.in,v 1.7 2009/10/31 03:41:59 mrsam Exp $
 #
 # Copyright 2002-2009, Double Precision Inc.
 #
@@ -58,6 +57,7 @@ AC_HEADER_SYS_WAIT
 dnl Checks for typedefs, structures, and compiler characteristics.
 
 AC_TYPE_SIGNAL
+AC_SYS_LARGEFILE
 
 dnl Checks for library functions.
 

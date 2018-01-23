@@ -1,10 +1,10 @@
-/* $Id: cone.C,v 1.24 2010/04/29 00:34:49 mrsam Exp $
-**
-** Copyright 2003-2008, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 
+#include "config.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
@@ -69,19 +69,22 @@ extern struct CustomColor color_misc_hotKeyDescr;
 
 // Special UTF-8 only chars:
 
-char uplus[16];
-char uasterisk[16];
 char ucheck[16];
 char udelete[16];
 char unew[16];
-char larr[16];
-char rarr[16];
-wchar_t uhoriz;
-wchar_t uvert;
-wchar_t uupright;
-wchar_t urighttee;
-wchar_t uwatch;
-wchar_t uwatchend;
+
+unicode_char ularr;
+unicode_char urarr;
+unicode_char ucplus;
+unicode_char ucasterisk;
+unicode_char ucwrap;
+
+unicode_char uchoriz;
+unicode_char ucvert;
+unicode_char ucupright;
+unicode_char ucrighttee;
+unicode_char ucwatch;
+unicode_char ucwatchend;
 
 static Macros *macroPtr;
 
@@ -1188,171 +1191,129 @@ int main(int argc, char *argv[])
 	// Init special characters if current display can show them.
 
 	{
-		const struct unicode_info *myChset=Gettext::defaultCharset();
+		std::vector<unicode_char> ucbuf;
 
-		unicode_char ucbuf[2];
-		int dummy;
+		ucbuf.push_back(8594);
 
-		ucbuf[0]=8594;
-		ucbuf[1]=0;
+		bool err;
 
-		char *p=(*myChset->u2c)(myChset, ucbuf, &dummy);
+		std::string s;
 
-		if (p == NULL)
-		{
-			strcpy(uplus, "+");
-			strcpy(rarr, ">");
-		}
+		s=mail::iconvert::convert(ucbuf, unicode_default_chset(), err);
+
+		if (s.size() > 0 && !err)
+			ucplus=urarr=ucbuf[0];
 		else
 		{
-			strcpy(uplus, p);
-			strcpy(rarr, p);
-			free(p);
+			urarr='>';
+			ucplus='+';
 		}
 
 		ucbuf[0]=8592;
-		ucbuf[1]=0;
 
-		p=(*myChset->u2c)(myChset, ucbuf, &dummy);
+		s=mail::iconvert::convert(ucbuf, unicode_default_chset(), err);
 
-		if (p == NULL)
-		{
-			strcpy(larr, "<");
-		}
+		if (s.size() > 0 && !err)
+			ularr=ucbuf[0];
 		else
-		{
-			strcpy(larr, p);
-			free(p);
-		}
+			ularr='<';
 
 		ucbuf[0]=8226;
 
-		p=(*myChset->u2c)(myChset, ucbuf, &dummy);
+		s=mail::iconvert::convert(ucbuf, unicode_default_chset(), err);
 
-		if (p == NULL)
-			strcpy(uasterisk, "*");
+		if (s.size() > 0 && !err)
+			ucasterisk=ucbuf[0];
 		else
-		{
-			strcpy(uasterisk, p);
-			free(p);
-		}
+			ucasterisk='*';
+
+		ucbuf[0]=8617;
+
+		s=mail::iconvert::convert(ucbuf, unicode_default_chset(), err);
+
+		if (s.size() > 0 && !err)
+			ucwrap=ucbuf[0];
+		else
+			ucwrap='<';
 
 		ucbuf[0]=8730;
 
-		p=(*myChset->u2c)(myChset, ucbuf, &dummy);
+		s=mail::iconvert::convert(ucbuf, unicode_default_chset(), err);
 
-		if (p == NULL)
-			strcpy(ucheck, "*");
+		if (s.size() > 0 && !err)
+			strncat(ucheck, s.c_str(), sizeof(ucheck)-1);
 		else
-		{
-			strcpy(ucheck, p);
-			free(p);
-		}
+			strcpy(ucheck, "*");
 
 		ucbuf[0]=215;
 
-		p=(*myChset->u2c)(myChset, ucbuf, &dummy);
+		s=mail::iconvert::convert(ucbuf, unicode_default_chset(), err);
 
-		if (p == NULL)
-			strcpy(udelete, _("D"));
+		if (s.size() > 0 && !err)
+			strncat(udelete, s.c_str(), sizeof(udelete)-1);
 		else
-		{
-			strcpy(udelete, p);
-			free(p);
-		}
+			strcpy(udelete, _("D"));
 
 		ucbuf[0]=9830;
 
-		p=(*myChset->u2c)(myChset, ucbuf, &dummy);
+		s=mail::iconvert::convert(ucbuf, unicode_default_chset(), err);
 
-		if (p == NULL)
-			strcpy(unew, _("N"));
+		if (s.size() > 0 && !err)
+			strncat(unew, s.c_str(), sizeof(unew)-1);
 		else
-		{
-			strcpy(unew, p);
-			free(p);
-		}
+			strcpy(unew, _("N"));
 
 		// Line drawing
 
 		ucbuf[0]=0x2500;
 
-		p=(*myChset->u2c)(myChset, ucbuf, &dummy);
+		s=mail::iconvert::convert(ucbuf, unicode_default_chset(), err);
 
-		if (p == NULL)
-			// ucbuf[0]='-';
+		if (s.size() == 0 || err)
 			ucbuf[0]='_';
-		else
-		{
-			free(p);
-		}
-		uhoriz=ucbuf[0];
+		uchoriz=ucbuf[0];
 
 		ucbuf[0]=0x2502;
 
-		p=(*myChset->u2c)(myChset, ucbuf, &dummy);
+		s=mail::iconvert::convert(ucbuf, unicode_default_chset(), err);
 
-		if (p == NULL)
+		if (s.size() == 0 || err)
 			ucbuf[0]='|';
-		else
-		{
-			free(p);
-		}
-		uvert=ucbuf[0];
+		ucvert=ucbuf[0];
 
 		ucbuf[0]=0x2514;
 
-		p=(*myChset->u2c)(myChset, ucbuf, &dummy);
+		s=mail::iconvert::convert(ucbuf, unicode_default_chset(), err);
 
-		if (p == NULL)
-			// ucbuf[0]='+';
+		if (s.size() == 0 || err)
 			ucbuf[0]='|';
-		else
-		{
-			free(p);
-		}
-		uupright=ucbuf[0];
+		ucupright=ucbuf[0];
 
 		ucbuf[0]=0x251C;
 
-		p=(*myChset->u2c)(myChset, ucbuf, &dummy);
+		s=mail::iconvert::convert(ucbuf, unicode_default_chset(), err);
 
-		if (p == NULL)
-			// ucbuf[0]='+';
+		if (s.size() == 0 || err)
 			ucbuf[0]='|';
-		else
-		{
-			free(p);
-		}
-		urighttee=ucbuf[0];
-
+		ucrighttee=ucbuf[0];
 
 		// Watching
 
 		ucbuf[0]=0x2261;
 
-		p=(*myChset->u2c)(myChset, ucbuf, &dummy);
+		s=mail::iconvert::convert(ucbuf, unicode_default_chset(), err);
 
-		if (p == NULL)
+		if (s.size() == 0 || err)
 			ucbuf[0]='o';
-		else
-		{
-			free(p);
-		}
-		uwatch=ucbuf[0];
+		ucwatch=ucbuf[0];
 
 		ucbuf[0]=0x2022;
 
-		p=(*myChset->u2c)(myChset, ucbuf, &dummy);
+		s=mail::iconvert::convert(ucbuf, unicode_default_chset(), err);
 
-		if (p == NULL)
+		if (s.size() == 0 || err)
 			ucbuf[0]='*';
-		else
-		{
-			free(p);
-		}
-		uwatchend=ucbuf[0];
-
+		ucwatchend=ucbuf[0];
 	}
 
 	// Default location of special folders.
@@ -1361,8 +1322,6 @@ int main(int argc, char *argv[])
 						 SpecialFolder(_("Drafts"))));
 	SpecialFolder::folders.insert( make_pair(string(SENT),
 						 SpecialFolder(_("Outbox"))));
-
-	mail::setAppCharset(Gettext::defaultCharsetName().c_str());
 
 	mail::fd::rootCertRequiredErrMsg=
 		_("Unable to initialize an encrypted connection because root authority certificates are not installed.\n\nIf you would like to proceed without verifying the the server's encryption certificate, append \"/novalidate-cert\" to the server's name and try again.");
@@ -1489,8 +1448,8 @@ int main(int argc, char *argv[])
 			statusBar->clearstatus();
 			statusBar->status(Gettext(_("Welcome to Cone %1% (%2%)")
 						  ) << VERSION
-					  << Gettext::defaultCharset()->chset,
-					  statusBar->NORMAL);
+					  << unicode_default_chset()
+					  << statusBar->NORMAL);
 		}
 
 		hierarchyScreen(NULL); // Initial screen.

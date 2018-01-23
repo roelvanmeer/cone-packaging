@@ -12,7 +12,6 @@
 extern "C" {
 #endif
 
-static const char hmac_h_rcsid[]="$Id: hmac.h,v 1.7 2009/06/27 17:12:00 mrsam Exp $";
 
 struct hmac_hashinfo {	/* HMAC hash function descriptor */
 

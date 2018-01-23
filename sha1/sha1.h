@@ -6,7 +6,6 @@
 ** See COPYING for distribution information.
 */
 
-static const char sha1_h_rcsid[]="$Id: sha1.h,v 1.6 2008/12/18 12:08:26 mrsam Exp $";
 
 #if	HAVE_CONFIG_H
 #include	"sha1/config.h"

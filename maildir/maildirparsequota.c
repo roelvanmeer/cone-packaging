@@ -10,7 +10,6 @@
 #include	<stdlib.h>
 #include	<string.h>
 
-static const char rcsid[]="$Id: maildirparsequota.c,v 1.3 2002/07/02 20:01:37 mrsam Exp $";
 
 int maildir_parsequota(const char *n, unsigned long *s)
 {

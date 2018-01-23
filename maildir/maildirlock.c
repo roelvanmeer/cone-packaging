@@ -15,7 +15,6 @@
 #include <stdio.h>
 #include <errno.h>
 
-static const char rcsid[]="$Id: maildirlock.c,v 1.2 2003/11/15 19:16:25 mrsam Exp $";
 
 /*
 ** Courier-IMAP compatible maildir lock.

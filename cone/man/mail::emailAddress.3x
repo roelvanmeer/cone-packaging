@@ -1,16 +1,17 @@
-.\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
-.\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+.\"<!-- Copyright 2002-2010 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
 '\" t
 .\"     Title: mail::emailAddress
-.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\"    Author: Sam Varshavchik
 .\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
-.\"      Date: 05/08/2010
+.\"      Date: 04/04/2011
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: [FIXME: source]
+.\"    Source: 
+        Cone\(co
+      
 .\"  Language: English
 .\"
-.TH "MAIL::EMAILADDRESS" "3x" "05/08/2010" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.TH "MAIL::EMAILADDRESS" "3x" "04/04/2011" "Cone\(co" "Cone: COnsole Newsreader And E"
 .\" -----------------------------------------------------------------
 .\" * set default formatting
 .\" -----------------------------------------------------------------
@@ -30,14 +31,18 @@ mail::emailAddress \- An E\-mail address
 
 mail::emailAddress address;
 
-address\&.setDisplayName("Jóse Smith");
-address\&.setDisplayAddr("josesmith@example\&.com");
+bool errflag;
 
-std::string addr=address\&.getDisplayAddr();
-std::string name=address\&.getDisplayName();
+address\&.setDisplayName("Jóse Smith", "iso\-8859\-1");
+address\&.setDisplayAddr("josesmith@example\&.com", "utf\-8");
+
+std::string addr=address\&.getDisplayAddr("utf\-8");
+std::string addr=address\&.getDisplayAddr("utf\-8", errflag);
+std::string name=address\&.getDisplayName("utf\-8");
+std::string name=address\&.getDisplayName("utf\-8", errflag);
 
 address\&.setAddr(addr);
-address\&.setDisplayName(name);
+address\&.setDisplayName(name, "utf\-8");
 
 .fi
 .SH "USAGE"
@@ -51,7 +56,7 @@ that defines four new methods:
 \fBsetDisplayName()\fR,
 \fBgetDisplayAddr()\fR
 and
-\fBsetDisplayAddr()\fR, which retrieve or set the name and the address components of an E\-mail address using the native character set\&.
+\fBsetDisplayAddr()\fR, which retrieve or set the name and the address components of an E\-mail address specified in a native character set\&.
 mail::emailAddress
 can be constructed from an existing
 mail::address; or, the default constructor initializes an empty address, then use
@@ -63,6 +68,8 @@ to set the address structure\&.
 and
 \fBsetDisplayAddr()\fR
 return an empty string if the display name or address was succesfully mapped from the native character, or an error message\&.
+.PP
+The overloaded methods that take a boolean flag will initialize it to indicate if the address contains characters that do not exist in the specified character set\&.
 .PP
 Non\-Latin characters in the name component use MIME encoding\&. Passing the name component to
 \fBsetDisplayName()\fR
@@ -123,3 +130,8 @@ mail::address, and vice\-versa\&.
 
 \fBmail::address\fR(3x),
 \fBmail::setappcharset\fR(3x)\&.
+.SH "AUTHOR"
+.PP
+\fBSam Varshavchik\fR
+.RS 4
+.RE

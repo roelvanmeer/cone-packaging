@@ -5,6 +5,12 @@ struct CustomColor color_fl_folderDirName={N_("Directory Name: "), "fl_folderDir
 struct CustomColor color_fl_messageCount={N_("Message Count: "), "fl_messageCount", 5};
 struct CustomColor color_md_headerName={N_("Header Name: "), "md_headerName", 1};
 struct CustomColor color_md_headerContents={N_("Header Contents: "), "md_headerContents", 2};
+
+struct CustomColor color_md_quote1={N_("Quote Level 1: "), "md_quote1", 1};
+struct CustomColor color_md_quote2={N_("Quote Level 2: "), "md_quote2", 2};
+struct CustomColor color_md_quote3={N_("Quote Level 3: "), "md_quote3", 3};
+struct CustomColor color_md_quote4={N_("Quote Level 4: "), "md_quote4", 4};
+
 struct CustomColor color_md_formatWarning={N_("Format warnings: "), "md_formatWarning", 3};
 struct CustomColor color_wm_headerName={N_("Header Name: "), "wm_headerName", 1};
 struct CustomColor color_perms_user={N_("User Permissions: "), "perms_user", 1};
@@ -27,6 +33,10 @@ static struct CustomColor *messageDisplay[]={
 	&color_md_headerName,
 	&color_md_headerContents,
 	&color_md_formatWarning,
+	&color_md_quote1,
+	&color_md_quote2,
+	&color_md_quote3,
+	&color_md_quote4,
 	NULL};
 
 static struct CustomColor *writeMessage[]={

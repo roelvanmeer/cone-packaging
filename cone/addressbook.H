@@ -1,5 +1,4 @@
-/* $Id: addressbook.H,v 1.6 2006/02/16 02:59:42 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -8,6 +7,7 @@
 #ifndef addressbook_H
 #define addressbook_H
 
+#include "config.h"
 #include <list>
 
 #include "libmail/mail.H"

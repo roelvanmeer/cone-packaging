@@ -14,7 +14,6 @@
 #include	<stdlib.h>
 #include	<stdio.h>
 
-/* $Id: rfc2045acchk.c,v 1.8 2004/06/27 02:28:22 mrsam Exp $ */
 
 extern void rfc2045_enomem();
 

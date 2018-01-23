@@ -1,5 +1,4 @@
-/* $Id: imaplogout.C,v 1.3 2010/04/29 00:34:49 mrsam Exp $
-**
+/*
 ** Copyright 2002-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.

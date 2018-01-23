@@ -1,5 +1,4 @@
-/* $Id: mbox.H,v 1.7 2008/05/24 17:57:42 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -370,8 +369,8 @@ public:
 	std::string translatePath(std::string path);
 
 	static std::string translatePathCommon(std::string path,
-					       std::vector<unicode_char> &,
-					       const char *);
+					       const char *verbotten,
+					       const char *sep);
 
 	void readMessageAttributes(const std::vector<size_t> &messages,
 				   MessageAttributes attributes,
@@ -464,7 +463,6 @@ public:
 				       struct rfc2045 *&structret,
 				       mail::callback &callback);
 	void genericMarkRead(size_t messageNumber);
-	static void mkverbotten(std::vector<unicode_char> &uc);
 };
 
 LIBMAIL_END

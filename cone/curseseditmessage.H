@@ -1,6 +1,5 @@
-/* $Id: curseseditmessage.H,v 1.5 2009/06/27 17:12:00 mrsam Exp $
-**
-** Copyright 2003, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -14,7 +13,7 @@
 #include "config.h"
 #include "curses/cursescontainer.H"
 #include "curses/curseskeyhandler.H"
-
+#include "curses/cursesflowedline.H"
 #include "libmail/objectmonitor.H"
 #include "unicode/unicode.h"
 #include "spellcheckerbase.H"
@@ -33,10 +32,70 @@ class CursesEditMessage : public Curses,
 			  public CursesKeyHandler,
 			  public mail::obj {
 
-	// Text that's being edited is saved, always in UTF-8
+	// Text that's being edited
 
-	std::vector<std::string> text_UTF8;
+	std::vector<CursesFlowedLine> text_UTF8;
 
+public:
+	size_t numLines() const { return text_UTF8.size(); }
+	void getText(size_t line, std::vector<unicode_char> &textRef);
+	void getText(size_t line, std::vector<unicode_char> &textRef,
+		     bool &wrapped);
+	void getText(size_t line, CursesFlowedLine &textRef)
+	{
+		textRef=line >= text_UTF8.size() ? CursesFlowedLine()
+			: text_UTF8[line];
+	}
+
+	// Retrieve text in its native UTF-8 format. Optionally append a
+	// space if the line of text is flowed.
+
+	std::string getUTF8Text(size_t line,
+				bool useflowedformat);
+
+private:
+	void setText(size_t line, const std::vector<unicode_char> &textRef);
+	void setText(size_t line, const CursesFlowedLine &textRef);
+
+	void getTextBeforeAfter(std::vector<unicode_char> &before,
+				std::vector<unicode_char> &after);
+
+	void getTextBeforeAfter(std::vector<unicode_char> &before,
+				std::vector<unicode_char> &after,
+				bool &flowed);
+
+	void setTextBeforeAfter(const std::vector<unicode_char> &before,
+				const std::vector<unicode_char> &after,
+				bool flowed=false);
+
+	bool justifiable(size_t lineNum);
+
+	void insertKeyPos(unicode_char key);
+
+	template<typename iter_type>
+	void replaceTextLines(size_t start, size_t cnt,
+			      iter_type beg_iter, iter_type end_iter);
+
+	template<typename iter_type>
+	void replaceTextLinesImpl(size_t start, size_t cnt,
+				  iter_type beg_iter, iter_type end_iter);
+
+	template<typename value_type>
+	void replaceTextLine(size_t line, const value_type &value);
+
+	template<typename iter_category>
+	class replace_text_lines_helper;
+
+	class get_file_helper;
+
+	class unicode_wordwrap_iterator;
+	class unicode_wordwrap_rewrapper;
+
+	class unicode_wordwrap_oiterator;
+public:
+	template<typename iter_category>
+	friend class replace_text_lines_helper;
+private:
 	//
 	// Whenever cursor row changes, leaf wants to update the status bar.
 	// Rather then remembering to call a function each time the cursor
@@ -106,23 +165,12 @@ class CursesEditMessage : public Curses,
 				 std::vector<size_t> &pos,
 				 size_t colNum);
 
-	//
-	// For each character in line, create pos giving each character's
-	// column.
-	//
+	// Return the horizontal location of the given character
 
-	static void getTextPos(std::vector<unicode_char> &line,
-			       std::vector<size_t> &pos);
-
-	//
-	// Replace tabs in line (horizontal positions in pos) with U+00A0
-	//
-
-	static void expandTabs(std::vector<unicode_char> &line,
-			       std::vector<size_t> &pos);
+	static size_t getTextHorizPos(const std::vector<unicode_char> &line,
+				      size_t column);
 
 	class SpellCheckerManager;
-	class DefineMacroHelper;
 
 public:
 	virtual void cursorRowChanged();
@@ -135,8 +183,8 @@ public:
 	int getWidth() const;
 	int getHeight() const;
 
-	void load(std::istream &i);
-	void save(std::ostream &o);
+	void load(std::istream &i, bool isflowed, bool delsp);
+	void save(std::ostream &o, bool isflowed);
 	bool isFocusable();
 	bool processKeyInFocus(const Key &key);
 	int getCursorPosition(int &row, int &col);
@@ -144,11 +192,11 @@ public:
 	void draw();
 	void erase();
 
-	void eraseAllText();
+	void enterKey();
 
 	void setCurrentLine(size_t row)
 	{
-		if (row < text_UTF8.size())
+		if (row < numLines())
 		{
 			cursorRow=row;
 			cursorCol=0;
@@ -156,33 +204,26 @@ public:
 	}
 
 	size_t currentLine() { return cursorRow; }
-	size_t numLines() { return text_UTF8.size(); }
-	std::string line_utf8(size_t n) { return text_UTF8[n]; }
 
 private:
 	virtual void macroDefined();
-	void processMacroKey(size_t macroNameSize,
-			     std::string &repl_utf8);
+	void processMacroKey(std::string &repl_utf8);
 
-	void getText(size_t line, std::vector<unicode_char> &textRef);
-	void setText(size_t line, std::vector<unicode_char> &textRef);
-
-	void inserted(size_t, std::vector<unicode_char> &line);
+	void inserted();
 	void drawLine(size_t lineNum);
 	void left(bool);
 	void right();
-	void deleteChar();
+	void deleteChar(bool is_clreol_key);
 	bool checkReplace(bool &, std::string &, SpellCheckerBase::Manager *);
 	class ReplacePrompt;
 
-	bool search(bool doUpdate, bool doWrap, mail::Search &engine,
-		    size_t searchStrSize);
+	bool search(bool doUpdate, bool doWrap, mail::Search &engine);
 	void mark();
 	void end();
 
-	class yankHelper;
-
-	void yank(wchar_t key, bool doUpdate, yankHelper &);
+	void yank(const std::list<CursesFlowedLine> &yankText,
+		  const std::string &chset,
+		  bool doUpdate);
 
 	bool getMarkedRegion(size_t &row1, size_t &row2,
 			     size_t &col1, size_t &col2);

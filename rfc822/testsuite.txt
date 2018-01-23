@@ -95,3 +95,6 @@ Mr Nobody <nobody@example.com>, "Mr. Nobody" <nobody@example.com>
 nobody@example.com, nobody@example.com, "Mr. Nobody" <nobody@example.com>
 ----
 =?UTF-8?Q?Test?= <nobody@example.com>, "foo=bar" <nobody@example.com>
+=?utf-8?B?4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk?=
+=?utf-8?B?4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk?= =?utf-8?B?4oWk?=
+=?utf-8?B?4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk4oWk?= =?utf-8?B?4oWkzIA=?=

@@ -1,5 +1,4 @@
-/* $Id: addressbooksearch.H,v 1.2 2004/05/30 02:43:00 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.

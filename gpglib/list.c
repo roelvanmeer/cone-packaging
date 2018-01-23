@@ -1,9 +1,8 @@
 /*
-** Copyright 2001-2010 Double Precision, Inc.  See COPYING for
+** Copyright 2001-2011 Double Precision, Inc.  See COPYING for
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: list.c,v 1.5 2010/05/30 20:27:43 mrsam Exp $";
 
 #include	"config.h"
 #include	<stdio.h>
@@ -41,7 +40,7 @@ static void definit(struct gpg_list_info *arg)
 
 #define DEFINIT(c, a) if (!(c)) (c)=(a)
 
-	DEFINIT(arg->charset, &unicode_ISO8859_1);
+	DEFINIT(arg->charset, "iso-8859-1");
 	DEFINIT(arg->disabled_msg, "[ This key is disabled ]");
 	DEFINIT(arg->revoked_msg, "[ This key is revoked ]");
 	DEFINIT(arg->expired_msg, "[ This key is expired ]");
@@ -390,7 +389,7 @@ static int dolist_callback(char *line, void *vp1,
 			return (-1);
 	}
 
-	userid=unicode_cfromutf8(vp->charset, userid, NULL);
+	userid=libmail_u_convert_fromutf8(userid, vp->charset, NULL);
 	if (!userid)
 		return (-1);
 
@@ -542,7 +541,7 @@ int libmail_gpg_listgroups(const char *gpgdir,
 		if (*p == 0)
 			continue;
 
-		q=unicode_cfromutf8(voidarg->charset, p, NULL);
+		q=libmail_u_convert_fromutf8(p, voidarg->charset, NULL);
 
 		if (!q)
 			continue;

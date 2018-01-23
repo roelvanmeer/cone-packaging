@@ -1,11 +1,9 @@
-/* $Id: rfcaddr.C,v 1.12 2010/05/02 12:03:22 mrsam Exp $
-**
-** Copyright 2002-2009, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 #include "libmail_config.h"
-#include <ctype.h>
 #include <string.h>
 #include "rfcaddr.H"
 #include "mail.H"
@@ -16,6 +14,7 @@
 #include "unicode/unicode.h"
 
 #include <iostream>
+#include <algorithm>
 
 #if LIBIDN
 #include <idna.h>
@@ -162,20 +161,10 @@ string mail::address::getCanonAddress() const
 
 	if (n < a.size())
 	{
-		char *p=
-			(*unicode_ISO8859_1.tolower_func)(&unicode_ISO8859_1,
-							  a.c_str() + n, NULL);
-
-		if (!p)
-			LIBMAIL_THROW("Out of memory.");
-
-		try {
-			a=a.substr(0, n) + p;
-			free(p);
-		} catch (...) {
-			free(p);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-		}
+		a=a.substr(0, n) +
+			mail::iconvert::convert_tocase(a.substr(n),
+						       "iso-8859-1",
+						       unicode_lc);
 	}
 
 	return a;
@@ -305,53 +294,86 @@ mail::emailAddress::emailAddress(const mail::address &a)
 	decode();
 }
 
-std::string mail::emailAddress::setDisplayName(string s)
+std::string mail::emailAddress::setDisplayName(const std::string &s,
+					       const std::string &charset)
 {
-	decodedName=s;
-	if (appcharset == NULL)
-		appcharset=unicode_find(unicode_default_chset());
+	std::vector<unicode_char> ucbuf;
 
-	name=mail::rfc2047::encodeAddrName(s, appcharset->chset);
+	if (!mail::iconvert::convert(s, charset, ucbuf))
+		return "Encoding error";
 
-	return ""; // TODO
+	decodedName=ucbuf;
+
+	name=mail::rfc2047::encodeAddrName(s, charset);
+
+	return "";
 }
 
-std::string mail::emailAddress::setDisplayAddr(string s)
+std::string mail::emailAddress::setDisplayAddr(const std::string &s,
+					       const std::string &charset)
 {
-	std::string errcode;
+	std::vector<unicode_char> ucbuf;
 
-	decodedAddr=s;
+	if (!mail::iconvert::convert(s, charset, ucbuf))
+		return "Encoding error";
 
 #if LIBIDN
-	char *ascii_ptr;
+	std::vector<unicode_char>::iterator b, e;
 
-	size_t at=s.find('@');
-
-	if (at != std::string::npos)
+	for (b=ucbuf.begin(), e=ucbuf.end(); b != e; ++b)
 	{
-		int err=idna_to_ascii_lz(s.c_str()+at+1, &ascii_ptr, 0);
-
-		if (err != IDNA_SUCCESS)
+		if (*b == '@')
 		{
-			errcode=idna_strerror((Idna_rc)err);
-		}
-		else
-		{
-			try {
-				s=s.substr(0, at+1) + ascii_ptr;
-				free(ascii_ptr);
-			} catch (...)
-			{
-				free(ascii_ptr);
-				throw;
-			}
+			++b;
+			break;
 		}
 	}
+
+	size_t addr_start= b-ucbuf.begin();
+
+	// Assume non-latin usernames are simply UTF-8 */
+
+	std::string name_portion=
+		mail::iconvert::convert(std::vector<unicode_char>(ucbuf.begin(),
+								  b),
+					"utf-8");
+
+	ucbuf.push_back(0);
+
+	char *ascii_ptr;
+
+	int rc=idna_to_ascii_4z(&ucbuf[addr_start], &ascii_ptr, 0);
+
+	if (rc != IDNA_SUCCESS)
+		return std::string(std::string("Address encoding error: ") +
+				   idna_strerror((Idna_rc)rc));
+
+	try {
+		name_portion += ascii_ptr;
+		free(ascii_ptr);
+	} catch (...) {
+		free(ascii_ptr);
+		throw;
+	}
+
+	ucbuf.pop_back();
+	addr=name_portion;
+#else
+	std::vector<unicode_char>::iterator b, e;
+
+	for (b=ucbuf.begin(), e=ucbuf.end(); b != e; ++b)
+	{
+		if (*b < ' ' || *b > 0x7F)
+			return "Internationalized addresses not supported";
+	}
+
+	addr.clear();
+	addr.reserve(ucbuf.size());
+	addr.insert(addr.end(), ucbuf.begin(), ucbuf.end());
+
 #endif
-
-	addr=s;
-
-	return errcode;
+	decodedAddr=ucbuf;
+	return "";
 }
 
 void mail::emailAddress::setName(string s)
@@ -368,34 +390,53 @@ void mail::emailAddress::setAddr(string s)
 
 void mail::emailAddress::decode()
 {
-	if (appcharset == NULL)
-		appcharset=unicode_find(unicode_default_chset());
-	decodedName=mail::rfc2047::decoder().decode(name, *appcharset);
+	std::vector<unicode_char> ucname, ucaddr;
 
+	mail::iconvert::convert(mail::rfc2047::decoder().decode(name,
+								"utf-8"),
+				"utf-8", ucname);
+
+	ucaddr.reserve(addr.size());
+
+	std::string::iterator b, e;
+
+	for (std::string::iterator b=addr.begin(), e=addr.end(); b != e; ++b)
+		ucaddr.push_back((unsigned char)*b);
+		
 #if LIBIDN
-	char *encoded_str;
-
-	size_t at=addr.find('@');
+	size_t at=std::find(ucaddr.begin(), ucaddr.end(), '@')
+		- ucaddr.begin();
 
 	if (at != std::string::npos)
 	{
-		int rc=idna_to_unicode_lzlz(addr.c_str()+at+1, &encoded_str, 0);
+		++at;
+		ucaddr.push_back(0);
+
+		unicode_char *ucbuf;
+
+		int rc=idna_to_unicode_4z4z(&ucaddr[at], &ucbuf, 0);
 
 		if (rc == IDNA_SUCCESS)
 		{
+			size_t i;
+
+			for (i=0; ucbuf[i]; ++i)
+				;
+
 			try {
-				decodedAddr=addr.substr(0, at+1) + encoded_str;
-				free(encoded_str);
-			} catch (...)
-			{
-				free(encoded_str);
+				ucaddr.erase(ucaddr.begin()+at,
+					     ucaddr.end());
+				ucaddr.insert(ucaddr.end(),
+					      ucbuf, ucbuf+i);
+				free(ucbuf);
+			} catch (...) {
+				free(ucbuf);
 				throw;
 			}
-			return;
 		}
 	}
-
 #endif
-	decodedAddr=addr;
+	decodedName=ucname;
+	decodedAddr=ucaddr;
 }
 

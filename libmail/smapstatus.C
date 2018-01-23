@@ -1,12 +1,10 @@
-/* $Id: smapstatus.C,v 1.2 2003/07/30 21:26:01 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 #include "smap.H"
 #include "smapstatus.H"
-#include <ctype.h>
 #include <sstream>
 
 using namespace std;

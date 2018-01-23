@@ -3,7 +3,6 @@
 ** distribution information.
 */
 
-static const char rcsid[]="$Id: mimegpgfork.c,v 1.8 2010/05/30 20:27:43 mrsam Exp $";
 
 #include "config.h"
 #include <stdio.h>

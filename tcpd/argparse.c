@@ -8,7 +8,6 @@
 ** See COPYING for distribution information.
 */
 
-/* $Id: argparse.c,v 1.2 2000/07/30 01:08:10 mrsam Exp $ */
 
 
 int argparse(int argc, char **argv, struct args *s)

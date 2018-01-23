@@ -1,5 +1,4 @@
 /*
-** $Id: encode.h,v 1.2 2004/05/23 14:28:24 mrsam Exp $
 */
 #ifndef	rfc822_encode_h
 #define	rfc822_encode_h
@@ -34,9 +33,9 @@ struct libmail_encode_info {
 	void *callback_arg;
 };
 
-const char *libmail_encode_autodetect_fp(FILE *, int okQp);
-const char *libmail_encode_autodetect_fppos(FILE *, const char *, off_t, off_t);
-const char *libmail_encode_autodetect_str(const char *, const char *);
+const char *libmail_encode_autodetect_fp(FILE *, int, int *);
+const char *libmail_encode_autodetect_fpoff(FILE *, int, off_t, off_t, int *);
+const char *libmail_encode_autodetect_buf(const char *, int);
 
 void libmail_encode_start(struct libmail_encode_info *info,
 			  const char *transfer_encoding,

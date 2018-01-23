@@ -1,6 +1,5 @@
-/* $Id: curseslabel.C,v 1.1 2003/05/27 14:09:07 mrsam Exp $
-**
-** Copyright 2002, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -13,8 +12,9 @@ using namespace std;
 CursesLabel::CursesLabel(CursesContainer *parent,
 			 string textArg,
 			 Curses::CursesAttr attributeArg)
-	: Curses(parent), text(textArg), attribute(attributeArg)
+	: Curses(parent), attribute(attributeArg)
 {
+	setutext(textArg);
 }
 
 CursesLabel::~CursesLabel()
@@ -51,13 +51,28 @@ void CursesLabel::setAttribute(Curses::CursesAttr attr)
 void CursesLabel::setText(string textArg)
 {
 	erase();
-	text=textArg;
+	setutext(textArg);
 	draw();
+}
+
+void CursesLabel::setutext(const std::string &textArg)
+{
+	std::vector<unicode_char> buf;
+
+	mail::iconvert::convert(textArg, unicode_default_chset(), buf);
+
+	widecharbuf wc;
+
+	wc.init_unicode(buf.begin(), buf.end());
+	wc.expandtabs(0);
+
+	wc.tounicode(utext);
+	w=wc.wcwidth(0);
 }
 
 int CursesLabel::getWidth() const
 {
-	return getTextLength(text.c_str());
+	return w;
 }
 
 int CursesLabel::getHeight() const
@@ -67,19 +82,15 @@ int CursesLabel::getHeight() const
 
 void CursesLabel::draw()
 {
-	writestr(text, attribute);
+	writeText(utext, 0, 0, attribute);
 }
 
 void CursesLabel::erase()
 {
-	string s="";
+	std::vector<unicode_char> s;
 
-	s.append(getWidth(), ' ');
+	s.insert(s.end(), getWidth(), ' ');
 
-	writestr(s, CursesAttr());
+	writeText(s, 0, 0, CursesAttr());
 }
 
-void CursesLabel::writestr(string str, Curses::CursesAttr attr)
-{
-	writeText(str, 0, 0, attr);
-}

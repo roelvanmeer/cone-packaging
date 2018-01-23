@@ -1,5 +1,4 @@
 /*
-** $Id: abookread.c,v 1.4 2006/02/12 17:59:56 mrsam Exp $
 **
 ** Copyright 2003-2006, Double Precision Inc.
 **

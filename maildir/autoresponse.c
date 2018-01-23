@@ -34,7 +34,6 @@
 #endif
 #endif
 
-static const char rcsid[]="$Id: autoresponse.c,v 1.8 2003/01/05 03:32:47 mrsam Exp $";
 
 struct maildir_autoresponse_quota {
 	unsigned files;

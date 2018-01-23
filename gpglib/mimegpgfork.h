@@ -6,7 +6,6 @@
 ** distribution information.
 */
 
-static const char mimegpgfork_h_rcsid[]="$Id: mimegpgfork.h,v 1.4 2008/07/07 03:25:41 mrsam Exp $";
 
 #include "config.h"
 #include <stdio.h>

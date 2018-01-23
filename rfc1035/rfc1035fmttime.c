@@ -6,7 +6,6 @@
 #include	"rfc1035.h"
 #include	<string.h>
 
-static const char rcsid[]="$Id: rfc1035fmttime.c,v 1.3 2000/05/27 04:59:27 mrsam Exp $";
 
 const char *rfc1035_fmttime(unsigned long n, char *buf)
 {

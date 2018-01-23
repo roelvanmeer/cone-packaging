@@ -57,12 +57,12 @@ information.
       <h2>Synopsis</h2>
 
       <div class="cmdsynopsis">
-        <p><code class="command">leaf</code> [-d <em class="replaceable"><code>dictionary</code></em>] [+<em class="replaceable"><code>n</code></em>] [<em class="replaceable"><code>filename</code></em>]</p>
+        <p><code class="command">leaf</code> [-f] [-d <em class="replaceable"><code>dictionary</code></em>] [+<em class="replaceable"><code>n</code></em>] [<em class="replaceable"><code>filename</code></em>]</p>
       </div>
     </div>
 
     <div class="refsect1" title="USAGE">
-      <a id="id498513" shape="rect" name="id498513"> </a>
+      <a id="id542094" shape="rect" name="id542094"> </a>
 
       <h2>USAGE</h2>
 
@@ -70,8 +70,8 @@ information.
       simple console text file editor, with paragraph word-wrapping
       and spell checking. <span class="command"><strong>leaf</strong></span> is based on the text
       editor in the <span class="application">Cone</span> mail
-      reader and composer. <span class="command"><strong>leaf</strong></span> opens <em class="replaceable"><code>filename</code></em>, position the cursor
-      on the first line, or line #<em class="replaceable"><code>n</code></em>, if specified.</p>
+      reader and composer. <span class="command"><strong>leaf</strong></span> opens <em class="replaceable"><code>filename</code></em>, positioning the
+      cursor on the first line, or line #<em class="replaceable"><code>n</code></em>, if specified.</p>
 
       <p>This is not really the best editor for program sources.
       <span class="command"><strong>leaf</strong></span> is meant
@@ -83,18 +83,99 @@ information.
       to fit an 80-character display). Word wrapping is "lazy":
       only long text lines are wrapped. Short text lines are not
       folded together. Individual paragraphs are separated by blank
-      lines of text. Press <span class="keycap"><strong>CTRL</strong></span>-<span class="keycap"><strong>J</strong></span> to optimally rewrap the
+      lines of text. Press <span class="keycap"><strong>CTRL</strong></span>-<span class="keycap"><strong>J</strong></span> to optimally rejustify the
       paragraph under the cursor. The bottom two lines on the
       screen list which keys to press for other functions.</p>
 
-      <p>The <code class="option">-d</code> sets the name of the
-      dictionary used for spell checking (overriding the default
-      spell checking dictionary set by the <code class="envar">DICTIONARY</code> environment variable). <code class="option">+<em class="replaceable"><code>n</code></em></code>
-      sets the initial cursor position to line #<em class="replaceable"><code>n</code></em>.</p>
+      <div class="refsect2" title="Flowed text">
+        <a id="id542167" shape="rect" name="id542167"> </a>
+
+        <h3>Flowed text</h3>
+
+        <p>The <code class="option">-f</code> option enables
+        <span class="quote">&#8220;<span class="quote">flowed
+        text</span>&#8221;</span> formatting convention. Plain text
+        files have no explicit means for joining multiple lines
+        into logical paragraph. Each line of text is an individual
+        line, and a blank line marks the end of a paragraph.</p>
+
+        <p>In a <span class="quote">&#8220;<span class="quote">flowed text</span>&#8221;</span> formatted file,
+        each line in a paragraph except the last one ends with a
+        space character. This makes no visual difference, it's just
+        a marker that this line should be merged with the next
+        line. The last line in the paragraph does not end in a
+        space character.</p>
+
+        <p>The trailing space character is logically removed from
+        each flowed line, and all flowed lines are merged into a
+        logical paragraph that can be adjusted to any display
+        width. It's important to note that text written in
+        non-ideographic languages, where individual words are
+        separated by spaces, will have two space characters at the
+        end of every line: the space character that separates the
+        last word on the line from the first word on the next line,
+        and the a second space character that marks the line as a
+        flowed line.</p>
+
+        <p>Because the trailing space marking a flowed line is
+        logically removed, without the second space character there
+        will not be a logical space between the two words, and if
+        the paragraph's width is adjusted for display the two words
+        may get combined together.</p>
+
+        <p>The <code class="option">-f</code> option puts
+        <span class="command"><strong>leaf</strong></span> into
+        flowed text mode, removing spaces from each flowed line of
+        text in an opened file. A flowed line is marked on the
+        screen with a "&lt;" character in the right margin (or a
+        small "next line" character on a UTF-8 display). When
+        saving a file <span class="command"><strong>leaf</strong></span> automatically adds a
+        trailing space to each line that's marked as flowed.</p>
+
+        <p>The flowed text mode stays in effect for each file
+        opened in <span class="command"><strong>leaf</strong></span>. When opening
+        another file, press <span class="keycap"><strong>CTRL</strong></span>-<span class="keycap"><strong>F</strong></span> to turn flowed mode on
+        or off for the next file. This change stays in effect until
+        it gets toggled again.</p>
+
+        <p>Pressing <span class="keycap"><strong>CTRL</strong></span>-<span class="keycap"><strong>J</strong></span> optimally rejustifies
+        the text in flowed text mode. <span class="command"><strong>leaf</strong></span> heuristically
+        determines the start and the end of the paragraph,
+        readjusts the width of the paragraph, and marks each line
+        as flowed, except the last paragraph line. <span class="command"><strong>leaf</strong></span> uses a unicode-based
+        algorithm for determining whether the last character line
+        needs a space character, in addition to the flowed space
+        marker.</p>
+
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
+          <h3 class="title">Note</h3>
+
+          <p><span class="command"><strong>leaf</strong></span> is
+          frequently used to edit plain text email message content.
+          Because email messages assign some semantical meaning to
+          lines of text that start with spaces or "&gt;"
+          characters, <span class="keycap"><strong>CTRL</strong></span>-<span class="keycap"><strong>J</strong></span> will not rejustify
+          lines of text that begin with a "&gt;" or a space. These
+          lines will be considered paragraph boundaries, in
+          addition to blank lines.</p>
+        </div>
+      </div>
+
+      <div class="refsect2" title="Spell checking">
+        <a id="id542313" shape="rect" name="id542313"> </a>
+
+        <h3>Spell checking</h3>
+
+        <p>The <code class="option">-d</code> option sets the name
+        of the dictionary used for spell checking (overriding the
+        default spell checking dictionary set by the <code class="envar">DICTIONARY</code> environment variable).
+        <code class="option">+<em class="replaceable"><code>n</code></em></code> sets the initial
+        cursor position to line #<em class="replaceable"><code>n</code></em>.</p>
+      </div>
     </div>
 
     <div class="refsect1" title="SEE ALSO">
-      <a id="id498608" shape="rect" name="id498608"> </a>
+      <a id="id542342" shape="rect" name="id542342"> </a>
 
       <h2>SEE ALSO</h2>
 

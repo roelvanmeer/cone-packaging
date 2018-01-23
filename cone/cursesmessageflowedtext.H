@@ -1,6 +1,5 @@
-/* $Id: cursesmessageflowedtext.H,v 1.1 2003/05/27 14:09:03 mrsam Exp $
-**
-** Copyright 2003, Double Precision Inc.
+/*
+** Copyright 2003-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -9,33 +8,61 @@
 #define cursesmessageflowedtext_H
 
 #include "cursesmessage.H"
-#include "rfc2646parse.H"
+#include "rfc2045/rfc3676parser.h"
+
 
 //////////////////////////////////////////////////////////////////////
 // Helper classes for flowed text reformatting
 //
 
-class CursesMessage::FlowedTextParser : public rfc2646Parser,
+class CursesMessage::FlowedTextParser : public mail::textplainparser,
 		     public CursesMessage::reformatter {
 
 	CursesMessage *messagePtr;
-	const struct unicode_info *content_chset;
-	const struct unicode_info *my_chset;
-	std::string flowedTextBuffer;
+	std::string content_chset;
+	std::string my_chset;
 	size_t displayWidth;
-        bool rewrapFlowed(std::string text, bool partialFlag);
 
+	// Inherited from reformatter
 	void parse(std::string text);
 	bool finish();
+	bool conversionError();
 
+	bool conversionErrorFlag;
+
+	size_t currentQuoteLevel;
+
+	// Inherited from textplainparser
+
+	void line_begin(size_t);
+
+	void line_contents(const unicode_char *, size_t);
+
+	void line_end();
+
+	unicoderewrapnone norewrapper;
+
+	unicodewordwrapper<CursesMessage::FlowedTextParser> wrapper;
+
+	std::vector<std::string> wrapped_lines;
+
+	void flushlines();
+
+	bool emitted_line;
 public:
 	FlowedTextParser( CursesMessage *messagePtrArg,
-			 const struct unicode_info *content_chsetArg,
-			 const struct unicode_info *my_chsetArg,
-			 size_t displayWidthArg);
+			  const std::string &content_chsetArg,
+			  const std::string &my_chsetArg,
+			  size_t displayWidthArg,
+			  bool flowed,
+			  bool delsp);
 	~FlowedTextParser();
 
-	bool operator()(std::string text);
+
+	FlowedTextParser &operator++() { return *this; }
+	FlowedTextParser &operator++(int) { return *this; }
+	FlowedTextParser &operator*() { return *this; }
+	void operator=(const std::vector<unicode_char> &);
 };
 
 #endif

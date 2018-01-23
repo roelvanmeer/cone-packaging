@@ -1,6 +1,5 @@
-dnl $Id: configure.in,v 1.27 2009/11/08 18:14:47 mrsam Exp $
 dnl
-dnl Copyright 1998 - 2009 Double Precision, Inc.  See COPYING for
+dnl Copyright 1998 - 2011 Double Precision, Inc.  See COPYING for
 dnl distribution information.
 AC_INIT(rfc2045lib, 0.20, [courier-maildrop@lists.sourceforge.net])
 
@@ -13,6 +12,7 @@ AM_CONFIG_HEADER(rfc2045_config.h)
 dnl Checks for programs.
 AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_CC
+AC_PROG_CXX
 AC_LIBTOOL_DLOPEN
 AM_PROG_LIBTOOL
 
@@ -52,6 +52,7 @@ AC_C_CONST
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
 AC_TYPE_PID_T
+AC_SYS_LARGEFILE
 
 dnl Checks for library functions.
 AC_CHECK_FUNCS(setlocale)
@@ -84,4 +85,7 @@ AC_SUBST(RFC2045CHARSET)
 
 AM_CONDITIONAL(HAVE_SGML, test -d ${srcdir}/../docbook)
 
+. ../rfc822/rfc822.config
+
+AM_CONDITIONAL(HAVE_LIBIDN, test "$libidn" = "yes")
 AC_OUTPUT(Makefile rfc2045charset.h)

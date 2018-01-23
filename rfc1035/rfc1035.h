@@ -6,7 +6,6 @@
 #ifndef	rfc1035_h
 #define	rfc1035_h
 
-static const char rfc1035_h_rcsid[]="$Id: rfc1035.h,v 1.7 2005/06/24 17:47:33 mrsam Exp $";
 
 
 #if	HAVE_CONFIG_H

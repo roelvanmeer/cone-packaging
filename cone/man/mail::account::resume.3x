@@ -1,16 +1,17 @@
-.\"<!-- $Id: book.sgml,v 1.4 2007/04/05 02:35:33 mrsam Exp $ -->
-.\"<!-- Copyright 2002-2003 Double Precision, Inc.  See COPYING for -->
+.\"<!-- Copyright 2002-2010 Double Precision, Inc.  See COPYING for -->
 .\"<!-- distribution information. -->
 '\" t
 .\"     Title: mail::account::resume
-.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\"    Author: Sam Varshavchik
 .\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
-.\"      Date: 05/08/2010
+.\"      Date: 04/04/2011
 .\"    Manual: Cone: COnsole Newsreader And Emailer
-.\"    Source: [FIXME: source]
+.\"    Source: 
+        Cone\(co
+      
 .\"  Language: English
 .\"
-.TH "MAIL::ACCOUNT::RESUM" "3x" "05/08/2010" "[FIXME: source]" "Cone: COnsole Newsreader And E"
+.TH "MAIL::ACCOUNT::RESUM" "3x" "04/04/2011" "Cone\(co" "Cone: COnsole Newsreader And E"
 .\" -----------------------------------------------------------------
 .\" * set default formatting
 .\" -----------------------------------------------------------------
@@ -28,7 +29,6 @@ mail::account::resume \- Resume after a suspend
 .nf
       
 
-
 #include <libmail/mail\&.H>
 
 .fi
@@ -40,15 +40,12 @@ This function should be invoked when the application resumes after it was suspen
 \fBmail::account::process\fR\&. The application could\'ve been suspended while
 
 
-
 LibMAIL
 was in a middle of processing a background event\&. After resuming, the jump in the system clock may result in
 
 
-
 LibMAIL
 concluding that the remote mail server timed out without responding, when the actual response did come in while the application was suspended, and
-
 
 
 LibMAIL
@@ -59,10 +56,14 @@ just hasn\'t read it yet\&.
 resets
 
 
-
 LibMAIL
 \'s internal timeouts\&. Note that not much can be done if the application remained suspended long enough for the remote mail server to shut down the connection itself\&.
 .SH "SEE ALSO"
 .PP
 
 \fBmail::account::process\fR(3x)\&.
+.SH "AUTHOR"
+.PP
+\fBSam Varshavchik\fR
+.RS 4
+.RE

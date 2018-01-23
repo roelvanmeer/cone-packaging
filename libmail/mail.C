@@ -1,5 +1,4 @@
-/* $Id: mail.C,v 1.13 2010/04/29 00:34:49 mrsam Exp $
-**
+/*
 ** Copyright 2002-2004, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -27,12 +26,6 @@
 using namespace std;
 
 list<mail::account *> mail::account::mailaccount_list;
-
-LIBMAIL_START
-
-const struct unicode_info *appcharset=NULL;
-
-LIBMAIL_END
 
 //
 // Initialize mail::folder's default.  mail::folder is a superclass for
@@ -228,10 +221,6 @@ mail::account::account(mail::callback::disconnect &callbackArg)
 	: disconnect_callback(callbackArg)
 {
 	my_mailaccount_p=mailaccount_list.insert(mailaccount_list.end(), this);
-	// Keep track of all mail::account objects
-
-	if (appcharset == NULL)
-		appcharset=unicode_find(unicode_default_chset());
 }
 
 mail::account::~account()
@@ -249,17 +238,6 @@ mail::account::~account()
 //////////////////////////////////////////////////////////////////////////////
 
 LIBMAIL_START
-
-bool setAppCharset(const char *charsetName)
-{
-	const struct unicode_info *u=unicode_find(charsetName);
-
-	if (!u)
-		return false;
-
-	appcharset=u;
-	return true;
-}
 
 string hostname()
 {
@@ -289,17 +267,9 @@ string homedir()
 
 void upper(string &w)
 {
-	char *p= (*unicode_ISO8859_1.toupper_func)(&unicode_ISO8859_1,
-						   w.c_str(), NULL);
-
-	if (p)
-		try {
-			w= p;
-			free(p);
-		} catch (...) {
-			free(p);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-		}
+	for (string::iterator b=w.begin(), e=w.end(); b != e; ++b)
+		if (*b >= 'a' && *b <= 'z')
+			*b += 'A'-'a';
 }
 LIBMAIL_END
 
@@ -700,8 +670,8 @@ string toutf8(string s)
 {
 	string u;
 
-	char *p=unicode_xconvert(s.c_str(),
-				 mail::appcharset, &unicode_UTF8);
+	char *p=libmail_u_convert_toutf8(s.c_str(),
+					 unicode_default_chset(), NULL);
 
 	try {
 		u=p;
@@ -717,8 +687,8 @@ string fromutf8(string s)
 {
 	string u;
 
-	char *p=unicode_xconvert(s.c_str(), &unicode_UTF8,
-				 mail::appcharset);
+	char *p=libmail_u_convert_fromutf8(s.c_str(), unicode_default_chset(),
+					   NULL);
 
 	try {
 		u=p;
@@ -736,11 +706,9 @@ LIBMAIL_END
 //
 
 string mail::mbox::translatePathCommon(string path,
-				       vector<unicode_char> &verbotten,
+				       const char *verbotten,
 				       const char *sep)
 {
-	int dummy;
-
 	string newpath;
 
 	do
@@ -762,9 +730,23 @@ string mail::mbox::translatePathCommon(string path,
 
 		vector<unicode_char> ucvec;
 
-		unicode_char *uc=(*mail::appcharset->c2u)
-			(mail::appcharset, component.c_str(),
-			 &dummy);
+		unicode_char *uc;
+		size_t ucsize;
+		libmail_u_convert_handle_t h;
+
+		if ((h=libmail_u_convert_tou_init(unicode_default_chset(),
+						  &uc, &ucsize, 1)) == NULL)
+		{
+			uc=NULL;
+		}
+		else
+		{
+			libmail_u_convert(h, component.c_str(),
+					  component.size());
+
+			if (libmail_u_convert_deinit(h, NULL))
+				uc=NULL;
+		}
 
 		if (!uc)
 		{
@@ -822,26 +804,16 @@ string mail::mbox::translatePathCommon(string path,
 			free(uc);
 			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
 		}
-		ucvec.push_back(0);
 
-		char *p=unicode_uctomodutf7x(uc, &verbotten[0]);
-
-		if (!p)
-		{
-			free(uc);
-			return "";
-		}
 		free(uc);
+		std::string p(mail::iconvert::convert(ucvec,
+						      std::string(unicode_x_imap_modutf7 " ")
+						      + verbotten));
 
-		try {
-			if (newpath.size() > 0)
-				newpath += sep;
-			newpath += p;
-			free(p);
-		} catch (...) {
-			free(p);
-			LIBMAIL_THROW(LIBMAIL_THROW_EMPTY);
-		}
+
+		if (newpath.size() > 0)
+			newpath += sep;
+		newpath += p;
 	} while (path.size() > 0);
 
 	return newpath;

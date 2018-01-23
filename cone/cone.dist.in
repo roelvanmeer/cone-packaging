@@ -1,4 +1,4 @@
-##VERSION: $Id: cone.dist.in,v 1.7 2008/07/13 14:27:33 mrsam Exp $
+##VERSION: $Id: cone.dist.in 79 2011-04-22 21:41:17Z mrsam $
 #
 # cone configuration file created from cone.dist by sysconftool
 #
@@ -46,9 +46,8 @@ UNDERLINE_HACK=0
 #
 # OpenSSL:
 #
-# SSL2 - SSLv2
 # SSL3 - SSLv3
-# SSL23 - either SSLv2 or SSLv3
+# SSL23 - either SSLv2 or SSLv3 (also TLS1, it seems)
 # TLS1 - TLS1
 #
 # GnuTLS:
@@ -68,6 +67,8 @@ UNDERLINE_HACK=0
 #
 # It takes the same values for OpenSSL/GnuTLS as TLS_PROTOCOL
 
+TLS_STARTTLS_PROTOCOL=TLS1
+
 ##NAME: TLS_CIPHER_LIST:0
 #
 # TLS_CIPHER_LIST optionally sets the list of ciphers to be used by the
@@ -76,7 +77,7 @@ UNDERLINE_HACK=0
 #
 # OpenSSL:
 #
-# TLS_CIPHER_LIST="ALL:!ADH:RC4+RSA:+SSLv2:@STRENGTH"
+# TLS_CIPHER_LIST="SSLv3:TLSv1:HIGH:!LOW:!MEDIUM:!EXP:!NULL:!aNULL@STRENGTH"
 #
 # GnuTLS:
 #

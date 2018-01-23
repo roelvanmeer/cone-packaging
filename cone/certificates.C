@@ -1,10 +1,10 @@
-/* $Id: certificates.C,v 1.5 2009/06/27 17:12:00 mrsam Exp $
-**
+/*
 ** Copyright 2008, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
 
+#include "config.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>

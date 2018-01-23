@@ -52,7 +52,6 @@
 
 #include	<netdb.h>
 
-static const char rcsid[]="$Id: tcpd.c,v 1.47 2009/07/30 02:29:54 mrsam Exp $";
 
 static const char *accessarg=0;
 static const char *accesslocal=0;

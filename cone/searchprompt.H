@@ -1,5 +1,4 @@
-/* $Id: searchprompt.H,v 1.2 2003/07/27 19:11:51 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

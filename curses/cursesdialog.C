@@ -1,6 +1,5 @@
-/* $Id: cursesdialog.C,v 1.1 2003/05/27 14:09:07 mrsam Exp $
-**
-** Copyright 2002, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -203,13 +202,15 @@ bool CursesDialog::writeText(const char *text, int row, int col,
 	return false;
 }
 
-bool CursesDialog::writeText(const wchar_t *text, int row, int col,
-			       const CursesAttr &attr) const
+bool CursesDialog::writeText(const std::vector<unicode_char> &text,
+			     int row, int col,
+			     const Curses::CursesAttr &attr) const
 {
 	if (draw_flag)
 		CursesContainer::writeText(text, row, col, attr);
 	return false;
 }
+
 
 void CursesDialog::deleteChild(Curses *child)
 {

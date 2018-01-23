@@ -6,7 +6,6 @@
 ** See COPYING for distribution information.
 */
 
-/* $Id: argparse.h,v 1.1 2000/07/09 16:31:24 mrsam Exp $ */
 
 #include	"config.h"
 

@@ -4,7 +4,6 @@
 */
 
 /*
-** $Id: rfc822_getaddrs.c,v 1.6 2009/11/08 18:14:47 mrsam Exp $
 */
 #include	"rfc822.h"
 #include	<stdlib.h>

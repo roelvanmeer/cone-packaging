@@ -1,5 +1,4 @@
-/* $Id: filtereditscreen.H,v 1.2 2003/07/28 14:59:26 mrsam Exp $
-**
+/*
 ** Copyright 2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.

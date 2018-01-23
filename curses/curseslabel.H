@@ -1,6 +1,5 @@
-/* $Id: curseslabel.H,v 1.1 2003/05/27 14:09:07 mrsam Exp $
-**
-** Copyright 2002, Double Precision Inc.
+/*
+** Copyright 2002-2011, Double Precision Inc.
 **
 ** See COPYING for distribution information.
 */
@@ -18,7 +17,11 @@
 
 class CursesLabel : public Curses {
 
-	std::string text;
+	std::vector<unicode_char> utext;
+
+	size_t w;
+
+	void setutext(const std::string &textArg);
 
 protected:
 	Curses::CursesAttr attribute;
@@ -39,8 +42,6 @@ public:
 
 	void draw();
 	void erase();
-private:
-	void writestr(std::string str, Curses::CursesAttr attr);
 };
 
 #endif

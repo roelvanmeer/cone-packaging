@@ -1,5 +1,4 @@
-/* $Id: objectmonitor.H,v 1.2 2003/05/29 00:11:02 mrsam Exp $
-**
+/*
 ** Copyright 2002, Double Precision Inc.
 **
 ** See COPYING for distribution information.
@@ -16,6 +15,7 @@
 // will return NULL
 
 #include <set>
+#include <cstdio>
 
 #include "namespace.H"
 

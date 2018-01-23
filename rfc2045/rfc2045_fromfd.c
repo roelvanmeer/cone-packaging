@@ -4,7 +4,6 @@
 */
 
 /*
-** $Id: rfc2045_fromfd.c,v 1.8 2008/10/12 03:05:49 mrsam Exp $
 */
 #if	HAVE_CONFIG_H
 #include "rfc2045_config.h"

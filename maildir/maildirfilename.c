@@ -38,7 +38,6 @@
 
 #include	"maildirmisc.h"
 
-static const char rcsid[]="$Id: maildirfilename.c,v 1.3 2002/07/02 20:01:37 mrsam Exp $";
 
 /*
 ** char *maildir_filename(const char *maildir, const char *folder,

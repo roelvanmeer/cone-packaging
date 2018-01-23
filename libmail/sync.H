@@ -1,5 +1,4 @@
-/* $Id: sync.H,v 1.7 2004/06/14 00:18:43 mrsam Exp $
-**
+/*
 ** Copyright 2002-2003, Double Precision Inc.
 **
 ** See COPYING for distribution information.
